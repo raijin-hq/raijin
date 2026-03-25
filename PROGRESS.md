@@ -53,21 +53,24 @@
 
 ---
 
-## Phase 2B: Shell-Integration + Blocks 🔲
+## Phase 2B: Shell-Integration + Blocks 🔨
 
-**Status:** Nicht begonnen — NÄCHSTER SCHRITT
+**Status:** In Arbeit (25. März 2026)
 
 **Ziel:** Shell-Hooks für Block-Boundaries, Prompt-Unterdrückung, Exit-Codes
 
 | Task | Status |
 |------|--------|
-| Shell-Hook Scripts (zsh, bash, fish) mit OSC-Markern | 🔲 |
-| VTE-Parser erweitern für OSC 133 Marker | 🔲 |
-| Block-Datenmodell (Command + Output + Metadata) | 🔲 |
-| Block-Rendering (Header + Body + Exit-Code Badge) | 🔲 |
-| Prompt-Unterdrückung in Raijin Mode | 🔲 |
+| Shell-Hook Scripts (zsh, bash, fish) mit OSC 133 Markern | ✅ |
+| OSC 133 Byte-Scanner (osc_parser.rs, 6 Tests) | ✅ |
+| PTY Shell-Hook Injection (ZDOTDIR für zsh, --rcfile für bash) | ✅ |
+| ShellMarker Events in TerminalEvent Pipeline | ✅ |
+| Block-Datenmodell (TerminalBlock + BlockManager) | ✅ |
+| Block-Rendering (Header + Body + Exit-Code Badge) | 🔲 ← NÄCHSTER SCHRITT |
+| Prompt-Unterdrückung in Raijin Mode (via Block-Filter) | 🔲 |
 | PS1 Mode (Shell-Prompt sichtbar) als Alternative | 🔲 |
 | Raijin Mode / PS1 Mode Setting | 🔲 |
+| Text-Bleeding Bug fixen | 🔲 |
 | Block-Navigation (Cmd+↑/↓) | 🔲 |
 | Block Collapse/Expand | 🔲 |
 

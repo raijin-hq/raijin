@@ -4,6 +4,8 @@ use std::sync::{Arc, Mutex};
 use alacritty_terminal::event::Event as AlacrittyEvent;
 use alacritty_terminal::event::EventListener;
 
+use crate::osc_parser::ShellMarker;
+
 /// Events emitted by the terminal to the UI layer.
 pub enum TerminalEvent {
     /// Terminal content changed, UI should repaint.
@@ -14,6 +16,8 @@ pub enum TerminalEvent {
     Bell,
     /// Shell process exited.
     Exit,
+    /// Shell integration marker detected (OSC 133).
+    ShellMarker(ShellMarker),
 }
 
 /// Bridges alacritty_terminal events to our TerminalEvent channel.

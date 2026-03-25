@@ -9,6 +9,7 @@ use anyhow::Result;
 use parking_lot::FairMutex;
 
 use crate::event::{RaijinEventListener, TerminalEvent};
+use crate::osc_parser::OscScanner;
 use crate::pty;
 
 const SCROLLBACK_HISTORY: usize = 10_000;
@@ -111,11 +112,12 @@ impl Terminal {
     pub fn new(rows: u16, cols: u16) -> Result<Self> {
         let (event_tx, event_rx) = flume::unbounded();
 
-        let (master, reader, pty_writer) = pty::spawn_pty(rows, cols, true)?;
+        let (master, reader, pty_writer) =
+            pty::spawn_pty(rows, cols, pty::InputMode::Raijin)?;
 
         let shared_writer: Arc<std::sync::Mutex<Box<dyn Write + Send>>> =
             Arc::new(std::sync::Mutex::new(pty_writer));
-        let listener = RaijinEventListener::new(event_tx, Arc::clone(&shared_writer));
+        let listener = RaijinEventListener::new(event_tx.clone(), Arc::clone(&shared_writer));
 
         let config = Config {
             scrolling_history: SCROLLBACK_HISTORY,
@@ -131,7 +133,7 @@ impl Terminal {
         let term = Term::new(config, &dims, listener);
         let term = Arc::new(FairMutex::new(term));
 
-        Self::spawn_pty_reader(Arc::clone(&term), reader);
+        Self::spawn_pty_reader(Arc::clone(&term), event_tx, reader);
 
         let handle = TerminalHandle {
             term,
@@ -146,8 +148,13 @@ impl Terminal {
     }
 
     /// Spawn the background thread that reads PTY output and feeds it to the terminal.
+    ///
+    /// The thread scans incoming bytes for OSC 133 shell integration markers
+    /// and emits ShellMarker events. The bytes are then passed unmodified to
+    /// alacritty_terminal's VTE parser for grid processing.
     fn spawn_pty_reader(
         term: Arc<FairMutex<Term<RaijinEventListener>>>,
+        event_tx: flume::Sender<TerminalEvent>,
         mut reader: Box<dyn std::io::Read + Send>,
     ) {
         thread::Builder::new()
@@ -155,13 +162,22 @@ impl Terminal {
             .spawn(move || {
                 let mut buf = [0u8; 8192];
                 let mut parser = ansi::Processor::<ansi::StdSyncHandler>::new();
+                let mut osc_scanner = OscScanner::new();
 
                 loop {
                     match reader.read(&mut buf) {
                         Ok(0) => break,
                         Ok(n) => {
+                            let chunk = &buf[..n];
+
+                            // Scan for OSC 133 shell integration markers
+                            for marker in osc_scanner.scan(chunk) {
+                                let _ = event_tx.send(TerminalEvent::ShellMarker(marker));
+                            }
+
+                            // Feed bytes to alacritty_terminal (ignores unknown OSC)
                             let mut term = term.lock();
-                            parser.advance(&mut *term, &buf[..n]);
+                            parser.advance(&mut *term, chunk);
                         }
                         Err(e) => {
                             log::error!("PTY read error: {}", e);

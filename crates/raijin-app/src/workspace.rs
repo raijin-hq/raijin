@@ -84,6 +84,36 @@ impl Workspace {
             TerminalEvent::Exit => {
                 cx.notify();
             }
+            TerminalEvent::ShellMarker(marker) => {
+                self.handle_shell_marker(marker, cx);
+            }
+        }
+    }
+
+    fn handle_shell_marker(
+        &mut self,
+        marker: raijin_terminal::ShellMarker,
+        cx: &mut Context<Self>,
+    ) {
+        match marker {
+            raijin_terminal::ShellMarker::PromptStart => {
+                // Shell is about to display a prompt — a new potential block starts
+                self.show_terminal = true;
+                cx.notify();
+            }
+            raijin_terminal::ShellMarker::InputStart => {
+                // Prompt ended, user input region begins
+            }
+            raijin_terminal::ShellMarker::CommandStart => {
+                // Command is being executed, output will follow
+                self.show_terminal = true;
+                cx.notify();
+            }
+            raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
+                // Command finished — store exit code for block metadata
+                log::info!("Command finished with exit code: {}", exit_code);
+                cx.notify();
+            }
         }
     }
 
