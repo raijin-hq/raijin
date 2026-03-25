@@ -3,9 +3,9 @@
 > **Name:** Raijin (雷神) — Der Donnergott unter den Terminals
 > **CLI Command:** `raijin`
 > **Repo:** `nyxb/raijin`
-> **Basis:** gpui-ce (GPUI Community Edition, gevendored ins Monorepo)
+> **Framework:** Inazuma (稲妻) — gevendorter Fork von Zed's GPUI
 > **Ziel:** GPU-beschleunigter Terminal-Emulator mit Warp-Level UX & Design
-> **Stack:** Rust + gpui-ce + alacritty_terminal + cosmic-text
+> **Stack:** Rust + Inazuma + alacritty_terminal + Metal
 
 ---
 
@@ -13,116 +13,93 @@
 
 | Komponente | Technologie |
 |---|---|
-| UI Framework | gpui-ce (gevendored in crates/gpui) |
-| UI Components | gpui-component (gevendored in crates/gpui-component) |
-| GPU Rendering | Metal (macOS), wgpu (Linux) |
+| UI Framework | Inazuma (稲妻) — gevendorter GPUI-Fork |
+| UI Components | inazuma-component (70+ Widgets) |
+| GPU Rendering | Metal (macOS) |
 | Terminal Emulation | alacritty_terminal |
-| VTE Parser | vte |
+| VTE Parser | vte (in alacritty_terminal) |
 | PTY | portable-pty |
-| Text Shaping | cosmic-text |
-| GPU Text Rendering | glyphon |
-| Syntax Highlighting | tree-sitter + grammars |
-| Layout Engine | Taffy (in GPUI) |
-| Fuzzy Search | fuzzy-matcher |
-| File Watching | notify |
-| AI | Multi-Provider BYOK (Anthropic, OpenAI, Google) |
-| MCP | Model Context Protocol |
-| Config | TOML |
+| Text Shaping | Inazuma text system (cosmic-text based) |
+| Layout Engine | Taffy (in Inazuma) |
+| Config | TOML (raijin-settings) |
+| Shell Integration | OSC 133 (blocks) + OSC 7777 (metadata) |
 
 ---
 
-## Projekt-Struktur
+## Crate-Struktur
 
 ```
 raijin/
-├── Cargo.toml              # Workspace root
+├── Cargo.toml                  # Workspace root (Rust nightly, edition 2024)
 ├── crates/
-│   ├── gpui/               # gpui-ce gevendored — UNSER Fork, direkt editierbar
-│   ├── gpui-component/     # gpui-component gevendored — Widgets anpassbar
-│   ├── raijin-ui/          # Eigenes Design-System (Farben, Tokens, Themes)
-│   ├── raijin-terminal/    # Terminal-Emulation (alacritty_terminal wrapper)
-│   ├── raijin-shell/       # Shell-Integration (precmd/preexec hooks, agent detection)
-│   ├── raijin-editor/      # Lightweight Code Editor (Warp Code equivalent)
-│   ├── raijin-agent/       # AI/Agent Integration + Agent Toolbar
-│   ├── raijin-drive/       # Workflows, Notebooks, Knowledge Store
-│   └── raijin-app/         # Haupt-Binary, Window-Management, CLI entry point
-├── assets/
-│   ├── fonts/              # Input Mono, JetBrains Mono
-│   ├── icons/              # Lucide oder custom SVG icons (⚡ Raijin thunder)
-│   └── themes/             # Theme-Definitionen (TOML)
+│   ├── inazuma/                # GPU UI Framework (Zed GPUI Fork)
+│   │   └── tooling/macros/     # Proc-Macros
+│   ├── inazuma-component/      # 70+ UI Components (Input, Chips, TitleBar, Tabs)
+│   │   ├── ui/
+│   │   ├── macros/
+│   │   └── assets/             # Bundled Fonts/Icons
+│   ├── raijin-app/             # Binary — Workspace, Terminal Rendering
+│   ├── raijin-terminal/        # PTY + alacritty_terminal + OSC Parser + Blocks
+│   ├── raijin-shell/           # Shell Context, Metadata Payload
+│   ├── raijin-settings/        # Config System (TOML)
+│   ├── raijin-ui/              # Design Token System (WIP)
+│   └── cargo-raijin/           # Dev CLI (dev/build/icon commands)
 ├── shell/
-│   ├── raijin.zsh          # Shell-Hooks für zsh
-│   ├── raijin.bash         # Shell-Hooks für bash
-│   └── raijin.fish         # Shell-Hooks für fish
-└── docs/
-    └── ARCHITECTURE.md
+│   ├── raijin.zsh              # Shell Hooks (OSC 133 + OSC 7777 metadata)
+│   ├── raijin.bash
+│   └── raijin.fish
+└── plan/                       # Roadmap & Architecture Plans
 ```
 
 ---
 
-## Zeitplan
+## Phase-Status
 
-| Woche | Phase | Ergebnis |
+| Phase | Status | Beschreibung |
 |---|---|---|
-| 1 | Phase 0: Setup | Repo, Toolchain, gpui-ce verified |
-| 2–3 | Phase 1: Minimal Terminal | Shell im GPUI-Window |
-| 4–6 | Phase 2: Block-UX | Visuelle Blöcke |
-| 6–9 | Phase 3: Design System | Warp-Level Polish |
-| 9–11 | Phase 4: Input + Completions | Rich Editing |
-| 11–14 | Phase 5: Explorer + Editor | File-Tree, Code Editor, Splits |
-| 14–17 | Phase 6: AI + Agent Bar | Agent Detection, AI Features |
-| 17–19 | Phase 7: Drive + Workflows | Notebooks, Launch Configs |
-| 19–22 | Phase 8: Polish + Launch | Performance, Distribution |
-| 22+ | Phase 9: Future | Windows, Cloud, Enterprise |
+| Phase 0: Foundation | ✅ Done | Repo, Toolchain, Inazuma vendored |
+| Phase 1: Minimal Terminal | ✅ Done | PTY, Grid-Rendering, Input, ANSI Colors |
+| Phase 2A: Shell Integration | ✅ Done | OSC 133 Hooks, BlockManager, OSC 7777 Metadata |
+| Phase 2B: Block Rendering | ✅ Done | Warp-style Headers, Prompt Suppression, Error Styling |
+| Phase 2C: Block Interaction | 🔜 Next | Copy, Collapse, Navigation, Sticky Headers → Plan 12 |
+| Multi-Tab Sessions | 🔜 Next | Tab-Management, Session-Persistence → Plan 11 |
+| Phase 3: Design System | ⬜ Planned | Theme Tokens, Animations |
+| Phase 4: Input Editor | ⬜ Planned | History, Completions, Multi-Line |
+| Phase 5: Explorer + Editor | ⬜ Planned | File Tree, Code Editor |
+| Phase 6: AI + Agents | ⬜ Planned | Agent Detection, AI Features |
+| Phase 7–9: Future | ⬜ Planned | Drive, Workflows, Distribution |
 
 ---
 
-## Wo wir Warp SCHLAGEN können
+## Nächste Schritte
 
-| Bereich | Warp's Schwäche | Unsere Chance |
-|---|---|---|
-| Login-Pflicht | Account nötig | Kein Login, offline-first |
-| Telemetry | Sammelt Daten (opt-out) | Default: keine Telemetry |
-| Closed Source | Proprietär | Open Source |
-| Agent Detection | Nur offizielle CLI-Names | Konfigurierbar |
-| Pricing | $18-180/Monat | Freemium oder einmalig |
-| Vendor Lock-in (AI) | Pusht eigene Models | BYOK: jedes Modell |
-| Privacy | Cloud-abhängig | Local-first |
-
----
-
-## Referenz-Projekte
-
-| Projekt | Relevanz |
-|---|---|
-| termy | GPUI Terminal |
-| Zed Terminal Panel | alacritty_terminal in GPUI |
-| COSMIC Terminal | iced + alacritty_terminal |
-| Warp Blog | Architektur |
-| Rio Terminal | wgpu Rust Terminal |
-| gpui-component | GPUI Widgets |
-| nohrs | GPUI File Explorer |
-| claude-code-warp | Agent Integration via OSC |
+1. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
+2. **Plan 12: Block Interaction Design** — Copy, Collapse, Navigation, Search
 
 ---
 
 ## Plan-Dateien
 
-| Datei | Inhalt |
-|---|---|
-| `00-OVERVIEW.md` | Dieses Dokument — Überblick, Stack, Zeitplan |
-| `01-WARP-FEATURE-ANALYSE.md` | Vollständige Warp Feature-Analyse (Referenz) |
-| `02-PHASE-0-FOUNDATION.md` | Repository Setup, Toolchain, Dependencies |
-| `03-PHASE-1-MINIMAL-TERMINAL.md` | Erstes funktionierendes Terminal im GPUI-Window |
-| `04-PHASE-2-BLOCK-UX.md` | Block-System — Warp's Killer Feature |
-| `05-PHASE-3-DESIGN-SYSTEM.md` | Theming, Farben, Typographie, Animationen |
-| `06-PHASE-4-INPUT-EDITOR.md` | IDE-Style Input Editor & Smart Completions |
-| `07-PHASE-5-EXPLORER-EDITOR.md` | File Explorer, Code Editor, Split Panes |
-| `08-PHASE-6-AI-AGENTS.md` | AI Integration & Agent Toolbar |
-| `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Polish, Distribution, Future |
+| Datei | Inhalt | Status |
+|---|---|---|
+| `00-OVERVIEW.md` | Dieses Dokument | Aktuell |
+| `01-WARP-FEATURE-ANALYSE.md` | Warp Feature-Analyse (Referenz) | Referenz |
+| `04-PHASE-2-BLOCK-UX.md` | Block-System Architektur | 🔄 In Progress |
+| `05-PHASE-3-DESIGN-SYSTEM.md` | Theming, Farben, Typographie | ⬜ Planned |
+| `06-PHASE-4-INPUT-EDITOR.md` | IDE-Style Input & Completions | ⬜ Planned |
+| `07-PHASE-5-EXPLORER-EDITOR.md` | File Explorer, Code Editor | ⬜ Planned |
+| `08-PHASE-6-AI-AGENTS.md` | AI Integration & Agent Toolbar | ⬜ Planned |
+| `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Distribution | ⬜ Planned |
+| `10-INAZUMA-OBJC2-MIGRATION.md` | objc→objc2 Migration Plan | ⬜ Planned |
+| `11-MULTI-TAB-SESSION-MANAGEMENT.md` | Tab-System, Sessions | 🔜 Next |
+| `12-BLOCK-INTERACTION-DESIGN.md` | Block Copy/Collapse/Nav | 🔜 Next |
+| **done/** | | |
+| `done/02-PHASE-0-FOUNDATION.md` | Repository Setup | ✅ Done |
+| `done/03-PHASE-1-MINIMAL-TERMINAL.md` | Erstes Terminal im Window | ✅ Done |
+| `done/13-PRECMD-JSON-METADATA-ARCHITECTURE.md` | OSC 7777 Metadata System | ✅ Done |
 
 ---
 
 *Erstellt: 24. März 2026*
+*Aktualisiert: 25. März 2026*
 *Projekt: Raijin (雷神) — nyxb/raijin*
-*Bestätigt: Zed CEO hat GPUI-Nutzung freigegeben*
