@@ -30,6 +30,7 @@ pub mod badge;
 pub mod breadcrumb;
 pub mod button;
 pub mod chart;
+pub mod chip;
 pub mod checkbox;
 pub mod clipboard;
 pub mod collapsible;

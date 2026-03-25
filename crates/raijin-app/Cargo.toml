@@ -18,3 +18,5 @@ anyhow = { workspace = true }
 log = { workspace = true }
 parking_lot = { workspace = true }
 alacritty_terminal = "0.26.0-rc1"
+inazuma-component-assets = { path = "../inazuma-component/assets" }
+time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }

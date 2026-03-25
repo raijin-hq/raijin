@@ -1,18 +1,20 @@
+use alacritty_terminal::grid::Dimensions;
 use alacritty_terminal::term::TermMode;
 use inazuma::{
-    div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, Hsla, KeyDownEvent,
+    div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
     ParentElement, Render, SharedString, Styled, Window, prelude::*,
 };
 use inazuma_component::{
-    divider::Divider,
+    IconName,
+    chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
     input::{Input, InputEvent, InputState},
     tab::{Tab, TabBar},
 };
 use raijin_shell::ShellContext;
-use raijin_terminal::{Terminal, TerminalEvent};
+use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
 
-use crate::terminal_element::TerminalElement;
+use crate::terminal_element::{BlockRenderInfo, TerminalElement};
 
 /// Top-level workspace view that composes the Warp-style layout:
 /// TabBar (top) → Terminal Output (middle) → Context Chips + Input (bottom)
@@ -22,6 +24,7 @@ pub struct Workspace {
     input_state: Entity<InputState>,
     focus_handle: FocusHandle,
     shell_context: ShellContext,
+    block_manager: BlockManager,
     interactive_mode: bool,
     show_terminal: bool,
 }
@@ -65,6 +68,7 @@ impl Workspace {
             input_state,
             focus_handle,
             shell_context,
+            block_manager: BlockManager::new(),
             interactive_mode: false,
             show_terminal: false,
         }
@@ -95,22 +99,29 @@ impl Workspace {
         marker: raijin_terminal::ShellMarker,
         cx: &mut Context<Self>,
     ) {
+        // Get absolute cursor row: history_size + cursor_line gives a monotonic position
+        let cursor_row = {
+            let handle = self.terminal.handle();
+            let term = handle.lock();
+            let history = term.grid().history_size();
+            let cursor_line = term.grid().cursor.point.line.0 as usize;
+            history + cursor_line
+        };
+
+        // Feed marker to BlockManager for block tracking
+        self.block_manager.process_marker(marker.clone(), cursor_row);
+
         match marker {
             raijin_terminal::ShellMarker::PromptStart => {
-                // Shell is about to display a prompt — a new potential block starts
-                self.show_terminal = true;
+                // In Raijin mode, don't show terminal until first command runs
                 cx.notify();
             }
-            raijin_terminal::ShellMarker::InputStart => {
-                // Prompt ended, user input region begins
-            }
+            raijin_terminal::ShellMarker::InputStart => {}
             raijin_terminal::ShellMarker::CommandStart => {
-                // Command is being executed, output will follow
                 self.show_terminal = true;
                 cx.notify();
             }
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
-                // Command finished — store exit code for block metadata
                 log::info!("Command finished with exit code: {}", exit_code);
                 cx.notify();
             }
@@ -134,6 +145,8 @@ impl Workspace {
             InputEvent::PressEnter { secondary: false } => {
                 let value = self.input_state.read(cx).value();
                 if !value.is_empty() {
+                    self.block_manager
+                        .set_pending_command(value.to_string());
                     let mut bytes = value.as_bytes().to_vec();
                     bytes.push(b'\r');
                     self.terminal.write(&bytes);
@@ -176,42 +189,86 @@ impl Workspace {
             .selected_index(0)
     }
 
-    fn render_context_chips(&self) -> impl IntoElement {
-        h_flex()
-            .gap_1()
-            .px_4()
-            .py_2()
-            .child(chip("nyxb", rgb(0x9ece6a).into()))
-            .child(chip(&self.shell_context.cwd_short, rgb(0x7aa2f7).into()))
-            .when_some(self.shell_context.git_branch.as_ref(), |this, branch| {
-                this.child(chip(branch, rgb(0xbb9af7).into()))
-            })
-    }
+    fn render_input_area(&self) -> impl IntoElement {
+        let time_str = time::OffsetDateTime::now_local()
+            .unwrap_or_else(|_| time::OffsetDateTime::now_utc())
+            .format(time::macros::format_description!("[hour]:[minute]"))
+            .unwrap_or_else(|_| "--:--".to_string());
 
-    fn render_input_bar(&self) -> impl IntoElement {
+        let mut chips = h_flex()
+            .gap(px(6.0))
+            .px_4()
+            .pt_2()
+            .flex_wrap()
+            .child(Chip::new("nyxb", rgb(0x14F195).into()))
+            .child(Chip::new(&self.shell_context.hostname, rgb(0xc8c8c8).into()))
+            .child(
+                Chip::new(&self.shell_context.cwd_short, rgb(0x6ee7b7).into())
+                    .icon(IconName::Folder),
+            )
+            .child(
+                Chip::new(&time_str, rgb(0xff5f5f).into())
+                    .icon(IconName::Clock),
+            );
+
+        if let Some(branch) = &self.shell_context.git_branch {
+            chips = chips.child(GitBranchChip::new(branch));
+        }
+
+        if let Some(stats) = &self.shell_context.git_stats {
+            chips = chips.child(GitStatsChip::new(
+                stats.files_changed,
+                stats.insertions,
+                stats.deletions,
+            ));
+        }
+
         div()
             .flex_shrink_0()
             .w_full()
-            .px_4()
-            .py_3()
-            .bg(rgb(0x1e1f2b))
+            .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+            .border_t_1()
+            .child(chips)
             .child(
-                Input::new(&self.input_state)
-                    .appearance(false)
-                    .cleanable(false),
+                // Input row — px_1 so cursor aligns with chip left edge
+                div()
+                    .px_1()
+                    .pt_1()
+                    .pb_3()
+                    .child(
+                        Input::new(&self.input_state)
+                            .appearance(false)
+                            .cleanable(false),
+                    ),
             )
+    }
+
+    fn build_block_render_info(&self) -> Vec<BlockRenderInfo> {
+        self.block_manager
+            .blocks()
+            .iter()
+            .map(|block| BlockRenderInfo {
+                command: block.command.clone(),
+                duration_display: block.duration_display(),
+                exit_code: block.exit_code,
+                abs_start_row: block.start_row,
+                abs_end_row: block.end_row,
+            })
+            .collect()
     }
 }
 
 impl Render for Workspace {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let handle = self.terminal.handle();
+        let blocks = self.build_block_render_info();
+        let hide_before = self.block_manager.prompt_start_row();
 
         let mut container = div()
             .flex()
             .flex_col()
             .size_full()
-            .bg(rgb(0x1a1b26))
+            .bg(rgb(0x121212))
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive))
             .child(self.render_tab_bar())
@@ -225,17 +282,18 @@ impl Render for Workspace {
                     .overflow_hidden();
 
                 if self.show_terminal || self.interactive_mode {
-                    output_area.child(TerminalElement::new(handle))
+                    output_area.child(
+                        TerminalElement::new(handle)
+                            .with_blocks(blocks)
+                            .with_hide_before_row(hide_before),
+                    )
                 } else {
                     output_area
                 }
             });
 
         if !self.interactive_mode {
-            container = container
-                .child(Divider::horizontal())
-                .child(self.render_context_chips())
-                .child(self.render_input_bar());
+            container = container.child(self.render_input_area());
         }
 
         container
@@ -246,20 +304,6 @@ impl Focusable for Workspace {
     fn focus_handle(&self, _cx: &App) -> FocusHandle {
         self.focus_handle.clone()
     }
-}
-
-/// Warp-style context chip: pill-shaped label with subtle border.
-fn chip(label: &str, color: Hsla) -> impl IntoElement {
-    div()
-        .px_2()
-        .py(px(2.0))
-        .rounded(px(6.0))
-        .border_1()
-        .border_color(hsla(0.0, 0.0, 1.0, 0.1))
-        .bg(hsla(0.0, 0.0, 1.0, 0.05))
-        .text_sm()
-        .text_color(color)
-        .child(label.to_string())
 }
 
 fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Vec<u8> {

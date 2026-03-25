@@ -6,7 +6,9 @@ use inazuma_component::Root;
 use workspace::Workspace;
 
 fn main() {
-    Application::new().run(|cx: &mut App| {
+    Application::new()
+        .with_assets(inazuma_component_assets::Assets)
+        .run(|cx: &mut App| {
         inazuma_component::init(cx);
         inazuma_component::theme::Theme::change(
             inazuma_component::theme::ThemeMode::Dark,

@@ -1,3 +1,3 @@
 mod context;
 
-pub use context::ShellContext;
+pub use context::{GitStats, ShellContext};

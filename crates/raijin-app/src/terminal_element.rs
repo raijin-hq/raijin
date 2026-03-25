@@ -3,15 +3,27 @@ use alacritty_terminal::index::{Column, Line};
 use alacritty_terminal::term::cell::Flags as CellFlags;
 use alacritty_terminal::vte::ansi::{Color as AnsiColor, NamedColor};
 use inazuma::{
-    point, px, size, App, Bounds, Element, ElementId, Font, FontStyle, FontWeight,
+    point, px, size, App, Bounds, Corners, Element, ElementId, Font, FontStyle, FontWeight,
     GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId, Pixels, Point,
     SharedString, ShapedLine, Size, StrikethroughStyle, Style, TextAlign, TextRun,
     UnderlineStyle, Window, fill, hsla, rgb,
 };
 use raijin_terminal::TerminalHandle;
 
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
 const FONT_SIZE: f32 = 14.0;
 const CELL_PADDING: f32 = 2.0;
+
+const BLOCK_HEADER_HEIGHT: f32 = 28.0;
+const BLOCK_HEADER_PAD_X: f32 = 12.0;
+const BLOCK_GAP: f32 = 6.0;
+const BLOCK_LEFT_BORDER: f32 = 3.0;
+const BADGE_RADIUS: f32 = 4.0;
+
+const HEADER_FONT_SIZE: f32 = 12.0;
 
 /// Font families to try in order. First match wins.
 const FONT_FAMILIES: &[&str] = &[
@@ -21,6 +33,63 @@ const FONT_FAMILIES: &[&str] = &[
     "Monaco",
 ];
 
+// ---------------------------------------------------------------------------
+// Raijin Dark Theme
+// ---------------------------------------------------------------------------
+
+fn terminal_bg() -> Hsla {
+    rgb(0x121212).into()
+}
+
+fn terminal_fg() -> Hsla {
+    rgb(0xf1f1f1).into()
+}
+
+fn cursor_color() -> Hsla {
+    rgb(0x14F195).into()
+}
+
+fn accent() -> Hsla {
+    rgb(0x14F195).into()
+}
+
+fn error_color() -> Hsla {
+    rgb(0xff5f5f).into()
+}
+
+fn block_header_bg() -> Hsla {
+    rgb(0x1a1a1a).into()
+}
+
+fn header_command_fg() -> Hsla {
+    rgb(0xf1f1f1).into()
+}
+
+fn header_duration_fg() -> Hsla {
+    hsla(0.0, 0.0, 1.0, 0.5)
+}
+
+// ---------------------------------------------------------------------------
+// Block render info (passed from workspace)
+// ---------------------------------------------------------------------------
+
+/// Metadata for rendering a block header overlay.
+#[derive(Clone)]
+pub struct BlockRenderInfo {
+    pub command: String,
+    pub duration_display: String,
+    pub exit_code: Option<i32>,
+    /// Absolute row where this block's output starts (history_size + cursor_line at marker time).
+    pub abs_start_row: usize,
+    /// Absolute row where this block's output ends (None if still running).
+    #[allow(dead_code)]
+    pub abs_end_row: Option<usize>,
+}
+
+// ---------------------------------------------------------------------------
+// Layout / prepaint state
+// ---------------------------------------------------------------------------
+
 /// Terminal grid dimensions computed from font metrics.
 pub struct TerminalLayout {
     pub font: Font,
@@ -28,33 +97,64 @@ pub struct TerminalLayout {
     pub cell_width: Pixels,
     pub cell_height: Pixels,
     pub line_height: Pixels,
+    pub header_font: Font,
 }
 
-/// Pre-painted state: shaped text lines and background rects.
+/// A block header ready for painting.
+pub(crate) struct BlockHeaderPaint {
+    bg_bounds: Bounds<Pixels>,
+    left_border_bounds: Option<Bounds<Pixels>>,
+    badge_center: Point<Pixels>,
+    badge_color: Hsla,
+    command_line: ShapedLine,
+    command_origin: Point<Pixels>,
+    duration_line: ShapedLine,
+    duration_origin: Point<Pixels>,
+}
+
+/// Pre-painted state: shaped text lines, background rects, block headers.
 pub struct TerminalPrepaint {
     pub lines: Vec<(Point<Pixels>, ShapedLine)>,
     pub backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
     pub cursor_rect: Option<Bounds<Pixels>>,
     pub line_height: Pixels,
+    pub block_headers: Vec<BlockHeaderPaint>,
 }
 
-/// Custom Inazuma element that renders the terminal grid.
-///
-/// Uses `TerminalHandle` to read grid state for rendering and
-/// automatically resize the terminal when element bounds change.
+// ---------------------------------------------------------------------------
+// TerminalElement
+// ---------------------------------------------------------------------------
+
+/// Custom Inazuma element that renders the terminal grid with block headers.
 pub struct TerminalElement {
     handle: TerminalHandle,
+    blocks: Vec<BlockRenderInfo>,
+    /// Hide all rows before this absolute row (hides initial prompt in Raijin mode).
+    hide_before_row: Option<usize>,
 }
 
 impl TerminalElement {
     pub fn new(handle: TerminalHandle) -> Self {
-        Self { handle }
+        Self {
+            handle,
+            blocks: Vec::new(),
+            hide_before_row: None,
+        }
+    }
+
+    pub fn with_blocks(mut self, blocks: Vec<BlockRenderInfo>) -> Self {
+        self.blocks = blocks;
+        self
+    }
+
+    pub fn with_hide_before_row(mut self, row: Option<usize>) -> Self {
+        self.hide_before_row = row;
+        self
     }
 
     fn compute_layout(&self, window: &mut Window) -> TerminalLayout {
         let font_size = px(FONT_SIZE);
 
-        // Try fonts in priority order
         let mut font = Font {
             family: FONT_FAMILIES[0].into(),
             weight: FontWeight::NORMAL,
@@ -63,9 +163,6 @@ impl TerminalElement {
 
         let font_id = window.text_system().resolve_font(&font);
 
-        // Verify font resolved to something with the right family by checking advance
-        // If the first font isn't installed, resolve_font still returns a fallback
-        // We just use whatever it resolved to
         let cell_width = window
             .text_system()
             .advance(font_id, font_size, 'M')
@@ -77,13 +174,16 @@ impl TerminalElement {
         let cell_height = ascent + descent.abs() + px(CELL_PADDING);
         let line_height = cell_height;
 
-        // Update font to match what was actually resolved
         if let Some(resolved) = window.text_system().get_font_for_id(font_id) {
             font = resolved;
         }
 
-        // font_id is used only for metric computation above,
-        // not stored — shape_line resolves fonts per-run via Font struct
+        let header_font = Font {
+            family: font.family.clone(),
+            weight: FontWeight::MEDIUM,
+            ..Font::default()
+        };
+
         let _ = font_id;
 
         TerminalLayout {
@@ -92,7 +192,13 @@ impl TerminalElement {
             cell_width,
             cell_height,
             line_height,
+            header_font,
         }
+    }
+
+    /// Compute visual row for an absolute row given current grid state.
+    fn abs_to_visual(abs_row: usize, history_size: usize, display_offset: usize) -> i64 {
+        abs_row as i64 - history_size as i64 + display_offset as i64
     }
 }
 
@@ -146,7 +252,7 @@ impl Element for TerminalElement {
         window: &mut Window,
         _cx: &mut App,
     ) -> Self::PrepaintState {
-        // Resize terminal grid + PTY if bounds changed (Zed pattern: recalculate every frame)
+        // Resize terminal grid + PTY if bounds changed
         let new_cols = (bounds.size.width / layout.cell_width).floor() as u16;
         let new_rows = (bounds.size.height / layout.cell_height).floor() as u16;
         self.handle.set_size(new_rows, new_cols);
@@ -158,39 +264,207 @@ impl Element for TerminalElement {
         let grid_cols = term.columns();
         let colors = content.colors;
         let display_offset = content.display_offset;
+        let history_size = term.grid().history_size();
 
         let bg_color = terminal_bg();
 
         let mut lines = Vec::with_capacity(grid_rows);
         let mut backgrounds = Vec::new();
         let mut cursor_rect = None;
+        let mut block_headers: Vec<BlockHeaderPaint> = Vec::new();
 
-        // Bottom-grow layout (Warp-style): only render rows with content,
-        // positioned at the bottom of the container so output grows upward.
+        // Compute which rows to hide (initial prompt)
+        let first_block_start = self.blocks.first().map(|b| b.abs_start_row);
+        let hide_up_to = match (self.hide_before_row, first_block_start) {
+            (Some(prompt_row), Some(block_start)) => Some(block_start.min(prompt_row + grid_rows)),
+            (Some(prompt_row), None) => Some(prompt_row + grid_rows), // no blocks yet, hide prompt area
+            _ => None,
+        };
+
+        // Build a set of visual rows where block headers should appear
+        let mut header_at_visual_row: Vec<(i64, usize)> = Vec::new(); // (visual_row, block_index)
+        for (idx, block) in self.blocks.iter().enumerate() {
+            let visual = Self::abs_to_visual(block.abs_start_row, history_size, display_offset);
+            header_at_visual_row.push((visual, idx));
+        }
+        header_at_visual_row.sort_by_key(|(v, _)| *v);
+
+        // Bottom-grow layout: only render rows with content
         let cursor = &content.cursor;
         let cursor_point = cursor.point;
-        let cursor_visual_row = (cursor_point.line.0 as usize)
-            .saturating_add(display_offset);
+        let cursor_visual_row =
+            (cursor_point.line.0 as usize).saturating_add(display_offset);
 
-        // Content rows = everything from row 0 up to and including the cursor row
         let content_rows = (cursor_visual_row + 1).min(grid_rows);
-        let content_height = layout.cell_height * content_rows as f32;
+
+        // Calculate total extra height from block headers that will be visible
+        let visible_headers: Vec<(usize, usize)> = header_at_visual_row
+            .iter()
+            .filter(|(v, _)| *v >= 0 && (*v as usize) < content_rows)
+            .map(|(v, idx)| (*v as usize, *idx))
+            .collect();
+
+        let total_header_height =
+            visible_headers.len() as f32 * (BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+        let content_height =
+            layout.cell_height * content_rows as f32 + px(total_header_height);
 
         // Y offset: push content to the bottom of the bounds
         let y_offset = bounds.size.height - content_height;
 
+        // Track accumulated header offset as we iterate rows
+        let mut header_offset = px(0.0);
+        let mut next_header_idx = 0;
+
+        // Cursor rect (adjusted for header offsets)
         if content.mode.contains(alacritty_terminal::term::TermMode::SHOW_CURSOR) {
+            // Compute header offset at cursor row
+            let mut cursor_header_offset = px(0.0);
+            for (visual_row, _) in &visible_headers {
+                if *visual_row <= cursor_visual_row {
+                    cursor_header_offset += px(BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+                }
+            }
+
             let cx_px = bounds.origin.x + layout.cell_width * cursor_point.column.0 as f32;
-            let cy_px = bounds.origin.y + y_offset + layout.cell_height * cursor_visual_row as f32;
+            let cy_px = bounds.origin.y
+                + y_offset
+                + layout.cell_height * cursor_visual_row as f32
+                + cursor_header_offset;
             cursor_rect = Some(Bounds::new(
                 point(cx_px, cy_px),
                 size(px(2.0), layout.cell_height),
             ));
         }
 
-        // Only render rows with content (0..content_rows), skip empty rows below cursor
         let grid = term.grid();
+
         for row_idx in 0..content_rows {
+            // Check if this row should be hidden (prompt area)
+            let abs_row = history_size + row_idx - display_offset.min(row_idx);
+            if let Some(hide_up) = hide_up_to {
+                if abs_row < hide_up && self.blocks.is_empty() {
+                    continue;
+                }
+            }
+
+            // Check if a block header should be inserted before this row
+            while next_header_idx < visible_headers.len()
+                && visible_headers[next_header_idx].0 == row_idx
+            {
+                let block_idx = visible_headers[next_header_idx].1;
+                let block = &self.blocks[block_idx];
+
+                let header_y =
+                    bounds.origin.y + y_offset + layout.cell_height * row_idx as f32 + header_offset;
+
+                let is_error = block.exit_code.map_or(false, |c| c != 0);
+                let is_running = block.exit_code.is_none();
+                let badge_color = if is_running {
+                    accent()
+                } else if is_error {
+                    error_color()
+                } else {
+                    accent()
+                };
+
+                // Header background
+                let header_bounds = Bounds::new(
+                    point(bounds.origin.x, header_y),
+                    size(bounds.size.width, px(BLOCK_HEADER_HEIGHT)),
+                );
+
+                // Left border for error blocks
+                let left_border = if is_error {
+                    Some(Bounds::new(
+                        point(bounds.origin.x, header_y),
+                        size(px(BLOCK_LEFT_BORDER), px(BLOCK_HEADER_HEIGHT)),
+                    ))
+                } else {
+                    None
+                };
+
+                // Badge position (centered vertically in header)
+                let badge_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
+                let badge_y = header_y + px(BLOCK_HEADER_HEIGHT / 2.0);
+
+                // Shape command text
+                let cmd_text = if block.command.is_empty() {
+                    "(empty)".to_string()
+                } else {
+                    block.command.clone()
+                };
+
+                let command_runs = vec![TextRun {
+                    len: cmd_text.len(),
+                    font: layout.header_font.clone(),
+                    color: header_command_fg(),
+                    background_color: None,
+                    underline: None,
+                    strikethrough: None,
+                }];
+
+                let command_line = window.text_system().shape_line(
+                    SharedString::from(cmd_text),
+                    px(HEADER_FONT_SIZE),
+                    &command_runs,
+                    None,
+                );
+
+                let cmd_origin = point(
+                    badge_x + px(BADGE_RADIUS * 2.0 + 8.0),
+                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
+                );
+
+                // Shape duration text
+                let dur_text = if is_running {
+                    "running...".to_string()
+                } else {
+                    block.duration_display.clone()
+                };
+
+                let duration_runs = vec![TextRun {
+                    len: dur_text.len(),
+                    font: Font {
+                        family: layout.font.family.clone(),
+                        weight: FontWeight::NORMAL,
+                        ..Font::default()
+                    },
+                    color: header_duration_fg(),
+                    background_color: None,
+                    underline: None,
+                    strikethrough: None,
+                }];
+
+                let duration_line = window.text_system().shape_line(
+                    SharedString::from(dur_text),
+                    px(HEADER_FONT_SIZE),
+                    &duration_runs,
+                    None,
+                );
+
+                let dur_width = duration_line.width();
+                let dur_origin = point(
+                    bounds.origin.x + bounds.size.width - dur_width - px(BLOCK_HEADER_PAD_X),
+                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
+                );
+
+                block_headers.push(BlockHeaderPaint {
+                    bg_bounds: header_bounds,
+                    left_border_bounds: left_border,
+                    badge_center: point(badge_x + px(BADGE_RADIUS), badge_y),
+                    badge_color,
+                    command_line,
+                    command_origin: cmd_origin,
+                    duration_line,
+                    duration_origin: dur_origin,
+                });
+
+                header_offset += px(BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+                next_header_idx += 1;
+            }
+
+            // Render the grid row
             let mut line_text = String::with_capacity(grid_cols);
             let mut runs: Vec<TextRun> = Vec::new();
             let mut skip_next = false;
@@ -198,7 +472,6 @@ impl Element for TerminalElement {
             let line = Line(row_idx as i32 - display_offset as i32);
 
             for col_idx in 0..grid_cols {
-                // Skip wide char spacer cells
                 if skip_next {
                     skip_next = false;
                     continue;
@@ -208,7 +481,6 @@ impl Element for TerminalElement {
                 let c = cell.c;
                 let flags = cell.flags;
 
-                // Mark next cell for skip if this is a wide character
                 if flags.contains(CellFlags::WIDE_CHAR) {
                     skip_next = true;
                 }
@@ -222,7 +494,10 @@ impl Element for TerminalElement {
                 // Background rect if non-default
                 if bg != bg_color {
                     let x = bounds.origin.x + layout.cell_width * col_idx as f32;
-                    let y = bounds.origin.y + y_offset + layout.cell_height * row_idx as f32;
+                    let y = bounds.origin.y
+                        + y_offset
+                        + layout.cell_height * row_idx as f32
+                        + header_offset;
                     let width = if flags.contains(CellFlags::WIDE_CHAR) {
                         layout.cell_width * 2.0
                     } else {
@@ -308,7 +583,10 @@ impl Element for TerminalElement {
                 );
                 let origin = point(
                     bounds.origin.x,
-                    bounds.origin.y + y_offset + layout.cell_height * row_idx as f32,
+                    bounds.origin.y
+                        + y_offset
+                        + layout.cell_height * row_idx as f32
+                        + header_offset,
                 );
                 lines.push((origin, shaped));
             }
@@ -319,6 +597,7 @@ impl Element for TerminalElement {
             backgrounds,
             cursor_rect,
             line_height: layout.line_height,
+            block_headers,
         }
     }
 
@@ -332,23 +611,65 @@ impl Element for TerminalElement {
         window: &mut Window,
         cx: &mut App,
     ) {
-        // Clip all rendering to element bounds — prevents text bleeding outside
         let content_mask = inazuma::ContentMask { bounds };
         window.with_content_mask(Some(content_mask), |window| {
             // 1. Overall background
             window.paint_quad(fill(bounds, terminal_bg()));
 
-            // 2. Cell backgrounds
+            // 2. Block headers
+            for header in &prepaint.block_headers {
+                // Header background
+                window.paint_quad(fill(header.bg_bounds, block_header_bg()));
+
+                // Left border (error indicator)
+                if let Some(border) = header.left_border_bounds {
+                    window.paint_quad(fill(border, error_color()));
+                }
+
+                // Exit badge (small filled circle via a tiny rounded quad)
+                let badge_bounds = Bounds::new(
+                    point(
+                        header.badge_center.x - px(BADGE_RADIUS),
+                        header.badge_center.y - px(BADGE_RADIUS),
+                    ),
+                    size(px(BADGE_RADIUS * 2.0), px(BADGE_RADIUS * 2.0)),
+                );
+                let mut badge_quad = fill(badge_bounds, header.badge_color);
+                badge_quad.corner_radii = Corners::all(px(BADGE_RADIUS));
+                window.paint_quad(badge_quad);
+
+                // Command text
+                let _ = header.command_line.paint(
+                    header.command_origin,
+                    prepaint.line_height,
+                    TextAlign::Left,
+                    None,
+                    window,
+                    cx,
+                );
+
+                // Duration text
+                let _ = header.duration_line.paint(
+                    header.duration_origin,
+                    prepaint.line_height,
+                    TextAlign::Left,
+                    None,
+                    window,
+                    cx,
+                );
+            }
+
+            // 3. Cell backgrounds
             for (rect, color) in &prepaint.backgrounds {
                 window.paint_quad(fill(*rect, *color));
             }
 
-            // 3. Cursor (BEFORE text so text renders on top of block cursor)
+            // 4. Cursor
             if let Some(cursor_rect) = prepaint.cursor_rect {
                 window.paint_quad(fill(cursor_rect, cursor_color()));
             }
 
-            // 4. Text
+            // 5. Text
             for (origin, shaped_line) in &prepaint.lines {
                 let _ = shaped_line.paint(
                     *origin,
@@ -357,26 +678,15 @@ impl Element for TerminalElement {
                     None,
                     window,
                     cx,
-            );
-        }
-        }); // end content_mask
+                );
+            }
+        });
     }
 }
 
-// --- Color helpers ---
-
-fn terminal_bg() -> Hsla {
-    rgb(0x1a1b26).into()
-}
-
-fn terminal_fg() -> Hsla {
-    rgb(0xc0caf5).into()
-}
-
-fn cursor_color() -> Hsla {
-    // Warp-style green beam cursor
-    rgb(0x9ece6a).into()
-}
+// ---------------------------------------------------------------------------
+// Color helpers — Raijin Dark Theme
+// ---------------------------------------------------------------------------
 
 fn resolve_colors(
     cell: &alacritty_terminal::term::cell::Cell,
@@ -443,28 +753,28 @@ fn ansi_color_to_hsla(
 }
 
 fn named_color_to_hsla(name: NamedColor, dim: bool) -> Hsla {
+    // Raijin Dark palette
     let (r, g, b) = match name {
-        // Tokyo Night palette
-        NamedColor::Black => (0x15, 0x16, 0x1e),
-        NamedColor::Red => (0xf7, 0x76, 0x8e),
-        NamedColor::Green => (0x9e, 0xce, 0x6a),
-        NamedColor::Yellow => (0xe0, 0xaf, 0x68),
-        NamedColor::Blue => (0x7a, 0xa2, 0xf7),
-        NamedColor::Magenta => (0xbb, 0x9a, 0xf7),
-        NamedColor::Cyan => (0x7d, 0xcf, 0xff),
-        NamedColor::White => (0xa9, 0xb1, 0xd6),
-        NamedColor::BrightBlack => (0x41, 0x48, 0x68),
-        NamedColor::BrightRed => (0xf7, 0x76, 0x8e),
-        NamedColor::BrightGreen => (0x9e, 0xce, 0x6a),
-        NamedColor::BrightYellow => (0xe0, 0xaf, 0x68),
-        NamedColor::BrightBlue => (0x7a, 0xa2, 0xf7),
-        NamedColor::BrightMagenta => (0xbb, 0x9a, 0xf7),
-        NamedColor::BrightCyan => (0x7d, 0xcf, 0xff),
-        NamedColor::BrightWhite => (0xc0, 0xca, 0xf5),
-        NamedColor::Foreground => (0xc0, 0xca, 0xf5),
-        NamedColor::Background => (0x1a, 0x1b, 0x26),
-        NamedColor::Cursor => (0x7d, 0xcf, 0xff),
-        _ => (0xc0, 0xca, 0xf5),
+        NamedColor::Black => (0x12, 0x12, 0x12),
+        NamedColor::Red => (0xff, 0x5f, 0x5f),
+        NamedColor::Green => (0x14, 0xF1, 0x95),
+        NamedColor::Yellow => (0xff, 0xd7, 0x00),
+        NamedColor::Blue => (0x5f, 0x87, 0xff),
+        NamedColor::Magenta => (0xd7, 0x5f, 0xff),
+        NamedColor::Cyan => (0x00, 0xd7, 0xaf),
+        NamedColor::White => (0xf1, 0xf1, 0xf1),
+        NamedColor::BrightBlack => (0x66, 0x66, 0x66),
+        NamedColor::BrightRed => (0xff, 0x5f, 0x5f),
+        NamedColor::BrightGreen => (0x00, 0xff, 0x87),
+        NamedColor::BrightYellow => (0xff, 0xff, 0x00),
+        NamedColor::BrightBlue => (0x5c, 0x78, 0xff),
+        NamedColor::BrightMagenta => (0xca, 0x1f, 0x7b),
+        NamedColor::BrightCyan => (0x00, 0xd7, 0xff),
+        NamedColor::BrightWhite => (0xff, 0xff, 0xff),
+        NamedColor::Foreground => (0xf1, 0xf1, 0xf1),
+        NamedColor::Background => (0x12, 0x12, 0x12),
+        NamedColor::Cursor => (0x14, 0xF1, 0x95),
+        _ => (0xf1, 0xf1, 0xf1),
     };
     let mut c = rgb_to_hsla(r, g, b);
     if dim {

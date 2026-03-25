@@ -6,3 +6,4 @@ publish.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
+hostname = "0.4"
