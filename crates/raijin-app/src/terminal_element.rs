@@ -18,10 +18,10 @@ const FONT_SIZE: f32 = 14.0;
 const CELL_PADDING: f32 = 2.0;
 
 /// Two-line block header like Warp: metadata line + command line.
-const BLOCK_HEADER_HEIGHT: f32 = 46.0;
-const BLOCK_HEADER_PAD_X: f32 = 12.0;
+const BLOCK_HEADER_HEIGHT: f32 = 50.0;
+const BLOCK_HEADER_PAD_X: f32 = 16.0;
 const BLOCK_GAP: f32 = 0.0;
-const BLOCK_LEFT_BORDER: f32 = 3.0;
+const BLOCK_LEFT_BORDER: f32 = 4.0;
 
 const HEADER_META_FONT_SIZE: f32 = 11.0;
 const HEADER_CMD_FONT_SIZE: f32 = 13.0;
@@ -589,7 +589,7 @@ impl Element for TerminalElement {
                 );
                 let command_origin = point(
                     text_x,
-                    header_y + px(4.0 + HEADER_META_FONT_SIZE + 4.0),
+                    header_y + px(4.0 + HEADER_META_FONT_SIZE + 8.0),
                 );
 
                 block_headers.push(BlockHeaderPaint {
