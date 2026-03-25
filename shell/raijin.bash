@@ -89,10 +89,5 @@ if [[ -f "$HOME/.bashrc" ]]; then
     source "$HOME/.bashrc"
 fi
 
-# Raijin Mode: suppress shell prompt, PS1 emits OSC 133;B marker
-if [[ "$RAIJIN_MODE" == "raijin" ]]; then
-    PS1=$'\e]133;B\a'
-    PS2=''
-    export STARSHIP_SHELL=''
-    export STARSHIP_SESSION_KEY='disabled'
-fi
+# Raijin Mode: no shell-side prompt suppression needed.
+# The Raijin renderer hides prompt rows on the Rust side.

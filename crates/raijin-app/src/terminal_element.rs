@@ -141,6 +141,10 @@ pub struct TerminalElement {
     blocks: Vec<BlockRenderInfo>,
     /// Hide all rows before this absolute row (hides initial prompt in Raijin mode).
     hide_before_row: Option<usize>,
+    /// Prompt regions to hide: (start_row, end_row) inclusive absolute rows.
+    /// These are rows where the shell prompt rendered — Raijin replaces them
+    /// with its own context chips, like Warp does with its prompt grid.
+    hidden_prompt_regions: Vec<(usize, usize)>,
     /// Font family from config.
     font_family: String,
     /// Font size from config.
@@ -155,6 +159,7 @@ impl TerminalElement {
             handle,
             blocks: Vec::new(),
             hide_before_row: None,
+            hidden_prompt_regions: Vec::new(),
             font_family: FONT_FAMILIES[0].to_string(),
             font_size: FONT_SIZE,
             cursor_beam: true,
@@ -182,6 +187,29 @@ impl TerminalElement {
     pub fn with_hide_before_row(mut self, row: Option<usize>) -> Self {
         self.hide_before_row = row;
         self
+    }
+
+    pub fn with_hidden_prompt_regions(mut self, regions: Vec<(usize, usize)>) -> Self {
+        self.hidden_prompt_regions = regions;
+        self
+    }
+
+    /// Check if an absolute row falls inside a hidden prompt region or
+    /// the current pending prompt (prompt_start_row to present).
+    fn is_in_hidden_prompt_region(&self, abs_row: usize) -> bool {
+        // Closed prompt regions (between PromptStart and CommandStart)
+        for &(start, end) in &self.hidden_prompt_regions {
+            if abs_row >= start && abs_row <= end {
+                return true;
+            }
+        }
+        // Current open prompt (no CommandStart yet — user is still at prompt)
+        if let Some(prompt_start) = self.hide_before_row {
+            if abs_row >= prompt_start {
+                return true;
+            }
+        }
+        false
     }
 
     fn compute_layout(&self, window: &mut Window) -> TerminalLayout {
@@ -379,10 +407,18 @@ impl Element for TerminalElement {
         for row_idx in 0..content_rows {
             // Check if this row should be hidden (prompt area)
             let abs_row = history_size + row_idx - display_offset.min(row_idx);
+
+            // Hide initial prompt (before any blocks)
             if let Some(hide_up) = hide_up_to {
                 if abs_row < hide_up && self.blocks.is_empty() {
                     continue;
                 }
+            }
+
+            // Hide prompt regions between blocks — rows where the shell prompt
+            // (Starship, P10k, etc.) rendered. Like Warp, we don't render these.
+            if self.is_in_hidden_prompt_region(abs_row) {
+                continue;
             }
 
             // Check if a block header should be inserted before this row

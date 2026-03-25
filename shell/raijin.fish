@@ -63,12 +63,5 @@ function _raijin_preexec --on-event fish_preexec
     set -g _raijin_state 1
 end
 
-# Raijin Mode: suppress prompt, emit OSC 133;B marker
-if test "$RAIJIN_MODE" = "raijin"
-    function fish_prompt
-        printf '\e]133;B\a'
-    end
-    function fish_right_prompt
-    end
-    set -gx STARSHIP_SHELL ''
-end
+# Raijin Mode: no shell-side prompt suppression needed.
+# The Raijin renderer hides prompt rows on the Rust side.

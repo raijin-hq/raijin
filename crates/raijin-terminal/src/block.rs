@@ -59,7 +59,7 @@ impl TerminalBlock {
 pub struct BlockManager {
     blocks: Vec<TerminalBlock>,
     next_id: u64,
-    /// The grid row where the current prompt started.
+    /// The grid row where the current prompt started (pending close).
     prompt_start_row: Option<usize>,
     /// Whether we're currently in a command execution phase.
     in_command: bool,
@@ -67,6 +67,11 @@ pub struct BlockManager {
     pending_command: Option<String>,
     /// Latest raw JSON metadata from shell precmd (updated on each Metadata marker).
     latest_metadata_json: Option<String>,
+    /// Prompt regions to hide: (start_row, end_row) inclusive.
+    /// Each region spans from PromptStart to CommandStart — the rows where
+    /// the shell prompt (Starship, P10k, etc.) renders. Like Warp, we simply
+    /// don't render these rows, making prompt suppression shell-agnostic.
+    hidden_prompt_regions: Vec<(usize, usize)>,
 }
 
 impl BlockManager {
@@ -78,6 +83,7 @@ impl BlockManager {
             in_command: false,
             pending_command: None,
             latest_metadata_json: None,
+            hidden_prompt_regions: Vec::new(),
         }
     }
 
@@ -105,7 +111,15 @@ impl BlockManager {
             }
 
             ShellMarker::CommandStart => {
-                // User hit Enter, command is being executed
+                // Close the prompt region: rows from PromptStart up to here are prompt
+                // text (Starship, P10k, etc.) that we hide — like Warp's prompt grid.
+                if let Some(prompt_row) = self.prompt_start_row.take() {
+                    if cursor_row > prompt_row {
+                        self.hidden_prompt_regions
+                            .push((prompt_row, cursor_row.saturating_sub(1)));
+                    }
+                }
+
                 let id = self.next_id;
                 self.next_id += 1;
 
@@ -167,9 +181,17 @@ impl BlockManager {
         !self.blocks.is_empty()
     }
 
-    /// Get the grid row where the initial prompt started (before any commands).
-    /// Used to hide the initial prompt in Raijin mode.
+    /// Get the grid row where the current (pending) prompt started.
+    /// If set, all rows from this row onward are prompt text that should be hidden.
     pub fn prompt_start_row(&self) -> Option<usize> {
         self.prompt_start_row
+    }
+
+    /// Get all closed prompt regions to hide.
+    /// Each region is (start_row, end_row) inclusive — these are rows where
+    /// the shell prompt rendered (Starship, P10k, etc.) that Raijin replaces
+    /// with its own context chips, like Warp does.
+    pub fn hidden_prompt_regions(&self) -> &[(usize, usize)] {
+        &self.hidden_prompt_regions
     }
 }

@@ -82,13 +82,6 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd _raijin_precmd
 add-zsh-hook preexec _raijin_preexec
 
-# Raijin Mode: suppress shell prompt (replaced by Raijin's context chips)
-# PS1 emits OSC 133;B (InputStart) as an invisible marker so the block
-# system knows when the input region starts, even without a visible prompt.
-if [[ "$RAIJIN_MODE" == "raijin" ]]; then
-    PROMPT=$'\e]133;B\a'
-    RPROMPT=''
-    # Prevent Starship from overriding our empty prompt
-    export STARSHIP_SHELL=''
-    export STARSHIP_SESSION_KEY='disabled'
-fi
+# Raijin Mode: no shell-side prompt suppression needed.
+# The Raijin renderer hides prompt rows (between PromptStart and CommandStart)
+# on the Rust side — shell-agnostic, works with any prompt system.

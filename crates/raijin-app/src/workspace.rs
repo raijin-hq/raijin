@@ -390,6 +390,7 @@ impl Render for Workspace {
                 let handle = self.terminal.handle();
                 let blocks = self.build_block_render_info();
                 let hide_before = self.block_manager.prompt_start_row();
+                let hidden_regions = self.block_manager.hidden_prompt_regions().to_vec();
                 let config = cx.global::<raijin_settings::RaijinConfig>();
                 let font_family = config.appearance.font_family.clone();
                 let font_size = config.appearance.font_size as f32;
@@ -411,7 +412,8 @@ impl Render for Workspace {
                                 .with_font(&font_family, font_size)
                                 .with_cursor_beam(cursor_beam)
                                 .with_blocks(blocks)
-                                .with_hide_before_row(hide_before),
+                                .with_hide_before_row(hide_before)
+                                .with_hidden_prompt_regions(hidden_regions),
                         )
                     } else {
                         output_area
