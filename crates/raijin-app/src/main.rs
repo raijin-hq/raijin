@@ -2,6 +2,7 @@ mod terminal_element;
 mod workspace;
 
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, px, size};
+use inazuma_component::TitleBar;
 use inazuma_component::Root;
 use workspace::Workspace;
 
@@ -20,6 +21,7 @@ fn main() {
         cx.open_window(
             WindowOptions {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
+                titlebar: Some(TitleBar::title_bar_options()),
                 ..Default::default()
             },
             |window, cx| {

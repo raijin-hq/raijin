@@ -2,14 +2,13 @@ use alacritty_terminal::grid::Dimensions;
 use alacritty_terminal::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
-    ParentElement, Render, SharedString, Styled, Window, prelude::*,
+    ParentElement, Render, Styled, Window, prelude::*,
 };
 use inazuma_component::{
-    IconName,
+    IconName, TitleBar,
     chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
     input::{Input, InputEvent, InputState},
-    tab::{Tab, TabBar},
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
@@ -183,10 +182,26 @@ impl Workspace {
         }
     }
 
-    fn render_tab_bar(&self) -> impl IntoElement {
-        TabBar::new("terminal-tabs")
-            .child(Tab::new().label(SharedString::from(self.terminal_title.clone())))
-            .selected_index(0)
+    fn render_title_bar(&self) -> impl IntoElement {
+        TitleBar::new().child(
+            div()
+                .flex()
+                .items_center()
+                .h_full()
+                .child(
+                    div()
+                        .flex()
+                        .items_center()
+                        .h_full()
+                        .px_3()
+                        .text_xs()
+                        .text_color(rgb(0xc8c8c8))
+                        .border_r_1()
+                        .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+                        .bg(rgb(0x222222))
+                        .child(self.shell_context.cwd_short.clone()),
+                ),
+        )
     }
 
     fn render_input_area(&self) -> impl IntoElement {
@@ -271,7 +286,7 @@ impl Render for Workspace {
             .bg(rgb(0x121212))
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive))
-            .child(self.render_tab_bar())
+            .child(self.render_title_bar())
             .child({
                 let output_area = div()
                     .flex()
