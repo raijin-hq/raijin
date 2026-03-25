@@ -1,0 +1,294 @@
+use alacritty_terminal::term::TermMode;
+use inazuma::{
+    div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, Hsla, KeyDownEvent,
+    ParentElement, Render, SharedString, Styled, Window, prelude::*,
+};
+use inazuma_component::{
+    divider::Divider,
+    h_flex,
+    input::{Input, InputEvent, InputState},
+    tab::{Tab, TabBar},
+};
+use raijin_shell::ShellContext;
+use raijin_terminal::{Terminal, TerminalEvent};
+
+use crate::terminal_element::TerminalElement;
+
+/// Top-level workspace view that composes the Warp-style layout:
+/// TabBar (top) → Terminal Output (middle) → Context Chips + Input (bottom)
+pub struct Workspace {
+    terminal: Terminal,
+    terminal_title: String,
+    input_state: Entity<InputState>,
+    focus_handle: FocusHandle,
+    shell_context: ShellContext,
+    interactive_mode: bool,
+    show_terminal: bool,
+}
+
+impl Workspace {
+    pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
+        let terminal = Terminal::new(24, 80).expect("failed to create terminal");
+
+        let focus_handle = cx.focus_handle();
+        let input_state = cx.new(|cx| InputState::new(window, cx));
+
+        cx.subscribe_in(&input_state, window, Self::on_input_event)
+            .detach();
+
+        let events_rx = terminal.event_receiver().clone();
+        cx.spawn_in(window, async move |this, cx| {
+            loop {
+                match events_rx.recv_async().await {
+                    Ok(event) => {
+                        this.update_in(cx, |view, _window, cx| {
+                            view.handle_terminal_event(event, cx);
+                        })
+                        .ok();
+                    }
+                    Err(_) => break,
+                }
+            }
+        })
+        .detach();
+
+        // Focus the input so the user can type immediately
+        input_state.update(cx, |state, cx| {
+            state.focus(window, cx);
+        });
+
+        let shell_context = ShellContext::gather();
+
+        Self {
+            terminal,
+            terminal_title: "~ zsh".to_string(),
+            input_state,
+            focus_handle,
+            shell_context,
+            interactive_mode: false,
+            show_terminal: false,
+        }
+    }
+
+    fn handle_terminal_event(&mut self, event: TerminalEvent, cx: &mut Context<Self>) {
+        match event {
+            TerminalEvent::Wakeup => {
+                self.update_interactive_mode();
+                cx.notify();
+            }
+            TerminalEvent::Title(title) => {
+                self.terminal_title = title;
+                cx.notify();
+            }
+            TerminalEvent::Bell => {}
+            TerminalEvent::Exit => {
+                cx.notify();
+            }
+        }
+    }
+
+    fn update_interactive_mode(&mut self) {
+        let handle = self.terminal.handle();
+        let term = handle.lock();
+        self.interactive_mode = term.mode().contains(TermMode::ALT_SCREEN);
+    }
+
+    fn on_input_event(
+        &mut self,
+        _state: &Entity<InputState>,
+        event: &InputEvent,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        match event {
+            InputEvent::PressEnter { secondary: false } => {
+                let value = self.input_state.read(cx).value();
+                if !value.is_empty() {
+                    let mut bytes = value.as_bytes().to_vec();
+                    bytes.push(b'\r');
+                    self.terminal.write(&bytes);
+                    self.show_terminal = true;
+                    self.input_state.update(cx, |state, cx| {
+                        state.set_value("", window, cx);
+                    });
+                    cx.notify();
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn on_key_down_interactive(
+        &mut self,
+        event: &KeyDownEvent,
+        _window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if !self.interactive_mode {
+            return;
+        }
+
+        let keystroke = &event.keystroke;
+        if keystroke.modifiers.platform {
+            return;
+        }
+
+        let bytes = keystroke_to_bytes(keystroke, &self.terminal);
+        if !bytes.is_empty() {
+            self.terminal.write(&bytes);
+            cx.notify();
+        }
+    }
+
+    fn render_tab_bar(&self) -> impl IntoElement {
+        TabBar::new("terminal-tabs")
+            .child(Tab::new().label(SharedString::from(self.terminal_title.clone())))
+            .selected_index(0)
+    }
+
+    fn render_context_chips(&self) -> impl IntoElement {
+        h_flex()
+            .gap_1()
+            .px_4()
+            .py_2()
+            .child(chip("nyxb", rgb(0x9ece6a).into()))
+            .child(chip(&self.shell_context.cwd_short, rgb(0x7aa2f7).into()))
+            .when_some(self.shell_context.git_branch.as_ref(), |this, branch| {
+                this.child(chip(branch, rgb(0xbb9af7).into()))
+            })
+    }
+
+    fn render_input_bar(&self) -> impl IntoElement {
+        div()
+            .flex_shrink_0()
+            .w_full()
+            .px_4()
+            .py_3()
+            .bg(rgb(0x1e1f2b))
+            .child(
+                Input::new(&self.input_state)
+                    .appearance(false)
+                    .cleanable(false),
+            )
+    }
+}
+
+impl Render for Workspace {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let handle = self.terminal.handle();
+
+        let mut container = div()
+            .flex()
+            .flex_col()
+            .size_full()
+            .bg(rgb(0x1a1b26))
+            .track_focus(&self.focus_handle)
+            .on_key_down(cx.listener(Self::on_key_down_interactive))
+            .child(self.render_tab_bar())
+            .child({
+                let output_area = div()
+                    .flex()
+                    .flex_col()
+                    .justify_end()
+                    .flex_1()
+                    .min_h_0()
+                    .overflow_hidden();
+
+                if self.show_terminal || self.interactive_mode {
+                    output_area.child(TerminalElement::new(handle))
+                } else {
+                    output_area
+                }
+            });
+
+        if !self.interactive_mode {
+            container = container
+                .child(Divider::horizontal())
+                .child(self.render_context_chips())
+                .child(self.render_input_bar());
+        }
+
+        container
+    }
+}
+
+impl Focusable for Workspace {
+    fn focus_handle(&self, _cx: &App) -> FocusHandle {
+        self.focus_handle.clone()
+    }
+}
+
+/// Warp-style context chip: pill-shaped label with subtle border.
+fn chip(label: &str, color: Hsla) -> impl IntoElement {
+    div()
+        .px_2()
+        .py(px(2.0))
+        .rounded(px(6.0))
+        .border_1()
+        .border_color(hsla(0.0, 0.0, 1.0, 0.1))
+        .bg(hsla(0.0, 0.0, 1.0, 0.05))
+        .text_sm()
+        .text_color(color)
+        .child(label.to_string())
+}
+
+fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Vec<u8> {
+    let modifiers = &keystroke.modifiers;
+    let key = keystroke.key.as_str();
+
+    let handle = terminal.handle();
+    let term = handle.lock();
+    let app_cursor = term.mode().contains(TermMode::APP_CURSOR);
+    drop(term);
+
+    let prefix = if app_cursor { "\x1bO" } else { "\x1b[" };
+
+    if modifiers.control {
+        if let Some(ch) = key.chars().next() {
+            if ch.is_ascii_alphabetic() {
+                let ctrl_byte = (ch.to_ascii_lowercase() as u8) - b'a' + 1;
+                return vec![ctrl_byte];
+            }
+        }
+        if key == "space" {
+            return vec![0x00];
+        }
+    }
+
+    match key {
+        "enter" | "return" => return b"\r".to_vec(),
+        "backspace" => return vec![0x7f],
+        "tab" => return b"\t".to_vec(),
+        "escape" => return vec![0x1b],
+        "up" => return format!("{}A", prefix).into_bytes(),
+        "down" => return format!("{}B", prefix).into_bytes(),
+        "right" => return format!("{}C", prefix).into_bytes(),
+        "left" => return format!("{}D", prefix).into_bytes(),
+        "home" => return b"\x1b[H".to_vec(),
+        "end" => return b"\x1b[F".to_vec(),
+        "delete" => return b"\x1b[3~".to_vec(),
+        "pageup" => return b"\x1b[5~".to_vec(),
+        "pagedown" => return b"\x1b[6~".to_vec(),
+        "space" => {
+            if modifiers.alt {
+                return b"\x1b ".to_vec();
+            }
+            return b" ".to_vec();
+        }
+        _ => {}
+    }
+
+    if modifiers.alt {
+        if let Some(ref key_char) = keystroke.key_char {
+            let mut bytes = vec![0x1b];
+            bytes.extend_from_slice(key_char.as_bytes());
+            return bytes;
+        }
+    }
+
+    if let Some(ref key_char) = keystroke.key_char {
+        return key_char.as_bytes().to_vec();
+    }
+
+    Vec::new()
+}

@@ -1,0 +1,67 @@
+[workspace]
+members = [
+    "crates/inazuma",
+    "crates/inazuma/tooling/macros",
+    "crates/inazuma-component/ui",
+    "crates/inazuma-component/macros",
+    "crates/inazuma-component/assets",
+    "crates/raijin-app",
+    "crates/raijin-terminal",
+    "crates/raijin-ui",
+    "crates/raijin-shell",
+]
+default-members = ["crates/raijin-app"]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+publish = false
+license = "Apache-2.0"
+
+[workspace.dependencies]
+inazuma = { path = "crates/inazuma" }
+inazuma-component = { path = "crates/inazuma-component/ui" }
+inazuma-component-macros = { path = "crates/inazuma-component/macros" }
+inazuma-component-assets = { path = "crates/inazuma-component/assets" }
+raijin-ui = { path = "crates/raijin-ui" }
+raijin-terminal = { path = "crates/raijin-terminal" }
+raijin-shell = { path = "crates/raijin-shell" }
+
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+log = "0.4"
+smol = "2"
+parking_lot = "0.12"
+flume = "0.11"
+
+[profile.dev]
+split-debuginfo = "unpacked"
+incremental = true
+codegen-units = 16
+
+[profile.dev.build-override]
+codegen-units = 16
+
+[profile.dev.package]
+quote = { opt-level = 3 }
+syn = { opt-level = 3 }
+proc-macro2 = { opt-level = 3 }
+taffy = { opt-level = 3 }
+resvg = { opt-level = 3 }
+
+[profile.release]
+debug = "limited"
+lto = "thin"
+codegen-units = 1
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "allow" }
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+style = { level = "allow", priority = -1 }
+type_complexity = "allow"
+too_many_arguments = "allow"
+large_enum_variant = "allow"

@@ -1,0 +1,8 @@
+[package]
+name = "raijin-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+inazuma = { workspace = true }

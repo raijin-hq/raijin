@@ -1,0 +1,20 @@
+[package]
+name = "raijin-app"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "raijin"
+path = "src/main.rs"
+
+[dependencies]
+inazuma = { workspace = true }
+inazuma-component = { workspace = true }
+raijin-terminal = { workspace = true }
+raijin-shell = { workspace = true }
+raijin-ui = { workspace = true }
+anyhow = { workspace = true }
+log = { workspace = true }
+parking_lot = { workspace = true }
+alacritty_terminal = "0.26.0-rc1"

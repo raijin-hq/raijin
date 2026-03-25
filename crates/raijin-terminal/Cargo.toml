@@ -1,0 +1,13 @@
+[package]
+name = "raijin-terminal"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+log = { workspace = true }
+alacritty_terminal = "0.26.0-rc1"
+portable-pty = "0.8"
+parking_lot = { workspace = true }
+flume = { workspace = true }
