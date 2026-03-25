@@ -61,7 +61,7 @@ raijin/
 | Phase 1: Minimal Terminal | ✅ Done | PTY, Grid-Rendering, Input, ANSI Colors |
 | Phase 2A: Shell Integration | ✅ Done | OSC 133 Hooks, BlockManager, OSC 7777 Metadata |
 | Phase 2B: Block Rendering | ✅ Done | Warp-style Headers, Prompt Suppression, Error Styling |
-| Phase 2C: Block Interaction | 🔜 Next | Copy, Collapse, Navigation, Sticky Headers → Plan 12 |
+| Phase 2C: Block Interaction | 🔜 Next | Copy, Collapse, Navigation, Sticky Headers → Plan 04 |
 | Multi-Tab Sessions | 🔜 Next | Tab-Management, Session-Persistence → Plan 11 |
 | Phase 3: Design System | ⬜ Planned | Theme Tokens, Animations |
 | Phase 4: Input Editor | ⬜ Planned | History, Completions, Multi-Line |
@@ -73,8 +73,8 @@ raijin/
 
 ## Nächste Schritte
 
-1. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
-2. **Plan 12: Block Interaction Design** — Copy, Collapse, Navigation, Search
+1. **Plan 04: Block Interaction** (offener Teil) — Copy, Collapse, Navigation, Search
+2. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
 
 ---
 
@@ -92,7 +92,6 @@ raijin/
 | `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Distribution | ⬜ Planned |
 | `10-INAZUMA-OBJC2-MIGRATION.md` | objc→objc2 Migration Plan | ⬜ Planned |
 | `11-MULTI-TAB-SESSION-MANAGEMENT.md` | Tab-System, Sessions | 🔜 Next |
-| `12-BLOCK-INTERACTION-DESIGN.md` | Block Copy/Collapse/Nav | 🔜 Next |
 | **done/** | | |
 | `done/02-PHASE-0-FOUNDATION.md` | Repository Setup | ✅ Done |
 | `done/03-PHASE-1-MINIMAL-TERMINAL.md` | Erstes Terminal im Window | ✅ Done |
