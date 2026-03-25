@@ -1,0 +1,17 @@
+[package]
+name = "cargo-raijin"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "cargo-raijin"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+log = { workspace = true }
+clap = { workspace = true, features = ["derive"] }
+notify-debouncer-mini = "0.5"
+env_logger = "0.11"
+ctrlc = "3"

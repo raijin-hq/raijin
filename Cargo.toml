@@ -9,6 +9,7 @@ members = [
     "crates/raijin-terminal",
     "crates/raijin-ui",
     "crates/raijin-shell",
+    "crates/cargo-raijin",
 ]
 default-members = ["crates/raijin-app"]
 resolver = "3"
@@ -29,6 +30,7 @@ raijin-shell = { path = "crates/raijin-shell" }
 
 cocoa = "=0.26.0"
 objc = "0.2"
+clap = { version = "4", features = ["derive"] }
 
 anyhow = "1"
 serde = { version = "1", features = ["derive"] }

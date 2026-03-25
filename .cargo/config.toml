@@ -3,3 +3,6 @@ rustflags = ["-C", "symbol-mangling-version=v0"]
 
 [env]
 MACOSX_DEPLOYMENT_TARGET = "10.15.7"
+
+[alias]
+raijin = "run -p cargo-raijin -- raijin"

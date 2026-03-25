@@ -51,7 +51,7 @@ cat > "$BUNDLE/Contents/Info.plist" << PLIST
     <key>CFBundleExecutable</key>
     <string>raijin</string>
     <key>CFBundleIconName</key>
-    <string>Icon</string>
+    <string>rajin</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>
