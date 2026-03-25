@@ -2,8 +2,8 @@ mod terminal_element;
 mod workspace;
 
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, px, size};
-use inazuma_component::TitleBar;
 use inazuma_component::Root;
+use inazuma_component::TitleBar;
 use workspace::Workspace;
 
 fn main() {
