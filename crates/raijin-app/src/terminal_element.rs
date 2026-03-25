@@ -357,6 +357,16 @@ impl Element for TerminalElement {
 
         let content_rows = (cursor_visual_row + 1).min(grid_rows);
 
+        // Count how many rows will be hidden (prompt regions)
+        let hidden_row_count = (0..content_rows)
+            .filter(|&row_idx| {
+                let abs_row = history_size + row_idx - display_offset.min(row_idx);
+                self.is_in_hidden_prompt_region(abs_row)
+                    || (hide_up_to.is_some_and(|h| abs_row < h) && self.blocks.is_empty())
+            })
+            .count();
+        let visible_content_rows = content_rows.saturating_sub(hidden_row_count);
+
         // Calculate total extra height from block headers that will be visible
         let visible_headers: Vec<(usize, usize)> = header_at_visual_row
             .iter()
@@ -367,7 +377,7 @@ impl Element for TerminalElement {
         let total_header_height =
             visible_headers.len() as f32 * (BLOCK_HEADER_HEIGHT + BLOCK_GAP);
         let content_height =
-            layout.cell_height * content_rows as f32 + px(total_header_height);
+            layout.cell_height * visible_content_rows as f32 + px(total_header_height);
 
         // Y offset: push content to the bottom of the bounds
         let y_offset = bounds.size.height - content_height;
@@ -376,8 +386,11 @@ impl Element for TerminalElement {
         let mut header_offset = px(0.0);
         let mut next_header_idx = 0;
 
-        // Cursor rect (adjusted for header offsets)
-        if content.mode.contains(alacritty_terminal::term::TermMode::SHOW_CURSOR) {
+        // Cursor rect (adjusted for header offsets).
+        // Don't render cursor if it's in a hidden prompt region.
+        let cursor_abs_row = history_size + cursor_visual_row - display_offset.min(cursor_visual_row);
+        let cursor_hidden = self.is_in_hidden_prompt_region(cursor_abs_row);
+        if content.mode.contains(alacritty_terminal::term::TermMode::SHOW_CURSOR) && !cursor_hidden {
             // Compute header offset at cursor row
             let mut cursor_header_offset = px(0.0);
             for (visual_row, _) in &visible_headers {
@@ -386,10 +399,19 @@ impl Element for TerminalElement {
                 }
             }
 
+            // Count hidden rows before the cursor to adjust visual position
+            let hidden_before_cursor = (0..cursor_visual_row)
+                .filter(|&r| {
+                    let abs = history_size + r - display_offset.min(r);
+                    self.is_in_hidden_prompt_region(abs)
+                })
+                .count();
+            let cursor_y_row = cursor_visual_row.saturating_sub(hidden_before_cursor);
+
             let cx_px = bounds.origin.x + layout.cell_width * cursor_point.column.0 as f32;
             let cy_px = bounds.origin.y
                 + y_offset
-                + layout.cell_height * cursor_visual_row as f32
+                + layout.cell_height * cursor_y_row as f32
                 + cursor_header_offset;
             let cursor_width = if self.cursor_beam {
                 px(2.0)
@@ -403,6 +425,10 @@ impl Element for TerminalElement {
         }
 
         let grid = term.grid();
+
+        // Track rendered row position separately from grid row index.
+        // Hidden prompt rows are skipped but the visual layout stays compact.
+        let mut visual_y_row: usize = 0;
 
         for row_idx in 0..content_rows {
             // Check if this row should be hidden (prompt area)
@@ -429,7 +455,7 @@ impl Element for TerminalElement {
                 let block = &self.blocks[block_idx];
 
                 let header_y =
-                    bounds.origin.y + y_offset + layout.cell_height * row_idx as f32 + header_offset;
+                    bounds.origin.y + y_offset + layout.cell_height * visual_y_row as f32 + header_offset;
 
                 let is_error = block.exit_code.map_or(false, |c| c != 0);
                 let is_running = block.exit_code.is_none();
@@ -613,7 +639,7 @@ impl Element for TerminalElement {
                     let x = bounds.origin.x + layout.cell_width * col_idx as f32;
                     let y = bounds.origin.y
                         + y_offset
-                        + layout.cell_height * row_idx as f32
+                        + layout.cell_height * visual_y_row as f32
                         + header_offset;
                     let width = if flags.contains(CellFlags::WIDE_CHAR) {
                         layout.cell_width * 2.0
@@ -702,11 +728,13 @@ impl Element for TerminalElement {
                     bounds.origin.x,
                     bounds.origin.y
                         + y_offset
-                        + layout.cell_height * row_idx as f32
+                        + layout.cell_height * visual_y_row as f32
                         + header_offset,
                 );
                 lines.push((origin, shaped));
             }
+
+            visual_y_row += 1;
         }
 
         TerminalPrepaint {
