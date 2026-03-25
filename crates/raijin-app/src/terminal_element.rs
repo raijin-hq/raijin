@@ -3,7 +3,7 @@ use alacritty_terminal::index::{Column, Line};
 use alacritty_terminal::term::cell::Flags as CellFlags;
 use alacritty_terminal::vte::ansi::{Color as AnsiColor, NamedColor};
 use inazuma::{
-    point, px, size, App, Bounds, Corners, Element, ElementId, Font, FontStyle, FontWeight,
+    point, px, size, App, Bounds, Element, ElementId, Font, FontStyle, FontWeight,
     GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId, Pixels, Point,
     SharedString, ShapedLine, Size, StrikethroughStyle, Style, TextAlign, TextRun,
     UnderlineStyle, Window, fill, hsla, rgb,
@@ -17,13 +17,14 @@ use raijin_terminal::TerminalHandle;
 const FONT_SIZE: f32 = 14.0;
 const CELL_PADDING: f32 = 2.0;
 
-const BLOCK_HEADER_HEIGHT: f32 = 28.0;
+/// Two-line block header like Warp: metadata line + command line.
+const BLOCK_HEADER_HEIGHT: f32 = 46.0;
 const BLOCK_HEADER_PAD_X: f32 = 12.0;
-const BLOCK_GAP: f32 = 6.0;
+const BLOCK_GAP: f32 = 0.0;
 const BLOCK_LEFT_BORDER: f32 = 3.0;
-const BADGE_RADIUS: f32 = 4.0;
 
-const HEADER_FONT_SIZE: f32 = 12.0;
+const HEADER_META_FONT_SIZE: f32 = 11.0;
+const HEADER_CMD_FONT_SIZE: f32 = 13.0;
 
 /// Font families to try in order. First match wins.
 const FONT_FAMILIES: &[&str] = &[
@@ -49,10 +50,6 @@ fn cursor_color() -> Hsla {
     rgb(0x14F195).into()
 }
 
-fn accent() -> Hsla {
-    rgb(0x14F195).into()
-}
-
 fn error_color() -> Hsla {
     rgb(0xff5f5f).into()
 }
@@ -61,12 +58,13 @@ fn block_header_bg() -> Hsla {
     rgb(0x1a1a1a).into()
 }
 
-fn header_command_fg() -> Hsla {
-    rgb(0xf1f1f1).into()
+fn block_header_error_bg() -> Hsla {
+    // Semi-transparent red overlay — the dark terminal bg (#121212) shines through
+    hsla(0.0, 0.7, 0.45, 0.12)
 }
 
-fn header_duration_fg() -> Hsla {
-    hsla(0.0, 0.0, 1.0, 0.5)
+fn header_command_fg() -> Hsla {
+    rgb(0xf1f1f1).into()
 }
 
 fn header_metadata_fg() -> Hsla {
@@ -86,12 +84,17 @@ pub struct BlockRenderInfo {
     /// Absolute row where this block's output starts (history_size + cursor_line at marker time).
     pub abs_start_row: usize,
     /// Absolute row where this block's output ends (None if still running).
-    #[allow(dead_code)]
     pub abs_end_row: Option<usize>,
     /// CWD at the time this block was created (from shell metadata).
     pub cwd_short: Option<String>,
     /// Git branch at block creation time.
     pub git_branch: Option<String>,
+    /// Username at block creation time.
+    pub username: Option<String>,
+    /// Hostname at block creation time.
+    pub hostname: Option<String>,
+    /// Time when the block was created (e.g. "17:33").
+    pub time_display: String,
 }
 
 // ---------------------------------------------------------------------------
@@ -105,21 +108,21 @@ pub struct TerminalLayout {
     pub cell_width: Pixels,
     pub cell_height: Pixels,
     pub line_height: Pixels,
-    pub header_font: Font,
 }
 
-/// A block header ready for painting.
+/// A two-line block header like Warp:
+/// Line 1 (dimmed): username hostname cwd time (duration)
+/// Line 2 (bright): command text
 pub(crate) struct BlockHeaderPaint {
     bg_bounds: Bounds<Pixels>,
     left_border_bounds: Option<Bounds<Pixels>>,
-    badge_center: Point<Pixels>,
-    badge_color: Hsla,
+    is_error: bool,
+    /// Line 1: metadata (username, hostname, cwd, time, duration)
+    metadata_line: ShapedLine,
+    metadata_origin: Point<Pixels>,
+    /// Line 2: command text
     command_line: ShapedLine,
     command_origin: Point<Pixels>,
-    metadata_line: Option<ShapedLine>,
-    metadata_origin: Point<Pixels>,
-    duration_line: ShapedLine,
-    duration_origin: Point<Pixels>,
 }
 
 /// Pre-painted state: shaped text lines, background rects, block headers.
@@ -196,7 +199,16 @@ impl TerminalElement {
 
     /// Check if an absolute row falls inside a hidden prompt region or
     /// the current pending prompt (prompt_start_row to present).
+    /// Rows that belong to a block are NEVER hidden.
     fn is_in_hidden_prompt_region(&self, abs_row: usize) -> bool {
+        // Never hide rows that belong to a block's output range
+        for block in &self.blocks {
+            let end = block.abs_end_row.unwrap_or(usize::MAX);
+            if abs_row >= block.abs_start_row && abs_row <= end {
+                return false;
+            }
+        }
+
         // Closed prompt regions (between PromptStart and CommandStart)
         for &(start, end) in &self.hidden_prompt_regions {
             if abs_row >= start && abs_row <= end {
@@ -238,12 +250,6 @@ impl TerminalElement {
             font = resolved;
         }
 
-        let header_font = Font {
-            family: font.family.clone(),
-            weight: FontWeight::MEDIUM,
-            ..Font::default()
-        };
-
         let _ = font_id;
 
         TerminalLayout {
@@ -252,7 +258,6 @@ impl TerminalElement {
             cell_width,
             cell_height,
             line_height,
-            header_font,
         }
     }
 
@@ -355,14 +360,45 @@ impl Element for TerminalElement {
         let cursor_visual_row =
             (cursor_point.line.0 as usize).saturating_add(display_offset);
 
-        let content_rows = (cursor_visual_row + 1).min(grid_rows);
+        // Cap content_rows: when all blocks are finished, stop at the last
+        // block's end row. This eliminates the gap between the last block and
+        // the input area — like Warp, blocks are tight discrete units.
+        let has_active_block = self.blocks.last().is_some_and(|b| b.exit_code.is_none());
+        let content_rows = if !self.blocks.is_empty() && !has_active_block {
+            // All blocks finished — cap at last block's end_row + 1
+            let last_end = self.blocks.iter()
+                .filter_map(|b| b.abs_end_row)
+                .max()
+                .unwrap_or(0);
+            let last_visual = Self::abs_to_visual(last_end, history_size, display_offset);
+            ((last_visual as usize) + 1).min(grid_rows)
+        } else {
+            // Active block or no blocks — extend to cursor
+            (cursor_visual_row + 1).min(grid_rows)
+        };
 
-        // Count how many rows will be hidden (prompt regions)
+        // Count how many rows will be hidden (prompt regions + empty block rows)
         let hidden_row_count = (0..content_rows)
             .filter(|&row_idx| {
                 let abs_row = history_size + row_idx - display_offset.min(row_idx);
-                self.is_in_hidden_prompt_region(abs_row)
-                    || (hide_up_to.is_some_and(|h| abs_row < h) && self.blocks.is_empty())
+                // Hidden prompt regions
+                if self.is_in_hidden_prompt_region(abs_row) {
+                    return true;
+                }
+                // Initial prompt hiding
+                if hide_up_to.is_some_and(|h| abs_row < h) && self.blocks.is_empty() {
+                    return true;
+                }
+                // Empty no-output block rows (only header renders, no grid row)
+                if self.blocks.iter().any(|b| {
+                    abs_row >= b.abs_start_row
+                        && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
+                        && b.abs_end_row == Some(b.abs_start_row)
+                        && b.exit_code.is_some()
+                }) {
+                    return true;
+                }
+                false
             })
             .count();
         let visible_content_rows = content_rows.saturating_sub(hidden_row_count);
@@ -459,13 +495,6 @@ impl Element for TerminalElement {
 
                 let is_error = block.exit_code.map_or(false, |c| c != 0);
                 let is_running = block.exit_code.is_none();
-                let badge_color = if is_running {
-                    accent()
-                } else if is_error {
-                    error_color()
-                } else {
-                    accent()
-                };
 
                 // Header background
                 let header_bounds = Bounds::new(
@@ -473,7 +502,7 @@ impl Element for TerminalElement {
                     size(bounds.size.width, px(BLOCK_HEADER_HEIGHT)),
                 );
 
-                // Left border for error blocks
+                // Left border for error blocks (spans entire header)
                 let left_border = if is_error {
                     Some(Bounds::new(
                         point(bounds.origin.x, header_y),
@@ -483,128 +512,110 @@ impl Element for TerminalElement {
                     None
                 };
 
-                // Badge position (centered vertically in header)
-                let badge_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
-                let badge_y = header_y + px(BLOCK_HEADER_HEIGHT / 2.0);
+                let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
 
-                // Shape command text
-                let cmd_text = if block.command.is_empty() {
-                    "(empty)".to_string()
-                } else {
-                    block.command.clone()
-                };
-
-                let command_runs = vec![TextRun {
-                    len: cmd_text.len(),
-                    font: layout.header_font.clone(),
-                    color: header_command_fg(),
-                    background_color: None,
-                    underline: None,
-                    strikethrough: None,
-                }];
-
-                let command_line = window.text_system().shape_line(
-                    SharedString::from(cmd_text),
-                    px(HEADER_FONT_SIZE),
-                    &command_runs,
-                    None,
-                );
-
-                let cmd_origin = point(
-                    badge_x + px(BADGE_RADIUS * 2.0 + 8.0),
-                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
-                );
-
-                // Shape metadata text (cwd + git branch, dimmed, after command)
-                let cmd_width = command_line.width();
-                let metadata_gap = px(12.0);
-                let meta_x = cmd_origin.x + cmd_width + metadata_gap;
-
+                // --- Line 1: metadata (Warp-style) ---
+                // Format: "nyxb MacBook-Pro.fritz.box ~ 17:33 (0.032s)"
                 let mut meta_parts: Vec<String> = Vec::new();
+                if let Some(ref user) = block.username {
+                    meta_parts.push(user.clone());
+                }
+                if let Some(ref host) = block.hostname {
+                    meta_parts.push(host.clone());
+                }
                 if let Some(ref cwd) = block.cwd_short {
                     meta_parts.push(cwd.clone());
                 }
                 if let Some(ref branch) = block.git_branch {
                     meta_parts.push(format!(" {}", branch));
                 }
-
-                let metadata_line = if meta_parts.is_empty() {
-                    None
-                } else {
-                    let meta_text = meta_parts.join("  ");
-                    let meta_runs = vec![TextRun {
-                        len: meta_text.len(),
-                        font: Font {
-                            family: layout.font.family.clone(),
-                            weight: FontWeight::NORMAL,
-                            ..Font::default()
-                        },
-                        color: header_metadata_fg(),
-                        background_color: None,
-                        underline: None,
-                        strikethrough: None,
-                    }];
-                    Some(window.text_system().shape_line(
-                        SharedString::from(meta_text),
-                        px(HEADER_FONT_SIZE),
-                        &meta_runs,
-                        None,
-                    ))
-                };
-
-                let metadata_origin = point(
-                    meta_x,
-                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
-                );
-
-                // Shape duration text
+                meta_parts.push(block.time_display.clone());
                 let dur_text = if is_running {
                     "running...".to_string()
                 } else {
-                    block.duration_display.clone()
+                    format!("({})", block.duration_display)
                 };
+                meta_parts.push(dur_text);
 
-                let duration_runs = vec![TextRun {
-                    len: dur_text.len(),
+                let meta_text = meta_parts.join("  ");
+                let meta_runs = vec![TextRun {
+                    len: meta_text.len(),
                     font: Font {
                         family: layout.font.family.clone(),
                         weight: FontWeight::NORMAL,
                         ..Font::default()
                     },
-                    color: header_duration_fg(),
+                    color: header_metadata_fg(),
                     background_color: None,
                     underline: None,
                     strikethrough: None,
                 }];
-
-                let duration_line = window.text_system().shape_line(
-                    SharedString::from(dur_text),
-                    px(HEADER_FONT_SIZE),
-                    &duration_runs,
+                let metadata_line = window.text_system().shape_line(
+                    SharedString::from(meta_text),
+                    px(HEADER_META_FONT_SIZE),
+                    &meta_runs,
                     None,
                 );
+                let metadata_origin = point(text_x, header_y + px(4.0));
 
-                let dur_width = duration_line.width();
-                let dur_origin = point(
-                    bounds.origin.x + bounds.size.width - dur_width - px(BLOCK_HEADER_PAD_X),
-                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
+                // --- Line 2: command text (bright, larger) ---
+                let cmd_text = if block.command.is_empty() {
+                    "(empty)".to_string()
+                } else {
+                    block.command.clone()
+                };
+                let cmd_color = if is_error {
+                    header_command_fg()
+                } else {
+                    header_command_fg()
+                };
+                let command_runs = vec![TextRun {
+                    len: cmd_text.len(),
+                    font: Font {
+                        family: layout.font.family.clone(),
+                        weight: FontWeight::MEDIUM,
+                        ..Font::default()
+                    },
+                    color: cmd_color,
+                    background_color: None,
+                    underline: None,
+                    strikethrough: None,
+                }];
+                let command_line = window.text_system().shape_line(
+                    SharedString::from(cmd_text),
+                    px(HEADER_CMD_FONT_SIZE),
+                    &command_runs,
+                    None,
+                );
+                let command_origin = point(
+                    text_x,
+                    header_y + px(4.0 + HEADER_META_FONT_SIZE + 4.0),
                 );
 
                 block_headers.push(BlockHeaderPaint {
                     bg_bounds: header_bounds,
                     left_border_bounds: left_border,
-                    badge_center: point(badge_x + px(BADGE_RADIUS), badge_y),
-                    badge_color,
-                    command_line,
-                    command_origin: cmd_origin,
+                    is_error,
                     metadata_line,
                     metadata_origin,
-                    duration_line,
-                    duration_origin: dur_origin,
+                    command_line,
+                    command_origin,
                 });
 
                 header_offset += px(BLOCK_HEADER_HEIGHT + BLOCK_GAP);
                 next_header_idx += 1;
+            }
+
+            // Skip empty grid rows that belong to no-output blocks.
+            // Only the header renders — no cell_height gap below it.
+            let in_empty_block = self.blocks.iter().any(|b| {
+                abs_row >= b.abs_start_row
+                    && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
+                    && b.abs_end_row == Some(b.abs_start_row)
+                    && b.exit_code.is_some()
+            });
+            if in_empty_block {
+                continue;
             }
 
             // Render the grid row
@@ -761,31 +772,24 @@ impl Element for TerminalElement {
             // 1. Overall background
             window.paint_quad(fill(bounds, terminal_bg()));
 
-            // 2. Block headers
+            // 2. Block headers (2-line Warp-style: metadata + command)
             for header in &prepaint.block_headers {
-                // Header background
-                window.paint_quad(fill(header.bg_bounds, block_header_bg()));
+                // Header background (red-tinted for errors, dark for success)
+                let bg = if header.is_error {
+                    block_header_error_bg()
+                } else {
+                    block_header_bg()
+                };
+                window.paint_quad(fill(header.bg_bounds, bg));
 
                 // Left border (error indicator)
                 if let Some(border) = header.left_border_bounds {
                     window.paint_quad(fill(border, error_color()));
                 }
 
-                // Exit badge (small filled circle via a tiny rounded quad)
-                let badge_bounds = Bounds::new(
-                    point(
-                        header.badge_center.x - px(BADGE_RADIUS),
-                        header.badge_center.y - px(BADGE_RADIUS),
-                    ),
-                    size(px(BADGE_RADIUS * 2.0), px(BADGE_RADIUS * 2.0)),
-                );
-                let mut badge_quad = fill(badge_bounds, header.badge_color);
-                badge_quad.corner_radii = Corners::all(px(BADGE_RADIUS));
-                window.paint_quad(badge_quad);
-
-                // Command text
-                let _ = header.command_line.paint(
-                    header.command_origin,
+                // Line 1: metadata (dimmed)
+                let _ = header.metadata_line.paint(
+                    header.metadata_origin,
                     prepaint.line_height,
                     TextAlign::Left,
                     None,
@@ -793,21 +797,9 @@ impl Element for TerminalElement {
                     cx,
                 );
 
-                // Metadata text (cwd + git branch)
-                if let Some(ref meta_line) = header.metadata_line {
-                    let _ = meta_line.paint(
-                        header.metadata_origin,
-                        prepaint.line_height,
-                        TextAlign::Left,
-                        None,
-                        window,
-                        cx,
-                    );
-                }
-
-                // Duration text
-                let _ = header.duration_line.paint(
-                    header.duration_origin,
+                // Line 2: command (bright)
+                let _ = header.command_line.paint(
+                    header.command_origin,
                     prepaint.line_height,
                     TextAlign::Left,
                     None,

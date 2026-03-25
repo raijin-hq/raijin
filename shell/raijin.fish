@@ -44,6 +44,12 @@ function _raijin_precmd --on-event fish_prompt
     end
     if test $_raijin_state -eq 1
         set _json "$_json,\"last_exit_code\":$ret"
+        if set -q _raijin_cmd_start
+            set -l _now_ms (date +%s%3N 2>/dev/null; or echo 0)
+            set -l _dur_ms (math "$_now_ms - $_raijin_cmd_start")
+            set _json "$_json,\"last_duration_ms\":$_dur_ms"
+            set -e _raijin_cmd_start
+        end
     end
     set _json "$_json}"
 
@@ -58,6 +64,7 @@ function _raijin_precmd --on-event fish_prompt
 end
 
 function _raijin_preexec --on-event fish_preexec
+    set -g _raijin_cmd_start (date +%s%3N 2>/dev/null; or echo 0)
     printf '\e]133;B\a'
     printf '\e]133;C\a'
     set -g _raijin_state 1

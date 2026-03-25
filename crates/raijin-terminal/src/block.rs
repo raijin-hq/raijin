@@ -21,6 +21,10 @@ pub struct TerminalBlock {
     pub finished_at: Option<Instant>,
     /// Raw JSON metadata snapshot from the shell at block creation time.
     pub metadata_json: Option<String>,
+    /// Command duration measured by the shell (milliseconds).
+    /// More accurate than Instant-based timing since the shell measures
+    /// the actual wall-clock time between preexec and precmd.
+    pub shell_duration_ms: Option<u64>,
 }
 
 impl TerminalBlock {
@@ -37,12 +41,16 @@ impl TerminalBlock {
         }
     }
 
-    /// Format the duration for display (e.g., "0.3s", "2.1s", "1m 30s").
+    /// Format the duration for display like Warp (e.g., "0.032s", "2.100s", "1m 30s").
+    /// Prefers the shell-measured duration over Rust Instant-based timing.
     pub fn duration_display(&self) -> String {
-        let dur = self.duration();
-        let secs = dur.as_secs_f64();
+        let secs = if let Some(ms) = self.shell_duration_ms {
+            ms as f64 / 1000.0
+        } else {
+            self.duration().as_secs_f64()
+        };
         if secs < 60.0 {
-            format!("{:.1}s", secs)
+            format!("{:.3}s", secs)
         } else {
             let mins = secs as u64 / 60;
             let remaining = secs as u64 % 60;
@@ -134,6 +142,7 @@ impl BlockManager {
                     started_at: Instant::now(),
                     finished_at: None,
                     metadata_json: self.latest_metadata_json.clone(),
+                    shell_duration_ms: None,
                 });
 
                 self.in_command = true;
@@ -143,7 +152,12 @@ impl BlockManager {
                 if let Some(block) = self.blocks.last_mut() {
                     if block.exit_code.is_none() {
                         block.exit_code = Some(exit_code);
-                        block.end_row = Some(cursor_row);
+                        // end_row is the last row of actual output, not the cursor
+                        // position (which is one line AFTER the output). For commands
+                        // with no output, clamp to start_row.
+                        block.end_row = Some(
+                            cursor_row.saturating_sub(1).max(block.start_row),
+                        );
                         block.finished_at = Some(Instant::now());
                     }
                 }
@@ -152,6 +166,16 @@ impl BlockManager {
 
             ShellMarker::Metadata(json) => {
                 self.latest_metadata_json = Some(json);
+            }
+        }
+    }
+
+    /// Set the shell-measured command duration on the last finished block.
+    /// Called when metadata arrives with `last_duration_ms`.
+    pub fn set_last_block_duration(&mut self, duration_ms: u64) {
+        if let Some(block) = self.blocks.last_mut() {
+            if block.is_finished() {
+                block.shell_duration_ms = Some(duration_ms);
             }
         }
     }

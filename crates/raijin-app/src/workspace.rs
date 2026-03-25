@@ -125,6 +125,10 @@ impl Workspace {
             match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
                 Ok(payload) => {
                     self.shell_context.update_from_metadata(&payload);
+                    // Transfer shell-measured duration to the last finished block
+                    if let Some(ms) = payload.last_duration_ms {
+                        self.block_manager.set_last_block_duration(ms);
+                    }
                     cx.notify();
                 }
                 Err(e) => {
@@ -346,19 +350,12 @@ impl Workspace {
             .blocks()
             .iter()
             .map(|block| {
-                let (cwd_short, git_branch) = block
+                let payload = block
                     .metadata_json
                     .as_ref()
                     .and_then(|json| {
                         serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json).ok()
-                    })
-                    .map(|p| {
-                        (
-                            Some(raijin_shell::shorten_path(&p.cwd)),
-                            p.git_branch,
-                        )
-                    })
-                    .unwrap_or((None, None));
+                    });
 
                 BlockRenderInfo {
                     command: block.command.clone(),
@@ -366,8 +363,21 @@ impl Workspace {
                     exit_code: block.exit_code,
                     abs_start_row: block.start_row,
                     abs_end_row: block.end_row,
-                    cwd_short,
-                    git_branch,
+                    cwd_short: payload.as_ref().map(|p| raijin_shell::shorten_path(&p.cwd)),
+                    git_branch: payload.as_ref().and_then(|p| p.git_branch.clone()),
+                    username: payload.as_ref().and_then(|p| p.username.clone()),
+                    hostname: payload.as_ref().and_then(|p| p.hostname.clone()),
+                    time_display: {
+                        let t = block.started_at;
+                        let elapsed = t.elapsed();
+                        // Approximate wall-clock time at block start
+                        let now = time::OffsetDateTime::now_local()
+                            .unwrap_or_else(|_| time::OffsetDateTime::now_utc());
+                        let at_start = now - elapsed;
+                        at_start
+                            .format(time::macros::format_description!("[hour]:[minute]"))
+                            .unwrap_or_else(|_| "--:--".to_string())
+                    },
                 }
             })
             .collect()

@@ -49,6 +49,12 @@ _raijin_precmd() {
     fi
     if [[ $_raijin_state == 1 ]]; then
         _json+=',"last_exit_code":'"$ret"
+        if [[ -n "$_raijin_cmd_start" ]]; then
+            local _now_ms=$(date +%s%3N 2>/dev/null || echo 0)
+            local _dur_ms=$(( _now_ms - _raijin_cmd_start ))
+            _json+=',"last_duration_ms":'"${_dur_ms}"
+            unset _raijin_cmd_start
+        fi
     fi
     _json+='}'
 
@@ -68,6 +74,8 @@ _raijin_preexec() {
     if [[ "$BASH_COMMAND" == "$PROMPT_COMMAND" ]]; then
         return
     fi
+
+    _raijin_cmd_start=$(date +%s%3N 2>/dev/null || echo 0)
 
     builtin printf '\e]133;B\a' >&$_raijin_fd
     builtin printf '\e]133;C\a' >&$_raijin_fd

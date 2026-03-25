@@ -51,6 +51,13 @@ _raijin_precmd() {
     fi
     if [[ $_raijin_state == 1 ]]; then
         _json+=',"last_exit_code":'$ret
+        # Calculate command duration in milliseconds
+        if [[ -n "$_raijin_cmd_start" ]]; then
+            local _dur_ms=$(( (EPOCHREALTIME - _raijin_cmd_start) * 1000 ))
+            _dur_ms=${_dur_ms%.*}
+            _json+=',"last_duration_ms":'${_dur_ms:-0}
+            unset _raijin_cmd_start
+        fi
     fi
     _json+='}'
 
@@ -69,6 +76,10 @@ _raijin_precmd() {
 }
 
 _raijin_preexec() {
+    # Record command start time (milliseconds via zsh EPOCHREALTIME)
+    zmodload -F zsh/datetime p:EPOCHREALTIME 2>/dev/null
+    _raijin_cmd_start=$EPOCHREALTIME
+
     # Mark prompt end / input region start
     builtin printf '\e]133;B\a' >&$_raijin_fd
 
