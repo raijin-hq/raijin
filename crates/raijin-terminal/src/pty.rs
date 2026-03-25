@@ -1,5 +1,5 @@
 use std::io::{Read, Write};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use anyhow::Result;
 use portable_pty::{CommandBuilder, MasterPty, NativePtySystem, PtySize, PtySystem};
@@ -17,10 +17,12 @@ pub enum InputMode {
 ///
 /// The hooks inject OSC 133 markers (precmd/preexec) for block boundary detection.
 /// In Raijin mode, the shell's prompt is also suppressed.
+/// `cwd` sets the initial working directory for the shell.
 pub fn spawn_pty(
     rows: u16,
     cols: u16,
     mode: InputMode,
+    cwd: &Path,
 ) -> Result<(
     Box<dyn MasterPty + Send>,
     Box<dyn Read + Send>,
@@ -41,6 +43,7 @@ pub fn spawn_pty(
     let shell_name = shell.rsplit('/').next().unwrap_or("zsh");
 
     let mut cmd = CommandBuilder::new(&shell);
+    cmd.cwd(cwd);
     cmd.env("TERM", "xterm-256color");
     cmd.env("COLORTERM", "truecolor");
     cmd.env("TERM_PROGRAM", "raijin");

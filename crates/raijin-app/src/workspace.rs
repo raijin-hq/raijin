@@ -13,7 +13,15 @@ use inazuma_component::{
 use raijin_shell::ShellContext;
 use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
 
+use crate::settings_view;
 use crate::terminal_element::{BlockRenderInfo, TerminalElement};
+
+/// Which view is currently active.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum ViewMode {
+    Terminal,
+    Settings,
+}
 
 /// Top-level workspace view that composes the Warp-style layout:
 /// TabBar (top) → Terminal Output (middle) → Context Chips + Input (bottom)
@@ -26,11 +34,20 @@ pub struct Workspace {
     block_manager: BlockManager,
     interactive_mode: bool,
     show_terminal: bool,
+    view_mode: ViewMode,
 }
 
 impl Workspace {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let terminal = Terminal::new(24, 80).expect("failed to create terminal");
+        let config = cx.global::<raijin_settings::RaijinConfig>().clone();
+        let cwd = config.resolve_working_directory();
+        let input_mode = match config.general.input_mode {
+            raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
+            raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
+        };
+        let scrollback = config.terminal.scrollback_history as usize;
+        let terminal = Terminal::new(24, 80, &cwd, input_mode, scrollback)
+            .expect("failed to create terminal");
 
         let focus_handle = cx.focus_handle();
         let input_state = cx.new(|cx| InputState::new(window, cx));
@@ -59,7 +76,7 @@ impl Workspace {
             state.focus(window, cx);
         });
 
-        let shell_context = ShellContext::gather();
+        let shell_context = ShellContext::gather_for(&cwd);
 
         Self {
             terminal,
@@ -70,6 +87,7 @@ impl Workspace {
             block_manager: BlockManager::new(),
             interactive_mode: false,
             show_terminal: false,
+            view_mode: ViewMode::Terminal,
         }
     }
 
@@ -182,24 +200,78 @@ impl Workspace {
         }
     }
 
-    fn render_title_bar(&self) -> impl IntoElement {
+    /// Tab label: shortened CWD (e.g. `~`, `~/Projects/raijin`).
+    fn tab_label(&self) -> String {
+        self.shell_context.cwd_short.clone()
+    }
+
+    fn render_title_bar(&self, cx: &mut Context<Self>) -> impl IntoElement {
+        let is_terminal = self.view_mode == ViewMode::Terminal;
+        let is_settings = self.view_mode == ViewMode::Settings;
+        let border_color = hsla(0.0, 0.0, 1.0, 0.08);
+        let active_bg = rgb(0x222222);
+
         TitleBar::new().child(
             div()
                 .flex()
                 .items_center()
                 .h_full()
+                // Terminal tab
                 .child(
                     div()
+                        .id("tab-terminal")
                         .flex()
                         .items_center()
+                        .justify_center()
                         .h_full()
+                        .w(px(160.0))
+                        .flex_shrink_0()
+                        .overflow_hidden()
+                        .whitespace_nowrap()
                         .px_3()
                         .text_xs()
-                        .text_color(rgb(0xc8c8c8))
+                        .cursor_pointer()
                         .border_r_1()
-                        .border_color(hsla(0.0, 0.0, 1.0, 0.08))
-                        .bg(rgb(0x222222))
-                        .child(self.shell_context.cwd_short.clone()),
+                        .border_l_1()
+                        .border_color(border_color)
+                        .when(is_terminal, |this| {
+                            this.text_color(rgb(0xf1f1f1)).bg(active_bg)
+                        })
+                        .when(!is_terminal, |this| {
+                            this.text_color(rgb(0x888888))
+                        })
+                        .on_click(cx.listener(|view, _, _, cx| {
+                            view.view_mode = ViewMode::Terminal;
+                            cx.notify();
+                        }))
+                        .child(self.tab_label()),
+                )
+                // Settings tab
+                .child(
+                    div()
+                        .id("tab-settings")
+                        .flex()
+                        .items_center()
+                        .justify_center()
+                        .h_full()
+                        .w(px(120.0))
+                        .flex_shrink_0()
+                        .px_3()
+                        .text_xs()
+                        .cursor_pointer()
+                        .border_r_1()
+                        .border_color(border_color)
+                        .when(is_settings, |this| {
+                            this.text_color(rgb(0xf1f1f1)).bg(active_bg)
+                        })
+                        .when(!is_settings, |this| {
+                            this.text_color(rgb(0x888888))
+                        })
+                        .on_click(cx.listener(|view, _, _, cx| {
+                            view.view_mode = ViewMode::Settings;
+                            cx.notify();
+                        }))
+                        .child("Settings"),
                 ),
         )
     }
@@ -275,10 +347,6 @@ impl Workspace {
 
 impl Render for Workspace {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let handle = self.terminal.handle();
-        let blocks = self.build_block_render_info();
-        let hide_before = self.block_manager.prompt_start_row();
-
         let mut container = div()
             .flex()
             .flex_col()
@@ -286,29 +354,54 @@ impl Render for Workspace {
             .bg(rgb(0x121212))
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive))
-            .child(self.render_title_bar())
-            .child({
-                let output_area = div()
-                    .flex()
-                    .flex_col()
-                    .justify_end()
-                    .flex_1()
-                    .min_h_0()
-                    .overflow_hidden();
+            .child(self.render_title_bar(cx));
 
-                if self.show_terminal || self.interactive_mode {
-                    output_area.child(
-                        TerminalElement::new(handle)
-                            .with_blocks(blocks)
-                            .with_hide_before_row(hide_before),
-                    )
-                } else {
-                    output_area
+        match self.view_mode {
+            ViewMode::Terminal => {
+                let handle = self.terminal.handle();
+                let blocks = self.build_block_render_info();
+                let hide_before = self.block_manager.prompt_start_row();
+                let config = cx.global::<raijin_settings::RaijinConfig>();
+                let font_family = config.appearance.font_family.clone();
+                let font_size = config.appearance.font_size as f32;
+                let cursor_beam = config.terminal.cursor_style
+                    == raijin_settings::CursorStyle::Beam;
+
+                container = container.child({
+                    let output_area = div()
+                        .flex()
+                        .flex_col()
+                        .justify_end()
+                        .flex_1()
+                        .min_h_0()
+                        .overflow_hidden();
+
+                    if self.show_terminal || self.interactive_mode {
+                        output_area.child(
+                            TerminalElement::new(handle)
+                                .with_font(&font_family, font_size)
+                                .with_cursor_beam(cursor_beam)
+                                .with_blocks(blocks)
+                                .with_hide_before_row(hide_before),
+                        )
+                    } else {
+                        output_area
+                    }
+                });
+
+                if !self.interactive_mode {
+                    container = container.child(self.render_input_area());
                 }
-            });
-
-        if !self.interactive_mode {
-            container = container.child(self.render_input_area());
+            }
+            ViewMode::Settings => {
+                container = container.child(
+                    div()
+                        .flex_1()
+                        .min_h_0()
+                        .overflow_hidden()
+                        .child(settings_view::build_settings()),
+                );
+            }
         }
 
         container

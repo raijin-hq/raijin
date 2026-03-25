@@ -4944,10 +4944,23 @@ dependencies = [
  "inazuma-component-assets",
  "log",
  "parking_lot",
+ "raijin-settings",
  "raijin-shell",
  "raijin-terminal",
  "raijin-ui",
  "time",
+]
+
+[[package]]
+name = "raijin-settings"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "dirs 6.0.0",
+ "inazuma",
+ "log",
+ "serde",
+ "toml 0.8.23",
 ]
 
 [[package]]

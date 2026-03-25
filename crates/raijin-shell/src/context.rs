@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 use std::process::Command;
 
 /// Git diff statistics (insertions, deletions, changed files).
@@ -21,17 +20,14 @@ pub struct ShellContext {
 }
 
 impl ShellContext {
-    /// Gather shell context from the current environment.
-    pub fn gather() -> Self {
-        let cwd = std::env::current_dir()
-            .unwrap_or_else(|_| PathBuf::from("~"))
-            .to_string_lossy()
-            .to_string();
+    /// Gather shell context for the given working directory.
+    pub fn gather_for(cwd_path: &std::path::Path) -> Self {
+        let cwd = cwd_path.to_string_lossy().to_string();
 
         let cwd_short = shorten_path(&cwd);
-        let git_branch = detect_git_branch();
+        let git_branch = detect_git_branch(cwd_path);
         let git_stats = if git_branch.is_some() {
-            detect_git_stats()
+            detect_git_stats(cwd_path)
         } else {
             None
         };
@@ -77,9 +73,10 @@ fn detect_hostname() -> String {
     "localhost".to_string()
 }
 
-fn detect_git_branch() -> Option<String> {
+fn detect_git_branch(cwd: &std::path::Path) -> Option<String> {
     let output = Command::new("git")
         .args(["rev-parse", "--abbrev-ref", "HEAD"])
+        .current_dir(cwd)
         .output()
         .ok()?;
 
@@ -95,9 +92,10 @@ fn detect_git_branch() -> Option<String> {
     }
 }
 
-fn detect_git_stats() -> Option<GitStats> {
+fn detect_git_stats(cwd: &std::path::Path) -> Option<GitStats> {
     let output = Command::new("git")
         .args(["diff", "--stat", "--shortstat", "HEAD"])
+        .current_dir(cwd)
         .output()
         .ok()?;
 

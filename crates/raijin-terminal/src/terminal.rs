@@ -8,11 +8,14 @@ use alacritty_terminal::vte::ansi;
 use anyhow::Result;
 use parking_lot::FairMutex;
 
+use std::path::Path;
+
 use crate::event::{RaijinEventListener, TerminalEvent};
 use crate::osc_parser::OscScanner;
 use crate::pty;
 
-const SCROLLBACK_HISTORY: usize = 10_000;
+/// Default scrollback history, can be overridden via config.
+const DEFAULT_SCROLLBACK_HISTORY: usize = 10_000;
 
 /// Terminal dimensions for alacritty_terminal.
 struct TermDimensions {
@@ -79,7 +82,7 @@ impl TerminalHandle {
         let dims = TermDimensions {
             cols: cols as usize,
             rows: rows as usize,
-            history: SCROLLBACK_HISTORY,
+            history: DEFAULT_SCROLLBACK_HISTORY,
         };
 
         term.resize(dims);
@@ -109,25 +112,31 @@ impl Terminal {
     ///
     /// Spawns the user's default shell in a PTY and starts a background
     /// thread to process PTY output.
-    pub fn new(rows: u16, cols: u16) -> Result<Self> {
+    pub fn new(
+        rows: u16,
+        cols: u16,
+        cwd: &Path,
+        input_mode: pty::InputMode,
+        scrollback_history: usize,
+    ) -> Result<Self> {
         let (event_tx, event_rx) = flume::unbounded();
 
         let (master, reader, pty_writer) =
-            pty::spawn_pty(rows, cols, pty::InputMode::Raijin)?;
+            pty::spawn_pty(rows, cols, input_mode, cwd)?;
 
         let shared_writer: Arc<std::sync::Mutex<Box<dyn Write + Send>>> =
             Arc::new(std::sync::Mutex::new(pty_writer));
         let listener = RaijinEventListener::new(event_tx.clone(), Arc::clone(&shared_writer));
 
         let config = Config {
-            scrolling_history: SCROLLBACK_HISTORY,
+            scrolling_history: scrollback_history,
             ..Config::default()
         };
 
         let dims = TermDimensions {
             cols: cols as usize,
             rows: rows as usize,
-            history: SCROLLBACK_HISTORY,
+            history: scrollback_history,
         };
 
         let term = Term::new(config, &dims, listener);

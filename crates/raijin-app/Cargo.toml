@@ -13,6 +13,7 @@ inazuma = { workspace = true }
 inazuma-component = { workspace = true }
 raijin-terminal = { workspace = true }
 raijin-shell = { workspace = true }
+raijin-settings = { workspace = true }
 raijin-ui = { workspace = true }
 anyhow = { workspace = true }
 log = { workspace = true }

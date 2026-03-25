@@ -131,6 +131,12 @@ pub struct TerminalElement {
     blocks: Vec<BlockRenderInfo>,
     /// Hide all rows before this absolute row (hides initial prompt in Raijin mode).
     hide_before_row: Option<usize>,
+    /// Font family from config.
+    font_family: String,
+    /// Font size from config.
+    font_size: f32,
+    /// Cursor style from config.
+    cursor_beam: bool,
 }
 
 impl TerminalElement {
@@ -139,7 +145,23 @@ impl TerminalElement {
             handle,
             blocks: Vec::new(),
             hide_before_row: None,
+            font_family: FONT_FAMILIES[0].to_string(),
+            font_size: FONT_SIZE,
+            cursor_beam: true,
         }
+    }
+
+    /// Set font family and size from config.
+    pub fn with_font(mut self, family: &str, size: f32) -> Self {
+        self.font_family = family.to_string();
+        self.font_size = size;
+        self
+    }
+
+    /// Set cursor style (true = beam, false = block).
+    pub fn with_cursor_beam(mut self, beam: bool) -> Self {
+        self.cursor_beam = beam;
+        self
     }
 
     pub fn with_blocks(mut self, blocks: Vec<BlockRenderInfo>) -> Self {
@@ -153,10 +175,10 @@ impl TerminalElement {
     }
 
     fn compute_layout(&self, window: &mut Window) -> TerminalLayout {
-        let font_size = px(FONT_SIZE);
+        let font_size = px(self.font_size);
 
         let mut font = Font {
-            family: FONT_FAMILIES[0].into(),
+            family: self.font_family.clone().into(),
             weight: FontWeight::NORMAL,
             ..Font::default()
         };
@@ -331,9 +353,14 @@ impl Element for TerminalElement {
                 + y_offset
                 + layout.cell_height * cursor_visual_row as f32
                 + cursor_header_offset;
+            let cursor_width = if self.cursor_beam {
+                px(2.0)
+            } else {
+                layout.cell_width
+            };
             cursor_rect = Some(Bounds::new(
                 point(cx_px, cy_px),
-                size(px(2.0), layout.cell_height),
+                size(cursor_width, layout.cell_height),
             ));
         }
 

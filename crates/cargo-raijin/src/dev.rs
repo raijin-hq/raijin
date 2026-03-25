@@ -133,11 +133,16 @@ fn cargo_build(workspace_root: &Path, release: bool) -> Result<bool> {
 }
 
 fn launch_app(bundle_path: &Path) -> Result<Child> {
-    log::info!("🚀 Launching {}", bundle_path.display());
-    Command::new("open")
-        .arg("-W") // wait for app to exit
-        .arg("-n") // open new instance
-        .arg(bundle_path)
+    // Launch the binary directly from the .app bundle so we get a real
+    // Child handle for kill/restart. Using `open` detaches the process
+    // and opens new instances on each rebuild.
+    let binary = bundle_path.join("Contents/MacOS/raijin");
+    log::info!("🚀 Launching {}", binary.display());
+
+    // Set RAIJIN_BUNDLE_PATH so the app knows it's running from a bundle
+    // (macOS needs this for icon loading via Assets.car)
+    Command::new(&binary)
+        .env("RAIJIN_BUNDLE_PATH", bundle_path)
         .spawn()
-        .with_context(|| format!("failed to launch {}", bundle_path.display()))
+        .with_context(|| format!("failed to launch {}", binary.display()))
 }

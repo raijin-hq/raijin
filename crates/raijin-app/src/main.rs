@@ -1,3 +1,4 @@
+mod settings_view;
 mod terminal_element;
 mod workspace;
 
@@ -16,6 +17,10 @@ fn main() {
             None,
             cx,
         );
+
+        // Load Raijin config and set as global
+        let config = raijin_settings::RaijinConfig::load().unwrap_or_default();
+        cx.set_global(config);
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
         cx.open_window(

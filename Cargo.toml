@@ -9,6 +9,7 @@ members = [
     "crates/raijin-terminal",
     "crates/raijin-ui",
     "crates/raijin-shell",
+    "crates/raijin-settings",
     "crates/cargo-raijin",
 ]
 default-members = ["crates/raijin-app"]
@@ -27,6 +28,8 @@ inazuma-component-assets = { path = "crates/inazuma-component/assets" }
 raijin-ui = { path = "crates/raijin-ui" }
 raijin-terminal = { path = "crates/raijin-terminal" }
 raijin-shell = { path = "crates/raijin-shell" }
+raijin-settings = { path = "crates/raijin-settings" }
+toml = "0.8"
 
 cocoa = "=0.26.0"
 objc = "0.2"
