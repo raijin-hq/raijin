@@ -1,8 +1,8 @@
-/// Shell integration markers from OSC 133 sequences (FTCS standard).
+/// Shell integration markers from OSC sequences.
 ///
-/// These markers are sent by the shell hooks (raijin.zsh/bash/fish) to
-/// indicate command block boundaries. The terminal uses them to separate
-/// output into visual blocks with metadata (command text, exit code, duration).
+/// OSC 133 markers are sent by the shell hooks (raijin.zsh/bash/fish) to
+/// indicate command block boundaries. OSC 7777 carries JSON metadata from
+/// the shell's precmd hook (CWD, git branch, username, etc.).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ShellMarker {
     /// OSC 133;A — Prompt region starts. A new potential block begins.
@@ -13,9 +13,11 @@ pub enum ShellMarker {
     CommandStart,
     /// OSC 133;D;N — Command finished with the given exit code.
     CommandEnd { exit_code: i32 },
+    /// OSC 7777;raijin-precmd;<hex> — Shell metadata (JSON, hex-decoded).
+    Metadata(String),
 }
 
-/// Scans a byte stream for OSC 133 shell integration markers.
+/// Scans a byte stream for OSC 133 and OSC 7777 shell integration markers.
 ///
 /// The scanner is stateful — it handles OSC sequences that may be split
 /// across multiple read() calls (e.g., `\x1b]133;` in one chunk, `A\x07`
@@ -44,11 +46,11 @@ impl OscScanner {
     pub fn new() -> Self {
         Self {
             state: ScanState::Normal,
-            param_buf: Vec::with_capacity(64),
+            param_buf: Vec::with_capacity(512),
         }
     }
 
-    /// Scan a chunk of bytes for OSC 133 markers.
+    /// Scan a chunk of bytes for OSC 133 and OSC 7777 markers.
     ///
     /// Returns all markers found in this chunk. May return empty vec
     /// if no markers are present or if a marker spans across chunks.
@@ -82,7 +84,7 @@ impl OscScanner {
                 ScanState::InOsc => {
                     if byte == 0x07 {
                         // BEL terminates the OSC sequence
-                        if let Some(marker) = self.parse_osc_133() {
+                        if let Some(marker) = self.try_parse_osc() {
                             markers.push(marker);
                         }
                         self.state = ScanState::Normal;
@@ -97,7 +99,7 @@ impl OscScanner {
                 ScanState::InOscSawEsc => {
                     if byte == b'\\' {
                         // ESC \ = ST (String Terminator)
-                        if let Some(marker) = self.parse_osc_133() {
+                        if let Some(marker) = self.try_parse_osc() {
                             markers.push(marker);
                         }
                         self.state = ScanState::Normal;
@@ -112,6 +114,28 @@ impl OscScanner {
         }
 
         markers
+    }
+
+    /// Try parsing the accumulated OSC as either 133 (block markers) or 7777 (metadata).
+    fn try_parse_osc(&self) -> Option<ShellMarker> {
+        self.parse_osc_133().or_else(|| self.parse_osc_7777())
+    }
+
+    /// Parse OSC 7777;raijin-precmd;<hex> into ShellMarker::Metadata.
+    ///
+    /// The payload after the prefix is hex-encoded JSON (two hex chars per byte).
+    /// This encoding prevents bytes like 0x9C (ST terminator) in emoji/special
+    /// chars from breaking the escape sequence — same strategy as Warp.
+    fn parse_osc_7777(&self) -> Option<ShellMarker> {
+        let params = &self.param_buf;
+        let prefix = b"7777;raijin-precmd;";
+        if params.len() <= prefix.len() || params[..prefix.len()] != *prefix {
+            return None;
+        }
+        let hex_bytes = &params[prefix.len()..];
+        let decoded = hex_decode(hex_bytes)?;
+        let json = std::str::from_utf8(&decoded).ok()?;
+        Some(ShellMarker::Metadata(json.to_string()))
     }
 
     /// Parse accumulated OSC parameters to check for 133;X markers.
@@ -149,6 +173,30 @@ impl OscScanner {
             }
             _ => None,
         }
+    }
+}
+
+/// Decode a hex-encoded byte slice (e.g., b"48656c6c6f" → b"Hello").
+/// Returns None if the input has odd length or contains non-hex characters.
+fn hex_decode(input: &[u8]) -> Option<Vec<u8>> {
+    if !input.len().is_multiple_of(2) {
+        return None;
+    }
+    let mut out = Vec::with_capacity(input.len() / 2);
+    for pair in input.chunks_exact(2) {
+        let hi = hex_nibble(pair[0])?;
+        let lo = hex_nibble(pair[1])?;
+        out.push((hi << 4) | lo);
+    }
+    Some(out)
+}
+
+fn hex_nibble(byte: u8) -> Option<u8> {
+    match byte {
+        b'0'..=b'9' => Some(byte - b'0'),
+        b'a'..=b'f' => Some(byte - b'a' + 10),
+        b'A'..=b'F' => Some(byte - b'A' + 10),
+        _ => None,
     }
 }
 
@@ -203,5 +251,112 @@ mod tests {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(b"\x1b]0;window title\x07");
         assert!(markers.is_empty());
+    }
+
+    // --- OSC 7777 (raijin-precmd metadata) tests ---
+
+    fn hex_encode(input: &[u8]) -> Vec<u8> {
+        let mut out = Vec::with_capacity(input.len() * 2);
+        for &b in input {
+            out.push(b"0123456789abcdef"[(b >> 4) as usize]);
+            out.push(b"0123456789abcdef"[(b & 0x0f) as usize]);
+        }
+        out
+    }
+
+    #[test]
+    fn test_scan_osc_7777_basic() {
+        let json = br#"{"cwd":"/tmp","username":"nyxb"}"#;
+        let hex = hex_encode(json);
+        let mut seq = b"\x1b]7777;raijin-precmd;".to_vec();
+        seq.extend_from_slice(&hex);
+        seq.push(0x07);
+
+        let mut scanner = OscScanner::new();
+        let markers = scanner.scan(&seq);
+        assert_eq!(
+            markers,
+            vec![ShellMarker::Metadata(
+                r#"{"cwd":"/tmp","username":"nyxb"}"#.to_string()
+            )]
+        );
+    }
+
+    #[test]
+    fn test_scan_osc_7777_st_terminator() {
+        let json = br#"{"cwd":"/"}"#;
+        let hex = hex_encode(json);
+        let mut seq = b"\x1b]7777;raijin-precmd;".to_vec();
+        seq.extend_from_slice(&hex);
+        seq.extend_from_slice(b"\x1b\\");
+
+        let mut scanner = OscScanner::new();
+        let markers = scanner.scan(&seq);
+        assert_eq!(
+            markers,
+            vec![ShellMarker::Metadata(r#"{"cwd":"/"}"#.to_string())]
+        );
+    }
+
+    #[test]
+    fn test_scan_osc_7777_split_across_chunks() {
+        let json = br#"{"cwd":"/home"}"#;
+        let hex = hex_encode(json);
+        let mut full = b"\x1b]7777;raijin-precmd;".to_vec();
+        full.extend_from_slice(&hex);
+        full.push(0x07);
+
+        // Split at an arbitrary midpoint
+        let mid = full.len() / 2;
+        let mut scanner = OscScanner::new();
+        let m1 = scanner.scan(&full[..mid]);
+        assert!(m1.is_empty());
+        let m2 = scanner.scan(&full[mid..]);
+        assert_eq!(
+            m2,
+            vec![ShellMarker::Metadata(r#"{"cwd":"/home"}"#.to_string())]
+        );
+    }
+
+    #[test]
+    fn test_scan_osc_7777_interleaved_with_133() {
+        let json = br#"{"cwd":"/"}"#;
+        let hex = hex_encode(json);
+        let mut seq = b"\x1b]7777;raijin-precmd;".to_vec();
+        seq.extend_from_slice(&hex);
+        seq.push(0x07);
+        seq.extend_from_slice(b"\x1b]133;A\x07");
+
+        let mut scanner = OscScanner::new();
+        let markers = scanner.scan(&seq);
+        assert_eq!(
+            markers,
+            vec![
+                ShellMarker::Metadata(r#"{"cwd":"/"}"#.to_string()),
+                ShellMarker::PromptStart,
+            ]
+        );
+    }
+
+    #[test]
+    fn test_scan_osc_7777_invalid_hex() {
+        // Odd-length hex should be ignored
+        let mut seq = b"\x1b]7777;raijin-precmd;abc\x07".to_vec();
+        let mut scanner = OscScanner::new();
+        let markers = scanner.scan(&seq);
+        assert!(markers.is_empty());
+
+        // Non-hex characters
+        seq = b"\x1b]7777;raijin-precmd;ZZZZ\x07".to_vec();
+        let markers = scanner.scan(&seq);
+        assert!(markers.is_empty());
+    }
+
+    #[test]
+    fn test_hex_decode_roundtrip() {
+        let original = b"Hello, World!";
+        let encoded = hex_encode(original);
+        let decoded = super::hex_decode(&encoded).unwrap();
+        assert_eq!(decoded, original);
     }
 }

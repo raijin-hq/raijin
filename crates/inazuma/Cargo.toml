@@ -402,4 +402,5 @@ path = "examples/legacy/window_positioning.rs"
 name = "window_shadow"
 path = "examples/legacy/window_shadow.rs"
 
-
+[lints]
+workspace = true

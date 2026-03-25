@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # Raijin (雷神) Shell Integration for Zsh
-# Sends OSC 133 markers for block boundary detection.
+# Sends OSC 133 markers for block boundary detection and
+# OSC 7777 metadata (JSON, hex-encoded) for context chips.
 # Loaded automatically via ZDOTDIR injection when Raijin spawns a PTY.
 
 # Guard against double-sourcing
@@ -23,6 +24,44 @@ _raijin_precmd() {
         builtin printf '\e]133;D;%d\a' "$ret" >&$_raijin_fd
     fi
 
+    # --- Gather metadata ---
+    local _cwd="$PWD"
+    local _user="$USER"
+    local _host="${HOST:-$(hostname -s 2>/dev/null || echo unknown)}"
+    local _shell="zsh"
+    local _git_branch=""
+    local _git_dirty="false"
+
+    if git rev-parse --git-dir >/dev/null 2>&1; then
+        _git_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [[ -n "$_git_branch" ]] && ! git diff --quiet HEAD 2>/dev/null; then
+            _git_dirty="true"
+        fi
+    fi
+
+    # Build JSON — values are escaped to handle quotes/backslashes in paths
+    local _json='{'
+    _json+='"cwd":"'${_cwd//\\/\\\\}'",'
+    _json+='"username":"'${_user//\\/\\\\}'",'
+    _json+='"hostname":"'${_host//\\/\\\\}'",'
+    _json+='"shell":"'$_shell'"'
+    if [[ -n "$_git_branch" ]]; then
+        _json+=',"git_branch":"'${_git_branch//\\/\\\\}'"'
+        _json+=',"git_dirty":'$_git_dirty
+    fi
+    if [[ $_raijin_state == 1 ]]; then
+        _json+=',"last_exit_code":'$ret
+    fi
+    _json+='}'
+
+    # Hex-encode JSON to prevent bytes like 0x9C (ST terminator in emoji)
+    # from breaking the escape sequence — same strategy as Warp.
+    local _hex
+    _hex=$(builtin printf '%s' "$_json" | xxd -p | tr -d '\n')
+
+    # Send metadata via custom OSC 7777
+    builtin printf '\e]7777;raijin-precmd;%s\a' "$_hex" >&$_raijin_fd
+
     # Mark prompt start
     builtin printf '\e]133;A\a' >&$_raijin_fd
 
@@ -44,8 +83,10 @@ add-zsh-hook precmd _raijin_precmd
 add-zsh-hook preexec _raijin_preexec
 
 # Raijin Mode: suppress shell prompt (replaced by Raijin's context chips)
+# PS1 emits OSC 133;B (InputStart) as an invisible marker so the block
+# system knows when the input region starts, even without a visible prompt.
 if [[ "$RAIJIN_MODE" == "raijin" ]]; then
-    PROMPT=''
+    PROMPT=$'\e]133;B\a'
     RPROMPT=''
     # Prevent Starship from overriding our empty prompt
     export STARSHIP_SHELL=''

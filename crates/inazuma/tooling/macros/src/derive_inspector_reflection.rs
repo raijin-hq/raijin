@@ -41,9 +41,9 @@ fn generate_reflected_trait(trait_item: ItemTrait) -> TokenStream {
     let trait_name = &trait_item.ident;
     let vis = &trait_item.vis;
 
-    // Determine if we're being called from within the gpui crate
+    // Determine if we're being called from within the inazuma crate
     let call_site = Span::call_site();
-    let inspector_reflection_path = if is_called_from_gpui_crate(call_site) {
+    let inspector_reflection_path = if is_called_from_inazuma_crate(call_site) {
         quote! { crate::inspector_reflection }
     } else {
         quote! { ::inazuma::inspector_reflection }
@@ -186,9 +186,8 @@ fn extract_cfg_attributes(attrs: &[Attribute]) -> Vec<Attribute> {
         .collect()
 }
 
-fn is_called_from_gpui_crate(_span: Span) -> bool {
-    // Check if we're being called from within the gpui crate by examining the call site
-    // This is a heuristic approach - we check if the current crate name is "inazuma"
+fn is_called_from_inazuma_crate(_span: Span) -> bool {
+    // Check if we're being called from within the inazuma crate
     std::env::var("CARGO_PKG_NAME").is_ok_and(|name| name == "inazuma")
 }
 

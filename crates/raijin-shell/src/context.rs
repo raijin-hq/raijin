@@ -1,5 +1,7 @@
 use std::process::Command;
 
+use crate::metadata::ShellMetadataPayload;
+
 /// Git diff statistics (insertions, deletions, changed files).
 pub struct GitStats {
     pub files_changed: u32,
@@ -9,12 +11,13 @@ pub struct GitStats {
 
 /// Shell context information gathered from the environment.
 ///
-/// Provides CWD, git branch, hostname, and other metadata for display
-/// in the terminal's context chips area.
+/// Provides CWD, git branch, hostname, username, and other metadata for display
+/// in the terminal's context chips area. Updated dynamically via OSC 7777 metadata.
 pub struct ShellContext {
     pub cwd: String,
     pub cwd_short: String,
     pub hostname: String,
+    pub username: String,
     pub git_branch: Option<String>,
     pub git_stats: Option<GitStats>,
 }
@@ -32,14 +35,40 @@ impl ShellContext {
             None
         };
         let hostname = detect_hostname();
+        let username = std::env::var("USER")
+            .or_else(|_| std::env::var("USERNAME"))
+            .unwrap_or_else(|_| "user".to_string());
 
         Self {
             cwd,
             cwd_short,
             hostname,
+            username,
             git_branch,
             git_stats,
         }
+    }
+
+    /// Update context dynamically from shell metadata (OSC 7777).
+    pub fn update_from_metadata(&mut self, payload: &ShellMetadataPayload) {
+        self.cwd = payload.cwd.clone();
+        self.cwd_short = shorten_path(&payload.cwd);
+        if let Some(ref u) = payload.username {
+            self.username = u.clone();
+        }
+        if let Some(ref h) = payload.hostname {
+            self.hostname = h.clone();
+        }
+        self.git_branch = payload.git_branch.clone();
+        self.git_stats = if payload.git_dirty == Some(true) {
+            Some(GitStats {
+                files_changed: 1,
+                insertions: 0,
+                deletions: 0,
+            })
+        } else {
+            None
+        };
     }
 }
 
@@ -49,13 +78,14 @@ impl Default for ShellContext {
             cwd: "~".to_string(),
             cwd_short: "~".to_string(),
             hostname: "localhost".to_string(),
+            username: "user".to_string(),
             git_branch: None,
             git_stats: None,
         }
     }
 }
 
-fn shorten_path(path: &str) -> String {
+pub fn shorten_path(path: &str) -> String {
     if let Some(home) = std::env::var_os("HOME") {
         let home = home.to_string_lossy();
         if path.starts_with(home.as_ref()) {

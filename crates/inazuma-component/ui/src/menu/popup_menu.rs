@@ -741,7 +741,7 @@ impl PopupMenu {
                         if let Some(handler) = handler {
                             handler(&ClickEvent::default(), window, cx);
                         } else if let Some(action) = action.as_ref() {
-                            self.dispatch_confirm_action(action, window, cx);
+                            self.dispatch_confirm_action(action.as_ref(), window, cx);
                         }
 
                         self.dismiss(&Cancel, window, cx)
@@ -752,7 +752,7 @@ impl PopupMenu {
                         if let Some(handler) = handler {
                             handler(&ClickEvent::default(), window, cx);
                         } else if let Some(action) = action.as_ref() {
-                            self.dispatch_confirm_action(action, window, cx);
+                            self.dispatch_confirm_action(action.as_ref(), window, cx);
                         }
                         self.dismiss(&Cancel, window, cx)
                     }
@@ -765,7 +765,7 @@ impl PopupMenu {
 
     fn dispatch_confirm_action(
         &self,
-        action: &Box<dyn Action>,
+        action: &dyn Action,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {

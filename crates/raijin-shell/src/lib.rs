@@ -1,3 +1,5 @@
 mod context;
+mod metadata;
 
-pub use context::{GitStats, ShellContext};
+pub use context::{shorten_path, GitStats, ShellContext};
+pub use metadata::ShellMetadataPayload;

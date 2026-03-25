@@ -14,7 +14,7 @@ pub(crate) fn register_action(ident: TokenStream) -> TokenStream {
 
 pub(crate) fn generate_register_action(type_name: &Ident) -> TokenStream2 {
     let action_builder_fn_name = format_ident!(
-        "__gpui_actions_builder_{}",
+        "__inazuma_actions_builder_{}",
         type_name.to_string().to_lowercase()
     );
 

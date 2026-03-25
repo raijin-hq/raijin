@@ -3153,6 +3153,7 @@ name = "inazuma-macros"
 version = "0.1.0"
 dependencies = [
  "heck 0.5.0",
+ "inazuma",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -4948,6 +4949,7 @@ dependencies = [
  "raijin-shell",
  "raijin-terminal",
  "raijin-ui",
+ "serde_json",
  "time",
 ]
 
@@ -4969,6 +4971,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "hostname",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

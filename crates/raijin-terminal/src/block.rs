@@ -19,6 +19,8 @@ pub struct TerminalBlock {
     pub started_at: Instant,
     /// When the command finished (None if still running).
     pub finished_at: Option<Instant>,
+    /// Raw JSON metadata snapshot from the shell at block creation time.
+    pub metadata_json: Option<String>,
 }
 
 impl TerminalBlock {
@@ -63,6 +65,8 @@ pub struct BlockManager {
     in_command: bool,
     /// The last command text entered by the user.
     pending_command: Option<String>,
+    /// Latest raw JSON metadata from shell precmd (updated on each Metadata marker).
+    latest_metadata_json: Option<String>,
 }
 
 impl BlockManager {
@@ -73,6 +77,7 @@ impl BlockManager {
             prompt_start_row: None,
             in_command: false,
             pending_command: None,
+            latest_metadata_json: None,
         }
     }
 
@@ -114,6 +119,7 @@ impl BlockManager {
                     end_row: None,
                     started_at: Instant::now(),
                     finished_at: None,
+                    metadata_json: self.latest_metadata_json.clone(),
                 });
 
                 self.in_command = true;
@@ -128,6 +134,10 @@ impl BlockManager {
                     }
                 }
                 self.in_command = false;
+            }
+
+            ShellMarker::Metadata(json) => {
+                self.latest_metadata_json = Some(json);
             }
         }
     }

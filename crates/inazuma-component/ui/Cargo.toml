@@ -144,3 +144,6 @@ core-text = "=21.0.0"
 [dev-dependencies]
 inazuma = { path = "../../inazuma", features = ["test-support"] }
 indoc = "2"
+
+[lints]
+workspace = true

@@ -16,3 +16,6 @@ log = "0.4"
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 rust-embed = { version = "8.7.2", features = ["interpolate-folder-path", "include-exclude"] }
+
+[lints]
+workspace = true

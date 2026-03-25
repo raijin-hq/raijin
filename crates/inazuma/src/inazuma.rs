@@ -93,8 +93,8 @@ pub use executor::*;
 pub use geometry::*;
 pub use global::*;
 pub use inazuma_macros::{
-    AppContext, IntoElement, Render, VisualContext, derive_inspector_reflection, register_action,
-    test,
+    AppContext, IntoElement, Render, VisualContext, derive_inspector_reflection, property_test,
+    register_action, test,
 };
 pub use http_client;
 pub use input::*;

@@ -20,7 +20,7 @@ pub fn derive_action(input: TokenStream) -> TokenStream {
     derive_action::derive_action(input)
 }
 
-/// This can be used to register an action with the GPUI runtime when you want to manually implement
+/// This can be used to register an action with the Inazuma runtime when you want to manually implement
 /// the `Action` trait. Typically you should use the `Action` derive macro or `actions!` macro
 /// instead.
 #[proc_macro]
@@ -48,7 +48,7 @@ pub fn derive_render(input: TokenStream) -> TokenStream {
 ///
 /// ```compile_fail
 /// # #[macro_use] extern crate inazuma_macros;
-/// # #[macro_use] extern crate gpui;
+/// # #[macro_use] extern crate inazuma;
 /// #[derive(AppContext)]
 /// struct MyContext<'a> {
 ///     app: &'a mut inazuma::App
@@ -68,7 +68,7 @@ pub fn derive_app_context(input: TokenStream) -> TokenStream {
 ///
 /// ```compile_fail
 /// # #[macro_use] extern crate inazuma_macros;
-/// # #[macro_use] extern crate gpui;
+/// # #[macro_use] extern crate inazuma;
 /// #[derive(VisualContext)]
 /// struct MyContext<'a, 'b> {
 ///     #[app]
@@ -79,7 +79,7 @@ pub fn derive_app_context(input: TokenStream) -> TokenStream {
 ///
 /// ```compile_fail
 /// # #[macro_use] extern crate inazuma_macros;
-/// # #[macro_use] extern crate gpui;
+/// # #[macro_use] extern crate inazuma;
 /// #[derive(VisualContext)]
 /// struct MyContext<'a, 'b> {
 ///     app: &'a mut inazuma::App,
@@ -92,7 +92,7 @@ pub fn derive_visual_context(input: TokenStream) -> TokenStream {
     derive_visual_context::derive_visual_context(input)
 }
 
-/// Used by GPUI to generate the style helpers.
+/// Used by Inazuma to generate the style helpers.
 #[proc_macro]
 #[doc(hidden)]
 pub fn style_helpers(input: TokenStream) -> TokenStream {
@@ -147,7 +147,7 @@ pub fn box_shadow_style_methods(input: TokenStream) -> TokenStream {
     styles::box_shadow_style_methods(input)
 }
 
-/// `#[inazuma::test]` can be used to annotate test functions that run with GPUI support.
+/// `#[inazuma::test]` can be used to annotate test functions that run with Inazuma support.
 ///
 /// It supports both synchronous and asynchronous tests, and can provide you with
 /// as many `TestAppContext` instances as you need.
@@ -191,15 +191,15 @@ pub fn test(args: TokenStream, function: TokenStream) -> TokenStream {
 
 /// A variant of `#[inazuma::test]` that supports property-based testing.
 ///
-/// A property test, much like a standard GPUI randomized test, allows testing
+/// A property test, much like a standard Inazuma randomized test, allows testing
 /// claims of the form "for any possible X, Y should hold". For example:
-/// ```
+/// ```ignore
 /// #[inazuma::property_test]
 /// fn test_arithmetic(x: i32, y: i32) {
 ///     assert!(x == y || x < y || x > y);
 /// }
 /// ```
-/// Standard GPUI randomized tests provide you with an instance of `StdRng` to
+/// Standard Inazuma randomized tests provide you with an instance of `StdRng` to
 /// generate random data in a controlled manner. Property-based tests have some
 /// advantages, however:
 /// - Shrinking - the harness also understands a notion of the "complexity" of a
@@ -215,13 +215,13 @@ pub fn test(args: TokenStream, function: TokenStream) -> TokenStream {
 /// Property tests work best when all inputs can be generated up-front and kept
 /// in a simple data structure. Sometimes, this isn't possible - for example, if
 /// a test needs to make a random decision based on the current state of some
-/// structure. In this case, a standard GPUI randomized test may be more
+/// structure. In this case, a standard Inazuma randomized test may be more
 /// suitable.
 ///
 /// ## Customizing random values
 ///
 /// This macro is based on the [`#[proptest::property_test]`] macro, but handles
-/// some of the same GPUI-specific arguments as `#[inazuma::test]`. Specifically,
+/// some of the same Inazuma-specific arguments as `#[inazuma::test]`. Specifically,
 /// `&{mut,} TestAppContext` and `BackgroundExecutor` work as normal. `StdRng`
 /// arguments are **explicitly forbidden**, since they break shrinking, and are
 /// a common footgun.
@@ -236,7 +236,7 @@ pub fn test(args: TokenStream, function: TokenStream) -> TokenStream {
 /// `Arbitrary`. Parameters to a `#[inazuma::property_test]`, by default, use a
 /// type's `Arbitrary` implementation. If you'd like to provide a custom
 /// strategy, you can use `#[strategy = ...]` on the argument:
-/// ```
+/// ```ignore
 /// #[inazuma::property_test]
 /// fn int_test(#[strategy = 1..10] x: i32, #[strategy = "[a-zA-Z0-9]{20}"] s: String) {
 ///   assert!(s.len() > (x as usize));

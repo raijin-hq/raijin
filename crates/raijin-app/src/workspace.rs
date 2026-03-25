@@ -57,16 +57,11 @@ impl Workspace {
 
         let events_rx = terminal.event_receiver().clone();
         cx.spawn_in(window, async move |this, cx| {
-            loop {
-                match events_rx.recv_async().await {
-                    Ok(event) => {
-                        this.update_in(cx, |view, _window, cx| {
-                            view.handle_terminal_event(event, cx);
-                        })
-                        .ok();
-                    }
-                    Err(_) => break,
-                }
+            while let Ok(event) = events_rx.recv_async().await {
+                this.update_in(cx, |view, _window, cx| {
+                    view.handle_terminal_event(event, cx);
+                })
+                .ok();
             }
         })
         .detach();
@@ -125,6 +120,19 @@ impl Workspace {
             history + cursor_line
         };
 
+        // Handle metadata — update context chips before block processing
+        if let raijin_terminal::ShellMarker::Metadata(ref json) = marker {
+            match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
+                Ok(payload) => {
+                    self.shell_context.update_from_metadata(&payload);
+                    cx.notify();
+                }
+                Err(e) => {
+                    log::warn!("Failed to parse shell metadata JSON: {}", e);
+                }
+            }
+        }
+
         // Feed marker to BlockManager for block tracking
         self.block_manager.process_marker(marker.clone(), cursor_row);
 
@@ -141,6 +149,9 @@ impl Workspace {
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
                 log::info!("Command finished with exit code: {}", exit_code);
                 cx.notify();
+            }
+            raijin_terminal::ShellMarker::Metadata(_) => {
+                // Already handled above
             }
         }
     }
@@ -287,7 +298,7 @@ impl Workspace {
             .px_4()
             .pt_2()
             .flex_wrap()
-            .child(Chip::new("nyxb", rgb(0x14F195).into()))
+            .child(Chip::new(&self.shell_context.username, rgb(0x14F195).into()))
             .child(Chip::new(&self.shell_context.hostname, rgb(0xc8c8c8).into()))
             .child(
                 Chip::new(&self.shell_context.cwd_short, rgb(0x6ee7b7).into())
@@ -334,12 +345,30 @@ impl Workspace {
         self.block_manager
             .blocks()
             .iter()
-            .map(|block| BlockRenderInfo {
-                command: block.command.clone(),
-                duration_display: block.duration_display(),
-                exit_code: block.exit_code,
-                abs_start_row: block.start_row,
-                abs_end_row: block.end_row,
+            .map(|block| {
+                let (cwd_short, git_branch) = block
+                    .metadata_json
+                    .as_ref()
+                    .and_then(|json| {
+                        serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json).ok()
+                    })
+                    .map(|p| {
+                        (
+                            Some(raijin_shell::shorten_path(&p.cwd)),
+                            p.git_branch,
+                        )
+                    })
+                    .unwrap_or((None, None));
+
+                BlockRenderInfo {
+                    command: block.command.clone(),
+                    duration_display: block.duration_display(),
+                    exit_code: block.exit_code,
+                    abs_start_row: block.start_row,
+                    abs_end_row: block.end_row,
+                    cwd_short,
+                    git_branch,
+                }
             })
             .collect()
     }

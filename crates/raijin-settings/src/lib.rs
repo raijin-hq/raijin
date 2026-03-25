@@ -15,7 +15,7 @@ impl Global for RaijinConfig {}
 /// Root configuration for Raijin.
 ///
 /// Stored at `~/.config/raijin/config.toml`.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct RaijinConfig {
     #[serde(default)]
     pub general: GeneralConfig,
@@ -25,7 +25,7 @@ pub struct RaijinConfig {
     pub terminal: TerminalConfig,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct GeneralConfig {
     #[serde(default)]
     pub working_directory: WorkingDirectory,
@@ -56,10 +56,11 @@ pub struct TerminalConfig {
 // ---------------------------------------------------------------------------
 
 /// Where the terminal shell starts.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum WorkingDirectory {
     /// User home directory ($HOME).
+    #[default]
     Home,
     /// Last used directory from previous session.
     Previous,
@@ -67,65 +68,30 @@ pub enum WorkingDirectory {
     Custom(String),
 }
 
-impl Default for WorkingDirectory {
-    fn default() -> Self {
-        Self::Home
-    }
-}
-
 /// Terminal input mode.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum InputMode {
     /// Raijin mode: shell prompt suppressed, context chips visible.
+    #[default]
     Raijin,
     /// Shell PS1 mode: native prompt (Starship, P10k) visible.
     ShellPs1,
 }
 
-impl Default for InputMode {
-    fn default() -> Self {
-        Self::Raijin
-    }
-}
-
 /// Terminal cursor style.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum CursorStyle {
+    #[default]
     Beam,
     Block,
     Underline,
 }
 
-impl Default for CursorStyle {
-    fn default() -> Self {
-        Self::Beam
-    }
-}
-
 // ---------------------------------------------------------------------------
 // Defaults (for serde)
 // ---------------------------------------------------------------------------
-
-impl Default for RaijinConfig {
-    fn default() -> Self {
-        Self {
-            general: GeneralConfig::default(),
-            appearance: AppearanceConfig::default(),
-            terminal: TerminalConfig::default(),
-        }
-    }
-}
-
-impl Default for GeneralConfig {
-    fn default() -> Self {
-        Self {
-            working_directory: WorkingDirectory::default(),
-            input_mode: InputMode::default(),
-        }
-    }
-}
 
 impl Default for AppearanceConfig {
     fn default() -> Self {

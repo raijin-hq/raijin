@@ -11,3 +11,6 @@ alacritty_terminal = "0.26.0-rc1"
 portable-pty = "0.8"
 parking_lot = { workspace = true }
 flume = { workspace = true }
+
+[lints]
+workspace = true

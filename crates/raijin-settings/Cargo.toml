@@ -11,3 +11,6 @@ toml = { workspace = true }
 dirs = "6"
 anyhow = { workspace = true }
 log = { workspace = true }
+
+[lints]
+workspace = true

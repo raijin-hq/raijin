@@ -69,6 +69,10 @@ fn header_duration_fg() -> Hsla {
     hsla(0.0, 0.0, 1.0, 0.5)
 }
 
+fn header_metadata_fg() -> Hsla {
+    hsla(0.0, 0.0, 1.0, 0.35)
+}
+
 // ---------------------------------------------------------------------------
 // Block render info (passed from workspace)
 // ---------------------------------------------------------------------------
@@ -84,6 +88,10 @@ pub struct BlockRenderInfo {
     /// Absolute row where this block's output ends (None if still running).
     #[allow(dead_code)]
     pub abs_end_row: Option<usize>,
+    /// CWD at the time this block was created (from shell metadata).
+    pub cwd_short: Option<String>,
+    /// Git branch at block creation time.
+    pub git_branch: Option<String>,
 }
 
 // ---------------------------------------------------------------------------
@@ -108,6 +116,8 @@ pub(crate) struct BlockHeaderPaint {
     badge_color: Hsla,
     command_line: ShapedLine,
     command_origin: Point<Pixels>,
+    metadata_line: Option<ShapedLine>,
+    metadata_origin: Point<Pixels>,
     duration_line: ShapedLine,
     duration_origin: Point<Pixels>,
 }
@@ -443,6 +453,48 @@ impl Element for TerminalElement {
                     header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
                 );
 
+                // Shape metadata text (cwd + git branch, dimmed, after command)
+                let cmd_width = command_line.width();
+                let metadata_gap = px(12.0);
+                let meta_x = cmd_origin.x + cmd_width + metadata_gap;
+
+                let mut meta_parts: Vec<String> = Vec::new();
+                if let Some(ref cwd) = block.cwd_short {
+                    meta_parts.push(cwd.clone());
+                }
+                if let Some(ref branch) = block.git_branch {
+                    meta_parts.push(format!(" {}", branch));
+                }
+
+                let metadata_line = if meta_parts.is_empty() {
+                    None
+                } else {
+                    let meta_text = meta_parts.join("  ");
+                    let meta_runs = vec![TextRun {
+                        len: meta_text.len(),
+                        font: Font {
+                            family: layout.font.family.clone(),
+                            weight: FontWeight::NORMAL,
+                            ..Font::default()
+                        },
+                        color: header_metadata_fg(),
+                        background_color: None,
+                        underline: None,
+                        strikethrough: None,
+                    }];
+                    Some(window.text_system().shape_line(
+                        SharedString::from(meta_text),
+                        px(HEADER_FONT_SIZE),
+                        &meta_runs,
+                        None,
+                    ))
+                };
+
+                let metadata_origin = point(
+                    meta_x,
+                    header_y + px((BLOCK_HEADER_HEIGHT - HEADER_FONT_SIZE) / 2.0),
+                );
+
                 // Shape duration text
                 let dur_text = if is_running {
                     "running...".to_string()
@@ -483,6 +535,8 @@ impl Element for TerminalElement {
                     badge_color,
                     command_line,
                     command_origin: cmd_origin,
+                    metadata_line,
+                    metadata_origin,
                     duration_line,
                     duration_origin: dur_origin,
                 });
@@ -674,6 +728,18 @@ impl Element for TerminalElement {
                     window,
                     cx,
                 );
+
+                // Metadata text (cwd + git branch)
+                if let Some(ref meta_line) = header.metadata_line {
+                    let _ = meta_line.paint(
+                        header.metadata_origin,
+                        prepaint.line_height,
+                        TextAlign::Left,
+                        None,
+                        window,
+                        cx,
+                    );
+                }
 
                 // Duration text
                 let _ = header.duration_line.paint(
