@@ -1,9 +1,10 @@
 //! Block-based grid routing for Raijin's terminal emulation.
 //!
-//! Instead of a single global grid, each command execution gets its own
-//! grid with independent cursor, mode state, and scrollback. The
-//! `BlockGridRouter` manages the collection of block grids and routes
-//! VTE handler calls to the currently active grid.
+//! Each command execution gets its own grid with independent cursor,
+//! scroll region, and damage tracking. Mode, charset, tabs, and colors
+//! are SHARED on the Terminal level (VT100 spec).
+//!
+//! BlockGrid is a display abstraction, not an independent terminal emulator.
 
 use std::sync::RwLock;
 use std::time::Instant;
@@ -11,31 +12,25 @@ use std::time::Instant;
 use crate::grid::{Dimensions, Grid};
 use crate::index::Line;
 use crate::term::cell::Cell;
-use crate::term::TermMode;
 
 /// Unique identifier for a block grid.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct BlockId(pub usize);
 
-/// Per-block terminal mode state that must be saved/restored when switching grids.
+/// Per-block display state — only what varies between blocks.
 ///
-/// In the original alacritty_terminal, these fields live in `Term` and are global.
-/// With grid-per-block, each block needs its own copy.
+/// Mode, charset, tabs, and colors are SHARED across all blocks on
+/// the Terminal level (VT100 spec: one mode state per terminal instance).
+/// Only the grid, cursor, scroll region, and damage are per-block.
 #[derive(Debug, Clone)]
-pub struct BlockModeState {
-    /// Terminal mode flags (insert, origin, line wrap, etc.)
-    pub mode: TermMode,
-    /// Active charset index.
-    pub active_charset: vte::ansi::CharsetIndex,
+pub struct BlockDisplayState {
     /// Scroll region (top..bottom, indexed from viewport top).
     pub scroll_region: std::ops::Range<Line>,
 }
 
-impl BlockModeState {
+impl BlockDisplayState {
     fn new(screen_lines: usize) -> Self {
         Self {
-            mode: TermMode::default(),
-            active_charset: Default::default(),
             scroll_region: Line(0)..Line(screen_lines as i32),
         }
     }
@@ -64,7 +59,7 @@ pub struct BlockGrid {
     /// while write thread updates the active block.
     pub grid: RwLock<Grid<Cell>>,
     /// Per-block terminal mode state.
-    pub mode_state: BlockModeState,
+    pub display_state: BlockDisplayState,
     /// The command text that generated this block.
     pub command: String,
     /// Exit code (None while still running).
@@ -86,7 +81,7 @@ impl BlockGrid {
         Self {
             id,
             grid: RwLock::new(grid),
-            mode_state: BlockModeState::new(rows),
+            display_state: BlockDisplayState::new(rows),
             command: String::new(),
             exit_code: None,
             metadata: BlockMetadata::default(),
@@ -167,20 +162,20 @@ impl BlockGridRouter {
             .map_or(&self.prompt_grid.grid, |block| &block.grid)
     }
 
-    /// Get the mode state for the currently active grid.
-    pub fn active_mode_state(&self) -> &BlockModeState {
+    /// Get the display state for the currently active grid.
+    pub fn active_display_state(&self) -> &BlockDisplayState {
         self.active_block_id
             .and_then(|id| self.blocks.iter().find(|b| b.id == id))
-            .map_or(&self.prompt_grid.mode_state, |block| &block.mode_state)
+            .map_or(&self.prompt_grid.display_state, |block| &block.display_state)
     }
 
-    /// Get a mutable reference to the active mode state.
-    pub fn active_mode_state_mut(&mut self) -> &mut BlockModeState {
+    /// Get a mutable reference to the active display state.
+    pub fn active_display_state_mut(&mut self) -> &mut BlockDisplayState {
         let id = self.active_block_id;
         if let Some(block) = id.and_then(|id| self.blocks.iter_mut().find(|b| b.id == id)) {
-            &mut block.mode_state
+            &mut block.display_state
         } else {
-            &mut self.prompt_grid.mode_state
+            &mut self.prompt_grid.display_state
         }
     }
 
@@ -286,7 +281,7 @@ impl BlockGridRouter {
         if let Ok(mut grid) = self.prompt_grid.grid.write() {
             grid.resize(true, rows, cols);
         }
-        self.prompt_grid.mode_state.scroll_region = Line(0)..Line(rows as i32);
+        self.prompt_grid.display_state.scroll_region = Line(0)..Line(rows as i32);
 
         // Resize active block grid immediately
         if let Some(block) = self.active_block_mut() {
@@ -294,7 +289,7 @@ impl BlockGridRouter {
                 let current_rows = grid.screen_lines();
                 grid.resize(true, current_rows.max(rows), cols);
             }
-            block.mode_state.scroll_region = Line(0)..Line(rows as i32);
+            block.display_state.scroll_region = Line(0)..Line(rows as i32);
         }
 
         // Finished blocks: mark for lazy resize (done when rendered)
