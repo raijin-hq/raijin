@@ -54,8 +54,13 @@ fn error_color() -> Hsla {
     rgb(0xff5f5f).into()
 }
 
-fn block_header_bg() -> Hsla {
-    rgb(0x1a1a1a).into()
+fn block_body_bg() -> Hsla {
+    hsla(0.0, 0.0, 1.0, 0.04)
+}
+
+/// Accent-tinted background when a block is selected/clicked.
+fn block_selected_bg() -> Hsla {
+    hsla(153.0 / 360.0, 0.93, 0.51, 0.08)
 }
 
 fn block_header_error_bg() -> Hsla {
@@ -121,10 +126,15 @@ pub(crate) struct BlockHeaderPaint {
     command_lines: Vec<(ShapedLine, Point<Pixels>)>,
 }
 
+/// Bottom padding inside a block body (space after last output line).
+const BLOCK_BODY_PAD_BOTTOM: f32 = 8.0;
+
 /// Full block body paint info (Header + Command + Output as one visual unit).
 pub(crate) struct BlockBodyPaint {
-    /// Background over the entire block (header + output).
+    /// Background over the entire block (header + output + bottom padding).
     pub bounds: Bounds<Pixels>,
+    /// Whether this block is selected/clicked (green highlight).
+    pub selected: bool,
     /// Whether this block has an error exit code.
     pub is_error: bool,
     /// Left border for error blocks (spans entire block height).
@@ -153,8 +163,6 @@ pub struct TerminalElement {
     /// Hide all rows before this absolute row (hides initial prompt in Raijin mode).
     hide_before_row: Option<usize>,
     /// Prompt regions to hide: (start_row, end_row) inclusive absolute rows.
-    /// These are rows where the shell prompt rendered — Raijin replaces them
-    /// with its own context chips, like Warp does with its prompt grid.
     hidden_prompt_regions: Vec<(usize, usize)>,
     /// Font family from config.
     font_family: String,
@@ -162,6 +170,8 @@ pub struct TerminalElement {
     font_size: f32,
     /// Cursor style from config.
     cursor_beam: bool,
+    /// Index of the selected/clicked block (green highlight).
+    selected_block: Option<usize>,
 }
 
 impl TerminalElement {
@@ -174,7 +184,14 @@ impl TerminalElement {
             font_family: FONT_FAMILIES[0].to_string(),
             font_size: FONT_SIZE,
             cursor_beam: true,
+            selected_block: None,
         }
+    }
+
+    /// Set the selected block index (for green highlight on click).
+    pub fn with_selected_block(mut self, selected: Option<usize>) -> Self {
+        self.selected_block = selected;
+        self
     }
 
     /// Set font family and size from config.
@@ -791,7 +808,9 @@ impl Element for TerminalElement {
         for (bidx, header_y, last_y) in &block_body_tracking {
             let block = &self.blocks[*bidx];
             let is_error = block.exit_code.map_or(false, |c| c != 0);
-            let body_height = *last_y - *header_y;
+            let is_selected = self.selected_block == Some(*bidx);
+            // Add bottom padding to the block body
+            let body_height = *last_y - *header_y + px(BLOCK_BODY_PAD_BOTTOM);
             if body_height > px(0.0) {
                 let body_bounds = Bounds::new(
                     point(bounds.origin.x, *header_y),
@@ -807,6 +826,7 @@ impl Element for TerminalElement {
                 };
                 block_bodies.push(BlockBodyPaint {
                     bounds: body_bounds,
+                    selected: is_selected,
                     is_error,
                     left_border,
                 });
@@ -840,10 +860,12 @@ impl Element for TerminalElement {
 
             // 2. Block body backgrounds (entire block: header + output)
             for body in &prepaint.block_bodies {
-                let bg = if body.is_error {
+                let bg = if body.selected {
+                    block_selected_bg()
+                } else if body.is_error {
                     block_header_error_bg()
                 } else {
-                    block_header_bg()
+                    block_body_bg()
                 };
                 window.paint_quad(fill(body.bounds, bg));
 

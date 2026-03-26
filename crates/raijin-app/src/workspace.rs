@@ -44,6 +44,7 @@ pub struct Workspace {
     correction_suggestion: Option<command_correction::CorrectionResult>,
     shell_completion: Rc<ShellCompletionProvider>,
     shell_name: String,
+    selected_block: Option<usize>,
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
@@ -124,6 +125,7 @@ impl Workspace {
             correction_suggestion: None,
             shell_completion,
             shell_name: shell_name.to_string(),
+            selected_block: None,
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
@@ -602,7 +604,8 @@ impl Render for Workspace {
                                 .with_cursor_beam(cursor_beam)
                                 .with_blocks(blocks)
                                 .with_hide_before_row(hide_before)
-                                .with_hidden_prompt_regions(hidden_regions),
+                                .with_hidden_prompt_regions(hidden_regions)
+                                .with_selected_block(self.selected_block),
                         )
                     } else {
                         output_area
