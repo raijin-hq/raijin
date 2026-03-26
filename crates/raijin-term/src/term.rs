@@ -73,6 +73,8 @@ pub fn viewport_to_point(display_offset: usize, point: Point<usize>) -> Point {
 
 use damage::TermDamageState;
 
+use crate::block_grid::BlockGridRouter;
+
 pub struct Term<T> {
     /// Terminal focus controlling the cursor shape.
     pub is_focused: bool,
@@ -81,6 +83,11 @@ pub struct Term<T> {
     pub vi_mode_cursor: ViModeCursor,
 
     pub selection: Option<Selection>,
+
+    /// Block-based grid router — manages per-block grids.
+    /// Each command execution gets its own grid with independent cursor
+    /// and scroll region. Mode, charset, tabs, colors are shared here on Term.
+    pub(crate) block_router: BlockGridRouter,
 
     /// Currently active grid.
     ///
@@ -230,7 +237,10 @@ impl<T> Term<T> {
         // Initialize terminal damage, covering the entire terminal upon launch.
         let damage = TermDamageState::new(num_cols, num_lines);
 
+        let block_router = BlockGridRouter::new(num_cols, num_lines);
+
         Term {
+            block_router,
             inactive_grid,
             scroll_region,
             event_proxy,
