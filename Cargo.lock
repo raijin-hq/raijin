@@ -4989,6 +4989,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "raijin-term"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "bitflags 2.11.0",
+ "home",
+ "libc",
+ "log",
+ "miow",
+ "parking_lot",
+ "piper",
+ "polling",
+ "regex-automata",
+ "rustix 1.1.4",
+ "rustix-openpty",
+ "serde",
+ "serde_json",
+ "signal-hook",
+ "unicode-width 0.2.2",
+ "vte",
+ "windows-sys 0.59.0",
+]
+
+[[package]]
 name = "raijin-terminal"
 version = "0.1.0"
 dependencies = [
