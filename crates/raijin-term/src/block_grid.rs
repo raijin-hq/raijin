@@ -103,7 +103,7 @@ impl BlockGrid {
 
     /// Whether this block had a non-zero exit code.
     pub fn is_error(&self) -> bool {
-        self.exit_code.map_or(false, |c| c != 0)
+        matches!(self.exit_code, Some(c) if c != 0)
     }
 }
 
@@ -162,32 +162,26 @@ impl BlockGridRouter {
     /// Returns the active block's grid if a command is running,
     /// otherwise returns the prompt grid.
     pub fn active_grid(&self) -> &RwLock<Grid<Cell>> {
-        if let Some(id) = self.active_block_id {
-            if let Some(block) = self.blocks.iter().find(|b| b.id == id) {
-                return &block.grid;
-            }
-        }
-        &self.prompt_grid.grid
+        self.active_block_id
+            .and_then(|id| self.blocks.iter().find(|b| b.id == id))
+            .map_or(&self.prompt_grid.grid, |block| &block.grid)
     }
 
     /// Get the mode state for the currently active grid.
     pub fn active_mode_state(&self) -> &BlockModeState {
-        if let Some(id) = self.active_block_id {
-            if let Some(block) = self.blocks.iter().find(|b| b.id == id) {
-                return &block.mode_state;
-            }
-        }
-        &self.prompt_grid.mode_state
+        self.active_block_id
+            .and_then(|id| self.blocks.iter().find(|b| b.id == id))
+            .map_or(&self.prompt_grid.mode_state, |block| &block.mode_state)
     }
 
     /// Get a mutable reference to the active mode state.
     pub fn active_mode_state_mut(&mut self) -> &mut BlockModeState {
-        if let Some(id) = self.active_block_id {
-            if let Some(block) = self.blocks.iter_mut().find(|b| b.id == id) {
-                return &mut block.mode_state;
-            }
+        let id = self.active_block_id;
+        if let Some(block) = id.and_then(|id| self.blocks.iter_mut().find(|b| b.id == id)) {
+            &mut block.mode_state
+        } else {
+            &mut self.prompt_grid.mode_state
         }
-        &mut self.prompt_grid.mode_state
     }
 
     /// Get the active block (if a command is running).
@@ -306,11 +300,9 @@ impl BlockGridRouter {
         // Finished blocks: mark for lazy resize (done when rendered)
         // For now, resize them all — can be optimized later
         for block in &self.blocks {
-            if block.is_finished() {
-                if let Ok(mut grid) = block.grid.write() {
-                    let current_rows = grid.screen_lines();
-                    grid.resize(true, current_rows, cols);
-                }
+            if block.is_finished() && let Ok(mut grid) = block.grid.write() {
+                let current_rows = grid.screen_lines();
+                grid.resize(true, current_rows, cols);
             }
         }
     }
