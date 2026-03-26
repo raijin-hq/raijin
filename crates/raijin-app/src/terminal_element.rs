@@ -114,14 +114,21 @@ pub struct TerminalLayout {
 /// Line 1 (dimmed): username hostname cwd time (duration)
 /// Line 2 (bright): command text
 pub(crate) struct BlockHeaderPaint {
-    bg_bounds: Bounds<Pixels>,
-    left_border_bounds: Option<Bounds<Pixels>>,
-    is_error: bool,
     /// Line 1: metadata (username, hostname, cwd, time, duration)
     metadata_line: ShapedLine,
     metadata_origin: Point<Pixels>,
     /// Lines 2+: command text (may be multi-line for shell scripts)
     command_lines: Vec<(ShapedLine, Point<Pixels>)>,
+}
+
+/// Full block body paint info (Header + Command + Output as one visual unit).
+pub(crate) struct BlockBodyPaint {
+    /// Background over the entire block (header + output).
+    pub bounds: Bounds<Pixels>,
+    /// Whether this block has an error exit code.
+    pub is_error: bool,
+    /// Left border for error blocks (spans entire block height).
+    pub left_border: Option<Bounds<Pixels>>,
 }
 
 /// Pre-painted state: shaped text lines, background rects, block headers.
@@ -131,6 +138,8 @@ pub struct TerminalPrepaint {
     pub cursor_rect: Option<Bounds<Pixels>>,
     pub line_height: Pixels,
     pub block_headers: Vec<BlockHeaderPaint>,
+    /// Full block body backgrounds (header + output area).
+    pub block_bodies: Vec<BlockBodyPaint>,
 }
 
 // ---------------------------------------------------------------------------
@@ -336,6 +345,10 @@ impl Element for TerminalElement {
         let mut backgrounds = Vec::new();
         let mut cursor_rect = None;
         let mut block_headers: Vec<BlockHeaderPaint> = Vec::new();
+        let mut block_bodies: Vec<BlockBodyPaint> = Vec::new();
+
+        // Track block body Y positions: (block_idx, header_y, last_output_y)
+        let mut block_body_tracking: Vec<(usize, Pixels, Pixels)> = Vec::new();
 
         // Compute which rows to hide (initial prompt)
         let first_block_start = self.blocks.first().map(|b| b.abs_start_row);
@@ -510,22 +523,6 @@ impl Element for TerminalElement {
                 let header_height = BLOCK_HEADER_HEIGHT
                     + (cmd_line_count.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
 
-                // Header background
-                let header_bounds = Bounds::new(
-                    point(bounds.origin.x, header_y),
-                    size(bounds.size.width, px(header_height)),
-                );
-
-                // Left border for error blocks (spans entire header)
-                let left_border = if is_error {
-                    Some(Bounds::new(
-                        point(bounds.origin.x, header_y),
-                        size(px(BLOCK_LEFT_BORDER), px(header_height)),
-                    ))
-                } else {
-                    None
-                };
-
                 let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
 
                 // --- Line 1: metadata (Warp-style) ---
@@ -616,13 +613,13 @@ impl Element for TerminalElement {
                 }
 
                 block_headers.push(BlockHeaderPaint {
-                    bg_bounds: header_bounds,
-                    left_border_bounds: left_border,
-                    is_error,
                     metadata_line,
                     metadata_origin,
                     command_lines,
                 });
+
+                // Track the start of this block body for later bounds calculation
+                block_body_tracking.push((block_idx, header_y, header_y + px(header_height)));
 
                 header_offset += px(header_height + BLOCK_GAP);
                 next_header_idx += 1;
@@ -757,17 +754,63 @@ impl Element for TerminalElement {
                     &runs,
                     None,
                 );
-                let origin = point(
-                    bounds.origin.x,
-                    bounds.origin.y
-                        + y_offset
-                        + layout.cell_height * visual_y_row as f32
-                        + header_offset,
-                );
+
+                // Check if this row belongs to a block → add left padding
+                let in_block = self.blocks.iter().any(|b| {
+                    abs_row >= b.abs_start_row
+                        && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
+                });
+                let text_x = if in_block {
+                    bounds.origin.x + px(BLOCK_HEADER_PAD_X)
+                } else {
+                    bounds.origin.x
+                };
+
+                let row_y = bounds.origin.y
+                    + y_offset
+                    + layout.cell_height * visual_y_row as f32
+                    + header_offset;
+                let origin = point(text_x, row_y);
                 lines.push((origin, shaped));
+
+                // Update block body tracking: extend last_output_y
+                for (bidx, _, last_y) in block_body_tracking.iter_mut() {
+                    let block = &self.blocks[*bidx];
+                    if abs_row >= block.abs_start_row
+                        && abs_row <= block.abs_end_row.unwrap_or(usize::MAX)
+                    {
+                        *last_y = row_y + layout.cell_height;
+                    }
+                }
             }
 
             visual_y_row += 1;
+        }
+
+        // Finalize block body bounds
+        for (bidx, header_y, last_y) in &block_body_tracking {
+            let block = &self.blocks[*bidx];
+            let is_error = block.exit_code.map_or(false, |c| c != 0);
+            let body_height = *last_y - *header_y;
+            if body_height > px(0.0) {
+                let body_bounds = Bounds::new(
+                    point(bounds.origin.x, *header_y),
+                    size(bounds.size.width, body_height),
+                );
+                let left_border = if is_error {
+                    Some(Bounds::new(
+                        point(bounds.origin.x, *header_y),
+                        size(px(BLOCK_LEFT_BORDER), body_height),
+                    ))
+                } else {
+                    None
+                };
+                block_bodies.push(BlockBodyPaint {
+                    bounds: body_bounds,
+                    is_error,
+                    left_border,
+                });
+            }
         }
 
         TerminalPrepaint {
@@ -776,6 +819,7 @@ impl Element for TerminalElement {
             cursor_rect,
             line_height: layout.line_height,
             block_headers,
+            block_bodies,
         }
     }
 
@@ -794,20 +838,23 @@ impl Element for TerminalElement {
             // 1. Overall background
             window.paint_quad(fill(bounds, terminal_bg()));
 
-            // 2. Block headers (2-line Warp-style: metadata + command)
-            for header in &prepaint.block_headers {
-                // Header background (red-tinted for errors, dark for success)
-                let bg = if header.is_error {
+            // 2. Block body backgrounds (entire block: header + output)
+            for body in &prepaint.block_bodies {
+                let bg = if body.is_error {
                     block_header_error_bg()
                 } else {
                     block_header_bg()
                 };
-                window.paint_quad(fill(header.bg_bounds, bg));
+                window.paint_quad(fill(body.bounds, bg));
 
-                // Left border (error indicator)
-                if let Some(border) = header.left_border_bounds {
+                // Left border (error indicator, spans entire block height)
+                if let Some(border) = body.left_border {
                     window.paint_quad(fill(border, error_color()));
                 }
+            }
+
+            // 3. Block header text (metadata + command)
+            for header in &prepaint.block_headers {
 
                 // Line 1: metadata (dimmed)
                 let _ = header.metadata_line.paint(
@@ -832,17 +879,17 @@ impl Element for TerminalElement {
                 }
             }
 
-            // 3. Cell backgrounds
+            // 4. Cell backgrounds
             for (rect, color) in &prepaint.backgrounds {
                 window.paint_quad(fill(*rect, *color));
             }
 
-            // 4. Cursor
+            // 5. Cursor
             if let Some(cursor_rect) = prepaint.cursor_rect {
                 window.paint_quad(fill(cursor_rect, cursor_color()));
             }
 
-            // 5. Text
+            // 6. Text
             for (origin, shaped_line) in &prepaint.lines {
                 let _ = shaped_line.paint(
                     *origin,
