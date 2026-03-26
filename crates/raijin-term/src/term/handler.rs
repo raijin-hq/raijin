@@ -36,32 +36,32 @@ impl<T: EventListener> Handler for Term<T> {
         // Handle zero-width characters.
         if width == 0 {
             // Get previous column.
-            let mut column = self.grid.cursor.point.column;
-            if !self.grid.cursor.input_needs_wrap {
+            let mut column = self.block_router.prompt_grid.grid.cursor.point.column;
+            if !self.block_router.prompt_grid.grid.cursor.input_needs_wrap {
                 column.0 = column.saturating_sub(1);
             }
 
             // Put zerowidth characters over first fullwidth character cell.
-            let line = self.grid.cursor.point.line;
-            if self.grid[line][column].flags.contains(Flags::WIDE_CHAR_SPACER) {
+            let line = self.block_router.prompt_grid.grid.cursor.point.line;
+            if self.block_router.prompt_grid.grid[line][column].flags.contains(Flags::WIDE_CHAR_SPACER) {
                 column.0 = column.saturating_sub(1);
             }
 
-            self.grid[line][column].push_zerowidth(c);
+            self.block_router.prompt_grid.grid[line][column].push_zerowidth(c);
             return;
         }
 
         // Move cursor to next line.
-        if self.grid.cursor.input_needs_wrap {
+        if self.block_router.prompt_grid.grid.cursor.input_needs_wrap {
             self.wrapline();
         }
 
         // If in insert mode, first shift cells to the right.
         let columns = self.columns();
-        if self.mode.contains(TermMode::INSERT) && self.grid.cursor.point.column + width < columns {
-            let line = self.grid.cursor.point.line;
-            let col = self.grid.cursor.point.column;
-            let row = &mut self.grid[line][..];
+        if self.mode.contains(TermMode::INSERT) && self.block_router.prompt_grid.grid.cursor.point.column + width < columns {
+            let line = self.block_router.prompt_grid.grid.cursor.point.line;
+            let col = self.block_router.prompt_grid.grid.cursor.point.column;
+            let row = &mut self.block_router.prompt_grid.grid[line][..];
 
             for col in (col.0..(columns - width)).rev() {
                 row.swap(col + width, col);
@@ -71,36 +71,36 @@ impl<T: EventListener> Handler for Term<T> {
         if width == 1 {
             self.write_at_cursor(c);
         } else {
-            if self.grid.cursor.point.column + 1 >= columns {
+            if self.block_router.prompt_grid.grid.cursor.point.column + 1 >= columns {
                 if self.mode.contains(TermMode::LINE_WRAP) {
                     // Insert placeholder before wide char if glyph does not fit in this row.
-                    self.grid.cursor.template.flags.insert(Flags::LEADING_WIDE_CHAR_SPACER);
+                    self.block_router.prompt_grid.grid.cursor.template.flags.insert(Flags::LEADING_WIDE_CHAR_SPACER);
                     self.write_at_cursor(' ');
-                    self.grid.cursor.template.flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
+                    self.block_router.prompt_grid.grid.cursor.template.flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
                     self.wrapline();
                 } else {
                     // Prevent out of bounds crash when linewrapping is disabled.
-                    self.grid.cursor.input_needs_wrap = true;
+                    self.block_router.prompt_grid.grid.cursor.input_needs_wrap = true;
                     return;
                 }
             }
 
             // Write full width glyph to current cursor cell.
-            self.grid.cursor.template.flags.insert(Flags::WIDE_CHAR);
+            self.block_router.prompt_grid.grid.cursor.template.flags.insert(Flags::WIDE_CHAR);
             self.write_at_cursor(c);
-            self.grid.cursor.template.flags.remove(Flags::WIDE_CHAR);
+            self.block_router.prompt_grid.grid.cursor.template.flags.remove(Flags::WIDE_CHAR);
 
             // Write spacer to cell following the wide glyph.
-            self.grid.cursor.point.column += 1;
-            self.grid.cursor.template.flags.insert(Flags::WIDE_CHAR_SPACER);
+            self.block_router.prompt_grid.grid.cursor.point.column += 1;
+            self.block_router.prompt_grid.grid.cursor.template.flags.insert(Flags::WIDE_CHAR_SPACER);
             self.write_at_cursor(' ');
-            self.grid.cursor.template.flags.remove(Flags::WIDE_CHAR_SPACER);
+            self.block_router.prompt_grid.grid.cursor.template.flags.remove(Flags::WIDE_CHAR_SPACER);
         }
 
-        if self.grid.cursor.point.column + 1 < columns {
-            self.grid.cursor.point.column += 1;
+        if self.block_router.prompt_grid.grid.cursor.point.column + 1 < columns {
+            self.block_router.prompt_grid.grid.cursor.point.column += 1;
         } else {
-            self.grid.cursor.input_needs_wrap = true;
+            self.block_router.prompt_grid.grid.cursor.input_needs_wrap = true;
         }
     }
 
@@ -110,7 +110,7 @@ impl<T: EventListener> Handler for Term<T> {
 
         for line in (0..self.screen_lines()).map(Line::from) {
             for column in 0..self.columns() {
-                let cell = &mut self.grid[line][Column(column)];
+                let cell = &mut self.block_router.prompt_grid.grid[line][Column(column)];
                 *cell = Cell::default();
                 cell.c = 'E';
             }
@@ -132,27 +132,27 @@ impl<T: EventListener> Handler for Term<T> {
         };
 
         self.damage_cursor();
-        self.grid.cursor.point.line = cmp::max(cmp::min(line + y_offset, max_y), Line(0));
-        self.grid.cursor.point.column = cmp::min(col, self.last_column());
+        self.block_router.prompt_grid.grid.cursor.point.line = cmp::max(cmp::min(line + y_offset, max_y), Line(0));
+        self.block_router.prompt_grid.grid.cursor.point.column = cmp::min(col, self.last_column());
         self.damage_cursor();
-        self.grid.cursor.input_needs_wrap = false;
+        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
     }
 
     #[inline]
     fn goto_line(&mut self, line: i32) {
         trace!("Going to line: {line}");
-        self.goto(line, self.grid.cursor.point.column.0)
+        self.goto(line, self.block_router.prompt_grid.grid.cursor.point.column.0)
     }
 
     #[inline]
     fn goto_col(&mut self, col: usize) {
         trace!("Going to column: {col}");
-        self.goto(self.grid.cursor.point.line.0, col)
+        self.goto(self.block_router.prompt_grid.grid.cursor.point.line.0, col)
     }
 
     #[inline]
     fn insert_blank(&mut self, count: usize) {
-        let cursor = &self.grid.cursor;
+        let cursor = &self.block_router.prompt_grid.grid.cursor;
         let bg = cursor.template.bg;
 
         // Ensure inserting within terminal bounds
@@ -165,7 +165,7 @@ impl<T: EventListener> Handler for Term<T> {
         let line = cursor.point.line;
         self.damage.damage_line(line.0 as usize, 0, self.columns() - 1);
 
-        let row = &mut self.grid[line][..];
+        let row = &mut self.block_router.prompt_grid.grid[line][..];
 
         for offset in (0..num_cells).rev() {
             row.swap(destination + offset, source.0 + offset);
@@ -182,8 +182,8 @@ impl<T: EventListener> Handler for Term<T> {
     fn move_up(&mut self, lines: usize) {
         trace!("Moving up: {lines}");
 
-        let line = self.grid.cursor.point.line - lines;
-        let column = self.grid.cursor.point.column;
+        let line = self.block_router.prompt_grid.grid.cursor.point.line - lines;
+        let column = self.block_router.prompt_grid.grid.cursor.point.column;
         self.goto(line.0, column.0)
     }
 
@@ -191,33 +191,33 @@ impl<T: EventListener> Handler for Term<T> {
     fn move_down(&mut self, lines: usize) {
         trace!("Moving down: {lines}");
 
-        let line = self.grid.cursor.point.line + lines;
-        let column = self.grid.cursor.point.column;
+        let line = self.block_router.prompt_grid.grid.cursor.point.line + lines;
+        let column = self.block_router.prompt_grid.grid.cursor.point.column;
         self.goto(line.0, column.0)
     }
 
     #[inline]
     fn move_forward(&mut self, cols: usize) {
         trace!("Moving forward: {cols}");
-        let last_column = cmp::min(self.grid.cursor.point.column + cols, self.last_column());
+        let last_column = cmp::min(self.block_router.prompt_grid.grid.cursor.point.column + cols, self.last_column());
 
-        let cursor_line = self.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(cursor_line, self.grid.cursor.point.column.0, last_column.0);
+        let cursor_line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+        self.damage.damage_line(cursor_line, self.block_router.prompt_grid.grid.cursor.point.column.0, last_column.0);
 
-        self.grid.cursor.point.column = last_column;
-        self.grid.cursor.input_needs_wrap = false;
+        self.block_router.prompt_grid.grid.cursor.point.column = last_column;
+        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
     }
 
     #[inline]
     fn move_backward(&mut self, cols: usize) {
         trace!("Moving backward: {cols}");
-        let column = self.grid.cursor.point.column.saturating_sub(cols);
+        let column = self.block_router.prompt_grid.grid.cursor.point.column.saturating_sub(cols);
 
-        let cursor_line = self.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(cursor_line, column, self.grid.cursor.point.column.0);
+        let cursor_line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+        self.damage.damage_line(cursor_line, column, self.block_router.prompt_grid.grid.cursor.point.column.0);
 
-        self.grid.cursor.point.column = Column(column);
-        self.grid.cursor.input_needs_wrap = false;
+        self.block_router.prompt_grid.grid.cursor.point.column = Column(column);
+        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
     }
 
     #[inline]
@@ -304,7 +304,7 @@ impl<T: EventListener> Handler for Term<T> {
                 self.event_proxy.send_event(Event::PtyWrite(text));
             },
             6 => {
-                let pos = self.grid.cursor.point;
+                let pos = self.block_router.prompt_grid.grid.cursor.point;
                 let text = format!("\x1b[{};{}R", pos.line + 1, pos.column + 1);
                 self.event_proxy.send_event(Event::PtyWrite(text));
             },
@@ -316,7 +316,7 @@ impl<T: EventListener> Handler for Term<T> {
     fn move_down_and_cr(&mut self, lines: usize) {
         trace!("Moving down and cr: {lines}");
 
-        let line = self.grid.cursor.point.line + lines;
+        let line = self.block_router.prompt_grid.grid.cursor.point.line + lines;
         self.goto(line.0, 0)
     }
 
@@ -324,7 +324,7 @@ impl<T: EventListener> Handler for Term<T> {
     fn move_up_and_cr(&mut self, lines: usize) {
         trace!("Moving up and cr: {lines}");
 
-        let line = self.grid.cursor.point.line - lines;
+        let line = self.block_router.prompt_grid.grid.cursor.point.line - lines;
         self.goto(line.0, 0)
     }
 
@@ -332,28 +332,28 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn put_tab(&mut self, mut count: u16) {
         // A tab after the last column is the same as a linebreak.
-        if self.grid.cursor.input_needs_wrap {
+        if self.block_router.prompt_grid.grid.cursor.input_needs_wrap {
             self.wrapline();
             return;
         }
 
-        while self.grid.cursor.point.column < self.columns() && count != 0 {
+        while self.block_router.prompt_grid.grid.cursor.point.column < self.columns() && count != 0 {
             count -= 1;
 
-            let c = self.grid.cursor.charsets[self.active_charset].map('\t');
-            let cell = self.grid.cursor_cell();
+            let c = self.block_router.prompt_grid.grid.cursor.charsets[self.active_charset].map('\t');
+            let cell = self.block_router.prompt_grid.grid.cursor_cell();
             if cell.c == ' ' {
                 cell.c = c;
             }
 
             loop {
-                if (self.grid.cursor.point.column + 1) == self.columns() {
+                if (self.block_router.prompt_grid.grid.cursor.point.column + 1) == self.columns() {
                     break;
                 }
 
-                self.grid.cursor.point.column += 1;
+                self.block_router.prompt_grid.grid.cursor.point.column += 1;
 
-                if self.tabs[self.grid.cursor.point.column] {
+                if self.tabs[self.block_router.prompt_grid.grid.cursor.point.column] {
                     break;
                 }
             }
@@ -365,11 +365,11 @@ impl<T: EventListener> Handler for Term<T> {
     fn backspace(&mut self) {
         trace!("Backspace");
 
-        if self.grid.cursor.point.column > Column(0) {
-            let line = self.grid.cursor.point.line.0 as usize;
-            let column = self.grid.cursor.point.column.0;
-            self.grid.cursor.point.column -= 1;
-            self.grid.cursor.input_needs_wrap = false;
+        if self.block_router.prompt_grid.grid.cursor.point.column > Column(0) {
+            let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+            let column = self.block_router.prompt_grid.grid.cursor.point.column.0;
+            self.block_router.prompt_grid.grid.cursor.point.column -= 1;
+            self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
             self.damage.damage_line(line, column - 1, column);
         }
     }
@@ -379,22 +379,22 @@ impl<T: EventListener> Handler for Term<T> {
     fn carriage_return(&mut self) {
         trace!("Carriage return");
         let new_col = 0;
-        let line = self.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(line, new_col, self.grid.cursor.point.column.0);
-        self.grid.cursor.point.column = Column(new_col);
-        self.grid.cursor.input_needs_wrap = false;
+        let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+        self.damage.damage_line(line, new_col, self.block_router.prompt_grid.grid.cursor.point.column.0);
+        self.block_router.prompt_grid.grid.cursor.point.column = Column(new_col);
+        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
     }
 
     /// Linefeed.
     #[inline]
     fn linefeed(&mut self) {
         trace!("Linefeed");
-        let next = self.grid.cursor.point.line + 1;
+        let next = self.block_router.prompt_grid.grid.cursor.point.line + 1;
         if next == self.scroll_region.end {
             self.scroll_up(1);
         } else if next < self.screen_lines() {
             self.damage_cursor();
-            self.grid.cursor.point.line += 1;
+            self.block_router.prompt_grid.grid.cursor.point.line += 1;
             self.damage_cursor();
         }
     }
@@ -445,7 +445,7 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn set_horizontal_tabstop(&mut self) {
         trace!("Setting horizontal tabstop");
-        self.tabs[self.grid.cursor.point.column] = true;
+        self.tabs[self.block_router.prompt_grid.grid.cursor.point.column] = true;
     }
 
     #[inline]
@@ -464,7 +464,7 @@ impl<T: EventListener> Handler for Term<T> {
     fn insert_blank_lines(&mut self, lines: usize) {
         trace!("Inserting blank {lines} lines");
 
-        let origin = self.grid.cursor.point.line;
+        let origin = self.block_router.prompt_grid.grid.cursor.point.line;
         if self.scroll_region.contains(&origin) {
             self.scroll_down_relative(origin, lines);
         }
@@ -472,7 +472,7 @@ impl<T: EventListener> Handler for Term<T> {
 
     #[inline]
     fn delete_lines(&mut self, lines: usize) {
-        let origin = self.grid.cursor.point.line;
+        let origin = self.block_router.prompt_grid.grid.cursor.point.line;
         let lines = cmp::min(self.screen_lines() - origin.0 as usize, lines);
 
         trace!("Deleting {lines} lines");
@@ -484,7 +484,7 @@ impl<T: EventListener> Handler for Term<T> {
 
     #[inline]
     fn erase_chars(&mut self, count: usize) {
-        let cursor = &self.grid.cursor;
+        let cursor = &self.block_router.prompt_grid.grid.cursor;
 
         trace!("Erasing chars: count={}, col={}", count, cursor.point.column);
 
@@ -492,10 +492,10 @@ impl<T: EventListener> Handler for Term<T> {
         let end = cmp::min(start + count, Column(self.columns()));
 
         // Cleared cells have current background color set.
-        let bg = self.grid.cursor.template.bg;
+        let bg = self.block_router.prompt_grid.grid.cursor.template.bg;
         let line = cursor.point.line;
         self.damage.damage_line(line.0 as usize, start.0, end.0);
-        let row = &mut self.grid[line];
+        let row = &mut self.block_router.prompt_grid.grid[line];
         for cell in &mut row[start..end] {
             *cell = bg.into();
         }
@@ -504,7 +504,7 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn delete_chars(&mut self, count: usize) {
         let columns = self.columns();
-        let cursor = &self.grid.cursor;
+        let cursor = &self.block_router.prompt_grid.grid.cursor;
         let bg = cursor.template.bg;
 
         // Ensure deleting within terminal bounds.
@@ -516,7 +516,7 @@ impl<T: EventListener> Handler for Term<T> {
 
         let line = cursor.point.line;
         self.damage.damage_line(line.0 as usize, 0, self.columns() - 1);
-        let row = &mut self.grid[line][..];
+        let row = &mut self.block_router.prompt_grid.grid[line][..];
 
         for offset in 0..num_cells {
             row.swap(start + offset, end + offset);
@@ -534,9 +534,9 @@ impl<T: EventListener> Handler for Term<T> {
     fn move_backward_tabs(&mut self, count: u16) {
         trace!("Moving backward {count} tabs");
 
-        let old_col = self.grid.cursor.point.column.0;
+        let old_col = self.block_router.prompt_grid.grid.cursor.point.column.0;
         for _ in 0..count {
-            let mut col = self.grid.cursor.point.column;
+            let mut col = self.block_router.prompt_grid.grid.cursor.point.column;
 
             if col == 0 {
                 break;
@@ -548,11 +548,11 @@ impl<T: EventListener> Handler for Term<T> {
                     break;
                 }
             }
-            self.grid.cursor.point.column = col;
+            self.block_router.prompt_grid.grid.cursor.point.column = col;
         }
 
-        let line = self.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(line, self.grid.cursor.point.column.0, old_col);
+        let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+        self.damage.damage_line(line, self.block_router.prompt_grid.grid.cursor.point.column.0, old_col);
     }
 
     #[inline]
@@ -560,9 +560,9 @@ impl<T: EventListener> Handler for Term<T> {
         trace!("Moving forward {count} tabs");
 
         let num_cols = self.columns();
-        let old_col = self.grid.cursor.point.column.0;
+        let old_col = self.block_router.prompt_grid.grid.cursor.point.column.0;
         for _ in 0..count {
-            let mut col = self.grid.cursor.point.column;
+            let mut col = self.block_router.prompt_grid.grid.cursor.point.column;
 
             if col == num_cols - 1 {
                 break;
@@ -575,18 +575,18 @@ impl<T: EventListener> Handler for Term<T> {
                 }
             }
 
-            self.grid.cursor.point.column = col;
+            self.block_router.prompt_grid.grid.cursor.point.column = col;
         }
 
-        let line = self.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(line, old_col, self.grid.cursor.point.column.0);
+        let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
+        self.damage.damage_line(line, old_col, self.block_router.prompt_grid.grid.cursor.point.column.0);
     }
 
     #[inline]
     fn save_cursor_position(&mut self) {
         trace!("Saving cursor position");
 
-        self.grid.saved_cursor = self.grid.cursor.clone();
+        self.block_router.prompt_grid.grid.saved_cursor = self.block_router.prompt_grid.grid.cursor.clone();
     }
 
     #[inline]
@@ -594,7 +594,7 @@ impl<T: EventListener> Handler for Term<T> {
         trace!("Restoring cursor position");
 
         self.damage_cursor();
-        self.grid.cursor = self.grid.saved_cursor.clone();
+        self.block_router.prompt_grid.grid.cursor = self.block_router.prompt_grid.grid.saved_cursor.clone();
         self.damage_cursor();
     }
 
@@ -602,7 +602,7 @@ impl<T: EventListener> Handler for Term<T> {
     fn clear_line(&mut self, mode: ansi::LineClearMode) {
         trace!("Clearing line: {mode:?}");
 
-        let cursor = &self.grid.cursor;
+        let cursor = &self.block_router.prompt_grid.grid.cursor;
         let bg = cursor.template.bg;
         let point = cursor.point;
 
@@ -615,12 +615,12 @@ impl<T: EventListener> Handler for Term<T> {
 
         self.damage.damage_line(point.line.0 as usize, left.0, right.0 - 1);
 
-        let row = &mut self.grid[point.line];
+        let row = &mut self.block_router.prompt_grid.grid[point.line];
         for cell in &mut row[left..right] {
             *cell = bg.into();
         }
 
-        let range = self.grid.cursor.point.line..=self.grid.cursor.point.line;
+        let range = self.block_router.prompt_grid.grid.cursor.point.line..=self.block_router.prompt_grid.grid.cursor.point.line;
         self.selection = self.selection.take().filter(|s| !s.intersects_range(range));
     }
 
@@ -716,23 +716,23 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn clear_screen(&mut self, mode: ansi::ClearMode) {
         trace!("Clearing screen: {mode:?}");
-        let bg = self.grid.cursor.template.bg;
+        let bg = self.block_router.prompt_grid.grid.cursor.template.bg;
 
         let screen_lines = self.screen_lines();
 
         match mode {
             ansi::ClearMode::Above => {
-                let cursor = self.grid.cursor.point;
+                let cursor = self.block_router.prompt_grid.grid.cursor.point;
 
                 // If clearing more than one line.
                 if cursor.line > 1 {
                     // Fully clear all lines before the current line.
-                    self.grid.reset_region(..cursor.line);
+                    self.block_router.prompt_grid.grid.reset_region(..cursor.line);
                 }
 
                 // Clear up to the current column in the current line.
                 let end = cmp::min(cursor.column + 1, Column(self.columns()));
-                for cell in &mut self.grid[cursor.line][..end] {
+                for cell in &mut self.block_router.prompt_grid.grid[cursor.line][..end] {
                     *cell = bg.into();
                 }
 
@@ -740,13 +740,13 @@ impl<T: EventListener> Handler for Term<T> {
                 self.selection = self.selection.take().filter(|s| !s.intersects_range(range));
             },
             ansi::ClearMode::Below => {
-                let cursor = self.grid.cursor.point;
-                for cell in &mut self.grid[cursor.line][cursor.column..] {
+                let cursor = self.block_router.prompt_grid.grid.cursor.point;
+                for cell in &mut self.block_router.prompt_grid.grid[cursor.line][cursor.column..] {
                     *cell = bg.into();
                 }
 
                 if (cursor.line.0 as usize) < screen_lines - 1 {
-                    self.grid.reset_region((cursor.line + 1)..);
+                    self.block_router.prompt_grid.grid.reset_region((cursor.line + 1)..);
                 }
 
                 let range = cursor.line..Line(screen_lines as i32);
@@ -754,14 +754,14 @@ impl<T: EventListener> Handler for Term<T> {
             },
             ansi::ClearMode::All => {
                 if self.mode.contains(TermMode::ALT_SCREEN) {
-                    self.grid.reset_region(..);
+                    self.block_router.prompt_grid.grid.reset_region(..);
                 } else {
-                    let old_offset = self.grid.display_offset();
+                    let old_offset = self.block_router.prompt_grid.grid.display_offset();
 
-                    self.grid.clear_viewport();
+                    self.block_router.prompt_grid.grid.clear_viewport();
 
                     // Compute number of lines scrolled by clearing the viewport.
-                    let lines = self.grid.display_offset().saturating_sub(old_offset);
+                    let lines = self.block_router.prompt_grid.grid.display_offset().saturating_sub(old_offset);
 
                     self.vi_mode_cursor.point.line =
                         (self.vi_mode_cursor.point.line - lines).grid_clamp(self, Boundary::Grid);
@@ -770,7 +770,7 @@ impl<T: EventListener> Handler for Term<T> {
                 self.selection = None;
             },
             ansi::ClearMode::Saved if self.history_size() > 0 => {
-                self.grid.clear_history();
+                self.block_router.prompt_grid.grid.clear_history();
 
                 self.vi_mode_cursor.point.line =
                     self.vi_mode_cursor.point.line.grid_clamp(self, Boundary::Cursor);
@@ -789,7 +789,7 @@ impl<T: EventListener> Handler for Term<T> {
         trace!("Clearing tabs: {mode:?}");
         match mode {
             ansi::TabulationClearMode::Current => {
-                self.tabs[self.grid.cursor.point.column] = false;
+                self.tabs[self.block_router.prompt_grid.grid.cursor.point.column] = false;
             },
             ansi::TabulationClearMode::All => {
                 self.tabs.clear_all();
@@ -801,11 +801,11 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn reset_state(&mut self) {
         if self.mode.contains(TermMode::ALT_SCREEN) {
-            mem::swap(&mut self.grid, &mut self.inactive_grid);
+            mem::swap(&mut self.block_router.prompt_grid.grid, &mut self.inactive_grid);
         }
         self.active_charset = Default::default();
         self.cursor_style = None;
-        self.grid.reset();
+        self.block_router.prompt_grid.grid.reset();
         self.inactive_grid.reset();
         self.scroll_region = Line(0)..Line(self.screen_lines() as i32);
         self.tabs = TabStops::new(self.columns());
@@ -828,11 +828,11 @@ impl<T: EventListener> Handler for Term<T> {
     fn reverse_index(&mut self) {
         trace!("Reversing index");
         // If cursor is at the top.
-        if self.grid.cursor.point.line == self.scroll_region.start {
+        if self.block_router.prompt_grid.grid.cursor.point.line == self.scroll_region.start {
             self.scroll_down(1);
         } else {
             self.damage_cursor();
-            self.grid.cursor.point.line = cmp::max(self.grid.cursor.point.line - 1, Line(0));
+            self.block_router.prompt_grid.grid.cursor.point.line = cmp::max(self.block_router.prompt_grid.grid.cursor.point.line - 1, Line(0));
             self.damage_cursor();
         }
     }
@@ -840,14 +840,14 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn set_hyperlink(&mut self, hyperlink: Option<Hyperlink>) {
         trace!("Setting hyperlink: {hyperlink:?}");
-        self.grid.cursor.template.set_hyperlink(hyperlink.map(|e| e.into()));
+        self.block_router.prompt_grid.grid.cursor.template.set_hyperlink(hyperlink.map(|e| e.into()));
     }
 
     /// Set a terminal attribute.
     #[inline]
     fn terminal_attribute(&mut self, attr: Attr) {
         trace!("Setting attribute: {attr:?}");
-        let cursor = &mut self.grid.cursor;
+        let cursor = &mut self.block_router.prompt_grid.grid.cursor;
         match attr {
             Attr::Foreground(color) => cursor.template.fg = color,
             Attr::Background(color) => cursor.template.bg = color,
@@ -1158,7 +1158,7 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn configure_charset(&mut self, index: CharsetIndex, charset: StandardCharset) {
         trace!("Configuring charset {index:?} as {charset:?}");
-        self.grid.cursor.charsets[index] = charset;
+        self.block_router.prompt_grid.grid.cursor.charsets[index] = charset;
     }
 
     #[inline]

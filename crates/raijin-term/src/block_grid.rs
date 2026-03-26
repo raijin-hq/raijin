@@ -166,12 +166,12 @@ impl BlockGrid {
 /// - Finished block grids: immutable, only read for rendering
 pub struct BlockGridRouter {
     /// All block grids (finished + active), in chronological order.
-    blocks: Vec<BlockGrid>,
+    pub(crate) blocks: Vec<BlockGrid>,
     /// ID of the currently active block (receiving output), or None.
-    active_block_id: Option<BlockId>,
+    pub(crate) active_block_id: Option<BlockId>,
     /// Prompt grid: absorbs prompt output to keep VTE parser state consistent.
     /// Reset at each PromptStart. Never rendered.
-    prompt_grid: BlockGrid,
+    pub(crate) prompt_grid: BlockGrid,
     /// Next block ID to assign.
     next_id: usize,
     /// Terminal column count (for creating new grids).
@@ -185,9 +185,9 @@ pub struct BlockGridRouter {
 }
 
 impl BlockGridRouter {
-    /// Create a new router with the given terminal dimensions.
-    pub fn new(cols: usize, rows: usize) -> Self {
-        let prompt_grid = BlockGrid::new(BlockId(0), cols, rows, 0);
+    /// Create a new router with the given terminal dimensions and scrollback.
+    pub fn new(cols: usize, rows: usize, scrollback: usize) -> Self {
+        let prompt_grid = BlockGrid::new(BlockId(0), cols, rows, scrollback);
         Self {
             blocks: Vec::new(),
             active_block_id: None,
@@ -383,7 +383,7 @@ mod tests {
 
     #[test]
     fn test_block_lifecycle() {
-        let mut router = BlockGridRouter::new(80, 24);
+        let mut router = BlockGridRouter::new(80, 24, 1000);
 
         // Initially no active block
         assert!(!router.has_active_block());
@@ -415,7 +415,7 @@ mod tests {
 
     #[test]
     fn test_memory_eviction() {
-        let mut router = BlockGridRouter::new(80, 24);
+        let mut router = BlockGridRouter::new(80, 24, 1000);
         router.set_limits(3, 1000);
 
         for i in 0..5 {
@@ -430,7 +430,7 @@ mod tests {
 
     #[test]
     fn test_prompt_grid_routing() {
-        let mut router = BlockGridRouter::new(80, 24);
+        let mut router = BlockGridRouter::new(80, 24, 1000);
 
         // When no command active, routing goes to prompt grid
         assert!(!router.has_active_block());

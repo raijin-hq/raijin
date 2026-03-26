@@ -84,22 +84,13 @@ pub struct Term<T> {
 
     pub selection: Option<Selection>,
 
+    /// Inactive grid (alt screen buffer). Swapped with active grid on ALT_SCREEN toggle.
+    pub(crate) inactive_grid: Grid<Cell>,
+
     /// Block-based grid router — manages per-block grids.
     /// Each command execution gets its own grid with independent cursor
     /// and scroll region. Mode, charset, tabs, colors are shared here on Term.
     pub(crate) block_router: BlockGridRouter,
-
-    /// Currently active grid.
-    ///
-    /// Tracks the screen buffer currently in use. While the alternate screen buffer is active,
-    /// this will be the alternate grid. Otherwise it is the primary screen buffer.
-    pub(crate) grid: Grid<Cell>,
-
-    /// Currently inactive grid.
-    ///
-    /// Opposite of the active grid. While the alternate screen buffer is active, this will be the
-    /// primary grid. Otherwise it is the alternate screen buffer.
-    pub(crate) inactive_grid: Grid<Cell>,
 
     /// Index into `charsets`, pointing to what ASCII is currently being mapped to.
     pub(crate) active_charset: CharsetIndex,
@@ -205,12 +196,12 @@ impl<T> Term<T> {
     where
         T: EventListener,
     {
-        let old_display_offset = self.grid.display_offset();
-        self.grid.scroll_display(scroll);
+        let old_display_offset = self.block_router.prompt_grid.grid.display_offset();
+        self.block_router.prompt_grid.grid.scroll_display(scroll);
         self.event_proxy.send_event(Event::MouseCursorDirty);
 
         // Clamp vi mode cursor to the viewport.
-        let viewport_start = -(self.grid.display_offset() as i32);
+        let viewport_start = -(self.block_router.prompt_grid.grid.display_offset() as i32);
         let viewport_end = viewport_start + self.bottommost_line().0;
         let vi_cursor_line = &mut self.vi_mode_cursor.point.line.0;
         *vi_cursor_line = cmp::min(viewport_end, cmp::max(viewport_start, *vi_cursor_line));
@@ -226,27 +217,23 @@ impl<T> Term<T> {
         let num_cols = dimensions.columns();
         let num_lines = dimensions.screen_lines();
 
-        let history_size = config.scrolling_history;
-        let grid = Grid::new(num_lines, num_cols, history_size);
         let inactive_grid = Grid::new(num_lines, num_cols, 0);
 
-        let tabs = TabStops::new(grid.columns());
+        let tabs = TabStops::new(num_cols);
 
-        let scroll_region = Line(0)..Line(grid.screen_lines() as i32);
+        let scroll_region = Line(0)..Line(num_lines as i32);
 
-        // Initialize terminal damage, covering the entire terminal upon launch.
         let damage = TermDamageState::new(num_cols, num_lines);
 
-        let block_router = BlockGridRouter::new(num_cols, num_lines);
+        let block_router = BlockGridRouter::new(num_cols, num_lines, config.scrolling_history);
 
         Term {
-            block_router,
             inactive_grid,
+            block_router,
             scroll_region,
             event_proxy,
             damage,
             config,
-            grid,
             tabs,
             inactive_keyboard_mode_stack: Default::default(),
             keyboard_mode_stack: Default::default(),
@@ -280,7 +267,7 @@ impl<T> Term<T> {
             self.mark_fully_damaged();
         }
 
-        let previous_cursor = mem::replace(&mut self.damage.last_cursor, self.grid.cursor.point);
+        let previous_cursor = mem::replace(&mut self.damage.last_cursor, self.block_router.prompt_grid.grid.cursor.point);
 
         if self.damage.full {
             return TermDamage::Full;
@@ -330,7 +317,7 @@ impl<T> Term<T> {
         if self.mode.contains(TermMode::ALT_SCREEN) {
             self.inactive_grid.update_history(self.config.scrolling_history);
         } else {
-            self.grid.update_history(self.config.scrolling_history);
+            self.block_router.prompt_grid.grid.update_history(self.config.scrolling_history);
         }
 
         if self.config.kitty_keyboard != old_config.kitty_keyboard {
@@ -395,7 +382,7 @@ impl<T> Term<T> {
     ) -> String {
         let mut text = String::new();
 
-        let grid_line = &self.grid[line];
+        let grid_line = &self.block_router.prompt_grid.grid[line];
         let line_length = cmp::min(grid_line.line_length(), cols.end + 1);
 
         // Include wide char when trailing spacer is selected.
@@ -433,7 +420,7 @@ impl<T> Term<T> {
 
         if cols.end >= self.columns() - 1
             && (line_length.0 == 0
-                || !self.grid[line][line_length - 1].flags.contains(Flags::WRAPLINE))
+                || !self.block_router.prompt_grid.grid[line][line_length - 1].flags.contains(Flags::WRAPLINE))
         {
             text.push('\n');
         }
@@ -444,7 +431,7 @@ impl<T> Term<T> {
             && grid_line[line_length - 1].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER)
             && include_wrapped_wide
         {
-            text.push(self.grid[line - 1i32][Column(0)].c);
+            text.push(self.block_router.prompt_grid.grid[line - 1i32][Column(0)].c);
         }
 
         text
@@ -459,14 +446,14 @@ impl<T> Term<T> {
         RenderableContent::new(self)
     }
 
-    /// Access to the raw grid data structure.
+    /// Access to the active block's grid.
     pub fn grid(&self) -> &Grid<Cell> {
-        &self.grid
+        self.block_router.active_grid()
     }
 
-    /// Mutable access to the raw grid data structure.
+    /// Mutable access to the active block's grid.
     pub fn grid_mut(&mut self) -> &mut Grid<Cell> {
-        &mut self.grid
+        self.block_router.active_grid_mut()
     }
 
     /// Resize terminal to new dimensions.
@@ -487,12 +474,12 @@ impl<T> Term<T> {
         // Move vi mode cursor with the content.
         let history_size = self.history_size();
         let mut delta = num_lines as i32 - old_lines as i32;
-        let min_delta = cmp::min(0, num_lines as i32 - self.grid.cursor.point.line.0 - 1);
+        let min_delta = cmp::min(0, num_lines as i32 - self.block_router.prompt_grid.grid.cursor.point.line.0 - 1);
         delta = cmp::min(cmp::max(delta, min_delta), history_size as i32);
         self.vi_mode_cursor.point.line += delta;
 
         let is_alt = self.mode.contains(TermMode::ALT_SCREEN);
-        self.grid.resize(!is_alt, num_lines, num_cols);
+        self.block_router.prompt_grid.grid.resize(!is_alt, num_lines, num_cols);
         self.inactive_grid.resize(is_alt, num_lines, num_cols);
 
         // Invalidate selection and tabs only when necessary.
@@ -509,7 +496,7 @@ impl<T> Term<T> {
 
         // Clamp vi cursor to viewport.
         let vi_point = self.vi_mode_cursor.point;
-        let viewport_top = Line(-(self.grid.display_offset() as i32));
+        let viewport_top = Line(-(self.block_router.prompt_grid.grid.display_offset() as i32));
         let viewport_bottom = viewport_top + self.bottommost_line();
         self.vi_mode_cursor.point.line =
             cmp::max(cmp::min(vi_point.line, viewport_bottom), viewport_top);
@@ -532,10 +519,10 @@ impl<T> Term<T> {
     pub fn swap_alt(&mut self) {
         if !self.mode.contains(TermMode::ALT_SCREEN) {
             // Set alt screen cursor to the current primary screen cursor.
-            self.inactive_grid.cursor = self.grid.cursor.clone();
+            self.inactive_grid.cursor = self.block_router.prompt_grid.grid.cursor.clone();
 
             // Drop information about the primary screens saved cursor.
-            self.grid.saved_cursor = self.grid.cursor.clone();
+            self.block_router.prompt_grid.grid.saved_cursor = self.block_router.prompt_grid.grid.cursor.clone();
 
             // Reset alternate screen contents.
             self.inactive_grid.reset_region(..);
@@ -546,7 +533,7 @@ impl<T> Term<T> {
             self.keyboard_mode_stack.last().copied().unwrap_or(KeyboardModes::NO_MODE).into();
         self.set_keyboard_mode(keyboard_mode, KeyboardModesApplyBehavior::Replace);
 
-        mem::swap(&mut self.grid, &mut self.inactive_grid);
+        mem::swap(&mut self.block_router.prompt_grid.grid, &mut self.inactive_grid);
         self.mode ^= TermMode::ALT_SCREEN;
         self.selection = None;
         self.mark_fully_damaged();
@@ -576,7 +563,7 @@ impl<T> Term<T> {
         }
 
         // Scroll between origin and bottom
-        self.grid.scroll_down(&region, lines);
+        self.block_router.prompt_grid.grid.scroll_down(&region, lines);
         self.mark_fully_damaged();
     }
 
@@ -595,10 +582,10 @@ impl<T> Term<T> {
         // Scroll selection.
         self.selection = self.selection.take().and_then(|s| s.rotate(self, &region, lines as i32));
 
-        self.grid.scroll_up(&region, lines);
+        self.block_router.prompt_grid.grid.scroll_up(&region, lines);
 
         // Scroll vi mode cursor.
-        let viewport_top = Line(-(self.grid.display_offset() as i32));
+        let viewport_top = Line(-(self.block_router.prompt_grid.grid.display_offset() as i32));
         let top = if region.start == 0 { viewport_top } else { region.start };
         let line = &mut self.vi_mode_cursor.point.line;
         if (top <= *line) && region.end > *line {
@@ -616,7 +603,7 @@ impl<T> Term<T> {
         self.set_scrolling_region(1, None);
 
         // Clear grid.
-        self.grid.reset_region(..);
+        self.block_router.prompt_grid.grid.reset_region(..);
         self.mark_fully_damaged();
     }
 
@@ -637,14 +624,14 @@ impl<T> Term<T> {
         self.mode ^= TermMode::VI;
 
         if self.mode.contains(TermMode::VI) {
-            let display_offset = self.grid.display_offset() as i32;
-            if self.grid.cursor.point.line > self.bottommost_line() - display_offset {
+            let display_offset = self.block_router.prompt_grid.grid.display_offset() as i32;
+            if self.block_router.prompt_grid.grid.cursor.point.line > self.bottommost_line() - display_offset {
                 // Move cursor to top-left if terminal cursor is not visible.
                 let point = Point::new(Line(-display_offset), Column(0));
                 self.vi_mode_cursor = ViModeCursor::new(point);
             } else {
                 // Reset vi mode cursor position to match primary cursor.
-                self.vi_mode_cursor = ViModeCursor::new(self.grid.cursor.point);
+                self.vi_mode_cursor = ViModeCursor::new(self.block_router.prompt_grid.grid.cursor.point);
             }
         }
 
@@ -703,8 +690,8 @@ impl<T> Term<T> {
     where
         T: EventListener,
     {
-        let display_offset = self.grid.display_offset() as i32;
-        let screen_lines = self.grid.screen_lines() as i32;
+        let display_offset = self.block_router.prompt_grid.grid.display_offset() as i32;
+        let screen_lines = self.block_router.prompt_grid.grid.screen_lines() as i32;
 
         if point.line < -display_offset {
             let lines = point.line + display_offset;
@@ -717,7 +704,7 @@ impl<T> Term<T> {
 
     /// Jump to the end of a wide cell.
     pub fn expand_wide(&self, mut point: Point, direction: Direction) -> Point {
-        let flags = self.grid[point.line][point.column].flags;
+        let flags = self.block_router.prompt_grid.grid[point.line][point.column].flags;
 
         match direction {
             Direction::Right if flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) => {
@@ -733,7 +720,7 @@ impl<T> Term<T> {
                 }
 
                 let prev = point.sub(self, Boundary::Grid, 1);
-                if self.grid[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
+                if self.block_router.prompt_grid.grid[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
                     point = prev;
                 }
             },
@@ -783,49 +770,49 @@ impl<T> Term<T> {
 
         trace!("Wrapping input");
 
-        self.grid.cursor_cell().flags.insert(Flags::WRAPLINE);
+        self.block_router.prompt_grid.grid.cursor_cell().flags.insert(Flags::WRAPLINE);
 
-        if self.grid.cursor.point.line + 1 >= self.scroll_region.end {
+        if self.block_router.prompt_grid.grid.cursor.point.line + 1 >= self.scroll_region.end {
             self.linefeed();
         } else {
             self.damage_cursor();
-            self.grid.cursor.point.line += 1;
+            self.block_router.prompt_grid.grid.cursor.point.line += 1;
         }
 
-        self.grid.cursor.point.column = Column(0);
-        self.grid.cursor.input_needs_wrap = false;
+        self.block_router.prompt_grid.grid.cursor.point.column = Column(0);
+        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
         self.damage_cursor();
     }
 
     /// Write `c` to the cell at the cursor position.
     #[inline(always)]
     fn write_at_cursor(&mut self, c: char) {
-        let c = self.grid.cursor.charsets[self.active_charset].map(c);
-        let fg = self.grid.cursor.template.fg;
-        let bg = self.grid.cursor.template.bg;
-        let flags = self.grid.cursor.template.flags;
-        let extra = self.grid.cursor.template.extra.clone();
+        let c = self.block_router.prompt_grid.grid.cursor.charsets[self.active_charset].map(c);
+        let fg = self.block_router.prompt_grid.grid.cursor.template.fg;
+        let bg = self.block_router.prompt_grid.grid.cursor.template.bg;
+        let flags = self.block_router.prompt_grid.grid.cursor.template.flags;
+        let extra = self.block_router.prompt_grid.grid.cursor.template.extra.clone();
 
-        let mut cursor_cell = self.grid.cursor_cell();
+        let mut cursor_cell = self.block_router.prompt_grid.grid.cursor_cell();
 
         // Clear all related cells when overwriting a fullwidth cell.
         if cursor_cell.flags.intersects(Flags::WIDE_CHAR | Flags::WIDE_CHAR_SPACER) {
             // Remove wide char and spacer.
             let wide = cursor_cell.flags.contains(Flags::WIDE_CHAR);
-            let point = self.grid.cursor.point;
+            let point = self.block_router.prompt_grid.grid.cursor.point;
             if wide && point.column < self.last_column() {
-                self.grid[point.line][point.column + 1].flags.remove(Flags::WIDE_CHAR_SPACER);
+                self.block_router.prompt_grid.grid[point.line][point.column + 1].flags.remove(Flags::WIDE_CHAR_SPACER);
             } else if point.column > 0 {
-                self.grid[point.line][point.column - 1].clear_wide();
+                self.block_router.prompt_grid.grid[point.line][point.column - 1].clear_wide();
             }
 
             // Remove leading spacers.
             if point.column <= 1 && point.line != self.topmost_line() {
                 let column = self.last_column();
-                self.grid[point.line - 1i32][column].flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
+                self.block_router.prompt_grid.grid[point.line - 1i32][column].flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
             }
 
-            cursor_cell = self.grid.cursor_cell();
+            cursor_cell = self.block_router.prompt_grid.grid.cursor_cell();
         }
 
         cursor_cell.c = c;
@@ -839,7 +826,7 @@ impl<T> Term<T> {
     fn damage_cursor(&mut self) {
         // The normal cursor coordinates are always in viewport.
         let point =
-            Point::new(self.grid.cursor.point.line.0 as usize, self.grid.cursor.point.column);
+            Point::new(self.block_router.prompt_grid.grid.cursor.point.line.0 as usize, self.block_router.prompt_grid.grid.cursor.point.column);
         self.damage.damage_point(point);
     }
 
@@ -860,17 +847,17 @@ impl<T> Term<T> {
 impl<T> Dimensions for Term<T> {
     #[inline]
     fn columns(&self) -> usize {
-        self.grid.columns()
+        self.block_router.prompt_grid.grid.columns()
     }
 
     #[inline]
     fn screen_lines(&self) -> usize {
-        self.grid.screen_lines()
+        self.block_router.prompt_grid.grid.screen_lines()
     }
 
     #[inline]
     fn total_lines(&self) -> usize {
-        self.grid.total_lines()
+        self.block_router.prompt_grid.grid.total_lines()
     }
 }
 
@@ -945,18 +932,18 @@ pub mod test {
         for (line, text) in lines.iter().enumerate() {
             let line = Line(line as i32);
             if !text.ends_with('\r') && line + 1 != lines.len() {
-                term.grid[line][Column(num_cols - 1)].flags.insert(Flags::WRAPLINE);
+                term.block_router.prompt_grid.grid[line][Column(num_cols - 1)].flags.insert(Flags::WRAPLINE);
             }
 
             let mut index = 0;
             for c in text.chars().take_while(|c| *c != '\r') {
-                term.grid[line][Column(index)].c = c;
+                term.block_router.prompt_grid.grid[line][Column(index)].c = c;
 
                 // Handle fullwidth characters.
                 let width = c.width().unwrap();
                 if width == 2 {
-                    term.grid[line][Column(index)].flags.insert(Flags::WIDE_CHAR);
-                    term.grid[line][Column(index + 1)].flags.insert(Flags::WIDE_CHAR_SPACER);
+                    term.block_router.prompt_grid.grid[line][Column(index)].flags.insert(Flags::WIDE_CHAR);
+                    term.block_router.prompt_grid.grid[line][Column(index + 1)].flags.insert(Flags::WIDE_CHAR_SPACER);
                 }
 
                 index += width;
@@ -995,17 +982,17 @@ mod tests {
         // Scrollable amount to top is 11.
         term.scroll_display(Scroll::PageUp);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(-1), Column(0)));
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
 
         // Scrollable amount to top is 1.
         term.scroll_display(Scroll::PageUp);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(-2), Column(0)));
-        assert_eq!(term.grid.display_offset(), 11);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 11);
 
         // Scrollable amount to top is 0.
         term.scroll_display(Scroll::PageUp);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(-2), Column(0)));
-        assert_eq!(term.grid.display_offset(), 11);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 11);
     }
 
     #[test]
@@ -1025,17 +1012,17 @@ mod tests {
         // Scrollable amount to bottom is 11.
         term.scroll_display(Scroll::PageDown);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(-1), Column(0)));
-        assert_eq!(term.grid.display_offset(), 1);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 1);
 
         // Scrollable amount to bottom is 1.
         term.scroll_display(Scroll::PageDown);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(0), Column(0)));
-        assert_eq!(term.grid.display_offset(), 0);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 0);
 
         // Scrollable amount to bottom is 0.
         term.scroll_display(Scroll::PageDown);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(0), Column(0)));
-        assert_eq!(term.grid.display_offset(), 0);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 0);
     }
 
     #[test]
@@ -1101,7 +1088,7 @@ mod tests {
 
         let mut escape_chars = String::from("\"");
 
-        mem::swap(&mut term.grid, &mut grid);
+        mem::swap(&mut term.block_router.prompt_grid.grid, &mut grid);
         mem::swap(&mut term.config.semantic_escape_chars, &mut escape_chars);
 
         {
@@ -1143,7 +1130,7 @@ mod tests {
         grid[Line(0)][Column(0)].c = '"';
         grid[Line(0)][Column(3)].c = '"';
 
-        mem::swap(&mut term.grid, &mut grid);
+        mem::swap(&mut term.block_router.prompt_grid.grid, &mut grid);
 
         term.selection = Some(Selection::new(
             SelectionType::Lines,
@@ -1234,12 +1221,12 @@ mod tests {
         // Change the display area.
         term.scroll_display(Scroll::Top);
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
 
         // Clear the viewport.
         term.clear_screen(ansi::ClearMode::All);
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
     }
 
     #[test]
@@ -1259,12 +1246,12 @@ mod tests {
         term.scroll_display(Scroll::Top);
         term.vi_mode_cursor.point = Point::new(Line(-5), Column(3));
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
 
         // Clear the viewport.
         term.clear_screen(ansi::ClearMode::All);
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(-5), Column(3)));
     }
 
@@ -1281,12 +1268,12 @@ mod tests {
         // Change the display area.
         term.scroll_display(Scroll::Top);
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
 
         // Clear the scrollback buffer.
         term.clear_screen(ansi::ClearMode::Saved);
 
-        assert_eq!(term.grid.display_offset(), 0);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 0);
     }
 
     #[test]
@@ -1306,12 +1293,12 @@ mod tests {
         term.scroll_display(Scroll::Top);
         term.vi_mode_cursor.point = Point::new(Line(-5), Column(3));
 
-        assert_eq!(term.grid.display_offset(), 10);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 10);
 
         // Clear the scrollback buffer.
         term.clear_screen(ansi::ClearMode::Saved);
 
-        assert_eq!(term.grid.display_offset(), 0);
+        assert_eq!(term.block_router.prompt_grid.grid.display_offset(), 0);
         assert_eq!(term.vi_mode_cursor.point, Point::new(Line(0), Column(3)));
     }
 
@@ -1321,20 +1308,20 @@ mod tests {
         let mut term = Term::new(Config::default(), &size, VoidListener);
 
         // Add one line of scrollback.
-        term.grid.scroll_up(&(Line(0)..Line(1)), 1);
+        term.block_router.prompt_grid.grid.scroll_up(&(Line(0)..Line(1)), 1);
 
         // Clear the history.
         term.clear_screen(ansi::ClearMode::Saved);
 
         // Make sure that scrolling does not change the grid.
-        let mut scrolled_grid = term.grid.clone();
+        let mut scrolled_grid = term.block_router.prompt_grid.grid.clone();
         scrolled_grid.scroll_display(Scroll::Top);
 
         // Truncate grids for comparison.
         scrolled_grid.truncate();
-        term.grid.truncate();
+        term.block_router.prompt_grid.grid.truncate();
 
-        assert_eq!(term.grid, scrolled_grid);
+        assert_eq!(term.block_router.prompt_grid.grid, scrolled_grid);
     }
 
     #[test]
@@ -1367,14 +1354,14 @@ mod tests {
             term.newline();
         }
         assert_eq!(term.history_size(), 10);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(9), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(9), Column(0)));
 
         // Increase visible lines.
         size.screen_lines = 30;
         term.resize(size);
 
         assert_eq!(term.history_size(), 0);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(19), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(19), Column(0)));
     }
 
     #[test]
@@ -1387,7 +1374,7 @@ mod tests {
             term.newline();
         }
         assert_eq!(term.history_size(), 10);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(9), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(9), Column(0)));
 
         // Enter alt screen.
         term.set_private_mode(NamedPrivateMode::SwapScreenAndSetRestoreCursor.into());
@@ -1400,7 +1387,7 @@ mod tests {
         term.unset_private_mode(NamedPrivateMode::SwapScreenAndSetRestoreCursor.into());
 
         assert_eq!(term.history_size(), 0);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(19), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(19), Column(0)));
     }
 
     #[test]
@@ -1413,14 +1400,14 @@ mod tests {
             term.newline();
         }
         assert_eq!(term.history_size(), 10);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(9), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(9), Column(0)));
 
         // Increase visible lines.
         size.screen_lines = 5;
         term.resize(size);
 
         assert_eq!(term.history_size(), 15);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(4), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(4), Column(0)));
     }
 
     #[test]
@@ -1433,7 +1420,7 @@ mod tests {
             term.newline();
         }
         assert_eq!(term.history_size(), 10);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(9), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(9), Column(0)));
 
         // Enter alt screen.
         term.set_private_mode(NamedPrivateMode::SwapScreenAndSetRestoreCursor.into());
@@ -1446,7 +1433,7 @@ mod tests {
         term.unset_private_mode(NamedPrivateMode::SwapScreenAndSetRestoreCursor.into());
 
         assert_eq!(term.history_size(), 15);
-        assert_eq!(term.grid.cursor.point, Point::new(Line(4), Column(0)));
+        assert_eq!(term.block_router.prompt_grid.grid.cursor.point, Point::new(Line(4), Column(0)));
     }
 
     #[test]
@@ -1458,14 +1445,14 @@ mod tests {
 
         // Test that we damage input form [`Term::input`].
 
-        let left = term.grid.cursor.point.column.0;
+        let left = term.block_router.prompt_grid.grid.cursor.point.column.0;
         term.input('d');
         term.input('a');
         term.input('m');
         term.input('a');
         term.input('g');
         term.input('e');
-        let right = term.grid.cursor.point.column.0;
+        let right = term.block_router.prompt_grid.grid.cursor.point.column.0;
 
         let mut damaged_lines = match term.damage() {
             TermDamage::Full => panic!("Expected partial damage, however got Full"),

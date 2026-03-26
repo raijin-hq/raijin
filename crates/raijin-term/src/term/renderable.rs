@@ -18,8 +18,8 @@ pub struct RenderableCursor {
 impl RenderableCursor {
     pub(crate) fn new<T>(term: &Term<T>) -> Self {
         let vi_mode = term.mode().contains(TermMode::VI);
-        let mut point = if vi_mode { term.vi_mode_cursor.point } else { term.grid.cursor.point };
-        if term.grid[point].flags.contains(Flags::WIDE_CHAR_SPACER) {
+        let mut point = if vi_mode { term.vi_mode_cursor.point } else { term.block_router.prompt_grid.grid.cursor.point };
+        if term.block_router.prompt_grid.grid[point].flags.contains(Flags::WIDE_CHAR_SPACER) {
             point.column -= 1;
         }
 
