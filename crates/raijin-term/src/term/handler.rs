@@ -125,29 +125,34 @@ impl<T: EventListener> Handler for Term<T> {
         let col = Column(col);
 
         trace!("Going to: line={line}, col={col}");
-        let (y_offset, max_y) = if self.mode.contains(TermMode::ORIGIN) {
+        let mode = self.mode;
+        let (y_offset, max_y) = if mode.contains(TermMode::ORIGIN) {
             (self.scroll_region.start, self.scroll_region.end - 1)
         } else {
             (Line(0), self.bottommost_line())
         };
+        let last_col = self.last_column();
 
         self.damage_cursor();
-        self.block_router.prompt_grid.grid.cursor.point.line = cmp::max(cmp::min(line + y_offset, max_y), Line(0));
-        self.block_router.prompt_grid.grid.cursor.point.column = cmp::min(col, self.last_column());
+        let grid = &mut self.block_router.prompt_grid;
+        grid.grid.cursor.point.line = cmp::max(cmp::min(line + y_offset, max_y), Line(0));
+        grid.grid.cursor.point.column = cmp::min(col, last_col);
+        grid.grid.cursor.input_needs_wrap = false;
         self.damage_cursor();
-        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
     }
 
     #[inline]
     fn goto_line(&mut self, line: i32) {
         trace!("Going to line: {line}");
-        self.goto(line, self.block_router.prompt_grid.grid.cursor.point.column.0)
+        let col = self.block_router.prompt_grid.grid.cursor.point.column.0;
+        self.goto(line, col)
     }
 
     #[inline]
     fn goto_col(&mut self, col: usize) {
         trace!("Going to column: {col}");
-        self.goto(self.block_router.prompt_grid.grid.cursor.point.line.0, col)
+        let line = self.block_router.prompt_grid.grid.cursor.point.line.0;
+        self.goto(line, col)
     }
 
     #[inline]
@@ -199,25 +204,23 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn move_forward(&mut self, cols: usize) {
         trace!("Moving forward: {cols}");
-        let last_column = cmp::min(self.block_router.prompt_grid.grid.cursor.point.column + cols, self.last_column());
-
-        let cursor_line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(cursor_line, self.block_router.prompt_grid.grid.cursor.point.column.0, last_column.0);
-
-        self.block_router.prompt_grid.grid.cursor.point.column = last_column;
-        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
+        let grid = &mut self.block_router.prompt_grid;
+        let old_col = grid.grid.cursor.point.column.0;
+        let cursor_line = grid.grid.cursor.point.line.0 as usize;
+        grid.move_cursor_forward(cols);
+        let new_col = grid.grid.cursor.point.column.0;
+        self.damage.damage_line(cursor_line, old_col, new_col);
     }
 
     #[inline]
     fn move_backward(&mut self, cols: usize) {
         trace!("Moving backward: {cols}");
-        let column = self.block_router.prompt_grid.grid.cursor.point.column.saturating_sub(cols);
-
-        let cursor_line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(cursor_line, column, self.block_router.prompt_grid.grid.cursor.point.column.0);
-
-        self.block_router.prompt_grid.grid.cursor.point.column = Column(column);
-        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
+        let grid = &mut self.block_router.prompt_grid;
+        let old_col = grid.grid.cursor.point.column.0;
+        let cursor_line = grid.grid.cursor.point.line.0 as usize;
+        grid.move_cursor_backward(cols);
+        let new_col = grid.grid.cursor.point.column.0;
+        self.damage.damage_line(cursor_line, new_col, old_col);
     }
 
     #[inline]
@@ -365,11 +368,11 @@ impl<T: EventListener> Handler for Term<T> {
     fn backspace(&mut self) {
         trace!("Backspace");
 
-        if self.block_router.prompt_grid.grid.cursor.point.column > Column(0) {
-            let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
-            let column = self.block_router.prompt_grid.grid.cursor.point.column.0;
-            self.block_router.prompt_grid.grid.cursor.point.column -= 1;
-            self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
+        let grid = &mut self.block_router.prompt_grid;
+        if grid.grid.cursor.point.column > Column(0) {
+            let line = grid.grid.cursor.point.line.0 as usize;
+            let column = grid.grid.cursor.point.column.0;
+            grid.backspace();
             self.damage.damage_line(line, column - 1, column);
         }
     }
@@ -378,11 +381,11 @@ impl<T: EventListener> Handler for Term<T> {
     #[inline]
     fn carriage_return(&mut self) {
         trace!("Carriage return");
-        let new_col = 0;
-        let line = self.block_router.prompt_grid.grid.cursor.point.line.0 as usize;
-        self.damage.damage_line(line, new_col, self.block_router.prompt_grid.grid.cursor.point.column.0);
-        self.block_router.prompt_grid.grid.cursor.point.column = Column(new_col);
-        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
+        let grid = &mut self.block_router.prompt_grid;
+        let line = grid.grid.cursor.point.line.0 as usize;
+        let old_col = grid.grid.cursor.point.column.0;
+        grid.carriage_return();
+        self.damage.damage_line(line, 0, old_col);
     }
 
     /// Linefeed.
