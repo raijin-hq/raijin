@@ -40,7 +40,7 @@ pub enum PromptKindType {
 /// in the next).
 ///
 /// The scanned bytes are NOT modified. They should still be passed to
-/// alacritty_terminal which will ignore unknown OSC sequences.
+/// raijin_term which will ignore unknown OSC sequences.
 pub struct OscScanner {
     state: ScanState,
     param_buf: Vec<u8>,

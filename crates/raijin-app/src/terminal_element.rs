@@ -1,7 +1,7 @@
-use alacritty_terminal::grid::Dimensions;
-use alacritty_terminal::index::{Column, Line};
-use alacritty_terminal::term::cell::Flags as CellFlags;
-use alacritty_terminal::vte::ansi::{Color as AnsiColor, NamedColor};
+use raijin_term::grid::Dimensions;
+use raijin_term::index::{Column, Line};
+use raijin_term::term::cell::Flags as CellFlags;
+use raijin_term::vte::ansi::{Color as AnsiColor, NamedColor};
 use inazuma::{
     point, px, size, App, Bounds, Element, ElementId, Font, FontStyle, FontWeight,
     GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId, Pixels, Point,
@@ -462,7 +462,7 @@ impl Element for TerminalElement {
         // Don't render cursor if it's in a hidden prompt region.
         let cursor_abs_row = history_size + cursor_visual_row - display_offset.min(cursor_visual_row);
         let cursor_hidden = self.is_in_hidden_prompt_region(cursor_abs_row);
-        if content.mode.contains(alacritty_terminal::term::TermMode::SHOW_CURSOR) && !cursor_hidden {
+        if content.mode.contains(raijin_term::term::TermMode::SHOW_CURSOR) && !cursor_hidden {
             // Compute header offset at cursor row
             let mut cursor_header_offset = px(0.0);
             for (visual_row, idx) in &visible_headers {
@@ -931,8 +931,8 @@ impl Element for TerminalElement {
 // ---------------------------------------------------------------------------
 
 fn resolve_colors(
-    cell: &alacritty_terminal::term::cell::Cell,
-    colors: &alacritty_terminal::term::color::Colors,
+    cell: &raijin_term::term::cell::Cell,
+    colors: &raijin_term::term::color::Colors,
 ) -> (Hsla, Hsla) {
     let fg = ansi_color_to_hsla(&cell.fg, colors, cell.flags.contains(CellFlags::DIM));
     let bg = ansi_color_to_hsla(&cell.bg, colors, false);
@@ -941,7 +941,7 @@ fn resolve_colors(
 
 fn ansi_color_to_hsla(
     color: &AnsiColor,
-    colors: &alacritty_terminal::term::color::Colors,
+    colors: &raijin_term::term::color::Colors,
     dim: bool,
 ) -> Hsla {
     match color {

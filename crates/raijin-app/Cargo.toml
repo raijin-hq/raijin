@@ -19,7 +19,7 @@ raijin-ui = { workspace = true }
 anyhow = { workspace = true }
 log = { workspace = true }
 parking_lot = { workspace = true }
-alacritty_terminal = "0.26.0-rc1"
+raijin-term = { path = "../raijin-term" }
 inazuma-component-assets = { path = "../inazuma-component/assets" }
 time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
 serde_json = { workspace = true }

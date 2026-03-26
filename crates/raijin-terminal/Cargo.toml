@@ -7,7 +7,7 @@ publish.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 log = { workspace = true }
-alacritty_terminal = "0.26.0-rc1"
+raijin-term = { path = "../raijin-term" }
 portable-pty = "0.8"
 parking_lot = { workspace = true }
 flume = { workspace = true }

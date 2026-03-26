@@ -1,5 +1,5 @@
-use alacritty_terminal::grid::Dimensions;
-use alacritty_terminal::term::TermMode;
+use raijin_term::grid::Dimensions;
+use raijin_term::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
     ParentElement, Render, Styled, Window, prelude::*,

@@ -1,8 +1,8 @@
 use std::io::Write;
 use std::sync::{Arc, Mutex};
 
-use alacritty_terminal::event::Event as AlacrittyEvent;
-use alacritty_terminal::event::EventListener;
+use raijin_term::event::Event as RaijinTermEvent;
+use raijin_term::event::EventListener;
 
 use crate::osc_parser::ShellMarker;
 
@@ -20,7 +20,7 @@ pub enum TerminalEvent {
     ShellMarker(ShellMarker),
 }
 
-/// Bridges alacritty_terminal events to our TerminalEvent channel.
+/// Bridges raijin-term events to our TerminalEvent channel.
 ///
 /// Also handles PtyWrite events by writing directly to the shared PTY writer.
 pub struct RaijinEventListener {
@@ -38,21 +38,21 @@ impl RaijinEventListener {
 }
 
 impl EventListener for RaijinEventListener {
-    fn send_event(&self, event: AlacrittyEvent) {
+    fn send_event(&self, event: RaijinTermEvent) {
         match event {
-            AlacrittyEvent::Wakeup => {
+            RaijinTermEvent::Wakeup => {
                 let _ = self.sender.send(TerminalEvent::Wakeup);
             }
-            AlacrittyEvent::Title(title) => {
+            RaijinTermEvent::Title(title) => {
                 let _ = self.sender.send(TerminalEvent::Title(title));
             }
-            AlacrittyEvent::Bell => {
+            RaijinTermEvent::Bell => {
                 let _ = self.sender.send(TerminalEvent::Bell);
             }
-            AlacrittyEvent::Exit => {
+            RaijinTermEvent::Exit => {
                 let _ = self.sender.send(TerminalEvent::Exit);
             }
-            AlacrittyEvent::PtyWrite(text) => {
+            RaijinTermEvent::PtyWrite(text) => {
                 if let Ok(mut writer) = self.pty_writer.lock() {
                     let _ = writer.write_all(text.as_bytes());
                 }

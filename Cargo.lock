@@ -63,31 +63,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "alacritty_terminal"
-version = "0.26.0-rc1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91f94e9945157b26a5a900d2ca2d432056f2c66c14584d0bece49745a6ef5d05"
-dependencies = [
- "base64",
- "bitflags 2.11.0",
- "home",
- "libc",
- "log",
- "miow",
- "parking_lot",
- "piper",
- "polling",
- "regex-automata",
- "rustix 1.1.4",
- "rustix-openpty",
- "serde",
- "signal-hook",
- "unicode-width 0.2.2",
- "vte",
- "windows-sys 0.59.0",
-]
-
-[[package]]
 name = "aligned"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4938,7 +4913,6 @@ checksum = "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09"
 name = "raijin-app"
 version = "0.1.0"
 dependencies = [
- "alacritty_terminal",
  "anyhow",
  "dirs 6.0.0",
  "inazuma",
@@ -4950,6 +4924,7 @@ dependencies = [
  "raijin-completions",
  "raijin-settings",
  "raijin-shell",
+ "raijin-term",
  "raijin-terminal",
  "raijin-ui",
  "ropey 1.6.1",
@@ -5016,12 +4991,12 @@ dependencies = [
 name = "raijin-terminal"
 version = "0.1.0"
 dependencies = [
- "alacritty_terminal",
  "anyhow",
  "flume",
  "log",
  "parking_lot",
  "portable-pty",
+ "raijin-term",
 ]
 
 [[package]]

@@ -2,9 +2,9 @@ use std::io::Write;
 use std::sync::Arc;
 use std::thread;
 
-use alacritty_terminal::grid::Dimensions as GridDimensions;
-use alacritty_terminal::term::{Config, Term};
-use alacritty_terminal::vte::ansi;
+use raijin_term::grid::Dimensions as GridDimensions;
+use raijin_term::term::{Config, Term};
+use raijin_term::vte::ansi;
 use anyhow::Result;
 use parking_lot::FairMutex;
 
@@ -17,7 +17,7 @@ use crate::pty;
 /// Default scrollback history, can be overridden via config.
 const DEFAULT_SCROLLBACK_HISTORY: usize = 10_000;
 
-/// Terminal dimensions for alacritty_terminal.
+/// Terminal dimensions for raijin-term.
 struct TermDimensions {
     cols: usize,
     rows: usize,
@@ -97,7 +97,7 @@ impl TerminalHandle {
     }
 }
 
-/// A terminal emulator backed by alacritty_terminal and a PTY.
+/// A terminal emulator backed by raijin-term and a PTY.
 ///
 /// The terminal runs a background thread that reads PTY output and feeds it
 /// through the VTE parser into the terminal grid. The UI thread uses the
@@ -160,7 +160,7 @@ impl Terminal {
     ///
     /// The thread scans incoming bytes for OSC 133 shell integration markers
     /// and emits ShellMarker events. The bytes are then passed unmodified to
-    /// alacritty_terminal's VTE parser for grid processing.
+    /// raijin-term's VTE parser for grid processing.
     fn spawn_pty_reader(
         term: Arc<FairMutex<Term<RaijinEventListener>>>,
         event_tx: flume::Sender<TerminalEvent>,
@@ -184,7 +184,7 @@ impl Terminal {
                                 let _ = event_tx.send(TerminalEvent::ShellMarker(marker));
                             }
 
-                            // Feed bytes to alacritty_terminal (ignores unknown OSC)
+                            // Feed bytes to raijin-term (ignores unknown OSC)
                             let mut term = term.lock();
                             parser.advance(&mut *term, chunk);
                         }
