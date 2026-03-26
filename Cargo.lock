@@ -3079,7 +3079,7 @@ dependencies = [
  "once_cell",
  "paste",
  "regex",
- "ropey",
+ "ropey 2.0.0-beta.1",
  "rust-i18n",
  "rust_decimal",
  "schemars",
@@ -4940,17 +4940,30 @@ version = "0.1.0"
 dependencies = [
  "alacritty_terminal",
  "anyhow",
+ "dirs 6.0.0",
  "inazuma",
  "inazuma-component",
  "inazuma-component-assets",
  "log",
+ "lsp-types",
  "parking_lot",
+ "raijin-completions",
  "raijin-settings",
  "raijin-shell",
  "raijin-terminal",
  "raijin-ui",
+ "ropey 1.6.1",
  "serde_json",
+ "strsim",
  "time",
+]
+
+[[package]]
+name = "raijin-completions"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -5348,6 +5361,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "ropey"
+version = "1.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93411e420bcd1a75ddd1dc3caf18c23155eda2c090631a85af21ba19e97093b5"
+dependencies = [
+ "smallvec",
+ "str_indices",
 ]
 
 [[package]]

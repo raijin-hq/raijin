@@ -99,6 +99,10 @@ pub enum InputEvent {
     PressEnter { secondary: bool },
     Focus,
     Blur,
+    /// Emitted when Up is pressed on the first row (for command history navigation).
+    HistoryUp,
+    /// Emitted when Down is pressed on the last row (for command history navigation).
+    HistoryDown,
 }
 
 pub(super) const CONTEXT: &str = "Input";
@@ -367,6 +371,11 @@ pub struct InputState {
 
     pub(super) _context_menu_task: Task<Result<()>>,
     pub(super) inline_completion: InlineCompletion,
+
+    /// Auto-closing bracket/quote configuration.
+    pub(super) auto_pairs: super::auto_pairs::AutoPairConfig,
+    /// Flag set during paste operations to suppress auto-closing.
+    pub(super) is_pasting: bool,
 }
 
 impl EventEmitter<InputEvent> for InputState {}
@@ -448,6 +457,8 @@ impl InputState {
             _context_menu_task: Task::ready(Ok(())),
             _pending_update: false,
             inline_completion: InlineCompletion::default(),
+            auto_pairs: super::auto_pairs::AutoPairConfig::default(),
+            is_pasting: false,
         }
     }
 
@@ -490,6 +501,26 @@ impl InputState {
         let language: SharedString = language.into();
         self.mode = InputMode::code_editor(language);
         self.searchable = true;
+        self
+    }
+
+    /// Set Input to use [`InputMode::ShellEditor`] mode — auto-growing
+    /// multi-line input with syntax highlighting, without line numbers,
+    /// indent guides, or code folding. Designed for terminal command input.
+    pub fn shell_editor(
+        mut self,
+        language: impl Into<SharedString>,
+        min_rows: usize,
+        max_rows: usize,
+    ) -> Self {
+        self.mode = InputMode::shell_editor(language, min_rows, max_rows);
+        self.soft_wrap = true;
+        self
+    }
+
+    /// Set auto-closing bracket/quote pairs configuration.
+    pub fn auto_pairs(mut self, config: super::auto_pairs::AutoPairConfig) -> Self {
+        self.auto_pairs = config;
         self
     }
 
@@ -560,6 +591,14 @@ impl InputState {
                 *r = rows
             }
             InputMode::AutoGrow {
+                max_rows: max_r,
+                rows: r,
+                ..
+            } => {
+                *r = rows;
+                *max_r = rows;
+            }
+            InputMode::ShellEditor {
                 max_rows: max_r,
                 rows: r,
                 ..
@@ -1122,7 +1161,26 @@ impl InputState {
 
     pub(super) fn backspace(&mut self, _: &Backspace, window: &mut Window, cx: &mut Context<Self>) {
         if self.selected_range.is_empty() {
-            self.select_to(self.previous_boundary(self.cursor()), cx)
+            let cursor = self.cursor();
+            // Auto-pair: delete both characters if cursor is between a matched pair
+            let char_before = if cursor > 0 {
+                Some(self.text.char(cursor - 1))
+            } else {
+                None
+            };
+            let char_after = if cursor < self.text.len() {
+                Some(self.text.char(cursor))
+            } else {
+                None
+            };
+            if self.auto_pairs.should_delete_pair(char_before, char_after) {
+                // Select both the opening and closing character
+                let start = cursor - char_before.unwrap().len_utf8();
+                let end = cursor + char_after.unwrap().len_utf8();
+                self.selected_range = (start..end).into();
+            } else {
+                self.select_to(self.previous_boundary(cursor), cx);
+            }
         }
         self.replace_text_in_range(None, "", window, cx);
         self.pause_blink_cursor(cx);
@@ -1565,7 +1623,9 @@ impl InputState {
                 new_text = new_text.replace('\n', "");
             }
 
+            self.is_pasting = true;
             self.replace_text_in_range_silent(None, &new_text, window, cx);
+            self.is_pasting = false;
             self.scroll_to(self.cursor(), None, cx);
         }
     }
@@ -2221,8 +2281,46 @@ impl EntityInputHandler for InputState {
             }))
             .unwrap_or(self.selected_range.into());
 
+        // --- Auto-pair: skip-over closing character ---
+        let mut chars_iter = new_text.chars();
+        let is_single_char = chars_iter.next().is_some() && chars_iter.next().is_none();
+        if is_single_char && range.start == range.end {
+            let typed = new_text.chars().next().unwrap();
+            let char_at_cursor = if range.start < self.text.len() {
+                self.text.char(range.start).into()
+            } else {
+                None
+            };
+            if self.auto_pairs.should_skip_over(typed, char_at_cursor) {
+                // Skip over the closing character — just move cursor right
+                let new_offset = (range.start + typed.len_utf8()).min(self.text.len());
+                self.selected_range = (new_offset..new_offset).into();
+                self.update_preferred_column();
+                self.pause_blink_cursor(cx);
+                cx.notify();
+                return;
+            }
+        }
+
         let old_text = self.text.clone();
         self.text.replace(range.clone(), new_text);
+
+        // --- Auto-pair: insert closing character ---
+        let mut auto_pair_close: Option<char> = None;
+        if is_single_char && range.start == range.end {
+            let typed = new_text.chars().next().unwrap();
+            let next_char = if range.start < old_text.len() {
+                Some(old_text.char(range.start))
+            } else {
+                None
+            };
+            if let Some(close) = self.auto_pairs.should_auto_close(typed, next_char, self.is_pasting) {
+                let insert_offset = range.start + new_text.len();
+                let close_str: String = close.into();
+                self.text.replace(insert_offset..insert_offset, &close_str);
+                auto_pair_close = Some(close);
+            }
+        }
 
         let mut new_offset = (range.start + new_text.len()).min(self.text.len());
 
@@ -2243,25 +2341,34 @@ impl EntityInputHandler for InputState {
             }
         }
 
-        self.push_history(&old_text, &range, &new_text);
+        // When auto-pair inserted a closing char, include it in the effective text for tracking
+        let effective_new_text: String;
+        let track_text = if let Some(close) = auto_pair_close {
+            effective_new_text = format!("{}{}", new_text, close);
+            effective_new_text.as_str()
+        } else {
+            new_text
+        };
+
+        self.push_history(&old_text, &range, track_text);
         self.history.end_grouping();
         if let Some(diagnostics) = self.mode.diagnostics_mut() {
             diagnostics.reset(&self.text)
         }
         // Adjust folds before updating wrap map: remove overlapping folds and shift others
         self.display_map
-            .adjust_folds_for_edit(&old_text, &range, new_text);
+            .adjust_folds_for_edit(&old_text, &range, track_text);
         self.display_map
-            .on_text_changed(&self.text, &range, &Rope::from(new_text), cx);
+            .on_text_changed(&self.text, &range, &Rope::from(track_text), cx);
 
         let bg = self
             .mode
-            .update_highlighter(&range, &self.text, &new_text, true, cx);
+            .update_highlighter(&range, &self.text, track_text, true, cx);
         if let Some(bg) = bg {
             Self::dispatch_background_parse(bg, window, cx);
         }
 
-        self.update_fold_candidates_incremental(&range, new_text);
+        self.update_fold_candidates_incremental(&range, track_text);
         self.lsp.update(&self.text, window, cx);
         self.selected_range = (new_offset..new_offset).into();
         self.ime_marked_range.take();
@@ -2269,7 +2376,7 @@ impl EntityInputHandler for InputState {
         self.update_search(cx);
         self.mode.update_auto_grow(&self.display_map);
         if !self.silent_replace_text {
-            self.handle_completion_trigger(&range, &new_text, window, cx);
+            self.handle_completion_trigger(&range, new_text, window, cx);
         }
         cx.emit(InputEvent::Change);
         cx.notify();

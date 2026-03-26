@@ -46,6 +46,17 @@ pub(crate) enum InputMode {
         diagnostics: DiagnosticSet,
         parse_task: Rc<RefCell<Option<Task<()>>>>,
     },
+    /// A shell editor input mode — combines AutoGrow (dynamic rows) with
+    /// syntax highlighting (like CodeEditor) but without line numbers,
+    /// indent guides, or folding. Designed for terminal command input.
+    ShellEditor {
+        min_rows: usize,
+        max_rows: usize,
+        rows: usize,
+        language: SharedString,
+        highlighter: Rc<RefCell<Option<SyntaxHighlighter>>>,
+        parse_task: Rc<RefCell<Option<Task<()>>>>,
+    },
 }
 
 impl Default for InputMode {
@@ -90,11 +101,28 @@ impl InputMode {
         }
     }
 
+    /// Create a shell editor input mode — AutoGrow + syntax highlighting,
+    /// without line numbers, indent guides, or folding.
+    pub(super) fn shell_editor(
+        language: impl Into<SharedString>,
+        min_rows: usize,
+        max_rows: usize,
+    ) -> Self {
+        InputMode::ShellEditor {
+            min_rows,
+            max_rows,
+            rows: min_rows,
+            language: language.into(),
+            highlighter: Rc::new(RefCell::new(None)),
+            parse_task: Rc::new(RefCell::new(None)),
+        }
+    }
+
     pub(super) fn multi_line(mut self, multi_line: bool) -> Self {
         match &mut self {
             InputMode::PlainText { multi_line: ml, .. } => *ml = multi_line,
             InputMode::CodeEditor { multi_line: ml, .. } => *ml = multi_line,
-            InputMode::AutoGrow { .. } => {}
+            InputMode::AutoGrow { .. } | InputMode::ShellEditor { .. } => {}
         }
         self
     }
@@ -128,7 +156,7 @@ impl InputMode {
 
     #[inline]
     pub(super) fn is_auto_grow(&self) -> bool {
-        matches!(self, InputMode::AutoGrow { .. })
+        matches!(self, InputMode::AutoGrow { .. } | InputMode::ShellEditor { .. })
     }
 
     #[inline]
@@ -136,7 +164,9 @@ impl InputMode {
         match self {
             InputMode::PlainText { multi_line, .. } => *multi_line,
             InputMode::CodeEditor { multi_line, .. } => *multi_line,
-            InputMode::AutoGrow { max_rows, .. } => *max_rows > 1,
+            InputMode::AutoGrow { max_rows, .. } | InputMode::ShellEditor { max_rows, .. } => {
+                *max_rows > 1
+            }
         }
     }
 
@@ -152,6 +182,12 @@ impl InputMode {
                 rows,
                 min_rows,
                 max_rows,
+            }
+            | InputMode::ShellEditor {
+                rows,
+                min_rows,
+                max_rows,
+                ..
             } => {
                 *rows = new_rows.clamp(*min_rows, *max_rows);
             }
@@ -176,7 +212,7 @@ impl InputMode {
         match self {
             InputMode::PlainText { rows, .. } => *rows,
             InputMode::CodeEditor { rows, .. } => *rows,
-            InputMode::AutoGrow { rows, .. } => *rows,
+            InputMode::AutoGrow { rows, .. } | InputMode::ShellEditor { rows, .. } => *rows,
         }
         .max(1)
     }
@@ -185,7 +221,9 @@ impl InputMode {
     #[allow(unused)]
     pub(super) fn min_rows(&self) -> usize {
         match self {
-            InputMode::AutoGrow { min_rows, .. } => *min_rows,
+            InputMode::AutoGrow { min_rows, .. } | InputMode::ShellEditor { min_rows, .. } => {
+                *min_rows
+            }
             _ => 1,
         }
         .max(1)
@@ -198,7 +236,9 @@ impl InputMode {
         }
 
         match self {
-            InputMode::AutoGrow { max_rows, .. } => *max_rows,
+            InputMode::AutoGrow { max_rows, .. } | InputMode::ShellEditor { max_rows, .. } => {
+                *max_rows
+            }
             _ => usize::MAX,
         }
     }
@@ -231,6 +271,12 @@ impl InputMode {
     ) -> Option<PendingBackgroundParse> {
         match &self {
             InputMode::CodeEditor {
+                language,
+                highlighter,
+                parse_task,
+                ..
+            }
+            | InputMode::ShellEditor {
                 language,
                 highlighter,
                 parse_task,
@@ -314,9 +360,16 @@ impl InputMode {
     /// Get a reference to the highlighter (if available)
     pub(super) fn highlighter(&self) -> Option<&Rc<RefCell<Option<SyntaxHighlighter>>>> {
         match self {
-            InputMode::CodeEditor { highlighter, .. } => Some(highlighter),
+            InputMode::CodeEditor { highlighter, .. }
+            | InputMode::ShellEditor { highlighter, .. } => Some(highlighter),
             _ => None,
         }
+    }
+
+    /// Returns true if this mode is a shell editor.
+    #[inline]
+    pub(super) fn is_shell_editor(&self) -> bool {
+        matches!(self, InputMode::ShellEditor { .. })
     }
 }
 

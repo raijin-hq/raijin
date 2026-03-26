@@ -183,6 +183,22 @@ source "{hook_script}"
             }
         }
 
+        "nu" => {
+            // Nushell emits OSC 133 markers natively (reedline) — no marker injection needed.
+            // We only inject our OSC 7777 metadata hooks via XDG_DATA_DIRS autoload.
+            let nu_hooks_dir = hooks_dir.join("nushell");
+            if nu_hooks_dir.join("vendor/autoload/raijin.nu").exists() {
+                let existing_xdg = std::env::var("XDG_DATA_DIRS").unwrap_or_default();
+                let raijin_xdg = if existing_xdg.is_empty() {
+                    nu_hooks_dir.to_string_lossy().to_string()
+                } else {
+                    format!("{}:{}", nu_hooks_dir.to_string_lossy(), existing_xdg)
+                };
+                cmd.env("XDG_DATA_DIRS", &raijin_xdg);
+            }
+            cmd.env("RAIJIN_SHELL_FEATURES", "metadata,sudo");
+        }
+
         other => {
             log::warn!("No shell integration hooks for shell: {}", other);
         }

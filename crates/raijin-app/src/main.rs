@@ -1,4 +1,8 @@
+mod command_correction;
+mod command_history;
+mod history_panel;
 mod settings_view;
+mod shell_completion;
 mod terminal_element;
 mod workspace;
 

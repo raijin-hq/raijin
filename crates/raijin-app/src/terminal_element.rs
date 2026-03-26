@@ -120,9 +120,8 @@ pub(crate) struct BlockHeaderPaint {
     /// Line 1: metadata (username, hostname, cwd, time, duration)
     metadata_line: ShapedLine,
     metadata_origin: Point<Pixels>,
-    /// Line 2: command text
-    command_line: ShapedLine,
-    command_origin: Point<Pixels>,
+    /// Lines 2+: command text (may be multi-line for shell scripts)
+    command_lines: Vec<(ShapedLine, Point<Pixels>)>,
 }
 
 /// Pre-painted state: shaped text lines, background rects, block headers.
@@ -410,8 +409,15 @@ impl Element for TerminalElement {
             .map(|(v, idx)| (*v as usize, *idx))
             .collect();
 
-        let total_header_height =
-            visible_headers.len() as f32 * (BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+        let total_header_height: f32 = visible_headers
+            .iter()
+            .map(|(_, idx)| {
+                let cmd_lines = self.blocks[*idx].command.lines().count().max(1);
+                BLOCK_HEADER_HEIGHT
+                    + (cmd_lines.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0))
+                    + BLOCK_GAP
+            })
+            .sum();
         let content_height =
             layout.cell_height * visible_content_rows as f32 + px(total_header_height);
 
@@ -429,9 +435,12 @@ impl Element for TerminalElement {
         if content.mode.contains(alacritty_terminal::term::TermMode::SHOW_CURSOR) && !cursor_hidden {
             // Compute header offset at cursor row
             let mut cursor_header_offset = px(0.0);
-            for (visual_row, _) in &visible_headers {
+            for (visual_row, idx) in &visible_headers {
                 if *visual_row <= cursor_visual_row {
-                    cursor_header_offset += px(BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+                    let cmd_lines = self.blocks[*idx].command.lines().count().max(1);
+                    let h = BLOCK_HEADER_HEIGHT
+                        + (cmd_lines.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
+                    cursor_header_offset += px(h + BLOCK_GAP);
                 }
             }
 
@@ -496,17 +505,22 @@ impl Element for TerminalElement {
                 let is_error = block.exit_code.map_or(false, |c| c != 0);
                 let is_running = block.exit_code.is_none();
 
+                // Calculate dynamic header height based on command line count
+                let cmd_line_count = block.command.lines().count().max(1);
+                let header_height = BLOCK_HEADER_HEIGHT
+                    + (cmd_line_count.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
+
                 // Header background
                 let header_bounds = Bounds::new(
                     point(bounds.origin.x, header_y),
-                    size(bounds.size.width, px(BLOCK_HEADER_HEIGHT)),
+                    size(bounds.size.width, px(header_height)),
                 );
 
                 // Left border for error blocks (spans entire header)
                 let left_border = if is_error {
                     Some(Bounds::new(
                         point(bounds.origin.x, header_y),
-                        size(px(BLOCK_LEFT_BORDER), px(BLOCK_HEADER_HEIGHT)),
+                        size(px(BLOCK_LEFT_BORDER), px(header_height)),
                     ))
                 } else {
                     None
@@ -558,7 +572,7 @@ impl Element for TerminalElement {
                 );
                 let metadata_origin = point(text_x, header_y + px(4.0));
 
-                // --- Line 2: command text (bright, larger) ---
+                // --- Lines 2+: command text (bright, larger, may be multi-line) ---
                 let cmd_text = if block.command.is_empty() {
                     "(empty)".to_string()
                 } else {
@@ -569,28 +583,37 @@ impl Element for TerminalElement {
                 } else {
                     header_command_fg()
                 };
-                let command_runs = vec![TextRun {
-                    len: cmd_text.len(),
-                    font: Font {
-                        family: layout.font.family.clone(),
-                        weight: FontWeight::MEDIUM,
-                        ..Font::default()
-                    },
-                    color: cmd_color,
-                    background_color: None,
-                    underline: None,
-                    strikethrough: None,
-                }];
-                let command_line = window.text_system().shape_line(
-                    SharedString::from(cmd_text),
-                    px(HEADER_CMD_FONT_SIZE),
-                    &command_runs,
-                    None,
-                );
-                let command_origin = point(
-                    text_x,
-                    header_y + px(4.0 + HEADER_META_FONT_SIZE + 8.0),
-                );
+
+                let cmd_lines_text: Vec<&str> = cmd_text.lines().collect();
+                let mut command_lines = Vec::with_capacity(cmd_lines_text.len());
+                let cmd_base_y = header_y + px(4.0 + HEADER_META_FONT_SIZE + 8.0);
+
+                for (line_idx, line_text) in cmd_lines_text.iter().enumerate() {
+                    let text = if line_text.is_empty() { " " } else { line_text };
+                    let runs = vec![TextRun {
+                        len: text.len(),
+                        font: Font {
+                            family: layout.font.family.clone(),
+                            weight: FontWeight::MEDIUM,
+                            ..Font::default()
+                        },
+                        color: cmd_color,
+                        background_color: None,
+                        underline: None,
+                        strikethrough: None,
+                    }];
+                    let shaped = window.text_system().shape_line(
+                        SharedString::from(text.to_string()),
+                        px(HEADER_CMD_FONT_SIZE),
+                        &runs,
+                        None,
+                    );
+                    let origin = point(
+                        text_x,
+                        cmd_base_y + px(line_idx as f32 * (HEADER_CMD_FONT_SIZE + 4.0)),
+                    );
+                    command_lines.push((shaped, origin));
+                }
 
                 block_headers.push(BlockHeaderPaint {
                     bg_bounds: header_bounds,
@@ -598,11 +621,10 @@ impl Element for TerminalElement {
                     is_error,
                     metadata_line,
                     metadata_origin,
-                    command_line,
-                    command_origin,
+                    command_lines,
                 });
 
-                header_offset += px(BLOCK_HEADER_HEIGHT + BLOCK_GAP);
+                header_offset += px(header_height + BLOCK_GAP);
                 next_header_idx += 1;
             }
 
@@ -797,15 +819,17 @@ impl Element for TerminalElement {
                     cx,
                 );
 
-                // Line 2: command (bright)
-                let _ = header.command_line.paint(
-                    header.command_origin,
-                    prepaint.line_height,
-                    TextAlign::Left,
-                    None,
-                    window,
-                    cx,
-                );
+                // Lines 2+: command text (bright, may be multi-line)
+                for (cmd_line, cmd_origin) in &header.command_lines {
+                    let _ = cmd_line.paint(
+                        *cmd_origin,
+                        prepaint.line_height,
+                        TextAlign::Left,
+                        None,
+                        window,
+                        cx,
+                    );
+                }
             }
 
             // 3. Cell backgrounds

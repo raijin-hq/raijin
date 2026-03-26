@@ -13,8 +13,24 @@ pub enum ShellMarker {
     CommandStart,
     /// OSC 133;D;N — Command finished with the given exit code.
     CommandEnd { exit_code: i32 },
+    /// OSC 133;P;k=<kind> — Prompt kind (Nushell-specific).
+    /// i=initial, c=continuation, s=secondary, r=right.
+    PromptKind { kind: PromptKindType },
     /// OSC 7777;raijin-precmd;<hex> — Shell metadata (JSON, hex-decoded).
     Metadata(String),
+}
+
+/// Nushell prompt kind types from OSC 133;P.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PromptKindType {
+    /// Initial prompt (default).
+    Initial,
+    /// Continuation prompt (multi-line).
+    Continuation,
+    /// Secondary prompt.
+    Secondary,
+    /// Right-side prompt.
+    Right,
 }
 
 /// Scans a byte stream for OSC 133 and OSC 7777 shell integration markers.
@@ -170,6 +186,21 @@ impl OscScanner {
                     0
                 };
                 Some(ShellMarker::CommandEnd { exit_code })
+            }
+            b'P' => {
+                // OSC 133;P;k=<kind> — Nushell prompt kind
+                let kind = if rest.len() > 4 && &rest[1..4] == b";k=" {
+                    match rest[4] {
+                        b'i' => PromptKindType::Initial,
+                        b'c' => PromptKindType::Continuation,
+                        b's' => PromptKindType::Secondary,
+                        b'r' => PromptKindType::Right,
+                        _ => PromptKindType::Initial,
+                    }
+                } else {
+                    PromptKindType::Initial
+                };
+                Some(ShellMarker::PromptKind { kind })
             }
             _ => None,
         }

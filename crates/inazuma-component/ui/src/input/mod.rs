@@ -1,3 +1,4 @@
+mod auto_pairs;
 mod blink_cursor;
 mod change;
 mod clear_button;
@@ -18,6 +19,7 @@ mod search;
 mod selection;
 mod state;
 
+pub use auto_pairs::AutoPairConfig;
 pub(crate) use clear_button::*;
 pub use cursor::*;
 #[cfg(target_family = "wasm")]

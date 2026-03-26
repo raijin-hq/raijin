@@ -114,7 +114,14 @@ impl RenderOnce for CompletionMenuItem {
                 this.bg(cx.theme().accent)
                     .text_color(cx.theme().accent_foreground)
             })
-            .child(div().child(StyledText::new(item.label.clone()).with_highlights(highlights)))
+            .child(
+                div()
+                    .text_color(cx.theme().muted_foreground.opacity(0.5))
+                    .flex_shrink_0()
+                    .text_xs()
+                    .child(">_"),
+            )
+            .child(div().flex_1().min_w_0().overflow_hidden().child(StyledText::new(item.label.clone()).with_highlights(highlights)))
             .when(item.detail.is_some(), |this| {
                 this.child(
                     Label::new(item.detail.as_deref().unwrap_or("").to_string())

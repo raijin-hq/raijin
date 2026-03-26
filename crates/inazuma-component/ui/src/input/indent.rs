@@ -60,6 +60,7 @@ impl InputMode {
             InputMode::PlainText { multi_line, .. } | InputMode::CodeEditor { multi_line, .. } => {
                 *multi_line
             }
+            InputMode::ShellEditor { max_rows, .. } => *max_rows > 1,
             _ => false,
         }
     }

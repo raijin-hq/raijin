@@ -92,6 +92,7 @@ raijin/
 | `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Distribution | ⬜ Planned |
 | `10-INAZUMA-OBJC2-MIGRATION.md` | objc→objc2 Migration Plan | ⬜ Planned |
 | `11-MULTI-TAB-SESSION-MANAGEMENT.md` | Tab-System, Sessions | 🔜 Next |
+| `12-NUSHELL-FIRST-CLASS.md` | Nushell als First-Class Shell | ⬜ Planned |
 | **done/** | | |
 | `done/02-PHASE-0-FOUNDATION.md` | Repository Setup | ✅ Done |
 | `done/03-PHASE-1-MINIMAL-TERMINAL.md` | Erstes Terminal im Window | ✅ Done |

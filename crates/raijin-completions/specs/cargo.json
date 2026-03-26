@@ -1,0 +1,89 @@
+{
+  "name": "cargo",
+  "description": "Rust package manager",
+  "subcommands": [
+    {"name": "build", "aliases": ["b"], "description": "Compile the current package", "options": [
+      {"names": ["--release", "-r"], "description": "Build in release mode"},
+      {"names": ["-p", "--package"], "description": "Build specific package", "takes_arg": true},
+      {"names": ["--all-targets"], "description": "Build all targets"},
+      {"names": ["--target"], "description": "Target triple", "takes_arg": true},
+      {"names": ["-j", "--jobs"], "description": "Number of parallel jobs", "takes_arg": true},
+      {"names": ["--features"], "description": "Features to activate", "takes_arg": true},
+      {"names": ["--all-features"], "description": "Activate all features"},
+      {"names": ["--no-default-features"], "description": "Disable default features"}
+    ]},
+    {"name": "run", "aliases": ["r"], "description": "Run a binary or example", "options": [
+      {"names": ["--release"], "description": "Run in release mode"},
+      {"names": ["-p", "--package"], "description": "Package to run", "takes_arg": true},
+      {"names": ["--bin"], "description": "Run specific binary", "takes_arg": true},
+      {"names": ["--example"], "description": "Run specific example", "takes_arg": true}
+    ]},
+    {"name": "test", "aliases": ["t"], "description": "Run tests", "options": [
+      {"names": ["--release"], "description": "Test in release mode"},
+      {"names": ["-p", "--package"], "description": "Test specific package", "takes_arg": true},
+      {"names": ["--lib"], "description": "Test library only"},
+      {"names": ["--doc"], "description": "Test documentation only"},
+      {"names": ["--no-run"], "description": "Compile but don't run"},
+      {"names": ["--workspace"], "description": "Test all workspace members"}
+    ]},
+    {"name": "check", "aliases": ["c"], "description": "Check for errors without building", "options": [
+      {"names": ["-p", "--package"], "description": "Check specific package", "takes_arg": true},
+      {"names": ["--workspace"], "description": "Check all workspace members"},
+      {"names": ["--all-targets"], "description": "Check all targets"}
+    ]},
+    {"name": "clippy", "description": "Run Clippy lints", "options": [
+      {"names": ["--fix"], "description": "Auto-fix warnings"},
+      {"names": ["--workspace"], "description": "Lint all workspace members"},
+      {"names": ["-p", "--package"], "description": "Lint specific package", "takes_arg": true}
+    ]},
+    {"name": "fmt", "description": "Format source code", "options": [
+      {"names": ["--check"], "description": "Check formatting without changing"},
+      {"names": ["--all"], "description": "Format all packages"}
+    ]},
+    {"name": "add", "description": "Add dependency to Cargo.toml", "options": [
+      {"names": ["--dev", "-D"], "description": "Add as dev dependency"},
+      {"names": ["--build", "-B"], "description": "Add as build dependency"},
+      {"names": ["--features", "-F"], "description": "Features to enable", "takes_arg": true},
+      {"names": ["--no-default-features"], "description": "Disable default features"},
+      {"names": ["--optional"], "description": "Mark as optional"}
+    ], "args": [{"name": "crate", "is_variadic": true}]},
+    {"name": "remove", "aliases": ["rm"], "description": "Remove dependency from Cargo.toml", "args": [{"name": "crate", "is_variadic": true}]},
+    {"name": "init", "description": "Create new Cargo package in existing directory", "options": [
+      {"names": ["--lib"], "description": "Create library package"},
+      {"names": ["--bin"], "description": "Create binary package"},
+      {"names": ["--name"], "description": "Package name", "takes_arg": true}
+    ]},
+    {"name": "new", "description": "Create new Cargo package", "options": [
+      {"names": ["--lib"], "description": "Create library package"},
+      {"names": ["--bin"], "description": "Create binary package"},
+      {"names": ["--name"], "description": "Package name", "takes_arg": true}
+    ], "args": [{"name": "path", "template": "folders"}]},
+    {"name": "publish", "description": "Publish package to crates.io", "options": [
+      {"names": ["--dry-run"], "description": "Simulate publish"},
+      {"names": ["--allow-dirty"], "description": "Allow dirty working directory"}
+    ]},
+    {"name": "install", "description": "Install a Rust binary", "args": [{"name": "crate"}]},
+    {"name": "uninstall", "description": "Uninstall a Rust binary", "args": [{"name": "crate"}]},
+    {"name": "update", "description": "Update dependencies"},
+    {"name": "clean", "description": "Remove build artifacts"},
+    {"name": "doc", "description": "Build documentation", "options": [
+      {"names": ["--open"], "description": "Open in browser"},
+      {"names": ["--no-deps"], "description": "Skip dependencies"}
+    ]},
+    {"name": "bench", "description": "Run benchmarks"},
+    {"name": "tree", "description": "Display dependency tree", "options": [
+      {"names": ["-i", "--invert"], "description": "Invert the tree", "takes_arg": true},
+      {"names": ["-d", "--depth"], "description": "Max depth", "takes_arg": true}
+    ]},
+    {"name": "search", "description": "Search crates.io", "args": [{"name": "query"}]},
+    {"name": "login", "description": "Save API token"},
+    {"name": "logout", "description": "Remove API token"}
+  ],
+  "options": [
+    {"names": ["--version", "-V"], "description": "Show version"},
+    {"names": ["--help", "-h"], "description": "Show help"},
+    {"names": ["--verbose", "-v"], "description": "Use verbose output"},
+    {"names": ["--quiet", "-q"], "description": "Suppress output"},
+    {"names": ["--color"], "description": "Control color output", "takes_arg": true, "arg_template": {"custom": ["auto", "always", "never"]}}
+  ]
+}

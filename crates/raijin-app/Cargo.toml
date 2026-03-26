@@ -14,6 +14,7 @@ inazuma-component = { workspace = true }
 raijin-terminal = { workspace = true }
 raijin-shell = { workspace = true }
 raijin-settings = { workspace = true }
+raijin-completions = { path = "../raijin-completions" }
 raijin-ui = { workspace = true }
 anyhow = { workspace = true }
 log = { workspace = true }
@@ -22,6 +23,10 @@ alacritty_terminal = "0.26.0-rc1"
 inazuma-component-assets = { path = "../inazuma-component/assets" }
 time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
 serde_json = { workspace = true }
+dirs = "6"
+strsim = "0.11"
+lsp-types = { version = "0.97", features = ["proposed"] }
+ropey = "1"
 
 [lints]
 workspace = true

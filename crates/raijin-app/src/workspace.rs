@@ -8,11 +8,18 @@ use inazuma_component::{
     IconName, TitleBar,
     chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
-    input::{Input, InputEvent, InputState},
+    input::{AutoPairConfig, Input, InputEvent, InputState},
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
 
+use std::rc::Rc;
+use std::sync::{Arc, RwLock};
+
+use crate::command_correction;
+use crate::command_history::CommandHistory;
+use crate::history_panel::HistoryPanel;
+use crate::shell_completion::ShellCompletionProvider;
 use crate::settings_view;
 use crate::terminal_element::{BlockRenderInfo, TerminalElement};
 
@@ -32,6 +39,11 @@ pub struct Workspace {
     focus_handle: FocusHandle,
     shell_context: ShellContext,
     block_manager: BlockManager,
+    command_history: Arc<RwLock<CommandHistory>>,
+    history_panel: HistoryPanel,
+    correction_suggestion: Option<command_correction::CorrectionResult>,
+    shell_completion: Rc<ShellCompletionProvider>,
+    shell_name: String,
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
@@ -50,7 +62,21 @@ impl Workspace {
             .expect("failed to create terminal");
 
         let focus_handle = cx.focus_handle();
-        let input_state = cx.new(|cx| InputState::new(window, cx));
+
+        // Detect shell language for syntax highlighting
+        let shell = std::env::var("SHELL").unwrap_or_else(|_| "/bin/zsh".to_string());
+        let shell_name = shell.rsplit('/').next().unwrap_or("zsh");
+        let shell_lang = match shell_name {
+            "nu" => "nu",
+            "fish" => "bash", // Fallback: fish → bash highlighting (close enough)
+            _ => "bash",      // zsh, bash, sh → bash highlighting
+        };
+
+        let input_state = cx.new(|cx| {
+            InputState::new(window, cx)
+                .shell_editor(shell_lang, 1, 10)
+                .auto_pairs(AutoPairConfig::shell_defaults())
+        });
 
         cx.subscribe_in(&input_state, window, Self::on_input_event)
             .detach();
@@ -73,6 +99,19 @@ impl Workspace {
 
         let shell_context = ShellContext::gather_for(&cwd);
 
+        // Load command history from shell's histfile
+        let command_history = Arc::new(RwLock::new(CommandHistory::detect_and_load(shell_name)));
+
+        // Set up shell completion provider
+        let shell_completion = Rc::new(ShellCompletionProvider::new(
+            shell_name,
+            cwd.clone(),
+            command_history.clone(),
+        ));
+        input_state.update(cx, |state, _cx| {
+            state.lsp.completion_provider = Some(shell_completion.clone());
+        });
+
         Self {
             terminal,
             terminal_title: "~ zsh".to_string(),
@@ -80,6 +119,11 @@ impl Workspace {
             focus_handle,
             shell_context,
             block_manager: BlockManager::new(),
+            command_history,
+            history_panel: HistoryPanel::new(),
+            correction_suggestion: None,
+            shell_completion,
+            shell_name: shell_name.to_string(),
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
@@ -125,6 +169,8 @@ impl Workspace {
             match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
                 Ok(payload) => {
                     self.shell_context.update_from_metadata(&payload);
+                    // Update completion provider CWD for file path completions
+                    self.shell_completion.update_cwd(std::path::PathBuf::from(&payload.cwd));
                     // Transfer shell-measured duration to the last finished block
                     if let Some(ms) = payload.last_duration_ms {
                         self.block_manager.set_last_block_duration(ms);
@@ -152,7 +198,29 @@ impl Workspace {
             }
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
                 log::info!("Command finished with exit code: {}", exit_code);
+
+                // Check for typo correction on "command not found"
+                if exit_code == 127 {
+                    if let Some(last_cmd) = self.block_manager.last_command() {
+                        let known: Vec<String> = std::env::var("PATH")
+                            .unwrap_or_default()
+                            .split(':')
+                            .filter_map(|dir| std::fs::read_dir(dir).ok())
+                            .flat_map(|entries| entries.flatten())
+                            .filter_map(|e| e.file_name().into_string().ok())
+                            .collect();
+                        self.correction_suggestion =
+                            command_correction::suggest_correction(&last_cmd, exit_code, &known);
+                    }
+                } else {
+                    self.correction_suggestion = None;
+                }
+
                 cx.notify();
+            }
+            raijin_terminal::ShellMarker::PromptKind { kind } => {
+                log::debug!("Prompt kind: {:?}", kind);
+                // Nushell-specific: used for multi-line prompt detection
             }
             raijin_terminal::ShellMarker::Metadata(_) => {
                 // Already handled above
@@ -175,8 +243,16 @@ impl Workspace {
     ) {
         match event {
             InputEvent::PressEnter { secondary: false } => {
+                // Close history panel if open
+                if self.history_panel.is_visible() {
+                    self.history_panel.close();
+                }
+
                 let value = self.input_state.read(cx).value();
                 if !value.is_empty() {
+                    if let Ok(mut hist) = self.command_history.write() {
+                        hist.push(value.to_string());
+                    }
                     self.block_manager
                         .set_pending_command(value.to_string());
                     let mut bytes = value.as_bytes().to_vec();
@@ -189,6 +265,53 @@ impl Workspace {
                     cx.notify();
                 }
             }
+            InputEvent::HistoryUp => {
+                if !self.history_panel.is_visible() {
+                    let current = self.input_state.read(cx).value().to_string();
+                    if let Ok(hist) = self.command_history.read() {
+                        self.history_panel.open(&hist, &current);
+                    }
+                } else {
+                    self.history_panel.select_previous();
+                }
+                if let Some(cmd) = self.history_panel.selected_command() {
+                    let cmd = cmd.to_string();
+                    self.input_state.update(cx, |state, cx| {
+                        state.set_value(&cmd, window, cx);
+                    });
+                }
+                cx.notify();
+            }
+            InputEvent::HistoryDown => {
+                if self.history_panel.is_visible() {
+                    if self.history_panel.is_at_bottom() {
+                        // At the newest entry — close panel, restore saved input
+                        let saved = self.history_panel.close();
+                        self.input_state.update(cx, |state, cx| {
+                            state.set_value(&saved, window, cx);
+                        });
+                    } else {
+                        self.history_panel.select_next();
+                        if let Some(cmd) = self.history_panel.selected_command() {
+                            let cmd = cmd.to_string();
+                            self.input_state.update(cx, |state, cx| {
+                                state.set_value(&cmd, window, cx);
+                            });
+                        }
+                    }
+                    cx.notify();
+                }
+            }
+            InputEvent::Change => {
+                // Filter history panel when user types while it's open
+                if self.history_panel.is_visible() {
+                    let query = self.input_state.read(cx).value().to_string();
+                    if let Ok(hist) = self.command_history.read() {
+                        self.history_panel.filter(&query, &hist);
+                    }
+                    cx.notify();
+                }
+            }
             _ => {}
         }
     }
@@ -196,9 +319,19 @@ impl Workspace {
     fn on_key_down_interactive(
         &mut self,
         event: &KeyDownEvent,
-        _window: &mut Window,
+        window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        // Handle Escape to dismiss history panel
+        if self.history_panel.is_visible() && event.keystroke.key.as_str() == "escape" {
+            let saved = self.history_panel.close();
+            self.input_state.update(cx, |state, cx| {
+                state.set_value(&saved, window, cx);
+            });
+            cx.notify();
+            return;
+        }
+
         if !self.interactive_mode {
             return;
         }
@@ -311,7 +444,8 @@ impl Workspace {
             .child(
                 Chip::new(&time_str, rgb(0xff5f5f).into())
                     .icon(IconName::Clock),
-            );
+            )
+            .child(Chip::new(&self.shell_name, rgb(0xa78bfa).into()));
 
         if let Some(branch) = &self.shell_context.git_branch {
             chips = chips.child(GitBranchChip::new(branch));
@@ -342,6 +476,51 @@ impl Workspace {
                             .appearance(false)
                             .cleanable(false),
                     ),
+            )
+    }
+
+    fn render_correction_banner(
+        &self,
+        correction: &command_correction::CorrectionResult,
+    ) -> impl IntoElement {
+        let original = correction.original.clone();
+        let suggestion = correction.suggestion.clone();
+        let confidence_pct = (correction.confidence * 100.0) as u32;
+        div()
+            .flex()
+            .items_center()
+            .w_full()
+            .h(px(32.0))
+            .px_4()
+            .gap_2()
+            .bg(hsla(0.0, 0.0, 1.0, 0.04))
+            .border_t_1()
+            .border_b_1()
+            .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+            .text_xs()
+            .child(
+                div()
+                    .text_color(rgb(0x666666))
+                    .child(original),
+            )
+            .child(
+                div()
+                    .text_color(rgb(0xffaa00))
+                    .child("→"),
+            )
+            .child(
+                div()
+                    .px_2()
+                    .py(px(2.0))
+                    .bg(hsla(0.0, 0.0, 1.0, 0.08))
+                    .rounded(px(4.0))
+                    .text_color(rgb(0x14F195))
+                    .child(format!("{} ({}%)", suggestion, confidence_pct)),
+            )
+            .child(
+                div()
+                    .text_color(rgb(0x666666))
+                    .child("? Press ↵ to run"),
             )
     }
 
@@ -431,6 +610,15 @@ impl Render for Workspace {
                 });
 
                 if !self.interactive_mode {
+                    // Correction banner (e.g. "Did you mean `git status`?")
+                    if let Some(ref correction) = self.correction_suggestion {
+                        container = container.child(self.render_correction_banner(correction));
+                    }
+
+                    // History panel overlay (between terminal output and input area)
+                    if self.history_panel.is_visible() {
+                        container = container.child(self.history_panel.render());
+                    }
                     container = container.child(self.render_input_area());
                 }
             }

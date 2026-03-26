@@ -158,7 +158,15 @@ impl InputState {
             return;
         }
 
+        // Emit HistoryUp when on single-line or cursor is on row 0
         if self.mode.is_single_line() {
+            cx.emit(super::InputEvent::HistoryUp);
+            return;
+        }
+
+        let cursor_row = self.text.offset_to_point(self.cursor()).row;
+        if cursor_row == 0 && self.selected_range.is_empty() {
+            cx.emit(super::InputEvent::HistoryUp);
             return;
         }
 
@@ -178,7 +186,20 @@ impl InputState {
             return;
         }
 
+        // Emit HistoryDown when on single-line or cursor is on the last row
         if self.mode.is_single_line() {
+            cx.emit(super::InputEvent::HistoryDown);
+            return;
+        }
+
+        let cursor_row = self.text.offset_to_point(self.cursor()).row;
+        let last_row = if self.text.len() > 0 {
+            self.text.offset_to_point(self.text.len()).row
+        } else {
+            0
+        };
+        if cursor_row >= last_row && self.selected_range.is_empty() {
+            cx.emit(super::InputEvent::HistoryDown);
             return;
         }
 

@@ -164,6 +164,10 @@ impl BlockManager {
                 self.in_command = false;
             }
 
+            ShellMarker::PromptKind { .. } => {
+                // Nushell-specific prompt kind — used for multi-line detection
+            }
+
             ShellMarker::Metadata(json) => {
                 self.latest_metadata_json = Some(json);
             }
@@ -193,6 +197,15 @@ impl BlockManager {
     /// Get only finished blocks (have exit code).
     pub fn finished_blocks(&self) -> impl Iterator<Item = &TerminalBlock> {
         self.blocks.iter().filter(|b| b.is_finished())
+    }
+
+    /// Get the command text of the most recently finished block.
+    pub fn last_command(&self) -> Option<String> {
+        self.blocks
+            .iter()
+            .rev()
+            .find(|b| b.is_finished())
+            .map(|b| b.command.clone())
     }
 
     /// Get the currently active block (if any command is running).
