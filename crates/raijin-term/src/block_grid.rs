@@ -6,7 +6,6 @@
 //!
 //! BlockGrid is a display abstraction, not an independent terminal emulator.
 
-use std::sync::RwLock;
 use std::time::Instant;
 
 use crate::grid::{Dimensions, Grid};
@@ -55,9 +54,7 @@ pub struct BlockMetadata {
 pub struct BlockGrid {
     pub id: BlockId,
     /// The terminal grid with cursor and scrollback.
-    /// Wrapped in RwLock for concurrent read access from render thread
-    /// while write thread updates the active block.
-    pub grid: RwLock<Grid<Cell>>,
+    pub grid: Grid<Cell>,
     /// Per-block terminal mode state.
     pub display_state: BlockDisplayState,
     /// The command text that generated this block.
@@ -80,7 +77,7 @@ impl BlockGrid {
         let grid = Grid::new(rows, cols, max_scrollback); // lines, columns, scroll_limit
         Self {
             id,
-            grid: RwLock::new(grid),
+            grid,
             display_state: BlockDisplayState::new(rows),
             command: String::new(),
             exit_code: None,
@@ -99,6 +96,65 @@ impl BlockGrid {
     /// Whether this block had a non-zero exit code.
     pub fn is_error(&self) -> bool {
         matches!(self.exit_code, Some(c) if c != 0)
+    }
+
+    // --- Grid Operations (Display Abstraction) ---
+    //
+    // These are pure grid+cursor operations that don't need shared terminal state.
+    // They operate on the block's own grid and cursor.
+    // Mode checks, damage tracking, and selection updates stay on Terminal.
+
+    // --- Grid Operations (Display Abstraction) ---
+    //
+    // Pure grid+cursor operations. Mode checks, damage tracking, and
+    // selection updates stay on Terminal.
+
+    /// Move cursor to absolute position (clamped to grid bounds).
+    pub fn move_cursor_to(&mut self, line: Line, col: crate::index::Column) {
+        let max_line = Line(self.grid.screen_lines() as i32 - 1);
+        let max_col = crate::index::Column(self.grid.columns() - 1);
+        self.grid.cursor.point.line = std::cmp::min(line, max_line);
+        self.grid.cursor.point.column = std::cmp::min(col, max_col);
+        self.grid.cursor.input_needs_wrap = false;
+    }
+
+    /// Move cursor backward (left) by n columns, clamped to column 0.
+    pub fn move_cursor_backward(&mut self, cols: usize) {
+        let col = self.grid.cursor.point.column.0.saturating_sub(cols);
+        self.grid.cursor.point.column = crate::index::Column(col);
+        self.grid.cursor.input_needs_wrap = false;
+    }
+
+    /// Move cursor forward (right) by n columns, clamped to last column.
+    pub fn move_cursor_forward(&mut self, cols: usize) {
+        let last_col = self.grid.columns() - 1;
+        let col = std::cmp::min(self.grid.cursor.point.column.0 + cols, last_col);
+        self.grid.cursor.point.column = crate::index::Column(col);
+        self.grid.cursor.input_needs_wrap = false;
+    }
+
+    /// Carriage return — move cursor to column 0.
+    pub fn carriage_return(&mut self) {
+        self.grid.cursor.point.column = crate::index::Column(0);
+        self.grid.cursor.input_needs_wrap = false;
+    }
+
+    /// Backspace — move cursor left by 1 if not at column 0.
+    pub fn backspace(&mut self) {
+        if self.grid.cursor.point.column > crate::index::Column(0) {
+            self.grid.cursor.point.column -= 1;
+            self.grid.cursor.input_needs_wrap = false;
+        }
+    }
+
+    /// Scroll the grid up within the scroll region.
+    pub fn scroll_up(&mut self, region: &std::ops::Range<Line>, lines: usize) {
+        self.grid.scroll_up(region, lines);
+    }
+
+    /// Scroll the grid down within the scroll region.
+    pub fn scroll_down(&mut self, region: &std::ops::Range<Line>, lines: usize) {
+        self.grid.scroll_down(region, lines);
     }
 }
 
@@ -156,10 +212,19 @@ impl BlockGridRouter {
     ///
     /// Returns the active block's grid if a command is running,
     /// otherwise returns the prompt grid.
-    pub fn active_grid(&self) -> &RwLock<Grid<Cell>> {
+    pub fn active_grid(&self) -> &Grid<Cell> {
         self.active_block_id
             .and_then(|id| self.blocks.iter().find(|b| b.id == id))
             .map_or(&self.prompt_grid.grid, |block| &block.grid)
+    }
+
+    pub fn active_grid_mut(&mut self) -> &mut Grid<Cell> {
+        let id = self.active_block_id;
+        if let Some(block) = id.and_then(|id| self.blocks.iter_mut().find(|b| b.id == id)) {
+            &mut block.grid
+        } else {
+            &mut self.prompt_grid.grid
+        }
     }
 
     /// Get the display state for the currently active grid.
@@ -278,26 +343,21 @@ impl BlockGridRouter {
         self.initial_rows = rows.max(24);
 
         // Resize prompt grid
-        if let Ok(mut grid) = self.prompt_grid.grid.write() {
-            grid.resize(true, rows, cols);
-        }
+        self.prompt_grid.grid.resize(true, rows, cols);
         self.prompt_grid.display_state.scroll_region = Line(0)..Line(rows as i32);
 
         // Resize active block grid immediately
         if let Some(block) = self.active_block_mut() {
-            if let Ok(mut grid) = block.grid.write() {
-                let current_rows = grid.screen_lines();
-                grid.resize(true, current_rows.max(rows), cols);
-            }
+            let current_rows = block.grid.screen_lines();
+            block.grid.resize(true, current_rows.max(rows), cols);
             block.display_state.scroll_region = Line(0)..Line(rows as i32);
         }
 
-        // Finished blocks: mark for lazy resize (done when rendered)
-        // For now, resize them all — can be optimized later
-        for block in &self.blocks {
-            if block.is_finished() && let Ok(mut grid) = block.grid.write() {
-                let current_rows = grid.screen_lines();
-                grid.resize(true, current_rows, cols);
+        // Finished blocks: resize all (can be optimized to lazy later)
+        for block in &mut self.blocks {
+            if block.is_finished() {
+                let current_rows = block.grid.screen_lines();
+                block.grid.resize(true, current_rows, cols);
             }
         }
     }
