@@ -3,6 +3,7 @@ mod command_history;
 mod history_panel;
 mod settings_view;
 mod shell_completion;
+mod terminal;
 mod terminal_element;
 mod workspace;
 
