@@ -324,14 +324,37 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        // Handle Escape to dismiss history panel
-        if self.history_panel.is_visible() && event.keystroke.key.as_str() == "escape" {
-            let saved = self.history_panel.close();
-            self.input_state.update(cx, |state, cx| {
-                state.set_value(&saved, window, cx);
-            });
-            cx.notify();
-            return;
+        // Cmd+C with selected block → copy block content
+        if event.keystroke.key.as_str() == "c" && event.keystroke.modifiers.platform {
+            if let Some(idx) = self.selected_block {
+                if let Some(block) = self.block_manager.blocks().get(idx) {
+                    let text = block.command.clone();
+                    // Grid content would be extracted here when BlockGridRouter is wired
+                    // For now, copy the command text
+                    cx.write_to_clipboard(inazuma::ClipboardItem::new_string(text));
+                    self.selected_block = None;
+                    cx.notify();
+                    return;
+                }
+            }
+        }
+
+        if event.keystroke.key.as_str() == "escape" {
+            // Dismiss history panel
+            if self.history_panel.is_visible() {
+                let saved = self.history_panel.close();
+                self.input_state.update(cx, |state, cx| {
+                    state.set_value(&saved, window, cx);
+                });
+                cx.notify();
+                return;
+            }
+            // Deselect block
+            if self.selected_block.is_some() {
+                self.selected_block = None;
+                cx.notify();
+                return;
+            }
         }
 
         if !self.interactive_mode {
@@ -590,12 +613,24 @@ impl Render for Workspace {
 
                 container = container.child({
                     let output_area = div()
+                        .id("terminal-output")
                         .flex()
                         .flex_col()
                         .justify_end()
                         .flex_1()
                         .min_h_0()
-                        .overflow_hidden();
+                        .overflow_hidden()
+                        .on_click(cx.listener(|view, _, _, cx| {
+                            // Toggle selection of the last finished block
+                            let last_idx = view.block_manager.blocks().iter()
+                                .rposition(|b| b.is_finished());
+                            if view.selected_block == last_idx {
+                                view.selected_block = None;
+                            } else {
+                                view.selected_block = last_idx;
+                            }
+                            cx.notify();
+                        }));
 
                     if self.show_terminal || self.interactive_mode {
                         output_area.child(
