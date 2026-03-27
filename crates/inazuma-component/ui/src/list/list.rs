@@ -14,7 +14,7 @@ use crate::{Icon, IndexPath, Selectable, Sizable, StyledExt};
 use crate::{VirtualListScrollHandle, list::ListDelegate, v_virtual_list};
 use inazuma::{
     App, AvailableSpace, ClickEvent, Context, DefiniteLength, EdgesRefinement, EventEmitter,
-    ListSizingBehavior, RenderOnce, ScrollStrategy, SharedString, StatefulInteractiveElement,
+    ListSizingBehavior, Pixels, RenderOnce, ScrollStrategy, SharedString, StatefulInteractiveElement,
     StyleRefinement, Subscription, px, size,
 };
 use inazuma::{
@@ -245,6 +245,18 @@ where
     /// Get scroll handle
     pub fn scroll_handle(&self) -> &VirtualListScrollHandle {
         &self.scroll_handle
+    }
+
+    /// Returns the measured height of a single item in the list.
+    /// All items in the list have the same height.
+    pub fn measured_item_height(&self) -> Pixels {
+        self.rows_cache.item_height()
+    }
+
+    /// Returns the total content height of the scrollable list.
+    pub fn content_height(&self) -> Pixels {
+        use crate::scroll::ScrollbarHandle;
+        self.scroll_handle.content_size().height
     }
 
     pub fn scroll_to_selected_item(&mut self, _: &mut Window, cx: &mut Context<Self>) {

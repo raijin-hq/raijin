@@ -74,6 +74,11 @@ pub(crate) struct RowsCache {
 }
 
 impl RowsCache {
+    /// Returns the measured height of a single item.
+    pub(crate) fn item_height(&self) -> Pixels {
+        self.measured_size.item_size.height
+    }
+
     pub(crate) fn get(&self, flatten_ix: usize) -> Option<RowEntry> {
         self.entities.get(flatten_ix).cloned()
     }

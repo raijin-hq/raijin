@@ -18,6 +18,22 @@ use lsp_types::{
 
 use crate::command_history::CommandHistory;
 
+/// Escape special shell characters in a path (spaces, parens, brackets, etc.)
+fn shell_escape_path(path: &str) -> String {
+    let mut escaped = String::with_capacity(path.len());
+    for ch in path.chars() {
+        match ch {
+            ' ' | '(' | ')' | '[' | ']' | '{' | '}' | '!' | '&' | '|' | ';' | '\''
+            | '"' | '`' | '$' | '#' | '~' | '*' | '?' | '<' | '>' => {
+                escaped.push('\\');
+                escaped.push(ch);
+            }
+            _ => escaped.push(ch),
+        }
+    }
+    escaped
+}
+
 /// Shell completion provider with all completion sub-systems.
 pub struct ShellCompletionProvider {
     /// Current shell name ("bash", "zsh", "fish", "nu").
@@ -156,22 +172,36 @@ impl ShellCompletionProvider {
         if let Ok(entries) = std::fs::read_dir(&dir) {
             for entry in entries.flatten() {
                 if let Ok(name) = entry.file_name().into_string() {
-                    if name.starts_with(&prefix) && !name.starts_with('.') {
+                    let name_lower = name.to_lowercase();
+                    let prefix_lower = prefix.to_lowercase();
+                    if name_lower.starts_with(&prefix_lower) && !name.starts_with('.') {
                         let is_dir = entry.file_type().map_or(false, |t| t.is_dir());
+                        let suffix = if is_dir { "/" } else { "" };
                         let display = if partial.contains('/') {
                             let dir_prefix = &partial[..partial.rfind('/').unwrap() + 1];
-                            format!("{}{}", dir_prefix, name)
+                            format!("{}{}{}", dir_prefix, name, suffix)
                         } else {
-                            name.clone()
+                            format!("{}{}", name, suffix)
                         };
+                        // Shell-escaped version for actual insertion
+                        let escaped_display = shell_escape_path(&display);
+                        let type_label = if is_dir { "Directory" } else { "File" };
                         items.push(CompletionItem {
-                            label: display,
+                            label: display.clone(),
+                            insert_text: Some(escaped_display),
+                            insert_text_format: Some(InsertTextFormat::PLAIN_TEXT),
                             kind: Some(if is_dir {
                                 CompletionItemKind::FOLDER
                             } else {
                                 CompletionItemKind::FILE
                             }),
-                            detail: Some(if is_dir { "Directory" } else { "File" }.to_string()),
+                            detail: Some(type_label.to_string()),
+                            documentation: Some(lsp_types::Documentation::MarkupContent(
+                                lsp_types::MarkupContent {
+                                    kind: lsp_types::MarkupKind::PlainText,
+                                    value: format!("{}\n{}", display, type_label),
+                                },
+                            )),
                             ..Default::default()
                         });
                     }

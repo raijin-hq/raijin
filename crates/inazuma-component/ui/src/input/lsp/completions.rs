@@ -126,18 +126,23 @@ impl InputState {
         let start = range.end;
         let new_offset = self.cursor();
 
-        if !provider.is_completion_trigger(start, new_text, cx) {
+        // Check if a completion menu already exists (open or recently shown)
+        let existing_menu = match self.context_menu.as_ref() {
+            Some(ContextMenu::Completion(menu)) => Some(menu.clone()),
+            _ => None,
+        };
+        let menu_was_active = existing_menu.as_ref()
+            .map(|m| m.read(cx).is_open() || m.read(cx).trigger_start_offset.is_some())
+            .unwrap_or(false);
+
+        // If no active menu, only trigger on specific characters
+        if !menu_was_active && !provider.is_completion_trigger(start, new_text, cx) {
             return;
         }
 
-        let menu = match self.context_menu.as_ref() {
-            Some(ContextMenu::Completion(menu)) => Some(menu),
-            _ => None,
-        };
-
-        // To create or get the existing completion menu.
-        let menu = match menu {
-            Some(menu) => menu.clone(),
+        // Reuse existing menu or create new one
+        let menu = match existing_menu {
+            Some(menu) => menu,
             None => {
                 let menu = CompletionMenu::new(cx.entity(), window, cx);
                 self.context_menu = Some(ContextMenu::Completion(menu.clone()));
@@ -184,6 +189,13 @@ impl InputState {
                     menu.hide(cx);
                     cx.notify();
                 });
+
+                // Menu closed due to no results — trigger inline completion
+                editor
+                    .update_in(cx, |editor, window, cx| {
+                        editor.schedule_inline_completion(window, cx);
+                    })
+                    .ok();
 
                 return Ok(());
             }

@@ -1,4 +1,4 @@
-# Inazuma: cocoa/objc → objc2 Migration
+# Inazuma: Modernization Migrations
 
 ## Ziel
 
@@ -44,3 +44,77 @@ Alle `cocoa` (0.26) und `objc` (0.2) Nutzung in `crates/inazuma/` durch `objc2`,
 - [objc2 GitHub](https://github.com/madsmtm/objc2)
 - [objc2-app-kit docs](https://docs.rs/objc2-app-kit)
 - [Migration Tracking Issue #174](https://github.com/madsmtm/objc2/issues/174)
+
+---
+
+# Inazuma: HSLA → OKLCH Color Migration
+
+## Ziel
+
+Gesamtes Farbsystem in Inazuma von HSLA auf OKLCH (Oklab Lightness Chroma Hue) umstellen.
+
+## Warum
+
+- OKLCH ist **perceptually uniform** — gleiche Lightness-Werte sehen für das menschliche Auge tatsächlich gleich hell aus (bei HSLA ist `hsl(60°,100%,50%)` deutlich heller als `hsl(240°,100%,50%)`)
+- Bessere Farb-Interpolation für Gradienten, Animationen, Opacity-Blending
+- Modernster CSS-Standard (CSS Color Level 4, ab 2023 in allen Browsern)
+- Design-Token-System (`raijin-ui`) profitiert massiv — Palette-Generierung, Contrast-Checks, Theme-Varianten werden alle einfacher
+- Gamut-Mapping für Wide-Gamut Displays (P3) ist mit OKLCH trivial
+
+## Scope
+
+| Bereich | Aufwand |
+|---------|---------|
+| `inazuma/src/color.rs` — `Oklch` Struct + Konvertierung | Mittel |
+| `inazuma/src/styled.rs` — `oklch()` / `oklcha()` Helper | Klein |
+| Alle `hsla()` Aufrufe in inazuma + inazuma-component | Groß (viele Stellen) |
+| `raijin-app` hardcoded Farben | Klein |
+| Theme-System (`ActiveTheme`) | Mittel |
+
+## Vorgehen
+
+1. `Oklch` Struct in `color.rs` definieren (L: 0–1, C: 0–0.4, H: 0–360, A: 0–1)
+2. Konvertierung `Oklch ↔ Hsla ↔ Rgba` implementieren
+3. `oklch()` und `oklcha()` Constructor-Funktionen
+4. Interne Rendering-Pipeline: OKLCH → Linear sRGB → GPU (Metal/wgpu erwartet Linear sRGB)
+5. Schrittweise Migration: neue Farben in OKLCH, bestehende Stück für Stück umstellen
+6. `Hsla` als Fallback/Compat behalten bis alles migriert ist
+
+## Referenzen
+
+- [OKLCH Color Picker](https://oklch.com)
+- [CSS Color Level 4 Spec](https://www.w3.org/TR/css-color-4/#ok-lab)
+- [Oklab Paper (Björn Ottosson)](https://bottosson.github.io/posts/oklab/)
+
+---
+
+# Inazuma: mod.rs → {modul}.rs Migration
+
+## Ziel
+
+Alle `mod.rs` Dateien in `crates/inazuma/` durch benannte Modul-Dateien ersetzen (moderne Rust-Convention).
+
+## Warum
+
+- `mod.rs` macht Tabs im Editor ununterscheidbar (alle heißen `mod.rs`)
+- Moderne Rust-Convention seit Edition 2018 — `foo.rs` statt `foo/mod.rs`
+- Raijin-Projekt-Convention verbietet `mod.rs` bereits (siehe CLAUDE.md)
+- Inazuma hat noch viele `mod.rs` aus dem GPUI-Fork
+
+## Scope
+
+```bash
+# Alle mod.rs in Inazuma finden:
+find crates/inazuma/src -name "mod.rs" | wc -l
+```
+
+## Vorgehen
+
+1. Für jedes `src/foo/mod.rs` → umbenennen zu `src/foo.rs`
+2. Interne `mod`-Deklarationen anpassen (von `mod foo { mod bar; }` zu `mod foo;`)
+3. Sicherstellen dass `cargo test -p inazuma` und `cargo build --workspace` durchlaufen
+4. Batch-weise machen (z.B. alle `platform/` auf einmal, dann `elements/`, etc.)
+
+## Hinweis
+
+Rein mechanische Umbenennung — kein Code ändert sich, nur Dateipfade. Git erkennt Renames automatisch.

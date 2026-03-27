@@ -6,18 +6,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 cargo build                           # Build raijin-app (default member)
-cargo build -p raijin-app             # Explicit app build
 cargo run -p raijin-app               # Run the terminal app
-cargo build -p raijin-terminal        # Build terminal crate only
-cargo build -p inazuma                # Build framework only
+cargo raijin dev                      # Hot-reload dev mode (watches src, rebuilds + relaunches)
+cargo raijin dev --release            # Hot-reload in release mode
+cargo raijin build                    # Release build + .app bundle
+cargo raijin build --debug            # Debug build + .app bundle
+cargo raijin icon                     # Compile .icon → Assets.car via actool
 cargo test -p raijin-terminal         # Run terminal tests (OSC parser, blocks)
 cargo test -p inazuma-macros          # Run framework macro tests
 cargo test --workspace                # All tests
 cargo clippy --workspace              # Lint (dbg! and todo! are denied)
-./crates/raijin-app/bundle.sh         # Create macOS .app bundle
 ```
 
-Requires **Rust nightly** (edition 2024, resolver 3). macOS is the primary platform (Metal rendering).
+Requires **Rust nightly** (edition 2024, resolver 3). No `rust-toolchain.toml` — install nightly manually. macOS is the primary platform (Metal rendering).
+
+`.cargo/config.toml` sets: `symbol-mangling-version=v0` rustflag, `MACOSX_DEPLOYMENT_TARGET=10.15.7`, and the `cargo raijin` alias.
 
 ## Architecture
 
@@ -28,12 +31,17 @@ Requires **Rust nightly** (edition 2024, resolver 3). macOS is the primary platf
 ```
 raijin-app (binary — entry point, workspace layout, terminal rendering)
 ├── inazuma (GPU UI framework, forked from gpui-ce)
-│   └── inazuma-macros (proc-macros)
+│   └── inazuma-macros (proc-macros: derive Actions, elements, etc.)
 ├── inazuma-component (70+ UI components: input, chips, title_bar, tabs, etc.)
-│   └── inazuma-component-assets (bundled fonts/icons)
+│   ├── inazuma-component-macros (proc-macros: icon_named!, IntoPlot derive)
+│   └── inazuma-component-assets (bundled fonts/icons/SVGs)
 ├── raijin-terminal (PTY + alacritty_terminal wrapper + OSC 133 parser + block system)
+├── raijin-term (low-level terminal emulation core — standalone fork of alacritty_terminal with BlockGrid)
 ├── raijin-shell (shell context: CWD, git branch, user info)
-└── raijin-ui (design token system — WIP, currently empty)
+├── raijin-settings (user config at ~/.config/raijin/config.toml — theme, font, cursor, scrollback, symbol_map)
+├── raijin-completions (spec-based CLI completion engine — JSON specs for git, cargo, etc.)
+├── raijin-ui (design token system — WIP, currently empty)
+└── cargo-raijin (dev tooling binary: cargo raijin dev/build/icon — not a library)
 ```
 
 ### Key Subsystems
@@ -42,11 +50,17 @@ raijin-app (binary — entry point, workspace layout, terminal rendering)
 
 **Terminal Backend** (`raijin-terminal`) — Wraps `alacritty_terminal::Term` for grid state. PTY spawning in `pty.rs` injects shell hooks via `ZDOTDIR` manipulation. The `osc_parser.rs` scans PTY byte streams for OSC 133 (FTCS) shell integration markers. `block.rs` provides `BlockManager` which tracks command blocks (prompt→input→output→exit code).
 
-**Shell Hooks** (`shell/raijin.{zsh,bash,fish}`) — Injected into the spawned shell to emit OSC 133 markers (PromptStart, InputStart, CommandStart, CommandEnd with exit code).
+**Terminal Core** (`raijin-term`) — Lower-level terminal emulation: VT state machine, grid storage, `BlockGrid` (per-command grids with independent cursors/scroll regions), PTY abstraction via `rustix-openpty`. Being developed as a more complete replacement for the alacritty_terminal dependency.
+
+**Shell Hooks** (`shell/raijin.{zsh,bash,fish}`, `shell/nushell/`) — Injected into the spawned shell to emit OSC 133 markers (PromptStart, InputStart, CommandStart, CommandEnd) and OSC 7777 JSON metadata (hex-encoded). Zsh uses `ZDOTDIR` injection, Bash uses `--rcfile`. Nushell has dedicated integration in `shell/nushell/`.
 
 **Workspace** (`raijin-app/src/workspace.rs`) — Warp-style 3-zone layout: tab bar (top), terminal output with block headers (middle), input bar with context chips (bottom). Two input modes: Raijin Mode (custom input + context chips) and Shell PS1 Mode (raw shell prompt).
 
 **Terminal Element** (`raijin-app/src/terminal_element.rs`) — Custom Inazuma element that renders the alacritty grid cell-by-cell with ANSI color mapping, block headers (command + duration + exit badge), cursor, and content masking.
+
+**Settings** (`raijin-settings`) — `RaijinConfig` implements `inazuma::Global` for app-wide access. Config sections: `GeneralConfig` (working_directory, input_mode), `AppearanceConfig` (theme, font_family, font_size, symbol_map for Nerd Font ranges), `TerminalConfig` (scrollback_history, cursor_style).
+
+**Completions** (`raijin-completions`) — Parses the user's current input line into `CommandContext` + `TokenPosition`, matches against embedded JSON specs (`specs/git.json`, `specs/cargo.json`), returns `CompletionCandidate`s. Supports file paths, git branches/tags/remotes, env vars, process IDs.
 
 ### Theme
 
@@ -63,4 +77,4 @@ Raijin Dark: `#121212` background, `#14F195` accent (Solana green), `#f1f1f1` fo
 
 ## Project Phases
 
-Roadmap lives in `plan/` (00–10). Current status: Phase 2A (Shell Integration + Block System) is in progress. Phases 0 (foundation) and 1 (minimal terminal) are complete.
+Roadmap lives in `plan/` (00–14). Current status: Phase 2A (Shell Integration + Block System) is in progress. Phases 0 (foundation) and 1 (minimal terminal) are complete. Completed plans are in `plan/done/`.

@@ -223,7 +223,19 @@ impl InputState {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        // First, try to accept inline completion if present
+        // First, try to confirm completion menu selection if open
+        if self.is_context_menu_open(cx) {
+            if let Some(crate::input::popovers::ContextMenu::Completion(menu)) =
+                self.context_menu.as_ref()
+            {
+                let menu = menu.clone();
+                menu.update(cx, |menu, cx| {
+                    menu.confirm(window, cx);
+                });
+                return;
+            }
+        }
+        // Then, try to accept inline completion if present
         if self.accept_inline_completion(window, cx) {
             return;
         }
