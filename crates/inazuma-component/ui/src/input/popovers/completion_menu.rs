@@ -421,11 +421,18 @@ impl Render for CompletionMenu {
             abs_pos.x + MAX_MENU_WIDTH + POPOVER_GAP + MAX_MENU_WIDTH + POPOVER_GAP
                 > window.bounds().size.width;
 
+        // Menu opens above the cursor (terminal input is always at the bottom)
+        let editor = self.editor.read(cx);
+        let line_height = editor.last_layout.as_ref()
+            .map(|l| l.line_height)
+            .unwrap_or(px(20.));
+        let menu_y = pos.y - line_height - MAX_MENU_HEIGHT - POPOVER_GAP;
+
         deferred(
             div()
                 .absolute()
                 .left(pos.x)
-                .top(pos.y)
+                .top(menu_y)
                 .flex()
                 .flex_row()
                 .gap(POPOVER_GAP)
