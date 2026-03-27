@@ -13,32 +13,6 @@ use crate::terminal::colors::resolve_colors;
 use crate::terminal::constants::*;
 
 // ---------------------------------------------------------------------------
-// Block render info (passed from workspace)
-// ---------------------------------------------------------------------------
-
-/// Metadata for rendering a block header overlay.
-#[derive(Clone)]
-pub struct BlockRenderInfo {
-    pub command: String,
-    pub duration_display: String,
-    pub exit_code: Option<i32>,
-    /// Absolute row where this block's output starts (history_size + cursor_line at marker time).
-    pub abs_start_row: usize,
-    /// Absolute row where this block's output ends (None if still running).
-    pub abs_end_row: Option<usize>,
-    /// CWD at the time this block was created (from shell metadata).
-    pub cwd_short: Option<String>,
-    /// Git branch at block creation time.
-    pub git_branch: Option<String>,
-    /// Username at block creation time.
-    pub username: Option<String>,
-    /// Hostname at block creation time.
-    pub hostname: Option<String>,
-    /// Time when the block was created (e.g. "17:33").
-    pub time_display: String,
-}
-
-// ---------------------------------------------------------------------------
 // Layout / prepaint state
 // ---------------------------------------------------------------------------
 
@@ -102,13 +76,18 @@ pub struct TerminalPrepaint {
 // ---------------------------------------------------------------------------
 
 /// Custom Inazuma element that renders the terminal grid with block headers.
+/// Cached shaped lines for a finished block (never changes after finalization).
+struct BlockShapeCache {
+    lines: Vec<(Point<Pixels>, ShapedLine)>,
+    backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
+    /// Number of content rows when cached — invalidate if grid resizes.
+    content_rows: usize,
+    /// Grid columns when cached — invalidate on column resize.
+    cols: usize,
+}
+
 pub struct TerminalElement {
     handle: TerminalHandle,
-    blocks: Vec<BlockRenderInfo>,
-    /// Hide all rows before this absolute row (hides initial prompt in Raijin mode).
-    hide_before_row: Option<usize>,
-    /// Prompt regions to hide: (start_row, end_row) inclusive absolute rows.
-    hidden_prompt_regions: Vec<(usize, usize)>,
     /// Font family from config.
     font_family: String,
     /// Font size from config.
@@ -117,19 +96,22 @@ pub struct TerminalElement {
     cursor_beam: bool,
     /// Index of the selected/clicked block (green highlight).
     selected_block: Option<usize>,
+    /// Last terminal dimensions to avoid redundant resize calls.
+    last_size: Option<(u16, u16)>,
+    /// Shaped line cache for finished blocks. Key = block index.
+    shape_cache: std::collections::HashMap<usize, BlockShapeCache>,
 }
 
 impl TerminalElement {
     pub fn new(handle: TerminalHandle) -> Self {
         Self {
             handle,
-            blocks: Vec::new(),
-            hide_before_row: None,
-            hidden_prompt_regions: Vec::new(),
             font_family: FONT_FAMILIES[0].to_string(),
             font_size: FONT_SIZE,
             cursor_beam: true,
             selected_block: None,
+            last_size: None,
+            shape_cache: std::collections::HashMap::new(),
         }
     }
 
@@ -150,48 +132,6 @@ impl TerminalElement {
     pub fn with_cursor_beam(mut self, beam: bool) -> Self {
         self.cursor_beam = beam;
         self
-    }
-
-    pub fn with_blocks(mut self, blocks: Vec<BlockRenderInfo>) -> Self {
-        self.blocks = blocks;
-        self
-    }
-
-    pub fn with_hide_before_row(mut self, row: Option<usize>) -> Self {
-        self.hide_before_row = row;
-        self
-    }
-
-    pub fn with_hidden_prompt_regions(mut self, regions: Vec<(usize, usize)>) -> Self {
-        self.hidden_prompt_regions = regions;
-        self
-    }
-
-    /// Check if an absolute row falls inside a hidden prompt region or
-    /// the current pending prompt (prompt_start_row to present).
-    /// Rows that belong to a block are NEVER hidden.
-    fn is_in_hidden_prompt_region(&self, abs_row: usize) -> bool {
-        // Never hide rows that belong to a block's output range
-        for block in &self.blocks {
-            let end = block.abs_end_row.unwrap_or(usize::MAX);
-            if abs_row >= block.abs_start_row && abs_row <= end {
-                return false;
-            }
-        }
-
-        // Closed prompt regions (between PromptStart and CommandStart)
-        for &(start, end) in &self.hidden_prompt_regions {
-            if abs_row >= start && abs_row <= end {
-                return true;
-            }
-        }
-        // Current open prompt (no CommandStart yet — user is still at prompt)
-        if let Some(prompt_start) = self.hide_before_row {
-            if abs_row >= prompt_start {
-                return true;
-            }
-        }
-        false
     }
 
     fn compute_layout(&self, window: &mut Window) -> TerminalLayout {
@@ -231,10 +171,6 @@ impl TerminalElement {
         }
     }
 
-    /// Compute visual row for an absolute row given current grid state.
-    fn abs_to_visual(abs_row: usize, history_size: usize, display_offset: usize) -> i64 {
-        abs_row as i64 - history_size as i64 + display_offset as i64
-    }
 }
 
 impl IntoElement for TerminalElement {
@@ -287,490 +223,392 @@ impl Element for TerminalElement {
         window: &mut Window,
         _cx: &mut App,
     ) -> Self::PrepaintState {
-        // Resize terminal grid + PTY if bounds changed
+        // Resize terminal grid + PTY only if bounds actually changed
         let new_cols = (bounds.size.width / layout.cell_width).floor() as u16;
         let new_rows = (bounds.size.height / layout.cell_height).floor() as u16;
-        self.handle.set_size(new_rows, new_cols);
+        if self.last_size != Some((new_rows, new_cols)) {
+            self.handle.set_size(new_rows, new_cols);
+            self.last_size = Some((new_rows, new_cols));
+        }
 
         let term = self.handle.lock();
         let content = term.renderable_content();
-
-        let grid_rows = term.screen_lines();
-        let grid_cols = term.columns();
         let colors = content.colors;
-        let display_offset = content.display_offset;
-        let history_size = term.grid().history_size();
+        let mode = content.mode;
+        let router = term.block_router();
+        let router_blocks = router.blocks();
 
         let bg_color = terminal_bg();
 
-        let mut lines = Vec::with_capacity(grid_rows);
+        let mut lines = Vec::new();
         let mut backgrounds = Vec::new();
         let mut cursor_rect = None;
         let mut block_headers: Vec<BlockHeaderPaint> = Vec::new();
         let mut block_bodies: Vec<BlockBodyPaint> = Vec::new();
 
-        // Track block body Y positions: (block_idx, header_y, last_output_y)
-        let mut block_body_tracking: Vec<(usize, Pixels, Pixels)> = Vec::new();
+        // Pair metadata (from workspace BlockManager) with grid data (from block_router).
+        // Both are populated from the same OSC events, so indices correspond.
+        let block_count = router_blocks.len();
 
-        // Compute which rows to hide (initial prompt)
-        let first_block_start = self.blocks.first().map(|b| b.abs_start_row);
-        let hide_up_to = match (self.hide_before_row, first_block_start) {
-            (Some(prompt_row), Some(block_start)) => Some(block_start.min(prompt_row + grid_rows)),
-            (Some(prompt_row), None) => Some(prompt_row + grid_rows), // no blocks yet, hide prompt area
-            _ => None,
-        };
-
-        // Build a set of visual rows where block headers should appear
-        let mut header_at_visual_row: Vec<(i64, usize)> = Vec::new(); // (visual_row, block_index)
-        for (idx, block) in self.blocks.iter().enumerate() {
-            let visual = Self::abs_to_visual(block.abs_start_row, history_size, display_offset);
-            header_at_visual_row.push((visual, idx));
-        }
-        header_at_visual_row.sort_by_key(|(v, _)| *v);
-
-        // Bottom-grow layout: only render rows with content
-        let cursor = &content.cursor;
-        let cursor_point = cursor.point;
-        let cursor_visual_row =
-            (cursor_point.line.0 as usize).saturating_add(display_offset);
-
-        // Cap content_rows: when all blocks are finished, stop at the last
-        // block's end row. This eliminates the gap between the last block and
-        // the input area — like Warp, blocks are tight discrete units.
-        let has_active_block = self.blocks.last().is_some_and(|b| b.exit_code.is_none());
-        let content_rows = if !self.blocks.is_empty() && !has_active_block {
-            // All blocks finished — cap at last block's end_row + 1
-            let last_end = self.blocks.iter()
-                .filter_map(|b| b.abs_end_row)
-                .max()
-                .unwrap_or(0);
-            let last_visual = Self::abs_to_visual(last_end, history_size, display_offset);
-            ((last_visual as usize) + 1).min(grid_rows)
-        } else {
-            // Active block or no blocks — extend to cursor
-            (cursor_visual_row + 1).min(grid_rows)
-        };
-
-        // Count how many rows will be hidden (prompt regions + empty block rows)
-        let hidden_row_count = (0..content_rows)
-            .filter(|&row_idx| {
-                let abs_row = history_size + row_idx - display_offset.min(row_idx);
-                // Hidden prompt regions
-                if self.is_in_hidden_prompt_region(abs_row) {
-                    return true;
-                }
-                // Initial prompt hiding
-                if hide_up_to.is_some_and(|h| abs_row < h) && self.blocks.is_empty() {
-                    return true;
-                }
-                // Empty no-output block rows (only header renders, no grid row)
-                if self.blocks.iter().any(|b| {
-                    abs_row >= b.abs_start_row
-                        && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
-                        && b.abs_end_row == Some(b.abs_start_row)
-                        && b.exit_code.is_some()
-                }) {
-                    return true;
-                }
-                false
-            })
-            .count();
-        let visible_content_rows = content_rows.saturating_sub(hidden_row_count);
-
-        // Calculate total extra height from block headers that will be visible
-        let visible_headers: Vec<(usize, usize)> = header_at_visual_row
-            .iter()
-            .filter(|(v, _)| *v >= 0 && (*v as usize) < content_rows)
-            .map(|(v, idx)| (*v as usize, *idx))
-            .collect();
-
-        let total_header_height: f32 = visible_headers
-            .iter()
-            .map(|(_, idx)| {
-                let cmd_lines = self.blocks[*idx].command.lines().count().max(1);
-                BLOCK_HEADER_HEIGHT
-                    + (cmd_lines.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0))
-                    + BLOCK_GAP
-            })
-            .sum();
-        let content_height =
-            layout.cell_height * visible_content_rows as f32 + px(total_header_height);
-
-        // Y offset: push content to the bottom of the bounds
-        let y_offset = bounds.size.height - content_height;
-
-        // Track accumulated header offset as we iterate rows
-        let mut header_offset = px(0.0);
-        let mut next_header_idx = 0;
-
-        // Cursor rect (adjusted for header offsets).
-        // Don't render cursor if it's in a hidden prompt region.
-        let cursor_abs_row = history_size + cursor_visual_row - display_offset.min(cursor_visual_row);
-        let cursor_hidden = self.is_in_hidden_prompt_region(cursor_abs_row);
-        if content.mode.contains(raijin_term::term::TermMode::SHOW_CURSOR) && !cursor_hidden {
-            // Compute header offset at cursor row
-            let mut cursor_header_offset = px(0.0);
-            for (visual_row, idx) in &visible_headers {
-                if *visual_row <= cursor_visual_row {
-                    let cmd_lines = self.blocks[*idx].command.lines().count().max(1);
-                    let h = BLOCK_HEADER_HEIGHT
-                        + (cmd_lines.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
-                    cursor_header_offset += px(h + BLOCK_GAP);
-                }
-            }
-
-            // Count hidden rows before the cursor to adjust visual position
-            let hidden_before_cursor = (0..cursor_visual_row)
-                .filter(|&r| {
-                    let abs = history_size + r - display_offset.min(r);
-                    self.is_in_hidden_prompt_region(abs)
-                })
-                .count();
-            let cursor_y_row = cursor_visual_row.saturating_sub(hidden_before_cursor);
-
-            let cx_px = bounds.origin.x + layout.cell_width * cursor_point.column.0 as f32;
-            let cy_px = bounds.origin.y
-                + y_offset
-                + layout.cell_height * cursor_y_row as f32
-                + cursor_header_offset;
-            let cursor_width = if self.cursor_beam {
-                px(2.0)
-            } else {
-                layout.cell_width
+        if block_count == 0 {
+            return TerminalPrepaint {
+                lines,
+                backgrounds,
+                cursor_rect,
+                line_height: layout.line_height,
+                block_headers,
+                block_bodies,
+                sticky_header: None,
             };
-            cursor_rect = Some(Bounds::new(
-                point(cx_px, cy_px),
-                size(cursor_width, layout.cell_height),
-            ));
         }
 
-        let grid = term.grid();
+        // First pass: compute total content height for bottom-grow layout
+        struct BlockLayoutInfo {
+            header_height: f32,
+            content_rows: usize,
+        }
+        let mut block_layouts: Vec<BlockLayoutInfo> = Vec::with_capacity(block_count);
+        let mut total_height = px(0.0);
 
-        // Track rendered row position separately from grid row index.
-        // Hidden prompt rows are skipped but the visual layout stays compact.
-        let mut visual_y_row: usize = 0;
+        for i in 0..block_count {
+            let block_grid = &router_blocks[i];
 
-        for row_idx in 0..content_rows {
-            // Check if this row should be hidden (prompt area)
-            let abs_row = history_size + row_idx - display_offset.min(row_idx);
+            let cmd_lines = block_grid.command.lines().count().max(1);
+            let header_height = BLOCK_HEADER_HEIGHT
+                + (cmd_lines.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
 
-            // Hide initial prompt (before any blocks)
-            if let Some(hide_up) = hide_up_to {
-                if abs_row < hide_up && self.blocks.is_empty() {
-                    continue;
-                }
-            }
+            // Content rows: scrollback history + visible rows up to cursor position
+            let cursor_line = block_grid.grid.cursor.point.line.0.max(0) as usize;
+            let history = block_grid.grid.history_size();
+            let content_rows = history + cursor_line + 1;
 
-            // Hide prompt regions between blocks — rows where the shell prompt
-            // (Starship, P10k, etc.) rendered. Like Warp, we don't render these.
-            if self.is_in_hidden_prompt_region(abs_row) {
+            total_height += px(header_height + BLOCK_GAP)
+                + layout.cell_height * content_rows as f32
+                + px(BLOCK_BODY_PAD_BOTTOM);
+
+            block_layouts.push(BlockLayoutInfo { header_height, content_rows });
+        }
+
+        // Bottom-grow layout: push content to the bottom of the bounds
+        let y_offset = (bounds.size.height - total_height).max(px(0.0));
+        let mut current_y = bounds.origin.y + y_offset;
+
+        // Second pass: render each block (header + grid content)
+        let viewport_top = bounds.origin.y;
+        let viewport_bottom = bounds.origin.y + bounds.size.height;
+
+        for i in 0..block_count {
+            let bl = &block_layouts[i];
+            let block_height = px(bl.header_height + BLOCK_GAP)
+                + layout.cell_height * bl.content_rows as f32
+                + px(BLOCK_BODY_PAD_BOTTOM);
+
+            // Viewport culling: skip blocks entirely outside the visible area
+            if current_y + block_height < viewport_top {
+                current_y += block_height;
                 continue;
             }
+            if current_y > viewport_bottom {
+                break; // All remaining blocks are below viewport
+            }
 
-            // Check if a block header should be inserted before this row
-            while next_header_idx < visible_headers.len()
-                && visible_headers[next_header_idx].0 == row_idx
-            {
-                let block_idx = visible_headers[next_header_idx].1;
-                let block = &self.blocks[block_idx];
+            let block_grid = &router_blocks[i];
+            let meta = &block_grid.metadata;
+            let grid = &block_grid.grid;
+            let is_error = block_grid.exit_code.map_or(false, |c| c != 0);
+            let is_running = block_grid.exit_code.is_none();
+            let is_selected = self.selected_block == Some(i);
 
-                let header_y =
-                    bounds.origin.y + y_offset + layout.cell_height * visual_y_row as f32 + header_offset;
+            let header_y = current_y;
+            let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
 
-                let is_error = block.exit_code.map_or(false, |c| c != 0);
-                let is_running = block.exit_code.is_none();
+            // ---- Block Header ----
+            // Line 1: metadata (Warp-style)
+            let mut meta_parts: Vec<String> = Vec::new();
+            if let Some(ref user) = meta.username {
+                meta_parts.push(user.clone());
+            }
+            if let Some(ref host) = meta.hostname {
+                meta_parts.push(host.clone());
+            }
+            if let Some(ref cwd) = meta.cwd {
+                meta_parts.push(cwd.clone());
+            }
+            if let Some(ref branch) = meta.git_branch {
+                meta_parts.push(format!(" {}", branch));
+            }
+            // Time display from block's started_at
+            let elapsed = block_grid.started_at.elapsed();
+            let now = time::OffsetDateTime::now_local()
+                .unwrap_or_else(|_| time::OffsetDateTime::now_utc());
+            let at_start = now - elapsed;
+            let time_display = at_start
+                .format(time::macros::format_description!("[hour]:[minute]"))
+                .unwrap_or_else(|_| "--:--".to_string());
+            meta_parts.push(time_display);
 
-                // Calculate dynamic header height based on command line count
-                let cmd_line_count = block.command.lines().count().max(1);
-                let header_height = BLOCK_HEADER_HEIGHT
-                    + (cmd_line_count.saturating_sub(1) as f32 * (HEADER_CMD_FONT_SIZE + 4.0));
+            let dur_text = if is_running {
+                "running...".to_string()
+            } else {
+                let duration = block_grid.finished_at
+                    .map(|f| f.duration_since(block_grid.started_at))
+                    .unwrap_or_default();
+                format!("({:.3}s)", duration.as_secs_f64())
+            };
+            meta_parts.push(dur_text);
 
-                let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
+            let meta_text = meta_parts.join("  ");
+            let meta_runs = vec![TextRun {
+                len: meta_text.len(),
+                font: Font {
+                    family: layout.font.family.clone(),
+                    weight: FontWeight::NORMAL,
+                    ..Font::default()
+                },
+                color: header_metadata_fg(),
+                background_color: None,
+                underline: None,
+                strikethrough: None,
+            }];
+            let metadata_line = window.text_system().shape_line(
+                SharedString::from(meta_text),
+                px(HEADER_META_FONT_SIZE),
+                &meta_runs,
+                None,
+            );
+            let metadata_origin = point(text_x, header_y + px(4.0));
 
-                // --- Line 1: metadata (Warp-style) ---
-                // Format: "nyxb MacBook-Pro.fritz.box ~ 17:33 (0.032s)"
-                let mut meta_parts: Vec<String> = Vec::new();
-                if let Some(ref user) = block.username {
-                    meta_parts.push(user.clone());
-                }
-                if let Some(ref host) = block.hostname {
-                    meta_parts.push(host.clone());
-                }
-                if let Some(ref cwd) = block.cwd_short {
-                    meta_parts.push(cwd.clone());
-                }
-                if let Some(ref branch) = block.git_branch {
-                    meta_parts.push(format!(" {}", branch));
-                }
-                meta_parts.push(block.time_display.clone());
-                let dur_text = if is_running {
-                    "running...".to_string()
-                } else {
-                    format!("({})", block.duration_display)
-                };
-                meta_parts.push(dur_text);
+            // Lines 2+: command text (bright, larger, may be multi-line)
+            let cmd_text = if block_grid.command.is_empty() {
+                "(empty)".to_string()
+            } else {
+                block_grid.command.clone()
+            };
+            let cmd_color = header_command_fg();
+            let cmd_lines_text: Vec<&str> = cmd_text.lines().collect();
+            let mut command_lines = Vec::with_capacity(cmd_lines_text.len());
+            let cmd_base_y = header_y + px(4.0 + HEADER_META_FONT_SIZE + 8.0);
 
-                let meta_text = meta_parts.join("  ");
-                let meta_runs = vec![TextRun {
-                    len: meta_text.len(),
+            for (line_idx, line_text) in cmd_lines_text.iter().enumerate() {
+                let text = if line_text.is_empty() { " " } else { line_text };
+                let runs = vec![TextRun {
+                    len: text.len(),
                     font: Font {
                         family: layout.font.family.clone(),
-                        weight: FontWeight::NORMAL,
+                        weight: FontWeight::MEDIUM,
                         ..Font::default()
                     },
-                    color: header_metadata_fg(),
+                    color: cmd_color,
                     background_color: None,
                     underline: None,
                     strikethrough: None,
                 }];
-                let metadata_line = window.text_system().shape_line(
-                    SharedString::from(meta_text),
-                    px(HEADER_META_FONT_SIZE),
-                    &meta_runs,
-                    None,
-                );
-                let metadata_origin = point(text_x, header_y + px(4.0));
-
-                // --- Lines 2+: command text (bright, larger, may be multi-line) ---
-                let cmd_text = if block.command.is_empty() {
-                    "(empty)".to_string()
-                } else {
-                    block.command.clone()
-                };
-                let cmd_color = if is_error {
-                    header_command_fg()
-                } else {
-                    header_command_fg()
-                };
-
-                let cmd_lines_text: Vec<&str> = cmd_text.lines().collect();
-                let mut command_lines = Vec::with_capacity(cmd_lines_text.len());
-                let cmd_base_y = header_y + px(4.0 + HEADER_META_FONT_SIZE + 8.0);
-
-                for (line_idx, line_text) in cmd_lines_text.iter().enumerate() {
-                    let text = if line_text.is_empty() { " " } else { line_text };
-                    let runs = vec![TextRun {
-                        len: text.len(),
-                        font: Font {
-                            family: layout.font.family.clone(),
-                            weight: FontWeight::MEDIUM,
-                            ..Font::default()
-                        },
-                        color: cmd_color,
-                        background_color: None,
-                        underline: None,
-                        strikethrough: None,
-                    }];
-                    let shaped = window.text_system().shape_line(
-                        SharedString::from(text.to_string()),
-                        px(HEADER_CMD_FONT_SIZE),
-                        &runs,
-                        None,
-                    );
-                    let origin = point(
-                        text_x,
-                        cmd_base_y + px(line_idx as f32 * (HEADER_CMD_FONT_SIZE + 4.0)),
-                    );
-                    command_lines.push((shaped, origin));
-                }
-
-                block_headers.push(BlockHeaderPaint {
-                    metadata_line,
-                    metadata_origin,
-                    command_lines,
-                });
-
-                // Track the start of this block body for later bounds calculation
-                block_body_tracking.push((block_idx, header_y, header_y + px(header_height)));
-
-                header_offset += px(header_height + BLOCK_GAP);
-                next_header_idx += 1;
-            }
-
-            // Skip empty grid rows that belong to no-output blocks.
-            // Only the header renders — no cell_height gap below it.
-            let in_empty_block = self.blocks.iter().any(|b| {
-                abs_row >= b.abs_start_row
-                    && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
-                    && b.abs_end_row == Some(b.abs_start_row)
-                    && b.exit_code.is_some()
-            });
-            if in_empty_block {
-                continue;
-            }
-
-            // Render the grid row
-            let mut line_text = String::with_capacity(grid_cols);
-            let mut runs: Vec<TextRun> = Vec::new();
-            let mut skip_next = false;
-
-            let line = Line(row_idx as i32 - display_offset as i32);
-
-            // Skip rows outside the grid's visible range
-            if line.0 >= grid.screen_lines() as i32 || line.0 < -(grid.history_size() as i32) {
-                visual_y_row += 1;
-                continue;
-            }
-
-            let actual_cols = grid.columns();
-            for col_idx in 0..actual_cols {
-                if skip_next {
-                    skip_next = false;
-                    continue;
-                }
-
-                let cell = &grid[line][Column(col_idx)];
-                let c = cell.c;
-                let flags = cell.flags;
-
-                if flags.contains(CellFlags::WIDE_CHAR) {
-                    skip_next = true;
-                }
-
-                let (mut fg, mut bg) = resolve_colors(cell, colors);
-
-                if flags.contains(CellFlags::INVERSE) {
-                    std::mem::swap(&mut fg, &mut bg);
-                }
-
-                // Background rect if non-default
-                if bg != bg_color {
-                    let x = bounds.origin.x + layout.cell_width * col_idx as f32;
-                    let y = bounds.origin.y
-                        + y_offset
-                        + layout.cell_height * visual_y_row as f32
-                        + header_offset;
-                    let width = if flags.contains(CellFlags::WIDE_CHAR) {
-                        layout.cell_width * 2.0
-                    } else {
-                        layout.cell_width
-                    };
-                    backgrounds.push((
-                        Bounds::new(point(x, y), size(width, layout.cell_height)),
-                        bg,
-                    ));
-                }
-
-                let ch = if c == '\0' { ' ' } else { c };
-                let byte_start = line_text.len();
-                line_text.push(ch);
-                let byte_len = line_text.len() - byte_start;
-
-                let font_weight = if flags.contains(CellFlags::BOLD) {
-                    FontWeight::BOLD
-                } else {
-                    FontWeight::NORMAL
-                };
-
-                let font = Font {
-                    family: layout.font.family.clone(),
-                    weight: font_weight,
-                    style: if flags.contains(CellFlags::ITALIC) {
-                        FontStyle::Italic
-                    } else {
-                        FontStyle::Normal
-                    },
-                    ..Font::default()
-                };
-
-                let underline = if flags.contains(CellFlags::UNDERLINE) {
-                    Some(UnderlineStyle {
-                        thickness: px(1.0),
-                        color: Some(fg),
-                        wavy: false,
-                    })
-                } else {
-                    None
-                };
-
-                let strikethrough = if flags.contains(CellFlags::STRIKEOUT) {
-                    Some(StrikethroughStyle {
-                        thickness: px(1.0),
-                        color: Some(fg),
-                    })
-                } else {
-                    None
-                };
-
-                // Merge consecutive cells with identical styling into one TextRun
-                if let Some(last) = runs.last_mut() {
-                    let same_style = last.color == fg
-                        && last.font.weight == font.weight
-                        && last.font.style == font.style
-                        && last.underline == underline
-                        && last.strikethrough == strikethrough;
-
-                    if same_style {
-                        last.len += byte_len;
-                        continue;
-                    }
-                }
-
-                runs.push(TextRun {
-                    len: byte_len,
-                    font,
-                    color: fg,
-                    background_color: None,
-                    underline,
-                    strikethrough,
-                });
-            }
-
-            if !line_text.is_empty() {
                 let shaped = window.text_system().shape_line(
-                    SharedString::from(line_text),
-                    layout.font_size,
+                    SharedString::from(text.to_string()),
+                    px(HEADER_CMD_FONT_SIZE),
                     &runs,
                     None,
                 );
-
-                // Check if this row belongs to a block → add left padding
-                let in_block = self.blocks.iter().any(|b| {
-                    abs_row >= b.abs_start_row
-                        && abs_row <= b.abs_end_row.unwrap_or(usize::MAX)
-                });
-                let text_x = if in_block {
-                    bounds.origin.x + px(BLOCK_HEADER_PAD_X)
-                } else {
-                    bounds.origin.x
-                };
-
-                let row_y = bounds.origin.y
-                    + y_offset
-                    + layout.cell_height * visual_y_row as f32
-                    + header_offset;
-                let origin = point(text_x, row_y);
-                lines.push((origin, shaped));
-
-                // Update block body tracking: extend last_output_y
-                for (bidx, _, last_y) in block_body_tracking.iter_mut() {
-                    let block = &self.blocks[*bidx];
-                    if abs_row >= block.abs_start_row
-                        && abs_row <= block.abs_end_row.unwrap_or(usize::MAX)
-                    {
-                        *last_y = row_y + layout.cell_height;
-                    }
-                }
+                let origin = point(
+                    text_x,
+                    cmd_base_y + px(line_idx as f32 * (HEADER_CMD_FONT_SIZE + 4.0)),
+                );
+                command_lines.push((shaped, origin));
             }
 
-            visual_y_row += 1;
-        }
+            block_headers.push(BlockHeaderPaint {
+                metadata_line,
+                metadata_origin,
+                command_lines,
+            });
 
-        // Finalize block body bounds
-        for (bidx, header_y, last_y) in &block_body_tracking {
-            let block = &self.blocks[*bidx];
-            let is_error = block.exit_code.map_or(false, |c| c != 0);
-            let is_selected = self.selected_block == Some(*bidx);
-            // Add bottom padding to the block body
-            let body_height = *last_y - *header_y + px(BLOCK_BODY_PAD_BOTTOM);
+            current_y += px(bl.header_height + BLOCK_GAP);
+            let output_start_y = current_y;
+
+            // ---- Block Grid Content ----
+            let history_size = grid.history_size();
+            let grid_cols = grid.columns();
+            let screen_lines = grid.screen_lines() as i32;
+
+            // Use cached shaped lines for finished blocks
+            let is_finished = block_grid.is_finished();
+            let cache_valid = is_finished && self.shape_cache.get(&i).is_some_and(|c| {
+                c.content_rows == bl.content_rows && c.cols == grid_cols
+            });
+
+            if cache_valid {
+                // Reuse cached lines with adjusted Y positions
+                let cache = self.shape_cache.get(&i).unwrap();
+                for (cached_origin, shaped) in &cache.lines {
+                    let base_y = cache.lines.first().map_or(px(0.0), |l| l.0.y);
+                    lines.push((point(cached_origin.x, output_start_y + (cached_origin.y - base_y)), shaped.clone()));
+                }
+                for (cached_bounds, color) in &cache.backgrounds {
+                    let dy = output_start_y - cache.lines.first().map_or(px(0.0), |l| l.0.y);
+                    backgrounds.push((
+                        Bounds::new(point(cached_bounds.origin.x, cached_bounds.origin.y + dy), cached_bounds.size),
+                        *color,
+                    ));
+                }
+                current_y += layout.cell_height * bl.content_rows as f32;
+            } else {
+
+            let block_lines_start = lines.len();
+            let block_bgs_start = backgrounds.len();
+
+            for row_offset in 0..bl.content_rows {
+                let line_idx = row_offset as i32 - history_size as i32;
+                let line = Line(line_idx);
+
+                // Bounds check
+                if line.0 >= screen_lines || line.0 < -(history_size as i32) {
+                    current_y += layout.cell_height;
+                    continue;
+                }
+
+                let mut line_text = String::with_capacity(grid_cols);
+                let mut runs: Vec<TextRun> = Vec::new();
+                let mut skip_next = false;
+
+                for col_idx in 0..grid_cols {
+                    if skip_next {
+                        skip_next = false;
+                        continue;
+                    }
+
+                    let cell = &grid[line][Column(col_idx)];
+                    let c = cell.c;
+                    let flags = cell.flags;
+
+                    if flags.contains(CellFlags::WIDE_CHAR) {
+                        skip_next = true;
+                    }
+
+                    let (mut fg, mut bg) = resolve_colors(cell, colors);
+
+                    if flags.contains(CellFlags::INVERSE) {
+                        std::mem::swap(&mut fg, &mut bg);
+                    }
+
+                    // Background rect if non-default
+                    if bg != bg_color {
+                        let x = text_x + layout.cell_width * col_idx as f32;
+                        let width = if flags.contains(CellFlags::WIDE_CHAR) {
+                            layout.cell_width * 2.0
+                        } else {
+                            layout.cell_width
+                        };
+                        backgrounds.push((
+                            Bounds::new(point(x, current_y), size(width, layout.cell_height)),
+                            bg,
+                        ));
+                    }
+
+                    let ch = if c == '\0' { ' ' } else { c };
+                    let byte_start = line_text.len();
+                    line_text.push(ch);
+                    let byte_len = line_text.len() - byte_start;
+
+                    let font_weight = if flags.contains(CellFlags::BOLD) {
+                        FontWeight::BOLD
+                    } else {
+                        FontWeight::NORMAL
+                    };
+
+                    let font = Font {
+                        family: layout.font.family.clone(),
+                        weight: font_weight,
+                        style: if flags.contains(CellFlags::ITALIC) {
+                            FontStyle::Italic
+                        } else {
+                            FontStyle::Normal
+                        },
+                        ..Font::default()
+                    };
+
+                    let underline = if flags.contains(CellFlags::UNDERLINE) {
+                        Some(UnderlineStyle {
+                            thickness: px(1.0),
+                            color: Some(fg),
+                            wavy: false,
+                        })
+                    } else {
+                        None
+                    };
+
+                    let strikethrough = if flags.contains(CellFlags::STRIKEOUT) {
+                        Some(StrikethroughStyle {
+                            thickness: px(1.0),
+                            color: Some(fg),
+                        })
+                    } else {
+                        None
+                    };
+
+                    // Merge consecutive cells with identical styling into one TextRun
+                    if let Some(last) = runs.last_mut() {
+                        let same_style = last.color == fg
+                            && last.font.weight == font.weight
+                            && last.font.style == font.style
+                            && last.underline == underline
+                            && last.strikethrough == strikethrough;
+
+                        if same_style {
+                            last.len += byte_len;
+                            continue;
+                        }
+                    }
+
+                    runs.push(TextRun {
+                        len: byte_len,
+                        font,
+                        color: fg,
+                        background_color: None,
+                        underline,
+                        strikethrough,
+                    });
+                }
+
+                if !line_text.is_empty() {
+                    let shaped = window.text_system().shape_line(
+                        SharedString::from(line_text),
+                        layout.font_size,
+                        &runs,
+                        None,
+                    );
+                    let origin = point(text_x, current_y);
+                    lines.push((origin, shaped));
+                }
+
+                current_y += layout.cell_height;
+            }
+
+            // Cache shaped lines for finished blocks
+            if is_finished && !cache_valid {
+                let block_lines: Vec<_> = lines[block_lines_start..].to_vec();
+                let block_bgs: Vec<_> = backgrounds[block_bgs_start..].to_vec();
+                self.shape_cache.insert(i, BlockShapeCache {
+                    lines: block_lines,
+                    backgrounds: block_bgs,
+                    content_rows: bl.content_rows,
+                    cols: grid_cols,
+                });
+            }
+
+            } // end of else (non-cached path)
+
+            // Block body bounds (header + output + padding)
+            let body_height = current_y - header_y + px(BLOCK_BODY_PAD_BOTTOM);
+            current_y += px(BLOCK_BODY_PAD_BOTTOM);
+
             if body_height > px(0.0) {
                 let body_bounds = Bounds::new(
-                    point(bounds.origin.x, *header_y),
+                    point(bounds.origin.x, header_y),
                     size(bounds.size.width, body_height),
                 );
                 let left_border = if is_error {
                     Some(Bounds::new(
-                        point(bounds.origin.x, *header_y),
+                        point(bounds.origin.x, header_y),
                         size(px(BLOCK_LEFT_BORDER), body_height),
                     ))
                 } else {
@@ -783,18 +621,33 @@ impl Element for TerminalElement {
                     left_border,
                 });
             }
+
+            // Cursor for the active (running) block
+            if is_running && mode.contains(raijin_term::term::TermMode::SHOW_CURSOR) {
+                let cursor_point = grid.cursor.point;
+                let cursor_row_y = output_start_y
+                    + layout.cell_height * (history_size as f32 + cursor_point.line.0 as f32);
+                let cursor_x = text_x + layout.cell_width * cursor_point.column.0 as f32;
+                let cursor_width = if self.cursor_beam {
+                    px(2.0)
+                } else {
+                    layout.cell_width
+                };
+                cursor_rect = Some(Bounds::new(
+                    point(cursor_x, cursor_row_y),
+                    size(cursor_width, layout.cell_height),
+                ));
+            }
         }
 
-        // Sticky header: if a block's header is above the viewport but its body
-        // is still visible, show a sticky overlay at the top.
+        // Sticky header: if a block's header scrolled above the viewport
+        // but its body is still visible, show a compact overlay at the top.
         let sticky_header = block_bodies.iter().zip(block_headers.iter()).find_map(|(body, header)| {
-            // Header is above viewport but body extends into it
             if header.metadata_origin.y < bounds.origin.y
                 && body.bounds.origin.y + body.bounds.size.height > bounds.origin.y
             {
-                // Build sticky header at the top of the viewport
                 let sticky_y = bounds.origin.y;
-                let sticky_height = px(BLOCK_HEADER_HEIGHT.min(36.0)); // Compact sticky
+                let sticky_height = px(BLOCK_HEADER_HEIGHT.min(36.0));
                 let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
 
                 let sticky_bg = Bounds::new(
@@ -802,7 +655,6 @@ impl Element for TerminalElement {
                     size(bounds.size.width, sticky_height),
                 );
 
-                // Re-shape the metadata and first command line at sticky position
                 let meta_line = header.metadata_line.clone();
                 let meta_origin = point(text_x, sticky_y + px(4.0));
 

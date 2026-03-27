@@ -196,12 +196,12 @@ impl<T> Term<T> {
     where
         T: EventListener,
     {
-        let old_display_offset = self.block_router.prompt_grid.grid.display_offset();
-        self.block_router.prompt_grid.grid.scroll_display(scroll);
+        let old_display_offset = self.block_router.active_grid().display_offset();
+        self.block_router.active_grid_mut().scroll_display(scroll);
         self.event_proxy.send_event(Event::MouseCursorDirty);
 
         // Clamp vi mode cursor to the viewport.
-        let viewport_start = -(self.block_router.prompt_grid.grid.display_offset() as i32);
+        let viewport_start = -(self.block_router.active_grid().display_offset() as i32);
         let viewport_end = viewport_start + self.bottommost_line().0;
         let vi_cursor_line = &mut self.vi_mode_cursor.point.line.0;
         *vi_cursor_line = cmp::min(viewport_end, cmp::max(viewport_start, *vi_cursor_line));
@@ -267,7 +267,7 @@ impl<T> Term<T> {
             self.mark_fully_damaged();
         }
 
-        let previous_cursor = mem::replace(&mut self.damage.last_cursor, self.block_router.prompt_grid.grid.cursor.point);
+        let previous_cursor = mem::replace(&mut self.damage.last_cursor, self.block_router.active_grid().cursor.point);
 
         if self.damage.full {
             return TermDamage::Full;
@@ -317,7 +317,7 @@ impl<T> Term<T> {
         if self.mode.contains(TermMode::ALT_SCREEN) {
             self.inactive_grid.update_history(self.config.scrolling_history);
         } else {
-            self.block_router.prompt_grid.grid.update_history(self.config.scrolling_history);
+            self.block_router.active_grid_mut().update_history(self.config.scrolling_history);
         }
 
         if self.config.kitty_keyboard != old_config.kitty_keyboard {
@@ -382,7 +382,7 @@ impl<T> Term<T> {
     ) -> String {
         let mut text = String::new();
 
-        let grid_line = &self.block_router.prompt_grid.grid[line];
+        let grid_line = &self.block_router.active_grid()[line];
         let line_length = cmp::min(grid_line.line_length(), cols.end + 1);
 
         // Include wide char when trailing spacer is selected.
@@ -420,7 +420,7 @@ impl<T> Term<T> {
 
         if cols.end >= self.columns() - 1
             && (line_length.0 == 0
-                || !self.block_router.prompt_grid.grid[line][line_length - 1].flags.contains(Flags::WRAPLINE))
+                || !self.block_router.active_grid()[line][line_length - 1].flags.contains(Flags::WRAPLINE))
         {
             text.push('\n');
         }
@@ -431,7 +431,7 @@ impl<T> Term<T> {
             && grid_line[line_length - 1].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER)
             && include_wrapped_wide
         {
-            text.push(self.block_router.prompt_grid.grid[line - 1i32][Column(0)].c);
+            text.push(self.block_router.active_grid()[line - 1i32][Column(0)].c);
         }
 
         text
@@ -500,12 +500,14 @@ impl<T> Term<T> {
         // Move vi mode cursor with the content.
         let history_size = self.history_size();
         let mut delta = num_lines as i32 - old_lines as i32;
-        let min_delta = cmp::min(0, num_lines as i32 - self.block_router.prompt_grid.grid.cursor.point.line.0 - 1);
+        let cursor_line = self.block_router.active_grid().cursor.point.line.0;
+        let min_delta = cmp::min(0, num_lines as i32 - cursor_line - 1);
         delta = cmp::min(cmp::max(delta, min_delta), history_size as i32);
         self.vi_mode_cursor.point.line += delta;
 
         let is_alt = self.mode.contains(TermMode::ALT_SCREEN);
-        self.block_router.prompt_grid.grid.resize(!is_alt, num_lines, num_cols);
+        // Resize all grids through the block router (prompt + active + finished blocks).
+        self.block_router.resize(num_cols, num_lines);
         self.inactive_grid.resize(is_alt, num_lines, num_cols);
 
         // Invalidate selection and tabs only when necessary.
@@ -522,7 +524,7 @@ impl<T> Term<T> {
 
         // Clamp vi cursor to viewport.
         let vi_point = self.vi_mode_cursor.point;
-        let viewport_top = Line(-(self.block_router.prompt_grid.grid.display_offset() as i32));
+        let viewport_top = Line(-(self.block_router.active_grid().display_offset() as i32));
         let viewport_bottom = viewport_top + self.bottommost_line();
         self.vi_mode_cursor.point.line =
             cmp::max(cmp::min(vi_point.line, viewport_bottom), viewport_top);
@@ -545,10 +547,11 @@ impl<T> Term<T> {
     pub fn swap_alt(&mut self) {
         if !self.mode.contains(TermMode::ALT_SCREEN) {
             // Set alt screen cursor to the current primary screen cursor.
-            self.inactive_grid.cursor = self.block_router.prompt_grid.grid.cursor.clone();
+            let cursor = self.block_router.active_grid().cursor.clone();
+            self.inactive_grid.cursor = cursor.clone();
 
             // Drop information about the primary screens saved cursor.
-            self.block_router.prompt_grid.grid.saved_cursor = self.block_router.prompt_grid.grid.cursor.clone();
+            self.block_router.active_grid_mut().saved_cursor = cursor;
 
             // Reset alternate screen contents.
             self.inactive_grid.reset_region(..);
@@ -559,7 +562,7 @@ impl<T> Term<T> {
             self.keyboard_mode_stack.last().copied().unwrap_or(KeyboardModes::NO_MODE).into();
         self.set_keyboard_mode(keyboard_mode, KeyboardModesApplyBehavior::Replace);
 
-        mem::swap(&mut self.block_router.prompt_grid.grid, &mut self.inactive_grid);
+        mem::swap(self.block_router.active_grid_mut(), &mut self.inactive_grid);
         self.mode ^= TermMode::ALT_SCREEN;
         self.selection = None;
         self.mark_fully_damaged();
@@ -589,7 +592,7 @@ impl<T> Term<T> {
         }
 
         // Scroll between origin and bottom
-        self.block_router.prompt_grid.grid.scroll_down(&region, lines);
+        self.block_router.active_grid_mut().scroll_down(&region, lines);
         self.mark_fully_damaged();
     }
 
@@ -608,10 +611,10 @@ impl<T> Term<T> {
         // Scroll selection.
         self.selection = self.selection.take().and_then(|s| s.rotate(self, &region, lines as i32));
 
-        self.block_router.prompt_grid.grid.scroll_up(&region, lines);
+        self.block_router.active_grid_mut().scroll_up(&region, lines);
 
         // Scroll vi mode cursor.
-        let viewport_top = Line(-(self.block_router.prompt_grid.grid.display_offset() as i32));
+        let viewport_top = Line(-(self.block_router.active_grid().display_offset() as i32));
         let top = if region.start == 0 { viewport_top } else { region.start };
         let line = &mut self.vi_mode_cursor.point.line;
         if (top <= *line) && region.end > *line {
@@ -629,7 +632,7 @@ impl<T> Term<T> {
         self.set_scrolling_region(1, None);
 
         // Clear grid.
-        self.block_router.prompt_grid.grid.reset_region(..);
+        self.block_router.active_grid_mut().reset_region(..);
         self.mark_fully_damaged();
     }
 
@@ -650,14 +653,15 @@ impl<T> Term<T> {
         self.mode ^= TermMode::VI;
 
         if self.mode.contains(TermMode::VI) {
-            let display_offset = self.block_router.prompt_grid.grid.display_offset() as i32;
-            if self.block_router.prompt_grid.grid.cursor.point.line > self.bottommost_line() - display_offset {
+            let display_offset = self.block_router.active_grid().display_offset() as i32;
+            let cursor_line = self.block_router.active_grid().cursor.point.line;
+            if cursor_line > self.bottommost_line() - display_offset {
                 // Move cursor to top-left if terminal cursor is not visible.
                 let point = Point::new(Line(-display_offset), Column(0));
                 self.vi_mode_cursor = ViModeCursor::new(point);
             } else {
                 // Reset vi mode cursor position to match primary cursor.
-                self.vi_mode_cursor = ViModeCursor::new(self.block_router.prompt_grid.grid.cursor.point);
+                self.vi_mode_cursor = ViModeCursor::new(self.block_router.active_grid().cursor.point);
             }
         }
 
@@ -716,8 +720,8 @@ impl<T> Term<T> {
     where
         T: EventListener,
     {
-        let display_offset = self.block_router.prompt_grid.grid.display_offset() as i32;
-        let screen_lines = self.block_router.prompt_grid.grid.screen_lines() as i32;
+        let display_offset = self.block_router.active_grid().display_offset() as i32;
+        let screen_lines = self.block_router.active_grid().screen_lines() as i32;
 
         if point.line < -display_offset {
             let lines = point.line + display_offset;
@@ -730,7 +734,7 @@ impl<T> Term<T> {
 
     /// Jump to the end of a wide cell.
     pub fn expand_wide(&self, mut point: Point, direction: Direction) -> Point {
-        let flags = self.block_router.prompt_grid.grid[point.line][point.column].flags;
+        let flags = self.block_router.active_grid()[point.line][point.column].flags;
 
         match direction {
             Direction::Right if flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) => {
@@ -746,7 +750,7 @@ impl<T> Term<T> {
                 }
 
                 let prev = point.sub(self, Boundary::Grid, 1);
-                if self.block_router.prompt_grid.grid[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
+                if self.block_router.active_grid()[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
                     point = prev;
                 }
             },
@@ -796,49 +800,56 @@ impl<T> Term<T> {
 
         trace!("Wrapping input");
 
-        self.block_router.prompt_grid.grid.cursor_cell().flags.insert(Flags::WRAPLINE);
+        self.block_router.active_grid_mut().cursor_cell().flags.insert(Flags::WRAPLINE);
 
-        if self.block_router.prompt_grid.grid.cursor.point.line + 1 >= self.scroll_region.end {
+        let cursor_line = self.block_router.active_grid().cursor.point.line;
+        if cursor_line + 1 >= self.scroll_region.end {
             self.linefeed();
         } else {
             self.damage_cursor();
-            self.block_router.prompt_grid.grid.cursor.point.line += 1;
+            self.block_router.active_grid_mut().cursor.point.line += 1;
         }
 
-        self.block_router.prompt_grid.grid.cursor.point.column = Column(0);
-        self.block_router.prompt_grid.grid.cursor.input_needs_wrap = false;
+        let grid = self.block_router.active_grid_mut();
+        grid.cursor.point.column = Column(0);
+        grid.cursor.input_needs_wrap = false;
         self.damage_cursor();
     }
 
     /// Write `c` to the cell at the cursor position.
     #[inline(always)]
     fn write_at_cursor(&mut self, c: char) {
-        let c = self.block_router.prompt_grid.grid.cursor.charsets[self.active_charset].map(c);
-        let fg = self.block_router.prompt_grid.grid.cursor.template.fg;
-        let bg = self.block_router.prompt_grid.grid.cursor.template.bg;
-        let flags = self.block_router.prompt_grid.grid.cursor.template.flags;
-        let extra = self.block_router.prompt_grid.grid.cursor.template.extra.clone();
+        let active_charset = self.active_charset;
+        let grid = self.block_router.active_grid_mut();
+        let c = grid.cursor.charsets[active_charset].map(c);
+        let fg = grid.cursor.template.fg;
+        let bg = grid.cursor.template.bg;
+        let flags = grid.cursor.template.flags;
+        let extra = grid.cursor.template.extra.clone();
 
-        let mut cursor_cell = self.block_router.prompt_grid.grid.cursor_cell();
+        let mut cursor_cell = grid.cursor_cell();
 
         // Clear all related cells when overwriting a fullwidth cell.
         if cursor_cell.flags.intersects(Flags::WIDE_CHAR | Flags::WIDE_CHAR_SPACER) {
             // Remove wide char and spacer.
             let wide = cursor_cell.flags.contains(Flags::WIDE_CHAR);
-            let point = self.block_router.prompt_grid.grid.cursor.point;
-            if wide && point.column < self.last_column() {
-                self.block_router.prompt_grid.grid[point.line][point.column + 1].flags.remove(Flags::WIDE_CHAR_SPACER);
+            let grid = self.block_router.active_grid_mut();
+            let point = grid.cursor.point;
+            let last_col = self.last_column();
+            if wide && point.column < last_col {
+                self.block_router.active_grid_mut()[point.line][point.column + 1].flags.remove(Flags::WIDE_CHAR_SPACER);
             } else if point.column > 0 {
-                self.block_router.prompt_grid.grid[point.line][point.column - 1].clear_wide();
+                self.block_router.active_grid_mut()[point.line][point.column - 1].clear_wide();
             }
 
             // Remove leading spacers.
-            if point.column <= 1 && point.line != self.topmost_line() {
+            let topmost = self.topmost_line();
+            if point.column <= 1 && point.line != topmost {
                 let column = self.last_column();
-                self.block_router.prompt_grid.grid[point.line - 1i32][column].flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
+                self.block_router.active_grid_mut()[point.line - 1i32][column].flags.remove(Flags::LEADING_WIDE_CHAR_SPACER);
             }
 
-            cursor_cell = self.block_router.prompt_grid.grid.cursor_cell();
+            cursor_cell = self.block_router.active_grid_mut().cursor_cell();
         }
 
         cursor_cell.c = c;
@@ -851,8 +862,8 @@ impl<T> Term<T> {
     #[inline]
     fn damage_cursor(&mut self) {
         // The normal cursor coordinates are always in viewport.
-        let point =
-            Point::new(self.block_router.prompt_grid.grid.cursor.point.line.0 as usize, self.block_router.prompt_grid.grid.cursor.point.column);
+        let cursor = self.block_router.active_grid().cursor.point;
+        let point = Point::new(cursor.line.0 as usize, cursor.column);
         self.damage.damage_point(point);
     }
 
@@ -873,17 +884,17 @@ impl<T> Term<T> {
 impl<T> Dimensions for Term<T> {
     #[inline]
     fn columns(&self) -> usize {
-        self.block_router.prompt_grid.grid.columns()
+        self.block_router.active_grid().columns()
     }
 
     #[inline]
     fn screen_lines(&self) -> usize {
-        self.block_router.prompt_grid.grid.screen_lines()
+        self.block_router.active_grid().screen_lines()
     }
 
     #[inline]
     fn total_lines(&self) -> usize {
-        self.block_router.prompt_grid.grid.total_lines()
+        self.block_router.active_grid().total_lines()
     }
 }
 

@@ -12,6 +12,10 @@ use inazuma_component::TitleBar;
 use workspace::Workspace;
 
 fn main() {
+    env_logger::Builder::from_env(
+        env_logger::Env::default().default_filter_or("warn,raijin=debug,raijin_term=debug")
+    ).init();
+
     Application::new()
         .with_assets(inazuma_component_assets::Assets)
         .run(|cx: &mut App| {

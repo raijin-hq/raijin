@@ -259,10 +259,28 @@ impl BlockGridRouter {
         self.blocks.iter_mut().find(|b| b.id == id)
     }
 
+    /// Get the active block grid or the prompt grid (for BlockGrid-level methods).
+    pub fn active_or_prompt(&self) -> &BlockGrid {
+        self.active_block_id
+            .and_then(|id| self.blocks.iter().find(|b| b.id == id))
+            .unwrap_or(&self.prompt_grid)
+    }
+
+    /// Get the active block grid or the prompt grid (mutable).
+    pub fn active_or_prompt_mut(&mut self) -> &mut BlockGrid {
+        let id = self.active_block_id;
+        if let Some(block) = id.and_then(|id| self.blocks.iter_mut().find(|b| b.id == id)) {
+            block
+        } else {
+            &mut self.prompt_grid
+        }
+    }
+
     // --- Block Lifecycle ---
 
     /// Called at PromptStart: reset the prompt grid and route output there.
     pub fn switch_to_prompt(&mut self) {
+        log::debug!("BlockGridRouter: switch_to_prompt (blocks={})", self.blocks.len());
         self.active_block_id = None;
         // Reset prompt grid — new prompt, fresh state
         let new_prompt = BlockGrid::new(BlockId(0), self.cols, self.initial_rows, 0);
@@ -275,13 +293,21 @@ impl BlockGridRouter {
         let id = BlockId(self.next_id);
         self.next_id += 1;
 
+        // Use current prompt_grid dimensions (reflects latest resize)
+        let current_rows = self.prompt_grid.grid.screen_lines().max(self.initial_rows);
+        let current_cols = self.prompt_grid.grid.columns().max(self.cols);
         let mut block = BlockGrid::new(
             id,
-            self.cols,
-            self.initial_rows,
+            current_cols,
+            current_rows,
             self.max_scrollback_per_block,
         );
         block.command = self.pending_command.take().unwrap_or(command);
+
+        log::debug!(
+            "BlockGridRouter: start_new_block id={:?}, cols={}, rows={}, cmd='{}'",
+            id, self.cols, self.initial_rows, block.command
+        );
 
         self.blocks.push(block);
         self.active_block_id = Some(id);
@@ -294,6 +320,7 @@ impl BlockGridRouter {
 
     /// Called at CommandEnd: finalize the active block with an exit code.
     pub fn finalize_block(&mut self, exit_code: i32) {
+        log::debug!("BlockGridRouter: finalize_block exit_code={}, active={:?}", exit_code, self.active_block_id);
         if let Some(block) = self.active_block_mut() {
             block.exit_code = Some(exit_code);
             block.finished_at = Some(Instant::now());
@@ -362,11 +389,15 @@ impl BlockGridRouter {
             block.display_state.scroll_region = Line(0)..Line(rows as i32);
         }
 
-        // Finished blocks: resize all (can be optimized to lazy later)
+        // Finished blocks: only resize columns (lazy — rows stay as-is).
+        // Full resize happens only when a block is actually rendered.
         for block in &mut self.blocks {
             if block.is_finished() {
-                let current_rows = block.grid.screen_lines();
-                block.grid.resize(true, current_rows, cols);
+                let current_cols = block.grid.columns();
+                if current_cols != cols {
+                    let current_rows = block.grid.screen_lines();
+                    block.grid.resize(true, current_rows, cols);
+                }
             }
         }
     }

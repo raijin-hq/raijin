@@ -292,7 +292,7 @@ impl<T> Term<T> {
         let input = Input::new(&[]).anchored(regex_anchored);
         let mut state = regex.dfa.start_state_forward(&mut regex.cache, &input).unwrap();
 
-        let mut iter = self.block_router.prompt_grid.grid.iter_from(start);
+        let mut iter = self.block_router.active_grid().iter_from(start);
         let mut regex_match = None;
         let mut done = false;
 
@@ -391,7 +391,7 @@ impl<T> Term<T> {
                     // Wrap around to other end of the scrollback buffer.
                     let line = topmost_line - point.line + screen_lines - 1;
                     let start = Point::new(line, last_column - point.column);
-                    iter = self.block_router.prompt_grid.grid.iter_from(start);
+                    iter = self.block_router.active_grid().iter_from(start);
                     iter.cell()
                 },
             };
@@ -460,7 +460,7 @@ impl<T> Term<T> {
                 }
 
                 let prev = iter.point().sub(self, Boundary::Grid, 1);
-                if self.block_router.prompt_grid.grid[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
+                if self.block_router.active_grid()[prev].flags.contains(Flags::LEADING_WIDE_CHAR_SPACER) {
                     iter.prev();
                 }
             },
@@ -470,7 +470,7 @@ impl<T> Term<T> {
 
     /// Find next matching bracket.
     pub fn bracket_search(&self, point: Point) -> Option<Point> {
-        let start_char = self.block_router.prompt_grid.grid[point].c;
+        let start_char = self.block_router.active_grid()[point].c;
 
         // Find the matching bracket we're looking for
         let (forward, end_char) = BRACKET_PAIRS.iter().find_map(|(open, close)| {
@@ -483,7 +483,7 @@ impl<T> Term<T> {
             }
         })?;
 
-        let mut iter = self.block_router.prompt_grid.grid.iter_from(point);
+        let mut iter = self.block_router.active_grid().iter_from(point);
 
         // For every character match that equals the starting bracket, we
         // ignore one bracket of the opposite type.
@@ -519,7 +519,7 @@ impl<T> Term<T> {
             // If we found a match, reverse for at least one cell, skipping over wide cell spacers.
             Ok(point) => {
                 let wide_spacer = Flags::WIDE_CHAR_SPACER | Flags::LEADING_WIDE_CHAR_SPACER;
-                self.block_router.prompt_grid.grid
+                self.block_router.active_grid()
                     .iter_from(point)
                     .find(|cell| !cell.flags.intersects(wide_spacer))
                     .map_or(point, |cell| cell.point)
@@ -532,7 +532,7 @@ impl<T> Term<T> {
     #[must_use]
     pub fn semantic_search_right(&self, point: Point) -> Point {
         match self.inline_search_right(point, self.semantic_escape_chars()) {
-            Ok(point) => self.block_router.prompt_grid.grid.iter_from(point).prev().map_or(point, |cell| cell.point),
+            Ok(point) => self.block_router.active_grid().iter_from(point).prev().map_or(point, |cell| cell.point),
             Err(point) => point,
         }
     }
@@ -542,7 +542,7 @@ impl<T> Term<T> {
         // Limit the starting point to the last line in the history
         point.line = max(point.line, self.topmost_line());
 
-        let mut iter = self.block_router.prompt_grid.grid.iter_from(point);
+        let mut iter = self.block_router.active_grid().iter_from(point);
         let last_column = self.columns() - 1;
 
         let wide_spacer = Flags::WIDE_CHAR_SPACER | Flags::LEADING_WIDE_CHAR_SPACER;
@@ -570,11 +570,11 @@ impl<T> Term<T> {
         let last_column = self.columns() - 1;
 
         // Immediately stop if start point in on line break.
-        if point.column == last_column && !self.block_router.prompt_grid.grid[point].flags.contains(Flags::WRAPLINE) {
+        if point.column == last_column && !self.block_router.active_grid()[point].flags.contains(Flags::WRAPLINE) {
             return Err(point);
         }
 
-        for cell in self.block_router.prompt_grid.grid.iter_from(point) {
+        for cell in self.block_router.active_grid().iter_from(point) {
             point = cell.point;
 
             if !cell.flags.intersects(wide_spacer) && needles.contains(cell.c) {
@@ -592,7 +592,7 @@ impl<T> Term<T> {
     /// Find the beginning of the current line across linewraps.
     pub fn line_search_left(&self, mut point: Point) -> Point {
         while point.line > self.topmost_line()
-            && self.block_router.prompt_grid.grid[point.line - 1i32][self.last_column()].flags.contains(Flags::WRAPLINE)
+            && self.block_router.active_grid()[point.line - 1i32][self.last_column()].flags.contains(Flags::WRAPLINE)
         {
             point.line -= 1;
         }
@@ -605,7 +605,7 @@ impl<T> Term<T> {
     /// Find the end of the current line across linewraps.
     pub fn line_search_right(&self, mut point: Point) -> Point {
         while point.line + 1 < self.screen_lines()
-            && self.block_router.prompt_grid.grid[point.line][self.last_column()].flags.contains(Flags::WRAPLINE)
+            && self.block_router.active_grid()[point.line][self.last_column()].flags.contains(Flags::WRAPLINE)
         {
             point.line += 1;
         }

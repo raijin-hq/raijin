@@ -1,4 +1,3 @@
-use raijin_term::grid::Dimensions;
 use raijin_term::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
@@ -11,7 +10,7 @@ use inazuma_component::{
     input::{AutoPairConfig, Input, InputEvent, InputState},
 };
 use raijin_shell::ShellContext;
-use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
+use raijin_terminal::{Terminal, TerminalEvent};
 
 use std::rc::Rc;
 use std::sync::{Arc, RwLock};
@@ -21,7 +20,7 @@ use crate::completions::command_correction;
 use crate::completions::shell_completion::ShellCompletionProvider;
 use crate::input::history_panel::HistoryPanel;
 use crate::settings_view;
-use crate::terminal_element::{BlockRenderInfo, TerminalElement};
+use crate::terminal_element::TerminalElement;
 
 /// Which view is currently active.
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -38,7 +37,6 @@ pub struct Workspace {
     input_state: Entity<InputState>,
     focus_handle: FocusHandle,
     shell_context: ShellContext,
-    block_manager: BlockManager,
     command_history: Arc<RwLock<CommandHistory>>,
     history_panel: HistoryPanel,
     correction_suggestion: Option<command_correction::CorrectionResult>,
@@ -119,7 +117,6 @@ impl Workspace {
             input_state,
             focus_handle,
             shell_context,
-            block_manager: BlockManager::new(),
             command_history,
             history_panel: HistoryPanel::new(),
             correction_suggestion: None,
@@ -157,15 +154,6 @@ impl Workspace {
         marker: raijin_terminal::ShellMarker,
         cx: &mut Context<Self>,
     ) {
-        // Get absolute cursor row: history_size + cursor_line gives a monotonic position
-        let cursor_row = {
-            let handle = self.terminal.handle();
-            let term = handle.lock();
-            let history = term.grid().history_size();
-            let cursor_line = term.grid().cursor.point.line.0 as usize;
-            history + cursor_line
-        };
-
         // Handle metadata — update context chips before block processing
         if let raijin_terminal::ShellMarker::Metadata(ref json) = marker {
             match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
@@ -173,10 +161,7 @@ impl Workspace {
                     self.shell_context.update_from_metadata(&payload);
                     // Update completion provider CWD for file path completions
                     self.shell_completion.update_cwd(std::path::PathBuf::from(&payload.cwd));
-                    // Transfer shell-measured duration to the last finished block
-                    if let Some(ms) = payload.last_duration_ms {
-                        self.block_manager.set_last_block_duration(ms);
-                    }
+                    // Duration is tracked by BlockGrid.started_at/finished_at
                     cx.notify();
                 }
                 Err(e) => {
@@ -184,9 +169,6 @@ impl Workspace {
                 }
             }
         }
-
-        // Feed marker to BlockManager for block tracking
-        self.block_manager.process_marker(marker.clone(), cursor_row);
 
         match marker {
             raijin_terminal::ShellMarker::PromptStart => {
@@ -203,7 +185,12 @@ impl Workspace {
 
                 // Check for typo correction on "command not found"
                 if exit_code == 127 {
-                    if let Some(last_cmd) = self.block_manager.last_command() {
+                    let last_cmd = {
+                        let handle = self.terminal.handle();
+                        let term = handle.lock();
+                        term.block_router().blocks().last().map(|b| b.command.clone())
+                    };
+                    if let Some(last_cmd) = last_cmd {
                         let known: Vec<String> = std::env::var("PATH")
                             .unwrap_or_default()
                             .split(':')
@@ -255,8 +242,6 @@ impl Workspace {
                     if let Ok(mut hist) = self.command_history.write() {
                         hist.push(value.to_string());
                     }
-                    self.block_manager
-                        .set_pending_command(value.to_string());
                     // Set pending command on the block router for when CommandStart fires
                     {
                         let handle = self.terminal.handle();
@@ -333,10 +318,12 @@ impl Workspace {
         // Cmd+C with selected block → copy block content
         if event.keystroke.key.as_str() == "c" && event.keystroke.modifiers.platform {
             if let Some(idx) = self.selected_block {
-                if let Some(block) = self.block_manager.blocks().get(idx) {
-                    let text = block.command.clone();
-                    // Grid content would be extracted here when BlockGridRouter is wired
-                    // For now, copy the command text
+                let text = {
+                    let handle = self.terminal.handle();
+                    let term = handle.lock();
+                    term.block_router().blocks().get(idx).map(|b| b.command.clone())
+                };
+                if let Some(text) = text {
                     cx.write_to_clipboard(inazuma::ClipboardItem::new_string(text));
                     self.selected_block = None;
                     cx.notify();
@@ -555,43 +542,6 @@ impl Workspace {
             )
     }
 
-    fn build_block_render_info(&self) -> Vec<BlockRenderInfo> {
-        self.block_manager
-            .blocks()
-            .iter()
-            .map(|block| {
-                let payload = block
-                    .metadata_json
-                    .as_ref()
-                    .and_then(|json| {
-                        serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json).ok()
-                    });
-
-                BlockRenderInfo {
-                    command: block.command.clone(),
-                    duration_display: block.duration_display(),
-                    exit_code: block.exit_code,
-                    abs_start_row: block.start_row,
-                    abs_end_row: block.end_row,
-                    cwd_short: payload.as_ref().map(|p| raijin_shell::shorten_path(&p.cwd)),
-                    git_branch: payload.as_ref().and_then(|p| p.git_branch.clone()),
-                    username: payload.as_ref().and_then(|p| p.username.clone()),
-                    hostname: payload.as_ref().and_then(|p| p.hostname.clone()),
-                    time_display: {
-                        let t = block.started_at;
-                        let elapsed = t.elapsed();
-                        // Approximate wall-clock time at block start
-                        let now = time::OffsetDateTime::now_local()
-                            .unwrap_or_else(|_| time::OffsetDateTime::now_utc());
-                        let at_start = now - elapsed;
-                        at_start
-                            .format(time::macros::format_description!("[hour]:[minute]"))
-                            .unwrap_or_else(|_| "--:--".to_string())
-                    },
-                }
-            })
-            .collect()
-    }
 }
 
 impl Render for Workspace {
@@ -608,9 +558,6 @@ impl Render for Workspace {
         match self.view_mode {
             ViewMode::Terminal => {
                 let handle = self.terminal.handle();
-                let blocks = self.build_block_render_info();
-                let hide_before = self.block_manager.prompt_start_row();
-                let hidden_regions = self.block_manager.hidden_prompt_regions().to_vec();
                 let config = cx.global::<raijin_settings::RaijinConfig>();
                 let font_family = config.appearance.font_family.clone();
                 let font_size = config.appearance.font_size as f32;
@@ -628,8 +575,12 @@ impl Render for Workspace {
                         .overflow_hidden()
                         .on_click(cx.listener(|view, _, _, cx| {
                             // Toggle selection of the last finished block
-                            let last_idx = view.block_manager.blocks().iter()
-                                .rposition(|b| b.is_finished());
+                            let last_idx = {
+                                let handle = view.terminal.handle();
+                                let term = handle.lock();
+                                let blocks = term.block_router().blocks();
+                                blocks.iter().rposition(|b| b.is_finished())
+                            };
                             if view.selected_block == last_idx {
                                 view.selected_block = None;
                             } else {
@@ -643,9 +594,6 @@ impl Render for Workspace {
                             TerminalElement::new(handle)
                                 .with_font(&font_family, font_size)
                                 .with_cursor_beam(cursor_beam)
-                                .with_blocks(blocks)
-                                .with_hide_before_row(hide_before)
-                                .with_hidden_prompt_regions(hidden_regions)
                                 .with_selected_block(self.selected_block),
                         )
                     } else {
@@ -654,7 +602,11 @@ impl Render for Workspace {
                 });
 
                 if !self.interactive_mode {
-                    let command_running = self.block_manager.active_block().is_some();
+                    let command_running = {
+                        let handle = self.terminal.handle();
+                        let term = handle.lock();
+                        term.block_router().has_active_block()
+                    };
 
                     // Correction banner (e.g. "Did you mean `git status`?")
                     if let Some(ref correction) = self.correction_suggestion {
