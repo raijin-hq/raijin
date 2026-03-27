@@ -5,7 +5,7 @@ use inazuma::{
     point, px, size, App, Bounds, Element, ElementId, Font, FontStyle, FontWeight,
     GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId, Pixels, Point,
     SharedString, ShapedLine, Size, StrikethroughStyle, Style, TextAlign, TextRun,
-    UnderlineStyle, Window, fill,
+    UnderlineStyle, Window, fill, hsla,
 };
 use raijin_terminal::TerminalHandle;
 
@@ -74,6 +74,16 @@ pub(crate) struct BlockBodyPaint {
     pub left_border: Option<Bounds<Pixels>>,
 }
 
+/// Sticky header overlay — shown when a block's header scrolls out of view.
+pub(crate) struct StickyHeaderPaint {
+    pub bg_bounds: Bounds<Pixels>,
+    pub metadata_line: ShapedLine,
+    pub metadata_origin: Point<Pixels>,
+    pub command_line: ShapedLine,
+    pub command_origin: Point<Pixels>,
+    pub is_error: bool,
+}
+
 /// Pre-painted state: shaped text lines, background rects, block headers.
 pub struct TerminalPrepaint {
     pub lines: Vec<(Point<Pixels>, ShapedLine)>,
@@ -83,6 +93,8 @@ pub struct TerminalPrepaint {
     pub block_headers: Vec<BlockHeaderPaint>,
     /// Full block body backgrounds (header + output area).
     pub block_bodies: Vec<BlockBodyPaint>,
+    /// Sticky header overlay (if a block header scrolled out of view).
+    pub sticky_header: Option<StickyHeaderPaint>,
 }
 
 // ---------------------------------------------------------------------------
@@ -766,6 +778,45 @@ impl Element for TerminalElement {
             }
         }
 
+        // Sticky header: if a block's header is above the viewport but its body
+        // is still visible, show a sticky overlay at the top.
+        let sticky_header = block_bodies.iter().zip(block_headers.iter()).find_map(|(body, header)| {
+            // Header is above viewport but body extends into it
+            if header.metadata_origin.y < bounds.origin.y
+                && body.bounds.origin.y + body.bounds.size.height > bounds.origin.y
+            {
+                // Build sticky header at the top of the viewport
+                let sticky_y = bounds.origin.y;
+                let sticky_height = px(BLOCK_HEADER_HEIGHT.min(36.0)); // Compact sticky
+                let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
+
+                let sticky_bg = Bounds::new(
+                    point(bounds.origin.x, sticky_y),
+                    size(bounds.size.width, sticky_height),
+                );
+
+                // Re-shape the metadata and first command line at sticky position
+                let meta_line = header.metadata_line.clone();
+                let meta_origin = point(text_x, sticky_y + px(4.0));
+
+                let cmd_line = header.command_lines.first()
+                    .map(|(line, _)| line.clone())
+                    .unwrap_or_else(|| header.metadata_line.clone());
+                let cmd_origin = point(text_x, sticky_y + px(4.0 + HEADER_META_FONT_SIZE + 4.0));
+
+                Some(StickyHeaderPaint {
+                    bg_bounds: sticky_bg,
+                    metadata_line: meta_line,
+                    metadata_origin: meta_origin,
+                    command_line: cmd_line,
+                    command_origin: cmd_origin,
+                    is_error: body.is_error,
+                })
+            } else {
+                None
+            }
+        });
+
         TerminalPrepaint {
             lines,
             backgrounds,
@@ -773,6 +824,7 @@ impl Element for TerminalElement {
             line_height: layout.line_height,
             block_headers,
             block_bodies,
+            sticky_header,
         }
     }
 
@@ -848,6 +900,34 @@ impl Element for TerminalElement {
             for (origin, shaped_line) in &prepaint.lines {
                 let _ = shaped_line.paint(
                     *origin,
+                    prepaint.line_height,
+                    TextAlign::Left,
+                    None,
+                    window,
+                    cx,
+                );
+            }
+
+            // 7. Sticky header overlay (always on top)
+            if let Some(sticky) = &prepaint.sticky_header {
+                let bg = if sticky.is_error {
+                    block_header_error_bg()
+                } else {
+                    // Slightly more opaque than normal block bg for sticky visibility
+                    hsla(0.0, 0.0, 0.1, 0.95)
+                };
+                window.paint_quad(fill(sticky.bg_bounds, bg));
+
+                let _ = sticky.metadata_line.paint(
+                    sticky.metadata_origin,
+                    prepaint.line_height,
+                    TextAlign::Left,
+                    None,
+                    window,
+                    cx,
+                );
+                let _ = sticky.command_line.paint(
+                    sticky.command_origin,
                     prepaint.line_height,
                     TextAlign::Left,
                     None,
