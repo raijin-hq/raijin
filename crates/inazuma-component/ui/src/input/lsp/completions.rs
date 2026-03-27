@@ -317,6 +317,7 @@ impl InputState {
         let range_utf16 = self.range_to_utf16(&(cursor..cursor));
         let completion_text = completion_item.insert_text;
         self.replace_text_in_range_silent(Some(range_utf16), &completion_text, window, cx);
+        self.completion_inserted_range = Some(cursor..cursor + completion_text.len());
         true
     }
 }

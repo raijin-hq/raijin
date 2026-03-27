@@ -1254,6 +1254,21 @@ impl Element for TextElement {
         );
 
         let state = self.state.read(cx);
+
+        // Merge overlay highlights (completion preview, command validation) on top
+        let highlight_styles = if !state.overlay_highlights.is_empty() {
+            let overlay = state.overlay_highlights.clone();
+            match highlight_styles {
+                Some(base) => Some(inazuma::combine_highlights(base, overlay).collect()),
+                None => {
+                    // Create base highlights covering the full text
+                    let base = vec![(0..state.text.len(), inazuma::HighlightStyle::default())];
+                    Some(inazuma::combine_highlights(base, overlay).collect())
+                }
+            }
+        } else {
+            highlight_styles
+        };
         let multi_line = state.mode.is_multi_line();
         let text = state.text.clone();
         let is_empty = text.len() == 0;

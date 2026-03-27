@@ -333,9 +333,74 @@ impl Workspace {
                     }
                     cx.notify();
                 }
+
+                // Command validation: highlight first token green if valid command
+                self.update_input_highlights(cx);
             }
             _ => {}
         }
+    }
+
+    /// Compute all input highlights from scratch: command validation + completion coloring.
+    /// Called on every text change. Reads `completion_inserted_range` for completion coloring.
+    fn update_input_highlights(&self, cx: &mut Context<Self>) {
+        let text = self.input_state.read(cx).value().to_string();
+        let completion_range = self.input_state.read(cx).completion_inserted_range.clone();
+
+        let trimmed = text.trim_start();
+        if trimmed.is_empty() {
+            self.input_state.update(cx, |state, _| {
+                state.overlay_highlights.clear();
+            });
+            return;
+        }
+
+        // Extract the first token (command name)
+        let cmd_end = trimmed.find(|c: char| c.is_whitespace()).unwrap_or(trimmed.len());
+        let cmd = &trimmed[..cmd_end];
+        let cmd_start = text.len() - trimmed.len();
+
+        // Check if it's a valid command (in $PATH or builtin)
+        let is_valid = if let Ok(executables) = self.shell_completion.path_executables.read() {
+            executables.iter().any(|e| e == cmd)
+        } else {
+            false
+        } || matches!(
+            cmd,
+            "cd" | "echo" | "export" | "source" | "alias" | "unalias" | "type"
+                | "which" | "eval" | "exec" | "set" | "unset" | "pwd" | "pushd"
+                | "popd" | "dirs" | "bg" | "fg" | "jobs" | "kill" | "wait"
+                | "trap" | "umask" | "test" | "true" | "false" | "readonly" | "shift"
+        );
+
+        self.input_state.update(cx, |state, _| {
+            state.overlay_highlights.clear();
+
+            // 1. Command highlight (full brand color)
+            if is_valid {
+                state.overlay_highlights.push((
+                    cmd_start..cmd_start + cmd_end,
+                    inazuma::HighlightStyle {
+                        color: Some(inazuma::hsla(195. / 360., 1.0, 0.5, 1.0)),
+                        ..Default::default()
+                    },
+                ));
+            }
+
+            // 2. Completion-inserted text highlight (dimmed brand color)
+            if let Some(range) = completion_range {
+                let clamped_end = range.end.min(text.len());
+                if range.start < clamped_end {
+                    state.overlay_highlights.push((
+                        range.start..clamped_end,
+                        inazuma::HighlightStyle {
+                            color: Some(inazuma::hsla(195. / 360., 1.0, 0.5, 0.6)),
+                            ..Default::default()
+                        },
+                    ));
+                }
+            }
+        });
     }
 
     fn on_key_down_interactive(

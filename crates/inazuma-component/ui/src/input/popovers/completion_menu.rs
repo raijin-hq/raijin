@@ -129,7 +129,8 @@ impl RenderOnce for CompletionMenuItem {
             .when(deprecated, |this| this.line_through())
             .hover(|this| this.bg(inazuma::hsla(0., 0., 1., 0.06)))
             .when(self.selected, |this| {
-                this.bg(inazuma::hsla(157. / 360., 0.87, 0.51, 0.25))
+                // Brand color #7FE6EF with 25% opacity
+                this.bg(inazuma::hsla(195. / 360., 1.0, 0.5, 0.25))
             })
             .child(
                 Icon::new(icon)
@@ -293,13 +294,17 @@ impl CompletionMenu {
                     range.start = token_start;
                 }
 
+                let insert_start = range.start;
                 editor.replace_text_in_range_silent(
                     Some(editor.range_to_utf16(&range)),
                     &new_text,
                     window,
                     cx,
                 );
+
+                editor.completion_inserted_range = Some(insert_start..insert_start + new_text.len());
                 editor.completion_inserting = false;
+
                 // FIXME: Input not get the focus
                 editor.focus(window, cx);
             })
@@ -392,9 +397,11 @@ impl CompletionMenu {
                 let range = editor.range_to_utf16(&(token_start..offset));
                 editor.completion_inserting = true;
                 editor.replace_text_in_range_silent(Some(range), &new_text, window, cx);
-                editor.completion_inserting = false;
 
+                editor.completion_inserted_range = Some(token_start..token_start + new_text.len());
+                editor.completion_inserting = false;
                 let new_offset = editor.cursor();
+
                 menu.update(cx, |menu, _| {
                     menu.offset = new_offset;
                 });
@@ -445,7 +452,7 @@ impl CompletionMenu {
 
             this.delegate_mut().query = self.query.clone();
             this.delegate_mut().set_items(items);
-            this.set_selected_index(Some(IndexPath::new(0)), window, cx);
+            this.set_selected_index(None, window, cx);
             this.set_item_to_measure_index(IndexPath::new(longest_ix), window, cx);
         });
 
@@ -492,11 +499,16 @@ impl Render for CompletionMenu {
             return Empty.into_any_element();
         };
 
+        let has_selection = self.list.read(cx).selected_index().is_some();
         let delegate = self.list.read(cx).delegate();
         let selected_ix = delegate.selected_ix;
-        let selected_documentation = delegate
-            .selected_item()
-            .and_then(|item| item.documentation.clone());
+        let selected_documentation = if has_selection {
+            delegate
+                .selected_item()
+                .and_then(|item| item.documentation.clone())
+        } else {
+            None
+        };
 
         let window_width = window.bounds().size.width;
 

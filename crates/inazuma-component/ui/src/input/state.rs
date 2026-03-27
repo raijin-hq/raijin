@@ -348,12 +348,21 @@ pub struct InputState {
     pub(super) context_menu: Option<ContextMenu>,
     pub(super) mouse_context_menu: Entity<MouseContextMenu>,
     /// A flag to indicate if we are currently inserting a completion item.
-    pub(super) completion_inserting: bool,
+    pub completion_inserting: bool,
     pub(super) hover_popover: Option<Entity<HoverPopover>>,
     /// The LSP definitions locations for "Go to Definition" feature.
     pub(super) hover_definition: HoverDefinition,
 
     pub lsp: Lsp,
+
+    /// Overlay highlights for text coloring (e.g. completion preview, command validation).
+    /// These are merged on top of syntax highlighting during rendering.
+    pub overlay_highlights: Vec<(std::ops::Range<usize>, inazuma::HighlightStyle)>,
+
+    /// Byte range of text that was inserted by a completion (menu or inline ghost text).
+    /// Used by the highlight system to color completion-inserted text differently.
+    /// Cleared automatically when the user types manually.
+    pub completion_inserted_range: Option<std::ops::Range<usize>>,
 
     /// A flag to indicate if we have a pending update to the text.
     ///
@@ -445,6 +454,8 @@ impl InputState {
             mask_pattern: MaskPattern::default(),
             text_align: TextAlign::Left,
             lsp: Lsp::default(),
+            overlay_highlights: Vec::new(),
+            completion_inserted_range: None,
             diagnostic_popover: None,
             context_menu: None,
             mouse_context_menu,
@@ -2377,6 +2388,8 @@ impl EntityInputHandler for InputState {
         self.mode.update_auto_grow(&self.display_map);
         if !self.silent_replace_text {
             self.handle_completion_trigger(&range, new_text, window, cx);
+            // User typed manually — clear completion highlight tracking
+            self.completion_inserted_range = None;
         }
         cx.emit(InputEvent::Change);
         cx.notify();
