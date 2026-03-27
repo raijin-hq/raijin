@@ -72,12 +72,11 @@ pub fn render_block(
         }
     };
 
-    let is_running = header.is_running;
     let is_error = header.is_error;
 
     // --- Grid element (renders from snapshot, no locking) ---
-    let grid_element = TerminalGridElement::new(snapshot.grid, font.clone(), font_size)
-        .with_cursor(is_running, true);
+    // No cursor in output blocks — cursor belongs in the input field (Warp pattern)
+    let grid_element = TerminalGridElement::new(snapshot.grid, font.clone(), font_size);
 
     // --- Build div ---
     let bg = if selected {

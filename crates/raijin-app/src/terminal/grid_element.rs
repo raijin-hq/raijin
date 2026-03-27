@@ -16,7 +16,6 @@ use super::grid_snapshot::BlockGridSnapshot;
 pub struct GridPrepaint {
     pub lines: Vec<(Point<Pixels>, ShapedLine)>,
     pub backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
-    pub cursor_rect: Option<Bounds<Pixels>>,
     pub line_height: Pixels,
 }
 
@@ -26,8 +25,6 @@ pub struct GridPrepaint {
 /// which was extracted with a single lock in block_list.rs.
 pub struct TerminalGridElement {
     snapshot: BlockGridSnapshot,
-    show_cursor: bool,
-    cursor_beam: bool,
     font: Font,
     font_size: f32,
 }
@@ -36,17 +33,9 @@ impl TerminalGridElement {
     pub fn new(snapshot: BlockGridSnapshot, font: Font, font_size: f32) -> Self {
         Self {
             snapshot,
-            show_cursor: false,
-            cursor_beam: true,
             font,
             font_size,
         }
-    }
-
-    pub fn with_cursor(mut self, show: bool, beam: bool) -> Self {
-        self.show_cursor = show;
-        self.cursor_beam = beam;
-        self
     }
 
     /// Compute cell dimensions from font metrics.
@@ -120,7 +109,7 @@ impl Element for TerminalGridElement {
         let viewport = window.content_mask().bounds;
         let block_bottom = bounds.origin.y + cell_height * self.snapshot.content_rows as f32;
         if block_bottom < viewport.origin.y || bounds.origin.y > viewport.origin.y + viewport.size.height {
-            return GridPrepaint { lines: vec![], backgrounds: vec![], cursor_rect: None, line_height };
+            return GridPrepaint { lines: vec![], backgrounds: vec![], line_height };
         }
 
         let bg_color = terminal_bg();
@@ -129,13 +118,12 @@ impl Element for TerminalGridElement {
 
         let mut lines = Vec::new();
         let mut backgrounds = Vec::new();
-        let mut cursor_rect = None;
 
         // Per-line viewport culling: skip lines above/below visible area
         let viewport_top = viewport.origin.y;
         let viewport_bottom = viewport.origin.y + viewport.size.height;
 
-        for (row_offset, snap_line) in self.snapshot.lines.iter().enumerate() {
+        for snap_line in self.snapshot.lines.iter() {
             let line_bottom = current_y + cell_height;
 
             // Skip lines completely above viewport
@@ -241,30 +229,16 @@ impl Element for TerminalGridElement {
                     text_len,
                     font_size,
                     &runs,
-                    Some(cell_width),
+                    None,
                     || SharedString::from(line_text),
                 );
                 lines.push((point(text_x, current_y), shaped));
             }
 
-            // Cursor
-            if self.show_cursor {
-                if let Some((cursor_row, cursor_col)) = self.snapshot.cursor {
-                    if row_offset == cursor_row {
-                        let cursor_x = text_x + cell_width * cursor_col as f32;
-                        let cursor_width = if self.cursor_beam { px(2.0) } else { cell_width };
-                        cursor_rect = Some(Bounds::new(
-                            point(cursor_x, current_y),
-                            size(cursor_width, cell_height),
-                        ));
-                    }
-                }
-            }
-
             current_y += cell_height;
         }
 
-        GridPrepaint { lines, backgrounds, cursor_rect, line_height }
+        GridPrepaint { lines, backgrounds, line_height }
     }
 
     fn paint(
@@ -279,10 +253,6 @@ impl Element for TerminalGridElement {
     ) {
         for (rect, color) in &prepaint.backgrounds {
             window.paint_quad(fill(*rect, *color));
-        }
-
-        if let Some(cursor_rect) = prepaint.cursor_rect {
-            window.paint_quad(fill(cursor_rect, cursor_color()));
         }
 
         for (origin, shaped_line) in &prepaint.lines {

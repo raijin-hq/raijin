@@ -23,10 +23,6 @@ pub fn terminal_fg() -> Hsla {
     rgb(0xf1f1f1).into()
 }
 
-pub fn cursor_color() -> Hsla {
-    rgb(0x14F195).into()
-}
-
 pub fn error_color() -> Hsla {
     rgb(0xff5f5f).into()
 }

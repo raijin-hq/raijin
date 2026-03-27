@@ -43,8 +43,6 @@ pub struct BlockGridSnapshot {
     pub content_rows: usize,
     pub grid_cols: usize,
     pub lines: Vec<SnapshotLine>,
-    /// Cursor position as (row_offset, column) — only for active blocks.
-    pub cursor: Option<(usize, usize)>,
 }
 
 /// Block metadata snapshot for the header.
@@ -237,12 +235,6 @@ fn extract_single_block(
         lines.push(SnapshotLine { cells });
     }
 
-    let cursor = if !block.is_finished() {
-        Some((history_size + cursor_line, cursor_point.column.0))
-    } else {
-        None
-    };
-
     BlockSnapshot {
         id: block.id,
         header: BlockHeaderSnapshot {
@@ -260,7 +252,6 @@ fn extract_single_block(
             content_rows,
             grid_cols,
             lines,
-            cursor,
         },
     }
 }

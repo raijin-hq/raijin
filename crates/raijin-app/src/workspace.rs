@@ -613,6 +613,7 @@ impl Render for Workspace {
                         .id("terminal-output")
                         .flex()
                         .flex_col()
+                        .justify_end()
                         .flex_1()
                         .min_h_0()
                         .overflow_y_scroll()
