@@ -41,6 +41,62 @@ pub struct AppearanceConfig {
     pub font_family: String,
     #[serde(default = "defaults_font_size")]
     pub font_size: f64,
+    /// Symbol maps: map Unicode ranges to specific font families.
+    /// Useful for Nerd Font icons, Powerline glyphs, etc.
+    ///
+    /// Example in config.toml:
+    /// ```toml
+    /// [[appearance.symbol_map]]
+    /// start = "E0B0"
+    /// end = "E0D7"
+    /// font_family = "Symbols Nerd Font Mono"
+    /// ```
+    #[serde(default)]
+    pub symbol_map: Vec<SymbolMapEntry>,
+}
+
+/// Maps a Unicode codepoint range to a specific font family.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SymbolMapEntry {
+    /// Start of Unicode range (hex, e.g. "E0B0").
+    pub start: String,
+    /// End of Unicode range (hex, e.g. "E0D7").
+    pub end: String,
+    /// Font family to use for characters in this range.
+    pub font_family: String,
+}
+
+/// Parsed symbol map entry with resolved codepoint range.
+#[derive(Debug, Clone)]
+pub struct ResolvedSymbolMap {
+    pub start: u32,
+    pub end: u32,
+    pub font_family: String,
+}
+
+impl SymbolMapEntry {
+    /// Parse hex start/end into a resolved entry.
+    pub fn resolve(&self) -> Option<ResolvedSymbolMap> {
+        let start = u32::from_str_radix(&self.start, 16).ok()?;
+        let end = u32::from_str_radix(&self.end, 16).ok()?;
+        Some(ResolvedSymbolMap {
+            start,
+            end,
+            font_family: self.font_family.clone(),
+        })
+    }
+}
+
+impl ResolvedSymbolMap {
+    /// Check if a character falls in this range and return the font family.
+    pub fn match_char(&self, c: char) -> Option<&str> {
+        let cp = c as u32;
+        if cp >= self.start && cp <= self.end {
+            Some(&self.font_family)
+        } else {
+            None
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -99,6 +155,7 @@ impl Default for AppearanceConfig {
             theme: defaults::THEME.to_string(),
             font_family: defaults::FONT_FAMILY.to_string(),
             font_size: defaults::FONT_SIZE,
+            symbol_map: Vec::new(),
         }
     }
 }

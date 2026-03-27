@@ -3,7 +3,6 @@ mod completions;
 mod input;
 mod settings_view;
 mod terminal;
-mod terminal_element;
 mod workspace;
 
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, px, size};

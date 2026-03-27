@@ -1,13 +1,14 @@
 use raijin_term::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
-    ParentElement, Render, Styled, Window, prelude::*,
+    ParentElement, Render, ScrollHandle, Styled, Window, prelude::*,
 };
 use inazuma_component::{
     IconName, TitleBar,
     chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
     input::{AutoPairConfig, Input, InputEvent, InputState},
+    scroll::ScrollableElement,
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
@@ -20,7 +21,7 @@ use crate::completions::command_correction;
 use crate::completions::shell_completion::ShellCompletionProvider;
 use crate::input::history_panel::HistoryPanel;
 use crate::settings_view;
-use crate::terminal_element::TerminalElement;
+// Block rendering now uses terminal::block_list::render_block_list
 
 /// Which view is currently active.
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -46,6 +47,11 @@ pub struct Workspace {
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
+    scroll_handle: ScrollHandle,
+    last_terminal_rows: u16,
+    last_terminal_cols: u16,
+    block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache,
+    resolved_symbol_maps: Vec<raijin_settings::ResolvedSymbolMap>,
 }
 
 impl Workspace {
@@ -126,6 +132,16 @@ impl Workspace {
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
+            scroll_handle: ScrollHandle::new(),
+            last_terminal_rows: 0,
+            last_terminal_cols: 0,
+            block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache::new(),
+            resolved_symbol_maps: config
+                .appearance
+                .symbol_map
+                .iter()
+                .filter_map(|entry| entry.resolve())
+                .collect(),
         }
     }
 
@@ -133,6 +149,7 @@ impl Workspace {
         match event {
             TerminalEvent::Wakeup => {
                 self.update_interactive_mode();
+                self.scroll_handle.scroll_to_bottom();
                 cx.notify();
             }
             TerminalEvent::Title(title) => {
@@ -545,7 +562,7 @@ impl Workspace {
 }
 
 impl Render for Workspace {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let mut container = div()
             .flex()
             .flex_col()
@@ -561,18 +578,46 @@ impl Render for Workspace {
                 let config = cx.global::<raijin_settings::RaijinConfig>();
                 let font_family = config.appearance.font_family.clone();
                 let font_size = config.appearance.font_size as f32;
-                let cursor_beam = config.terminal.cursor_style
-                    == raijin_settings::CursorStyle::Beam;
+
+                // Resize PTY based on viewport dimensions (once per frame)
+                {
+                    let font = inazuma::Font {
+                        family: font_family.clone().into(),
+                        weight: inazuma::FontWeight::NORMAL,
+                        ..inazuma::Font::default()
+                    };
+                    let font_id = window.text_system().resolve_font(&font);
+                    let font_px = px(font_size);
+                    let cell_width = window
+                        .text_system()
+                        .advance(font_id, font_px, 'M')
+                        .unwrap_or_default()
+                        .width;
+                    let ascent = window.text_system().ascent(font_id, font_px);
+                    let descent = window.text_system().descent(font_id, font_px);
+                    let cell_height = ascent + descent.abs() + px(crate::terminal::constants::CELL_PADDING);
+
+                    let viewport = window.viewport_size();
+                    let cols = ((viewport.width - px(crate::terminal::constants::BLOCK_HEADER_PAD_X)) / cell_width)
+                        .max(2.0) as u16;
+                    let rows = (viewport.height / cell_height).max(1.0) as u16;
+                    if rows != self.last_terminal_rows || cols != self.last_terminal_cols {
+                        handle.set_size(rows, cols);
+                        self.last_terminal_rows = rows;
+                        self.last_terminal_cols = cols;
+                    }
+                }
 
                 container = container.child({
                     let output_area = div()
                         .id("terminal-output")
                         .flex()
                         .flex_col()
-                        .justify_end()
                         .flex_1()
                         .min_h_0()
-                        .overflow_hidden()
+                        .overflow_y_scroll()
+                        .track_scroll(&self.scroll_handle)
+                        .vertical_scrollbar(&self.scroll_handle)
                         .on_click(cx.listener(|view, _, _, cx| {
                             // Toggle selection of the last finished block
                             let last_idx = {
@@ -590,11 +635,21 @@ impl Render for Workspace {
                         }));
 
                     if self.show_terminal || self.interactive_mode {
+                        let font = inazuma::Font {
+                            family: font_family.clone().into(),
+                            weight: inazuma::FontWeight::NORMAL,
+                            ..inazuma::Font::default()
+                        };
+
                         output_area.child(
-                            TerminalElement::new(handle)
-                                .with_font(&font_family, font_size)
-                                .with_cursor_beam(cursor_beam)
-                                .with_selected_block(self.selected_block),
+                            crate::terminal::block_list::render_block_list(
+                                &handle,
+                                &font,
+                                font_size,
+                                self.selected_block,
+                                &mut self.block_snapshot_cache,
+                                &self.resolved_symbol_maps,
+                            ),
                         )
                     } else {
                         output_area

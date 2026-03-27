@@ -1,48 +1,37 @@
 //! Scrollable list of terminal blocks.
 //!
-//! Renders all blocks (finished + active) as a vertical list.
-//! Each block is rendered via block_element::render_block().
+//! Locks the terminal ONCE via extract_all_block_snapshots(), then renders
+//! all blocks from pre-extracted snapshots. No per-block mutex locking.
+//! Finished blocks are served from the cache (zero extraction cost).
 
 use inazuma::{
-    div, px, IntoElement, ParentElement, Styled, Window,
+    div, Font, IntoElement, ParentElement, Styled,
 };
-use raijin_term::block_grid::BlockGridRouter;
-use raijin_term::term::color::Colors;
+use raijin_terminal::TerminalHandle;
 
 use super::block_element::render_block;
-use super::constants::*;
+use super::grid_snapshot::{BlockSnapshotCache, extract_all_block_snapshots};
 
-/// Render the scrollable block list from the BlockGridRouter.
+/// Render the block list from snapshots extracted with a single lock.
+/// Finished blocks come from the cache — only active blocks are freshly extracted.
 pub fn render_block_list(
-    router: &BlockGridRouter,
-    colors: &Colors,
-    font: &inazuma::Font,
-    font_size: inazuma::Pixels,
-    cell_width: inazuma::Pixels,
-    cell_height: inazuma::Pixels,
+    handle: &TerminalHandle,
+    font: &Font,
+    font_size: f32,
     selected_block: Option<usize>,
-    window: &mut Window,
+    cache: &mut BlockSnapshotCache,
+    symbol_maps: &[raijin_settings::ResolvedSymbolMap],
 ) -> impl IntoElement {
-    let blocks = router.blocks();
+    let snapshots = extract_all_block_snapshots(handle, cache, symbol_maps);
 
     let mut list = div()
         .flex()
         .flex_col()
-        .w_full()
-        .gap(px(BLOCK_GAP));
+        .w_full();
 
-    for (i, block) in blocks.iter().enumerate() {
+    for (i, snapshot) in snapshots.into_iter().enumerate() {
         let is_selected = selected_block == Some(i);
-        list = list.child(render_block(
-            block,
-            colors,
-            font,
-            font_size,
-            cell_width,
-            cell_height,
-            is_selected,
-            window,
-        ));
+        list = list.child(render_block(snapshot, font, font_size, is_selected));
     }
 
     list

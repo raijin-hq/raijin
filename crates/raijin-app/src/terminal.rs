@@ -5,5 +5,5 @@ pub mod block_list;
 pub mod colors;
 pub mod constants;
 pub mod grid_element;
+pub mod grid_snapshot;
 pub mod live_block;
-pub mod text_rendering;

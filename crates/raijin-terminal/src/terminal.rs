@@ -207,8 +207,13 @@ impl Terminal {
                             }
 
                             // Feed bytes to raijin-term
-                            let mut term = term.lock();
-                            parser.advance(&mut *term, chunk);
+                            {
+                                let mut term = term.lock();
+                                parser.advance(&mut *term, chunk);
+                            }
+
+                            // Notify UI that new content is available
+                            let _ = event_tx.send(TerminalEvent::Wakeup);
                         }
                         Err(e) => {
                             log::error!("PTY read error: {}", e);
