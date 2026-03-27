@@ -6,7 +6,7 @@
 //!   └── TerminalGridElement (Grid output — renders from pre-extracted snapshot)
 
 use inazuma::{
-    div, px, Font, IntoElement, ParentElement, Styled,
+    div, hsla, px, Font, IntoElement, ParentElement, Styled,
     prelude::FluentBuilder,
 };
 
@@ -88,6 +88,8 @@ pub fn render_block(
     div()
         .w_full()
         .bg(bg)
+        .border_t_1()
+        .border_color(hsla(0.0, 0.0, 1.0, 0.08))
         .pb(px(BLOCK_BODY_PAD_BOTTOM))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))

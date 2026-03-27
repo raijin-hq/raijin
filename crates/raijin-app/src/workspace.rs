@@ -1,14 +1,13 @@
 use raijin_term::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
-    ParentElement, Render, ScrollHandle, Styled, Window, prelude::*,
+    ListAlignment, ListState, ParentElement, Render, Styled, Window, prelude::*,
 };
 use inazuma_component::{
     IconName, TitleBar,
     chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
     input::{AutoPairConfig, Input, InputEvent, InputState},
-    scroll::ScrollableElement,
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
@@ -47,7 +46,7 @@ pub struct Workspace {
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
-    scroll_handle: ScrollHandle,
+    block_list_state: ListState,
     last_terminal_rows: u16,
     last_terminal_cols: u16,
     block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache,
@@ -132,7 +131,7 @@ impl Workspace {
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
-            scroll_handle: ScrollHandle::new(),
+            block_list_state: ListState::new(0, ListAlignment::Bottom, px(200.0)),
             last_terminal_rows: 0,
             last_terminal_cols: 0,
             block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache::new(),
@@ -149,7 +148,20 @@ impl Workspace {
         match event {
             TerminalEvent::Wakeup => {
                 self.update_interactive_mode();
-                self.scroll_handle.scroll_to_bottom();
+                // Sync block count with ListState for bottom-anchored scrolling
+                let block_count = {
+                    let handle = self.terminal.handle();
+                    let term = handle.lock();
+                    term.block_router().blocks().len()
+                };
+                let current_count = self.block_list_state.item_count();
+                if block_count != current_count {
+                    if block_count > current_count {
+                        self.block_list_state.splice(current_count..current_count, block_count - current_count);
+                    } else {
+                        self.block_list_state.reset(block_count);
+                    }
+                }
                 cx.notify();
             }
             TerminalEvent::Title(title) => {
@@ -608,54 +620,29 @@ impl Render for Workspace {
                     }
                 }
 
-                container = container.child({
-                    let output_area = div()
-                        .id("terminal-output")
-                        .flex()
-                        .flex_col()
-                        .justify_end()
-                        .flex_1()
-                        .min_h_0()
-                        .overflow_y_scroll()
-                        .track_scroll(&self.scroll_handle)
-                        .vertical_scrollbar(&self.scroll_handle)
-                        .on_click(cx.listener(|view, _, _, cx| {
-                            // Toggle selection of the last finished block
-                            let last_idx = {
-                                let handle = view.terminal.handle();
-                                let term = handle.lock();
-                                let blocks = term.block_router().blocks();
-                                blocks.iter().rposition(|b| b.is_finished())
-                            };
-                            if view.selected_block == last_idx {
-                                view.selected_block = None;
-                            } else {
-                                view.selected_block = last_idx;
-                            }
-                            cx.notify();
-                        }));
+                if self.show_terminal || self.interactive_mode {
+                    let font = inazuma::Font {
+                        family: font_family.clone().into(),
+                        weight: inazuma::FontWeight::NORMAL,
+                        ..inazuma::Font::default()
+                    };
 
-                    if self.show_terminal || self.interactive_mode {
-                        let font = inazuma::Font {
-                            family: font_family.clone().into(),
-                            weight: inazuma::FontWeight::NORMAL,
-                            ..inazuma::Font::default()
-                        };
-
-                        output_area.child(
-                            crate::terminal::block_list::render_block_list(
-                                &handle,
-                                &font,
-                                font_size,
-                                self.selected_block,
-                                &mut self.block_snapshot_cache,
-                                &self.resolved_symbol_maps,
-                            ),
-                        )
-                    } else {
-                        output_area
-                    }
-                });
+                    container = container.child(
+                        crate::terminal::block_list::render_block_list(
+                            &handle,
+                            &self.block_list_state,
+                            &mut self.block_snapshot_cache,
+                            &self.resolved_symbol_maps,
+                            &font,
+                            font_size,
+                            self.selected_block,
+                        ),
+                    );
+                } else {
+                    container = container.child(
+                        div().flex_1().min_h_0(),
+                    );
+                }
 
                 if !self.interactive_mode {
                     let command_running = {

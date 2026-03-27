@@ -6,10 +6,10 @@ use inazuma::{Hsla, hsla, rgb};
 // Layout Constants
 // ---------------------------------------------------------------------------
 
-pub const CELL_PADDING: f32 = 2.0;
+pub const CELL_PADDING: f32 = 4.0;
 pub const BLOCK_HEADER_PAD_X: f32 = 16.0;
 pub const BLOCK_LEFT_BORDER: f32 = 4.0;
-pub const BLOCK_BODY_PAD_BOTTOM: f32 = 8.0;
+pub const BLOCK_BODY_PAD_BOTTOM: f32 = 4.0;
 
 // ---------------------------------------------------------------------------
 // Raijin Dark Theme
