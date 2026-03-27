@@ -75,7 +75,7 @@ fn named_color_to_hsla(name: NamedColor, dim: bool) -> Hsla {
     let (r, g, b) = match name {
         NamedColor::Black => (0x12, 0x12, 0x12),
         NamedColor::Red => (0xff, 0x5f, 0x5f),
-        NamedColor::Green => (0x14, 0xF1, 0x95),
+        NamedColor::Green => (0x00, 0xBF, 0xFF),
         NamedColor::Yellow => (0xff, 0xd7, 0x00),
         NamedColor::Blue => (0x5f, 0x87, 0xff),
         NamedColor::Magenta => (0xd7, 0x5f, 0xff),
@@ -91,7 +91,7 @@ fn named_color_to_hsla(name: NamedColor, dim: bool) -> Hsla {
         NamedColor::BrightWhite => (0xff, 0xff, 0xff),
         NamedColor::Foreground => (0xf1, 0xf1, 0xf1),
         NamedColor::Background => (0x12, 0x12, 0x12),
-        NamedColor::Cursor => (0x14, 0xF1, 0x95),
+        NamedColor::Cursor => (0x00, 0xBF, 0xFF),
         _ => (0xf1, 0xf1, 0xf1),
     };
     let mut c = rgb_to_hsla(r, g, b);

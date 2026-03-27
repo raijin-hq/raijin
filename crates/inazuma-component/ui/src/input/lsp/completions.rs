@@ -316,8 +316,18 @@ impl InputState {
         let cursor = self.cursor();
         let range_utf16 = self.range_to_utf16(&(cursor..cursor));
         let completion_text = completion_item.insert_text;
+
         self.replace_text_in_range_silent(Some(range_utf16), &completion_text, window, cx);
-        self.completion_inserted_range = Some(cursor..cursor + completion_text.len());
+
+        // Highlight everything after the command token (the full argument area).
+        // Find command end by looking for the first space (commands never have escapes).
+        let full_text = self.text.to_string();
+        let cmd_end = full_text.find(|c: char| c.is_whitespace()).unwrap_or(full_text.len());
+        let arg_start = full_text[cmd_end..]
+            .find(|c: char| !c.is_whitespace())
+            .map(|i| cmd_end + i)
+            .unwrap_or(full_text.len());
+        self.completion_inserted_range = Some(arg_start..full_text.len());
         true
     }
 }

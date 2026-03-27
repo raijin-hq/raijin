@@ -547,7 +547,7 @@ impl Workspace {
             .px_4()
             .pt_2()
             .flex_wrap()
-            .child(Chip::new(&self.shell_context.username, rgb(0x14F195).into()))
+            .child(Chip::new(&self.shell_context.username, rgb(0x00BFFF).into()))
             .child(Chip::new(&self.shell_context.hostname, rgb(0xc8c8c8).into()))
             .child(
                 Chip::new(&self.shell_context.cwd_short, rgb(0x6ee7b7).into())
@@ -626,7 +626,7 @@ impl Workspace {
                     .py(px(2.0))
                     .bg(hsla(0.0, 0.0, 1.0, 0.08))
                     .rounded(px(4.0))
-                    .text_color(rgb(0x14F195))
+                    .text_color(rgb(0x00BFFF))
                     .child(format!("{} ({}%)", suggestion, confidence_pct)),
             )
             .child(

@@ -165,7 +165,7 @@ impl GitStatsChip {
             insertions,
             deletions,
             neutral_color: rgb(0xc8c8c8).into(),
-            insert_color: rgb(0x14F195).into(),
+            insert_color: rgb(0x00BFFF).into(),
             delete_color: rgb(0xff5f5f).into(),
         }
     }
