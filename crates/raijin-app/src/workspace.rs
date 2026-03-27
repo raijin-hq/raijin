@@ -16,10 +16,10 @@ use raijin_terminal::{BlockManager, Terminal, TerminalEvent};
 use std::rc::Rc;
 use std::sync::{Arc, RwLock};
 
-use crate::command_correction;
 use crate::command_history::CommandHistory;
-use crate::history_panel::HistoryPanel;
-use crate::shell_completion::ShellCompletionProvider;
+use crate::completions::command_correction;
+use crate::completions::shell_completion::ShellCompletionProvider;
+use crate::input::history_panel::HistoryPanel;
 use crate::settings_view;
 use crate::terminal_element::{BlockRenderInfo, TerminalElement};
 
