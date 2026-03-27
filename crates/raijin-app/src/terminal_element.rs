@@ -606,7 +606,8 @@ impl Element for TerminalElement {
 
             let line = Line(row_idx as i32 - display_offset as i32);
 
-            for col_idx in 0..grid_cols {
+            let actual_cols = grid.columns();
+            for col_idx in 0..actual_cols {
                 if skip_next {
                     skip_next = false;
                     continue;
