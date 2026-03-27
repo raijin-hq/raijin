@@ -53,11 +53,11 @@ pub fn create_app_bundle(config: &BundleConfig) -> Result<PathBuf> {
     }
 
     // Copy .icns fallback (for older macOS)
-    let icns_file = config.assets_dir.join("rajin.icns");
+    let icns_file = config.assets_dir.join("raijin.icns");
     if icns_file.exists() {
-        let dest = resources_dir.join("rajin.icns");
+        let dest = resources_dir.join("raijin.icns");
         fs::copy(&icns_file, &dest)
-            .with_context(|| format!("failed to copy rajin.icns to {}", dest.display()))?;
+            .with_context(|| format!("failed to copy raijin.icns to {}", dest.display()))?;
     }
 
     // Generate Info.plist
@@ -91,9 +91,9 @@ fn generate_info_plist(config: &BundleConfig) -> String {
     <key>CFBundleExecutable</key>
     <string>raijin</string>
     <key>CFBundleIconFile</key>
-    <string>rajin.icns</string>
+    <string>raijin.icns</string>
     <key>CFBundleIconName</key>
-    <string>rajin</string>
+    <string>AppIcon</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>
