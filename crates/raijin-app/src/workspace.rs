@@ -613,16 +613,21 @@ impl Render for Workspace {
                 });
 
                 if !self.interactive_mode {
+                    let command_running = self.block_manager.active_block().is_some();
+
                     // Correction banner (e.g. "Did you mean `git status`?")
                     if let Some(ref correction) = self.correction_suggestion {
                         container = container.child(self.render_correction_banner(correction));
                     }
 
-                    // History panel overlay (between terminal output and input area)
-                    if self.history_panel.is_visible() {
-                        container = container.child(self.history_panel.render());
+                    // Input area only visible when no command is running
+                    if !command_running {
+                        // History panel overlay (between terminal output and input area)
+                        if self.history_panel.is_visible() {
+                            container = container.child(self.history_panel.render());
+                        }
+                        container = container.child(self.render_input_area());
                     }
-                    container = container.child(self.render_input_area());
                 }
             }
             ViewMode::Settings => {
