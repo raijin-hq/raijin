@@ -180,11 +180,33 @@ impl Terminal {
                             let chunk = &buf[..n];
 
                             // Scan for OSC 133 shell integration markers
-                            for marker in osc_scanner.scan(chunk) {
+                            let markers = osc_scanner.scan(chunk);
+
+                            // Route block grid BEFORE feeding bytes to parser
+                            {
+                                let mut term = term.lock();
+                                for marker in &markers {
+                                    match marker {
+                                        crate::osc_parser::ShellMarker::PromptStart => {
+                                            term.route_to_prompt();
+                                        }
+                                        crate::osc_parser::ShellMarker::CommandStart => {
+                                            term.route_to_new_block(String::new());
+                                        }
+                                        crate::osc_parser::ShellMarker::CommandEnd { exit_code } => {
+                                            term.route_finalize_block(*exit_code);
+                                        }
+                                        _ => {}
+                                    }
+                                }
+                            }
+
+                            // Send markers as events for UI processing
+                            for marker in markers {
                                 let _ = event_tx.send(TerminalEvent::ShellMarker(marker));
                             }
 
-                            // Feed bytes to raijin-term (ignores unknown OSC)
+                            // Feed bytes to raijin-term
                             let mut term = term.lock();
                             parser.advance(&mut *term, chunk);
                         }

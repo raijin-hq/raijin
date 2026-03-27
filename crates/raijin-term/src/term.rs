@@ -456,6 +456,26 @@ impl<T> Term<T> {
         self.block_router.active_grid_mut()
     }
 
+    /// Switch to prompt grid (called at PromptStart).
+    pub fn route_to_prompt(&mut self) {
+        self.block_router.switch_to_prompt();
+    }
+
+    /// Create a new block grid and route output there (called at CommandStart).
+    pub fn route_to_new_block(&mut self, command: String) {
+        self.block_router.start_new_block(command);
+    }
+
+    /// Finalize the active block (called at CommandEnd).
+    pub fn route_finalize_block(&mut self, exit_code: i32) {
+        self.block_router.finalize_block(exit_code);
+    }
+
+    /// Access to the block router.
+    pub fn block_router(&self) -> &crate::block_grid::BlockGridRouter {
+        &self.block_router
+    }
+
     /// Resize terminal to new dimensions.
     pub fn resize<S: Dimensions>(&mut self, size: S) {
         let old_cols = self.columns();
