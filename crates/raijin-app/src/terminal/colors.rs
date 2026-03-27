@@ -4,7 +4,7 @@ use inazuma::{Hsla, hsla};
 use raijin_term::term::cell::Flags as CellFlags;
 use raijin_term::vte::ansi::{Color as AnsiColor, NamedColor};
 
-use super::constants::{terminal_bg, terminal_fg};
+use super::constants::terminal_fg;
 
 /// Resolve foreground and background colors for a terminal cell.
 pub fn resolve_colors(
