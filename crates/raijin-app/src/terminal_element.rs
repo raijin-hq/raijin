@@ -606,6 +606,12 @@ impl Element for TerminalElement {
 
             let line = Line(row_idx as i32 - display_offset as i32);
 
+            // Skip rows outside the grid's visible range
+            if line.0 >= grid.screen_lines() as i32 || line.0 < -(grid.history_size() as i32) {
+                visual_y_row += 1;
+                continue;
+            }
+
             let actual_cols = grid.columns();
             for col_idx in 0..actual_cols {
                 if skip_next {
