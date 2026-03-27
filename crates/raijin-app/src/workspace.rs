@@ -257,6 +257,12 @@ impl Workspace {
                     }
                     self.block_manager
                         .set_pending_command(value.to_string());
+                    // Set pending command on the block router for when CommandStart fires
+                    {
+                        let handle = self.terminal.handle();
+                        let mut term = handle.lock();
+                        term.set_pending_block_command(value.to_string());
+                    }
                     let mut bytes = value.as_bytes().to_vec();
                     bytes.push(b'\r');
                     self.terminal.write(&bytes);

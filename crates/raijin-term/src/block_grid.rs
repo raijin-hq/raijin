@@ -172,6 +172,8 @@ pub struct BlockGridRouter {
     /// Prompt grid: absorbs prompt output to keep VTE parser state consistent.
     /// Reset at each PromptStart. Never rendered.
     pub(crate) prompt_grid: BlockGrid,
+    /// Command text to assign to the next block (set from UI on Enter).
+    pending_command: Option<String>,
     /// Next block ID to assign.
     next_id: usize,
     /// Terminal column count (for creating new grids).
@@ -192,6 +194,7 @@ impl BlockGridRouter {
             blocks: Vec::new(),
             active_block_id: None,
             prompt_grid,
+            pending_command: None,
             next_id: 1,
             cols,
             initial_rows: rows.max(24),
@@ -267,6 +270,7 @@ impl BlockGridRouter {
     }
 
     /// Called at CommandStart: create a new block grid and route output there.
+    /// Uses pending_command if set (from UI Enter), otherwise uses the provided command.
     pub fn start_new_block(&mut self, command: String) -> BlockId {
         let id = BlockId(self.next_id);
         self.next_id += 1;
@@ -277,7 +281,7 @@ impl BlockGridRouter {
             self.initial_rows,
             self.max_scrollback_per_block,
         );
-        block.command = command;
+        block.command = self.pending_command.take().unwrap_or(command);
 
         self.blocks.push(block);
         self.active_block_id = Some(id);
@@ -303,6 +307,11 @@ impl BlockGridRouter {
         if let Some(block) = self.blocks.last_mut() {
             block.metadata = metadata;
         }
+    }
+
+    /// Set the command text that will be assigned to the next block.
+    pub fn set_pending_command(&mut self, command: String) {
+        self.pending_command = Some(command);
     }
 
     /// Set the command text on the active block.

@@ -476,6 +476,12 @@ impl<T> Term<T> {
         &self.block_router
     }
 
+    /// Set the command text that will be assigned to the next block.
+    /// Called from the UI when the user presses Enter.
+    pub fn set_pending_block_command(&mut self, command: String) {
+        self.block_router.set_pending_command(command);
+    }
+
     /// Resize terminal to new dimensions.
     pub fn resize<S: Dimensions>(&mut self, size: S) {
         let old_cols = self.columns();
