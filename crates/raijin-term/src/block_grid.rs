@@ -67,6 +67,9 @@ pub struct BlockGrid {
     pub started_at: Instant,
     /// When this block finished (exit code received).
     pub finished_at: Option<Instant>,
+    /// Number of rows with actual content (trimmed trailing empty lines).
+    /// Set at finalization; while running, equals cursor line + 1.
+    pub content_rows: usize,
     /// Whether synchronized rendering is active for this block.
     pub sync_rendering: bool,
 }
@@ -84,8 +87,25 @@ impl BlockGrid {
             metadata: BlockMetadata::default(),
             started_at: Instant::now(),
             finished_at: None,
+            content_rows: 0,
             sync_rendering: false,
         }
+    }
+
+    /// Compute the number of rows with actual content by finding the last non-empty row.
+    fn compute_content_rows(&self) -> usize {
+        use crate::index::Line;
+        let total = self.grid.screen_lines() as i32;
+        for row in (0..total).rev() {
+            let line = &self.grid[Line(row)];
+            for col in 0..self.grid.columns() {
+                let cell = &line[crate::index::Column(col)];
+                if cell.c != ' ' && cell.c != '\0' {
+                    return (row + 1) as usize;
+                }
+            }
+        }
+        0
     }
 
     /// Whether this block has finished executing.
@@ -324,6 +344,9 @@ impl BlockGridRouter {
         if let Some(block) = self.active_block_mut() {
             block.exit_code = Some(exit_code);
             block.finished_at = Some(Instant::now());
+            block.content_rows = block.compute_content_rows();
+            log::info!("finalize_block: content_rows={}, screen_lines={}, cursor_line={}",
+                block.content_rows, block.grid.screen_lines(), block.grid.cursor.point.line.0);
         }
         // Route subsequent bytes to prompt grid until next PromptStart
         self.active_block_id = None;

@@ -85,7 +85,7 @@ pub fn render_block(
         block_body_bg()
     };
 
-    let error_bg = hsla(0.0, 0.8, 0.15, 0.25);
+    let error_bg = hsla(0.0, 0.5, 0.18, 0.15);
 
     div()
         .w_full()
