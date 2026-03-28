@@ -47,7 +47,6 @@ GradientColor prepare_fill_color(uint tag, uint color_space, Hsla solid, Hsla co
 struct QuadVertexOutput {
   uint quad_id [[flat]];
   float4 position [[position]];
-  float4 border_color [[flat]];
   float4 background_solid [[flat]];
   float4 background_color0 [[flat]];
   float4 background_color1 [[flat]];
@@ -57,7 +56,6 @@ struct QuadVertexOutput {
 struct QuadFragmentInput {
   uint quad_id [[flat]];
   float4 position [[position]];
-  float4 border_color [[flat]];
   float4 background_solid [[flat]];
   float4 background_color0 [[flat]];
   float4 background_color1 [[flat]];
@@ -77,8 +75,6 @@ vertex QuadVertexOutput quad_vertex(uint unit_vertex_id [[vertex_id]],
       to_device_position(unit_vertex, quad.bounds, viewport_size);
   float4 clip_distance = distance_from_clip_rect(unit_vertex, quad.bounds,
                                                  quad.content_mask.bounds);
-  float4 border_color = hsla_to_rgba(quad.border_color);
-
   GradientColor gradient = prepare_fill_color(
     quad.background.tag,
     quad.background.color_space,
@@ -90,7 +86,6 @@ vertex QuadVertexOutput quad_vertex(uint unit_vertex_id [[vertex_id]],
   return QuadVertexOutput{
       quad_id,
       device_position,
-      border_color,
       gradient.solid,
       gradient.color0,
       gradient.color1,
@@ -210,7 +205,20 @@ fragment float4 quad_fragment(QuadFragmentInput input [[stage_in]],
 
   float4 color = background_color;
   if (border_sdf < antialias_threshold) {
-    float4 border_color = input.border_color;
+    // Select per-side border color based on which border region the fragment is in.
+    // Uses the distance to the inner border edge to determine if we're in the
+    // horizontal (left/right) or vertical (top/bottom) border strip.
+    float4 border_color;
+    bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
+    if (in_horizontal_border) {
+      border_color = center_to_point.x < 0.0
+        ? hsla_to_rgba(quad.border_colors.left)
+        : hsla_to_rgba(quad.border_colors.right);
+    } else {
+      border_color = center_to_point.y < 0.0
+        ? hsla_to_rgba(quad.border_colors.top)
+        : hsla_to_rgba(quad.border_colors.bottom);
+    }
 
     // Dashed border logic when border_style == 1
     if (quad.border_style == 1) {

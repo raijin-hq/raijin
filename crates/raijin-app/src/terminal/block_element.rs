@@ -85,15 +85,17 @@ pub fn render_block(
         block_body_bg()
     };
 
+    let error_bg = hsla(0.0, 0.8, 0.15, 0.25);
+
     div()
         .w_full()
-        .bg(bg)
+        .bg(if is_error { error_bg } else { bg })
         .border_t_1()
         .border_color(hsla(0.0, 0.0, 1.0, 0.08))
         .pb(px(BLOCK_BODY_PAD_BOTTOM))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))
-                .border_color(error_color())
+                .border_l_color(error_color())
         })
         // Header
         .child(

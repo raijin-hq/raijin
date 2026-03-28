@@ -113,7 +113,7 @@ impl Element for ScrollableMask {
                 window.paint_quad(PaintQuad {
                     bounds,
                     border_widths: Edges::all(px(1.0)),
-                    border_color: color,
+                    border_colors: Edges { top: color, right: color, bottom: color, left: color },
                     background: inazuma::transparent_white().into(),
                     corner_radii: Corners::all(px(0.)),
                     border_style: BorderStyle::default(),

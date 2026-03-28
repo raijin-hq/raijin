@@ -83,7 +83,7 @@ impl Inline {
             bounds,
             background: cx.theme().blue.alpha(0.01).into(),
             corner_radii: inazuma::Corners::default(),
-            border_color: inazuma::transparent_black(),
+            border_colors: inazuma::Edges { top: inazuma::transparent_black(), right: inazuma::transparent_black(), bottom: inazuma::transparent_black(), left: inazuma::transparent_black() },
             border_style: BorderStyle::default(),
             border_widths: inazuma::Edges::all(px(0.)),
         });
@@ -175,7 +175,7 @@ impl Inline {
                 px(0.),
                 cx.theme().selection,
                 Edges::default(),
-                inazuma::transparent_black(),
+                Edges::all(inazuma::transparent_black()),
                 BorderStyle::default(),
             ));
         } else {
@@ -187,7 +187,7 @@ impl Inline {
                 px(0.),
                 cx.theme().selection,
                 Edges::default(),
-                inazuma::transparent_black(),
+                Edges::all(inazuma::transparent_black()),
                 BorderStyle::default(),
             ));
 
@@ -200,7 +200,7 @@ impl Inline {
                     px(0.),
                     cx.theme().selection,
                     Edges::default(),
-                    inazuma::transparent_black(),
+                    Edges::all(inazuma::transparent_black()),
                     BorderStyle::default(),
                 ));
             }
@@ -213,7 +213,7 @@ impl Inline {
                 px(0.),
                 cx.theme().selection,
                 Edges::default(),
-                inazuma::transparent_black(),
+                Edges::all(inazuma::transparent_black()),
                 BorderStyle::default(),
             ));
         }

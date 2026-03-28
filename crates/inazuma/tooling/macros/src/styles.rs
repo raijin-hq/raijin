@@ -371,13 +371,84 @@ pub fn border_style_methods(input: TokenStream) -> TokenStream {
     }
 
     let output = quote! {
-        /// Sets the border color of the element.
+        /// Sets the border color of all sides.
         #visibility fn border_color<C>(mut self, border_color: C) -> Self
         where
             C: Into<inazuma::Hsla>,
             Self: Sized,
         {
-            self.style().border_color = Some(border_color.into());
+            let c = Some(border_color.into());
+            let colors = self.style().border_colors.get_or_insert_with(Default::default);
+            colors.top = c;
+            colors.right = c;
+            colors.bottom = c;
+            colors.left = c;
+            self
+        }
+
+        /// Sets the top border color.
+        #visibility fn border_t_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            self.style().border_colors.get_or_insert_with(Default::default).top = Some(color.into());
+            self
+        }
+
+        /// Sets the right border color.
+        #visibility fn border_r_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            self.style().border_colors.get_or_insert_with(Default::default).right = Some(color.into());
+            self
+        }
+
+        /// Sets the bottom border color.
+        #visibility fn border_b_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            self.style().border_colors.get_or_insert_with(Default::default).bottom = Some(color.into());
+            self
+        }
+
+        /// Sets the left border color.
+        #visibility fn border_l_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            self.style().border_colors.get_or_insert_with(Default::default).left = Some(color.into());
+            self
+        }
+
+        /// Sets the horizontal (left + right) border color.
+        #visibility fn border_x_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            let c = Some(color.into());
+            let colors = self.style().border_colors.get_or_insert_with(Default::default);
+            colors.left = c;
+            colors.right = c;
+            self
+        }
+
+        /// Sets the vertical (top + bottom) border color.
+        #visibility fn border_y_color<C>(mut self, color: C) -> Self
+        where
+            C: Into<inazuma::Hsla>,
+            Self: Sized,
+        {
+            let c = Some(color.into());
+            let colors = self.style().border_colors.get_or_insert_with(Default::default);
+            colors.top = c;
+            colors.bottom = c;
             self
         }
 

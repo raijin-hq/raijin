@@ -3199,7 +3199,12 @@ impl Window {
             bounds: quad.bounds.scale(scale_factor),
             content_mask: content_mask.scale(scale_factor),
             background: quad.background.opacity(opacity),
-            border_color: quad.border_color.opacity(opacity),
+            border_colors: Edges {
+                top: quad.border_colors.top.opacity(opacity),
+                right: quad.border_colors.right.opacity(opacity),
+                bottom: quad.border_colors.bottom.opacity(opacity),
+                left: quad.border_colors.left.opacity(opacity),
+            },
             corner_radii: quad.corner_radii.scale(scale_factor),
             border_widths: quad.border_widths.scale(scale_factor),
             border_style: quad.border_style,
@@ -5606,8 +5611,8 @@ pub struct PaintQuad {
     pub background: Background,
     /// The widths of the quad's borders.
     pub border_widths: Edges<Pixels>,
-    /// The color of the quad's borders.
-    pub border_color: Hsla,
+    /// Per-side border colors (top, right, bottom, left).
+    pub border_colors: Edges<Hsla>,
     /// The style of the quad's borders.
     pub border_style: BorderStyle,
 }
@@ -5629,12 +5634,37 @@ impl PaintQuad {
         }
     }
 
-    /// Sets the border color of the quad.
+    /// Sets the border color for all sides.
     pub fn border_color(self, border_color: impl Into<Hsla>) -> Self {
+        let c = border_color.into();
         PaintQuad {
-            border_color: border_color.into(),
+            border_colors: Edges { top: c, right: c, bottom: c, left: c },
             ..self
         }
+    }
+
+    /// Sets the border color for a specific side.
+    pub fn border_left_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.border_colors.left = color.into();
+        self
+    }
+
+    /// Sets the border color for a specific side.
+    pub fn border_right_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.border_colors.right = color.into();
+        self
+    }
+
+    /// Sets the border color for a specific side.
+    pub fn border_top_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.border_colors.top = color.into();
+        self
+    }
+
+    /// Sets the border color for a specific side.
+    pub fn border_bottom_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.border_colors.bottom = color.into();
+        self
     }
 
     /// Sets the background color of the quad.
@@ -5652,7 +5682,7 @@ pub fn quad(
     corner_radii: impl Into<Corners<Pixels>>,
     background: impl Into<Background>,
     border_widths: impl Into<Edges<Pixels>>,
-    border_color: impl Into<Hsla>,
+    border_colors: impl Into<Edges<Hsla>>,
     border_style: BorderStyle,
 ) -> PaintQuad {
     PaintQuad {
@@ -5660,19 +5690,20 @@ pub fn quad(
         corner_radii: corner_radii.into(),
         background: background.into(),
         border_widths: border_widths.into(),
-        border_color: border_color.into(),
+        border_colors: border_colors.into(),
         border_style,
     }
 }
 
 /// Creates a filled quad with the given bounds and background color.
 pub fn fill(bounds: impl Into<Bounds<Pixels>>, background: impl Into<Background>) -> PaintQuad {
+    let transparent = transparent_black();
     PaintQuad {
         bounds: bounds.into(),
         corner_radii: (0.).into(),
         background: background.into(),
         border_widths: (0.).into(),
-        border_color: transparent_black(),
+        border_colors: Edges { top: transparent, right: transparent, bottom: transparent, left: transparent },
         border_style: BorderStyle::default(),
     }
 }
@@ -5683,12 +5714,13 @@ pub fn outline(
     border_color: impl Into<Hsla>,
     border_style: BorderStyle,
 ) -> PaintQuad {
+    let c = border_color.into();
     PaintQuad {
         bounds: bounds.into(),
         corner_radii: (0.).into(),
         background: transparent_black().into(),
         border_widths: (1.).into(),
-        border_color: border_color.into(),
+        border_colors: Edges { top: c, right: c, bottom: c, left: c },
         border_style,
     }
 }

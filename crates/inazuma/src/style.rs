@@ -274,8 +274,8 @@ pub struct Style {
     /// The fill color of this element
     pub background: Option<Fill>,
 
-    /// The border color of this element
-    pub border_color: Option<Hsla>,
+    /// Per-side border colors of this element.
+    pub border_colors: Edges<Option<Hsla>>,
 
     /// The border style of this element
     pub border_style: BorderStyle,
@@ -609,10 +609,15 @@ impl Style {
                 let mut min = bounds.origin;
                 let mut max = bounds.bottom_right();
 
-                if self
-                    .border_color
-                    .is_some_and(|color| !color.is_transparent())
-                {
+                let has_visible_border = [
+                    &self.border_colors.top,
+                    &self.border_colors.right,
+                    &self.border_colors.bottom,
+                    &self.border_colors.left,
+                ]
+                .iter()
+                .any(|c| c.is_some_and(|color| !color.is_transparent()));
+                if has_visible_border {
                     min.x += self.border_widths.left.to_pixels(rem_size);
                     max.x -= self.border_widths.right.to_pixels(rem_size);
                     min.y += self.border_widths.top.to_pixels(rem_size);
@@ -672,7 +677,7 @@ impl Style {
 
         let background_color = self.background.as_ref().and_then(Fill::color);
         if background_color.is_some_and(|color| !color.is_transparent()) {
-            let mut border_color = match background_color {
+            let mut bg_border = match background_color {
                 Some(color) => match color.tag {
                     BackgroundTag::Solid
                     | BackgroundTag::PatternSlash
@@ -686,13 +691,14 @@ impl Style {
                 },
                 None => Hsla::default(),
             };
-            border_color.a = 0.;
+            bg_border.a = 0.;
+            let transparent_edges = Edges { top: bg_border, right: bg_border, bottom: bg_border, left: bg_border };
             window.paint_quad(quad(
                 bounds,
                 corner_radii,
                 background_color.unwrap_or_default(),
                 Edges::default(),
-                border_color,
+                transparent_edges,
                 self.border_style,
             ));
         }
@@ -729,14 +735,20 @@ impl Style {
             );
             right_bounds.size = right_bounds.size.max(&zero_size);
 
-            let mut background = self.border_color.unwrap_or_default();
-            background.a = 0.;
+            let resolved_border_colors = Edges {
+                top: self.border_colors.top.unwrap_or_default(),
+                right: self.border_colors.right.unwrap_or_default(),
+                bottom: self.border_colors.bottom.unwrap_or_default(),
+                left: self.border_colors.left.unwrap_or_default(),
+            };
+            let mut background_hsla = resolved_border_colors.top;
+            background_hsla.a = 0.;
             let quad = quad(
                 bounds,
                 corner_radii,
-                background,
+                background_hsla,
                 border_widths,
-                self.border_color.unwrap_or_default(),
+                resolved_border_colors,
                 self.border_style,
             );
 
@@ -776,8 +788,14 @@ impl Style {
     }
 
     fn is_border_visible(&self) -> bool {
-        self.border_color
-            .is_some_and(|color| !color.is_transparent())
+        [
+            &self.border_colors.top,
+            &self.border_colors.right,
+            &self.border_colors.bottom,
+            &self.border_colors.left,
+        ]
+        .iter()
+        .any(|c| c.is_some_and(|color| !color.is_transparent()))
             && self.border_widths.any(|length| !length.is_zero())
     }
 }
@@ -816,7 +834,7 @@ impl Default for Style {
             flex_shrink: 1.0,
             flex_basis: Length::Auto,
             background: None,
-            border_color: None,
+            border_colors: Edges::default(),
             border_style: BorderStyle::default(),
             corner_radii: Corners::default(),
             box_shadow: Default::default(),

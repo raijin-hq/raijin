@@ -124,6 +124,13 @@ struct Hsla {
     a: f32,
 }
 
+struct EdgesHsla {
+    top: Hsla,
+    right: Hsla,
+    bottom: Hsla,
+    left: Hsla,
+}
+
 struct LinearColorStop {
     color: Hsla,
     percentage: f32,
@@ -521,7 +528,7 @@ struct Quad {
     bounds: Bounds,
     content_mask: Bounds,
     background: Background,
-    border_color: Hsla,
+    border_colors: EdgesHsla,
     corner_radii: Corners,
     border_widths: Edges,
 }
@@ -529,13 +536,12 @@ struct Quad {
 
 struct QuadVarying {
     @builtin(position) position: vec4<f32>,
-    @location(0) @interpolate(flat) border_color: vec4<f32>,
-    @location(1) @interpolate(flat) quad_id: u32,
+    @location(0) @interpolate(flat) quad_id: u32,
     // TODO: use `clip_distance` once Naga supports it
-    @location(2) clip_distances: vec4<f32>,
-    @location(3) @interpolate(flat) background_solid: vec4<f32>,
-    @location(4) @interpolate(flat) background_color0: vec4<f32>,
-    @location(5) @interpolate(flat) background_color1: vec4<f32>,
+    @location(1) clip_distances: vec4<f32>,
+    @location(2) @interpolate(flat) background_solid: vec4<f32>,
+    @location(3) @interpolate(flat) background_color0: vec4<f32>,
+    @location(4) @interpolate(flat) background_color1: vec4<f32>,
 }
 
 @vertex
@@ -555,7 +561,6 @@ fn vs_quad(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index) insta
     out.background_solid = gradient.solid;
     out.background_color0 = gradient.color0;
     out.background_color1 = gradient.color1;
-    out.border_color = hsla_to_rgba(quad.border_color);
     out.quad_id = instance_id;
     out.clip_distances = distance_from_clip_rect(unit_vertex, quad.bounds, quad.content_mask);
     return out;
@@ -686,7 +691,21 @@ fn fs_quad(input: QuadVarying) -> @location(0) vec4<f32> {
 
     var color = background_color;
     if (border_sdf < antialias_threshold) {
-        var border_color = input.border_color;
+        var border_color: vec4<f32>;
+        let in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
+        if (in_horizontal_border) {
+            border_color = select(
+                hsla_to_rgba(quad.border_colors.right),
+                hsla_to_rgba(quad.border_colors.left),
+                center_to_point.x < 0.0
+            );
+        } else {
+            border_color = select(
+                hsla_to_rgba(quad.border_colors.bottom),
+                hsla_to_rgba(quad.border_colors.top),
+                center_to_point.y < 0.0
+            );
+        }
 
         // Dashed border logic when border_style == 1
         if (quad.border_style == 1) {

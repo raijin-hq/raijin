@@ -1,8 +1,8 @@
 // @reference: https://d3js.org/d3-shape/line
 
 use inazuma::{
-    Background, BorderStyle, Bounds, Hsla, PaintQuad, Path, PathBuilder, Pixels, Point, Window, px,
-    quad, size,
+    Background, BorderStyle, Bounds, Edges, Hsla, PaintQuad, Path, PathBuilder, Pixels, Point,
+    Window, px, quad, size,
 };
 
 use crate::plot::{StrokeStyle, origin_point};
@@ -119,7 +119,7 @@ impl<T> Line<T> {
             self.dot_size / 2.,
             self.dot_fill_color,
             px(1.),
-            self.dot_stroke_color.unwrap_or(self.dot_fill_color),
+            Edges::all(self.dot_stroke_color.unwrap_or(self.dot_fill_color)),
             BorderStyle::default(),
         )
     }

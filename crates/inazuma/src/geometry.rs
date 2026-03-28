@@ -1677,7 +1677,7 @@ impl Bounds<DevicePixels> {
 /// assert_eq!(edges.bottom, 30.0);
 /// assert_eq!(edges.left, 40.0);
 /// ```
-#[derive(Refineable, Clone, Default, Debug, Eq, PartialEq)]
+#[derive(Refineable, Clone, Default, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[refineable(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[repr(C)]
 pub struct Edges<T: Clone + Debug + Default + PartialEq> {

@@ -797,7 +797,7 @@ impl Element for Scrollbar {
                                     left: px(0.),
                                 }
                             },
-                            border_color: state.border,
+                            border_colors: Edges { top: state.border, right: state.border, bottom: state.border, left: state.border },
                             border_style: BorderStyle::default(),
                         });
 

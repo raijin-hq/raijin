@@ -41,6 +41,13 @@ struct Hsla {
     float a;
 };
 
+struct EdgesHsla {
+    Hsla top;
+    Hsla right;
+    Hsla bottom;
+    Hsla left;
+};
+
 struct LinearColorStop {
     Hsla color;
     float percentage;
@@ -483,7 +490,7 @@ struct Quad {
     Bounds bounds;
     Bounds content_mask;
     Background background;
-    Hsla border_color;
+    EdgesHsla border_colors;
     Corners corner_radii;
     Edges border_widths;
 };
@@ -491,20 +498,18 @@ struct Quad {
 struct QuadVertexOutput {
     nointerpolation uint quad_id: TEXCOORD0;
     float4 position: SV_Position;
-    nointerpolation float4 border_color: COLOR0;
-    nointerpolation float4 background_solid: COLOR1;
-    nointerpolation float4 background_color0: COLOR2;
-    nointerpolation float4 background_color1: COLOR3;
+    nointerpolation float4 background_solid: COLOR0;
+    nointerpolation float4 background_color0: COLOR1;
+    nointerpolation float4 background_color1: COLOR2;
     float4 clip_distance: SV_ClipDistance;
 };
 
 struct QuadFragmentInput {
     nointerpolation uint quad_id: TEXCOORD0;
     float4 position: SV_Position;
-    nointerpolation float4 border_color: COLOR0;
-    nointerpolation float4 background_solid: COLOR1;
-    nointerpolation float4 background_color0: COLOR2;
-    nointerpolation float4 background_color1: COLOR3;
+    nointerpolation float4 background_solid: COLOR0;
+    nointerpolation float4 background_color0: COLOR1;
+    nointerpolation float4 background_color1: COLOR2;
 };
 
 StructuredBuffer<Quad> quads: register(t1);
@@ -521,11 +526,9 @@ QuadVertexOutput quad_vertex(uint vertex_id: SV_VertexID, uint quad_id: SV_Insta
         quad.background.colors
     );
     float4 clip_distance = distance_from_clip_rect(unit_vertex, quad.bounds, quad.content_mask);
-    float4 border_color = hsla_to_rgba(quad.border_color);
 
     QuadVertexOutput output;
     output.position = device_position;
-    output.border_color = border_color;
     output.quad_id = quad_id;
     output.background_solid = gradient.solid;
     output.background_color0 = gradient.color0;
@@ -644,7 +647,17 @@ float4 quad_fragment(QuadFragmentInput input): SV_Target {
 
     float4 color = background_color;
     if (border_sdf < antialias_threshold) {
-        float4 border_color = input.border_color;
+        float4 border_color;
+        bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
+        if (in_horizontal_border) {
+            border_color = center_to_point.x < 0.0
+                ? hsla_to_rgba(quad.border_colors.left)
+                : hsla_to_rgba(quad.border_colors.right);
+        } else {
+            border_color = center_to_point.y < 0.0
+                ? hsla_to_rgba(quad.border_colors.top)
+                : hsla_to_rgba(quad.border_colors.bottom);
+        }
         // Dashed border logic when border_style == 1
         if (quad.border_style == 1) {
             // Position along the perimeter in "dash space", where each dash
