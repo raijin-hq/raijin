@@ -118,6 +118,22 @@ impl InputMode {
         }
     }
 
+    /// Update the language for ShellEditor mode (triggers re-highlighting).
+    pub(super) fn set_language(&mut self, language: impl Into<SharedString>) {
+        if let InputMode::ShellEditor {
+            language: lang,
+            highlighter,
+            parse_task,
+            ..
+        } = self
+        {
+            *lang = language.into();
+            // Clear cached highlighter so it re-initializes with the new language
+            *highlighter = Rc::new(RefCell::new(None));
+            *parse_task = Rc::new(RefCell::new(None));
+        }
+    }
+
     pub(super) fn multi_line(mut self, multi_line: bool) -> Self {
         match &mut self {
             InputMode::PlainText { multi_line: ml, .. } => *ml = multi_line,

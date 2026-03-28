@@ -128,7 +128,7 @@ pub(crate) fn init(cx: &mut App) {
         #[cfg(not(target_os = "macos"))]
         KeyBinding::new("ctrl-delete", DeleteToNextWordEnd, Some(CONTEXT)),
         KeyBinding::new("enter", Enter { secondary: false }, Some(CONTEXT)),
-        KeyBinding::new("shift-enter", Enter { secondary: false }, Some(CONTEXT)),
+        KeyBinding::new("shift-enter", Enter { secondary: true }, Some(CONTEXT)),
         KeyBinding::new("secondary-enter", Enter { secondary: true }, Some(CONTEXT)),
         KeyBinding::new("escape", Escape, Some(CONTEXT)),
         KeyBinding::new("up", MoveUp, Some(CONTEXT)),
@@ -527,6 +527,16 @@ impl InputState {
         self.mode = InputMode::shell_editor(language, min_rows, max_rows);
         self.soft_wrap = true;
         self
+    }
+
+    /// Update the syntax highlighting language for ShellEditor mode.
+    pub fn set_shell_language(
+        &mut self,
+        language: impl Into<SharedString>,
+        _window: &mut Window,
+        _cx: &mut Context<Self>,
+    ) {
+        self.mode.set_language(language);
     }
 
     /// Set auto-closing bracket/quote pairs configuration.
@@ -1309,7 +1319,13 @@ impl InputState {
             self.clear_inline_completion(cx);
         }
 
-        if self.mode.is_multi_line() {
+        if self.mode.is_shell_editor() {
+            // ShellEditor: Enter = submit (no newline), Shift+Enter = newline
+            if action.secondary {
+                self.replace_text_in_range_silent(None, "\n", window, cx);
+                self.pause_blink_cursor(cx);
+            }
+        } else if self.mode.is_multi_line() {
             // Get current line indent
             let indent = if self.mode.is_code_editor() {
                 self.indent_of_next_line()
