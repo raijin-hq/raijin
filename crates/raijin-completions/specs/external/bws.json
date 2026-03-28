@@ -1,0 +1,481 @@
+{
+  "name": "bws",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Specify server settings for the Secrets Manager CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Save specified value(s) to an alternate profile",
+          "takes_arg": true,
+          "arg_name": "profile",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-file"
+          ],
+          "description": "Save specified value(s) to an alternative config file",
+          "takes_arg": true,
+          "arg_name": "Config file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for login command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Setting",
+          "description": "Server setting to specify",
+          "template": {
+            "custom": [
+              "server-base",
+              "server-api",
+              "server-identity",
+              "state-file-dir"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "Generate shell completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for logout command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": "Shell to generate completions for",
+          "template": {
+            "custom": [
+              "bash",
+              "elvish",
+              "fish",
+              "powershell",
+              "zsh"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "project",
+      "aliases": [],
+      "description": "Access, manipulate and create projects",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "NAME",
+              "description": "Name of project to be created",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete one or more existing projects",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "PROJECT_ID(s)",
+              "description": "ID(s) of project(s) to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Change the name of an existing project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "--name",
+              "description": "New project name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "PROJECT_ID",
+              "description": "ID of project to edit",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve a specific project accessible to this service account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "PROJECT_ID",
+              "description": "ID of project to retrieve",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List projects accessible to this service account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Access, manipulate and create projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "secret",
+      "aliases": [],
+      "description": "Access, manipulate and create secrets",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new secret",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--note"
+              ],
+              "description": "Optional notes about this secret",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "KEY",
+              "description": "Secret Key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "VALUE",
+              "description": "Secret Value",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "PROJECT_ID",
+              "description": "The ID of the project this secret will be added to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an existing secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SECRET_IDS",
+              "description": "Delete one or more secrets designated by SECRET_IDS",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit an existing secret",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "key"
+              ],
+              "description": "Edit the Secret Key",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "value"
+              ],
+              "description": "Edit the Secret Value",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "project-id"
+              ],
+              "description": "Edit the ID of project this secret belongs to",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "note"
+              ],
+              "description": "Edit the optional notes about this secret",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SECRET_ID",
+              "description": "ID of secret to be edited",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve an existing secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SECRET_ID",
+              "description": "Secret to retrieve",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List the secrets this service account can access",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "Project",
+              "description": "Project Identifier",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for unlock command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "--help",
+      "aliases": [
+        "-h"
+      ],
+      "description": "Get help about using the Bitwarden Secrets Manager CLI tool",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Output format [default: json]",
+      "takes_arg": true,
+      "arg_name": "Format",
+      "arg_template": {
+        "custom": [
+          "json",
+          "yaml",
+          "env",
+          "table",
+          "tsv",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--color"
+      ],
+      "description": "Use colors in the output [default: auto]",
+      "takes_arg": true,
+      "arg_name": "Color",
+      "arg_template": {
+        "custom": [
+          "no",
+          "yes",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--access-token"
+      ],
+      "description": "Specify access token for the service account [env: BWS_ACCESS_TOKEN]",
+      "takes_arg": true,
+      "arg_name": "Access Token",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--config-file"
+      ],
+      "description": "Config file to use [default: ~/.bws.config]",
+      "takes_arg": true,
+      "arg_name": "Config File",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--profile"
+      ],
+      "description": "Profile to use from the config file [env: BWS_PROFILE=]",
+      "takes_arg": true,
+      "arg_name": "Profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--server-url"
+      ],
+      "description": "Override the server URL from the config file [env: BWS_SERVER_URL=]",
+      "takes_arg": true,
+      "arg_name": "Server URL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

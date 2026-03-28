@@ -1,0 +1,355 @@
+{
+  "name": "googler",
+  "aliases": [],
+  "description": "Google from the command-line",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show this help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--start"
+      ],
+      "description": "Start at the Nth result",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--count"
+      ],
+      "description": "Show N results",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--news"
+      ],
+      "description": "Show results from news section",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--videos"
+      ],
+      "description": "Show results from videos section",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--tld"
+      ],
+      "description": "Country-specific search with top-level domain .TLD, e.g., 'in' for India",
+      "takes_arg": true,
+      "arg_name": "top-level domain",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--lang"
+      ],
+      "description": "Display in language",
+      "takes_arg": true,
+      "arg_name": "language",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--geoloc"
+      ],
+      "description": "Country-specific geolocation search with country code CC, e.g. 'in' for India",
+      "takes_arg": true,
+      "arg_name": "CC",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--exact"
+      ],
+      "description": "Disable automatic spelling correction",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colorize"
+      ],
+      "description": "Whether to colorize output which enables color when stdout is a tty device",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "always",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--nocolor"
+      ],
+      "description": "Equivalent to --colorize=never",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colors"
+      ],
+      "description": "Set output colors",
+      "takes_arg": true,
+      "arg_name": "colors",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--first",
+        "--lucky"
+      ],
+      "description": "Open the first result in web browser and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--time"
+      ],
+      "description": "Time limit search [h5 (5 hrs), d5 (5 days), w5 (5 weeks), m5 (5 months), y5 (5 years)",
+      "takes_arg": true,
+      "arg_name": "time limit",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--from"
+      ],
+      "description": "Starting date/month/year of date range. Can be used in conjunction with --to and overrides -t, --time",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--to"
+      ],
+      "description": "Ending date/month/year of date range",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--site"
+      ],
+      "description": "Search a site using Google",
+      "takes_arg": true,
+      "arg_name": "site",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--exclude"
+      ],
+      "description": "Exclude site from results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unfilter"
+      ],
+      "description": "Do not omit similar results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--proxy"
+      ],
+      "description": "Tunnel traffic through an HTTP proxy",
+      "takes_arg": true,
+      "arg_name": "PROXY",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--notweak"
+      ],
+      "description": "Disable TCP optimizations and forced TLS 1.2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Output in JSON format; implies --noprompt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--url-handler"
+      ],
+      "description": "Custom script or cli utility to open results",
+      "takes_arg": true,
+      "arg_name": "util",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-browser-logs"
+      ],
+      "description": "Do not suppress browser output (stdout and stderr)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--np",
+        "--noprompt"
+      ],
+      "description": "Search and exit, do not prompt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-4",
+        "--ipv4"
+      ],
+      "description": "Only connect over IPv4 (by default, IPv4 is preferred but IPv6 is used as a fallback)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-6",
+        "--ipv6"
+      ],
+      "description": "Only connect over IPv6",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--upgrade"
+      ],
+      "description": "Perform in-place self-upgrade",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-git"
+      ],
+      "description": "When used with --upgrade, get latest git master",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Enable debugging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "keyword",
+      "description": "Search keywords",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

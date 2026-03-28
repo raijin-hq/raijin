@@ -1,0 +1,16 @@
+{
+  "name": "dotslash",
+  "aliases": [],
+  "description": null,
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "name": "klist",
+  "aliases": [],
+  "description": "Reads and displays the current tickets in the credential cache (also known as the ticket file)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Credential cache to list",
+      "takes_arg": true,
+      "arg_name": "cache",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Credential cache to list",
+      "takes_arg": true,
+      "arg_name": "cache",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "-t",
+        "--test"
+      ],
+      "description": "Test for there being an active and valid TGT for the local realm of the user in the credential cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--tokens"
+      ],
+      "description": "Display AFS tokens",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-5",
+        "--v5"
+      ],
+      "description": "Display v5 cred cache (this is the default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Include ticket flags in short form, each character stands for a specific flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbose output. Include all possible information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list-all"
+      ],
+      "description": "List the credential caches for the current users, not all cache types supports listing multiple caches",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "JSON formatted output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

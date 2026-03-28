@@ -1,0 +1,16 @@
+{
+  "name": "-",
+  "aliases": [],
+  "description": "ZSH pre-command modifier that prepends a '-' to the argv[0] string",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

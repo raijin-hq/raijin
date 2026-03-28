@@ -1,0 +1,281 @@
+{
+  "name": "ollama",
+  "aliases": [],
+  "description": "A command-line tool for managing and deploying machine learning models",
+  "subcommands": [
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Start ollama",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a model from a Modelfile",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify Modelfile",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show information for a model",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "model",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a model",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "model",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop the ollama server",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "model",
+          "description": null,
+          "template": "process_ids",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull a model from a registry",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push a model to a registry",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "ls"
+      ],
+      "description": "List models",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ps",
+      "aliases": [],
+      "description": "List running models",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cp",
+      "aliases": [],
+      "description": "Copy a model",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SOURCE",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [],
+      "description": "Remove a model",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "model",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "serve",
+          "aliases": [],
+          "description": "Start ollama",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a model from a Modelfile",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show information for a model",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run a model",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop the ollama server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Pull a model from a registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Push a model to a registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List models",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ps",
+          "aliases": [],
+          "description": "List running models",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cp",
+          "aliases": [],
+          "description": "Copy a model",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove a model",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for ollama",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

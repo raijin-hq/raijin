@@ -1,0 +1,61 @@
+{
+  "name": "zed",
+  "aliases": [],
+  "description": "A lightning-fast, collaborative code editor written in Rust",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print Zed's version and the app path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wait"
+      ],
+      "description": "Wait for all of the given paths to be closed before exiting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--bundle-path"
+      ],
+      "description": "Custom Zed.app path",
+      "takes_arg": true,
+      "arg_name": "bundle_path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path",
+      "description": "A sequence of space-separated paths that you want to open",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

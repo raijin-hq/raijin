@@ -1,0 +1,487 @@
+{
+  "name": "eb",
+  "aliases": [],
+  "description": "AWS Elastic Beanstalk",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a new AWS Elastic Beanstalk application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--interactive"
+          ],
+          "description": "Forces EB CLI to prompt you to provide a value for every eb init command option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--keyname"
+          ],
+          "description": "The name of the AWS EC2 key pair",
+          "takes_arg": true,
+          "arg_name": "keyname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--modules"
+          ],
+          "description": "List of child directories to initialize",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--platform"
+          ],
+          "description": "The platform version to use",
+          "takes_arg": true,
+          "arg_name": "plataform-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tags"
+          ],
+          "description": "List of tags to apply to the application",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the application",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploys the application source bundle from the initialized project directory to the running application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l",
+            "--label"
+          ],
+          "description": "Specify a label to use for the version that the EB CLI creates",
+          "takes_arg": true,
+          "arg_name": "version-label",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-group-suffix"
+          ],
+          "description": "Group name to append to the environment name",
+          "takes_arg": true,
+          "arg_name": "groupname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "The description for the application version, enclosed in double quotation marks",
+          "takes_arg": true,
+          "arg_name": "version-description",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--modules"
+          ],
+          "description": "List of components to update. Only for Compose Environments",
+          "takes_arg": true,
+          "arg_name": "component",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--platform"
+          ],
+          "description": "Preprocess and validate the environment manifest and configuration files in the source bundle",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "CodeCommit repository and branch",
+          "takes_arg": true,
+          "arg_name": "repository-name/repository-branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--staged"
+          ],
+          "description": "Deploy files staged in the git index instead of the HEAD commit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "The number of minutes before the command times out",
+          "takes_arg": true,
+          "arg_name": "minutes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "An existing application version to deploy",
+          "takes_arg": true,
+          "arg_name": "version-label",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "abort",
+      "aliases": [],
+      "description": "Abort the current running process",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clones an environment to a new environment so that both have identical environment settings",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n",
+            "--clone_name"
+          ],
+          "description": "Desired name for the cloned environment",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cname"
+          ],
+          "description": "Desired CNAME prefix for the cloned environment",
+          "takes_arg": true,
+          "arg_name": "cname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--envvars"
+          ],
+          "description": "Environment properties in a comma-separated list with the format name=value",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Prevents Elastic Beanstalk from updating the solution stack version for the new clone environment to the most recent version available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scale"
+          ],
+          "description": "The number of instances to run in the clone environment when it is launched",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tags"
+          ],
+          "description": "Tags for the resources in your environment in a comma-separated list with the format name=value",
+          "takes_arg": true,
+          "arg_name": "name=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "The number of minutes before the command times out",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": "The name of the environment to clone",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Opens the public URL of your website in the default browser",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": "The name of the environment to open",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List environments",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "List all environments from all applications",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Provides more detailed information about all environments, including instances",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "printenv",
+      "aliases": [],
+      "description": "Prints all the environment properties in the command window",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": "The name of the environment to print",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "Connect to a Linux Amazon EC2 instance in your environment using Secure Shell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--instance"
+          ],
+          "description": "The ID of the instance to connect to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--number"
+          ],
+          "description": "The number of the instance to connect to by number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--keep_open"
+          ],
+          "description": "Leave port 22 open on the security group after the SSH session ends",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--command"
+          ],
+          "description": "Execute a shell command on the specified instance instead of starting an SSH session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--custom"
+          ],
+          "description": "Specify an SSH command to use instead of 'ssh -i keyfile'. Do not include the remote user and hostname",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--setup"
+          ],
+          "description": "Change the key pair assigned to the environment's instances",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Open port 22 to incoming traffic from 0.0.0.0/0 in the environment's security group, even if the security group is already configured for SSH",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Set number of minutes before the command times out",
+          "takes_arg": true,
+          "arg_name": "minutes",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": "The name of the environment to connect to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Sets the specified environment as the default environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--region"
+          ],
+          "description": "Change the region in which you create environments",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "CodeCommit repository and branch",
+          "takes_arg": true,
+          "arg_name": "codecommit/repository-name/repository-branch",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "environment-name",
+          "description": "The name of the environment to use",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

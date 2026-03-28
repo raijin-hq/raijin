@@ -1,0 +1,195 @@
+{
+  "name": "defaults",
+  "aliases": [],
+  "description": "Command line interface to a user's defaults",
+  "subcommands": [
+    {
+      "name": "read",
+      "aliases": [],
+      "description": "Shows defaults",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": {
+            "custom": [
+              "-globalDomain",
+              "-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "write",
+      "aliases": [],
+      "description": "Writes key for domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": {
+            "custom": [
+              "-globalDomain",
+              "-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Deletes domain or key in domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": {
+            "custom": [
+              "-globalDomain",
+              "-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rename",
+      "aliases": [],
+      "description": "Renames old_key to new_key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": {
+            "custom": [
+              "-globalDomain",
+              "-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "old_key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "new_key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "domains",
+      "aliases": [],
+      "description": "Lists all domains",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "find",
+      "aliases": [],
+      "description": "Lists all entries containing word",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "word",
+          "description": "The word to search for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help text",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "read-type",
+      "aliases": [],
+      "description": "Shows the type for the given domain, key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": {
+            "custom": [
+              "-globalDomain",
+              "-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

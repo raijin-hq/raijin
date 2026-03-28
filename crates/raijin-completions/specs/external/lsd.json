@@ -1,0 +1,406 @@
+{
+  "name": "lsd",
+  "aliases": [],
+  "description": "An ls command with a lot of pretty colors and some other stuff",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-1",
+        "--oneline"
+      ],
+      "description": "Display one entry per line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--almost-all"
+      ],
+      "description": "Do not list implied . and",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--all"
+      ],
+      "description": "Do not ignore entries starting with",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--directory-only"
+      ],
+      "description": "Display directories themselves, and not their contents (recursively when used with --tree)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--classify"
+      ],
+      "description": "Append indicator (one of */=>@|) at the end of the file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--human-readable"
+      ],
+      "description": "For ls compatibility purposes ONLY, currently set by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--inode"
+      ],
+      "description": "Display the index number of each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--dereference"
+      ],
+      "description": "When showing file information for a symbolic link, show information for the file the link references rather than for the link itself",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--long"
+      ],
+      "description": "Display the extended file metadata as a table",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--recursive"
+      ],
+      "description": "Recurse into directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--reverse"
+      ],
+      "description": "Reverse the order of the sort",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--sizesort"
+      ],
+      "description": "Sort by size",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--timesort"
+      ],
+      "description": "Sort by time modified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--versionsort"
+      ],
+      "description": "Natural sort of (version) numbers within text",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--classic"
+      ],
+      "description": "Enable classic mode (no colors or icons)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--extensionsort"
+      ],
+      "description": "Sort by file extension",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-config"
+      ],
+      "description": "Ignore the configuration file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-symlink"
+      ],
+      "description": "Do not display symlink target",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--total-size"
+      ],
+      "description": "Display the total size of directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tree"
+      ],
+      "description": "Recurse into directories and present the result as a tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--blocks"
+      ],
+      "description": "Specify the blocks that will be displayed and in what order",
+      "takes_arg": true,
+      "arg_name": "blocks",
+      "arg_template": {
+        "custom": [
+          "permission",
+          "user",
+          "group",
+          "size",
+          "date",
+          "name",
+          "inode",
+          "links"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "When to use terminal colours",
+      "takes_arg": true,
+      "arg_name": "color",
+      "arg_template": {
+        "custom": [
+          "always",
+          "auto",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--date"
+      ],
+      "description": "How to display date",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": {
+        "custom": [
+          "date",
+          "relative",
+          "+date-time-format"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--depth"
+      ],
+      "description": "Stop recursing into directories after reaching depth",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--group-dirs"
+      ],
+      "description": "Sort the directories then the files",
+      "takes_arg": true,
+      "arg_name": "group-dirs",
+      "arg_template": {
+        "custom": [
+          "none",
+          "first",
+          "last"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--icon"
+      ],
+      "description": "When to print the icons",
+      "takes_arg": true,
+      "arg_name": "icon",
+      "arg_template": {
+        "custom": [
+          "always",
+          "auto",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--icon-theme"
+      ],
+      "description": "Whether to use fancy or unicode icons",
+      "takes_arg": true,
+      "arg_name": "icon-theme",
+      "arg_template": {
+        "custom": [
+          "fancy",
+          "unicode"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-glob"
+      ],
+      "description": "Do not display files/directories with names matching the glob pattern(s). More than one can be specified by repeating the argument",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--size"
+      ],
+      "description": "How to display size",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": {
+        "custom": [
+          "default",
+          "short",
+          "bytes"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": "Sort by WORD instead of name",
+      "takes_arg": true,
+      "arg_name": "WORD",
+      "arg_template": {
+        "custom": [
+          "size",
+          "time",
+          "version",
+          "extension"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

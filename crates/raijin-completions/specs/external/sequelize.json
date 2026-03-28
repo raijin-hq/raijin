@@ -1,0 +1,2417 @@
+{
+  "name": "sequelize",
+  "aliases": [],
+  "description": "The Sequelize Command Line Interface",
+  "subcommands": [
+    {
+      "name": "db:migrate",
+      "aliases": [],
+      "description": "Run pending migrations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Migration name to run migrations until",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from"
+          ],
+          "description": "Migration name to start migrations from (excluding)",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:migrate:schema:timestamps:add",
+      "aliases": [],
+      "description": "Update migration table to have timestamps",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Migration name to run migrations until",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from"
+          ],
+          "description": "Migration name to start migrations from (excluding)",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:migrate:status",
+      "aliases": [],
+      "description": "List the status of all migrations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Migration name to run migrations until",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from"
+          ],
+          "description": "Migration name to start migrations from (excluding)",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:migrate:undo",
+      "aliases": [],
+      "description": "Reverts a migration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Name of the migration to undo",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:migrate:undo:all",
+      "aliases": [],
+      "description": "Revert all migrations ran",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Revert to the provided migration",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:seed",
+      "aliases": [],
+      "description": "Run specified seeder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "List of seed files",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:seed:undo",
+      "aliases": [],
+      "description": "Deletes data from the database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "List of seed files",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:seed:all",
+      "aliases": [],
+      "description": "Run every seeder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:seed:undo:all",
+      "aliases": [],
+      "description": "Deletes data from the database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:create",
+      "aliases": [],
+      "description": "Create database specified by configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--charset"
+          ],
+          "description": "Pass charset option to dialect, MYSQL only",
+          "takes_arg": true,
+          "arg_name": "charset options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--collate"
+          ],
+          "description": "Pass collate option to dialect",
+          "takes_arg": true,
+          "arg_name": "collate options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--encoding"
+          ],
+          "description": "Pass encoding option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "encoding options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ctype"
+          ],
+          "description": "Pass ctype option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "ctype option",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template"
+          ],
+          "description": "Pass template option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "template option",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "db:drop",
+      "aliases": [],
+      "description": "Drop database specified by configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--charset"
+          ],
+          "description": "Pass charset option to dialect, MYSQL only",
+          "takes_arg": true,
+          "arg_name": "charset options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--collate"
+          ],
+          "description": "Pass collate option to dialect",
+          "takes_arg": true,
+          "arg_name": "collate options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--encoding"
+          ],
+          "description": "Pass encoding option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "encoding options",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ctype"
+          ],
+          "description": "Pass ctype option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "ctype option",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template"
+          ],
+          "description": "Pass template option to dialect, PostgreSQL only",
+          "takes_arg": true,
+          "arg_name": "template option",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Will drop the existing config folder and re-create it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init:config",
+      "aliases": [],
+      "description": "Initializes configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Will drop the existing config folder and re-create it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init:migrations",
+      "aliases": [],
+      "description": "Initializes migrations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Will drop the existing config folder and re-create it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init:models",
+      "aliases": [],
+      "description": "Initializes models",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Will drop the existing config folder and re-create it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init:seeders",
+      "aliases": [],
+      "description": "Initializes seeders",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Will drop the existing config folder and re-create it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:generate",
+      "aliases": [
+        "migration:create"
+      ],
+      "description": "Generates a new migration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Defines the name of the migration",
+          "takes_arg": true,
+          "arg_name": "migration name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "model:generate",
+      "aliases": [
+        "model:create"
+      ],
+      "description": "Generates a model and its migration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Defines the name of the new model",
+          "takes_arg": true,
+          "arg_name": "model name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--attributes"
+          ],
+          "description": "A list of attributes",
+          "takes_arg": true,
+          "arg_name": "attributes string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Forcefully re-creates model with the same name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--underscored"
+          ],
+          "description": "Use snake case for the timestamp's attribute names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "seed:generate",
+      "aliases": [
+        "seed:create"
+      ],
+      "description": "Generates a new seed file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Defines the name of the seed",
+          "takes_arg": true,
+          "arg_name": "seed name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "The environment to run the command in",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "The path to the config file",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-path"
+          ],
+          "description": "The path to a JSON file with additional options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--migrations-path"
+          ],
+          "description": "The path to the migrations folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seeders-path"
+          ],
+          "description": "The path to the seeders folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--models-path"
+          ],
+          "description": "The path to the models folder",
+          "takes_arg": true,
+          "arg_name": "folder path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "The database connection string to use",
+          "takes_arg": true,
+          "arg_name": "connection string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "When available show various debug information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

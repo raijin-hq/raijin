@@ -1,0 +1,1162 @@
+{
+  "name": "vercel",
+  "aliases": [],
+  "description": "CLI Interface for Vercel.com",
+  "subcommands": [
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Performs a deployment (default)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Start a local development server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--listen"
+          ],
+          "description": "Specifies which port to run on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "env",
+      "aliases": [],
+      "description": "Manages the Environment Variables for your current Project",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add an environment variable",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the env variable to add",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "environment",
+              "description": "Environment to add the variable to",
+              "template": {
+                "custom": [
+                  "production",
+                  "preview",
+                  "development"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove an environment variable",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the variable to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "environment",
+              "description": "Environment to remove from",
+              "template": {
+                "custom": [
+                  "production",
+                  "preview",
+                  "development"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Download dev env variables from cloud and write to .env",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "file",
+              "description": "The file to write downloaded variables to",
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List environment variables for a specific environment",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "environment",
+              "description": "Environment to list variables for",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize an example project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project name",
+          "description": "Project name to initialize locally",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "new project name",
+          "description": "Initialize specific project locally and rename directory",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Lists deployments",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-m",
+            "--meta"
+          ],
+          "description": "Filters results based on project metadata",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name",
+          "description": "View deployments for specified project",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "Lists deployments",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project name",
+          "description": "View deployments for specified project",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inspect",
+      "aliases": [],
+      "description": "Displays information related to a deployment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "url",
+          "description": "The URL of the deployment to inspect",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Logs into your account or creates a new one",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logs out of your account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "switch",
+      "aliases": [],
+      "description": "Switches between teams and your personal account",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "team name",
+          "description": "Team to switch to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Displays complete help for [cmd]",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Command to detailed information about",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [],
+      "description": "Removes a deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--safe"
+          ],
+          "description": "Skip removal of deployments with an active preview URL or production domain",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Skip confirmation step for a deployment or project removal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "deployment url",
+          "description": "URL of the deployment to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Removes a deployment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "deployment url",
+          "description": "URL of the deployment to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "domains",
+      "aliases": [],
+      "description": "Manages your domain names",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List all domains under an account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "inspect",
+          "aliases": [],
+          "description": "Retrieves information about a domain",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to inspect",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a domain to an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to add",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Removes a domain from an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "buy",
+          "aliases": [],
+          "description": "Buy a domain for an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to buy",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "move",
+          "aliases": [],
+          "description": "Removes a domain from an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to move",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "account name",
+              "description": "Account to move the domain to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "transfer-in",
+          "aliases": [],
+          "description": "Transfers in a domain to an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to transfer in",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "verify",
+          "aliases": [],
+          "description": "Verifies a domain for an account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to verify",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dns",
+      "aliases": [],
+      "description": "Manages your DNS records",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add DNS record for a domain",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "Domain to add record to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "subdomain",
+              "description": "Subdomain to add record to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "record type",
+              "description": "Type of record to add",
+              "template": {
+                "custom": [
+                  "A",
+                  "AAAA",
+                  "ALIAS",
+                  "CNAME",
+                  "TXT"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "value",
+              "description": "Record value",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "certs",
+      "aliases": [],
+      "description": "Manages your SSL certificates",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List all certificates under an account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "issue",
+          "aliases": [],
+          "description": "Issue certificates for multiple domains",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "Domains",
+              "description": "List of domains separated by commas to issue certificates for",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove a certificate by id",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "certificate id",
+              "description": "Id of the certificate to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--challenge-only"
+          ],
+          "description": "Show challenges needed to issue a certificate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--crt"
+          ],
+          "description": "Include path to .crt",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key"
+          ],
+          "description": "Include path to .key",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ca"
+          ],
+          "description": "Include path to .ca",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Manages your global Secrets, for use in Environment Variables",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all secrets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a new secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "secret name",
+              "description": "Name of the secret to add",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "secret value",
+              "description": "Value of the secret to add",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Rename a secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "old name",
+              "description": "Old name of the secret to rename",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "new name",
+              "description": "New name of the secret",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "secret name",
+              "description": "Name of the seret to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Displays the logs for a deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Receive access logs in addition to regular logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--follow"
+          ],
+          "description": "Watch for additional logs output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--number"
+          ],
+          "description": "Specify number of log lines to output",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies format of logs output as 'short' or 'raw'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Return logs after a specific ISO 8601 date",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Return logs against a search query",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--until"
+          ],
+          "description": "Return logs up to a specific ISO 8601 date",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "deployment url",
+          "description": "Get logs for specified deployment",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "teams",
+      "aliases": [],
+      "description": "Manages your teams",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all teams under an account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Create a new team",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "invite",
+          "aliases": [],
+          "description": "Invite a new member to the team",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "email",
+              "description": "Email of member to invite to team",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Shows the username of the currently logged in user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "alias",
+      "aliases": [],
+      "description": "Apply custom domains based on git branches, or other heuristics",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Assign a custom domain to a deployment",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "url",
+              "description": "The URL of the deployment to assign to a domain",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "domain",
+              "description": "The domain you want to assign to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove a custom domain from a deployment",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "domain",
+              "description": "The domain to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List custom domains that were assigned to deployments",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Links your local directory to a Project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "directory",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "billing",
+      "aliases": [],
+      "description": "Manage payment methods",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List all the payment methods of the active account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Interactively add a new credit card",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove a credit card by ID",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "The id of the card to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set-default",
+          "aliases": [],
+          "description": "Select which credit card should be default",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "The id of the card to set default",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--platform-version"
+      ],
+      "description": "Set the platform version to deploy to",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--local-config"
+      ],
+      "description": "Path to the local 'vercel.json' file",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Q",
+        "--global-config"
+      ],
+      "description": "Path to the global '.vercel' directory",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Provides more verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Force a new deployment even if nothing has changed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-with-cache"
+      ],
+      "description": "Retain build cache when using --force",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--token"
+      ],
+      "description": "Execute command with an auth token",
+      "takes_arg": true,
+      "arg_name": "auth token",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--public"
+      ],
+      "description": "Deployment is public ('/_src' is exposed)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--env"
+      ],
+      "description": "Include an env var during run time (e.g.: '-e KEY=value'). Can appear many times",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--build-env"
+      ],
+      "description": "Similar to `--env` but for build time only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--meta"
+      ],
+      "description": "Add metadata for the deployment (e.g.: `-m KEY=value`). Can appear many times",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--no-clipboard"
+      ],
+      "description": "Do not attempt to copy URL to clipboard",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--scope"
+      ],
+      "description": "Set a custom scope",
+      "takes_arg": true,
+      "arg_name": "team name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--regions"
+      ],
+      "description": "Set default regions to enable the deployment on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prod"
+      ],
+      "description": "Create a production deployment",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--confirm"
+      ],
+      "description": "Confirm default options and skip questions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path to project",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

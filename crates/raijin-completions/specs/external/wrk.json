@@ -1,0 +1,114 @@
+{
+  "name": "wrk",
+  "aliases": [],
+  "description": "Wrk - a HTTP benchmarking tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--c"
+      ],
+      "description": "Connections to keep open",
+      "takes_arg": true,
+      "arg_name": "Number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--duration"
+      ],
+      "description": "Duration of test",
+      "takes_arg": true,
+      "arg_name": "Time",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--threads"
+      ],
+      "description": "Number of threads",
+      "takes_arg": true,
+      "arg_name": "Number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--script"
+      ],
+      "description": "Load Lua script file",
+      "takes_arg": true,
+      "arg_name": "Script",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--header"
+      ],
+      "description": "Add header to request",
+      "takes_arg": true,
+      "arg_name": "Header",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--latency"
+      ],
+      "description": "Print latency statistics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout"
+      ],
+      "description": "Socket/request timeout",
+      "takes_arg": true,
+      "arg_name": "Time",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Url",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

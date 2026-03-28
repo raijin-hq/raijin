@@ -1,0 +1,1058 @@
+{
+  "name": "watson",
+  "aliases": [],
+  "description": "A wonderful CLI to track your time",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add time to a project with tag(s) that was not tracked live",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--from",
+            "-f"
+          ],
+          "description": "Date and time of start of tracked activity",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to",
+            "-t"
+          ],
+          "description": "Date and time of end of tracked activity",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--confirm-new-project",
+            "-c"
+          ],
+          "description": "Confirm creation of new tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "aggregate",
+      "aliases": [],
+      "description": "Display a report of the time spent on each project aggregated by day",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--current",
+            "-c"
+          ],
+          "description": "Include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-current",
+            "-C"
+          ],
+          "description": "Don't include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from",
+            "-f"
+          ],
+          "description": "The date from when the reports should start. Defaults to seven days ago",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to",
+            "-t"
+          ],
+          "description": "The date at which the report should stop (inclusive). Defaults to tomorrow",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project",
+            "-p"
+          ],
+          "description": "Reports activity only for the given project. You can add other projects by using this option several times",
+          "takes_arg": true,
+          "arg_name": "PROJECT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-T"
+          ],
+          "description": "Reports activity only for frames containing the given tag. You can add several tags by using this option multiple times",
+          "takes_arg": true,
+          "arg_name": "TAG",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Format output in JSON instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--csv",
+            "-s"
+          ],
+          "description": "Format output in CSV instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pager",
+            "-g"
+          ],
+          "description": "View output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pager",
+            "-G"
+          ],
+          "description": "Don't view output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel",
+      "aliases": [],
+      "description": "Cancel the last call to the start command. The time will not be recorded",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Get and set configuration options",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--edit",
+            "-e"
+          ],
+          "description": "Edit the configuration file with an editor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "SECTION.OPTION",
+          "description": null,
+          "template": {
+            "custom": [
+              "backend.url",
+              "backend.token",
+              "options.confirm_new_project",
+              "options.confirm_new_tag",
+              "options.date_format",
+              "options.log_current",
+              "options.pager",
+              "options.report_current",
+              "options.reverse_log",
+              "options.stop_on_start",
+              "options.stop_on_restart",
+              "options.time_format",
+              "options.week_start"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "VALUE",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Edit a frame",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--confirm-new-project",
+            "-c"
+          ],
+          "description": "Confirm addition of new project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--confirm-new-tag",
+            "-b"
+          ],
+          "description": "Confirm creation of new tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FRAME ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "frames",
+      "aliases": [],
+      "description": "Display the list of all frame IDs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help information",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "COMMAND",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Display each recorded session during the given timespan",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--current",
+            "-c"
+          ],
+          "description": "Include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-current",
+            "-C"
+          ],
+          "description": "Don't include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reverse",
+            "-r"
+          ],
+          "description": "Reverse the order of the days in output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-reverse",
+            "-R"
+          ],
+          "description": "Don't Reverse the order of the days in output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from",
+            "-f"
+          ],
+          "description": "The date from when the log should start. Defaults to seven days ago",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to",
+            "-t"
+          ],
+          "description": "The date at which the log should stop (inclusive). Defaults to tomorrow",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--year",
+            "-y"
+          ],
+          "description": "Reports activity for the current year",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--month",
+            "-m"
+          ],
+          "description": "Reports activity for the current month",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--luna",
+            "-l"
+          ],
+          "description": "Reports activity for the current moon cycle",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--week",
+            "-w"
+          ],
+          "description": "Reports activity for the current week",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--day",
+            "-d"
+          ],
+          "description": "Reports activity for the current day",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Reports all activities",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project",
+            "-p"
+          ],
+          "description": "Logs activity only for the given project. You can add other projects by using this option several times",
+          "takes_arg": true,
+          "arg_name": "PROJECT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-T"
+          ],
+          "description": "Logs activity only for frames containing the given tag. You can add several tags by using this option multiple times",
+          "takes_arg": true,
+          "arg_name": "TAG",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-project"
+          ],
+          "description": "Logs activity for all projects but the given ones. You can ignore several projects by using the option multiple times. Any given project will be ignored",
+          "takes_arg": true,
+          "arg_name": "PROJECT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-tag"
+          ],
+          "description": "Logs activity for all tags but the given ones. You can ignore several tags by using the option multiple times. Any given tag will be ignored",
+          "takes_arg": true,
+          "arg_name": "TAG",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Format output in JSON instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--csv",
+            "-s"
+          ],
+          "description": "Format output in CSV instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pager",
+            "-g"
+          ],
+          "description": "View output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pager",
+            "-G"
+          ],
+          "description": "Don't view output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "merge",
+      "aliases": [],
+      "description": "Perform a merge of the existing frames with a conflicting frames file.  When storing the frames on a file hosting service, there is the possibility that the frame file goes out-of-sync due to one or more of the connected clients going offline. This can cause the frames to diverge",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "If specified, then the merge will automatically be performed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FRAMES_WITH_CONFLICT",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Display the list of all the existing projects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove a frame. You can specify the frame either by id or by position (ex: -1 for the last frame)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Don’t ask for confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rename",
+      "aliases": [],
+      "description": "Rename a project or tag",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "Project or tag",
+          "template": {
+            "custom": [
+              "project",
+              "tag"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "OLD_NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "NEW_NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "report",
+      "aliases": [],
+      "description": "Display a report of the time spent on each project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--current",
+            "-c"
+          ],
+          "description": "Include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-current",
+            "-C"
+          ],
+          "description": "Don't include currently running frame in report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from",
+            "-f"
+          ],
+          "description": "The date from when the report should start. Defaults to seven days ago",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to",
+            "-t"
+          ],
+          "description": "The date at which the report should stop (inclusive). Defaults to tomorrow",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--year",
+            "-y"
+          ],
+          "description": "Reports activity for the current year",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--month",
+            "-m"
+          ],
+          "description": "Reports activity for the current month",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--luna",
+            "-l"
+          ],
+          "description": "Reports activity for the current moon cycle",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--week",
+            "-w"
+          ],
+          "description": "Reports activity for the current week",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--day",
+            "-d"
+          ],
+          "description": "Reports activity for the current day",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project",
+            "-p"
+          ],
+          "description": "Reports activity only for the given project. You can add other projects by using this option several times",
+          "takes_arg": true,
+          "arg_name": "PROJECT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-T"
+          ],
+          "description": "Reports activity only for frames containing the given tag. You can add several tags by using this option multiple times",
+          "takes_arg": true,
+          "arg_name": "TAG",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-project"
+          ],
+          "description": "Reports activity for all projects but the given ones. You can ignore several projects by using the option multiple times. Any given project will be ignored",
+          "takes_arg": true,
+          "arg_name": "PROJECT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-tag"
+          ],
+          "description": "Reports activity for all tags but the given ones. You can ignore several tags by using the option multiple times. Any given tag will be ignored",
+          "takes_arg": true,
+          "arg_name": "TAG",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Format output in JSON instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--csv",
+            "-s"
+          ],
+          "description": "Format output in CSV instead of plain text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pager",
+            "-g"
+          ],
+          "description": "View output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pager",
+            "-G"
+          ],
+          "description": "Don't view output through a pager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart monitoring time for a previously stopped project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--at"
+          ],
+          "description": "Start frame at this time. Must be in (YYYY-MM-DDT)?HH:MM(:SS)? format",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stop",
+            "-s"
+          ],
+          "description": "Stop an already running project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-stop",
+            "-S"
+          ],
+          "description": "Don't stop an already running project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FRAME",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start monitoring time for the given project. You can add tags indicating more specifically what you are working on with +tag",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--at"
+          ],
+          "description": "Start frame at this time. Must be in (YYYY-MM-DDT)?HH:MM(:SS)? format",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gap",
+            "-g"
+          ],
+          "description": "Leave gap between end time of previous project and start time of the current",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-gap",
+            "-G"
+          ],
+          "description": "Don't leave gap between end time of previous project and start time of the current",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--confirm-new-project",
+            "-c"
+          ],
+          "description": "Confirm addition of new project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--confirm-new-tag",
+            "-b"
+          ],
+          "description": "Confirm creation of new tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ARGS",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Display when the current project was started and the time spent since",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--project",
+            "-p"
+          ],
+          "description": "Only output project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tags",
+            "-t"
+          ],
+          "description": "Only show tags",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--elapsed",
+            "-e"
+          ],
+          "description": "Only show time elapsed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop monitoring time for the current project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--at"
+          ],
+          "description": "Stop frame at this time. Must be in (YYYY-MM-DDT)?HH:MM(:SS)? format",
+          "takes_arg": true,
+          "arg_name": "DATETIME",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Get the frames from the server and push the new ones",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tags",
+      "aliases": [],
+      "description": "Display the list of all the tags",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for watson",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version for watson",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Color output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "No color output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

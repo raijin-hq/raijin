@@ -1,0 +1,1319 @@
+{
+  "name": "bosh",
+  "aliases": [],
+  "description": "Bosh cli to managed your bosh deployment",
+  "subcommands": [
+    {
+      "name": "add-blob",
+      "aliases": [],
+      "description": "Add blob",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "BLOBS-PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unignore",
+      "aliases": [],
+      "description": "Unignore an instance",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update-cloud-config",
+      "aliases": [],
+      "description": "Update current cloud config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update-config",
+      "aliases": [],
+      "description": "Update config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update-cpi-config",
+      "aliases": [],
+      "description": "Update current CPI config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update-resurrection",
+      "aliases": [],
+      "description": "Enable/disable resurrection",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update-runtime-config",
+      "aliases": [],
+      "description": "Update current runtime config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upload-blobs",
+      "aliases": [],
+      "description": "Upload blobs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "upload-release",
+      "aliases": [],
+      "description": "Upload release",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "URL",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upload-stemcell",
+      "aliases": [],
+      "description": "Upload stemcell",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "fileOrUrl",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "variables",
+      "aliases": [],
+      "description": "List variables",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vendor-package",
+      "aliases": [],
+      "description": "Vendor package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PACKAGE",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "SRC-DIR",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "vms",
+      "aliases": [],
+      "description": "List all VMs in all deployments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "orphan-disk",
+      "aliases": [],
+      "description": "Orphan disk",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "CID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "networks",
+      "aliases": [],
+      "description": "List networks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "manifest",
+      "aliases": [],
+      "description": "Show deployment manifest",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tasks",
+      "aliases": [],
+      "description": "List running or recent tasks",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "aliases": [],
+      "description": "Show task status and start tracking its output",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "take-snapshot",
+      "aliases": [],
+      "description": "Take snapshot",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sync-blobs",
+      "aliases": [],
+      "description": "Sync blobs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stop-env",
+      "aliases": [],
+      "description": "Stop BOSH environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "stemcells",
+      "aliases": [],
+      "description": "List stemcells",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start-env",
+      "aliases": [],
+      "description": "Start BOSH environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "SSH into instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "snapshots",
+      "aliases": [],
+      "description": "List snapshots",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sha2ify-release",
+      "aliases": [],
+      "description": "Convert release tarball to use SHA256",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sha1ify-release",
+      "aliases": [],
+      "description": "Convert release tarball to use SHA1",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "runtime-config",
+      "aliases": [],
+      "description": "Show current runtime config",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run-errand",
+      "aliases": [],
+      "description": "Run errand",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reset-release",
+      "aliases": [],
+      "description": "Reset release",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "repack-stemcell",
+      "aliases": [],
+      "description": "Repack stemcell",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Path-to-Stemcell",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "Path-to-Result",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "remove-blob",
+      "aliases": [],
+      "description": "Remove blob",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "releases",
+      "aliases": [],
+      "description": "List releases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "recreate",
+      "aliases": [],
+      "description": "Recreate instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "orphaned-vms",
+      "aliases": [],
+      "description": "List all the orphaned VMs in all deployments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "scp",
+      "aliases": [],
+      "description": "SCP to/from instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH...",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show this help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ignore",
+      "aliases": [],
+      "description": "Ignore an instance",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init-release",
+      "aliases": [],
+      "description": "Initialize release",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "inspect-local-release",
+      "aliases": [],
+      "description": "Display information from release metadata",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inspect-local-stemcell",
+      "aliases": [],
+      "description": "Display information from stemcell metadata",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH-TO-STEMCELL",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inspect-release",
+      "aliases": [],
+      "description": "List release contents such as jobs",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME/VERSION",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "instances",
+      "aliases": [],
+      "description": "List all instances in a deployment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "interpolate",
+      "aliases": [],
+      "description": "Interpolates variables into a manifest",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "locks",
+      "aliases": [],
+      "description": "List current locks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "log-in",
+      "aliases": [],
+      "description": "Login",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "log-out",
+      "aliases": [],
+      "description": "Log out",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Fetch logs from instance(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deployment",
+      "aliases": [],
+      "description": "Show deployment information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deployments",
+      "aliases": [],
+      "description": "List deployments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "diff-config",
+      "aliases": [],
+      "description": "Diff two configs by ID or content",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "disks",
+      "aliases": [],
+      "description": "List disks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "environment",
+      "aliases": [],
+      "description": "Show environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "environments",
+      "aliases": [],
+      "description": "List environments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "errands",
+      "aliases": [],
+      "description": "List errands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "event",
+      "aliases": [],
+      "description": "Show event details",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "events",
+      "aliases": [],
+      "description": "List events",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "export-release",
+      "aliases": [],
+      "description": "Export the compiled release to a tarball",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME/VERSION",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "OS/VERSION",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "finalize-release",
+      "aliases": [],
+      "description": "Create final release from dev release tarball",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate-job",
+      "aliases": [],
+      "description": "Generate job",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate-package",
+      "aliases": [],
+      "description": "Generate package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-release",
+      "aliases": [],
+      "description": "Create release",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "curl",
+      "aliases": [],
+      "description": "Make an HTTP request to the Director",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-config",
+      "aliases": [],
+      "description": "Delete config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-deployment",
+      "aliases": [],
+      "description": "Delete deployment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete-disk",
+      "aliases": [],
+      "description": "Delete disk",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "CID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-env",
+      "aliases": [],
+      "description": "Delete BOSH environment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-network",
+      "aliases": [],
+      "description": "Delete network",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-release",
+      "aliases": [],
+      "description": "Delete release",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "NAME/VERSION",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-snapshot",
+      "aliases": [],
+      "description": "Delete snapshot",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "CID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-snapshots",
+      "aliases": [],
+      "description": "Delete all snapshots in a deployment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete-stemcell",
+      "aliases": [],
+      "description": "Delete stemcell",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete-vm",
+      "aliases": [],
+      "description": "Delete VM",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "CID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Update deployment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "alias-env",
+      "aliases": [],
+      "description": "Alias environment to save URL and CA certificate",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "attach-disk",
+      "aliases": [],
+      "description": "Attach disk to an instance",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "INSTANCE-GROUP/INSTANCE-ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "DISK-CID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "blobs",
+      "aliases": [],
+      "description": "List blobs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cancel-task",
+      "aliases": [],
+      "description": "Cancel task at its next checkpoint",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cancel-tasks",
+      "aliases": [],
+      "description": "Cancel tasks at their next checkpoints",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clean-up",
+      "aliases": [],
+      "description": "Clean up old unused resources except orphaned disks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud-check",
+      "aliases": [],
+      "description": "Cloud consistency check and interactive repair",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud-config",
+      "aliases": [],
+      "description": "Show current cloud config",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Show current config for either ID or both type and name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ID",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "configs",
+      "aliases": [],
+      "description": "List configs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cpi-config",
+      "aliases": [],
+      "description": "Show current CPI config",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "create-env",
+      "aliases": [],
+      "description": "Create or update BOSH environment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show CLI version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Config file path (default: ~/.bosh/config)",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--environment"
+      ],
+      "description": "Director environment name or URL",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ca-cert"
+      ],
+      "description": "Director CA certificate path or value",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sha2"
+      ],
+      "description": "Use SHA256 checksums",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parallel"
+      ],
+      "description": "The max number of parallel operations (default: 5)",
+      "takes_arg": true,
+      "arg_name": "amount",
+      "arg_template": {
+        "custom": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--client"
+      ],
+      "description": "Override username or UAA client [$BOSH_CLIENT]",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--client-secret"
+      ],
+      "description": "Override password or UAA client secret [$BOSH_CLIENT_SECRET]",
+      "takes_arg": true,
+      "arg_name": "secret",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deployment"
+      ],
+      "description": "Deployment name [$BOSH_DEPLOYMENT]",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--column"
+      ],
+      "description": "Filter to show only given column(s)",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Output as JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tty"
+      ],
+      "description": "Force TTY-like output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Toggle colorized output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--non-interactive"
+      ],
+      "description": "Don't ask for user input [$BOSH_NON_INTERACTIVE]",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

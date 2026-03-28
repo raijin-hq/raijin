@@ -1,0 +1,1479 @@
+{
+  "name": "symfony",
+  "aliases": [],
+  "description": "Symfony Binary",
+  "subcommands": [
+    {
+      "name": "book:check-requirements",
+      "aliases": [
+        "book:check"
+      ],
+      "description": "Check that you have all the pre-requisites locally to code while reading the \"Symfony: The Fast Track\" book",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "book:checkout",
+      "aliases": [],
+      "description": "Check out a step of the \"Symfony: The Fast Track\" book repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:clear-cache",
+      "aliases": [
+        "cloud:clearcache",
+        "cloud:cc"
+      ],
+      "description": "Clear the CLI cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:docs",
+      "aliases": [],
+      "description": "Open the online documentation",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:multi",
+      "aliases": [],
+      "description": "Execute a command on multiple projects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:web",
+      "aliases": [],
+      "description": "Open the Web UI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:activity:cancel",
+      "aliases": [],
+      "description": "Cancel an activity",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:activity:get",
+      "aliases": [],
+      "description": "View detailed information on a single activity",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:activity:list",
+      "aliases": [
+        "cloud:activities",
+        "cloud:act"
+      ],
+      "description": "Get a list of activities for an environment or project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:activity:log",
+      "aliases": [],
+      "description": "Display the log for an activity",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:app:config-get",
+      "aliases": [],
+      "description": "View the configuration of an app",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:app:list",
+      "aliases": [],
+      "description": "List apps in the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:auth:api-token-login",
+      "aliases": [],
+      "description": "Log in to Platform.sh using an API token",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:auth:browser-login",
+      "aliases": [
+        "cloud:login"
+      ],
+      "description": "Log in to Platform.sh via a browse",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:auth:info",
+      "aliases": [],
+      "description": "Display your account information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:auth:logout",
+      "aliases": [
+        "cloud:logout"
+      ],
+      "description": "Log out of Platform.sh",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:backup:create",
+      "aliases": [
+        "cloud:backup",
+        "cloud:snapshot:create",
+        "cloud:environment:backup"
+      ],
+      "description": "Make a backup of an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:backup:list",
+      "aliases": [
+        "cloud:backups",
+        "cloud:snapshots",
+        "cloud:snapshot:list"
+      ],
+      "description": "List available backups of an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:backup:restore",
+      "aliases": [
+        "cloud:environment:restore",
+        "cloud:snapshot:restore"
+      ],
+      "description": "Restore an environment backup",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:certificate:add",
+      "aliases": [],
+      "description": "Add an SSL certificate to the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:certificate:delete",
+      "aliases": [],
+      "description": "Delete a certificate from the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:certificate:get",
+      "aliases": [],
+      "description": "View a certificate",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:certificate:list",
+      "aliases": [
+        "cloud:certificates",
+        "cloud:certs"
+      ],
+      "description": "List project certificates",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:commit:get",
+      "aliases": [],
+      "description": "Show commit details",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:commit:list",
+      "aliases": [
+        "cloud:commits"
+      ],
+      "description": "List commits",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:db:dump",
+      "aliases": [
+        "cloud:sql-dump",
+        "cloud-environment:sql-dump"
+      ],
+      "description": "Create a local dump of the remote database",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:db:size",
+      "aliases": [],
+      "description": "Estimate the disk usage of a database",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:db:sql",
+      "aliases": [
+        "cloud:sql",
+        "cloud:environment:sql"
+      ],
+      "description": "Run SQL on the remote database",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:domain:add",
+      "aliases": [],
+      "description": "Add a new domain to the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:domain:delete",
+      "aliases": [],
+      "description": "Delete a domain from the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:domain:get",
+      "aliases": [],
+      "description": "Show detailed information for a domain",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:domain:list",
+      "aliases": [
+        "cloud:domains"
+      ],
+      "description": "Get a list of all domains",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:domain:update",
+      "aliases": [],
+      "description": "Update a domain",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "coud:environment:activate",
+      "aliases": [],
+      "description": "Activate an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:branch",
+      "aliases": [
+        "cloud:branch"
+      ],
+      "description": "Branch an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:checkout",
+      "aliases": [
+        "cloud:checkout"
+      ],
+      "description": "Check out an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:debug",
+      "aliases": [
+        "environment:debug"
+      ],
+      "description": "Debug an environment by switching Symfony to the debug mode temporarily",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:delete",
+      "aliases": [
+        "cloud:environment:deactivate"
+      ],
+      "description": "Delete one or more environments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:http-access",
+      "aliases": [
+        "cloud:httpaccess"
+      ],
+      "description": "Update HTTP access settings for an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:info",
+      "aliases": [
+        "cloud:environment:metadata"
+      ],
+      "description": "Read or set properties for an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:init",
+      "aliases": [],
+      "description": "Initialize an environment from a public Git repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:list",
+      "aliases": [
+        "cloud:environments",
+        "cloud:env"
+      ],
+      "description": "Get a list of environments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:logs",
+      "aliases": [
+        "cloud:log",
+        "cloud:logs"
+      ],
+      "description": "Read an environment's logs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:merge",
+      "aliases": [
+        "cloud:merge"
+      ],
+      "description": "Merge an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:push",
+      "aliases": [
+        "cloud:push",
+        "deploy",
+        "cloud:deploy"
+      ],
+      "description": "Push code to an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:redeploy",
+      "aliases": [
+        "cloud:redeploy"
+      ],
+      "description": "Redeploy an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:relationships",
+      "aliases": [
+        "cloud:relationships"
+      ],
+      "description": "Show an environment's relationships",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:scp",
+      "aliases": [
+        "cloud:scp"
+      ],
+      "description": "Copy files to and from current environment using scp",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:ssh",
+      "aliases": [
+        "cloud:ssh"
+      ],
+      "description": "SSH to the current environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:synchronize",
+      "aliases": [
+        "cloud:sync"
+      ],
+      "description": "Synchronize an environment's code and/or data from its parent",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:url",
+      "aliases": [
+        "cloud:url"
+      ],
+      "description": "Get the public URLs of an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:environment:xdebug",
+      "aliases": [
+        "cloud:xdebug"
+      ],
+      "description": "Open a tunnel to Xdebug on the environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:activity:get",
+      "aliases": [],
+      "description": "View detailed information on a single integration activity",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:activity:list",
+      "aliases": [
+        "cloud:i:act",
+        "cloud:integration:activities"
+      ],
+      "description": "Get a list of activities for an integration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:activity:log",
+      "aliases": [],
+      "description": "Display the log for an integration activity",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:add",
+      "aliases": [],
+      "description": "Add an integration to the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:delete",
+      "aliases": [],
+      "description": "Delete an integration from a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:get",
+      "aliases": [],
+      "description": "View details of an integration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:list",
+      "aliases": [
+        "cloud:integrations"
+      ],
+      "description": "View a list of project integration(s)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:update",
+      "aliases": [],
+      "description": "Update an integration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:integration:validate",
+      "aliases": [],
+      "description": "Validate an existing integration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:mount:download",
+      "aliases": [],
+      "description": "Download files from a mount, using rsync",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:mount:list",
+      "aliases": [
+        "cloud:mounts"
+      ],
+      "description": "Get a list of mounts",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:mount:size",
+      "aliases": [],
+      "description": "Check the disk usage of mounts",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:mount:upload",
+      "aliases": [],
+      "description": "Upload files to a mount, using rsync",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:billing:address",
+      "aliases": [],
+      "description": "View or change an organization's billing address",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:billing:profile",
+      "aliases": [],
+      "description": "View or change an organization's billing profile",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:create",
+      "aliases": [],
+      "description": "Create a new organization",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:delete",
+      "aliases": [],
+      "description": "Delete an organization",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:info",
+      "aliases": [],
+      "description": "View or change organization details",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:list",
+      "aliases": [
+        "cloud:orgs",
+        "cloud:organizations"
+      ],
+      "description": "List organizations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:subscription:list",
+      "aliases": [
+        "cloud:organization:subscriptions"
+      ],
+      "description": "List subscriptions within an organization",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:user:add",
+      "aliases": [],
+      "description": "Invite a user to an organization",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:user:delete",
+      "aliases": [],
+      "description": "Remove a user from an organization",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:user:get",
+      "aliases": [],
+      "description": "View an organization user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:user:list",
+      "aliases": [
+        "cloud:organization:users"
+      ],
+      "description": "List organization users",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:organization:user:update",
+      "aliases": [],
+      "description": "Update an organization user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:clear-build-cache",
+      "aliases": [],
+      "description": "Clear a project's build cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:create",
+      "aliases": [
+        "cloud:create"
+      ],
+      "description": "Create a new project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:delete",
+      "aliases": [],
+      "description": "Delete a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:get",
+      "aliases": [
+        "cloud:get"
+      ],
+      "description": "Clone a project locally",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:info",
+      "aliases": [
+        "cloud:project:metadata"
+      ],
+      "description": "Read or set properties for a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:list",
+      "aliases": [
+        "cloud:projects",
+        "cloud:pro"
+      ],
+      "description": "Get a list of all active projects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:project:set-remote",
+      "aliases": [],
+      "description": "Set the remote project for the current Git repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:repo:cat",
+      "aliases": [],
+      "description": "Read a file in the project repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:repo:ls",
+      "aliases": [],
+      "description": "List files in the project repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:repo:read",
+      "aliases": [
+        "cloud:read"
+      ],
+      "description": "Read a directory or file in the project repository",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:route:get",
+      "aliases": [],
+      "description": "View detailed information about a route",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:route:list",
+      "aliases": [
+        "cloud:routes",
+        "cloud:environment:routes"
+      ],
+      "description": "List all routes for an environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:list",
+      "aliases": [
+        "cloud:services"
+      ],
+      "description": "List services in the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:mongo:dump",
+      "aliases": [
+        "cloud:mongodump"
+      ],
+      "description": "Create a binary archive dump of data from MongoDB",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:mongo:export",
+      "aliases": [
+        "cloud:mongoexport"
+      ],
+      "description": "Export data from MongoDB",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:mongo:restore",
+      "aliases": [
+        "cloud:mongorestore"
+      ],
+      "description": "Restore a binary archive dump of data into MongoDB",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:mongo:shell",
+      "aliases": [
+        "cloud:mongo"
+      ],
+      "description": "Use the MongoDB shell",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:service:redis-cli",
+      "aliases": [
+        "cloud:redis"
+      ],
+      "description": "Access the Redis CLI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:ssh-cert:load",
+      "aliases": [],
+      "description": "Generate an SSH certificate",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:ssh-key:add",
+      "aliases": [],
+      "description": "Add a new SSH key",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:ssh-key:delete",
+      "aliases": [],
+      "description": "Delete an SSH key",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:ssh-key:list",
+      "aliases": [
+        "cloud:ssh-keys"
+      ],
+      "description": "Get a list of SSH keys in your accountt",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:subscription:info",
+      "aliases": [],
+      "description": "Read or modify subscription properties",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:tunnel:close",
+      "aliases": [],
+      "description": "Close SSH tunnels",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:tunnel:info",
+      "aliases": [],
+      "description": "View relationship info for SSH tunnels",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:tunnel:list",
+      "aliases": [
+        "cloud:tunnels"
+      ],
+      "description": "List SSH tunnels",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:tunnel:open",
+      "aliases": [],
+      "description": "Open SSH tunnels to an app's relationships",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:tunnel:single",
+      "aliases": [],
+      "description": "Open a single SSH tunnel to an app relationship",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:user:add",
+      "aliases": [],
+      "description": "Add a user to the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:user:delete",
+      "aliases": [],
+      "description": "Delete a user from the project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:user:get",
+      "aliases": [
+        "cloud:vget"
+      ],
+      "description": "View a user's role(s)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:user:list",
+      "aliases": [
+        "cloud:variables",
+        "cloud:var"
+      ],
+      "description": "List project users",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:user:update",
+      "aliases": [],
+      "description": "Update user role(s) on a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:variable:create",
+      "aliases": [],
+      "description": "Create a variable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:variable:delete",
+      "aliases": [],
+      "description": "Delete a variable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:variable:get",
+      "aliases": [],
+      "description": "View a variable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:variable:list",
+      "aliases": [],
+      "description": "List variables",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:variable:update",
+      "aliases": [],
+      "description": "Update a variable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud:worker:list",
+      "aliases": [
+        "cloud:workers"
+      ],
+      "description": "Get a list of all deployed workers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:check:requirements",
+      "aliases": [
+        "check-requirements",
+        "check:req"
+      ],
+      "description": "Checks requirements for running Symfony and gives useful recommendations to optimize PHP for Symfony",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:check:security",
+      "aliases": [
+        "security:check",
+        "check:security",
+        "local:security:check"
+      ],
+      "description": "Check security issues in project dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:new",
+      "aliases": [
+        "new"
+      ],
+      "description": "Create a new Symfony project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:php:list",
+      "aliases": [],
+      "description": "List locally available PHP versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:php:refresh",
+      "aliases": [],
+      "description": "Auto-discover the list of available PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:proxy:domain:attach",
+      "aliases": [
+        "proxy:domain:attach"
+      ],
+      "description": "Attach a local domain for the proxy",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:proxy:domain:detach",
+      "aliases": [
+        "proxy:domain:detach"
+      ],
+      "description": "Detach domains from the proxy",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:proxy:start",
+      "aliases": [
+        "proxy:start"
+      ],
+      "description": "Start the local proxy server (local domains support)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:proxy:status",
+      "aliases": [
+        "proxy:status"
+      ],
+      "description": "Get the local proxy server status",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:proxy:stop",
+      "aliases": [
+        "proxy:stop"
+      ],
+      "description": "Stop the local proxy server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:run",
+      "aliases": [
+        "run"
+      ],
+      "description": "Run a program with environment variables set depending on the current context",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:ca:install",
+      "aliases": [
+        "server:ca:install"
+      ],
+      "description": "Create a local Certificate Authority for serving HTTPS",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:ca:uninstall",
+      "aliases": [
+        "server:ca:uninstall"
+      ],
+      "description": "Uninstall the local Certificate Authority",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:list",
+      "aliases": [
+        "server:list"
+      ],
+      "description": "List all configured local web servers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:log",
+      "aliases": [
+        "server:log"
+      ],
+      "description": "Display local web server logs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:prod",
+      "aliases": [
+        "server:prod"
+      ],
+      "description": "Switch a project to use Symfony's production environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:start",
+      "aliases": [
+        "server:start",
+        "serve"
+      ],
+      "description": "Run a local web server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:status",
+      "aliases": [
+        "server:status"
+      ],
+      "description": "Get the local web server status",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:server:stop",
+      "aliases": [
+        "server:stop"
+      ],
+      "description": "Stop the local web server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "local:var:expose-from-tunnel",
+      "aliases": [
+        "var:expose-from-tunnel"
+      ],
+      "description": "Expose tunnel service environment variables locally",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "open:local",
+      "aliases": [],
+      "description": "Open the local project in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "open:local:rabbitmq",
+      "aliases": [],
+      "description": "Open the local project RabbitMQ web management interface in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "open:local:webmail",
+      "aliases": [],
+      "description": "Open the local project mail catcher web interface in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "project:init",
+      "aliases": [
+        "init"
+      ],
+      "description": "Initialize a new project using templates",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "self:help",
+      "aliases": [
+        "help",
+        "list"
+      ],
+      "description": "Display help for a command or a category of commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "self:version",
+      "aliases": [
+        "version"
+      ],
+      "description": "Display the application version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "var:export",
+      "aliases": [],
+      "description": "Export environment variables depending on the current context",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "composer",
+      "aliases": [],
+      "description": "Runs Composer without memory limit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "php",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pecl",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pear",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "php-fdp",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "php-cgi",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "php-config",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "phpdbg",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "phpize",
+      "aliases": [],
+      "description": "Runs the binary using the configured PHP version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Runs the Symfony Console (bin/console) for current project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Do not output any message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Disable ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ansi"
+      ],
+      "description": "Force ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-interaction"
+      ],
+      "description": "Do not ask any interactive question",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-V"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

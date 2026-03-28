@@ -1,0 +1,386 @@
+{
+  "name": "helmfile",
+  "aliases": [],
+  "description": "Deploy helm charts",
+  "subcommands": [
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Apply all resources from state file only when there are changes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build all resources from state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Cache management",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "charts",
+      "aliases": [],
+      "description": "DEPRECATED: sync releases from state file (helm upgrade --install)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "The helmfile delete sub-command deletes all the releases defined in the manifests",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deps",
+      "aliases": [],
+      "description": "Update charts based on their requirements, it locks your helmfile state and local charts dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Destroys and then purges releases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Diff releases defined in state file, it executes the helm-diff plugin across all of the charts/releases defined in the manifest",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "fetch",
+      "aliases": [],
+      "description": "Fetch charts from state file, it downloads or copies local charts to a local directory for debug purpose",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize the helmfile, includes version checking and installation of helm and plug-ins",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Lint charts from state file (helm lint)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List releases defined in state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "repos",
+      "aliases": [],
+      "description": "Repos releases defined in state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Causes the helm-secrets plugin to be executed to decrypt the file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Retrieve status of releases in state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Sync releases defined in state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "template",
+      "aliases": [],
+      "description": "Template releases defined in state file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Test charts from state file (helm test)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the CLI version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": " write-values",
+      "aliases": [],
+      "description": "Write values files for releases. Similar to `helmfile template`, write values files instead of manifests",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Do not exit with an error code if the provided selector has no matching releases",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-no-matching-release"
+      ],
+      "description": "Show help for helmfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chart",
+        "-c"
+      ],
+      "description": "Set chart. Uses the chart set in release by default, and is available in template as {{ .Chart }}",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Output with color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable verbose output for Helm and set log-level to debug, this disables --quiet/-q effect",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-live-output"
+      ],
+      "description": "Show live output from the Helm binary Stdout/Stderr into Helmfile own Stdout/Stderr. It only applies for the Helm CLI commands, Stdout/Stderr for Hooks are still displayed only when it's execution finishes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--environment",
+        "-e"
+      ],
+      "description": "Specify the environment name. defaults to default",
+      "takes_arg": true,
+      "arg_name": "environment",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Load config from file or directory. defaults to helmfile.yaml or `helmfile.d`(means `helmfile.d/*.yaml`) in this preference",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--helm-binary",
+        "-b"
+      ],
+      "description": "Path to the helm binary (default \"helm\")",
+      "takes_arg": true,
+      "arg_name": "binary",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive",
+        "-i"
+      ],
+      "description": "Request confirmation before attempting to modify clusters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kube-context"
+      ],
+      "description": "Set kubectl context. Uses current context by default",
+      "takes_arg": true,
+      "arg_name": "kube-context",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-level"
+      ],
+      "description": "Set log level, default info (default info)",
+      "takes_arg": true,
+      "arg_name": "log-level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--namespace",
+        "-n"
+      ],
+      "description": "Set namespace. Uses the namespace set in the context by default, and is available in templates as {{ .Namespace }}",
+      "takes_arg": true,
+      "arg_name": "namespace",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Output without color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Silence output. Equivalent to log-level warn",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--selector",
+        "-l"
+      ],
+      "description": "Only run using the releases that match labels. Labels can take the form of foo=bar or foo!=bar",
+      "takes_arg": true,
+      "arg_name": " selector ",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--state-values-file"
+      ],
+      "description": "Specify state values in a YAML file",
+      "takes_arg": true,
+      "arg_name": "state-values-file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--state-values-set"
+      ],
+      "description": "Set state values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2)",
+      "takes_arg": true,
+      "arg_name": "state-values-=set",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Version for helmfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

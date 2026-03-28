@@ -1,0 +1,719 @@
+{
+  "name": "nvm",
+  "aliases": [],
+  "description": "Node Package Manager",
+  "subcommands": [
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Download and install a <version>. Uses .nvmrc if available and version is omitted",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Skip binary download, install from source only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reinstall-packages-from"
+          ],
+          "description": "When installing, reinstall packages installed in <version>",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When installing, only select from LTS (long-term support) versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When installing, only select from versions for a specific LTS line",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-default-packages"
+          ],
+          "description": "When installing, skip the default-packages file if it exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--latest-npm"
+          ],
+          "description": "After installing, attempt to upgrade to the latest working npm on the given node version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable the progress bar on any downloads",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--alias"
+          ],
+          "description": "After installing, set the alias specified to the version specified. (same as: nvm alias <name> <version>)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default"
+          ],
+          "description": "After installing, set default alias to the version specified. (same as: nvm alias default <version>)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uninstall using automatic LTS (long-term support) alias `lts/*`, if available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uninstall using automatic alias for provided LTS line, if available",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Modify PATH to use <version>. Uses .nvmrc if available and version is omitted",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silences stdout/stderr output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic LTS (long-term support) alias `lts/*`, if available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic alias for provided LTS line, if available",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Run <command> on <version>. Uses .nvmrc if available and version is omitted",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silences stdout/stderr output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic LTS (long-term support) alias `lts/*`, if available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic alias for provided LTS line, if available",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run `node` on <version> with <args> as arguments. Uses .nvmrc if available and version is omitted",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silences stdout/stderr output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic LTS (long-term support) alias `lts/*`, if available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "Uses automatic alias for provided LTS line, if available",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "args",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "current",
+      "aliases": [],
+      "description": "Display currently activated version of Node",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "List installed versions, matching a given <version> if provided",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-colors"
+          ],
+          "description": "Suppress colored output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-alias"
+          ],
+          "description": "Suppress `nvm alias` output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ls-remote",
+      "aliases": [],
+      "description": "List remote versions available for install, matching a given <version> if provided",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When listing, only show LTS (long-term support) versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When listing, only show versions for a specific LTS line",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-colors"
+          ],
+          "description": "Suppress colored output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Resolve the given description to a single local version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version-remote",
+      "aliases": [],
+      "description": "Resolve the given description to a single remote version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When listing, only show LTS (long-term support) versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lts"
+          ],
+          "description": "When listing, only show versions for a specific LTS line",
+          "takes_arg": true,
+          "arg_name": "LTS name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deactivate",
+      "aliases": [],
+      "description": "Undo effects of `nvm` on current shell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silences stdout/stderr output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "alias",
+      "aliases": [],
+      "description": "Show all aliases beginning with <pattern> or Set an alias named <name> pointing to <version>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pattern or name",
+          "description": "Pattern or name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unalias",
+      "aliases": [],
+      "description": "Deletes the alias named <name>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install-latest-npm",
+      "aliases": [],
+      "description": "Attempt to upgrade to the latest working `npm` on the current node version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reinstall-packages",
+      "aliases": [],
+      "description": "Reinstall global `npm` packages contained in <version> to current version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unload",
+      "aliases": [],
+      "description": "Unload `nvm` from shell",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Display path to installed node version. Uses .nvmrc if available and version is omitted",
+      "subcommands": [
+        {
+          "name": "current",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silences stdout/stderr output when a version is omitted",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Node version",
+          "template": {
+            "custom": [
+              "node",
+              "iojs",
+              "system"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": {
+            "custom": [
+              "dir",
+              "clear"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "set-colors",
+      "aliases": [],
+      "description": "Set five text colors using format \"yMeBg\". Available when supported",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "color codes",
+          "description": "Using format \"yMeBg\"",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help page",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print out the installed version of nvm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-colors"
+      ],
+      "description": "Suppress colored output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,37 @@
+{
+  "name": "tail",
+  "aliases": [],
+  "description": "Display the last part of a file",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Wait for additional data to be appended",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Display in reverse order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

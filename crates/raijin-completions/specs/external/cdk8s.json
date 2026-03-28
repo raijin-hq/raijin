@@ -1,0 +1,221 @@
+{
+  "name": "cdk8s",
+  "aliases": [],
+  "description": "CDK for K8s",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new, empty CDK8S project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "Select language you are using",
+          "template": {
+            "custom": [
+              "go-app",
+              "java-app",
+              "python-app",
+              "typescript-app"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import a CRD schema to generate generate resources",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--language",
+            "-l"
+          ],
+          "description": "Output programming language",
+          "takes_arg": true,
+          "arg_name": "language",
+          "arg_template": {
+            "custom": [
+              "typescript",
+              "python",
+              "java",
+              "go"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--class-prefix"
+          ],
+          "description": "A prefix to add to all generated class names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-class-prefix"
+          ],
+          "description": "Does not add a prefix to generated class names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Do not import types that match these regular expressions",
+          "takes_arg": true,
+          "arg_name": "regexp",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "spec",
+          "description": "Path to the CRD schema",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "synth",
+      "aliases": [],
+      "description": "Synthesizes Kubernetes manifests for all charts in your app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Command to use in order to execute cdk8s app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdout",
+            "-s"
+          ],
+          "description": "Write synthesized manifests to STDOUT instead of the output directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugins-dir"
+          ],
+          "description": "Directory to store cdk8s plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--validate"
+          ],
+          "description": "Apply validation plugins on the resulting manifests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-validate"
+          ],
+          "description": "Disable validation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--validation-reports-output-file"
+          ],
+          "description": "File to write a JSON representation of the validation reports to",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "The current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check-upgrade"
+      ],
+      "description": "Check for cdk8s-cli upgrade",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

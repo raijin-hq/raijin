@@ -1,0 +1,562 @@
+{
+  "name": "act",
+  "aliases": [],
+  "description": "Run GitHub actions locally by specifying the event name (e.g. `push`) or an action name directly",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--bind",
+        "-b"
+      ],
+      "description": "Bind working directory to container, rather than copy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bug-report"
+      ],
+      "description": "Display system information for bug report",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--container-cap-add"
+      ],
+      "description": "Kernel capabilities to add to the workflow containers (e.g. --container-cap-add SYS_PTRACE)",
+      "takes_arg": true,
+      "arg_name": "container-cap-add",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--container-cap-drop"
+      ],
+      "description": "Kernel capabilities to remove from the workflow containers (e.g. --container-cap-drop SYS_PTRACE)",
+      "takes_arg": true,
+      "arg_name": "container-cap-drop",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--defaultbranch"
+      ],
+      "description": "The name of the main branch",
+      "takes_arg": true,
+      "arg_name": "defaultbranch",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--detect-event"
+      ],
+      "description": "Use first event type from workflow as event that triggered the workflow",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env"
+      ],
+      "description": "Env to make available to actions with optional value (e.g. --env myenv=foo or --env myenv)",
+      "takes_arg": true,
+      "arg_name": "env",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--eventpath",
+        "-e"
+      ],
+      "description": "Path to event JSON file",
+      "takes_arg": true,
+      "arg_name": "eventpath",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--graph",
+        "-g"
+      ],
+      "description": "Draw workflows",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--job",
+        "-j"
+      ],
+      "description": "Run job",
+      "takes_arg": true,
+      "arg_name": "job",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list",
+        "-l"
+      ],
+      "description": "List workflows",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--platform",
+        "-P"
+      ],
+      "description": "Custom image to use per platform (e.g. -P ubuntu-18.04=nektos/act-environments-ubuntu:18.04)",
+      "takes_arg": true,
+      "arg_name": "platform",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--privileged"
+      ],
+      "description": "Use privileged mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pull",
+        "-p"
+      ],
+      "description": "Pull docker image(s) even if already present",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rebuild"
+      ],
+      "description": "Rebuild local action docker image(s) even if already present",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remote-name"
+      ],
+      "description": "Git remote name that will be used to retrieve url of git repo",
+      "takes_arg": true,
+      "arg_name": "remote-name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reuse",
+        "-r"
+      ],
+      "description": "Don't remove container(s) on successfully completed workflow(s) to maintain state between runs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rm"
+      ],
+      "description": "Automatically remove container(s)/volume(s) after a workflow(s) failure",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--secret",
+        "-s"
+      ],
+      "description": "Secret to make available to actions with optional value (e.g. -s mysecret=foo or -s mysecret)",
+      "takes_arg": true,
+      "arg_name": "secret",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--use-gitignore"
+      ],
+      "description": "Controls whether paths specified in .gitignore should be copied into container",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--userns"
+      ],
+      "description": "User namespace to use",
+      "takes_arg": true,
+      "arg_name": "userns",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch",
+        "-w"
+      ],
+      "description": "Watch the contents of the local repo and run when files change",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--actor",
+        "-a"
+      ],
+      "description": "User that triggered the event",
+      "takes_arg": true,
+      "arg_name": "actor",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--artifact-server-path"
+      ],
+      "description": "Defines the path where the artifact server stores uploads and retrieves downloads from. If not specified the artifact server will not start",
+      "takes_arg": true,
+      "arg_name": "artifact-server-path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--artifact-server-port"
+      ],
+      "description": "Defines the port where the artifact server listens (will only bind to localhost)",
+      "takes_arg": true,
+      "arg_name": "artifact-server-port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--container-architecture"
+      ],
+      "description": "Architecture which should be used to run containers, e.g.: linux/amd64. If not specified, will use host default architecture. Requires Docker server API Version 1.41+. Ignored on earlier Docker server platforms",
+      "takes_arg": true,
+      "arg_name": "container-architecture",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--container-daemon-socket"
+      ],
+      "description": "Path to Docker daemon socket which will be mounted to containers",
+      "takes_arg": true,
+      "arg_name": "container-daemon-socket",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--directory",
+        "-C"
+      ],
+      "description": "Working directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dryrun",
+        "-n"
+      ],
+      "description": "Dryrun mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env-file"
+      ],
+      "description": "Environment file to read and use as env in the containers",
+      "takes_arg": true,
+      "arg_name": "env-file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--github-instance"
+      ],
+      "description": "GitHub instance to use. Don't use this if you are not using GitHub Enterprise Server",
+      "takes_arg": true,
+      "arg_name": "github-instance",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--insecure-secrets"
+      ],
+      "description": "NOT RECOMMENDED! Doesn't hide secrets while printing logs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Output logs in json format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-recurse"
+      ],
+      "description": "Flag to disable running workflows from subdirectories of specified path in '--workflows'/'-W' flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-skip-checkout"
+      ],
+      "description": "Do not skip actions/checkout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Disable logging of output from steps",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--secret-file"
+      ],
+      "description": "File with list of secrets to read from (e.g. --secret-file .secrets)",
+      "takes_arg": true,
+      "arg_name": "secret-file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workflows",
+        "-W"
+      ],
+      "description": "Path to workflow file(s)",
+      "takes_arg": true,
+      "arg_name": "workflows",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

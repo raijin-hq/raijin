@@ -1,0 +1,1880 @@
+{
+  "name": "clilol",
+  "aliases": [],
+  "description": "A cli for omg.lol",
+  "subcommands": [
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create things",
+      "subcommands": [
+        {
+          "name": "dns",
+          "aliases": [],
+          "description": "Create a DNS record",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--priority",
+                "-p"
+              ],
+              "description": "Priority of the DNS record",
+              "takes_arg": true,
+              "arg_name": "priority",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ttl",
+                "-T"
+              ],
+              "description": "Time to live of the DNS record",
+              "takes_arg": true,
+              "arg_name": "ttl",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the DNS record",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "type",
+              "description": "Type of the DNS record",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "data",
+              "description": "Data of the DNS record",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "paste",
+          "aliases": [],
+          "description": "Create or update a paste",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to read paste from (default stdin)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--listed",
+                "-l"
+              ],
+              "description": "Create paste as listed (default false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "title",
+              "description": "Title of the paste",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "picture",
+          "aliases": [],
+          "description": "Upload a picture to some.pics",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--description",
+                "-d"
+              ],
+              "description": "Description of the picture (default empty/unlisted)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "filename",
+              "description": "Filename of the image file",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "purl",
+          "aliases": [],
+          "description": "Create a PURL",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--listed",
+                "-l"
+              ],
+              "description": "Create as listed (default false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the PURL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "url",
+              "description": "URL that the PURL redirects to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Create a status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--emoji",
+                "-e"
+              ],
+              "description": "Emoji to add to status (default sparkles)",
+              "takes_arg": true,
+              "arg_name": "emoji",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-mastodon-post"
+              ],
+              "description": "Do not cross-post to Mastodon",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "text",
+              "description": "Text of the status",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "weblog",
+          "aliases": [],
+          "description": "Create a weblog entry",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to read entry from (default stdin)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete things",
+      "subcommands": [
+        {
+          "name": "account",
+          "aliases": [],
+          "description": "Delete information about your account",
+          "subcommands": [
+            {
+              "name": "session",
+              "aliases": [],
+              "description": "Delete a session",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "id",
+                  "description": "ID of the session to delete",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dns",
+          "aliases": [],
+          "description": "Delete a DNS record",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the record to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "paste",
+          "aliases": [],
+          "description": "Delete a paste",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the paste to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "picture",
+          "aliases": [],
+          "description": "Delete a picture from some.pics",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the picture to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "purl",
+          "aliases": [],
+          "description": "Delete a PURL",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the PURL to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Delete a status",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the status to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "weblog",
+          "aliases": [],
+          "description": "Delete a weblog entry",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the weblog entry to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Get things",
+      "subcommands": [
+        {
+          "name": "account",
+          "aliases": [],
+          "description": "Get information about your account",
+          "subcommands": [
+            {
+              "name": "info",
+              "aliases": [],
+              "description": "Get info about your account",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "name",
+              "aliases": [],
+              "description": "Get your account name",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "settings",
+              "aliases": [],
+              "description": "Get your account settings",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "address",
+          "aliases": [],
+          "description": "Get information about an address",
+          "subcommands": [
+            {
+              "name": "availability",
+              "aliases": [],
+              "description": "Get address availability",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "address",
+                  "description": "Address to get",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "expiration",
+              "aliases": [],
+              "description": "Get address expiration",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "address",
+                  "description": "Address to get",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "info",
+              "aliases": [],
+              "description": "Get information about an address",
+              "subcommands": [
+                {
+                  "name": "private",
+                  "aliases": [],
+                  "description": "Get private information about an address",
+                  "subcommands": [],
+                  "options": [],
+                  "args": [
+                    {
+                      "name": "address",
+                      "description": "Address to get",
+                      "template": null,
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                },
+                {
+                  "name": "public",
+                  "aliases": [],
+                  "description": "Get public information about an address",
+                  "subcommands": [],
+                  "options": [],
+                  "args": [
+                    {
+                      "name": "address",
+                      "description": "Address to get",
+                      "template": null,
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "email",
+          "aliases": [],
+          "description": "Get email forwarding address(es)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "now",
+          "aliases": [],
+          "description": "Get a Now page",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose Now page to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to write Now page to (default stdout)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "paste",
+          "aliases": [],
+          "description": "Get a paste",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose paste to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to write paste to (default stdout)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "title",
+              "description": "Title of the paste",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "purl",
+          "aliases": [],
+          "description": "Get a PURL",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose PURL to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the PURL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "service",
+          "aliases": [],
+          "description": "Get service stats",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose status to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the status",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "status-bio",
+          "aliases": [],
+          "description": "Get status bio",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose status bio to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "theme",
+          "aliases": [],
+          "description": "Get theme information",
+          "subcommands": [
+            {
+              "name": "preview",
+              "aliases": [],
+              "description": "Get theme preview",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--filename",
+                    "-f"
+                  ],
+                  "description": "File to write preview to (default stdout)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the theme",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the theme",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "aliases": [],
+          "description": "Get your webpage content",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to write webpage to (default stdout)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "weblog",
+          "aliases": [],
+          "description": "Get a weblog entry",
+          "subcommands": [
+            {
+              "name": "config",
+              "aliases": [],
+              "description": "Get your weblog config",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--filename",
+                    "-f"
+                  ],
+                  "description": "File to write configuration to (default stdout)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "latest",
+              "aliases": [],
+              "description": "Get the latest weblog entry",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "template",
+              "aliases": [],
+              "description": "Get your weblog template",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--filename",
+                    "-f"
+                  ],
+                  "description": "File to write template to (default stdout)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "ID of the weblog entry",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List things",
+      "subcommands": [
+        {
+          "name": "account",
+          "aliases": [],
+          "description": "List information about your account",
+          "subcommands": [
+            {
+              "name": "addresses",
+              "aliases": [],
+              "description": "List your addresses",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "sessions",
+              "aliases": [],
+              "description": "List your sessions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "directory",
+          "aliases": [],
+          "description": "List the address directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dns",
+          "aliases": [],
+          "description": "List your dns records",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "now",
+          "aliases": [],
+          "description": "List Now pages",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "paste",
+          "aliases": [],
+          "description": "List pastes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose pastes to list",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "picture",
+          "aliases": [],
+          "description": "List pictures",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "purl",
+          "aliases": [],
+          "description": "List all PURLs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose PURLs to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "List statuses",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address",
+                "-a"
+              ],
+              "description": "Address whose status(es) to get",
+              "takes_arg": true,
+              "arg_name": "address",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--limit",
+                "-l"
+              ],
+              "description": "How many status(es) to get (default all)",
+              "takes_arg": true,
+              "arg_name": "limit",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "statuslog",
+          "aliases": [],
+          "description": "List the statuslog",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all",
+                "-A"
+              ],
+              "description": "Get the entire statuslog (default is latest statuses only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "theme",
+          "aliases": [],
+          "description": "List profile themes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "weblog",
+          "aliases": [],
+          "description": "List all weblog entries",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update things",
+      "subcommands": [
+        {
+          "name": "account",
+          "aliases": [],
+          "description": "Update information about your account",
+          "subcommands": [
+            {
+              "name": "name",
+              "aliases": [],
+              "description": "Set the name on your account",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "settings",
+              "aliases": [],
+              "description": "Set the settings on your account",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--communication",
+                    "-c"
+                  ],
+                  "description": "Communication preference",
+                  "takes_arg": true,
+                  "arg_name": "communication",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--date-format",
+                    "-d"
+                  ],
+                  "description": "Date format preference",
+                  "takes_arg": true,
+                  "arg_name": "date-format",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--web-editor",
+                    "-w"
+                  ],
+                  "description": "Web editor preference",
+                  "takes_arg": true,
+                  "arg_name": "web-editor",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dns",
+          "aliases": [],
+          "description": "Update a DNS record",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--priority",
+                "-p"
+              ],
+              "description": "Updated priority",
+              "takes_arg": true,
+              "arg_name": "priority",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ttl",
+                "-T"
+              ],
+              "description": "Updated TTL",
+              "takes_arg": true,
+              "arg_name": "ttl",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "email",
+          "aliases": [],
+          "description": "Set email forwarding address(es)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--destination",
+                "-d"
+              ],
+              "description": "Address(es) to forward to",
+              "takes_arg": true,
+              "arg_name": "destination",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "preference",
+          "aliases": [],
+          "description": "Set a preference",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set Now page content",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to read Now page from (default stdin)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--listed",
+                "-l"
+              ],
+              "description": "Create Now page as listed (default false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Update a status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--emoji",
+                "-e"
+              ],
+              "description": "Emoji to add to status (default sparkles)",
+              "takes_arg": true,
+              "arg_name": "emoji",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status-bio",
+          "aliases": [],
+          "description": "Update your status bio",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "web",
+          "aliases": [],
+          "description": "Set webpage content",
+          "subcommands": [
+            {
+              "name": "pfp",
+              "aliases": [],
+              "description": "Set your profile picture",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--filename",
+                "-f"
+              ],
+              "description": "File to read webpage from (default stdin)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--publish",
+                "-p"
+              ],
+              "description": "Publish the updated page (default false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "weblog",
+          "aliases": [],
+          "description": "Set your weblog config",
+          "subcommands": [
+            {
+              "name": "config",
+              "aliases": [],
+              "description": "Set your weblog config",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--filename",
+                    "-f"
+                  ],
+                  "description": "File to read config from (default stdin)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "template",
+              "aliases": [],
+              "description": "Set your weblog template",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--filename",
+                    "-f"
+                  ],
+                  "description": "File to read template from (default stdin)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create things",
+          "subcommands": [
+            {
+              "name": "dns",
+              "aliases": [],
+              "description": "Create a DNS record",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "paste",
+              "aliases": [],
+              "description": "Create or update a paste",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "purl",
+              "aliases": [],
+              "description": "Create a PURL",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Create a status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "weblog",
+              "aliases": [],
+              "description": "Create a weblog entry",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete things",
+          "subcommands": [
+            {
+              "name": "account",
+              "aliases": [],
+              "description": "Delete information about your account",
+              "subcommands": [
+                {
+                  "name": "session",
+                  "aliases": [],
+                  "description": "Delete a session",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "dns",
+              "aliases": [],
+              "description": "Delete a DNS record",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "paste",
+              "aliases": [],
+              "description": "Delete a paste",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "purl",
+              "aliases": [],
+              "description": "Delete a PURL",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "weblog",
+              "aliases": [],
+              "description": "Delete a weblog entry",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get things",
+          "subcommands": [
+            {
+              "name": "account",
+              "aliases": [],
+              "description": "Get information about your account",
+              "subcommands": [
+                {
+                  "name": "info",
+                  "aliases": [],
+                  "description": "Get info about your account",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "name",
+                  "aliases": [],
+                  "description": "Get your account name",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "settings",
+                  "aliases": [],
+                  "description": "Get your account settings",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "address",
+              "aliases": [],
+              "description": "Get information about an address",
+              "subcommands": [
+                {
+                  "name": "availability",
+                  "aliases": [],
+                  "description": "Get address availability",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "expiration",
+                  "aliases": [],
+                  "description": "Get address expiration",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "info",
+                  "aliases": [],
+                  "description": "Get information about an address",
+                  "subcommands": [
+                    {
+                      "name": "private",
+                      "aliases": [],
+                      "description": "Get private information about an address",
+                      "subcommands": [],
+                      "options": [],
+                      "args": []
+                    },
+                    {
+                      "name": "public",
+                      "aliases": [],
+                      "description": "Get public information about an address",
+                      "subcommands": [],
+                      "options": [],
+                      "args": []
+                    }
+                  ],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "email",
+              "aliases": [],
+              "description": "Get email forwarding address(es)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "now",
+              "aliases": [],
+              "description": "Get a Now page",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "paste",
+              "aliases": [],
+              "description": "Get a paste",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "purl",
+              "aliases": [],
+              "description": "Get a PURL",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "service",
+              "aliases": [],
+              "description": "Get service stats",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Get status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status-bio",
+              "aliases": [],
+              "description": "Get status bio",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "theme",
+              "aliases": [],
+              "description": "Get theme information",
+              "subcommands": [
+                {
+                  "name": "preview",
+                  "aliases": [],
+                  "description": "Get theme preview",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "web",
+              "aliases": [],
+              "description": "Get your webpage content",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "weblog",
+              "aliases": [],
+              "description": "Get a weblog entry",
+              "subcommands": [
+                {
+                  "name": "config",
+                  "aliases": [],
+                  "description": "Get your weblog config",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "latest",
+                  "aliases": [],
+                  "description": "Get the latest weblog entry",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "template",
+                  "aliases": [],
+                  "description": "Get your weblog template",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List things",
+          "subcommands": [
+            {
+              "name": "account",
+              "aliases": [],
+              "description": "List information about your account",
+              "subcommands": [
+                {
+                  "name": "addresses",
+                  "aliases": [],
+                  "description": "List your addresses",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "sessions",
+                  "aliases": [],
+                  "description": "List your sessions",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "directory",
+              "aliases": [],
+              "description": "List the address directory",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "dns",
+              "aliases": [],
+              "description": "List your dns records",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "now",
+              "aliases": [],
+              "description": "List Now pages",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "paste",
+              "aliases": [],
+              "description": "List pastes",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "purl",
+              "aliases": [],
+              "description": "List all PURLs",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "List statuses",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "statuslog",
+              "aliases": [],
+              "description": "List the statuslog",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "theme",
+              "aliases": [],
+              "description": "List profile themes",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "weblog",
+              "aliases": [],
+              "description": "List all weblog entries",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update things",
+          "subcommands": [
+            {
+              "name": "account",
+              "aliases": [],
+              "description": "Update information about your account",
+              "subcommands": [
+                {
+                  "name": "name",
+                  "aliases": [],
+                  "description": "Set the name on your account",
+                  "subcommands": [],
+                  "options": [],
+                  "args": [
+                    {
+                      "name": "name",
+                      "description": "The name to set",
+                      "template": null,
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                },
+                {
+                  "name": "settings",
+                  "aliases": [],
+                  "description": "Set the settings on your account",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "dns",
+              "aliases": [],
+              "description": "Update a DNS record",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The ID of the record to update",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "name",
+                  "description": "Updated name",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "type",
+                  "description": "Updated type",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "data",
+                  "description": "Updated data",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "email",
+              "aliases": [],
+              "description": "Set email forwarding address(es)",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "address",
+                  "description": "Address(es) to forward to",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "preference",
+              "aliases": [],
+              "description": "Set a preference",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "item",
+                  "description": "Preferences item to set",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "value",
+                  "description": "Value to set",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "now",
+              "aliases": [],
+              "description": "Update Now page content",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Update a status",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The ID of the status to update",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "text",
+                  "description": "New text for the status",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "status-bio",
+              "aliases": [],
+              "description": "Update your status bio",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "text",
+                  "description": "New text for the status bio",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "web",
+              "aliases": [],
+              "description": "Set webpage content",
+              "subcommands": [
+                {
+                  "name": "pfp",
+                  "aliases": [],
+                  "description": "Set your profile picture",
+                  "subcommands": [],
+                  "options": [],
+                  "args": [
+                    {
+                      "name": "filename",
+                      "description": "The filename of the image to set",
+                      "template": "filepaths",
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "weblog",
+              "aliases": [],
+              "description": "Set your weblog config",
+              "subcommands": [
+                {
+                  "name": "config",
+                  "aliases": [],
+                  "description": "Set your weblog config",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "template",
+                  "aliases": [],
+                  "description": "Set your weblog template",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

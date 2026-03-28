@@ -1,0 +1,596 @@
+{
+  "name": "trunk",
+  "aliases": [],
+  "description": "An all-in-one tool for scalably checking, formatting, and monitoring code",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Setup trunk in this repo",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Add sha256s to trunk.yaml for additional verification",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check-sample"
+          ],
+          "description": "Run `trunk check sample` without prompting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nocheck-sample"
+          ],
+          "description": "Do not run `trunk check sample` post-init",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Overwrite existing trunk.yaml",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Universal code checker",
+      "subcommands": [
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade all linters to latest versions",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "linters",
+              "description": "Linter(s) to upgrade (upgrades all if none specified)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "download",
+          "aliases": [],
+          "description": "Download all files needed for trunk to work offline",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "tools",
+              "description": "Tool(s) to download (if omitted, downloads all configured tools)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable linters",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "linters",
+              "description": "Linter(s) to enable",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable linters",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "linters",
+              "description": "Linter(s) to disable",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--fix"
+          ],
+          "description": "Automatically apply all fixes without prompting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Run on all files instead of only changed files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--no-fix"
+          ],
+          "description": "Don't automatically apply fixes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-existing-autofixes"
+          ],
+          "description": "Show autofixes for existing issues",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Run on all files, even if ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--diff"
+          ],
+          "description": "Diff printing mode",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "none",
+              "compact",
+              "full"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filter the set of executed linters and/or the returned codes; use a leading '-' to exclude a linter or code",
+          "takes_arg": true,
+          "arg_name": "linter or code",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Shorthand for an inverse --filter",
+          "takes_arg": true,
+          "arg_name": "linter or code",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-j",
+            "--jobs"
+          ],
+          "description": "Number of concurrent jobs (does not affect background linting)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sample"
+          ],
+          "description": "Run each linter on N files (implies --no-fix and --all if no paths are given)",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--upstream"
+          ],
+          "description": "Upstream branch used to compute changed files (autodetected by default)",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "paths",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Universal code formatter",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Run on all files instead of only changed files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--no-fix"
+          ],
+          "description": "Don't automatically apply fixes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-existing-autofixes"
+          ],
+          "description": "Show autofixes for existing issues",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Run on all files, even if ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--diff"
+          ],
+          "description": "Diff printing mode",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "none",
+              "compact",
+              "full"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filter the set of executed linters and/or the returned codes; use a leading '-' to exclude a linter or code",
+          "takes_arg": true,
+          "arg_name": "linter or code",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Shorthand for an inverse --filter",
+          "takes_arg": true,
+          "arg_name": "linter or code",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-j",
+            "--jobs"
+          ],
+          "description": "Number of concurrent jobs (does not affect background linting)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sample"
+          ],
+          "description": "Run each linter on N files (implies --no-fix and --all if no paths are given)",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--upstream"
+          ],
+          "description": "Upstream branch used to compute changed files (autodetected by default)",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "paths",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade trunk to the latest release",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "git-hooks",
+      "aliases": [],
+      "description": "Git hooks",
+      "subcommands": [
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Install trunk git hooks",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Cache management",
+      "subcommands": [
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Clean the cache",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Delete all files (including results cache)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Print all directories that would be cleaned out without running deletion",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "print-config",
+      "aliases": [],
+      "description": "Print the resolved trunk config",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "daemon",
+      "aliases": [],
+      "description": "Daemon management",
+      "subcommands": [
+        {
+          "name": "launch",
+          "aliases": [],
+          "description": "Start the trunk daemon if its not already running",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "shutdown",
+          "aliases": [],
+          "description": "Shutdown the trunk daemon if it is running",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Report daemon status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "The version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--monitor"
+      ],
+      "description": "Enable the trunk daemon to monitor file changes in your repo",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ci"
+      ],
+      "description": "Run in continuous integration mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Output format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "text",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-progress"
+      ],
+      "description": "Don't show progress updates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ci-progress"
+      ],
+      "description": "Show updates every 30 seconds without clearing terminal screen (implicit with --ci)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--action_timeout"
+      ],
+      "description": "How long actions (downloads, lint runs, etc.) have to time out, with units (s, ms, etc)",
+      "takes_arg": true,
+      "arg_name": "timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Output details about what's happening under the hood",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,862 @@
+{
+  "name": "truffle",
+  "aliases": [],
+  "description": "A world class development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM), aiming to make life as a developer easier",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Execute build pipeline (if configuration present)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compile contract source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List all recent stable releases from solc-bin. If filter is specified then it will display only that type of release or docker tags",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": {
+            "custom": [
+              "prereleases",
+              "releases",
+              "latestRelease",
+              "docker"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Compile all contracts instead of only the contracts changed since last compile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Suppress all compilation output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Set user-level configuration options",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get a Truffle configuration option value",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a Truffle configuration option value",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "value-for-set",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--enable-analytics"
+          ],
+          "description": "Enable Truffle to send usage data to Google Analytics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-analytics"
+          ],
+          "description": "Disable Truffle's ability to send usage data to Google Analytics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Run a console with contract abstractions and commands available",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Specify the network to use",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose-rpc"
+          ],
+          "description": "Log communication between Truffle and the Ethereum client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--require",
+            "-r"
+          ],
+          "description": "Preload console environment from required JavaScript file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--require-none"
+          ],
+          "description": "Do not load any user-defined JavaScript into the console environment. This option takes precedence over --require, -r, and values provided for console.require in your project's truffle-config.js",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Helper to create new contracts, migrations and tests",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "artifact_type",
+          "description": "Create a new artifact where artifact_type is one of the following: contract, migration, test or all. The new artifact is created along with one(or all) of the followingfiles: `contracts/ArtifactName.sol`, `migrations/####_artifact_name.js` or`tests/artifact_name.js`. (required)",
+          "template": {
+            "custom": [
+              "contract",
+              "migration",
+              "test",
+              "all"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "ArtifactName",
+          "description": "Name of new artifact. (required)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Interactively debug any transaction on the blockchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "The network to connect to",
+          "takes_arg": true,
+          "arg_name": "network",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fetch-external",
+            "-x"
+          ],
+          "description": "Allows the debugger to download source from source verification services to debug transactions involving external contracts. When used, a transaction hash is required. May be abbreviated -x",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile-tests"
+          ],
+          "description": "Allows the debugger to compile Solidity test contracts. Implies --compile-all",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile-all"
+          ],
+          "description": "Forces the debugger to recompile all contracts, even when it would otherwise judge doing so unnecessary. Compilation results are not saved",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile-none"
+          ],
+          "description": "Forces the debugger not to recompile contracts, even when it would otherwise judge it necessary. This option is dangerous and may cause errors. Please only use this if you are sure a recompilation is not necessary",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "transaction_hash",
+          "description": "Transaction ID to use for debugging. You can omit this to simply start the debugger and then load a transaction later",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Alias for migrate. See migrate for details",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "develop",
+      "aliases": [],
+      "description": "Open a console with a development blockchaine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Start/Connect to a Truffle develop session and log all RPC activity. See the Log RPC Activity docs for more information about using this option",
+          "takes_arg": true,
+          "arg_name": "network",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--require",
+            "-r"
+          ],
+          "description": "Preload console environment from required JavaScript file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--require-none"
+          ],
+          "description": "Do not load any user-defined JavaScript into the console environment. This option takes precedence over --require, -r, and values provided for console.require in your project's truffle-config.js",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a JS module within the Truffle environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Specify the network to use, using artifacts specific to that network",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile"
+          ],
+          "description": "Compile contracts before executing the script",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script.js",
+          "description": "JavaScript file to be executed. Can include path information if the script does not exist in the current directory. (required)",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display a list of all commands or information about a specific command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Display usage information about the specified command",
+          "template": {
+            "custom": [
+              "build",
+              "compile",
+              "config",
+              "console",
+              "create",
+              "debug",
+              "deploy",
+              "develop",
+              "exec",
+              "help",
+              "init",
+              "install",
+              "networks",
+              "obtain",
+              "opcode",
+              "publish",
+              "run",
+              "version",
+              "watch",
+              "preserve",
+              "migrate",
+              "unbox",
+              "test"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize new and empty Ethereum project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Initialize project regardless of the current working directory's state. Be careful, this could overwrite existing files that have name conflicts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install a package from the Ethereum Package Registry",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package_name",
+          "description": "Name of the package as listed in the Ethereum Package Registry. (required)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "@version",
+          "description": "When specified, will install a specific version of the package, otherwise will install the latest version",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "networks",
+      "aliases": [],
+      "description": "Show addresses for deployed contracts on each network",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--clean"
+          ],
+          "description": "Remove all network artifacts that aren't associated with a named network",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "obtain",
+      "aliases": [],
+      "description": "Fetch and cache a specified compiler",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--solc"
+          ],
+          "description": "Download and cache a version of the solc compiler. (required)",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "opcode",
+      "aliases": [],
+      "description": "Print the compiled opcodes for a given contract",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "contract_name",
+          "description": "Name of the contract to print opcodes for. Must be a contract name, not a file name. (required)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Publish a package to the Ethereum Package Registry",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a third-party plugin command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Name of a command defined by an installed plugin. (required)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show version number and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Watch filesystem for changes and rebuild the project automatically",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "preserve",
+      "aliases": [],
+      "description": "Save data to decentralized storage platforms like IPFS and Filecoin",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--environment"
+          ],
+          "description": "Environment name, as defined in truffle-config `environments` object",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ipfs"
+          ],
+          "description": "Preserve to IPFS",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filecoin"
+          ],
+          "description": "Preserve to Filecoin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--buckets"
+          ],
+          "description": "Preserve to Textile Buckets",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Run migrations to deploy contracts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--reset"
+          ],
+          "description": "Run all migrations from the beginning, instead of running from the last completed migration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--f"
+          ],
+          "description": "Run contracts from a specific migration",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Run contracts to a specific migration",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Specify the network to use, saving artifacts specific to that network",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile-all"
+          ],
+          "description": "Compile all contracts instead of intelligently choosing which contracts need to be compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose-rpc"
+          ],
+          "description": "Log communication between Truffle and the Ethereum client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Fork the network specified and only perform a test migration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dry-run"
+          ],
+          "description": "Skip the test migration performed before the real migration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive"
+          ],
+          "description": "Prompt to confirm that the user wants to proceed after the dry run",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--describe-json"
+          ],
+          "description": "Prints additional status messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unbox",
+      "aliases": [],
+      "description": "Download a Truffle Box, a pre-built Truffle project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Unbox project in the current directory regardless of its state. Be careful, this will potentially overwrite files that exist in the directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "box_name",
+          "description": "Name of the Truffle Box. (required)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run JavaScript and Solidity tests",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--compile-all"
+          ],
+          "description": "Compile all contracts instead of intelligently choosing which contracts need to be compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile-all-debug"
+          ],
+          "description": "Like --compile-all, but compiles contracts in debug mode for extra information. Has no effect on Solidity <0.6.3",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Specify the network to use, using artifacts specific to that network",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose-rpc"
+          ],
+          "description": "Log communication between Truffle and the Ethereum client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-events"
+          ],
+          "description": "Log all contract events",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Provides global debug() function for in-test debugging. Usable with Javascript tests only; implies --compile-all",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug-global"
+          ],
+          "description": "Allows one to rename the debug() function to something else",
+          "takes_arg": true,
+          "arg_name": "identifier",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bail",
+            "-b"
+          ],
+          "description": "Bail after the first test failure. May be abbreviated -b",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stacktrace",
+            "-t"
+          ],
+          "description": "Allows for mixed Javascript-and-Solidity stacktraces when a Truffle Contract transaction or deployment reverts. Does not apply to calls or gas estimates. Implies --compile-all. May be abbreviated -t. Warning: This option is still somewhat experimental",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stacktrace-extra"
+          ],
+          "description": "Shortcut for --stacktrace --compile-all-debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "test_file",
+          "description": "Name of the test file to be run. Can include path information if the file does not exist in the current directory",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

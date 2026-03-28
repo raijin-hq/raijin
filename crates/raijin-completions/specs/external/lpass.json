@@ -1,0 +1,1284 @@
+{
+  "name": "lpass",
+  "aliases": [],
+  "description": "Command line interface for LastPass",
+  "subcommands": [
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to LastPass",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--trust"
+          ],
+          "description": "Subsequent logins will not require multifactor authentication",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plaintext-key"
+          ],
+          "description": "Save decryption key to the hard disk in plaintext",
+          "takes_arg": true,
+          "arg_name": "--force",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "USERNAME",
+          "description": "LastPass account username (email address)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of LastPass",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Skip user confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "List names in groups in a tree structure",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--long",
+            "-l"
+          ],
+          "description": "Show the last modification time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Show the last modified time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Show the last used time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "GROUP",
+          "description": "Group of entries to list",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "passwd",
+      "aliases": [],
+      "description": "Change LastPass password and reencrypt all entries",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show password or selected field",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clip",
+            "-c"
+          ],
+          "description": "Copy to the clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Display no output and only sets return code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--expand-multi",
+            "-x"
+          ],
+          "description": "Show information from all matching sites",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Generate json output instead of human-readable text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Show all fields",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--username"
+          ],
+          "description": "Show only the username",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Show only the password",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Show only the URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notes"
+          ],
+          "description": "Show only the notes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--field"
+          ],
+          "description": "Show only the field",
+          "takes_arg": true,
+          "arg_name": "FIELD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Show only the ID",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Show only the name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--attach"
+          ],
+          "description": "Show only the attachment",
+          "takes_arg": true,
+          "arg_name": "ATTACHID",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--basic-regexp",
+            "-G"
+          ],
+          "description": "Show sites matching case-insensitive regular expression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fixed-strings",
+            "-F"
+          ],
+          "description": "Show sites matching this exact substring",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "UNIQENAME|UNIQUEID",
+          "description": "Shows entry with this unique name or ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "mv",
+      "aliases": [],
+      "description": "Move LastPass entry to a different group",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "UNIQUENAME|UNIQUEID",
+          "description": "Unique name or ID to move",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "GROUP",
+          "description": "Destination group",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add a new entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Accept data until EOF or, unless the notes field is being edited, the first new line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--username"
+          ],
+          "description": "Add only the username",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Add only the password",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Add only the URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notes"
+          ],
+          "description": "Add only the notes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--field"
+          ],
+          "description": "Add only the field",
+          "takes_arg": true,
+          "arg_name": "FIELD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--note-type"
+          ],
+          "description": "Add only the note",
+          "takes_arg": true,
+          "arg_name": "NOTETYPE",
+          "arg_template": {
+            "custom": [
+              "amex",
+              "bank",
+              "credit",
+              "database",
+              "drivers_license",
+              "email",
+              "health_insurance",
+              "im",
+              "mastercard",
+              "membership",
+              "passport",
+              "server",
+              "software_license",
+              "ssh_key",
+              "ssn",
+              "visa",
+              "wifi"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "NAME|UNIQUEID",
+          "description": "Name or unique ID of the entry to add",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Edit existing entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Accept data until EOF or, unless the notes field is being edited, the first new line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name",
+            "--username"
+          ],
+          "description": "Edit only the name (or username)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Edit only the password",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Edit only the URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notes"
+          ],
+          "description": "Edit only the notes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--field"
+          ],
+          "description": "Edit only the field",
+          "takes_arg": true,
+          "arg_name": "FIELD",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "NAME|UNIQUEID",
+          "description": "Name or unique ID of the entry to edit",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Create randomly generated password",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clip",
+            "-c"
+          ],
+          "description": "Copy the text to the clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--username"
+          ],
+          "description": "Generate password for this username",
+          "takes_arg": true,
+          "arg_name": "USERNAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Generate password for this URL",
+          "takes_arg": true,
+          "arg_name": "URL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-symbols"
+          ],
+          "description": "Generate password without symbols",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "NAME|UNIQUEID",
+          "description": "Name or unique ID of the entry to generate the password for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "LENGTH",
+          "description": "Length of the password to create",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "duplicate",
+      "aliases": [],
+      "description": "Duplicate existing entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "UNIQUENAME|UNIQUEID",
+          "description": "Unique name or unique ID of the entry to duplicate",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [],
+      "description": "Removes existing entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "UNIQUENAME|UNIQUEID",
+          "description": "Unique name or unique ID of the entry to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show the LastPass login status",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Display no output and only sets return code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Sync the local cache against the LastPass server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--background",
+            "-b"
+          ],
+          "description": "Syncronization occurs in a daemonized process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import account information from an unencrypted CSV",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-dupes"
+          ],
+          "description": "Keeps any duplicate entries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILENAME",
+          "description": "CSV filename to import from",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Export account information to an unencrypted CSV",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "When the current operation syncs to server",
+          "takes_arg": true,
+          "arg_name": "sync",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "now",
+              "no"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Control colored output to the terminal",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "never",
+              "always"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fields"
+          ],
+          "description": "Comma-separated subset of: id, url, username, password, extra, name, fav, id, grouping, group, fullname, last_touch, last_modified_gmt, attachpresent",
+          "takes_arg": true,
+          "arg_name": "FIELDLIST",
+          "arg_template": {
+            "custom": [
+              "id,url,username,password,extra,name,fav,id,grouping,group,fullname,last_touch,last_modified_gmt,attachpresent"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILENAME",
+          "description": "CSV filename to export to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "LastPass Sharing Center functionality",
+      "subcommands": [
+        {
+          "name": "userls",
+          "aliases": [],
+          "description": "List the LastPass users which have access to the Shared Folders",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "useradd",
+          "aliases": [],
+          "description": "Add user to Shared Folders",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--read-only"
+              ],
+              "description": "Control read or write access",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--hidden"
+              ],
+              "description": "Share user view permission",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--admin"
+              ],
+              "description": "Share user administer permission",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "Entry to share",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "USERNAME",
+              "description": "User to share entry with",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "usermod",
+          "aliases": [],
+          "description": "Modify user on Shared Folders",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--read-only"
+              ],
+              "description": "Control read or write access",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--hidden"
+              ],
+              "description": "Share user view permission",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--admin"
+              ],
+              "description": "Share user administer permission",
+              "takes_arg": true,
+              "arg_name": "true",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "Entry to modify",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "USERNAME",
+              "description": "User access to modify",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "userdel",
+          "aliases": [],
+          "description": "Remove user from Shared Folders",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "LastPass entry to remove user from",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "USERNAME",
+              "description": "LastPass user to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create new LastPass Shared Folder",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "LastPass Shared Folder to create",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "LastPass Shared Folder to remove",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "LastPass Shared Folder to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "limit",
+          "aliases": [],
+          "description": "Manipulate LastPass Shared Folder access",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--deny",
+                "--allow"
+              ],
+              "description": "Deny or allow access",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add",
+                "--rm",
+                "--clear"
+              ],
+              "description": "Add, remove, or clear acces",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SHARE",
+              "description": "Shared Folder to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "USERNAME",
+              "description": "User access to manipulate",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "sites",
+              "description": "LastPass sites to manipulate",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "SHARE",
+          "description": "LastPass Shared folder to query",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display the help for lpass",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Display the version of lpass",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

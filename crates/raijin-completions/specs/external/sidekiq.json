@@ -1,0 +1,119 @@
+{
+  "name": "sidekiq",
+  "aliases": [],
+  "description": "Background job framework for Ruby",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--concurrency",
+        "-c"
+      ],
+      "description": "Processor threads to use",
+      "takes_arg": true,
+      "arg_name": "INT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--environment",
+        "-e"
+      ],
+      "description": "Application environment",
+      "takes_arg": true,
+      "arg_name": "ENV",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tag",
+        "-g"
+      ],
+      "description": "Process tag for procline",
+      "takes_arg": true,
+      "arg_name": "TAG",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--queue",
+        "-q"
+      ],
+      "description": "Queues to process with optional weights",
+      "takes_arg": true,
+      "arg_name": "QUEUE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--require",
+        "-r"
+      ],
+      "description": "Location of Rails application with jobs or file to require",
+      "takes_arg": true,
+      "arg_name": "PATH|DIR",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout",
+        "-t"
+      ],
+      "description": "Shutdown timeout",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Print more verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-C"
+      ],
+      "description": "Path to YAML config file",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for sidekiq run",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

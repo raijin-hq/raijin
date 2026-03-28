@@ -1,0 +1,153 @@
+{
+  "name": "hyper",
+  "aliases": [],
+  "description": "Hyper is an Electron-based terminal",
+  "subcommands": [
+    {
+      "name": "install",
+      "aliases": [
+        "i"
+      ],
+      "description": "Install a plugin",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "aliases": [
+        "d",
+        "h",
+        "home"
+      ],
+      "description": "Open the npm page of a plugin",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "ls"
+      ],
+      "description": "List installed plugins",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list-remote",
+      "aliases": [
+        "lsr",
+        " ls-remote"
+      ],
+      "description": "List plugins available on npm",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "search",
+      "aliases": [
+        "s"
+      ],
+      "description": "Search for plugins on npm",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "query",
+          "description": "Your search query",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [
+        "u",
+        "rm",
+        "remove"
+      ],
+      "description": "Uninstall plugin",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": "Plugin to uninstall",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbose mode (disabled by default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

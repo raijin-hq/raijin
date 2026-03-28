@@ -1,0 +1,290 @@
+{
+  "name": "ts-node",
+  "aliases": [],
+  "description": "Run the TypeScript interpreter for Node.JS",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for ts-node",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version information of the ts-node module",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--eval"
+      ],
+      "description": "Evaluate script",
+      "takes_arg": true,
+      "arg_name": "script",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--print"
+      ],
+      "description": "Evaluate script and print result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--require"
+      ],
+      "description": "Require module before executing",
+      "takes_arg": true,
+      "arg_name": "module",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-i",
+        "--interactive"
+      ],
+      "description": "Always open interactive REPL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-config"
+      ],
+      "description": "Print resolved Typescript config to the terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd-mode"
+      ],
+      "description": "Resolve Typescript config based on the current working directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--transpile-only"
+      ],
+      "description": "Use the Typescript transpile module mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--compiler-host"
+      ],
+      "description": "Use the Typescript compiler host API",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--ignore"
+      ],
+      "description": "Ignore patterns from Typescript compilation",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--project"
+      ],
+      "description": "Specify TypeScript project location",
+      "takes_arg": true,
+      "arg_name": "project",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--compiler"
+      ],
+      "description": "Use a custom compiler",
+      "takes_arg": true,
+      "arg_name": "compiler",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--transpiler"
+      ],
+      "description": "Use a custom transpiler",
+      "takes_arg": true,
+      "arg_name": "transpiler",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--ignore-diagnostics"
+      ],
+      "description": "Specify Typescript diagnostic code to ignore",
+      "takes_arg": true,
+      "arg_name": "code",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O",
+        "--compiler-options"
+      ],
+      "description": "JSON object that will be merged with the compiler options",
+      "takes_arg": true,
+      "arg_name": "options",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd"
+      ],
+      "description": "Specify working directory",
+      "takes_arg": true,
+      "arg_name": "cwd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files"
+      ],
+      "description": "Load files, include and exclude from Typescript config on startup",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pretty"
+      ],
+      "description": "Use the pretty formatter for diagnostic errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-project"
+      ],
+      "description": "Skip reading Typescript config",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scope"
+      ],
+      "description": "Scope compilation to scope directory specified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scope-dir"
+      ],
+      "description": "Directory for scope parameter",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-ignore"
+      ],
+      "description": "Skip --ignore checks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prefer-ts-exts"
+      ],
+      "description": "Prefer Typescript files over JavaScript files when importing files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-error"
+      ],
+      "description": "Pipe Typescript errors to stderr instead of throwing exceptions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-experimental-repl-await"
+      ],
+      "description": "Disable the top-level await function in REPL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "script",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

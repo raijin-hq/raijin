@@ -1,0 +1,118 @@
+{
+  "name": "shelve",
+  "aliases": [],
+  "description": "Shelve CLI a command-line interface designed for the Shelve platform. This tool enables users to authenticate with Shelve, facilitating the seamless transfer of environment variables for project collaboration within a team directly through the terminal interface",
+  "subcommands": [
+    {
+      "name": "create",
+      "aliases": [
+        "c",
+        "init"
+      ],
+      "description": "Create a new project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name",
+            "-n"
+          ],
+          "description": "Name of the project",
+          "takes_arg": true,
+          "arg_name": "project-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [
+        "pl"
+      ],
+      "description": "Pull variables for specified environment to .env file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Specify the environment",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [
+        "ps"
+      ],
+      "description": "Push variables for specified environment to Shelve",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Specify the environment",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [
+        "g"
+      ],
+      "description": "Generate resources for a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [
+        "cf"
+      ],
+      "description": "Show the current configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--help",
+      "aliases": [
+        "-h"
+      ],
+      "description": "Show help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

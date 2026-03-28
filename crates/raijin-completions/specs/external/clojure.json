@@ -1,0 +1,262 @@
+{
+  "name": "clojure",
+  "aliases": [],
+  "description": "Use the Clojure tools to run Clojure programs on the JVM, start a REPL, or invoke a specific function with data",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-A"
+      ],
+      "description": "Use concatenated aliases to modify classpath",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "a/fn",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Invoke tool by name or via aliases ala -X",
+      "takes_arg": true,
+      "arg_name": "a/fn",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M"
+      ],
+      "description": "Use concatenated aliases to modify classpath or supply main opts",
+      "takes_arg": true,
+      "arg_name": "args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Prepare deps - download libs, cache classpath, but don't exec",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J"
+      ],
+      "description": "Pass opt through in java_opts",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Sdeps"
+      ],
+      "description": "Pass the deps data on the command line",
+      "takes_arg": true,
+      "arg_name": "edn",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Spath"
+      ],
+      "description": "Compute classpath and echo to stdout only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Scp"
+      ],
+      "description": "Use specified classpath instead of cached or computed one",
+      "takes_arg": true,
+      "arg_name": "cp",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Sdescribe"
+      ],
+      "description": "Print environment and command parsing information as data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Sforce"
+      ],
+      "description": "Ignore classpath cache and force recomputation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Spom"
+      ],
+      "description": "Generate (or update) pom.xml with deps and paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Srepro"
+      ],
+      "description": "Ignore the ~/.clojure/deps.edn config file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Sthreads"
+      ],
+      "description": "Set the number of threads to use when downloading dependencies",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Strace"
+      ],
+      "description": "Write a trace.edn file that traces deps expansion",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Stree"
+      ],
+      "description": "Print dependency tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Sverbose"
+      ],
+      "description": "Print all path locations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-version",
+        "--version"
+      ],
+      "description": "Print the Clojure CLI version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--init"
+      ],
+      "description": "Load a file or resource",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--eval"
+      ],
+      "description": "Evaluate expressions in string; print non-nil values",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--report"
+      ],
+      "description": "Report uncaught exceptions",
+      "takes_arg": true,
+      "arg_name": "target",
+      "arg_template": {
+        "custom": [
+          "file",
+          "stderr",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--main"
+      ],
+      "description": "Call the -main function from a namespace with args",
+      "takes_arg": true,
+      "arg_name": "ns-name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--repl"
+      ],
+      "description": "Run a REPL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "-?",
+        "--help"
+      ],
+      "description": "Show help for clojure",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

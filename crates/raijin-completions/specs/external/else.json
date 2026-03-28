@@ -1,0 +1,16 @@
+{
+  "name": "else",
+  "aliases": [],
+  "description": "Execute this command if the test returned 1",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

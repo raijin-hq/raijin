@@ -1,0 +1,3275 @@
+{
+  "name": "go",
+  "aliases": [],
+  "description": "Go is a tool for managing Go source code",
+  "subcommands": [
+    {
+      "name": "bug",
+      "aliases": [],
+      "description": "Start a bug report",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Compile packages and dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Write the resulting executable or object to the named output file or directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i"
+          ],
+          "description": "Install the packages that are dependencies of the target",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "packages",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Remove object files and cached files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i"
+          ],
+          "description": "Remove the corresponding installed archive or binary",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Apply recursively to all the dependencies of the packages named by the import paths",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cache"
+          ],
+          "description": "Remove the entire go build cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-testcache"
+          ],
+          "description": "Expire all test results in the go build cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcache"
+          ],
+          "description": "Remove the entire module download cache, including unpacked source code of versioned dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "doc",
+      "aliases": [],
+      "description": "Show documentation for package or symbol",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-all"
+          ],
+          "description": "Show all the documentation for the package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Respect case when matching symbols",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cmd"
+          ],
+          "description": "Treat a command (package main) like a regular package. Otherwise package main's exported symbols are hidden when showing the package's top-level documentation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-short"
+          ],
+          "description": "One-line representation for each symbol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-src"
+          ],
+          "description": "Show the full source code for the symbol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Show documentation for unexported as well as exported symbols, methods, and fields",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "env",
+      "aliases": [],
+      "description": "Print Go environment information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-json"
+          ],
+          "description": "Prints the environment in JSON format instead of as a shell script",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Unset the default setting for the named environment variables",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Change the default settings of the named environment variables to the given values",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fix",
+      "aliases": [],
+      "description": "Update packages to use new APIs",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "packages",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Gofmt (reformat) package sources",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands that would be executed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands as they are executed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Which module download mode to use",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "packages",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Generate Go files by processing source",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-run"
+          ],
+          "description": "Specifies a regular expression to select directives whose full original source text matches the expression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Add dependencies to current module and install them",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Modules needed to build tests of packages specified on the command line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Update to newer minor or patch releases when available",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "patch"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-insecure"
+          ],
+          "description": "Permit fetching from insecure origins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Only update go.mod and download source code needed to build packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "url",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Compile and install packages and dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "packages",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List packages or modules",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiled"
+          ],
+          "description": "Set CompiledGoFiles to the Go source files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-deps"
+          ],
+          "description": "Terate over not just the named packages but also all their dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify an alternate format for the list",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Processes the erroneous packages with the usual printing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-export"
+          ],
+          "description": "Set the Export field to the name of a file containing up-to-date export information for the given package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-find"
+          ],
+          "description": "Identify the named packages but not resolve their dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-test"
+          ],
+          "description": "Report test binaries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "List modules instead of packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Add information about available upgrades",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-versions"
+          ],
+          "description": "Set the Module's Versions field to a list of all known versions of that module",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-retracted"
+          ],
+          "description": "Eport information about retracted module versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "mod",
+      "aliases": [],
+      "description": "Module maintenance",
+      "subcommands": [
+        {
+          "name": "download",
+          "aliases": [],
+          "description": "Download the named modules into the module cache",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-json"
+              ],
+              "description": "Print a sequence of JSON objects to standard output, describing each downloaded module (or failure)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-x"
+              ],
+              "description": "Print the commands download executes to standard error",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "modules",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit and format go.mod files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-module"
+              ],
+              "description": "Change the module's path",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-go"
+              ],
+              "description": "Set the expected Go language version",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-require"
+              ],
+              "description": "Add a requirement on the given module",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-droprequire"
+              ],
+              "description": "Drop a requirement on the given module",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-exclude"
+              ],
+              "description": "Add an exclusion on the given module",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-dropexclude"
+              ],
+              "description": "Drop an exclusion on the given module",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-replace"
+              ],
+              "description": "Add a replacement of the given module path and version pair",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-dropreplace"
+              ],
+              "description": "Drops a replacement of the given module path and version pair",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-retract"
+              ],
+              "description": "Add a retraction for the given version",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-dropretract"
+              ],
+              "description": "Drop a retraction for the given version",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-fmt"
+              ],
+              "description": "Format the go.mod file without making other changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-print"
+              ],
+              "description": "Print the final go.mod in its text format instead of writing it back to disk",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-json"
+              ],
+              "description": "Print the final go.mod in JSON format instead of writing it back to disk in text forma",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "graph",
+          "aliases": [],
+          "description": "Print the module requirement graph",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize and write a new go.mod file in the current directory",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "module path",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "tidy",
+          "aliases": [],
+          "description": "Ensure that the go.mod file matches the source code in the module",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-e"
+              ],
+              "description": "Attempt to proceed despite errors encountered while loading packages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v"
+              ],
+              "description": "Print information about removed modules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "vendor",
+          "aliases": [],
+          "description": "Construct a directory named vendor in the main module's root directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-e"
+              ],
+              "description": "Attempt to proceed despite errors encountered while loading packages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v"
+              ],
+              "description": "Print information about removed modules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "verify",
+          "aliases": [],
+          "description": "Check that dependencies of the main module stored in the module cache have not been modified since they were downloaded",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "why",
+          "aliases": [],
+          "description": "Show a shortest path in the import graph from the main module to each of the listed packages",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-m"
+              ],
+              "description": "Treat its arguments as a list of modules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-vendor"
+              ],
+              "description": "Ignore imports in tests of packages outside the main module",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "packages",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "work",
+      "aliases": [],
+      "description": "Workspace maintenance",
+      "subcommands": [
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit go.work from tools or scripts",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-fmt"
+              ],
+              "description": "The -fmt flag reformats the go.work file without making other changes. This reformatting is also implied by any other modifications that use or rewrite the go.mod file. The only time this flag is needed is if no other flags are specified, as in 'go work edit -fmt'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-use"
+              ],
+              "description": "The -use=path and -dropuse=path flags add and drop a use directive from the go.work file's set of module directories",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-dropuse"
+              ],
+              "description": "The -use=path and -dropuse=path flags add and drop a use directive from the go.work file's set of module directories",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-replace"
+              ],
+              "description": "The -replace=old[@v]=new[@v] flag adds a replacement of the given module path and version pair. If the @v in old@v is omitted, a replacement without a version on the left side is added, which applies to all versions of the old module path. If the @v in new@v is omitted, the new path should be a local module root directory, not a module path. Note that -replace overrides any redundant replacements for old[@v], so omitting @v will drop existing replacements for specific versions",
+              "takes_arg": true,
+              "arg_name": "old[@v]=new[@v]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-dropreplace"
+              ],
+              "description": "The -dropreplace=old[@v] flag drops a replacement of the given module path and version pair. If the @v is omitted, a replacement without a version on the left side is dropped",
+              "takes_arg": true,
+              "arg_name": "old[@v]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-go"
+              ],
+              "description": "Set the expected Go language version",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-print"
+              ],
+              "description": "The -print flag prints the final go.work in its text format instead of writing it back to go.mod",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-json"
+              ],
+              "description": "The -json flag prints the final go.work file in JSON format instead of writing it back to go.mod",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize workspace file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "moddirs",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "sync",
+          "aliases": [],
+          "description": "Sync workspace build list to modules",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "use",
+          "aliases": [],
+          "description": "Add modules to workspace file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-r"
+              ],
+              "description": "The -r flag searches recursively for modules in the argument directories, and the use command operates as if each of the directories were specified as arguments: namely, use directives will be added for directories that exist, and removed for directories that do not exist",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "moddirs",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Compile and run Go program",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-exec"
+          ],
+          "description": "Invoke the binary using xprog",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Test packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Force rebuilding of packages that are already up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The number of programs, such as build commands or",
+          "takes_arg": true,
+          "arg_name": "programs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-race"
+          ],
+          "description": "Enable data race detection.\nSupported only on linux/amd64, freebsd/amd64, darwin/amd64, windows/amd64,\nlinux/ppc64le and linux/arm64 (only for 48-bit VMA)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-msan"
+          ],
+          "description": "Enable interoperation with memory sanitizer.\nSupported only on linux/amd64, linux/arm64\nand only with Clang/LLVM as the host C compiler.\nOn linux/arm64, pie build mode will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-work"
+          ],
+          "description": "Print the name of the temporary work directory and\ndo not delete it when exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-asmflags"
+          ],
+          "description": "Arguments to pass on each go tool asm invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-buildmode"
+          ],
+          "description": "Build mode to use. See 'go help buildmode' for more",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "archive",
+              "c-archive",
+              "c-shared",
+              "default",
+              "shared",
+              "exe",
+              "pie",
+              "plugin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-compiler"
+          ],
+          "description": "Name of compiler to use, as in runtime.Compiler (gccgo or gc)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gccgoflags"
+          ],
+          "description": "Arguments to pass on each gccgo compiler/linker invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-gcflags"
+          ],
+          "description": "Arguments to pass on each go tool compile invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-installsuffix"
+          ],
+          "description": "A suffix to use in the name of the package installation directory,",
+          "takes_arg": true,
+          "arg_name": "suffix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ldflags"
+          ],
+          "description": "Arguments to pass on each go tool link invocation",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-linkshared"
+          ],
+          "description": "Build code that will be linked against shared libraries previously",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-mod"
+          ],
+          "description": "Module download mode to use: readonly, vendor, or mod",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "readonly",
+              "vendor",
+              "mod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modcacherw"
+          ],
+          "description": "Leave newly-created directories in the module cache read-write",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-modfile"
+          ],
+          "description": "In module aware mode, read (and possibly write) an alternate go.mod file instead of the one in the module root directory",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-overlay"
+          ],
+          "description": "Read a JSON config file that provides an overlay for build operations",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pkgdir"
+          ],
+          "description": "Install and load all packages from dir instead of the usual locations",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trimpath"
+          ],
+          "description": "Remove all file system paths from the resulting executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-args"
+          ],
+          "description": "Pass the remainder of the command line to the test binary",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Compile the test binary to pkg.test but do not run it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-exec"
+          ],
+          "description": "Invoke the binary using xprog",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i"
+          ],
+          "description": "Install packages that are dependencies of the test",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-json"
+          ],
+          "description": "Convert test output to JSON suitable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Compile the test binary to the named file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tool",
+      "aliases": [],
+      "description": "Run specified go tool",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the command that would be executed but not execute it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print Go version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Print each executable's embedded module version information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Report unrecognized files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "vet",
+      "aliases": [],
+      "description": "Report likely mistakes in packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Print the commands but do not run them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print the names of packages as they are compiled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Print the commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tags"
+          ],
+          "description": "A comma-separated list of build tags to consider satisfied during the build",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-toolexec"
+          ],
+          "description": "A program to use to invoke toolchain programs like vet and asm",
+          "takes_arg": true,
+          "arg_name": "cmd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-vettool"
+          ],
+          "description": "Select a different analysis tool with alternative or additional checks",
+          "takes_arg": true,
+          "arg_name": "tool",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

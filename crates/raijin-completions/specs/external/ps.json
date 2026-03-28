@@ -1,0 +1,395 @@
+{
+  "name": "ps",
+  "aliases": [],
+  "description": "Report a snapshot of the current processes",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-A",
+        "-e"
+      ],
+      "description": "Select all processes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Select all processes except both session leaders",
+      "takes_arg": true,
+      "arg_name": "getsid",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Select all processes except session leaders",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deselect"
+      ],
+      "description": "Select all processes except those that fulfill the specified conditions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N"
+      ],
+      "description": "Select all processes except those that fulfill the specified conditions (negates the selection)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pid"
+      ],
+      "description": "Select by process ID",
+      "takes_arg": true,
+      "arg_name": "pidlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ppid"
+      ],
+      "description": "Select by parent process ID. This selects the processes with a parent process ID in pidlist",
+      "takes_arg": true,
+      "arg_name": "pidlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sid"
+      ],
+      "description": "Select by session ID",
+      "takes_arg": true,
+      "arg_name": "sesslist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tty"
+      ],
+      "description": "Select by terminal",
+      "takes_arg": true,
+      "arg_name": "ttylist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "U"
+      ],
+      "description": "Select by effective user ID (EUID) or name",
+      "takes_arg": true,
+      "arg_name": "userlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U"
+      ],
+      "description": "Select by real user ID (RUID) or name",
+      "takes_arg": true,
+      "arg_name": "userlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Select by effective user ID (EUID) or name",
+      "takes_arg": true,
+      "arg_name": "userlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--User"
+      ],
+      "description": "Select by real user ID (RUID) or name",
+      "takes_arg": true,
+      "arg_name": "userlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user"
+      ],
+      "description": "Select by effective user ID (EUID) or name",
+      "takes_arg": true,
+      "arg_name": "userlist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Show different scheduler information for the -l option",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--context"
+      ],
+      "description": "Display security context format (for SE Linux)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Do full-format listing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Extra full format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format",
+        "-o",
+        "o"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-M",
+        "Z"
+      ],
+      "description": "(for SE Linux)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-y",
+        "-l"
+      ],
+      "description": null,
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cols"
+      ],
+      "description": "Set screen width",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--columns"
+      ],
+      "description": "Set screen width",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cumulative"
+      ],
+      "description": "Include some dead child process data (as a sum with the parent)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--forest"
+      ],
+      "description": "ASCII art process tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H"
+      ],
+      "description": "Show process hierarchy (forest)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headers"
+      ],
+      "description": "Repeat header lines, one per page of output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Set namelist file",
+      "takes_arg": true,
+      "arg_name": "namelist",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--lines"
+      ],
+      "description": "Set screen height",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-headers",
+        "--no-heading"
+      ],
+      "description": "Print no header line at all",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rows"
+      ],
+      "description": "Set screen height",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": "Specify sorting order",
+      "takes_arg": true,
+      "arg_name": "spec",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--width"
+      ],
+      "description": "Set screen width",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Show threads, possibly with LWP and NLWP columns",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Show threads, possibly with SPID column",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Print a help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--info"
+      ],
+      "description": "Print debugging info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print the procps version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

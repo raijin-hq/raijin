@@ -1,0 +1,37 @@
+{
+  "name": "which",
+  "aliases": [],
+  "description": "Locate a program in the user's PATH",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "No output, return 0 if all the executables are found, 1 if not",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "List all instances of executables found, instead of just the first",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "names",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

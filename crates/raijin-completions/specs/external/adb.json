@@ -1,0 +1,1676 @@
+{
+  "name": "adb",
+  "aliases": [],
+  "description": "Android Debug Bridge",
+  "subcommands": [
+    {
+      "name": "devices",
+      "aliases": [],
+      "description": "List connected devices",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Long output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show this help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get-state",
+      "aliases": [],
+      "description": "Print offline | bootloader | device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get-serialno",
+      "aliases": [],
+      "description": "Print <serial-number>",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get-devpath",
+      "aliases": [],
+      "description": "Print <device-path>",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remount",
+      "aliases": [],
+      "description": "Remount partitions read-write. if a reboot is required, -R will automatically reboot the device",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-R"
+          ],
+          "description": "Reboot device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "jdwp",
+      "aliases": [],
+      "description": "List pids of processes hosting a JDWP transport",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "root",
+      "aliases": [],
+      "description": "Restart adbd with root permissions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "unroot",
+      "aliases": [],
+      "description": "Restart adbd without root permissions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "usb",
+      "aliases": [],
+      "description": "Restart adbd listening on USB",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sideload",
+      "aliases": [],
+      "description": "Sideload the given full OTA package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "OTAPACKAGE",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start-server",
+      "aliases": [],
+      "description": "Ensure that there is a server running",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kill-server",
+      "aliases": [],
+      "description": "Kill the server if it is running",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reconnect",
+      "aliases": [],
+      "description": "Kick connection from host side to force reconnect",
+      "subcommands": [
+        {
+          "name": "device",
+          "aliases": [],
+          "description": "Kick connection from device side to force reconnect",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "offline",
+          "aliases": [],
+          "description": "Reset offline/unauthorized devices to force reconnect`",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tcpip",
+      "aliases": [],
+      "description": "Restart adbd listening on TCP on PORT",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PORT",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reboot",
+      "aliases": [],
+      "description": "Reboot the device; defaults to booting system image but supports bootloader and recovery too. sideload reboots into recovery and automatically starts sideload mode, sideload-auto-reboot is the same but reboots after sideloading",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": null,
+          "template": {
+            "custom": [
+              "bootloader",
+              "recovery",
+              "sideload",
+              "sideload-auto-reboot"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "disable-verity",
+      "aliases": [],
+      "description": "Disable dm-verity checking on userdebug builds",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "enable-verity",
+      "aliases": [],
+      "description": "Re-enable dm-verity checking on userdebug builds",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-device",
+      "aliases": [],
+      "description": "Wait for state=device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-recovery",
+      "aliases": [],
+      "description": "Wait for state=recovery",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-rescue",
+      "aliases": [],
+      "description": "Wait for state=rescue",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-sideload",
+      "aliases": [],
+      "description": "Wait for state=sideload",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-bootloader",
+      "aliases": [],
+      "description": "Wait for state=bootloader",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-disconnect",
+      "aliases": [],
+      "description": "Wait for state=disconnect",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-device",
+      "aliases": [],
+      "description": "Wait for usb in state=device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-recovery",
+      "aliases": [],
+      "description": "Wait for usb in state=recovery",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-rescue",
+      "aliases": [],
+      "description": "Wait for usb in state=rescue",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-sideload",
+      "aliases": [],
+      "description": "Wait for usb in state=sideload",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-bootloader",
+      "aliases": [],
+      "description": "Wait for usb in state=bootloader",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-usb-disconnect",
+      "aliases": [],
+      "description": "Wait for usb in state=disconnect",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-device",
+      "aliases": [],
+      "description": "Wait for local in state=device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-recovery",
+      "aliases": [],
+      "description": "Wait for local in state=recovery",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-rescue",
+      "aliases": [],
+      "description": "Wait for local in state=rescue",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-sideload",
+      "aliases": [],
+      "description": "Wait for local in state=sideload",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-bootloader",
+      "aliases": [],
+      "description": "Wait for local in state=bootloader",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-local-disconnect",
+      "aliases": [],
+      "description": "Wait for local in state=disconnect",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-device",
+      "aliases": [],
+      "description": "Wait for any in state=device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-recovery",
+      "aliases": [],
+      "description": "Wait for any in state=recovery",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-rescue",
+      "aliases": [],
+      "description": "Wait for any in state=rescue",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-sideload",
+      "aliases": [],
+      "description": "Wait for any in state=sideload",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-bootloader",
+      "aliases": [],
+      "description": "Wait for any in state=bootloader",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wait-for-any-disconnect",
+      "aliases": [],
+      "description": "Wait for any in state=disconnect",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "keygen",
+      "aliases": [],
+      "description": "Generate adb public/private key; private key stored in FILE",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logcat",
+      "aliases": [],
+      "description": "Show device log (logcat --help for more)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show version num",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "connect",
+      "aliases": [],
+      "description": "Connect to a device via TCP/IP [default port=5555]",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "HOST[:PORT]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "disconnect",
+      "aliases": [],
+      "description": "Disconnect from given TCP/IP device [default port=5555], or all",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "HOST[:PORT]",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Remove this app package from the device",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Keep the data and cache directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bugreport",
+      "aliases": [],
+      "description": "Write bugreport to given PATH [default=bugreport.zip];",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pair",
+      "aliases": [],
+      "description": "Pair with a device for secure TCP/IP communication",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "HOST[:PORT]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "[PAIRING CODE]",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ppp",
+      "aliases": [],
+      "description": "Run PPP over USB",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "TTY",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "[PARAMETER...]",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "emu",
+      "aliases": [],
+      "description": "Run emulator console command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "COMMAND",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Push a single package to the device and install it",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Forward-lock the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Replace existing application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Allow test packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Allow version code downgrade (debuggable packages only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Install on SD card instead of internal storage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g"
+          ],
+          "description": "Grant all runtime permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--abi"
+          ],
+          "description": "Override platform's default ABI",
+          "takes_arg": true,
+          "arg_name": "ABI",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--instant"
+          ],
+          "description": "Cause the app to be installed as an ephemeral install app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-streaming"
+          ],
+          "description": "Always push APK to device and invoke Package Manager as separate steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--streaming"
+          ],
+          "description": "Force streaming APK directly into Package Manager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fastdeploy"
+          ],
+          "description": "Use fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-fastdeploy"
+          ],
+          "description": "Prevent use of fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-agent"
+          ],
+          "description": "Force update of deployment agent when using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--date-check-agent"
+          ],
+          "description": "Update deployment agent when local version is newer and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version-check-agent"
+          ],
+          "description": "Update deployment agent when local version has different version code and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-agent"
+          ],
+          "description": "Locate agent files from local source build (instead of SDK location)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PACKAGE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install-multiple",
+      "aliases": [],
+      "description": "Push multiple APKs to the device for a single package and install them",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Partial application install (install-multiple only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Forward-lock the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Replace existing application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Allow test packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Allow version code downgrade (debuggable packages only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Install on SD card instead of internal storage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g"
+          ],
+          "description": "Grant all runtime permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--abi"
+          ],
+          "description": "Override platform's default ABI",
+          "takes_arg": true,
+          "arg_name": "ABI",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--instant"
+          ],
+          "description": "Cause the app to be installed as an ephemeral install app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-streaming"
+          ],
+          "description": "Always push APK to device and invoke Package Manager as separate steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--streaming"
+          ],
+          "description": "Force streaming APK directly into Package Manager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fastdeploy"
+          ],
+          "description": "Use fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-fastdeploy"
+          ],
+          "description": "Prevent use of fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-agent"
+          ],
+          "description": "Force update of deployment agent when using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--date-check-agent"
+          ],
+          "description": "Update deployment agent when local version is newer and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version-check-agent"
+          ],
+          "description": "Update deployment agent when local version has different version code and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-agent"
+          ],
+          "description": "Locate agent files from local source build (instead of SDK location)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PACKAGE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "install-multi-package",
+      "aliases": [],
+      "description": "Push one or more packages to the device and install them atomically",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Partial application install (install-multiple only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Forward-lock the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Replace existing application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Allow test packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Allow version code downgrade (debuggable packages only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Install on SD card instead of internal storage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g"
+          ],
+          "description": "Grant all runtime permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--abi"
+          ],
+          "description": "Override platform's default ABI",
+          "takes_arg": true,
+          "arg_name": "ABI",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--instant"
+          ],
+          "description": "Cause the app to be installed as an ephemeral install app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-streaming"
+          ],
+          "description": "Always push APK to device and invoke Package Manager as separate steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--streaming"
+          ],
+          "description": "Force streaming APK directly into Package Manager",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fastdeploy"
+          ],
+          "description": "Use fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-fastdeploy"
+          ],
+          "description": "Prevent use of fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-agent"
+          ],
+          "description": "Force update of deployment agent when using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--date-check-agent"
+          ],
+          "description": "Update deployment agent when local version is newer and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version-check-agent"
+          ],
+          "description": "Update deployment agent when local version has different version code and using fast deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-agent"
+          ],
+          "description": "Locate agent files from local source build (instead of SDK location)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PACKAGE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "shell",
+      "aliases": [],
+      "description": "Run remote shell command (interactive shell if no command given)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Choose escape character, or `none` default '~'",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Don't read from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Disable pty allocation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Allocate a pty if on a tty",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-tt"
+          ],
+          "description": "-tt: force pty allocation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Disable remote exit codes and stdout/stderr separation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "COMMANDS ...",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "mdns",
+      "aliases": [],
+      "description": "Mdns utils",
+      "subcommands": [
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Check if mdns discovery is available",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "services",
+          "aliases": [],
+          "description": "List all discovered services",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Copy local files/directories to device",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sync"
+          ],
+          "description": "Only push files that are newer on the host than the device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Dry run: push files to device without storing to the filesystem",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-z"
+          ],
+          "description": "Enable compression with a specified algorithm (any, none, brotli)",
+          "takes_arg": true,
+          "arg_name": "ALGORITHM",
+          "arg_template": {
+            "custom": [
+              "any",
+              "none",
+              "brotli"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Disable compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "LOCAL",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "REMOTE",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Sync a local build from $ANDROID_PRODUCT_OUT to the device (default all)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Dry run: push files to device without storing to the filesystem",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "List files that would be copied, but don't copy them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-z"
+          ],
+          "description": "Enable compression with a specified algorithm (any, none, brotli)",
+          "takes_arg": true,
+          "arg_name": "ALGORITHM",
+          "arg_template": {
+            "custom": [
+              "any",
+              "none",
+              "brotli"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Disable compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": {
+            "custom": [
+              "all",
+              "data",
+              "odm",
+              "oem",
+              "product",
+              "system",
+              "system_ext",
+              "vendor"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Copy files/dirs from device",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Preserve file timestamp and mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-z"
+          ],
+          "description": "Enable compression with a specified algorithm (any, none, brotli)",
+          "takes_arg": true,
+          "arg_name": "ALGORITHM",
+          "arg_template": {
+            "custom": [
+              "any",
+              "none",
+              "brotli"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Disable compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "REMOTE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "LOCAL",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "forward",
+      "aliases": [],
+      "description": "Forward connection",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List all forward socket connections",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove"
+          ],
+          "description": "Remove specific forward socket connection",
+          "takes_arg": true,
+          "arg_name": "LOCAL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-all"
+          ],
+          "description": "Remove all forward socket connections",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-rebind"
+          ],
+          "description": "Reversal fails if the specified socket is already bound through a previous reverse command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "LOCAL -> port|domain|device|pid",
+          "description": null,
+          "template": {
+            "custom": [
+              "tcp",
+              "localabstract",
+              "localreserved",
+              "localfilesystem",
+              "dev",
+              "jdwp",
+              "acceptfd"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "REMOTE -> port|domain|device|pid",
+          "description": null,
+          "template": {
+            "custom": [
+              "tcp",
+              "localabstract",
+              "localreserved",
+              "localfilesystem",
+              "dev",
+              "jdwp",
+              "acceptfd"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reverse",
+      "aliases": [],
+      "description": "Reverse connection",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List all reverse socket connections from device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove"
+          ],
+          "description": "Remove specific reverse socket connection",
+          "takes_arg": true,
+          "arg_name": "REMOTE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-all"
+          ],
+          "description": "Remove all reverse socket connections from device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-rebind"
+          ],
+          "description": "Reversal fails if the specified socket is already bound through a previous reverse command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "REMOTE -> port|domain|device|pid",
+          "description": null,
+          "template": {
+            "custom": [
+              "tcp",
+              "localabstract",
+              "localreserved",
+              "localfilesystem"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "LOCAL -> port|domain|device|pid",
+          "description": null,
+          "template": {
+            "custom": [
+              "tcp",
+              "localabstract",
+              "localreserved",
+              "localfilesystem"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Listen on all network interfaces, not just localhost",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Use USB device (error if multiple devices connected)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Use TCP/IP device (error if multiple TCP/IP devices available)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Use device with given serial (overrides $ANDROID_SERIAL)",
+      "takes_arg": true,
+      "arg_name": "SERIAL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Use device with given transport id",
+      "takes_arg": true,
+      "arg_name": "ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H"
+      ],
+      "description": "Name of adb server host [default=localhost]",
+      "takes_arg": true,
+      "arg_name": "host name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Port of adb server [default=5037]",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Listen on given socket for adb server [default=tcp:localhost:5037]",
+      "takes_arg": true,
+      "arg_name": "socket",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,324 @@
+{
+  "name": "lsblk",
+  "aliases": [],
+  "description": "List block devices",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for lsblk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Show version for lsblk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--all",
+        "-a"
+      ],
+      "description": "Also list empty devices and RAM disk devices",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bytes",
+        "-b"
+      ],
+      "description": "Print the SIZE column in bytes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--discard",
+        "-D"
+      ],
+      "description": "Print information about the discarding capabilities (TRIM, UNMAP) for each device",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nodeps",
+        "-d"
+      ],
+      "description": "Do not print holder devices or slaves",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dedup",
+        "-E"
+      ],
+      "description": "Use column as a de-duplication key to de-duplicate output tree",
+      "takes_arg": true,
+      "arg_name": "column",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude",
+        "-e"
+      ],
+      "description": "Exclude the devices specified by the comma-separated list of major device numbers",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fs",
+        "-f"
+      ],
+      "description": "Output info about filesystems",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include",
+        "-I"
+      ],
+      "description": "Include devices specified by the comma-separated list of major device numbers",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ascii",
+        "-i"
+      ],
+      "description": "Use ASCII characters for tree formatting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json",
+        "-J"
+      ],
+      "description": "Use JSON output format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list",
+        "-l"
+      ],
+      "description": "Produce output in the form of a list",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--merge",
+        "-M"
+      ],
+      "description": "Group parents of sub-trees to provide more readable output for RAIDs and Multi-path devices",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--perms",
+        "-m"
+      ],
+      "description": "Output info about device owner, group and mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noheadings",
+        "-n"
+      ],
+      "description": "Do not print a header line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Specify which output columns to print",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-all",
+        "-O"
+      ],
+      "description": "Output all available columns",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pairs",
+        "-P"
+      ],
+      "description": "Produce output in the form of key-value pairs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--raw",
+        "-r"
+      ],
+      "description": "Produce output in raw format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scsi",
+        "-S"
+      ],
+      "description": "Output info about SCSI devices only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inverse",
+        "-s"
+      ],
+      "description": "Print dependencies in inverse order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tree",
+        "-T"
+      ],
+      "description": "Force tree-like output format",
+      "takes_arg": true,
+      "arg_name": "column",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--topology",
+        "-t"
+      ],
+      "description": "Output info about block-device topology",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--width",
+        "-w"
+      ],
+      "description": "Specifies output width as a number of characters",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort",
+        "-x"
+      ],
+      "description": "Sort output lines by column",
+      "takes_arg": true,
+      "arg_name": "column",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--zoned",
+        "-z"
+      ],
+      "description": "Print the zone model for each device",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sysroot"
+      ],
+      "description": "Gather data for a Linux instance other than the instance from which the lsblk command is issued",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "description": "Device to list",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

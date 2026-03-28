@@ -1,0 +1,1917 @@
+{
+  "name": "nx",
+  "aliases": [],
+  "description": "Fig completions for Nx by Nrwl",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Adds nx.json file and installs nx if not installed already",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Runs a generator that creates and/or modifies files based on a generator from a collection",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--defaults"
+          ],
+          "description": "When true, disables interactive input prompts for options with a default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dryRun"
+          ],
+          "description": "When true, preview the changes without updating files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "When true, forces overwriting of existing files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive"
+          ],
+          "description": "Enable/disable prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "collection:generator",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs an Architect target with an optional custom builder configuration defined in your project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "A named builder configuration, defined in the \"configurations\" section of the workspace configuration file. The builder uses the named configuration to run the given target",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project:target[:configuration]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "daemon",
+      "aliases": [],
+      "description": "Prints information about the Nx Daemon process or starts a daemon process",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--start"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stop"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "graph",
+      "aliases": [],
+      "description": "Graph dependencies within workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "Output file (e.g. --file=output.json or --file=dep-graph.html)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--focus"
+          ],
+          "description": "Use to show the project graph for a particular project and every node that is either an ancestor or a descendant",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--groupByFolder"
+          ],
+          "description": "Group projects by folder in the project graph",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Bind the project graph server to a specific ip address",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Open the project graph in the browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Bind the project graph server to a specific port",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targets"
+          ],
+          "description": "Targets (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "targets",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--view"
+          ],
+          "description": "Choose whether to view the projects or task graph",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "projects",
+              "tasks"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for changes to project graph and update in-browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run-many",
+      "aliases": [],
+      "description": "Run target for multiple listed projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "A named builder configuration, defined in the \"configurations\" section of the workspace configuration file. The builder uses the named configuration to run the given target",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show the task graph of the command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-bail"
+          ],
+          "description": "Stop command execution after the first failed task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-ignore-cycles"
+          ],
+          "description": "Ignore cycles in the task graph",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-style"
+          ],
+          "description": "Defines how Nx emits outputs tasks logs",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "dynamic",
+              "static",
+              "stream",
+              "stream-without-prefixes",
+              "compact"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Max number of parallel processes [default is 3]",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projects"
+          ],
+          "description": "Projects (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--runner"
+          ],
+          "description": "This is the name of the tasks runner configured in nx.json",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-nx-cache"
+          ],
+          "description": "Rerun the tasks even when the results are available in the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targets"
+          ],
+          "description": "Targets (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "targets",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints additional information about the commands (e.g., stack traces)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "affected",
+      "aliases": [],
+      "description": "Run target for affected projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base"
+          ],
+          "description": "Base of the current branch (usually main)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "A named builder configuration, defined in the \"configurations\" section of the workspace configuration file. The builder uses the named configuration to run the given target",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Change the way Nx is calculating the affected command by providing directly changed files, list of files delimited by commas or spaces",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show the task graph of the command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Latest commit of the current branch (usually HEAD)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-bail"
+          ],
+          "description": "Stop command execution after the first failed task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-ignore-cycles"
+          ],
+          "description": "Ignore cycles in the task graph",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-style"
+          ],
+          "description": "Defines how Nx emits outputs tasks logs",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "dynamic",
+              "static",
+              "stream",
+              "stream-without-prefixes",
+              "compact"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Max number of parallel processes [default is 3]",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--runner"
+          ],
+          "description": "This is the name of the tasks runner configured in nx.json",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-nx-cache"
+          ],
+          "description": "Rerun the tasks even when the results are available in the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targets"
+          ],
+          "description": "Targets (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "targets",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uncommitted"
+          ],
+          "description": "Uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--untracked"
+          ],
+          "description": "Untracked changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints additional information about the commands (e.g., stack traces)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "affected:graph",
+      "aliases": [],
+      "description": "Graph dependencies affected by changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base"
+          ],
+          "description": "Base of the current branch (usually main)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "Output file (e.g. --file=output.json or --file=dep-graph.html)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Change the way Nx is calculating the affected command by providing directly changed files, list of files delimited by commas or spaces",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--focus"
+          ],
+          "description": "Use to show the project graph for a particular project and every node that is either an ancestor or a descendant",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--groupByFolder"
+          ],
+          "description": "Group projects by folder in the project graph",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Latest commit of the current branch (usually HEAD)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Bind the project graph server to a specific ip address",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Open the project graph in the browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Bind the project graph server to a specific port",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targets"
+          ],
+          "description": "Targets (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "targets",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uncommitted"
+          ],
+          "description": "Uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--untracked"
+          ],
+          "description": "Untracked changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--view"
+          ],
+          "description": "Choose whether to view the projects or task graph",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "projects",
+              "tasks"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for changes to project graph and update in-browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "print-affected",
+      "aliases": [],
+      "description": "Prints information about the projects and targets affected by changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base"
+          ],
+          "description": "Base of the current branch (usually main)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "A named builder configuration, defined in the \"configurations\" section of the workspace configuration file. The builder uses the named configuration to run the given target",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Change the way Nx is calculating the affected command by providing directly changed files, list of files delimited by commas or spaces",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Latest commit of the current branch (usually HEAD)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select"
+          ],
+          "description": "Select the subset of the returned json document (e.g., --select=projects)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targets"
+          ],
+          "description": "Targets (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "targets",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type"
+          ],
+          "description": "Select the type of projects to be returned (e.g., --type=app)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "app",
+              "lib"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uncommitted"
+          ],
+          "description": "Uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--untracked"
+          ],
+          "description": "Untracked changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "format:check",
+      "aliases": [],
+      "description": "Check for un-formatted files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base"
+          ],
+          "description": "Base of the current branch (usually main)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Change the way Nx is calculating the affected command by providing directly changed files, list of files delimited by commas or spaces",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Latest commit of the current branch (usually HEAD)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--libs-and-apps"
+          ],
+          "description": "Format only libraries and applications files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projects"
+          ],
+          "description": "Projects (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uncommitted"
+          ],
+          "description": "Uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--untracked"
+          ],
+          "description": "Untracked changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "format:write",
+      "aliases": [],
+      "description": "Overwrite un-formatted files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base"
+          ],
+          "description": "Base of the current branch (usually main)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Change the way Nx is calculating the affected command by providing directly changed files, list of files delimited by commas or spaces",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Latest commit of the current branch (usually HEAD)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--libs-and-apps"
+          ],
+          "description": "Format only libraries and applications files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projects"
+          ],
+          "description": "Projects (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uncommitted"
+          ],
+          "description": "Uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--untracked"
+          ],
+          "description": "Untracked changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Creates a migrations file or runs migrations from the migrations file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--commitPrefix"
+          ],
+          "description": "Commit prefix to apply to the commit for each migration, when --create-commits is enabled",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--createCommits"
+          ],
+          "description": "Automatically create a git commit after each migration runs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--excludeAppliedMigrations"
+          ],
+          "description": "Exclude migrations that should have been applied on previous updates. To be used with --from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from"
+          ],
+          "description": "Use the provided versions for packages instead of the ones installed in node_modules (e.g., --from=\"@nrwl/react@12.0.0,@nrwl/js@12.0.0\")",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ifExists"
+          ],
+          "description": "Run migrations only if the migrations file exists, if not continues successfully",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive"
+          ],
+          "description": "Enable/disable prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--runMigrations"
+          ],
+          "description": "Execute migrations from a file (when the file isn't provided, execute migrations from migrations.json)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to"
+          ],
+          "description": "Use the provided versions for packages instead of the ones calculated by the migrator (e.g., --to=\"@nrwl/react@12.0.0,@nrwl/js@12.0.0\")",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "packageAndVersion",
+          "description": "The target package and version (e.g, @nrwl/workspace@13.0.0)",
+          "template": {
+            "custom": [
+              "latest"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "report",
+      "aliases": [],
+      "description": "Reports useful version numbers to copy into the Nx issue template",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "plugin",
+          "description": "The name of an installed plugin to query",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "workspace-generator",
+      "aliases": [],
+      "description": "Runs a workspace generator from the tools/generators directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list-generators"
+          ],
+          "description": "List the available workspace-generators",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of your generator",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "connect",
+      "aliases": [],
+      "description": "Connect workspace to Nx Cloud",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Clears all the cached Nx artifacts and metadata about the workspace and shuts down the Nx Daemon",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "repair",
+      "aliases": [],
+      "description": "Repair any configuration that is no longer supported by Nx",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints additional information about the commands (e.g., stack traces)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Executes any command as if it was a target on the project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "A named builder configuration, defined in the \"configurations\" section of the workspace configuration file. The builder uses the named configuration to run the given target",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude certain projects from being processed",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show the task graph of the command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-bail"
+          ],
+          "description": "Stop command execution after the first failed task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nx-ignore-cycles"
+          ],
+          "description": "Ignore cycles in the task graph",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-style"
+          ],
+          "description": "Defines how Nx emits outputs tasks logs",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "dynamic",
+              "static",
+              "stream",
+              "stream-without-prefixes",
+              "compact"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Max number of parallel processes [default is 3]",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project"
+          ],
+          "description": "Target project",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--runner"
+          ],
+          "description": "This is the name of the tasks runner configured in nx.json",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-nx-cache"
+          ],
+          "description": "Rerun the tasks even when the results are available in the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints additional information about the commands (e.g., stack traces)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Watch for changes within projects, and execute commands",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "All projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--includeDependentProjects"
+          ],
+          "description": "When watching selected projects, include dependent projects as well",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projects"
+          ],
+          "description": "Projects (comma/space delimited)",
+          "takes_arg": true,
+          "arg_name": "projects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints additional information about the commands (e.g., stack traces)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show information about the workspace (e.g., list of projects)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "What to show (e.g., projects)",
+          "template": {
+            "custom": [
+              "projects"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "view-logs",
+      "aliases": [],
+      "description": "Enables you to view and interact with the logs via the advanced analytic UI from Nx Cloud to help you debug your issue. To do this, Nx needs to connect your workspace to Nx Cloud and upload the most recent run details. Only the metrics are uploaded, not the artefacts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

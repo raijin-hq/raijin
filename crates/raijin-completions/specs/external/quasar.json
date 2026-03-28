@@ -1,0 +1,354 @@
+{
+  "name": "quasar",
+  "aliases": [],
+  "description": "Quasar Framework CLI",
+  "subcommands": [
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new Quasar project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--kit",
+            "-k"
+          ],
+          "description": "Use specific starter kit",
+          "takes_arg": true,
+          "arg_name": "kit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--branch",
+            "-b"
+          ],
+          "description": "Use specific branch of the starter kit",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clone",
+            "-c"
+          ],
+          "description": "Use git clone",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--offline",
+            "-o"
+          ],
+          "description": "Use a cached starter kit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Output usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project-name",
+          "description": "Name of the project",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Gather environment information for issue reporting",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Output usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade Quasar Framework packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--install",
+            "-i"
+          ],
+          "description": "Also perform package upgrades",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prerelease",
+            "-p"
+          ],
+          "description": "Allow pre-release versions (alpha/beta)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major",
+            "-m"
+          ],
+          "description": "Allow newer major versions (breaking changes)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Output usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Start development server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port to use",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hostname",
+            "-H"
+          ],
+          "description": "Address to use",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gzip",
+            "-g"
+          ],
+          "description": "Compress content",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent",
+            "-s"
+          ],
+          "description": "Suppress log message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--colors"
+          ],
+          "description": "Log messages with colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open",
+            "-o"
+          ],
+          "description": "Open browser window after starting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cache",
+            "-c"
+          ],
+          "description": "Cache time (max-age) in seconds",
+          "takes_arg": true,
+          "arg_name": "cache",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--micro",
+            "-m"
+          ],
+          "description": "Use micro-cache",
+          "takes_arg": true,
+          "arg_name": "micro",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--history"
+          ],
+          "description": "Use history api fallback",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--index",
+            "-i"
+          ],
+          "description": "History mode (only!) index url path",
+          "takes_arg": true,
+          "arg_name": "index",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "Enable HTTPS",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert",
+            "-C"
+          ],
+          "description": "Path to SSL cert file (Optional)",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key",
+            "-K"
+          ],
+          "description": "Path to SSL key file (Optional)",
+          "takes_arg": true,
+          "arg_name": "key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--proxy"
+          ],
+          "description": "Proxy specific requests defined in file",
+          "takes_arg": true,
+          "arg_name": "proxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cors"
+          ],
+          "description": "Enable CORS for all requests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Output usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to serve",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

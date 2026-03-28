@@ -1,0 +1,322 @@
+{
+  "name": "nvim",
+  "aliases": [],
+  "description": "Hyperextensible Vim-based text editor",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "+"
+      ],
+      "description": "Start at end of file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cmd"
+      ],
+      "description": "Execute <cmd> before any config",
+      "takes_arg": true,
+      "arg_name": "cmd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Execute <cmd> after config and first file",
+      "takes_arg": true,
+      "arg_name": "cmd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Binary mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Diff mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "-E"
+      ],
+      "description": "Ex mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-es",
+        "-Es"
+      ],
+      "description": "Silent (batch) mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print this help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Use this shada file",
+      "takes_arg": true,
+      "arg_name": "shada",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Modifications (writing files) not allowed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M"
+      ],
+      "description": "Modifications in text not allowed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "No swap file, use memory only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Open N windows (default: one per file)",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Open N vertical windows (default: one per file)",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Open N tab pages (default: one per file)",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "List swap files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Recover edit state for this file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R"
+      ],
+      "description": "Read-only mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Source <session> after loading the first file",
+      "takes_arg": true,
+      "arg_name": "session",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Read Normal mode commands from <scriptin>",
+      "takes_arg": true,
+      "arg_name": "scriptin",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Use this config file",
+      "takes_arg": true,
+      "arg_name": "config",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--api-info"
+      ],
+      "description": "Write msgpack-encoded API metadata to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--embed"
+      ],
+      "description": "Use stdin/stdout as a msgpack-rpc channel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headless"
+      ],
+      "description": "Don't start a user interface",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--listen"
+      ],
+      "description": "Serve RPC API from this address",
+      "takes_arg": true,
+      "arg_name": "address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noplugin"
+      ],
+      "description": "Don't load plugins",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remote",
+        "--remote-subcommand"
+      ],
+      "description": "Execute commands remotely on a server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--server"
+      ],
+      "description": "Specify RPC server to send commands to",
+      "takes_arg": true,
+      "arg_name": "address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--startuptime"
+      ],
+      "description": "Write startup timing messages to <file>",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

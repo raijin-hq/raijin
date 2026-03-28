@@ -1,0 +1,1069 @@
+{
+  "name": "rg",
+  "aliases": [],
+  "description": "Recursively searches current directory for lines matching a pattern",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-A",
+        "--after-context"
+      ],
+      "description": "Shows NUM lines after each match",
+      "takes_arg": true,
+      "arg_name": "Num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auto-hybrid-regex"
+      ],
+      "description": "When this flag is used, ripgrep will dynamically choose between supported regex engines depending on the features used in a pattern",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "--before-context"
+      ],
+      "description": "Shows NUM lines before each match",
+      "takes_arg": true,
+      "arg_name": "Num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary"
+      ],
+      "description": "Enabling this flag will cause ripgrep to search binary files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--block-buffered"
+      ],
+      "description": "When enabled, ripgrep will use block buffering",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--byte-offset"
+      ],
+      "description": "Prints the 0-based byte offset within the input file before each line of output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--case-sensitive"
+      ],
+      "description": "Search case sensitively",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Controls when to use colors",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "never",
+          "auto",
+          "always",
+          "ansi"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colors"
+      ],
+      "description": "Specifies color settings for use in the output",
+      "takes_arg": true,
+      "arg_name": "Color Spec",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--column"
+      ],
+      "description": "Shows column numbers for the first match on each line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--context"
+      ],
+      "description": "Shows NUM lines before and after each match",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--context-separator"
+      ],
+      "description": "The string used to separate non-contiguous context lines in the output",
+      "takes_arg": true,
+      "arg_name": "Separator",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--count"
+      ],
+      "description": "Suppresses normal output and shows the number of lines that match the given pattersns for each file searched",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--count-matches"
+      ],
+      "description": "Suppresses normal output and shows the number of individual matches of the given patterns for each file searched",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crlf"
+      ],
+      "description": "Treats CRLF as a line terminator instead of just a line break",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Shows debug messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dfa-size-limit"
+      ],
+      "description": "The upper size limit of the regex DFA",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--encoding"
+      ],
+      "description": "Specifies the text encoding that ripgrep will use on all files searched",
+      "takes_arg": true,
+      "arg_name": "Encoding",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--engine"
+      ],
+      "description": "Specifies which regular expression engine to use",
+      "takes_arg": true,
+      "arg_name": "Engine",
+      "arg_template": {
+        "custom": [
+          "default",
+          "pcre2",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--file"
+      ],
+      "description": "Searches for patterns from the given file, with one pattern per line",
+      "takes_arg": true,
+      "arg_name": "Patternfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files"
+      ],
+      "description": "Prints each file that would be searched without actually performing the search",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--files-with-matches"
+      ],
+      "description": "Only prints the paths with at least one match",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files-without-match"
+      ],
+      "description": "Only prints the paths that contains zero matches",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--fixed-strings"
+      ],
+      "description": "Treats the pattern as a literal string instead of a regular expression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--follow"
+      ],
+      "description": "Follows symbolic links while traversing directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--glob"
+      ],
+      "description": "Includes or excludes files and directories for searching that match the given glob",
+      "takes_arg": true,
+      "arg_name": "GLOB",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--glob-case-insensitive"
+      ],
+      "description": "Processes glob patterns given with the -g/--glob flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--heading"
+      ],
+      "description": "Prints the file path above clusters of matches from each file instead of printing the file path as a prefix for reach matched line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden"
+      ],
+      "description": "Searches hidden files and directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--iglob"
+      ],
+      "description": "Includes or excludes files and directories for searching that match given the glob",
+      "takes_arg": true,
+      "arg_name": "GLOB",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-file"
+      ],
+      "description": "Specifies a path to one or more .gitignore format rules files",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-file-case-insensitive"
+      ],
+      "description": "Process ignores files case insensitively",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-zero"
+      ],
+      "description": "Prints the number of matchesfor each file when used with --count or --count matches",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--invert-match"
+      ],
+      "description": "Inverts matching",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Enables printing results in a JSON Lines format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-json"
+      ],
+      "description": "Disables the JSON Lines format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--line-buffered"
+      ],
+      "description": "Enables line buffering",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--line-number"
+      ],
+      "description": "Shows the line numbers (1-based)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--line-regexp"
+      ],
+      "description": "Only shows matches surrounded by line boundaries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--max-columns"
+      ],
+      "description": "Don't print lines longer than this limit in bytes",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-columns-preview"
+      ],
+      "description": "Completely replaces any line that is too long with a message indicating that a matching line was removed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--max-count"
+      ],
+      "description": "Limits the number of matching lines per file searched to NUM",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-depth"
+      ],
+      "description": "Limits the depth of directory traversal to NUM levels beyond the paths given",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-filesize"
+      ],
+      "description": "Ignores files larger than NUM in size",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-mmap"
+      ],
+      "description": "Searches using memory maps when possible",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--multiline"
+      ],
+      "description": "Enables matching across multiple lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--multiline-dotall"
+      ],
+      "description": "Enables dot all in your regex pattern",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-config"
+      ],
+      "description": "Never read configuration files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--no-filename"
+      ],
+      "description": "Never prints the file path with the matched lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-heading"
+      ],
+      "description": "Don't group matches by each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Don't respect ignore files (.gitignore, .ignore, etc.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-dot"
+      ],
+      "description": "Don't respect .ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-excluded"
+      ],
+      "description": "Don't respect ignore files that are manually configured for the repository",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-files"
+      ],
+      "description": "Ignores any --ignore-file flags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-global"
+      ],
+      "description": "Don't respect ignore files that come from `global` sources",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-messages"
+      ],
+      "description": "Suppresses all error messages related to parsing ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-parent"
+      ],
+      "description": "Don't repsect ignore files in parent directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-vcs"
+      ],
+      "description": "Don't respect version control ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--no-line-number"
+      ],
+      "description": "Suppress line numbers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-messages"
+      ],
+      "description": "Suppresses all error messages related to opening and reading files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-map"
+      ],
+      "description": "Never use memory maps, even when they might be faster",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-pcre2-unicode"
+      ],
+      "description": null,
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-require-git"
+      ],
+      "description": "Will only respect global gitignore rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-unicode"
+      ],
+      "description": "Turn off unicode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unicode"
+      ],
+      "description": "Disables --no-unicode flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-0",
+        "--null"
+      ],
+      "description": "Whenever a file path is printed, follow it with a NUL byte",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--null-data"
+      ],
+      "description": "Uses NUL as a line terminator instead of the default line break",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--one-file-system"
+      ],
+      "description": "Will not cross file system boundaries relative to where the search started from",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-one-file-system"
+      ],
+      "description": "Disables `--one-file-system` flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--only-matching"
+      ],
+      "description": "Prints only the matched (non-empty) parts of a matching line, with each such part on a separate output line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--passthru"
+      ],
+      "description": "Prints both matching and non-matching lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--path-separator"
+      ],
+      "description": "Sets the path separator to use when printing file paths",
+      "takes_arg": true,
+      "arg_name": "Separator",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--pcre2"
+      ],
+      "description": "Usess the PCRE2 regex engine instead of its default regex engine",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pcre2-version"
+      ],
+      "description": "Prints the version of PCRE2 in use",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pre"
+      ],
+      "description": "For each input File, search the standard output of the command",
+      "takes_arg": true,
+      "arg_name": "Command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pre-glob"
+      ],
+      "description": "Only files that match the given set of globs will be handed to the command specified by the `--pre flag`",
+      "takes_arg": true,
+      "arg_name": "GLOB",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--pretty"
+      ],
+      "description": "Convenience alias for `--color always --heading --line-number`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Do not print anything to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--regex-size-limit"
+      ],
+      "description": "Sets the upper size limit of the compiled regex",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--regexp"
+      ],
+      "description": "A pattern to search for",
+      "takes_arg": true,
+      "arg_name": "Pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--replace"
+      ],
+      "description": "Replace every match with the text given when printing results",
+      "takes_arg": true,
+      "arg_name": "Replacement Text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z",
+        "--search-zip"
+      ],
+      "description": "Search in compressed files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--smart-case"
+      ],
+      "description": "Searches case insensitively if the pattern is all lowercase",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "Sortby",
+      "arg_template": {
+        "custom": [
+          "none",
+          "path",
+          "modified",
+          "accessed",
+          "created"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sortr"
+      ],
+      "description": "Enables sorting results in descending order",
+      "takes_arg": true,
+      "arg_name": "Sortby",
+      "arg_template": {
+        "custom": [
+          "none",
+          "path",
+          "modified",
+          "accessed",
+          "created"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stats"
+      ],
+      "description": "Prints aggregate statistics about this ripgrep search",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--text"
+      ],
+      "description": "Searches binary files as if they were text",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--threads"
+      ],
+      "description": "The approximate number of threads to use",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trim"
+      ],
+      "description": "All ASCII whitespace at the beginning of each line printed will be trimmed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--type"
+      ],
+      "description": "Only searches files matching TYPE",
+      "takes_arg": true,
+      "arg_name": "Type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-add"
+      ],
+      "description": "Add a new glob for a particular file type",
+      "takes_arg": true,
+      "arg_name": "Type Spec",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-clear"
+      ],
+      "description": "Clear the file type globs previously defined for type",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-list"
+      ],
+      "description": "Shows all supported file types and their corresponding globs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--type-not"
+      ],
+      "description": "Do not search files matching type",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--unrestricted"
+      ],
+      "description": "Reduce the level of smart searching, increase by adding `u`s, ex: -uuu",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vimgrep"
+      ],
+      "description": "Shows results with every match on its own line, including line numbers and column nnumbers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--with-filename"
+      ],
+      "description": "Displays the file path for matches",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--word-regexp"
+      ],
+      "description": "Only shows the matches surrounded by word boundaries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Pattern",
+      "description": "A regular expression used for searching",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "Path",
+      "description": "A file or directory to search",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

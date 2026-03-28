@@ -1,0 +1,189 @@
+{
+  "name": "pocketbase",
+  "aliases": [],
+  "description": "PocketBase CLI",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Executes DB migration scripts",
+      "subcommands": [
+        {
+          "name": "collections",
+          "aliases": [],
+          "description": "(Experimental) Creates new migration file with the most recent local collections configuration",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "folder",
+              "description": "Migrations folder",
+              "template": "folders",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Creates new migration template file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Migration file name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "folder",
+              "description": "Migrations folder",
+              "template": "folders",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "down",
+          "aliases": [],
+          "description": "Reverts the last [number] applied migrations",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "number",
+              "description": "Number of applied migrations to revert",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "up",
+          "aliases": [],
+          "description": "Runs all available migrations",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Starts the web server (default to 127.0.0.1:8090)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--http"
+          ],
+          "description": "API HTTP server address (default \"127.0.0.1:8090\")",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "API HTTPS server address (auto TLS via Let's Encrypt). The incoming --http address traffic also will be redirected to this address",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--origins"
+          ],
+          "description": "CORS allowed domain origins list (default [*])",
+          "takes_arg": true,
+          "arg_name": "strings",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable debug mode, aka showing more detailed logs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dir"
+      ],
+      "description": "PocketBase data directory (default \"pb_data\")",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--encryptionEnv"
+      ],
+      "description": "Environment variable whose value of 32 chars will be used as encryption key for the app settings (default none)",
+      "takes_arg": true,
+      "arg_name": "env",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help for pocketbase",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version for pocketbase",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

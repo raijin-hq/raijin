@@ -1,0 +1,401 @@
+{
+  "name": "sort",
+  "aliases": [],
+  "description": "Sort or merge records (lines) of text and binary files",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Shows help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Displays the current version of sort",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--check",
+        "-C"
+      ],
+      "description": "Check that the single input file is sorted",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": {
+        "custom": [
+          "silent",
+          "quiet"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--merge"
+      ],
+      "description": "Merge only.  The input files are assumed to be pre-sorted.  If they are not sorted the output order is undefined",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Print the output to the output file instead of the standard output",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--buffer-size"
+      ],
+      "description": "Use size for the maximum size of the memory buffer",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--temporary-directory"
+      ],
+      "description": "Store temporary files in the directory dir",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--unique"
+      ],
+      "description": "Unique keys. Suppress all lines that have a key that is equal to an already processed one",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Stable sort. This option maintains the original record order of records that have an equal key",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--ignore-leading-blanks"
+      ],
+      "description": "Ignore leading blank characters when comparing lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--dictionary-order"
+      ],
+      "description": "Consider only blank spaces and alphanumeric characters in comparisons",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--ignore-case"
+      ],
+      "description": "Convert all lowercase characters to their upper case equivalent before comparison",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--general-numeric-sort"
+      ],
+      "description": "Sort by general numerical value",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--human-numeric-sort"
+      ],
+      "description": "Sort by numerical value, but take into account the SI suffix, if present",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--ignore-nonprinting"
+      ],
+      "description": "Ignore all non-printable characters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--month-sort"
+      ],
+      "description": "Sort by month abbreviations.  Unknown strings are considered smaller than the month names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--numeric-sort"
+      ],
+      "description": "Sort fields numerically by arithmetic value",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--random-sort"
+      ],
+      "description": "Sort by a random order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--reverse"
+      ],
+      "description": "Sort in reverse order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version-sort"
+      ],
+      "description": "Sort version numbers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k",
+        "--key"
+      ],
+      "description": "Define a restricted sort key that has the starting position field1, and optional ending position field2",
+      "takes_arg": true,
+      "arg_name": "field1",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--field-separator"
+      ],
+      "description": "Use char as a field separator character",
+      "takes_arg": true,
+      "arg_name": "char",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z",
+        "--zero-terminated"
+      ],
+      "description": "Use NUL as record separator",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--batch-size"
+      ],
+      "description": "Specify maximum number of files that can be opened by sort at once",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compress-program"
+      ],
+      "description": "Use PROGRAM to compress temporary files (eg. bzip2)",
+      "takes_arg": true,
+      "arg_name": "PROGRAM",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--random-source"
+      ],
+      "description": "In random sort, the file content is used as the source of the 'seed' data for the hash function choice",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Print some extra information about the sorting process to the standard output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parallel"
+      ],
+      "description": "Set the maximum number of execution threads.  Default number equals to the number of CPUs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files0-from"
+      ],
+      "description": "Take the input file list from the file filename",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--radixsort"
+      ],
+      "description": "Try to use radix sort, if the sort specifications allow",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mergesort"
+      ],
+      "description": "Use mergesort.  This is a universal algorithm that can always be used, but it is not always the fastest",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--qsort"
+      ],
+      "description": "Try to use quick sort, if the sort specifications allow.  This sort algorithm cannot be used with -u and -s",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--heapsort"
+      ],
+      "description": "Try to use heap sort, if the sort specifications allow.  This sort algorithm cannot be used with -u and -s",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mmap"
+      ],
+      "description": "Try to use file memory mapping system call.  It may increase speed in some cases",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": "Select how to sort values",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "general-numeric",
+          "human-numeric",
+          "month",
+          "numeric",
+          "random"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,1546 @@
+{
+  "name": "rustup",
+  "aliases": [],
+  "description": "The Rust toolchain installer",
+  "subcommands": [
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show the active and installed toolchains or profiles",
+      "subcommands": [
+        {
+          "name": "active-toolchain",
+          "aliases": [],
+          "description": "Show the active toolchain",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "home",
+          "aliases": [],
+          "description": "Display the computed value of RUSTUP_HOME",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "profile",
+          "aliases": [],
+          "description": "Show the current profile",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "keys",
+          "aliases": [],
+          "description": "Display the known PGP keys",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update Rust toolchains and rustup",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force an update, even if some components are missing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-non-host"
+          ],
+          "description": "Install toolchains that require an emulator. See https://github.com/rust-lang/rustup/wiki/Non-host-toolchains",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-self-update"
+          ],
+          "description": "Don't perform self update when running the `rustup update` command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "toolchain",
+          "description": "Toolchain name. For more information see `rustup help toolchain`",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check for updates to Rust toolchains and rustup",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "toolchain",
+          "description": "Toolchain name. For more information see `rustup help toolchain`",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "default",
+      "aliases": [],
+      "description": "Sets the default toolchain to the one specified. If the toolchain is not already installed then it is installed first",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "toolchain",
+          "description": "Toolchain name",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "target",
+      "aliases": [],
+      "description": "Modify a toolchain's supported targets",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List installed and available targets",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a target to a Rust toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--toolchain"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "toolchain",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "target",
+              "description": "Target triple",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a target from a Rust toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--toolchain"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "toolchain",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "target",
+              "description": "Target triple",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "subcommand",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "toolchain",
+      "aliases": [],
+      "description": "Modify or query the installed toolchains",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List installed toolchains",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Install or update a given toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--target"
+              ],
+              "description": "Add specific targets on installation",
+              "takes_arg": true,
+              "arg_name": "targets",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--component"
+              ],
+              "description": "Add specific components on installation",
+              "takes_arg": true,
+              "arg_name": "components",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--profile"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "profile",
+              "arg_template": {
+                "custom": [
+                  "minimal",
+                  "default",
+                  "complete"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--allow-downgrade"
+              ],
+              "description": "Allow rustup to downgrade the toolchain to satisfy your component choice",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Force an update, even if some components are missing",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-self-update"
+              ],
+              "description": "Don't perform self update when running the`rustup toolchain install` command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "toolchain",
+              "description": "Toolchain name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Uninstall a toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "toolchain",
+              "description": "Toolchain name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "link",
+          "aliases": [],
+          "description": "Create a custom toolchain by symlinking to a directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "toolchain",
+              "description": "Custom toolchain name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            },
+            {
+              "name": "path",
+              "description": "Path to the directory",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "subcommand",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "component",
+      "aliases": [],
+      "description": "Modify a toolchain's installed components",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List installed and available components",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a component to a Rust toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a component from a Rust toolchain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "subcommand(s)",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "override",
+      "aliases": [],
+      "description": "Modify directory toolchain overrides",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List directory toolchain overrides",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set the override toolchain for a directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "toolchain",
+              "description": "Toolchain name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Remove the override toolchain for a directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "subcommand(s)",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a command with an environment configured for a given toolchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--install"
+          ],
+          "description": "Install the requested toolchain if needed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "toolchain",
+          "description": "Toolchain name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Display which binary will be run for a given command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toolchain"
+          ],
+          "description": "Toolchain name",
+          "takes_arg": true,
+          "arg_name": "toolchain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "doc",
+      "aliases": [],
+      "description": "Open the documentation for the current toolchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--alloc"
+          ],
+          "description": "The Rust core allocation and collections library",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--book"
+          ],
+          "description": "The Rust Programming Language book",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cargo"
+          ],
+          "description": "The Cargo Book",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--core"
+          ],
+          "description": "The Rust Core Library",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edition-guide"
+          ],
+          "description": "The Rust Edition Guide",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--embedded-book"
+          ],
+          "description": "The Embedded Rust Book",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nomicon"
+          ],
+          "description": "The Dark Arts of Advanced and Unsafe Rust Programming",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Only print the path to the documentation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--proc_macro"
+          ],
+          "description": "A support library for macro authors when defining new macros",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reference"
+          ],
+          "description": "The Rust Reference",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rust-by-example"
+          ],
+          "description": "A collection of runnable examples that illustrate various Rust concepts and standard libraries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rustc"
+          ],
+          "description": "The compiler for the Rust programming language",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rustdoc"
+          ],
+          "description": "Generate documentation for Rust projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--std"
+          ],
+          "description": "Standard library API documentation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--test"
+          ],
+          "description": "Support code for rustc's built in unit-test and micro-benchmarking framework",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable-book"
+          ],
+          "description": "--unstable-book",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toolchain"
+          ],
+          "description": "Toolchain name",
+          "takes_arg": true,
+          "arg_name": "toolchain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "topic",
+          "description": "Topic such as 'core', 'fn', 'usize', 'eprintln!', 'core::arch', 'alloc::format!', 'std::fs', 'std::fs::read_dir', 'std::io::Bytes', 'std::iter::Sum', 'std::io::error::Result' etc",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "man",
+      "aliases": [],
+      "description": "View the man page for a given command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toolchain"
+          ],
+          "description": "Toolchain name",
+          "takes_arg": true,
+          "arg_name": "toolchain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "self",
+      "aliases": [],
+      "description": "Modify the rustup installation",
+      "subcommands": [
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Download and install updates to rustup",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Uninstall rustup",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upgrade-data",
+          "aliases": [],
+          "description": "Upgrade the internal data format",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "subcommand(s)",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set",
+      "aliases": [],
+      "description": "Alter rustup settings",
+      "subcommands": [
+        {
+          "name": "auto-self-update",
+          "aliases": [],
+          "description": "The rustup auto self update mode",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "auto-self-update-mode",
+              "description": null,
+              "template": {
+                "custom": [
+                  "enable",
+                  "disable",
+                  "check-only"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "default-host",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Prints help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-V",
+                "--version"
+              ],
+              "description": "Prints version information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "host-triple",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "Generate tab-completion scripts for your shell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell",
+          "description": null,
+          "template": {
+            "custom": [
+              "zsh",
+              "bash",
+              "fish",
+              "powershell",
+              "elvish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "rustup",
+              "cargo"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Disable progress output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Enable verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "toolchain",
+      "description": "Release channel (e.g. +stable) or custom toolchain to set override",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

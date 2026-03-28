@@ -1,0 +1,501 @@
+{
+  "name": "scc",
+  "aliases": [],
+  "description": "Sloc, Cloc and Code. Count lines of code in a directory with complexity estimation",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--avg-wage"
+      ],
+      "description": "Average salary value used for COCOMO calculations",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary"
+      ],
+      "description": "Disable binary file detection",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--by-file"
+      ],
+      "description": "Display output for every file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ci"
+      ],
+      "description": "Enable CI output settings where stdout is ASCII",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cocomo-project-type"
+      ],
+      "description": "Change the COCOMO model type (allows custom models, eg. \"name,1,1,1,1\")",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "organic",
+          "semi-detached",
+          "embedded"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--count-as"
+      ],
+      "description": "Count a file extension as a language (comma-separated key:value list, eg. jst:js,tpl:Markdown)",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable debug output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude-dir"
+      ],
+      "description": "Directories to exclude",
+      "takes_arg": true,
+      "arg_name": "strings",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file-gc-count"
+      ],
+      "description": "Number of files to parse before turning the GC on",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": "Set output format",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "tabular",
+          "wide",
+          "json",
+          "csv",
+          "csv-stream",
+          "cloc-yaml",
+          "html",
+          "html-table",
+          "sql",
+          "sql-insert"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format-multi"
+      ],
+      "description": "Multiple outputs with different formats (comma-separated key:value list, eg. tabular:stdout,csv:scc.csv)",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gen"
+      ],
+      "description": "Identify generated files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--generated-markers"
+      ],
+      "description": "Identify generated files by the presence of a string (comma-separated list)",
+      "takes_arg": true,
+      "arg_name": "strings",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for scc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--include-ext"
+      ],
+      "description": "Limit to these file extensions (comma-separated list)",
+      "takes_arg": true,
+      "arg_name": "strings",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-symlinks"
+      ],
+      "description": "Count symbolic links",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--languages"
+      ],
+      "description": "Print supported languages and extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--large-byte-count"
+      ],
+      "description": "Number of bytes a file can contain before being omitted",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--large-line-count"
+      ],
+      "description": "Number of lines a file can contain before being omitted",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min"
+      ],
+      "description": "Identify minified files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z",
+        "--min-gen"
+      ],
+      "description": "Identify minified or generated files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min-gen-line-length"
+      ],
+      "description": "Number of bytes per average line for file to be considered minified or generated",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-cocomo"
+      ],
+      "description": "Skip COCOMO calculation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--no-complexity"
+      ],
+      "description": "Skip code complexity calculation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--no-duplicates"
+      ],
+      "description": "Remove duplicate files from stats and output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-gen"
+      ],
+      "description": "Ignore generated files in output (implies --gen)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-gitignore"
+      ],
+      "description": "Disables .gitignore file logic",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Disables .ignore file logic",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-large"
+      ],
+      "description": "Ignore files over certain byte and line size set by --max-line-count and --max-byte-count",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-min"
+      ],
+      "description": "Ignore minified files in output (implies --min)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-min-gen"
+      ],
+      "description": "Ignore minified or generated files in output (implies --min-gen)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-size"
+      ],
+      "description": "Remove size calculation output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--not-match"
+      ],
+      "description": "Ignore files and directories matching regular expression",
+      "takes_arg": true,
+      "arg_name": "regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Output filename (defaults to stdout if not provided)",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remap-all"
+      ],
+      "description": "Inspect every file and set its type by checking for a string (comma-separated key:value list, eg. \"-*- C++ -*-\":\"C Header\")",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remap-unknown"
+      ],
+      "description": "Inspect files of unknown type and set its type by checking for a string (comma-separated key:value list, eg. \"-*- C++ -*-\":\"C Header\")",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--size-unit"
+      ],
+      "description": "Set the unit used for file size output",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "si",
+          "binary",
+          "mixed",
+          "xkcd-kb",
+          "xkcd-kelly",
+          "xkcd-imaginary",
+          "xkcd-intel",
+          "xkcd-drive",
+          "xkcd-bakers"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--sort"
+      ],
+      "description": "Column to sort by",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "files",
+          "name",
+          "lines",
+          "blanks",
+          "code",
+          "comments",
+          "complexity"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sql-project"
+      ],
+      "description": "Use supplied name as the project identifier for the current run. Only valid with the '--format sql' or '--format sql-insert' option",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--trace"
+      ],
+      "description": "Enable trace output (not recommended when processing multiple files)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Version for scc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wide"
+      ],
+      "description": "Wider output with additional statistics (implies --complexity)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "files or directories",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

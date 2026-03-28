@@ -1,0 +1,92 @@
+{
+  "name": "java",
+  "aliases": [],
+  "description": "Launch a Java application",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-jar"
+      ],
+      "description": "To launch the main class in a JAR file",
+      "takes_arg": true,
+      "arg_name": "JAR file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Set a system property, -D<NAME>=<VALUE>",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h",
+        "-?"
+      ],
+      "description": "Show help for java",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-version"
+      ],
+      "description": "Print product version to the error stream and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-showversion",
+        "--show-version"
+      ],
+      "description": "Print product version to the output stream and continue",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dry-run"
+      ],
+      "description": "Create VM and load main class but do not execute main method",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--classpath",
+        "-cp"
+      ],
+      "description": "Class search path of directories and zip/jar files",
+      "takes_arg": true,
+      "arg_name": "search files",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "mainclass",
+      "description": "To launch a class file",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

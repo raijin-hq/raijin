@@ -1,0 +1,123 @@
+{
+  "name": "wing",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs a Wing executable in the Wing Console",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "executable",
+          "description": "Executable .wx file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compiles a Wing program",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--out-dir"
+          ],
+          "description": "Output directory",
+          "takes_arg": true,
+          "arg_name": "out-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--target"
+          ],
+          "description": "Target platform (options: 'tf-aws', 'sim')",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entrypoint",
+          "description": "Program .w entrypoint",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrades the Wing toolchain to the latest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

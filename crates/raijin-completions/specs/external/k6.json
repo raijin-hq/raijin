@@ -1,0 +1,811 @@
+{
+  "name": "k6",
+  "aliases": [],
+  "description": "Grafana k6 is an open-source load testing tool that makes performance testing easy",
+  "subcommands": [
+    {
+      "name": "archive",
+      "aliases": [],
+      "description": "Create an archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "archive",
+          "description": "Name of a file to archive",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cloud",
+      "aliases": [],
+      "description": "Run a test on the cloud",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "cloud",
+          "description": "Name of a script to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "completion",
+          "description": "Generate the autocompletion script for the specified shell",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "convert",
+      "aliases": [],
+      "description": "Convert a HAR file to a k6 script",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "convert",
+          "description": "HAR file to convert",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "help",
+          "description": "Help about any command",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inspect",
+      "aliases": [],
+      "description": "Inspect a script or archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "inspect",
+          "description": "K6 script to inspect or archive",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Inspect a script or archive",
+      "subcommands": [
+        {
+          "name": "cloud",
+          "aliases": [],
+          "description": "Authenticate with Load Impact",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "influxdb",
+          "aliases": [],
+          "description": "Authenticate with InfluxDB",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "login",
+          "description": "K6 script to inspect or archive",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "aliases": [],
+      "description": "Pause a running test",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "resume",
+      "aliases": [],
+      "description": "Resume a running test",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Start a load test",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--address"
+          ],
+          "description": "Address of the API server",
+          "takes_arg": true,
+          "arg_name": "address",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--batch"
+          ],
+          "description": "Max parallel batch reqs (default 20)",
+          "takes_arg": true,
+          "arg_name": "batch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--batch-per-host"
+          ],
+          "description": "Max parallel batch reqs per host (default 6)",
+          "takes_arg": true,
+          "arg_name": "batch-per-host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vus",
+            "-u"
+          ],
+          "description": "Number of virtual users (default 1)",
+          "takes_arg": true,
+          "arg_name": "vus",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--duration",
+            "-d"
+          ],
+          "description": "Test duration limit",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--iterations",
+            "-i"
+          ],
+          "description": "Script total iteration limit (among all VUs)",
+          "takes_arg": true,
+          "arg_name": "iterations",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stage",
+            "-s"
+          ],
+          "description": "Add a stage, as `[duration]:[target]`",
+          "takes_arg": true,
+          "arg_name": "stage",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--execution-segment"
+          ],
+          "description": "Add a stage, as `[duration]:[target]`",
+          "takes_arg": true,
+          "arg_name": "execution-segment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--execution-segment-sequence"
+          ],
+          "description": "The execution segment sequence",
+          "takes_arg": true,
+          "arg_name": "execution-segment-sequence",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--paused",
+            "-p"
+          ],
+          "description": "Start the test in a paused state",
+          "takes_arg": true,
+          "arg_name": "paused",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-setup"
+          ],
+          "description": "Don't run setup()",
+          "takes_arg": true,
+          "arg_name": "no-setup",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-teardown"
+          ],
+          "description": "Don't run teardown()",
+          "takes_arg": true,
+          "arg_name": "no-teardown",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-redirects"
+          ],
+          "description": "Follow at most n redirects (default 10)",
+          "takes_arg": true,
+          "arg_name": "max-redirects",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rps"
+          ],
+          "description": "Limit requests per second",
+          "takes_arg": true,
+          "arg_name": "rps",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user-agent"
+          ],
+          "description": "User agent for http requests (default \"k6/0.39.0 (https://k6.io/)\")",
+          "takes_arg": true,
+          "arg_name": "user-agent",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--http-debug"
+          ],
+          "description": "Log all HTTP requests and responses. Excludes body by default. To include body use '--http-debug=full'",
+          "takes_arg": true,
+          "arg_name": "http-debug",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--insecure-skip-tls-verify"
+          ],
+          "description": "Skip verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "insecure-skip-tls-verify",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-connection-reuse"
+          ],
+          "description": "Disable keep-alive connections",
+          "takes_arg": true,
+          "arg_name": "no-connection-reuse",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-vu-connection-reuse"
+          ],
+          "description": "Don't reuse connections between iterations",
+          "takes_arg": true,
+          "arg_name": "no-vu-connection-reuse",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--min-iteration-duration"
+          ],
+          "description": "Minimum amount of time k6 will take executing a single iteration",
+          "takes_arg": true,
+          "arg_name": "min-iteration-duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--throw"
+          ],
+          "description": "Throw warnings (like failed http requests) as errors",
+          "takes_arg": true,
+          "arg_name": "throw",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--blacklist-ip"
+          ],
+          "description": "Blacklist an ip range from being called",
+          "takes_arg": true,
+          "arg_name": "blacklist-ip",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--block-hostnames"
+          ],
+          "description": "Block a case-insensitive hostname pattern, with optional leading wildcard, from being called",
+          "takes_arg": true,
+          "arg_name": "block-hostnames",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--summary-trend-stats"
+          ],
+          "description": "Define stats for trend metrics (response times), one or more as 'avg,p(95),...' (default 'avg,min,med,max,p(90),p(95)')",
+          "takes_arg": true,
+          "arg_name": "summary-trend-stats",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--summary-time-unit"
+          ],
+          "description": "Define the time unit used to display the trend stats. Possible units are: 's', 'ms' and 'us'",
+          "takes_arg": true,
+          "arg_name": "summary-time-unit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--system-tags"
+          ],
+          "description": "Only include these system tags in metrics (default \"proto,subproto,status,method,url,name,group,check,error,error_code,tls_version,scenario,service,expected_response\")",
+          "takes_arg": true,
+          "arg_name": "system-tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag"
+          ],
+          "description": "Add a tag to be applied to all samples, as `[name]=[value]`",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--console-output"
+          ],
+          "description": "Redirects the console logging to the provided output file",
+          "takes_arg": true,
+          "arg_name": "console-output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discard-response-bodies"
+          ],
+          "description": "Read but don't process or save HTTP response bodies",
+          "takes_arg": true,
+          "arg_name": "discard-response-bodies",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-ips"
+          ],
+          "description": "Client IP Ranges and/or CIDRs from which each VU will be making requests, e.g. '192.168.220.1,192.168.0.10-192.168.0.25', 'fd:1::0/120', etc",
+          "takes_arg": true,
+          "arg_name": "local-ips",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dns"
+          ],
+          "description": "DNS resolver configuration",
+          "takes_arg": true,
+          "arg_name": "dns",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-system-env-vars"
+          ],
+          "description": "Pass the real system environment variables to the runtime (default true)",
+          "takes_arg": true,
+          "arg_name": "include-system-env-vars",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compatibility-mode"
+          ],
+          "description": "JavaScript compiler compatibility mode, \"extended\" or \"base\"",
+          "takes_arg": true,
+          "arg_name": "compatibility-mode",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Override test type, \"js\" or \"archive\"",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Add/override environment variable with VAR=value",
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-thresholds"
+          ],
+          "description": "Don't run thresholds",
+          "takes_arg": true,
+          "arg_name": "no-thresholds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-summary"
+          ],
+          "description": "Don't show the summary at the end of the test",
+          "takes_arg": true,
+          "arg_name": "no-summary",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--summary-export"
+          ],
+          "description": "Output the end-of-test summary report to JSON file",
+          "takes_arg": true,
+          "arg_name": "summary-export",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--out",
+            "-o"
+          ],
+          "description": "Uri for an external metrics database",
+          "takes_arg": true,
+          "arg_name": "out",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--linger",
+            "-l"
+          ],
+          "description": "Keep the API server alive past test end",
+          "takes_arg": true,
+          "arg_name": "linger",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-usage-report"
+          ],
+          "description": "Don't send anonymous stats to the developers",
+          "takes_arg": true,
+          "arg_name": "no-usage-report",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "run",
+          "description": "K6 script to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "scale",
+      "aliases": [],
+      "description": "Scale a running test",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for scale",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--max"
+          ],
+          "description": "Max available virtual users",
+          "takes_arg": true,
+          "arg_name": "max",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--vus"
+          ],
+          "description": "Number of virtual users (default 1)",
+          "takes_arg": true,
+          "arg_name": "vus",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stats",
+      "aliases": [],
+      "description": "Show test metrics",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for stats",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show test status",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show the application version and exit",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Enable verbose logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Disable progress updates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for k6",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--address"
+      ],
+      "description": "Address for the REST API server (default \"localhost:6565\")",
+      "takes_arg": true,
+      "arg_name": "address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-c"
+      ],
+      "description": "JSON config file",
+      "takes_arg": true,
+      "arg_name": "config",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-format"
+      ],
+      "description": "Log output format",
+      "takes_arg": true,
+      "arg_name": "log-format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-output"
+      ],
+      "description": "Change the output for k6 logs",
+      "takes_arg": true,
+      "arg_name": "log-output",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Disable colored output",
+      "takes_arg": true,
+      "arg_name": "no-color",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

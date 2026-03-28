@@ -1,0 +1,34 @@
+{
+  "name": "for",
+  "aliases": [],
+  "description": "Perform a set of commands multiple times",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "var",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "arg",
+      "description": null,
+      "template": {
+        "custom": [
+          "in"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "values",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

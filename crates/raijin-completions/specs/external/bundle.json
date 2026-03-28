@@ -1,0 +1,1280 @@
+{
+  "name": "bundle",
+  "aliases": [],
+  "description": "Ruby Dependency Management",
+  "subcommands": [
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install the gems specified by the Gemfile or Gemfile.lock",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--binstubs"
+          ],
+          "description": "Create binstubs in dir",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean"
+          ],
+          "description": "Remove unused gems after install",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deployment"
+          ],
+          "description": "For Production and CI use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "--redownload"
+          ],
+          "description": "Redownload all gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--frozen"
+          ],
+          "description": "Do not allow lock file to update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-index"
+          ],
+          "description": "Cache the full index locally",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gemfile"
+          ],
+          "description": "The gemfile to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--jobs"
+          ],
+          "description": "Maximum number of parallel installs",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local"
+          ],
+          "description": "Use only gems already downloaded or cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use vendor/cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prune"
+          ],
+          "description": "Do not remove stale gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Path the install gems too",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Do not print to stdout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--retry"
+          ],
+          "description": "Retry failed network requests N times",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shebang"
+          ],
+          "description": "Uses the specified ruby executable for binstubs",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--standalone"
+          ],
+          "description": "Makes a bundle that can work without depending on Rubygems or Bundler at runtime",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--system"
+          ],
+          "description": "Use system Rubygems location",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trust-policy"
+          ],
+          "description": "Apply the Rubygems security policy",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--with"
+          ],
+          "description": "Groups to install",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--without"
+          ],
+          "description": "Groups to NOT install",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update dependencies to their latest versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Update all gems specified in Gemfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group",
+            "-g"
+          ],
+          "description": "Only update the gems in the specified group",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "The name of a :git or :path source used in the Gemfile",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local"
+          ],
+          "description": "Use only gems already downloaded or cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ruby"
+          ],
+          "description": "Update the locked version of Ruby to the current version of Ruby",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundler"
+          ],
+          "description": "Update the locked version of bundler to the invoked bundler version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-index"
+          ],
+          "description": "Fall back to using the single-file index of all gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--jobs",
+            "-j"
+          ],
+          "description": "Specify the number of jobs to run in parallel. The default is 1",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--retry"
+          ],
+          "description": "Retry failed network or git requests for number times",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Only output warnings and errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "--redownload"
+          ],
+          "description": "Force downloading every gem",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--patch"
+          ],
+          "description": "Prefer updating only to next patch version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minor"
+          ],
+          "description": "Prefer updating only to next minor version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major"
+          ],
+          "description": "Prefer updating to next major version (default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "Do not allow any gem to be updated past latest --patch | --minor | --major",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--conservative"
+          ],
+          "description": "Do not allow shared dependencies to be updated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gem",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "package",
+      "aliases": [],
+      "description": "Package the .gem files required by your application into the vendor/cache directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a command in the context of the bundle",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--keep-file-descriptors"
+          ],
+          "description": "Pass all file descriptors to the new process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add gem to the Gemfile and run bundle install",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--version",
+            "-v"
+          ],
+          "description": "Specify version requirements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group",
+            "-g"
+          ],
+          "description": "Specify the group(s) for the added gem",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source",
+            "-s"
+          ],
+          "description": "Specify the source",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-install"
+          ],
+          "description": "Adds the gem to the Gemfile but does not install it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--optimistic"
+          ],
+          "description": "Adds optimistic declaration of version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "Adds strict declaration of version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "binstubs",
+      "aliases": [],
+      "description": "Install the binstubs of the listed gems",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Overwrite existing binstubs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "The location to install the specified binstubs to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--standalone"
+          ],
+          "description": "Makes binstubs that can work without depending on Rubygems or Bundler at runtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shebang"
+          ],
+          "description": "Specify a different shebang executable name than the default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Determine whether the requirements for your application are installed and available to Bundler",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Locks the Gemfile before running the command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gemfile"
+          ],
+          "description": "Use the specified gemfile instead of the Gemfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Specify a different path than the system default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show the source location of a particular gem in the bundle",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--paths"
+          ],
+          "description": "List the paths of all gems that are required by your Gemfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gem",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "outdated",
+      "aliases": [],
+      "description": "Show all of the outdated gems in the current bundle",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--local"
+          ],
+          "description": "Do not attempt to fetch gems remotely and use the gem cache instead",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pre"
+          ],
+          "description": "Check for newer pre-release gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "Check against a specific source",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "Only list newer versions allowed by your Gemfile requirements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parseable",
+            "--porcelain"
+          ],
+          "description": "Use minimal formatting for more parseable output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group"
+          ],
+          "description": "List gems from a specific group",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--groups"
+          ],
+          "description": "List gems organized by groups",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--update-strict"
+          ],
+          "description": "Strict conservative resolution, do not allow any gem to be updated past latest --patch | --minor| --major",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minor"
+          ],
+          "description": "Prefer updating only to next minor version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major"
+          ],
+          "description": "Prefer updating to next major version (default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--patch"
+          ],
+          "description": "Prefer updating only to next patch version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter-major"
+          ],
+          "description": "Only list major newer versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter-minor"
+          ],
+          "description": "Only list minor newer versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter-patch"
+          ],
+          "description": "Only list patch newer versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--only-explicit"
+          ],
+          "description": "Only list gems specified in your Gemfile, not their dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Start an IRB session in the current bundle",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open an installed gem in the editor",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "gem",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "lock",
+      "aliases": [],
+      "description": "Generate a lockfile for your dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--update"
+          ],
+          "description": "Ignores the existing lockfile",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local"
+          ],
+          "description": "Do not attempt to connect to rubygems.org",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print"
+          ],
+          "description": "Prints the lockfile to STDOUT instead of writing to the file\n system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lockfile"
+          ],
+          "description": "The path where the lockfile should be written to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-index"
+          ],
+          "description": "Fall back to using the single-file index of all gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-platform"
+          ],
+          "description": "Add a new platform to the lockfile, re-resolving for the addi-\n tion of that platform",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-platform"
+          ],
+          "description": "Remove a platform from the lockfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--patch"
+          ],
+          "description": "If updating, prefer updating only to next patch version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minor"
+          ],
+          "description": "If updating, prefer updating only to next minor version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major"
+          ],
+          "description": "If updating, prefer updating to next major version (default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "If updating, do not allow any gem to be updated past latest --patch | --minor | --major",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--conservative"
+          ],
+          "description": "If updating, use bundle install conservative update behavior and do not allow shared dependencies to be updated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "viz",
+      "aliases": [],
+      "description": "Generate a visual representation of your dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "The name to use for the generated file. See --format option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-F"
+          ],
+          "description": "This is output format option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--requirements",
+            "-R"
+          ],
+          "description": "Set to show the version of each required dependency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-v"
+          ],
+          "description": "Set to show each gem version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--without",
+            "-W"
+          ],
+          "description": "Exclude gems that are part of the specified named group",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Generate a simple Gemfile, placed in the current directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--gemspec"
+          ],
+          "description": "Use the specified .gemspec to create the Gemfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "gem",
+      "aliases": [],
+      "description": "Create a simple gem, suitable for development with Bundler",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exe",
+            "-b",
+            "--bin"
+          ],
+          "description": "Specify that Bundler should create a binary executable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-exe"
+          ],
+          "description": "Do not create a binary",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coc"
+          ],
+          "description": "Add a CODE_OF_CONDUCT.md file to the root of the generated project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-coc"
+          ],
+          "description": "Do not create a CODE_OF_CONDUCT.md",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ext"
+          ],
+          "description": "Add boilerplate for C extension code to the generated project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ext"
+          ],
+          "description": "Do not add C extension code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mit"
+          ],
+          "description": "Add an MIT license",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-mit"
+          ],
+          "description": "Do not create a LICENSE.txt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--test"
+          ],
+          "description": "Specify the test framework that Bundler should use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--edit"
+          ],
+          "description": "Open the resulting gemspec in EDITOR",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "platform",
+      "aliases": [],
+      "description": "Display platform compatibility information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ruby"
+          ],
+          "description": "It will display the ruby directive information so you don't have to parse it from the Gemfile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Clean up unused gems in your Bundler directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Print the changes, but do not clean the unused gems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force a clean even if --path is not set",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Display warnings about common problems",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Only output warnings and errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gemfile"
+          ],
+          "description": "The location of the Gemfile which Bundler should use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Print all output without color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--retry",
+        "-r"
+      ],
+      "description": "Specify the number of times you wish to attempt network commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-V"
+      ],
+      "description": "Print out additional logging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

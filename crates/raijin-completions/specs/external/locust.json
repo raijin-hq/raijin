@@ -1,0 +1,448 @@
+{
+  "name": "locust",
+  "aliases": [],
+  "description": "Locust is an easy to use, scriptable and scalable Python-based performance testing tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show this help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--locustfile"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": true,
+      "arg_name": "files...",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Config file path",
+      "takes_arg": true,
+      "arg_name": "files...",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--host"
+      ],
+      "description": "Host to load test in the following format: http://10.21.32.33",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--users"
+      ],
+      "description": "Peak number of concurrent Locust users. Primarily used together with --headless or --autostart",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--spawn-rate"
+      ],
+      "description": "Rate to spawn users at (users per second). Primarily used together with --headless or --autostart",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--run-time"
+      ],
+      "description": "Stop after the specified amount of time, e.g. (300s, 20m, 3h, 1h30m, etc.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list"
+      ],
+      "description": "Show list of possible User classes and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--web-host"
+      ],
+      "description": "Host to bind the web interface to. Defaults to '*' (all interfaces)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--web-port"
+      ],
+      "description": "Port on which to run web host",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headless"
+      ],
+      "description": "Disable the web interface, and start the test immediately",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--autostart"
+      ],
+      "description": "Starts the test immediately (without disabling the web UI)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--autoquit"
+      ],
+      "description": "Quits Locust entirely, X seconds after the run is finished",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--web-auth"
+      ],
+      "description": "Turn on Basic Auth for the web interface. e.g. username:password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tls-cert"
+      ],
+      "description": "Optional path to TLS certificate to use to serve over HTTPS",
+      "takes_arg": true,
+      "arg_name": "tls-cert",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tls-key"
+      ],
+      "description": "Optional path to TLS private key to use to serve over HTTPS",
+      "takes_arg": true,
+      "arg_name": "tls-key",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--class-picker"
+      ],
+      "description": "Enable select boxes in the web interface to choose from all available User classes and Shape classes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--master"
+      ],
+      "description": "Set locust to run in distributed mode with this process as master",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--master-bind-host"
+      ],
+      "description": "Interfaces (hostname, ip) that locust master should bind to",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--master-bind-port"
+      ],
+      "description": "Port that locust master should bind to",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--expect-workers"
+      ],
+      "description": "How many workers master should expect to connect before starting the test (only when --headless/autostart is used)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--expect-workers-max-wait"
+      ],
+      "description": "How long should the master wait for workers to connect before giving up. Defaults to wait forever",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--worker"
+      ],
+      "description": "Set locust to run in distributed mode with this process as worker",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--master-host"
+      ],
+      "description": "Host or IP address of locust master for distributed load testing. Only used when running with --worker. Defaults to 127.0.0.1",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--master-port"
+      ],
+      "description": "Show list of possible User classes and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--csv"
+      ],
+      "description": "Store current request stats to files in CSV format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--csv-full-history"
+      ],
+      "description": "Store each stats entry in CSV format to _stats_history.csv file. You must also specify the '--csv' argument to enable this",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-stats"
+      ],
+      "description": "Print stats in the console",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-summary"
+      ],
+      "description": "Only print the summary stats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reset-stats"
+      ],
+      "description": "Reset statistics once spawning has been completed. Should be set on both master and workers when running in distributed mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--html"
+      ],
+      "description": "Store HTML report to file path specified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-log-setup"
+      ],
+      "description": "Disable Locust's logging setup. Instead, the configuration is provided by the Locust test or Python defaults. --loglevel LOGLEVEL, -L LOGLEVEL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--loglevel"
+      ],
+      "description": "Choose between DEBUG/INFO/WARNING/ERROR/CRITICAL. Default is INFO",
+      "takes_arg": true,
+      "arg_name": "loglevel",
+      "arg_template": {
+        "custom": [
+          "INFO",
+          "WARNING",
+          "DEBUG",
+          "ERROR",
+          "CRITICAL"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logfile"
+      ],
+      "description": "Path to log file. If not set, log will go to stderr",
+      "takes_arg": true,
+      "arg_name": "logfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-task-ratio"
+      ],
+      "description": "Print table of the User classes' task execution ratio. Use this with non-zero --user option if some classes define non-zero fixed_count attribute",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-task-ratio-json"
+      ],
+      "description": "Print json data of the User classes' task execution ratio. Use this with non-zero --user option if some classes define non-zero fixed_count attribute",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exit-code-on-error"
+      ],
+      "description": "Sets the process exit code to use when a test result contain any failure or error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--equal-weights"
+      ],
+      "description": "Use equally distributed task weights, overriding the weights specified in the locustfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-rebalancing"
+      ],
+      "description": "Allow to automatically rebalance users if new workers are added or removed during a test run",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--tags"
+      ],
+      "description": "List of tags to include in the test, so only tasks with any matching tags will be executed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--E",
+        "--exclude-tags"
+      ],
+      "description": "List of tags to exclude from the test, so only tasks with no matching tags will be executed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

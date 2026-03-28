@@ -1,0 +1,242 @@
+{
+  "name": "leaf",
+  "aliases": [],
+  "description": "Create and interact with your leaf projects",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Dump the shell completion script",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "[init] Create a new Leaf PHP project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project name",
+          "description": "Name of the project",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "[publish] Deploy your leaf project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for a command",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Add a new package to your leaf app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package name",
+          "description": "Name of the package",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "interact",
+      "aliases": [],
+      "description": "Interact with your application",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a script in your composer.json",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command name",
+          "description": "Name of the command",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Run your Leaf app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The port number to run the server on",
+          "takes_arg": true,
+          "arg_name": "port number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for changes and restart the server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Test your leaf application through leaf alchemy",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "test:setup",
+      "aliases": [],
+      "description": "Add tests to your application",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package name",
+          "description": "Name of the package",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update leaf cli to the latest version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for the given command. When no command is given display help for the list command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Do not output any message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display this application version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ansi"
+      ],
+      "description": "Force ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Disable ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-interaction"
+      ],
+      "description": "Do not ask any interactive question",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    }
+  ],
+  "args": []
+}

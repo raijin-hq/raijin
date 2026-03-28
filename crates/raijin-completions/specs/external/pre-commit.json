@@ -1,0 +1,1067 @@
+{
+  "name": "pre-commit",
+  "aliases": [],
+  "description": "Pre-commit",
+  "subcommands": [
+    {
+      "name": "autoupdate",
+      "aliases": [],
+      "description": "Auto-update pre-commit config to the latest repos' versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bleeding-edge"
+          ],
+          "description": "Update to the bleeding edge of `master` instead of the latest tagged version (the default behavior)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--freeze"
+          ],
+          "description": "Store 'frozen' hashes in `rev` instead of tag names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repo"
+          ],
+          "description": "Only update this repository -- may be specified multiple times",
+          "takes_arg": true,
+          "arg_name": "REPO",
+          "arg_template": null,
+          "is_repeatable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Clean out pre-commit files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "gc",
+      "aliases": [],
+      "description": "Clean unused cached repos",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init-templatedir",
+      "aliases": [],
+      "description": "Install hook script in a directory intended for use with `git config init.templateDir`",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--hook-type"
+          ],
+          "description": "Type of hook to install",
+          "takes_arg": true,
+          "arg_name": "HOOK_TYPE",
+          "arg_template": {
+            "custom": [
+              "pre-commit",
+              "pre-merge-commit",
+              "pre-push",
+              "prepare-commit-msg",
+              "commit-msg",
+              "post-commit",
+              "post-checkout",
+              "post-merge",
+              "post-rewrite"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-allow-missing-config"
+          ],
+          "description": "Assume cloned repos should have a `pre-commit` config",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install the pre-commit script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--overwrite"
+          ],
+          "description": "Overwrite existing hooks / remove migration mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "install-hooks"
+          ],
+          "description": "Whether to install hook environments for all environments in the config file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--hook-type"
+          ],
+          "description": "Type of hook to install",
+          "takes_arg": true,
+          "arg_name": "HOOK_TYPE",
+          "arg_template": {
+            "custom": [
+              "pre-commit",
+              "pre-merge-commit",
+              "pre-push",
+              "prepare-commit-msg",
+              "commit-msg",
+              "post-commit",
+              "post-checkout",
+              "post-merge",
+              "post-rewrite"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-missing-config"
+          ],
+          "description": "Whether to allow a missing `pre-commit` configuration file or exit with a failure code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate-config",
+      "aliases": [],
+      "description": "Migrate list configuration to new map configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run hooks",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all-files",
+            "-a"
+          ],
+          "description": "Run all files in the repo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Specific filenames to run hooks on",
+          "takes_arg": true,
+          "arg_name": "FILES",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-diff-on-failure"
+          ],
+          "description": "When hooks fail, run `git diff` directly afterward",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hook-stage"
+          ],
+          "description": "The stage during which the hook is fired",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "pre-commit",
+              "pre-merge-commit",
+              "pre-push",
+              "prepare-commit-msg",
+              "commit-msg",
+              "post-commit",
+              "post-checkout",
+              "post-merge",
+              "post-rewrite"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-branch"
+          ],
+          "description": "Remote branch ref used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_BRANCH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-branch"
+          ],
+          "description": "Local branch ref used by `git push`",
+          "takes_arg": true,
+          "arg_name": "LOCAL_BRANCH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from-ref",
+            "--source",
+            "-s"
+          ],
+          "description": "Represents the original ref in a `from_ref...to_ref` diff expression. For `pre-push` hooks, this represents the branch you are pushing to. For `post-checkout` hooks, this represents the branch that was previously checked out",
+          "takes_arg": true,
+          "arg_name": "FROM_REF",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to-ref",
+            "--origin",
+            "-o"
+          ],
+          "description": "Represents the destination ref in a `from_ref...to_ref` diff expression. For `pre-push` hooks, this represents the branch being pushed. For `post-checkout` hooks, this represents the branch that is now checked out",
+          "takes_arg": true,
+          "arg_name": "TO_REF",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--commit-msg-filename"
+          ],
+          "description": "Filename to check when running during `commit-msg`",
+          "takes_arg": true,
+          "arg_name": "COMMIT_MSG_FILENAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-name"
+          ],
+          "description": "Remote name used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_NAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-url"
+          ],
+          "description": "Remote URL used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_URL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkout-type"
+          ],
+          "description": "Indicates whether the checkout was a branch checkout (changing branches, flag=1) or a file checkout (retrieving a file from the index, flag=0)",
+          "takes_arg": true,
+          "arg_name": "CHECKOUT_TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--is-squash-merge"
+          ],
+          "description": "During a post-merge hook, indicates whether the merge was a squash merge",
+          "takes_arg": true,
+          "arg_name": "IS_SQUASH_MERGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rewrite-command"
+          ],
+          "description": "During a post-rewrite hook, specifies the command that invoked the rewrite",
+          "takes_arg": true,
+          "arg_name": "REWRITE_COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "hook",
+          "description": "A single hook-id to run",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sample-config",
+      "aliases": [],
+      "description": "Produce a sample .pre-commit-config.yaml file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "try-repo",
+      "aliases": [],
+      "description": "Try the hooks in a repository, useful for developing new hooks",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all-files",
+            "-a"
+          ],
+          "description": "Run all files in the repo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Specific filenames to run hooks on",
+          "takes_arg": true,
+          "arg_name": "FILES",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-diff-on-failure"
+          ],
+          "description": "When hooks fail, run `git diff` directly afterward",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hook-stage"
+          ],
+          "description": "The stage during which the hook is fired",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "pre-commit",
+              "pre-merge-commit",
+              "pre-push",
+              "prepare-commit-msg",
+              "commit-msg",
+              "post-commit",
+              "post-checkout",
+              "post-merge",
+              "post-rewrite"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-branch"
+          ],
+          "description": "Remote branch ref used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_BRANCH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-branch"
+          ],
+          "description": "Local branch ref used by `git push`",
+          "takes_arg": true,
+          "arg_name": "LOCAL_BRANCH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from-ref",
+            "--source",
+            "-s"
+          ],
+          "description": "Represents the original ref in a `from_ref...to_ref` diff expression. For `pre-push` hooks, this represents the branch you are pushing to. For `post-checkout` hooks, this represents the branch that was previously checked out",
+          "takes_arg": true,
+          "arg_name": "FROM_REF",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to-ref",
+            "--origin",
+            "-o"
+          ],
+          "description": "Represents the destination ref in a `from_ref...to_ref` diff expression. For `pre-push` hooks, this represents the branch being pushed. For `post-checkout` hooks, this represents the branch that is now checked out",
+          "takes_arg": true,
+          "arg_name": "TO_REF",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--commit-msg-filename"
+          ],
+          "description": "Filename to check when running during `commit-msg`",
+          "takes_arg": true,
+          "arg_name": "COMMIT_MSG_FILENAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-name"
+          ],
+          "description": "Remote name used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_NAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-url"
+          ],
+          "description": "Remote URL used by `git push`",
+          "takes_arg": true,
+          "arg_name": "REMOTE_URL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkout-type"
+          ],
+          "description": "Indicates whether the checkout was a branch checkout (changing branches, flag=1) or a file checkout (retrieving a file from the index, flag=0)",
+          "takes_arg": true,
+          "arg_name": "CHECKOUT_TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--is-squash-merge"
+          ],
+          "description": "During a post-merge hook, indicates whether the merge was a squash merge",
+          "takes_arg": true,
+          "arg_name": "IS_SQUASH_MERGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rewrite-command"
+          ],
+          "description": "During a post-rewrite hook, specifies the command that invoked the rewrite",
+          "takes_arg": true,
+          "arg_name": "REWRITE_COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ref",
+            "--rev"
+          ],
+          "description": "Manually select a rev to run against, otherwise the `HEAD` revision will be used",
+          "takes_arg": true,
+          "arg_name": "REV",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "repo",
+          "description": "Repository to source hooks from",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "hook",
+          "description": "A single hook-id to run",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall the pre-commit script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--hook-type"
+          ],
+          "description": "Type of hook to install",
+          "takes_arg": true,
+          "arg_name": "HOOK_TYPE",
+          "arg_template": {
+            "custom": [
+              "pre-commit",
+              "pre-merge-commit",
+              "pre-push",
+              "prepare-commit-msg",
+              "commit-msg",
+              "post-commit",
+              "post-checkout",
+              "post-merge",
+              "post-rewrite"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help for a specific command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Whether to use color in output. Defaults to `auto`",
+          "takes_arg": true,
+          "arg_name": "color",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to alternate config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "drush",
+  "aliases": [],
+  "description": "Drush is a command line shell and Unix scripting interface for Drupal",
+  "subcommands": [],
+  "options": [],
+  "args": []
+}

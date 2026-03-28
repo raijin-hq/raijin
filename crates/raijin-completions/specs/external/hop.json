@@ -1,0 +1,349 @@
+{
+  "name": "hop",
+  "aliases": [],
+  "description": "Interact with Hop in your terminal",
+  "subcommands": [
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Authenticate with Hop",
+      "subcommands": [
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login to Hop",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Logout the current user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy a new container",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Type of the container, defaults to `ephemeral`",
+          "takes_arg": true,
+          "arg_name": "container type",
+          "arg_template": {
+            "custom": [
+              "ephemeral",
+              "persistent"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--containers",
+            "-i"
+          ],
+          "description": "Number of containers to use, defaults to 1 if `scaling` is manual",
+          "takes_arg": true,
+          "arg_name": "container amount",
+          "arg_template": {
+            "custom": [
+              "1",
+              "2",
+              "4",
+              "8",
+              "10"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cpu",
+            "-c"
+          ],
+          "description": "The number of CPUs to use, defaults to 1",
+          "takes_arg": true,
+          "arg_name": "cpu amount",
+          "arg_template": {
+            "custom": [
+              "1",
+              "2",
+              "4",
+              "8"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Environment variables to set, in the form of KEY=VALUE",
+          "takes_arg": true,
+          "arg_name": "environment variable",
+          "arg_template": {
+            "custom": [
+              "port="
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name",
+            "-n"
+          ],
+          "description": "Name of the deployment, defaults to the directory name",
+          "takes_arg": true,
+          "arg_name": "deployment name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project",
+            "-p"
+          ],
+          "description": "Namespace or ID of the project to use",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ram",
+            "-m"
+          ],
+          "description": "Amount of RAM to use, defaults to 512MB",
+          "takes_arg": true,
+          "arg_name": "ram amount",
+          "arg_template": {
+            "custom": [
+              "128MB",
+              "256MB",
+              "512MB",
+              "1G",
+              "2G",
+              "4G"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scaling",
+            "-s"
+          ],
+          "description": "Scaling strategy, defaults to `manual`",
+          "takes_arg": true,
+          "arg_name": "scaling strategy",
+          "arg_template": {
+            "custom": [
+              "manual",
+              "autoscale"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Directory to deploy, defaults to current directory",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ignite",
+      "aliases": [],
+      "description": "Interact with Ignite containers",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List all deployments",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project",
+                "-p"
+              ],
+              "description": "Namespace or ID of the project to use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Delete a deployment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project",
+                "-p"
+              ],
+              "description": "Namespace or ID of the project to use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link an existing deployment to a hopfile",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Interact with projects",
+      "subcommands": [
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Get information about a project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List all projects that you're authorized to",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a new project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Delete a project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "switch",
+          "aliases": [],
+          "description": "Switch to a different project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Get information about the current user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--project",
+        "-p"
+      ],
+      "description": "Namespace or ID of the project to use",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

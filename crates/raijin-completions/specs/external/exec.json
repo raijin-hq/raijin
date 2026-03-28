@@ -1,0 +1,16 @@
+{
+  "name": "exec",
+  "aliases": [],
+  "description": "Replace the current shell with a program",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

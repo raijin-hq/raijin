@@ -1,0 +1,4245 @@
+{
+  "name": "tmux",
+  "aliases": [],
+  "description": "A terminal multiplexer",
+  "subcommands": [
+    {
+      "name": "a",
+      "aliases": [
+        "at",
+        "attach",
+        "attach-session"
+      ],
+      "description": "Attach to last session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Detach all others clients to the session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Send SIGHUP to the parent process and detach the client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Set client flags",
+          "takes_arg": true,
+          "arg_name": "flags",
+          "arg_template": {
+            "custom": [
+              "active-pane",
+              "ignore-size",
+              "no-output",
+              "pause-after",
+              "read-only",
+              "wait-exit"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Set the session's working directory",
+          "takes_arg": true,
+          "arg_name": "working-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Don't use update-environment option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Attach to a session with the given name",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bind",
+      "aliases": [
+        "bind-key"
+      ],
+      "description": "Bind a key to a command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Alias for -T root",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Indicate that this key may repeat",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Attach a note to the key",
+          "takes_arg": true,
+          "arg_name": "note",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "The key table to use",
+          "takes_arg": true,
+          "arg_name": "key-table",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "key",
+          "description": "The key to bind",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": "The command to bind to the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arguments",
+          "description": "Arguments for the command",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "breakp",
+      "aliases": [
+        "break-pane"
+      ],
+      "description": "Break a pane from an exiting into a new window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Move the window to the next index after",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Move the window to the next index before",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "The new windows does not become the current window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P"
+          ],
+          "description": "Print information about the new window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "capturep",
+      "aliases": [
+        "capture-pane"
+      ],
+      "description": "Capture the contents of a pane to a buffer",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Use the alternate screen and history is not accessible",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Include escape sequences for text and background attributes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Redirect output to stdout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P"
+          ],
+          "description": "Capture only outputs that is the beginning of an as-yet incomplete escape sequence",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Do not throw an error if not alternate screen is found",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-C"
+          ],
+          "description": "Escape non-printable characters as octal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J"
+          ],
+          "description": "Preserve trailing spaces and join any wrapped lines",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Preserve trailing spaces at each line's end",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "The buffer name",
+          "takes_arg": true,
+          "arg_name": "buffer-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Ending line number",
+          "takes_arg": true,
+          "arg_name": "end-line",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S"
+          ],
+          "description": "Starting line number",
+          "takes_arg": true,
+          "arg_name": "start-line",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "choose-buffer",
+      "aliases": [],
+      "description": "Put a pane into buffer choice mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Start without the preview",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Zoom the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Reverse the sort order",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify an initial filter",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-O"
+          ],
+          "description": "Specify the sort order",
+          "takes_arg": true,
+          "arg_name": "sort-order",
+          "arg_template": {
+            "custom": [
+              "time",
+              "name",
+              "size"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "choose-client",
+      "aliases": [],
+      "description": "Put a pane into buffer client mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Start without the preview",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Reserve the sort order",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Zoom the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify an initial filter",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-O"
+          ],
+          "description": "Specify the initial sort field",
+          "takes_arg": true,
+          "arg_name": "sort",
+          "arg_template": {
+            "custom": [
+              "name",
+              "size",
+              "creation",
+              "activity"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "choose-tree",
+      "aliases": [],
+      "description": "Put a pane into buffer tree mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-G"
+          ],
+          "description": "Include all sessions in any session group in the tree",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Start without the preview",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Reserve the sort order",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Start with sessions collapsed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Start with windows collapsed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Zoom the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify an initial filter",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-O"
+          ],
+          "description": "Specify the initial sort field",
+          "takes_arg": true,
+          "arg_name": "sort",
+          "arg_template": {
+            "custom": [
+              "name",
+              "size",
+              "creation",
+              "activity"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clearhist",
+      "aliases": [
+        "clear-history"
+      ],
+      "description": "Remove and clear history for a pane",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clock-mode",
+      "aliases": [],
+      "description": "Enter clock mode",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "command-prompt",
+      "aliases": [],
+      "description": "Open the tmux command prompt in a client",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "The prompt only accept one key press",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i"
+          ],
+          "description": "Execute the command every time the prompt input changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Like -l but the key press is translated to a key name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "The prompt only accept numeric key press",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Tell that the prompt is for a target",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-W"
+          ],
+          "description": "Tell that the prompt is for a window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-I"
+          ],
+          "description": "Comma-separated list of the initial text for each prompt",
+          "takes_arg": true,
+          "arg_name": "inputs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Comma-separated list of prompts which are displayed in order",
+          "takes_arg": true,
+          "arg_name": "prompts",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": "If specified, used as a command",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "confirm",
+      "aliases": [
+        "confirm-before"
+      ],
+      "description": "Run a command but ask for confirmation before",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "A prompt to display for confirmation",
+          "takes_arg": true,
+          "arg_name": "prompt",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": "The command to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "copy-mode",
+      "aliases": [],
+      "description": "Enter copy mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Scrolling to the bottom should exit copy mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H"
+          ],
+          "description": "Hide the position indicator",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-M"
+          ],
+          "description": "Begin a mouse drag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Cancel copy mode and any other modes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Scroll one page up",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deleteb",
+      "aliases": [
+        "delete-buffer"
+      ],
+      "description": "Delete a paste buffer",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "The target buffer",
+          "takes_arg": true,
+          "arg_name": "buffer-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "detach",
+      "aliases": [
+        "detach-client"
+      ],
+      "description": "Detach a client from the server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Kills all but the client given with -t",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P"
+          ],
+          "description": "Send SIGHUP to the parent process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Run the given shell-command to replace the client",
+          "takes_arg": true,
+          "arg_name": "shell-command",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Detach all clients attached to the specified session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "menu",
+      "aliases": [
+        "display-menu"
+      ],
+      "description": "Display menu on target-client",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-O"
+          ],
+          "description": "Do not close the menu when the mouse button is released",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Specify a title",
+          "takes_arg": true,
+          "arg_name": "title",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Give the x position of the menu",
+          "takes_arg": true,
+          "arg_name": "position",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Give the y position of the menu",
+          "takes_arg": true,
+          "arg_name": "position",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the menu",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "The key to press to open the menu",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": "Commands to execute",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "display",
+      "aliases": [
+        "display-message"
+      ],
+      "description": "Display a message in the status line",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "List the format variables and their values",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-I"
+          ],
+          "description": "Forward any input read from stdin to the empty pane target-pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Print output to stdout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Print verbose logging as the format is parsed",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "A delay for the message",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "message",
+          "description": "The message to display",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "displayp",
+      "aliases": [
+        "display-panes"
+      ],
+      "description": "Display an indicator for each visible pane",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Do not block other commands from running until the indicator is closed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Do not close the indicator when a key is pressed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Specify the duration",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "findw",
+      "aliases": [
+        "find-window"
+      ],
+      "description": "Search for a pattern in windows",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i"
+          ],
+          "description": "Make the search ignore cases",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-C"
+          ],
+          "description": "Match only visible window contents",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N"
+          ],
+          "description": "Match only the window name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Search a regular expression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Match only the window's title",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Zoom the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "match-string",
+          "description": "A string to search for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "has",
+      "aliases": [
+        "has-session"
+      ],
+      "description": "Check and report if a session exists on the server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Specify the target session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "if",
+      "aliases": [
+        "if-shell"
+      ],
+      "description": "Execute a tmux command if a shell-command succeeded",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "joinp",
+      "aliases": [
+        "join-pane",
+        "movep",
+        "move-pane"
+      ],
+      "description": "Split a pane and move an existing one into the new space",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Src-pane will be joined to left of or above dst-pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Set the size of the new space",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "killp",
+      "aliases": [
+        "kill-pane"
+      ],
+      "description": "Destroy a given pane",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Kill all but the target-pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "kill-server",
+      "aliases": [],
+      "description": "Kill clients, session and server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kill-ses",
+      "aliases": [
+        "kill-session"
+      ],
+      "description": "Kill/delete sessions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Kill/delete session with the given name",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Kill/delete all session but the current",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-C"
+          ],
+          "description": "Clear alerts (bell, activity, or silence) in all windows linked to the session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "killw",
+      "aliases": [
+        "kill-window"
+      ],
+      "description": "Destroy a given window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Kill all but the target-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lastp",
+      "aliases": [
+        "last-pane"
+      ],
+      "description": "Select the previously selected pane",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Disable input to the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Enable input to the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Keep the window zoomed if it was zoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "last",
+      "aliases": [
+        "last-window"
+      ],
+      "description": "Select the previously selected window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Select the previously select window of the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "linkw",
+      "aliases": [
+        "link-window"
+      ],
+      "description": "Link a window to another",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Move the window to the next index after dst-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Move the window to the next index before dst-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Do not select the newly linked window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill dst-window if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lsb",
+      "aliases": [
+        "list-buffers"
+      ],
+      "description": "List paste buffers of a session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lsc",
+      "aliases": [
+        "list-clients"
+      ],
+      "description": "List clients attached to a server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "List only clients connected to that session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lscm",
+      "aliases": [
+        "list-commands"
+      ],
+      "description": "List supported sub-commands",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": "The command to list syntax of",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "lsk",
+      "aliases": [
+        "list-keys"
+      ],
+      "description": "List all key-bindings",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lsp",
+      "aliases": [
+        "list-panes"
+      ],
+      "description": "List panes of a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Ignore target-window and list all panes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Target-window becomes a session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify a filter",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [
+        "list-sessions"
+      ],
+      "description": "List sessions managed by a server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Filter the sessions",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lsw",
+      "aliases": [
+        "list-windows"
+      ],
+      "description": "List windows of a session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Ignore target-session and list all windows",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Specify a filter",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "loadb",
+      "aliases": [
+        "load-buffer"
+      ],
+      "description": "Load a file into a paste buffer",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Send the buffer to the clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "The target buffer",
+          "takes_arg": true,
+          "arg_name": "buffer-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Load from this path",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "lockc",
+      "aliases": [
+        "lock-client"
+      ],
+      "description": "Lock a client",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lock",
+      "aliases": [
+        "lock-server"
+      ],
+      "description": "Lock all clients attached to the server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "locks",
+      "aliases": [
+        "lock-session"
+      ],
+      "description": "Lock all clients attached to a session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Lock all clients attached to target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "movew",
+      "aliases": [
+        "move-window"
+      ],
+      "description": "Move a window to another",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Move the window to the next index after dst-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Move the window to the next index before dst-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Renumber all windows in the session in sequential order",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Do not select the newly linked window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill dst-window if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [
+        "new-session"
+      ],
+      "description": "Create a new session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-A"
+          ],
+          "description": "Behave like attach-session if session-name already exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Use the initial size from default-size",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Behave like -d if -A is set",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Do not use update-environment option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P"
+          ],
+          "description": "Print information about the new session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-X"
+          ],
+          "description": "Behave like -x if -A is set",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Specify a start directory for the session",
+          "takes_arg": true,
+          "arg_name": "start-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Set client flags",
+          "takes_arg": true,
+          "arg_name": "flags",
+          "arg_template": {
+            "custom": [
+              "active-pane",
+              "ignore-size",
+              "no-output",
+              "pause-after",
+              "read-only",
+              "wait-exit"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Start a new session with the given name",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Start a new session with the given name",
+          "takes_arg": true,
+          "arg_name": "session-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The name of the group",
+          "takes_arg": true,
+          "arg_name": "group-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "The width of the session",
+          "takes_arg": true,
+          "arg_name": "width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "The height of the session",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "A shell command to run when creating the session",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "neww",
+      "aliases": [
+        "new-window"
+      ],
+      "description": "Create a new window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Insert the new window at the next index after target-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Insert the new window at the next index before target-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "The session does not make the new window the current window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill the target-window if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P"
+          ],
+          "description": "Print information about the new window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S"
+          ],
+          "description": "Select window-name if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Specify a start directory for the window",
+          "takes_arg": true,
+          "arg_name": "start-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Start a new window with the given name",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "A shell command to run when creating the window",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "nextl",
+      "aliases": [
+        "next-layout"
+      ],
+      "description": "Move a window to the next layout",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "next",
+      "aliases": [
+        "next-window"
+      ],
+      "description": "Move to the next window in a session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Move to the next window with an alert",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Move to the next window of the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pasteb",
+      "aliases": [
+        "paste-buffer"
+      ],
+      "description": "Insert a paste buffer into the window",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pipep",
+      "aliases": [
+        "pipe-pane"
+      ],
+      "description": "Pipe output from a pane to a shell command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-I"
+          ],
+          "description": "Connect stdout to shell-command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-O"
+          ],
+          "description": "Connect stdin to shell-command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Only open a new pipe if no previous pipe exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "The shell-command to run",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prevl",
+      "aliases": [
+        "previous-layout"
+      ],
+      "description": "Move a window to the previous layout",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "prev",
+      "aliases": [
+        "previous-window"
+      ],
+      "description": "Move to the previous window in a session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Move with an alert",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Move to the previous window of the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refresh",
+      "aliases": [
+        "refresh-client"
+      ],
+      "description": "Refresh a client",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Return the tracking cursor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Allow the visible portion of a window to be changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Request the clipboard from the client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L"
+          ],
+          "description": "Allow the visible portion of a window to be changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-R"
+          ],
+          "description": "Allow the visible portion of a window to be changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S"
+          ],
+          "description": "Only update the client's status line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Allow the visible portion of a window to be changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-B"
+          ],
+          "description": "A subscription to a format for a control mode",
+          "takes_arg": true,
+          "arg_name": "subscription",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-C"
+          ],
+          "description": "Set the width and height",
+          "takes_arg": true,
+          "arg_name": "XxY",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Set client flags",
+          "takes_arg": true,
+          "arg_name": "flags",
+          "arg_template": {
+            "custom": [
+              "active-pane",
+              "ignore-size",
+              "no-output",
+              "pause-after",
+              "read-only",
+              "wait-exit"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "adjustment",
+          "description": "An adjustment value to use",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rename",
+      "aliases": [
+        "rename-session"
+      ],
+      "description": "Rename a session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Rename the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "new-name",
+          "description": "The new name of the session",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "renamew",
+      "aliases": [
+        "rename-window"
+      ],
+      "description": "Rename a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "new-name",
+          "description": "The new name of the window",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "resizep",
+      "aliases": [
+        "resize-pane"
+      ],
+      "description": "Resize a pane",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Resize down by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L"
+          ],
+          "description": "Resize left by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-M"
+          ],
+          "description": "Begin mouse resizing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-R"
+          ],
+          "description": "Resize right by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Trim all lines below the current cursor position",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Resize up by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Toggle the active pane between zoomed and unzoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "The width of the pane",
+          "takes_arg": true,
+          "arg_name": "width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "The height of the pane",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "adjustment",
+          "description": "Adjustment used with -ULDR",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "resizew",
+      "aliases": [
+        "resize-window"
+      ],
+      "description": "Resize a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Set the size of the smallest session containing the window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A"
+          ],
+          "description": "Set the size of the largest session containing the window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Resize down by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L"
+          ],
+          "description": "Resize left by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-R"
+          ],
+          "description": "Resize right by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Resize up by adjustment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "The width of the pane",
+          "takes_arg": true,
+          "arg_name": "width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "The height of the pane",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "adjustment",
+          "description": "Adjustment used with -ULDR",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "respawnp",
+      "aliases": [
+        "respawn-pane"
+      ],
+      "description": "Reactivate a pane in which a command has exited",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill the target-pane if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Specify a start directory for the pane",
+          "takes_arg": true,
+          "arg_name": "start-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "A shell command to run when creating the pane",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "respawnw",
+      "aliases": [
+        "respawn-window"
+      ],
+      "description": "Reactivate a window in which a command has exited",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill the target-window if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Specify a start directory for the window",
+          "takes_arg": true,
+          "arg_name": "start-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "A shell command to run when creating the window",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rotatew",
+      "aliases": [
+        "rotate-window"
+      ],
+      "description": "Rotate positions of panes in a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Rotate upward",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Rotate downward",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Keep the window zoomed if it was zoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [
+        "run-shell"
+      ],
+      "description": "Execute a command without create a new window",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "saveb",
+      "aliases": [
+        "save-buffer"
+      ],
+      "description": "Save a paste buffer to a file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "selectl",
+      "aliases": [
+        "select-layout"
+      ],
+      "description": "Choose a layout for a pane",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Spread the current pane and any panes next to it evenly",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Equivalent to next-layout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Apply the last set layout if possible",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Equivalent to previous-layout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "layout-name",
+          "description": "Use the last preset layout used if not specified",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "selectp",
+      "aliases": [
+        "select-pane"
+      ],
+      "description": "Make a pane the active one in the window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Use the down pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Disable input to the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Enable input to the pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L"
+          ],
+          "description": "Use the left pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Same as last-pane command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-M"
+          ],
+          "description": "Clear the marked pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Set the market pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-R"
+          ],
+          "description": "Use the right pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Use the up pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set the pane's title",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Set the pane title",
+          "takes_arg": true,
+          "arg_name": "title",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "selectw",
+      "aliases": [
+        "select-window"
+      ],
+      "description": "Select a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Same as last-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Same as next-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Same as previous-window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Same as last-window if the selected window is already the current window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "send",
+      "aliases": [
+        "send-keys"
+      ],
+      "description": "Send key(s) to a window",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "send-prefix",
+      "aliases": [],
+      "description": "Send the prefix key to a window",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [
+        "server-info"
+      ],
+      "description": "Show every session, window, pane, etc",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "setb",
+      "aliases": [
+        "set-buffer"
+      ],
+      "description": "Set content of a paste buffer",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Append to rather than overwriting the buffer",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Send the buffer to the clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "The name of the buffer",
+          "takes_arg": true,
+          "arg_name": "buffer-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "The new name of the buffer",
+          "takes_arg": true,
+          "arg_name": "new-buffer-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "data",
+          "description": "The data to set in the buffer",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setenv",
+      "aliases": [
+        "set-environment"
+      ],
+      "description": "(Un)set an environment variable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "set-hook",
+      "aliases": [],
+      "description": "Set a hook to a command",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "set",
+      "aliases": [
+        "set-option"
+      ],
+      "description": "Set a session option",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "setw",
+      "aliases": [
+        "set-window-option"
+      ],
+      "description": "Set a window option",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "showb",
+      "aliases": [
+        "show-buffer"
+      ],
+      "description": "Display the contents of a paste buffer",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "showenv",
+      "aliases": [
+        "show-environment"
+      ],
+      "description": "Display the environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Display the environment of the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show-hooks",
+      "aliases": [],
+      "description": "Show the global list of hooks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "showmsgs",
+      "aliases": [
+        "show-messages"
+      ],
+      "description": "Show client's message log",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Show debugging information about terminals",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J"
+          ],
+          "description": "Show debugging information about jobs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [
+        "show-options"
+      ],
+      "description": "Show session options",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "showw",
+      "aliases": [
+        "show-winsow-options"
+      ],
+      "description": "Show window options",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "source",
+      "aliases": [
+        "source-file"
+      ],
+      "description": "Execute tmux commands from a file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Expand path as a format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Parse the file but don't run commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Don't return any error if path does not exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Show the parsed command and line numbers if possible",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "splitw",
+      "aliases": [
+        "split-window"
+      ],
+      "description": "Splits a pane into two",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b"
+          ],
+          "description": "Create the new pane to the left of or above target-pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Create a new pane spanning the full window height with -h or width with -v",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Set the pane take full height",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-I"
+          ],
+          "description": "Create an empty pane and forward stdin to it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Set the pane take full width",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Zoom if the window is not zoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Specify a start directory for the pane",
+          "takes_arg": true,
+          "arg_name": "start-directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Set the size in columns (horizontal split) or rows (vertical split)",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Format output",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell-command",
+          "description": "A shell command to run when creating the pane",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [
+        "start-server"
+      ],
+      "description": "Start a tmux server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "suspendc",
+      "aliases": [
+        "suspend-client"
+      ],
+      "description": "Suspend a client",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "swapp",
+      "aliases": [
+        "swap-pane"
+      ],
+      "description": "Swap two panes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Do not change the active pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Swap with the next pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Swap dst-pane with the previous pane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Keep the window zoomed if it was zoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination pane",
+          "takes_arg": true,
+          "arg_name": "src-pane",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "swapw",
+      "aliases": [
+        "swap-window"
+      ],
+      "description": "Swap two windows",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "The new window does not become the current window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "The source window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The destination window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "switchc",
+      "aliases": [
+        "switch-client"
+      ],
+      "description": "Switch the client to another session",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Do not use update-environment option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Move the client to the last session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Move the client to the next session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Move the client to the previous session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Toggle the client read-only and ignore-size flags",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Keep the window zoomed if it was zoomed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "The target client",
+          "takes_arg": true,
+          "arg_name": "target-client",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Switch the client to the target-session",
+          "takes_arg": true,
+          "arg_name": "target-session",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "Set the client's key table",
+          "takes_arg": true,
+          "arg_name": "key-table",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unbind",
+      "aliases": [
+        "unbind-key"
+      ],
+      "description": "Unbind a key",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Remove all key-bindings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Alias for -T root",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Prevent errors being returned",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T"
+          ],
+          "description": "The key table to use",
+          "takes_arg": true,
+          "arg_name": "key-table",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "key",
+          "description": "The key to unbind",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unlinkw",
+      "aliases": [
+        "unlink-window"
+      ],
+      "description": "Unlink a window",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Destroy the window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "The target window",
+          "takes_arg": true,
+          "arg_name": "window-name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "wait",
+      "aliases": [
+        "wait-for"
+      ],
+      "description": "Wait for an event or trigger it",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L"
+          ],
+          "description": "Lock the channel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Unlock the channel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "channel",
+          "description": "Wait for this channel",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

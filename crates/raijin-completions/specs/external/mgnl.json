@@ -1,0 +1,580 @@
+{
+  "name": "mgnl",
+  "aliases": [],
+  "description": "Magnolia CLI is a command line interface (CLI) tool to set up and facilitate light development with Magnolia",
+  "subcommands": [
+    {
+      "name": "add-availability",
+      "aliases": [],
+      "description": "This command makes a component available to a page",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module that contains the page template",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g"
+          ],
+          "description": "Add this parameter to autogenerate the component instead of providing plain availability",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "<[module-id:]path-to-component>",
+          "description": "The component you want to make available",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "<path-to-page[@area]>",
+          "description": "The page you want to make the component available to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-app",
+      "aliases": [],
+      "description": "This command creates a content type and an app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module where you want to create the app",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the app",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the new app. The name cannot contain spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-block",
+      "aliases": [],
+      "description": "This command creates a block",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module to add the new block to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the block",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "blockName",
+          "description": "The name of the new block definition. The block name cannot contain spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-component",
+      "aliases": [],
+      "description": "This command creates a new component template",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module you want to add the component template to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--available"
+          ],
+          "description": "The page you want to make the component available to",
+          "takes_arg": true,
+          "arg_name": "<path-to-page[@area]>",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g",
+            "--autogenerate"
+          ],
+          "description": "Add this parameter to autogenerate the component instead of providing plain availability",
+          "takes_arg": true,
+          "arg_name": "<path-to-page[@area]>",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the component",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the new component template. The name cannot contain spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-content-type",
+      "aliases": [],
+      "description": "This command creates a content type",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Creates also a new app that references the content type. With the -a option, the command is functionally equivalent to the create-app command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module where you want to create the content type",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the content type",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the new content type. The name cannot contain spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-light-module",
+      "aliases": [],
+      "description": "This command creates a new light module in the form of a set of empty light module folders",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path of the parent directory for the new light module",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the light module",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "moduleName",
+          "description": "The name of the new light module. Avoid spaces and special characters since this name is used as folder name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-page",
+      "aliases": [],
+      "description": "This command creates a new page template",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module to add the new template to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the page",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "templateName",
+          "description": "The name of the new page template. The template name cannot contain spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create-virtual-uri",
+      "aliases": [],
+      "description": "The command creates a virtual URI mapping configuration file (a YAML definition file) in the light module",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light module",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--formUri"
+          ],
+          "description": "The pattern to be matched in the requested URI. Enclose the <uri> value in quotes",
+          "takes_arg": true,
+          "arg_name": "uri",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--toUri"
+          ],
+          "description": "A concrete URI that the request is mapped to. Enclose the <prefix:uri> value in quotes",
+          "takes_arg": true,
+          "arg_name": "<prefix:uri>",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--prototype"
+          ],
+          "description": "The name of the prototype variant to create the mapping",
+          "takes_arg": true,
+          "arg_name": "prototype",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "virtualUriName",
+          "description": "The name of the new URI configuration",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "customize-local-config",
+      "aliases": [],
+      "description": "Run this command to create a local configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path into which the mgnl-cli-prototypes folder and mgnl-cli.json file are installed",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Downloads and installs one or more light modules from npm to the light module directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light-modules folder",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "light-module-name",
+          "description": "At least one name of a light module to be downloaded from npm. If you are installing more than one module from the repository, separate the module names with a space",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "jumpstart",
+      "aliases": [],
+      "description": "This command downloads, unpacks and pre-configures a Magnolia Tomcat server together with a specific webapp",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the light modules root folder which is observed for changes",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--magnolia-version"
+          ],
+          "description": "Use to choose a specific version of the Magnolia webapp. If not provided, the latest stable version of the specified webapp is downloaded",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--install-sample-module"
+          ],
+          "description": "If provided, a sample light module under the light modules root folder with the given name is created",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--snapshot"
+          ],
+          "description": "Downloads the latest snapshot development version of the specified webapp",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--webapp"
+          ],
+          "description": "Use to directly specify which Magnolia webapp you want to install",
+          "takes_arg": true,
+          "arg_name": "webapp",
+          "arg_template": {
+            "custom": [
+              "magnolia-empty-webapp",
+              "magnolia-community-webapp",
+              "magnolia-community-demo-webapp",
+              "magnolia-dx-core-webapp",
+              "magnolia-dx-core-demo-webapp"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tab-completion",
+      "aliases": [],
+      "description": "Run the command to install or uninstall autocompletion for Magnolia CLI commands",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "install",
+              "uninstall"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Searches for Magnolia-related packages available from npm",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "query",
+          "description": "The search query sent to the npm's API. The query can contain multiple terms separated with commas and no spaces",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "This command starts up Magnolia and displays the main log file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to the apache-tomcat folder",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Does NOT ignore the open files limit check. The files limit check is ignored by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for mgnl",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

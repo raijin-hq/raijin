@@ -1,0 +1,736 @@
+{
+  "name": "dscl",
+  "aliases": [],
+  "description": "Directory Service command line utility",
+  "subcommands": [
+    {
+      "name": "read",
+      "aliases": [
+        "-read"
+      ],
+      "description": "Prints a directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "keys",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "readall",
+      "aliases": [
+        "-readall"
+      ],
+      "description": "Prints all the records of a given type",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "keys",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "readpl",
+      "aliases": [
+        "-readpl"
+      ],
+      "description": "Prints the contents of plist_path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "readpli",
+      "aliases": [
+        "-readpli"
+      ],
+      "description": "Prints the contents of plist_path for the plist at value_index of the key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value index",
+          "description": "Value index of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "-list",
+        "ls",
+        "-ls"
+      ],
+      "description": "Lists the subdirectories of the given directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "aliases": [
+        "-search"
+      ],
+      "description": "Searches for records that match a pattern",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "val",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [
+        "-create",
+        "mk",
+        "-mk"
+      ],
+      "description": "Creates a new record",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "createpl",
+      "aliases": [
+        "-createpl"
+      ],
+      "description": "Creates a string, or array of strings at plist_path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "val",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "createpli",
+      "aliases": [
+        "-createpli"
+      ],
+      "description": "Creates a string, or array of strings at plist_path for the plist at value_index of the key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value index",
+          "description": "Value index of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "val",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "append",
+      "aliases": [
+        "-append"
+      ],
+      "description": "Appends one or more values to a property in a given record",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "merge",
+      "aliases": [
+        "-merge"
+      ],
+      "description": "Appends one or more values to a property in a given directory if the property does not already have those values",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "aliases": [
+        "-delete",
+        "rm",
+        "-rm"
+      ],
+      "description": "Delete a directory, property, or value",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "deletepl",
+      "aliases": [
+        "-deletepl"
+      ],
+      "description": "Deletes a value in a plist",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "deletepli",
+      "aliases": [
+        "-deletepli"
+      ],
+      "description": "Deletes a value for the plist at value_index of the key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value index",
+          "description": "Value index of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "plist path",
+          "description": "Path to the plist file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "vals",
+          "description": "Value of the key",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "change",
+      "aliases": [
+        "-change"
+      ],
+      "description": "Replaces the given old value in the list of values of the given key with the new value in the specified record",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "old val",
+          "description": "Old value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "new val",
+          "description": "New value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "changei",
+      "aliases": [
+        "-changei"
+      ],
+      "description": "Replaces the value at the given index in the list of values of the given key with the new value in the specified record",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "key",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value index",
+          "description": "Value index of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "new val",
+          "description": "New value of the key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [
+        "-diff"
+      ],
+      "description": "Compares the data from path1 and path2 looking at the specified keys (or all if no keys are specified)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "keys",
+          "description": "Directory Service record attribute type",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "passwd",
+      "aliases": [
+        "-passwd"
+      ],
+      "description": "Changes the password of a user",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the record",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "new password",
+          "description": "New password of the user",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Prompt for password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Authenticate as user",
+      "takes_arg": true,
+      "arg_name": "user",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Authenticate with password",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Targeted local node database file path",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-raw"
+      ],
+      "description": "Don't strip off prefix from DirectoryService API constants",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-plist"
+      ],
+      "description": "Print out record(s) or attribute(s) in XML plist format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-url"
+      ],
+      "description": "Print record attribute values in URL-style encoding",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "Quiet - no interactive prompt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "datasource",
+      "description": null,
+      "template": {
+        "custom": [
+          ".",
+          "..",
+          "localhost",
+          "localonly"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

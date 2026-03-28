@@ -1,0 +1,272 @@
+{
+  "name": "hyperfine",
+  "aliases": [],
+  "description": "A command-line benchmarking tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--warmup",
+        "-w"
+      ],
+      "description": "Perform warmupruns (number) before the actual benchmarking starts",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min-runs",
+        "-m"
+      ],
+      "description": "Perform at least NUM runs for each command",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-runs",
+        "-M"
+      ],
+      "description": "Perform at most NUM runs for each command. Default: no limit",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--runs",
+        "-r"
+      ],
+      "description": "Perform exactly NUM runs for each command",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup",
+        "-s"
+      ],
+      "description": "Execute cmd once before each set of timing runs",
+      "takes_arg": true,
+      "arg_name": "CMD",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prepare",
+        "-p"
+      ],
+      "description": "Execute cmd before each timing run. This is useful for clearing disk caches, for example",
+      "takes_arg": true,
+      "arg_name": "CMD ...",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cleanup",
+        "-c"
+      ],
+      "description": "Execute cmd after the completion of all benchmarking runs for each individual command to be benchmarked",
+      "takes_arg": true,
+      "arg_name": "CMD",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parameter-scan",
+        "-P"
+      ],
+      "description": "Perform benchmark runs for each value in the range min..max",
+      "takes_arg": true,
+      "arg_name": "VAR",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parameter-step-size",
+        "-D"
+      ],
+      "description": "This argument requires --parameter-scan to be specified as well. Traverse the range min..max in steps of delta",
+      "takes_arg": true,
+      "arg_name": "delta",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parameter-list",
+        "-L"
+      ],
+      "description": "Perform benchmark runs for each value in the comma-separated list of values",
+      "takes_arg": true,
+      "arg_name": "VAR",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--style"
+      ],
+      "description": "Set output style type",
+      "takes_arg": true,
+      "arg_name": "STYLE",
+      "arg_template": {
+        "custom": [
+          "basic",
+          "full",
+          "nocolor",
+          "color",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell",
+        "-S"
+      ],
+      "description": "Set the shell to use for executing benchmarked commands",
+      "takes_arg": true,
+      "arg_name": "SHELL",
+      "arg_template": {
+        "custom": [
+          "bash",
+          "zsh",
+          "sh",
+          "fish",
+          "pwsh",
+          "powershell"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-failure",
+        "-i"
+      ],
+      "description": "Ignore non-zero exit codes of the benchmarked commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--time-unit",
+        "-u"
+      ],
+      "description": "Set the time unit to use for the benchmark results",
+      "takes_arg": true,
+      "arg_name": "UNIT",
+      "arg_template": {
+        "custom": [
+          "millisecond",
+          "second"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--export-asciidoc"
+      ],
+      "description": "Export the timing summary statistics as an AsciiDoc table to the given file",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--export-csv"
+      ],
+      "description": "Export the timing summary statistics as CSV to the given file",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--export-json"
+      ],
+      "description": "Export the timing summary statistics and timings of individual runs as JSON to the given file",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--export-markdown"
+      ],
+      "description": "Export the timing summary statistics as a Markdown table to the given file",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-output"
+      ],
+      "description": "Print the stdout and stderr of the benchmark instead of suppressing it",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--command-name"
+      ],
+      "description": "Identify a command with the given name",
+      "takes_arg": true,
+      "arg_name": "NAME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Prints help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Shows version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "CMD",
+      "description": "Command to benchmark",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

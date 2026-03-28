@@ -1,0 +1,28 @@
+{
+  "name": "lima",
+  "aliases": [],
+  "description": "Lima is an alias for \"limactl shell $LIMA_INSTANCE\"",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for lima",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "COMMAND",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

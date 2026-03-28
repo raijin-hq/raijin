@@ -1,0 +1,16 @@
+{
+  "name": "defaultbrowser",
+  "aliases": [],
+  "description": "Change your default browser from the CLI",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

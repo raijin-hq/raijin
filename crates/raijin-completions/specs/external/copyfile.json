@@ -1,0 +1,16 @@
+{
+  "name": "copyfile",
+  "aliases": [],
+  "description": "Oh-My-Zsh plugin that copies the contents of a file to the clipboard",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

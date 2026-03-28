@@ -1,0 +1,373 @@
+{
+  "name": "oh-my-posh",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize oh-my-posh for your shell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "The config file to use",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print",
+            "-p"
+          ],
+          "description": "Print the init script",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "zsh",
+              "fish",
+              "pwsh",
+              "powershell",
+              "cmd",
+              "bash",
+              "shell"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Get oh-my-posh values",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "VALUE",
+          "description": null,
+          "template": {
+            "custom": [
+              "millis",
+              "shell"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Debug oh-my-posh, example usage: 'oh-my-posh debug'",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "The config file to use",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Interact with the oh-my-posh configuration",
+      "subcommands": [
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit the config file, example usage: 'oh-my-posh config edit'",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "migrate",
+          "aliases": [],
+          "description": "Migrate the config file, example usage: 'oh-my-posh config migrate --config ~/.config.omp.json'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--write",
+                "-w"
+              ],
+              "description": "Write the migrated config to the configuration file, example usage: 'oh-my-posh config migrate --write'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": "The file format to use",
+              "takes_arg": true,
+              "arg_name": "FORMAT",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "yaml",
+                  "toml"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "export",
+          "aliases": [],
+          "description": "Export the config file, example usage: 'oh-my-posh config export --config ~/.config.omp.toml'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "The file to output the migrated config to, example usage: 'oh-my-posh config export --output ~/.config.omp.json'",
+              "takes_arg": true,
+              "arg_name": "OUTPUT",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": "The file format to use",
+              "takes_arg": true,
+              "arg_name": "FORMAT",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "yaml",
+                  "toml"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "The config file to use",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "print",
+      "aliases": [],
+      "description": "Print a prompt",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "The config file to use",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--terminal-width",
+            "-w"
+          ],
+          "description": "The terminal width, example usage: 'oh-my-posh print primary --terminal-width 200'",
+          "takes_arg": true,
+          "arg_name": "WIDTH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--command"
+          ],
+          "description": "The current command for tooltips, example usage: 'oh-my-posh print tooltip --command az'",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--error",
+            "-e"
+          ],
+          "description": "The last exit code, example usage: 'oh-my-posh print primary --error 127'",
+          "takes_arg": true,
+          "arg_name": "ERROR CODE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--eval"
+          ],
+          "description": "Use eval to render the prompt, example usage: 'oh-my-posh print primary --eval'",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--execution-time"
+          ],
+          "description": "Use last command execution time in millis, example usage: 'oh-my-posh print primary --execution-time 200'",
+          "takes_arg": true,
+          "arg_name": "EXECUTION TIME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plain",
+            "-p"
+          ],
+          "description": "Print a prompt without ASNI codes, example usage: 'oh-my-posh print primary --plain'",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pswd"
+          ],
+          "description": "The current working directory according to PowerShell, example usage: 'oh-my-posh print primary --pswd C:\\Users\\user\\Documents'",
+          "takes_arg": true,
+          "arg_name": "POWERSHELL WORKING DIRECTORY",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pwd"
+          ],
+          "description": "The current working directory, example usage: 'oh-my-posh print primary --pwd /home/user/Documents'",
+          "takes_arg": true,
+          "arg_name": "WORKING DIRECTORY",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "The current shell, example usage: 'oh-my-posh print primary --shell fish'",
+          "takes_arg": true,
+          "arg_name": "SHELL",
+          "arg_template": {
+            "custom": [
+              "zsh",
+              "fish",
+              "pwsh",
+              "powershell",
+              "cmd",
+              "bash",
+              "shell"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stack-count"
+          ],
+          "description": "The directory stack count, example usage: 'oh-my-posh print primary --stack-count 1'",
+          "takes_arg": true,
+          "arg_name": "NUM",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PROMPT",
+          "description": null,
+          "template": {
+            "custom": [
+              "primary",
+              "secondary",
+              "right",
+              "transient",
+              "tooltip",
+              "valid",
+              "error"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Display the oh-my-posh version, example usage: 'oh-my-posh version'",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for oh-my-posh",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

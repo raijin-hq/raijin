@@ -1,0 +1,156 @@
+{
+  "name": "who",
+  "aliases": [],
+  "description": "Display who is logged in",
+  "subcommands": [
+    {
+      "name": "am",
+      "aliases": [],
+      "description": "Returns the invoker's real user name",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Same as -bdlprTtu",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Time of last system boot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Print dead processes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H"
+      ],
+      "description": "Write column headings above the regular output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Print system login processes (unsupported)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Only print information about the current terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Print active processes spawned by launchd(8) (unsupported)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "'Quick mode': List only names and number of users currently logged on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Print the current runlevel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "List only the name, line and time fields (this is the default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Print a character after the user name indicating the state of the terminal line: '+' writable, '-' not writable, '?' bad",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Print last system clock change (unsupported)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Print the idle time for each user and the associated process ID",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "By default, who gathers information from the file /var/run/utmpx; an alternative file may be specified",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

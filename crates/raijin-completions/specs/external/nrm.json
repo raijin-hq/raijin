@@ -1,0 +1,78 @@
+{
+  "name": "nrm",
+  "aliases": [],
+  "description": "Use the right package manage - remove",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Operates in 'global' mode, so that packages are removed from the prefix folder instead of the current working directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Package will be removed from your `devDependencies`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Remove package from your `peerDependencies`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Remove package from your `optionalDependencies`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--frozen"
+      ],
+      "description": "Don't generate a lockfile and fail if an update is needed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "package",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

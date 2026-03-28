@@ -1,0 +1,93 @@
+{
+  "name": "afplay",
+  "aliases": [],
+  "description": "Audio File Play",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--volume"
+      ],
+      "description": "Set the volume for playback of the file\nApple does not define a value range for this, but it appears to accept\n0=silent, 1=normal (default) and then up to 255=Very loud.\nThe scale is logarithmic and in addition to (not a replacement for) other volume control(s)",
+      "takes_arg": true,
+      "arg_name": "0 (silent) - 1 (normal) - 255 (very loud)",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--leaks"
+      ],
+      "description": "Run leaks analysis",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--time"
+      ],
+      "description": "Play for `TIME` seconds\n>0 and < duration of `audio_file`",
+      "takes_arg": true,
+      "arg_name": "TIME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--rate"
+      ],
+      "description": "Play at playback `RATE`.\npractical limits are about 0.4 (slower) to 3.0 (faster)",
+      "takes_arg": true,
+      "arg_name": "RATE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--rQuality"
+      ],
+      "description": "Set the quality used for rate-scaled playback (default is 0 - low quality, 1 - high quality)",
+      "takes_arg": true,
+      "arg_name": "QUALITY",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Debug print output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "play the song in the path",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "name": "mount",
+  "aliases": [],
+  "description": "Mount disks and manage subtrees",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for abc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--all"
+      ],
+      "description": "Mount all filesystems in fstab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--no-canonicalize"
+      ],
+      "description": "Don't canonicalize paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--fake"
+      ],
+      "description": "Dry run; skip the mount(2) syscall",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--fork"
+      ],
+      "description": "Fork off for each device (use with -a)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--fstab"
+      ],
+      "description": "Alternative file to /etc/fstab",
+      "takes_arg": true,
+      "arg_name": "fstab",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--internal-only"
+      ],
+      "description": "Don't call the mount.<type> helpers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--show-labels"
+      ],
+      "description": "Show also filesystem labels",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--mkdir"
+      ],
+      "description": "Alias to '-o X-mount.mkdir",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-mtab"
+      ],
+      "description": "Don't write to /etc/mtab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--options-mode"
+      ],
+      "description": "What to do with options loaded from fstab",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--options-source"
+      ],
+      "description": "Mount options source",
+      "takes_arg": true,
+      "arg_name": "source",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--options-source-force"
+      ],
+      "description": "Force use of options from fstab/mtab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--options"
+      ],
+      "description": "Comma-separated list of mount options",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O",
+        "--test-opts"
+      ],
+      "description": "Limit the set of filesystems (use with -a)",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--read-only"
+      ],
+      "description": "Mount the filesystem read-only (same as -o ro)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--types"
+      ],
+      "description": "Limit the set of filesystem types",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--source"
+      ],
+      "description": "Explicitly specifies source",
+      "takes_arg": true,
+      "arg_name": "source",
+      "arg_template": {
+        "custom": [
+          "path",
+          "label",
+          "uuid"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--target"
+      ],
+      "description": "Explicitly specifies mountpoint",
+      "takes_arg": true,
+      "arg_name": "mountpoint",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--target-prefix"
+      ],
+      "description": "Specifies path used for all mountpoints",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Say what is being done",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--rw",
+        "--read-write"
+      ],
+      "description": "Mount the filesystem read-write (default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "--bind"
+      ],
+      "description": "Mount a subtree somewhere else (same as -o bind)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--move"
+      ],
+      "description": "Move a subtree to some other place",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "-rbind"
+      ],
+      "description": "Mount a subtree and all submounts somewhere else",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-shared"
+      ],
+      "description": "Mark a subtree as shared",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-slave"
+      ],
+      "description": "Mark a subtree as slave",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-private"
+      ],
+      "description": "Mark a subtree as private",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-unbindable"
+      ],
+      "description": "Mark a subtree as unbindable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-rshared"
+      ],
+      "description": "Recursively mark a whole subtree as shared",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-rslave"
+      ],
+      "description": "Recursively mark a whole subtree as slave",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-rprivate"
+      ],
+      "description": "Recursively mark a whole subtree as private",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--make-runbindable"
+      ],
+      "description": "Recursively mark a whole subtree as unbindable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Disk/loopfile",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "mountpoint",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

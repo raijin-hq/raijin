@@ -1,0 +1,299 @@
+{
+  "name": "stencil",
+  "aliases": [],
+  "description": "CLI to build Stencil projects and generate components",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build components for development or production",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ci"
+          ],
+          "description": "Run a build using recommended settings for a Continuous Integration (CI) environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Set stencil config file",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set the log level to debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Development build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docs-readme"
+          ],
+          "description": "Generate component readme.md docs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--es5"
+          ],
+          "description": "Creates an ES5 compatible build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Write stencil-build.log file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prerender"
+          ],
+          "description": "Prerender the application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod"
+          ],
+          "description": "Runs a production build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-workers"
+          ],
+          "description": "Max number of workers the compiler should use",
+          "takes_arg": true,
+          "arg_name": "workers",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--next"
+          ],
+          "description": "Opt-in to test the 'next' Stencil compiler features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Disables using the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-open"
+          ],
+          "description": "Do not automatically open the browser window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "--p"
+          ],
+          "description": "Port for the Integrated Dev Server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--serve"
+          ],
+          "description": "Start the dev-server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stats"
+          ],
+          "description": "Write stencil-stats.json file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Logs additional information about each step of the build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Rebuild when files update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run unit and end-to-end tests",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--spec"
+          ],
+          "description": "Run unit tests with Jest",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--e2e"
+          ],
+          "description": "Run e2e tests with Puppeteer",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-build"
+          ],
+          "description": "Skips build process before running the tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [
+        "g"
+      ],
+      "description": "Bootstrap components",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "Name of new component (must contain dash (-))",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "telemetry",
+      "aliases": [],
+      "description": "Opt in or out of telemetry",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "state",
+          "description": null,
+          "template": {
+            "custom": [
+              "off",
+              "on"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Display the help output explaining the different flags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Prints the current Stencil version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

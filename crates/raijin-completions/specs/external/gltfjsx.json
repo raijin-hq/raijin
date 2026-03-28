@@ -1,0 +1,116 @@
+{
+  "name": "gltfjsx",
+  "aliases": [],
+  "description": "GLTF to JSX converter",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-t",
+        "--types"
+      ],
+      "description": "Add Typescript definitions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbose output w/ names and empty groups",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--meta"
+      ],
+      "description": "Include metadata (as userData)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--shadows"
+      ],
+      "description": "Let meshes cast and receive shadows",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--printwidth"
+      ],
+      "description": "Prettier printWidth (default: 120)",
+      "takes_arg": true,
+      "arg_name": "width",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--precision"
+      ],
+      "description": "Number of fractional digits (default: 2)",
+      "takes_arg": true,
+      "arg_name": "digits",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--draco"
+      ],
+      "description": "Draco binary path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--root"
+      ],
+      "description": "Sets directory from which .gltf file is served",
+      "takes_arg": true,
+      "arg_name": "root",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--debug"
+      ],
+      "description": "Debug output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,1631 @@
+{
+  "name": "meroxa",
+  "aliases": [],
+  "description": "The Meroxa CLI",
+  "subcommands": [
+    {
+      "name": "accounts",
+      "aliases": [
+        "account"
+      ],
+      "description": "Manage Meroxa Accounts",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List Meroxa Accounts",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Display output without headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set active account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "api",
+      "aliases": [],
+      "description": "Invoke Meroxa API",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "app",
+      "aliases": [
+        "apps"
+      ],
+      "description": "Manage Turbine Data Applications",
+      "subcommands": [
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy a Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--docker-hub-access-token"
+              ],
+              "description": "DockerHub access token to use to build and deploy the app",
+              "takes_arg": true,
+              "arg_name": "docker-hub-access-token",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--docker-hub-username"
+              ],
+              "description": "DockerHub username to use to build and deploy the app",
+              "takes_arg": true,
+              "arg_name": "docker-hub-username",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--env"
+              ],
+              "description": "Environment (name or UUID) where application will be deployed to",
+              "takes_arg": true,
+              "arg_name": "env",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path to the app directory (default is local directory)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-collection-validation"
+              ],
+              "description": "Skips unique destination collection and looping validations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Deployment specification version to use to build and deploy the app",
+              "takes_arg": true,
+              "arg_name": "spec",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Prints more logging messages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe a Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path to the app directory (default is local directory)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize a Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--lang",
+                "-l"
+              ],
+              "description": "Language to use (js|go|py) (required)",
+              "takes_arg": true,
+              "arg_name": "lang",
+              "arg_template": {
+                "custom": [
+                  "js",
+                  "go",
+                  "py"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--mod-vendor"
+              ],
+              "description": "Whether to download modules to vendor or globally while initializing a Go application",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path where application will be initialized (current directory as default)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-mod-init"
+              ],
+              "description": "Whether to run 'go mod init' while initializing a Go application",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List Turbine Data Applications",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Display output without headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "log",
+          "aliases": [
+            "logs"
+          ],
+          "description": "View relevant logs to the state of the given Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path to the app directory (default is local directory)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open the link to a Turbine Data Application in the Dashboard",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path to the app directory (default is local directory)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [
+            "delete",
+            "remove"
+          ],
+          "description": "Remove a Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path to the app directory (default is local directory)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Execute a Turbine Data Application locally",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path of application to run",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade a Turbine Data Application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Path where application exists (current directory as default)",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Authentication commands for Meroxa",
+      "subcommands": [
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login or Sign up to the Meroxa Platform",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Clears local login credentials of the Meroxa Platform",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "whoami",
+          "aliases": [],
+          "description": "Display the current logged in user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "billing",
+      "aliases": [],
+      "description": "Open your billing page in a web browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [
+        "builds"
+      ],
+      "description": "Inspect Process Builds on Meroxa",
+      "subcommands": [
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe a Meroxa Process Build",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "log",
+          "aliases": [
+            "logs"
+          ],
+          "description": "List a Meroxa Process Build's Logs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate completion script",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cfg",
+      "aliases": [
+        "config"
+      ],
+      "description": "Manage your Meroxa CLI configuration",
+      "subcommands": [
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Show Meroxa CLI configuration details",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Update your Meroxa CLI configuration file with a specific key=value",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "env",
+      "aliases": [
+        "environment",
+        "environments"
+      ],
+      "description": "Manage environments on Meroxa",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create an environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Environment configuration based on type and provider (e.g.: --config aws_access_key_id=my_access_key --config aws_secret_access_key=my_access_secret)",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--provider"
+              ],
+              "description": "Environment cloud provider to use",
+              "takes_arg": true,
+              "arg_name": "provider",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "Environment region",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Environment type, when not specified",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Skip confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe environment",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List environments",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Display output without headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [
+            "delete",
+            "remove"
+          ],
+          "description": "Remove environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yolo"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "repair",
+          "aliases": [],
+          "description": "Repair environment",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update an environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Updated environment configuration based on type and provider (e.g.: --config aws_access_key_id=my_access_key --config aws_secret_access_key=my_access_secret)",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Updated environment name, when specified",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Skip confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login or Sign up to the Meroxa Platform",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Clears local login credentials of the Meroxa Platform",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open in a web browser",
+      "subcommands": [
+        {
+          "name": "billing",
+          "aliases": [],
+          "description": "Open your billing page in a web browser",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "resource",
+      "aliases": [
+        "resources"
+      ],
+      "description": "Manage resources on Meroxa",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [
+            "create"
+          ],
+          "description": "Add a resource to your Meroxa resource catalog",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--ca-cert"
+              ],
+              "description": "Trusted certificates for verifying resource",
+              "takes_arg": true,
+              "arg_name": "ca-cert",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--client-cert"
+              ],
+              "description": "Client certificate for authenticating to the resource",
+              "takes_arg": true,
+              "arg_name": "client-cert",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--client-key"
+              ],
+              "description": "Client private key for authenticating to the resource",
+              "takes_arg": true,
+              "arg_name": "client-key",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--env"
+              ],
+              "description": "Environment (name or UUID) where resource will be created",
+              "takes_arg": true,
+              "arg_name": "env",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--metadata",
+                "-m"
+              ],
+              "description": "Resource metadata",
+              "takes_arg": true,
+              "arg_name": "metadata",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "Password",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--private-key-file"
+              ],
+              "description": "Path to private key file",
+              "takes_arg": true,
+              "arg_name": "private-key-file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssh-private-key"
+              ],
+              "description": "SSH tunneling private key",
+              "takes_arg": true,
+              "arg_name": "ssh-private-key",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssh-url"
+              ],
+              "description": "SSH tunneling address",
+              "takes_arg": true,
+              "arg_name": "ssh-url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssl"
+              ],
+              "description": "Use SSL",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--token"
+              ],
+              "description": "API Token",
+              "takes_arg": true,
+              "arg_name": "token",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Resource type (required)",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--url",
+                "-u"
+              ],
+              "description": "Resource url",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--username"
+              ],
+              "description": "Username",
+              "takes_arg": true,
+              "arg_name": "username",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe resource",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List resources and resource types",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Display output without headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Alias to --types",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--types"
+              ],
+              "description": "List resource types",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [
+            "delete",
+            "remove"
+          ],
+          "description": "Remove resource",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yolo"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rotate-tunnel-key",
+          "aliases": [],
+          "description": "Rotate the tunnel key for a resource",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yolo"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update a resource",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--ca-cert"
+              ],
+              "description": "Trusted certificates for verifying resource",
+              "takes_arg": true,
+              "arg_name": "ca-cert",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--client-cert"
+              ],
+              "description": "Client certificate for authenticating to the resource",
+              "takes_arg": true,
+              "arg_name": "client-cert",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--client-key"
+              ],
+              "description": "Client private key for authenticating to the resource",
+              "takes_arg": true,
+              "arg_name": "client-key",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--metadata",
+                "-m"
+              ],
+              "description": "New resource metadata",
+              "takes_arg": true,
+              "arg_name": "metadata",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "New resource name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "Password",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssh-url"
+              ],
+              "description": "SSH tunneling address",
+              "takes_arg": true,
+              "arg_name": "ssh-url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssl"
+              ],
+              "description": "Use SSL",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--url",
+                "-u"
+              ],
+              "description": "New resource url",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--username"
+              ],
+              "description": "Username",
+              "takes_arg": true,
+              "arg_name": "username",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "validate",
+          "aliases": [],
+          "description": "Validate a resource",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "transform",
+      "aliases": [
+        "transforms"
+      ],
+      "description": "Manage transforms on Meroxa",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List transforms",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Display output without headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Display the Meroxa CLI version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Display the current logged in user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "accounts",
+          "aliases": [
+            "account"
+          ],
+          "description": "Manage Meroxa Accounts",
+          "subcommands": [
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List Meroxa Accounts",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set active account",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "api",
+          "aliases": [],
+          "description": "Invoke Meroxa API",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "app",
+          "aliases": [
+            "apps"
+          ],
+          "description": "Manage Turbine Data Applications",
+          "subcommands": [
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy a Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "describe",
+              "aliases": [],
+              "description": "Describe a Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "init",
+              "aliases": [],
+              "description": "Initialize a Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List Turbine Data Applications",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "log",
+              "aliases": [
+                "logs"
+              ],
+              "description": "View relevant logs to the state of the given Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "open",
+              "aliases": [],
+              "description": "Open the link to a Turbine Data Application in the Dashboard",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [
+                "delete",
+                "remove"
+              ],
+              "description": "Remove a Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "run",
+              "aliases": [],
+              "description": "Execute a Turbine Data Application locally",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "upgrade",
+              "aliases": [],
+              "description": "Upgrade a Turbine Data Application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "auth",
+          "aliases": [],
+          "description": "Authentication commands for Meroxa",
+          "subcommands": [
+            {
+              "name": "login",
+              "aliases": [],
+              "description": "Login or Sign up to the Meroxa Platform",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "logout",
+              "aliases": [],
+              "description": "Clears local login credentials of the Meroxa Platform",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "whoami",
+              "aliases": [],
+              "description": "Display the current logged in user",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "billing",
+          "aliases": [],
+          "description": "Open your billing page in a web browser",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "build",
+          "aliases": [
+            "builds"
+          ],
+          "description": "Inspect Process Builds on Meroxa",
+          "subcommands": [
+            {
+              "name": "describe",
+              "aliases": [],
+              "description": "Describe a Meroxa Process Build",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "log",
+              "aliases": [
+                "logs"
+              ],
+              "description": "List a Meroxa Process Build's Logs",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate completion script",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cfg",
+          "aliases": [
+            "config"
+          ],
+          "description": "Manage your Meroxa CLI configuration",
+          "subcommands": [
+            {
+              "name": "describe",
+              "aliases": [],
+              "description": "Show Meroxa CLI configuration details",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Update your Meroxa CLI configuration file with a specific key=value",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "env",
+          "aliases": [
+            "environment",
+            "environments"
+          ],
+          "description": "Manage environments on Meroxa",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create an environment",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "describe",
+              "aliases": [],
+              "description": "Describe environment",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List environments",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [
+                "delete",
+                "remove"
+              ],
+              "description": "Remove environment",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "repair",
+              "aliases": [],
+              "description": "Repair environment",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Update an environment",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login or Sign up to the Meroxa Platform",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Clears local login credentials of the Meroxa Platform",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open in a web browser",
+          "subcommands": [
+            {
+              "name": "billing",
+              "aliases": [],
+              "description": "Open your billing page in a web browser",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "resource",
+          "aliases": [
+            "resources"
+          ],
+          "description": "Manage resources on Meroxa",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [
+                "create"
+              ],
+              "description": "Add a resource to your Meroxa resource catalog",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "describe",
+              "aliases": [],
+              "description": "Describe resource",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List resources and resource types",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [
+                "delete",
+                "remove"
+              ],
+              "description": "Remove resource",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "rotate-tunnel-key",
+              "aliases": [],
+              "description": "Rotate the tunnel key for a resource",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Update a resource",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "validate",
+              "aliases": [],
+              "description": "Validate a resource",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "transform",
+          "aliases": [
+            "transforms"
+          ],
+          "description": "Manage transforms on Meroxa",
+          "subcommands": [
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List transforms",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Display the Meroxa CLI version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "whoami",
+          "aliases": [],
+          "description": "Display the current logged in user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--api-url"
+      ],
+      "description": "API url",
+      "takes_arg": true,
+      "arg_name": "api-url",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cli-config-file"
+      ],
+      "description": "Meroxa configuration file",
+      "takes_arg": true,
+      "arg_name": "cli-config-file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Display any debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Output json",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout"
+      ],
+      "description": "Set the duration of the client timeout in seconds",
+      "takes_arg": true,
+      "arg_name": "timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

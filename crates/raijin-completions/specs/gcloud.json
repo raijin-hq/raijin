@@ -1,0 +1,569 @@
+{
+  "name": "gcloud",
+  "aliases": [],
+  "description": "Manage Google Cloud Platform resources and developer workflow",
+  "subcommands": [
+    {
+      "name": "access-context-manager",
+      "aliases": [],
+      "description": "Manage Access Context Manager resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "active-directory",
+      "aliases": [],
+      "description": "Manage Managed Microsoft AD resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ai-platform",
+      "aliases": [],
+      "description": "Manage AI Platform jobs and models",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "alpha",
+      "aliases": [],
+      "description": "*(ALPHA)*  Alpha versions of gcloud commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "anthos",
+      "aliases": [],
+      "description": "Anthos command Group",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "apigee",
+      "aliases": [],
+      "description": "Manage Apigee resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "app",
+      "aliases": [],
+      "description": "Manage your App Engine deployments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "artifacts",
+      "aliases": [],
+      "description": "Manage Artifact Registry resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "asset",
+      "aliases": [],
+      "description": "Manage the Cloud Asset Inventory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Manage oauth2 credentials for the Google Cloud SDK",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "beta",
+      "aliases": [],
+      "description": "*(BETA)*  Beta versions of gcloud commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "bigtable",
+      "aliases": [],
+      "description": "Manage your Cloud Bigtable storage",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "builds",
+      "aliases": [],
+      "description": "Create and manage builds for Google Cloud Build",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cheat-sheet",
+      "aliases": [],
+      "description": "Display gcloud cheat sheet",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cloud-shell",
+      "aliases": [],
+      "description": "Manage Google Cloud Shell",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "components",
+      "aliases": [],
+      "description": "List, install, update, or remove Google Cloud SDK components",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "composer",
+      "aliases": [],
+      "description": "Create and manage Cloud Composer Environments",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "compute",
+      "aliases": [],
+      "description": "Create and manipulate Compute Engine resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "View and edit Cloud SDK properties",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "container",
+      "aliases": [],
+      "description": "Deploy and manage clusters of machines for running containers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "data-catalog",
+      "aliases": [],
+      "description": "Manage Cloud Data Catalog resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dataflow",
+      "aliases": [],
+      "description": "Manage Google Cloud Dataflow resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dataproc",
+      "aliases": [],
+      "description": "Create and manage Google Cloud Dataproc clusters and jobs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "datastore",
+      "aliases": [],
+      "description": "Manage your Cloud Datastore resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Commands for interacting with the Cloud Debugger",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deployment-manager",
+      "aliases": [],
+      "description": "Manage deployments of cloud resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dns",
+      "aliases": [],
+      "description": "Manage your Cloud DNS managed-zones and record-sets",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "docker",
+      "aliases": [],
+      "description": "*(DEPRECATED)*  Enable Docker CLI access to Google Container Registry",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "domains",
+      "aliases": [],
+      "description": "Manage domains for your Google Cloud projects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "endpoints",
+      "aliases": [],
+      "description": "Create, enable and manage API services",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "feedback",
+      "aliases": [],
+      "description": "Provide feedback to the Google Cloud SDK team",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "filestore",
+      "aliases": [],
+      "description": "Create and manipulate Cloud Filestore resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "firebase",
+      "aliases": [],
+      "description": "Work with Google Firebase",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "firestore",
+      "aliases": [],
+      "description": "Manage your Cloud Firestore resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "functions",
+      "aliases": [],
+      "description": "Manage Google Cloud Functions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "game",
+      "aliases": [],
+      "description": "Managed Cloud Game Services",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "healthcare",
+      "aliases": [],
+      "description": "Manage Cloud Healthcare resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Search gcloud help text",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "iam",
+      "aliases": [],
+      "description": "Manage IAM service accounts and keys",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "iap",
+      "aliases": [],
+      "description": "Manage IAP policies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "identity",
+      "aliases": [],
+      "description": "Manage Cloud Identity Groups and Memberships resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Display information about the current gcloud environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize or reinitialize gcloud",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "iot",
+      "aliases": [],
+      "description": "Manage Cloud IoT resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kms",
+      "aliases": [],
+      "description": "Manage cryptographic keys in the cloud",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logging",
+      "aliases": [],
+      "description": "Manage Cloud Logging",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "meta",
+      "aliases": [],
+      "description": "Cloud meta introspection commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ml",
+      "aliases": [],
+      "description": "Use Google Cloud machine learning capabilities",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ml-engine",
+      "aliases": [],
+      "description": "Manage AI Platform jobs and models",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "monitoring",
+      "aliases": [],
+      "description": "Manage Cloud Monitoring dashboards",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "network-management",
+      "aliases": [],
+      "description": "Manage Network Management resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "organizations",
+      "aliases": [],
+      "description": "Create and manage Google Cloud Platform Organizations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "policy-troubleshoot",
+      "aliases": [],
+      "description": "Troubleshoot Google Cloud Platform policies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Create and manage project access policies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pubsub",
+      "aliases": [],
+      "description": "Manage Cloud Pub/Sub topics, subscriptions, and snapshots",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "recommender",
+      "aliases": [],
+      "description": "Manage Cloud recommendations and recommendation rules",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "redis",
+      "aliases": [],
+      "description": "Manage Cloud Memorystore Redis resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "resource-manager",
+      "aliases": [],
+      "description": "Manage Cloud Resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Manage your Cloud Run applications",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "scc",
+      "aliases": [],
+      "description": "Manage Cloud SCC resources",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "scheduler",
+      "aliases": [],
+      "description": "Manage Cloud Scheduler jobs and schedules",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Manage secrets on Google Cloud",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "services",
+      "aliases": [],
+      "description": "List, enable and disable APIs and services",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "source",
+      "aliases": [],
+      "description": "Cloud git repository commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "spanner",
+      "aliases": [],
+      "description": "Command groups for Cloud Spanner",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sql",
+      "aliases": [],
+      "description": "Create and manage Google Cloud SQL databases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "survey",
+      "aliases": [],
+      "description": "Invoke a customer satisfaction survey for Cloud SDK",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tasks",
+      "aliases": [],
+      "description": "Manage Cloud Tasks queues and tasks",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "topic",
+      "aliases": [],
+      "description": "Gcloud supplementary help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print version information for Cloud SDK components",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

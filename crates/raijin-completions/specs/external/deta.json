@@ -1,0 +1,728 @@
+{
+  "name": "deta",
+  "aliases": [],
+  "description": "Deta CLI for managing Deta Micros",
+  "subcommands": [
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Trigger the login process for the Deta CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for login",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the Deta version",
+      "subcommands": [
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade Deta CLI version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for upgrade",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v"
+              ],
+              "description": "Upgrade CLI to specific version",
+              "takes_arg": true,
+              "arg_name": "Version number",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "List Deta projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new Deta Micro",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for new",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "Create a micro with Node (node14.x) runtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Create a micro with Python (python 3.9) runtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Set the name of the new micro",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project"
+          ],
+          "description": "Set the project under which the micro is created",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--runtime"
+          ],
+          "description": "Create a micro with a specified runtime",
+          "takes_arg": true,
+          "arg_name": "runtime",
+          "arg_template": {
+            "custom": [
+              "node12",
+              "node14",
+              "python3.7",
+              "python3.9"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to new directory for the micro",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy new code to a Deta Micro",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to project directory",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "details",
+      "aliases": [],
+      "description": "Get detailed information about a specific Deta micro",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for details",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to project directory",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Auto-deploy locally saved changes in real time to your Deta micro",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for watch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to project directory",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Change auth settings for a Deta Micro",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable HTTP Auth for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for auth disable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable HTTP Auth for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for auth enable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create-api-key",
+          "aliases": [],
+          "description": "Create an API key for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for auth create-api-key",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d"
+              ],
+              "description": "Set the api-key description",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n"
+              ],
+              "description": "Set the api-key name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o"
+              ],
+              "description": "Set the api-key output file",
+              "takes_arg": true,
+              "arg_name": "outfile",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete-api-key",
+          "aliases": [],
+          "description": "Delete an API key for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for auth delete-api-key",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n"
+              ],
+              "description": "Set the api-key name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for auth",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull the latest deployed code of a Deta Micro to your local machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for pull",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Force the overwrite of existing files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clone a Deta Micro",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for clone",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "The name of the micro to be cloned",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "The name of the project with the micro to be cloned",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to new directory for the clone",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update a Deta Micro's name or environment variables",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for pull",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "The new name of the micro",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "The new runtime of the micro",
+          "takes_arg": true,
+          "arg_name": "runtime",
+          "arg_template": {
+            "custom": [
+              "node12",
+              "node14",
+              "python3.7",
+              "python3.9"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "The new env file of the micro",
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "visor",
+      "aliases": [],
+      "description": "Change the Visor settings for a Deta Micro",
+      "subcommands": [
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open Micro's visor page in the browser",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for visor open",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable Visor for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for visor enable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable Visor for a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for visor disable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for visor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a Deta Micro from the CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for run",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Show the micro logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "action",
+          "description": "The action to be performed on the micro. See docs for full examples and details",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cron",
+      "aliases": [],
+      "description": "Change cron settings for a Deta Micro",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set Deta Micro to run on a schedule",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for cron set",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "expression",
+              "description": "The cron expression to be set",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a schedule from a Deta Micro",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h"
+              ],
+              "description": "Show help for cron remove",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "expression",
+              "description": "The cron expression to be removed",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for cron",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Show help for deta",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

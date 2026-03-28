@@ -1,0 +1,454 @@
+{
+  "name": "exa",
+  "aliases": [],
+  "description": "A modern replacement for ls",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-?",
+        "--help"
+      ],
+      "description": "Show list of command-line options",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version of exa",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-1",
+        "--oneline"
+      ],
+      "description": "Display one entry per line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--long"
+      ],
+      "description": "Display extended file metadata as a table",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--grid"
+      ],
+      "description": "Display entries as a grid (default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--across"
+      ],
+      "description": "Sort the grid across, rather than downwards",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--recurse"
+      ],
+      "description": "Recurse into directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--tree"
+      ],
+      "description": "Recurse into directories as a tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--classify"
+      ],
+      "description": "Display type indicator by file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colour",
+        "--color"
+      ],
+      "description": "When to use terminal colours (always, auto, never)",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "always",
+          "auto",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colour-scale",
+        "--color-scale"
+      ],
+      "description": "Highlight levels of file sizes distinctly",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--all"
+      ],
+      "description": "Show hidden and 'dot' files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--list-dirs"
+      ],
+      "description": "List directories like regular files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--level"
+      ],
+      "description": "Limit the depth of recursion",
+      "takes_arg": true,
+      "arg_name": "DEPTH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--reverse"
+      ],
+      "description": "Reverse the sort order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--sort"
+      ],
+      "description": "Which field to sort by",
+      "takes_arg": true,
+      "arg_name": "sort field",
+      "arg_template": {
+        "custom": [
+          "name",
+          "Name",
+          "extension",
+          "Extension",
+          "size",
+          "type",
+          "modified",
+          "accessed",
+          "created",
+          "inode",
+          "none",
+          "date",
+          "time",
+          "old",
+          "new"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--group-directories-first"
+      ],
+      "description": "List directories before other files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--only-dirs"
+      ],
+      "description": "List only directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--ignore-glob"
+      ],
+      "description": "Glob patterns (pipe-separated) of files to ignore",
+      "takes_arg": true,
+      "arg_name": "GLOB",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--git-ignore"
+      ],
+      "description": "Ignore files mentioned in '.gitignore'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--binary"
+      ],
+      "description": "List file sizes with binary prefixes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "--bytes"
+      ],
+      "description": "List file sizes in bytes, without any prefixes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--group"
+      ],
+      "description": "List each file's group",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--header"
+      ],
+      "description": "Add a header row to each column",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--links"
+      ],
+      "description": "List each file's number of hard links",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--inode"
+      ],
+      "description": "List each file's inode number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--modified"
+      ],
+      "description": "Use the modified timestamp field",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--blocks"
+      ],
+      "description": "Show number of file system blocks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--time"
+      ],
+      "description": "Which timestamp field to list (modified, accessed, created)",
+      "takes_arg": true,
+      "arg_name": "FIELD",
+      "arg_template": {
+        "custom": [
+          "modified",
+          "accessed",
+          "created"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--accessed"
+      ],
+      "description": "Use the accessed timestamp field",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--created"
+      ],
+      "description": "Use the created timestamp field",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--time-style"
+      ],
+      "description": "How to format timestamps (default, iso, long-iso, full-iso)",
+      "takes_arg": true,
+      "arg_name": "style",
+      "arg_template": {
+        "custom": [
+          "default",
+          "iso",
+          "long-iso",
+          "full-iso"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--git"
+      ],
+      "description": "List each file's Git status, if tracked or ignored",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-@",
+        "--extended"
+      ],
+      "description": "List each file's extended attributes and sizes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--icons"
+      ],
+      "description": "Shows icons before each folder or file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-icons"
+      ],
+      "description": "Does not display icons",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changed"
+      ],
+      "description": "Displays when a file or folder got changed instead of modified in the header",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "files...",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

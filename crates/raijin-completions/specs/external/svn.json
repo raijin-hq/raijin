@@ -1,0 +1,287 @@
+{
+  "name": "svn",
+  "aliases": [],
+  "description": "The first content tracker",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [
+        "h"
+      ],
+      "description": "Show help for svn",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": "Help about specific subcommand",
+          "template": {
+            "custom": [
+              "add",
+              "auth",
+              "blame",
+              "praise",
+              "annotate",
+              "ann",
+              "cat",
+              "changelist",
+              "cl",
+              "checkout",
+              "co",
+              "cleanup",
+              "commit",
+              "ci",
+              "copy",
+              "cp",
+              "delete",
+              "del",
+              "remove",
+              "rm",
+              "diff",
+              "di",
+              "export",
+              "help",
+              "?",
+              "h",
+              "import",
+              "info",
+              "list",
+              "ls",
+              "lock",
+              "log",
+              "merge",
+              "mergeinfo",
+              "mkdir",
+              "move",
+              "mv",
+              "rename",
+              "ren",
+              "patch",
+              "propdel",
+              "pdel",
+              "pd",
+              "propedit",
+              "pedit",
+              "pe",
+              "propget",
+              "pget",
+              "pg",
+              "proplist",
+              "plist",
+              "pl",
+              "propset",
+              "pset",
+              "ps",
+              "relocate",
+              "resolve",
+              "resolved",
+              "revert",
+              "status",
+              "stat",
+              "st",
+              "switch",
+              "sw",
+              "unlock",
+              "update",
+              "up",
+              "upgrade"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [
+        "st"
+      ],
+      "description": "Show the working tree status",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Show information about a local or remote item",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "checkout",
+      "aliases": [
+        "co"
+      ],
+      "description": "Check out a working copy from a repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "repository",
+          "description": "The repository you want to checkout",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "commit",
+      "aliases": [
+        "ci"
+      ],
+      "description": "Commit to a repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "Use the given message as the commit message",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--username"
+          ],
+          "description": "Specify a username ARG",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Specify a password ARG",
+          "takes_arg": true,
+          "arg_name": "password",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password-from-stdin"
+          ],
+          "description": "Read password from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auth-cache"
+          ],
+          "description": "Do not cache authentication tokens",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Do no interactive prompting (default is to prompt only if standard input is a terminal device)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-interactive"
+          ],
+          "description": "Do interactive prompting even if standard input is not a terminal device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trust-server-cert"
+          ],
+          "description": "Specify a password ARG",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trust-server-cert-failures"
+          ],
+          "description": "Specify a password ARG",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-dir"
+          ],
+          "description": "Read user configuration files from directory ARG",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-option"
+          ],
+          "description": "Specify a password ARG",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show help for svn",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Show help for svn",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Show help for svn",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

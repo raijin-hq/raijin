@@ -1,0 +1,427 @@
+{
+  "name": "just",
+  "aliases": [],
+  "description": "Just a command runner",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changelog"
+      ],
+      "description": "Print the changelog",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check"
+      ],
+      "description": "Run --fmt in 'check' mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--choose"
+      ],
+      "description": "Select one or more recipes to run using another program",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chooser"
+      ],
+      "description": "Override the binary invoked by --choose",
+      "takes_arg": true,
+      "arg_name": "program",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Print colorful output",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "auto",
+          "always",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--command"
+      ],
+      "description": "Run an arbitrary command with the working directory, .env, overrides, and exports",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--completions"
+      ],
+      "description": "Print shell completions",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": {
+        "custom": [
+          "zsh",
+          "bash",
+          "fish",
+          "powershell",
+          "elvish"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clear-shell-args"
+      ],
+      "description": "Clear shell arguments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dry-run"
+      ],
+      "description": "Print what just would do, without doing it",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dump"
+      ],
+      "description": "Print justfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dotenv-filename"
+      ],
+      "description": "Use a file with this name instead of .env",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dotenv-path"
+      ],
+      "description": "Load the environment file from a path instead of searching for one",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dump-format"
+      ],
+      "description": "Specify the format for dumping the justfile",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "just",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--edit"
+      ],
+      "description": "Edit the justfile with $VISUAL or $EDITOR, falling back to vim",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--evaluate"
+      ],
+      "description": "Evaluate and print all variables",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fmt"
+      ],
+      "description": "Format and overwrite the justfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--highlight"
+      ],
+      "description": "Highlight echoed recipe lines in bold",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--init"
+      ],
+      "description": "Initialize a new justfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--justfile"
+      ],
+      "description": "Use a specific justfile",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list"
+      ],
+      "description": "List available recipes and their arguments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-heading"
+      ],
+      "description": "Print this text before the list",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-prefix"
+      ],
+      "description": "Print this text before each list item",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-dotenv"
+      ],
+      "description": "Don't load the environment file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-highlight"
+      ],
+      "description": "Don't highlight echoed recipe lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Suppress all output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--set"
+      ],
+      "description": "Override a variable with a value",
+      "takes_arg": true,
+      "arg_name": "variable",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell"
+      ],
+      "description": "Invoke this shell to run recipes",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell-arg"
+      ],
+      "description": "Invoke the shell with this as an argument",
+      "takes_arg": true,
+      "arg_name": "argument",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell-command"
+      ],
+      "description": "Invoke --command with the shell used to run recipe lines and backticks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--show"
+      ],
+      "description": "Show information about a recipe",
+      "takes_arg": true,
+      "arg_name": "recipe",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--summary"
+      ],
+      "description": "List names of available recipes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--unsorted"
+      ],
+      "description": "Return list and summary entries in source order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unstable"
+      ],
+      "description": "Enable unstable features",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--variables"
+      ],
+      "description": "List names of variables",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Use verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--working-directory"
+      ],
+      "description": "Use this as the working directory",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "folders",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "args",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,1052 @@
+{
+  "name": "barnard59",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "Output file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pipeline"
+          ],
+          "description": "IRI of the pipeline description",
+          "takes_arg": true,
+          "arg_name": "iri",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--variable"
+          ],
+          "description": "Variable key/value pairs",
+          "takes_arg": true,
+          "arg_name": "name=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--variable-all"
+          ],
+          "description": "Import all environment variables",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable diagnostic console output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Disable all logging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cube",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "fetch-metadata",
+          "aliases": [],
+          "description": "Retrieves cube and its constraint shape from SPARQL endpoint",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--endpoint"
+              ],
+              "description": "SPARQL endpoint",
+              "takes_arg": true,
+              "arg_name": "endpoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cube"
+              ],
+              "description": "Cube URI",
+              "takes_arg": true,
+              "arg_name": "cube",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "check-metadata",
+          "aliases": [],
+          "description": "Validate input cube and its constraint against profile shapes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--profile"
+              ],
+              "description": "Cube constraint profile URL",
+              "takes_arg": true,
+              "arg_name": "profile",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--profileFormat"
+              ],
+              "description": "Override the profile format",
+              "takes_arg": true,
+              "arg_name": "profileFormat",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fetch-observations",
+          "aliases": [],
+          "description": "Retrieves cube observations from SPARQL endpoint",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--endpoint"
+              ],
+              "description": "SPARQL endpoint",
+              "takes_arg": true,
+              "arg_name": "endpoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cube"
+              ],
+              "description": "Cube URI",
+              "takes_arg": true,
+              "arg_name": "cube",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "check-observations",
+          "aliases": [],
+          "description": "Validate input observations against cube constraint",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--constraint"
+              ],
+              "description": "Cube constraint file",
+              "takes_arg": true,
+              "arg_name": "constraint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--batchSize"
+              ],
+              "description": "Batch size",
+              "takes_arg": true,
+              "arg_name": "batchSize",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--maxViolations"
+              ],
+              "description": "Max number of violations",
+              "takes_arg": true,
+              "arg_name": "maxViolations",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--sortChunkSize"
+              ],
+              "description": "Sort chunk size",
+              "takes_arg": true,
+              "arg_name": "sortChunkSize",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fetch-constraint",
+          "aliases": [],
+          "description": "Retrieves cube constraint from SPARQL endpoint",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--endpoint"
+              ],
+              "description": "SPARQL endpoint",
+              "takes_arg": true,
+              "arg_name": "endpoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cube"
+              ],
+              "description": "Cube URI",
+              "takes_arg": true,
+              "arg_name": "cube",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fetch-cube",
+          "aliases": [],
+          "description": "Retrieves cube with observations from SPARQL endpoint",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--endpoint"
+              ],
+              "description": "SPARQL endpoint",
+              "takes_arg": true,
+              "arg_name": "endpoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cube"
+              ],
+              "description": "Cube URI",
+              "takes_arg": true,
+              "arg_name": "cube",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Output the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "graph-store",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "put",
+          "aliases": [],
+          "description": "Upload RDF documents using SPARQL Graph Store Protocol",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--source"
+              ],
+              "description": "Glob of RDF documents to upload",
+              "takes_arg": true,
+              "arg_name": "source",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--graph"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "graph",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--endpoint"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "endpoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--user"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "user",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Output the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "shacl",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "validate",
+          "aliases": [],
+          "description": "Validates the RDF in standard input against a SHACL document",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--shapes"
+              ],
+              "description": "URL or path of the shapes graph",
+              "takes_arg": true,
+              "arg_name": "shapes",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--shapesMediaType"
+              ],
+              "description": "Override the shapes graph format",
+              "takes_arg": true,
+              "arg_name": "shapesMediaType",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "report-summary",
+          "aliases": [],
+          "description": "Human-readable summary of SHACL validation report",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Variable key/value pairs",
+              "takes_arg": true,
+              "arg_name": "name=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-all"
+              ],
+              "description": "Import all environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Enable diagnostic console output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Output the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--variable"
+      ],
+      "description": "Variable key/value pairs",
+      "takes_arg": true,
+      "arg_name": "name=value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--variable-all"
+      ],
+      "description": "Import all environment variables",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Enable diagnostic console output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Disable all logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-buffer-monitor"
+      ],
+      "description": "Enable histogram of buffer usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--otel-debug"
+      ],
+      "description": "Enable OpenTelemetry console diagnostic output",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "NONE",
+          "ERROR",
+          "WARN",
+          "INFO",
+          "DEBUG",
+          "VERBOSE",
+          "ALL"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--otel-metrics-exporter"
+      ],
+      "description": "OpenTelemetry Metrics exporter to use",
+      "takes_arg": true,
+      "arg_name": "exporter",
+      "arg_template": {
+        "custom": [
+          "otlp",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--otel-metrics-interval"
+      ],
+      "description": "Export Metrics interval",
+      "takes_arg": true,
+      "arg_name": "milliseconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--otel-traces-exporter"
+      ],
+      "description": "OpenTelemetry Traces exporter to use",
+      "takes_arg": true,
+      "arg_name": "exporter",
+      "arg_template": {
+        "custom": [
+          "otlp",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

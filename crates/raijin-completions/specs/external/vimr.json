@@ -1,0 +1,108 @@
+{
+  "name": "vimr",
+  "aliases": [],
+  "description": "VimR — Neovim GUI for macOS in Swift",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dry-run"
+      ],
+      "description": "Just print the 'open' command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd"
+      ],
+      "description": "Set the working directory",
+      "takes_arg": true,
+      "arg_name": "CWD",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--line"
+      ],
+      "description": "Go to line",
+      "takes_arg": true,
+      "arg_name": "LINE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait"
+      ],
+      "description": "This command line tool will exit when the corresponding UI window is closed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nvim"
+      ],
+      "description": "All arguments except --cur-env, --line, --dry-run and --wait will be passed over to the (new) nvim instance in a new UI window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cur-env"
+      ],
+      "description": "Use the current environment variables when launching the background neovim process. All files will be opened in a new window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Open files in tabs in a new window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Open files in separate windows",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

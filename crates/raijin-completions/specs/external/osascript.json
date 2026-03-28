@@ -1,0 +1,64 @@
+{
+  "name": "osascript",
+  "aliases": [],
+  "description": "Execute OSA scripts (AppleScript, JavaScript, etc.)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Enter one line of a script",
+      "takes_arg": true,
+      "arg_name": "statement",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Interactive mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Override the language for any plain text files",
+      "takes_arg": true,
+      "arg_name": "language",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Modify the output style",
+      "takes_arg": true,
+      "arg_name": "flags",
+      "arg_template": {
+        "custom": [
+          "h",
+          "s",
+          "e",
+          "o"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "script",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

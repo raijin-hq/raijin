@@ -1,0 +1,5926 @@
+{
+  "name": "bit",
+  "aliases": [],
+  "description": "Bit documentation: https://bit.dev/docs",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create or reinitialize an empty workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bare",
+            "-b"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shared",
+            "-s"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--standalone"
+          ],
+          "description": "Do not nest component store within .git",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset",
+            "-r"
+          ],
+          "description": "Write missing or damaged Bit files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset-new"
+          ],
+          "description": "Reset .bitmap file as if components were newly added",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset-lane-new"
+          ],
+          "description": "Reset only components belonging to lanes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset-hard"
+          ],
+          "description": "Delete all Bit files and directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset-scope"
+          ],
+          "description": "Removes local scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default-directory",
+            "-d"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default-scope"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--package-manager",
+            "-p"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force workspace initialization without clearing local objects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--harmony"
+          ],
+          "description": "DEPRECATED: Harmony is the default now",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive",
+            "-I"
+          ],
+          "description": "Start an interactive process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Path",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new workspace from a template",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--aspect",
+            "-a"
+          ],
+          "description": "ID of the aspect that registered the template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template",
+            "-t"
+          ],
+          "description": "Env-ID of the template's owner. Alias for --env",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Env-ID of the template. Alias for -t",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default-scope",
+            "-d"
+          ],
+          "description": "Set defaultScope in the new workspace's workspace.jsonc",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-git"
+          ],
+          "description": "Skip generation of Git repository in the new workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--empty"
+          ],
+          "description": "Skip template's default component creation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--load-from"
+          ],
+          "description": "Local path to the workspace containing the template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The name of the workspace template",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "The name for the new workspace and workspace directory",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Global config management",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a global configuration",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Configuration value",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "del",
+          "aliases": [],
+          "description": "Delete given key from global configuration",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get a value from global configuration",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all configuration(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "scope-config",
+      "aliases": [],
+      "description": "Scope config management\n\nbit scope-config",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a scope configuration.\n\nUsage: scope-config set <key> <val>",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key to set",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Value for the configuration key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "del",
+          "aliases": [],
+          "description": "Delete given key from global configuration.\n\nUsage: scope-config del <key>",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get a scope configuration.\n\nUsage: scope-config get <key>",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Configuration key to retrieve",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all scope configuration(s).\n\nUsage: scope-config list",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to Bit cloud",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cloud-domain"
+          ],
+          "description": "Login cloud domain (default bit.cloud)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port number to open for localhost server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--suppress-browser-launch"
+          ],
+          "description": "Do not open a browser for authentication",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--npmrc-path"
+          ],
+          "description": "Path to npmrc file to configure bit.cloud registry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-registry-config"
+          ],
+          "description": "Don't configure bit.cloud registry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--machine-name"
+          ],
+          "description": "Specify machine-name to pair with the token",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log the CLI out of Bit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Diagnose a bit workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return diagnoses in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List all available diagnoses",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save",
+            "-s"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "filePath",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--archive",
+            "-a"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "filePath",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Diagnosis name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Enable bash/zsh-completion shortcuts for commands and options",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cli",
+      "aliases": [],
+      "description": "EXPERIMENTAL: Enters bit cli program and generates commands list",
+      "subcommands": [
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generate an .md file with all commands details",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--metadata"
+              ],
+              "description": "Metadata/front-matter to place at the top of the .md file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--docs"
+              ],
+              "description": "Generate the cli-reference.docs.mdx file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "Output the commands info as JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [
+        "$0"
+      ],
+      "description": "Shows help",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--internal"
+          ],
+          "description": "Show internal commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clear-cache",
+      "aliases": [
+        "cc"
+      ],
+      "description": "Clears Bit's cache from current working machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--remote",
+            "-r"
+          ],
+          "description": "Clear memory cache from a remote scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "remote",
+      "aliases": [],
+      "description": "Manage set of tracked bit scope(s)",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a bare-scope as a remote, usage: remote add <url>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Configure a remote bit scope",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "URL of the remote scope",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "del",
+          "aliases": [],
+          "description": "Remove a tracked bit remote: usage: remote del <name>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Remove a globally configured remote scope",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Name of the remote to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [
+        "rm"
+      ],
+      "description": "Remove component(s) from the local workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--track",
+            "-t"
+          ],
+          "description": "Keep tracking component in .bitmap",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-files"
+          ],
+          "description": "Keep component files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Removes the component even if used as a dependency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent",
+            "-s"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, ID, or pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import components from their remote scopes to the local workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--path",
+            "-p"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--objects"
+          ],
+          "description": "Import components objects without checkout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override",
+            "-O"
+          ],
+          "description": "Override local changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Show verbose output for inspection",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dependency-installation"
+          ],
+          "description": "Do not auto-install dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--merge"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dependencies"
+          ],
+          "description": "Import all dependencies of imported components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dependents"
+          ],
+          "description": "Import components found while traversing from imported components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save-in-lane"
+          ],
+          "description": "Save in the lane when checked out to a lane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all-history"
+          ],
+          "description": "Fetch all history versions, always",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fetch-deps"
+          ],
+          "description": "Fetch dependencies objects without adding to the workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--track-only"
+          ],
+          "description": "Create bitmap entries without writing component files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-deprecated"
+          ],
+          "description": "Include deprecated components when importing with patterns",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component IDs or component patterns",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pack",
+      "aliases": [],
+      "description": "Create tar for npm publish",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deprecate",
+      "aliases": [
+        "d"
+      ],
+      "description": "Deprecate a component",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--new-id"
+          ],
+          "description": "If replaced by another component, enter the new component id",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name or component id",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "undeprecate",
+      "aliases": [],
+      "description": "Undeprecate a deprecated component (local/remote).\n\nbit undeprecate <id>",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "rename",
+      "aliases": [],
+      "description": "Rename a component",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "Define the scope for the newly created component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path",
+            "-p"
+          ],
+          "description": "Relative path in the workspace to place new component in",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--refactor",
+            "-r"
+          ],
+          "description": "Update the import/require statements in all dependent components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preserve"
+          ],
+          "description": "Avoid renaming files and variables according to the new component name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ast"
+          ],
+          "description": "EXPERIMENTAL. Use AST to transform files instead of regex",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The current component name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "The new component name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fork",
+      "aliases": [],
+      "description": "Create a new component forked from an existing one (copies source files and configs)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path",
+            "-p"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--refactor",
+            "-r"
+          ],
+          "description": "Update the import/require statements in all dependent components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dependency-installation"
+          ],
+          "description": "Do not install packages of the imported components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-config"
+          ],
+          "description": "Do not copy the config to the new component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preserve"
+          ],
+          "description": "Avoid refactoring file and variable/class names according to the new component name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-link"
+          ],
+          "description": "Avoid saving a reference to the original component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ast"
+          ],
+          "description": "Use ast to transform files instead of regex",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component id of the source component",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "Name for the new component",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [
+        "e"
+      ],
+      "description": "Export components from the workspace to remote scopes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--eject",
+            "-e"
+          ],
+          "description": "Remove component from the workspace and install it as a regular npm package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Export all components, including non-staged",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all-versions"
+          ],
+          "description": "Export not only staged versions but all of them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--origin-directly"
+          ],
+          "description": "Avoid export to the central hub, export directly to the original scopes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--resume"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-missing-artifacts"
+          ],
+          "description": "Don't throw an error when artifact files are missing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fork-lane-new-scope"
+          ],
+          "description": "Allow exporting a forked lane into a different scope than the original scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Show output in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component patterns",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dependents",
+      "aliases": [],
+      "description": "Show dependents of the given component",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Display the component's essential information\n\nbit show <component-name>",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the component data in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--legacy"
+          ],
+          "description": "Use the legacy bit show",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote",
+            "-r"
+          ],
+          "description": "Show data for a remote component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compare",
+            "-c"
+          ],
+          "description": "Legacy-only. Compare current file system component to its latest tagged version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name or component ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deps",
+      "aliases": [
+        "dependencies"
+      ],
+      "description": "Manage dependencies",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Show direct and indirect dependencies of the given component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--tree",
+                "-t"
+              ],
+              "description": "EXPERIMENTAL: Render dependencies as a tree, similar to 'npm ls'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name or component id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a dependency to component(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dev",
+                "-d"
+              ],
+              "description": "Remove from devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--peer",
+                "-p"
+              ],
+              "description": "Remove from peerDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name, component id, or component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Package name with or without a version",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Unset a dependency to component(s) that was previously set by 'bit deps set'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dev",
+                "-d"
+              ],
+              "description": "Unset from devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--peer",
+                "-p"
+              ],
+              "description": "Unset from peerDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name, component id, or component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Package name with or without a version",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "debug",
+          "aliases": [],
+          "description": "Show the immediate dependencies and how their versions were determined",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name or component id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a dependency to component(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dev",
+                "-d"
+              ],
+              "description": "Add to the devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--peer",
+                "-p"
+              ],
+              "description": "Add to the peerDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name, component id, or component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Package name with or without a version",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset dependencies to the default values (revert any previously 'bit deps set')",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name, component id, or component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "eject",
+          "aliases": [],
+          "description": "Write dependencies that were previously set via 'bit deps set' into .bitmap",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name, component id, or component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "blame",
+          "aliases": [],
+          "description": "EXPERIMENTAL: Find out which snap/tag changed a dependency version",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Dependency name, package-name or component-id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "usage",
+          "aliases": [],
+          "description": "EXPERIMENTAL: Find components that use the specified dependency",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Package name, component-id or package-name, optionally with version",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Show components(s) version history",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--remote",
+            "-r"
+          ],
+          "description": "Show log of a remote component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parents"
+          ],
+          "description": "Show parents and lanes data",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-line",
+            "-o"
+          ],
+          "description": "Show each log entry in one line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component-id or component-name to show logs for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add any subset of files to be tracked as a component(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--id",
+            "-i"
+          ],
+          "description": "Manually set component id",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--main",
+            "-m"
+          ],
+          "description": "Define component entry point",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Organize component in a namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override",
+            "-o"
+          ],
+          "description": "Override existing component if exists (default = false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "Sets the component's scope. If not entered, the default-scope from workspace.jsonc will be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Set the component's environment. (overrides the env from variants if exists)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Output as json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "move",
+      "aliases": [
+        "mv"
+      ],
+      "description": "Move a component to a different filesystem path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The component's current directory",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "The new directory to move the component's files to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Show the diff between the components' current source files and config, and their latest snapshot or tag",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Show a more verbose output where possible",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--table",
+            "-t"
+          ],
+          "description": "Show tables instead of plain text for dependencies diff",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Values for comparison, component IDs, versions or patterns",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "envs",
+      "aliases": [
+        "env"
+      ],
+      "description": "List all components maintained by the workspace and their corresponding envs",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all envs currently used in the workspace",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Show config information from a component's env",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--services"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component name or component id of the component whose env you'd like to inspect",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Assigns one or more components a development environment (env)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "The env's component id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Un-sets an env from components",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "replace",
+          "aliases": [],
+          "description": "Replace an existing env with another env for all components using the old env",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Current environment id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "New environment id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update a version of an env for all components using that env",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Environment id",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Component pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [
+        "c"
+      ],
+      "description": "Run the UI/development server\n\nbit start [component-pattern]",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dev",
+            "-d"
+          ],
+          "description": "Start UI server in dev mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port of the UI server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rebuild",
+            "-r"
+          ],
+          "description": "Rebuild the UI (useful e.g. when updating the workspace UI - can use the dev flag for HMR in this case)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-ui-build"
+          ],
+          "description": "Skip building UI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Show verbose output for inspection and prints stack trace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-browser",
+            "-n"
+          ],
+          "description": "Do not automatically open browser when ready",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-compilation"
+          ],
+          "description": "Skip the auto-compilation before starting the web-server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ui-root-name"
+          ],
+          "description": "Name of the UI root to use, e.g. \"teambit.scope/scope\" or \"teambit.workspace/workspace\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component ID, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. E.g. \"ui/**, !ui/button\". Wrap the pattern with quotes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ui-build",
+      "aliases": [],
+      "description": "Build production assets for deployment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "checkout",
+      "aliases": [
+        "U"
+      ],
+      "description": "Switch between component versions or remove local changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--interactive-merge"
+          ],
+          "description": "Display options to resolve conflicts when found during merge",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ours"
+          ],
+          "description": "DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--theirs"
+          ],
+          "description": "DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--manual"
+          ],
+          "description": "DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto-merge-resolve"
+          ],
+          "description": "Resolve merge conflicts according to the provided strategy: [ours, theirs, manual]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset",
+            "-r"
+          ],
+          "description": "Revert changes that were not snapped/tagged",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "All components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace-only"
+          ],
+          "description": "Only relevant for 'bit checkout head' when on a lane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Verbose output for inspection",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dependency-installation"
+          ],
+          "description": "Do not auto-install dependencies of the imported components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Permitted values: [head, latest, reset, specific-version]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [
+        "in"
+      ],
+      "description": "Installs workspace dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--type"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--update",
+            "-u"
+          ],
+          "description": "Update all dependencies to the latest version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--update-existing"
+          ],
+          "description": "DEPRECATED: Update existing dependencies version and types",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save-prefix"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dedupe"
+          ],
+          "description": "Do not dedupe dependencies on installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-import"
+          ],
+          "description": "Do not import bit objects post installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-compile"
+          ],
+          "description": "Do not compile components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-missing-deps"
+          ],
+          "description": "Install all missing dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-missing-peers"
+          ],
+          "description": "Install all missing peer dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recurring-install"
+          ],
+          "description": "Automatically run install again if there are old envs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Do not install optional dependencies (pnpm only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "A list of packages to install",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [
+        "un"
+      ],
+      "description": "Uninstall dependencies.\n\nbit uninstall [packages...]",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [
+        "up"
+      ],
+      "description": "Update dependencies.\n\nbit update [package-patterns...]",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Automatically update all outdated versions for packages specified in pattern (all if no pattern supplied) - use carefully as could result in breaking updates for dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--patch"
+          ],
+          "description": "Update to the latest patch version. Semver rules are ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minor"
+          ],
+          "description": "Update to the latest minor version. Semver rules are ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major"
+          ],
+          "description": "Update to the latest major version. Semver rules are ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "A string list of package names, or patterns (separated by space), e.g. \"@teambit/ @my-org/ui/\". The patterns should be in glob format. By default, all packages are selected",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Create links in the node_modules directory, to core aspects and to components in the workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rewire",
+            "-r"
+          ],
+          "description": "Replace relative paths with module paths in code (e.g. \"../foo\" => \"@bit/foo\")",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Link to an external directory (similar to npm-link) so other projects could use these components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-fetching-objects"
+          ],
+          "description": "Skip fetch missing objects from remotes before linking",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "component-names",
+          "description": "Names or IDs of the components to link",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "component-issues",
+      "aliases": [],
+      "description": "List available component-issues",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tag",
+      "aliases": [
+        "t"
+      ],
+      "description": "Create an immutable and exportable component snapshot, tagged with a release version.\nIf no patterns are provided, it will tag all new and modified components.\nIf patterns are entered, you can specify a version per pattern using \"@\" sign, e.g. bit tag foo@1.0.0 bar@minor baz@major\n\nbit tag [component-patterns...]",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--message",
+            "-m"
+          ],
+          "description": "A log message describing the latest changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unmodified",
+            "-u"
+          ],
+          "description": "Include unmodified components (by default, only new and modified components are tagged)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--editor"
+          ],
+          "description": "Open an editor to write a tag message for each component. Optionally, specify the editor-name (defaults to vim)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ver",
+            "-v"
+          ],
+          "description": "Tag with the given version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--increment",
+            "-l"
+          ],
+          "description": "Options are: [major, premajor, minor, preminor, patch, prepatch, prerelease], default to patch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prerelease-id"
+          ],
+          "description": "Prerelease identifier (e.g. \"dev\" to get \"1.0.0-dev.1\")",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--patch",
+            "-p"
+          ],
+          "description": "Syntactic sugar for \"--increment patch\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minor"
+          ],
+          "description": "Syntactic sugar for \"--increment minor\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--major"
+          ],
+          "description": "Syntactic sugar for \"--increment major\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pre-release"
+          ],
+          "description": "Syntactic sugar for \"--increment prerelease\" and --prerelease-id <identifier>",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--snapped"
+          ],
+          "description": "Tag only components whose head is a snap (not a tag)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unmerged"
+          ],
+          "description": "Complete a merge process by tagging the unmerged components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-tests"
+          ],
+          "description": "Skip running component tests during tag process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-auto-tag"
+          ],
+          "description": "Skip auto tagging dependents",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--soft"
+          ],
+          "description": "Do not persist. Only keep note of the changes to be made",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--persist"
+          ],
+          "description": "Persist the changes generated by --soft tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-tag-pipeline"
+          ],
+          "description": "Skip the tag pipeline to avoid publishing the components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-build-errors"
+          ],
+          "description": "Proceed to tag pipeline even when build pipeline fails",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--increment-by"
+          ],
+          "description": "(default to 1) increment semver flag (patch/minor/major) by. e.g. incrementing patch by 2: 0.0.1 -> 0.0.3",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-issues",
+            "-i"
+          ],
+          "description": "Ignore component issues (shown in \"bit status\" as \"issues found\"), issues to ignore: [MissingPackagesDependenciesOnFs, MissingManuallyConfiguredPackages, MissingComponents, UntrackedDependencies, ResolveErrors, RelativeComponents, RelativeComponentsAuthored, ParseErrors, MissingDists, LegacyInsideHarmony, MissingDependenciesOnFs, ImportNonMainFiles, MultipleEnvs, MissingLinksFromNodeModulesToSrc, CircularDependencies, DuplicateComponentAndPackage, MergeConfigHasConflict, NonLoadedEnv, ExternalEnvWithoutVersion, RemovedDependencies] to ignore multiple issues, separate them by a comma and wrap with quotes. To ignore all issues, specify '*'",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-newest-version",
+            "-I"
+          ],
+          "description": "Allow tagging even when the component has newer versions e.g. for hotfixes (default = false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-fast"
+          ],
+          "description": "Stop pipeline execution on the first failed task (by default a task is skipped only when its dependency failed)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build",
+            "-b"
+          ],
+          "description": "Not needed for now. Run the pipeline build and complete the tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "DEPRECATED (not needed anymore, it is the default now). Tag all new and modified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "DEPRECATED (use \"--unmodified\" instead). Tag all components of the local scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "DEPRECATED (use \"--skip-tests\", \"--ignore-build-errors\" or \"--unmodified\" instead). Force-tag even if tests are failing and even when component has not changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-deploy-pipeline"
+          ],
+          "description": "DEPRECATED. Use --disable-tag-pipeline instead",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. e.g. \"ui/**, !ui/button\" wrap the pattern with quotes. By default, all new and modified are tagged",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Revert tagged or snapped versions for component(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Revert all unexported tags/snaps for all components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Revert the head tag/snap only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--soft"
+          ],
+          "description": "Revert only soft-tags",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Revert the tag even if it's used as a dependency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, ID, or pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "merge",
+      "aliases": [],
+      "description": "Merge changes of the remote head into local and creates snaps for merged components",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ours"
+          ],
+          "description": "DEPRECATED. In case of a conflict, keep the local modification",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--theirs"
+          ],
+          "description": "DEPRECATED. In case of a conflict, override the local modification with the specified version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--manual"
+          ],
+          "description": "DEPRECATED. Use --auto-merge-resolve",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto-merge-resolve"
+          ],
+          "description": "In case of a conflict, resolve according to the strategy: [ours, theirs, manual]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--abort"
+          ],
+          "description": "In case of an unresolved merge, revert to pre-merge state",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--resolve"
+          ],
+          "description": "Mark an unresolved merge as resolved and create a new snap with the changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-snap"
+          ],
+          "description": "Do not auto snap even if the merge completed without conflicts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "In case of snap during the merge, run the build-pipeline",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Show details of components that were not merged successfully",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dependency-installation",
+            "-x"
+          ],
+          "description": "Do not install new dependencies resulting from the merge",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--message",
+            "-m"
+          ],
+          "description": "Override the default message for the auto snap",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "IDs or patterns of components to merge",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new component using a template",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Sets the component's namespace and nested dirs inside the scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "Sets the component's scope-name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--aspect",
+            "-a"
+          ],
+          "description": "Aspect-id of the template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template"
+          ],
+          "description": "Env-id of the template, alias for --aspect",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Relative path in the workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Set the component's environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The template for generating the component",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "A list of component names to generate",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "templates",
+      "aliases": [],
+      "description": "List available templates for \"bit create\" and \"bit new\"\n\nList components templates when inside bit-workspace (for bit-create), otherwise, list workspace templates (for bit-new).\n\nbit templates",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--show-all",
+            "-s"
+          ],
+          "description": "Show hidden templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--aspect",
+            "-a"
+          ],
+          "description": "Show templates provided by the aspect-id",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Run set of tasks for build. By default, only new and modified components are built",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "DEPRECATED. Use --unmodified",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unmodified",
+            "-u"
+          ],
+          "description": "Include unmodified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev",
+            "-d"
+          ],
+          "description": "Run the pipeline in dev mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--install"
+          ],
+          "description": "Install core aspects in capsules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reuse-capsules"
+          ],
+          "description": "Avoid deleting the capsules root-dir before starting the build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tasks"
+          ],
+          "description": "Build the specified task(s) only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cache-packages-on-capsule-root"
+          ],
+          "description": "Set the package-manager cache on the capsule root",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list-tasks"
+          ],
+          "description": "List tasks of an env or a component-id for each one of the pipelines",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-tests"
+          ],
+          "description": "Skip running component tests during build process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-fast"
+          ],
+          "description": "Stop pipeline execution on the first failed task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and '!' to exclude",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "artifacts",
+      "aliases": [],
+      "description": "List and download component artifacts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--aspect"
+          ],
+          "description": "Show/download only artifacts generated by this aspect-id",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--task"
+          ],
+          "description": "Show/download only artifacts generated by this task-id",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--files"
+          ],
+          "description": "Show/download only artifacts matching the given files or the glob pattern (wrap glob patterns in quotes)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--out-dir"
+          ],
+          "description": "Download the files to the specified dir",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and '!' to exclude. E.g. 'ui/**, !ui/button' wrap the pattern with quotes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "refactor",
+      "aliases": [],
+      "description": "Source code refactoring / codemod",
+      "subcommands": [
+        {
+          "name": "dependency-name",
+          "aliases": [],
+          "description": "Replace the dependency's old package-name with a new one in the code, usage: refactor dependency-name <old-id> <new-id>",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Old ID or package name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "New ID or package name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [
+        "s"
+      ],
+      "description": "Present the current status of components in the workspace, including indication of detected issues\n\nbit status",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return a JSON version of the component",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Show extra data: full snap hashes for staged components, and divergence point for lanes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lanes",
+            "-l"
+          ],
+          "description": "When on a lane, show updates from main and updates from forked lanes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "In case issues found, exit with code 1",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compile components in the workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--changed",
+            "-c"
+          ],
+          "description": "Compile only new and modified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Show more data, such as, dist paths",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the compile results in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--delete-dist-dir"
+          ],
+          "description": "Delete existing dist folder before writing new compiled files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "A list of component names or component IDs",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [
+        "at"
+      ],
+      "description": "Test components in the workspace. By default only runs tests for new and modified components.\n\nbit test [component-pattern]",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--watch",
+            "-w"
+          ],
+          "description": "Start the tester in watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug",
+            "-d"
+          ],
+          "description": "Start the tester in debug mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Test all components, not only new and modified",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--junit"
+          ],
+          "description": "Write tests results as JUnit XML format into the specified file path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coverage"
+          ],
+          "description": "Show code coverage data",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Test only components assigned the given env",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "DEPRECATED. (use the pattern instead, e.g. \"scopeName/**\"). Name of the scope to test",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. e.g. \"ui/**, !ui/button\" wrap the pattern with quotes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "schema",
+      "aliases": [],
+      "description": "Shows the API schema of the specified component/s",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the component schema in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Pattern for components to match",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "check-types",
+      "aliases": [],
+      "description": "Check typescript types",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Check-types for all components, not only modified and new",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "In case issues found, exit with code 1",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "aspect",
+      "aliases": [],
+      "description": "EXPERIMENTAL. Manage aspects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "eject",
+      "aliases": [
+        "E"
+      ],
+      "description": "Remove component from the workspace and install it instead as a regular npm package. By default the component files will be removed from the workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Ignore local changes/versions, eject component/s even when they are staged or modified. Note: unexported tags/snaps will be lost",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Print the results in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-files"
+          ],
+          "description": "Keep the component files in the workspace intact",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "format",
+      "aliases": [],
+      "description": "Format components in the development workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--changed"
+          ],
+          "description": "Format only new and modified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Will output a message and a list of unformatted files, if any",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the format results in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Lint components in the development workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--changed",
+            "-c"
+          ],
+          "description": "Lint only new and modified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix",
+            "-f"
+          ],
+          "description": "Automatically fix problems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-type"
+          ],
+          "description": "Specify the types of fixes to apply (problem, suggestion, layout)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the lint results in json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component names or component IDs to lint",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "graph",
+      "aliases": [],
+      "description": "Generate an image file with the workspace components' dependencies graph",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--image",
+            "-i"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all-versions"
+          ],
+          "description": "Enter all components versions into the graph, not only latest",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--layout"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "ls"
+      ],
+      "description": "List components on a workspace or a remote scope",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ids",
+            "-i"
+          ],
+          "description": "Show only component ids, unformatted",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope",
+            "-s"
+          ],
+          "description": "Show only components stored in the local scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--outdated",
+            "-o"
+          ],
+          "description": "Highlight outdated components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Show the output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace"
+          ],
+          "description": "Show only components in the specified namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Remote scope to list components from",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "globals",
+      "aliases": [],
+      "description": "List all globals",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Json format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Locally run an app component (independent of bit's dev server)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dev",
+            "-d"
+          ],
+          "description": "Start the application in dev mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port to run the app on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Show verbose output for inspection and print stack trace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-watch"
+          ],
+          "description": "Avoid running the watch process that compiles components in the background",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssr"
+          ],
+          "description": "Run app in server side rendering mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The app's name registered by the app",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "aliases": [],
+      "description": "Manages apps",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all registered apps",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "Return the component data in json format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Locally run an app component (independent of bit's dev server)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dev",
+                "-d"
+              ],
+              "description": "Start the application in dev mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "Port to run the app on",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbose",
+                "-v"
+              ],
+              "description": "Show verbose output for inspection and print stack trace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-watch"
+              ],
+              "description": "Avoid running the watch process that compiles components in the background",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssr"
+              ],
+              "description": "Run app in server side rendering mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "The app's name is registered by the app (run 'bit app list' to list the names of the available apps)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "capsule",
+      "aliases": [],
+      "description": "Manage capsules",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List the capsules generated for this workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create capsules for components",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--base-dir",
+                "-b"
+              ],
+              "description": "Set base dir of all capsules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--root-base-dir",
+                "-r"
+              ],
+              "description": "Set root base dir of all capsules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--always-new",
+                "-a"
+              ],
+              "description": "Create new environment for capsule",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--seeders-only"
+              ],
+              "description": "Create capsules for the seeders only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--id",
+                "-i"
+              ],
+              "description": "Reuse capsule of certain name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-hash"
+              ],
+              "description": "Whether to use hash function as capsules root dir name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--install-packages"
+              ],
+              "description": "Install packages by the package-manager",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--package-manager",
+                "-p"
+              ],
+              "description": "Npm, yarn or pnpm, default to npm",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete capsules",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--scope-aspects"
+              ],
+              "description": "Delete scope-aspects capsules",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--all",
+                "-a"
+              ],
+              "description": "Delete all capsules for all workspaces and scopes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Mark components as deleted on the remote",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lane"
+          ],
+          "description": "When on a lane, delete the component from this lane only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--update-main"
+          ],
+          "description": "EXPERIMENTAL: Delete component/s on the main lane after merging this lane into main",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Removes the component from the scope, even if used as a dependency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent",
+            "-s"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hard"
+          ],
+          "description": "NOT-RECOMMENDED: Delete a component completely from a remote scope",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component id, or component pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "eject-conf",
+      "aliases": [],
+      "description": "Eject components configuration (create a component.json file). Note this can be reversed at any time by snapping/tagging changes and deleting the component.json file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--propagate",
+            "-p"
+          ],
+          "description": "Mark propagate true in the config file, so that component.json configs will be merge with workspace configs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override",
+            "-o"
+          ],
+          "description": "Override file if exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Pattern for component ids",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "git",
+      "aliases": [],
+      "description": "Perform git operations",
+      "subcommands": [
+        {
+          "name": "set-merge-driver",
+          "aliases": [],
+          "description": "Setup bit's git merge driver for bitmap files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Set the git merge driver globally",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "merge-bitmaps",
+          "aliases": [],
+          "description": "Merge conflicting bitmap files during git merge",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Ancestor",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Current",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Other",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lane",
+      "aliases": [
+        "l"
+      ],
+      "description": "Manage lanes - if no sub-command is used, runs 'bit lane list'",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List local lanes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--details",
+                "-d"
+              ],
+              "description": "Show more details on the state of each component in each lane",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "Show lanes' details in a json format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remote",
+                "-r"
+              ],
+              "description": "Show all remote lanes from the specified scope",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--merged"
+              ],
+              "description": "List only merged lanes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--not-merged"
+              ],
+              "description": "List only lanes that haven't been merged",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "switch",
+          "aliases": [],
+          "description": "Switch to the specified lane",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--alias",
+                "-n"
+              ],
+              "description": "Relevant when the specified lane is a remote lane. Create a local alias for the lane",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--merge",
+                "-m"
+              ],
+              "description": "Merge local changes with the checked out version. Strategy should be 'theirs', 'ours', or 'manual'",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--get-all"
+              ],
+              "description": "Checkout all components in a lane, including those not currently in the workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-dependency-installation"
+              ],
+              "description": "Do not install packages of the imported components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pattern",
+                "-p"
+              ],
+              "description": "Switch only the lane components matching the specified component-pattern",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "Return the output as JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Lane-name or lane-id (if lane is not local) to switch to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show lane details. If no lane specified, show the current lane",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "Show the lane details in json format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remote"
+              ],
+              "description": "Show details of the remote head of the provided lane",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Creates a new lane and switches to it",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--scope",
+                "-s"
+              ],
+              "description": "Remote scope to which this lane will be exported, default to the workspace.json's defaultScope",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remote-scope"
+              ],
+              "description": "DEPRECATED. Use --scope",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--alias"
+              ],
+              "description": "A local alias to refer to this lane, defaults to the <lane-name>",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--fork-lane-new-scope"
+              ],
+              "description": "Create the new lane in a different scope than its parent lane (if created from another lane)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "The name for the new lane",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove or delete lanes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--remote",
+                "-r"
+              ],
+              "description": "Delete a remote lane. Use remote/lane-id syntax e.g. bit lane remove owner.org/my-lane --remote. Delete is immediate, no export required",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Removes/deletes the lane even when the lane is not yet merged to main",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--silent",
+                "-s"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "A list of lane names, separated by spaces",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "change-scope",
+          "aliases": [],
+          "description": "Changes the remote scope of a lane",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--lane-name",
+                "-l"
+              ],
+              "description": "The name of the lane to change its remote scope. If not specified, the current lane is used",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Remote scope name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "alias",
+          "aliases": [],
+          "description": "Adds an alias to a lane",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Lane name and alias",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "EXPERIMENTAL. Change the lane-name locally and on the remote (if exported)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--lane-name",
+                "-l"
+              ],
+              "description": "The name of the lane to rename. If not specified, the current lane is used",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "New name for the lane",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "diff",
+          "aliases": [],
+          "description": "Show diff between lanes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--pattern",
+                "-p"
+              ],
+              "description": "Show lane-diff for components conforming to the specified component-pattern only",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--workspace-only"
+              ],
+              "description": "Do not mark the components as removed from the lane. Instead, remove them from the workspace only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--update-main"
+              ],
+              "description": "EXPERIMENTAL. Remove, i.e. delete, component/s on the main lane after merging this lane into main",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Base lane for comparison and lane being compared to base lane",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "merge-abort",
+          "aliases": [],
+          "description": "Abort the recent lane-merge. Revert the lane object and checkout accordingly",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Show details of components that didn't need to be merged",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--silent",
+                "-s"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-dependency-installation"
+              ],
+              "description": "Do not install packages of the imported components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "merge",
+          "aliases": [],
+          "description": "Merge a local or a remote lane to the current lane. By default, the provided lane will be fetched from the remote before merging. To merge the lane from the local scope without updating it first, use '--skip-fetch' flag",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--ours"
+              ],
+              "description": "DEPRECATED. Use --auto-merge-resolve. In case of a conflict, keep local modifications",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--theirs"
+              ],
+              "description": "DEPRECATED. Use --auto-merge-resolve. In case of a conflict, override local with incoming changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--manual"
+              ],
+              "description": "DEPRECATED. Use --auto-merge-resolve. Requires manual resolution of conflicts",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--auto-merge-resolve"
+              ],
+              "description": "In case of a merge conflict, resolve according to the provided strategy. Options include: [ours, theirs, manual]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--workspace"
+              ],
+              "description": "Merge only lane components that are in the current workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-snap"
+              ],
+              "description": "Do not auto snap after merge completed without conflicts",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tag"
+              ],
+              "description": "Auto-tag all lane components after merging into main (or tag-merge in case of snap-merge)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build"
+              ],
+              "description": "In case of snap during the merge, run the build-pipeline (similar to bit snap --build)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--message",
+                "-m"
+              ],
+              "description": "Override the default message for the auto snap",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--keep-readme"
+              ],
+              "description": "Skip deleting the lane readme component after merging",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-squash"
+              ],
+              "description": "Relevant for merging lanes into main, which by default squashes all lane snaps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--squash"
+              ],
+              "description": "EXPERIMENTAL. Relevant for merging a lane into another non-main lane, which by default does not squash",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-config-changes"
+              ],
+              "description": "Allow merging when components are modified due to config changes (such as dependencies) only and not files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Show details of components that were not merged successfully",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-dependency-installation",
+                "-x"
+              ],
+              "description": "Do not install dependencies of the imported components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-fetch"
+              ],
+              "description": "Use the local state of target-lane if exits locally, without updating it from the remote",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-deps"
+              ],
+              "description": "Relevant for \"--pattern\" and \"--workspace\". Merge also dependencies of the specified components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--resolve-unrelated"
+              ],
+              "description": "Relevant when a component on a lane and the component on main have nothing in common. merge-strategy can be \"ours\" (default) or \"theirs\"",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-non-lane-comps"
+              ],
+              "description": "When merging main, include workspace components that are not on the lane (by default only lane components are merged)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "lane",
+              "description": "Lane-name or full lane-id (if remote) to merge into the current lane",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "pattern",
+              "description": "Partially merge the lane - only components that match the specified component-pattern. Component pattern format: component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. E.g. \"ui/**, !ui/button\". Wrap the pattern with quotes",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "add-readme",
+          "aliases": [],
+          "description": "EXPERIMENTAL. Sets an existing component as the readme of a lane",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "component-id",
+              "description": "The component name or id of the component to use as the lane's readme",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "lane-name",
+              "description": "The lane to attach the readme to (defaults to the current lane)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove-readme",
+          "aliases": [],
+          "description": "EXPERIMENTAL. Remove lane readme component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "laneName",
+              "description": "Name of the lane from which the readme component should be removed",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Import a remote lane to your workspace and switch to that lane",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--skip-dependency-installation",
+                "-x"
+              ],
+              "description": "Do not install dependencies of the imported components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pattern",
+                "-p"
+              ],
+              "description": "Import only components from the lane that fit the specified component-pattern to the workspace. Works only when the workspace is empty",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "lane",
+              "description": "The remote lane name to be imported",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove-comp",
+          "aliases": [],
+          "description": "DEPRECATED. Remove components when on a lane",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--workspace-only"
+              ],
+              "description": "Do not mark the components as removed from the lane. Instead, remove them from the workspace only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--update-main"
+              ],
+              "description": "EXPERIMENTAL. Remove, i.e., delete, component/s on the main lane after merging this lane into the main",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "component-pattern",
+              "description": "Component name, component id, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. E.g. \"ui/**, !ui/button\". Wrap the pattern with quotes",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "log-file",
+      "aliases": [],
+      "description": "EXPERIMENTAL: Show file history",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--one-line",
+            "-o"
+          ],
+          "description": "Show each log entry in one line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "File path relative to the workspace",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "mini-status",
+      "aliases": [
+        "ms"
+      ],
+      "description": "EXPERIMENTAL. Basic status for fast execution",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--show-issues"
+          ],
+          "description": "Show component issues",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component ID, or component pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pattern",
+      "aliases": [],
+      "description": "List the component ids matching the given pattern",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json",
+            "-j"
+          ],
+          "description": "Return the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Pattern for components to match",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "recover",
+      "aliases": [],
+      "description": "EXPERIMENTAL. Recover component(s) soft-deleted from the workspace, or a remote scope",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--skip-dependency-installation",
+            "-x"
+          ],
+          "description": "Do not install packages in case of importing components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name to recover",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "revert",
+      "aliases": [],
+      "description": "Replace the current component files by the specified version, leave the version intact",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Showing verbose output for inspection",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-dependency-installation",
+            "-x"
+          ],
+          "description": "Do not install packages of the imported components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, ID, or pattern",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": "Permitted values: [main, specific-version]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "scope",
+      "aliases": [],
+      "description": "Manage the scope-name for components\n\nbit scope <sub-command>",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Sets the scope for specified component/s. If no component is specified, sets the default scope of the workspace. Default scopes for components are set in the bitmap file. The default scope for a workspace is set in the workspace.jsonc. A component is set with a scope (as opposed to default scope) only once it is versioned. You can use a pattern for multiple component ids, such as bit scope set scope-name \"org.scope/utils/**\". Use comma to separate patterns and '!' to exclude. Always wrap the pattern with single quotes to avoid collision with shell commands.\n\nUsage: scope set <scope-name> [component-pattern]",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": "Name of the scope to set",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "Component name, ID, or pattern",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Renames the scope name for all components with the specified 'current scope name' - only available for new components that have not yet been snapped/tagged. If <current-scope-name> is also the defaultScope for the workspace, this command will set <new-scope-name> as the defaultScope instead.\n\nUsage: scope rename <current-scope-name> <new-scope-name>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--refactor",
+                "-r"
+              ],
+              "description": "Update the import statements in all dependent components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "The current scope name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "The new scope name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename-owner",
+          "aliases": [],
+          "description": "Renames the owner part of the scope-name for all components with the specified 'current owner name'.\n\nUsage: scope rename-owner <current-owner-name> <new-owner-name>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--refactor",
+                "-r"
+              ],
+              "description": "Update the import statements in all dependent components",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ast"
+              ],
+              "description": "EXPERIMENTAL. Use AST to transform files instead of regex",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": "The current owner name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "arg",
+              "description": "The new owner name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "fork",
+          "aliases": [],
+          "description": "Fork all components of the original-scope and refactor the source-code to use the new scope name.\n\nUsage: scope fork <original-scope> <new-scope>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--ast"
+              ],
+              "description": "EXPERIMENTAL. Use AST to transform files instead of regex",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "server",
+      "aliases": [],
+      "description": "EXPERIMENTAL. Communicate with bit CLI program via HTTP requests\n\nbit server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port to run the server on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "system",
+      "aliases": [],
+      "description": "System operations\n\nbit system <sub-command>",
+      "subcommands": [
+        {
+          "name": "log",
+          "aliases": [],
+          "description": "Print debug.log to the screen\n\nUsage: system log",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "snap",
+      "aliases": [],
+      "description": "Create an immutable and exportable component snapshot (non-release version)\n\nbit snap [component-pattern]",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--message",
+            "-m"
+          ],
+          "description": "Snap message describing the latest changes - will appear in component history log",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unmodified"
+          ],
+          "description": "Include unmodified components (by default, only new and modified components are snapped)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unmerged"
+          ],
+          "description": "Complete a merge process by snapping the unmerged components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build",
+            "-b"
+          ],
+          "description": "Not needed for now. Run the build pipeline locally in case the feature-flag build-on-ci is enabled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--editor"
+          ],
+          "description": "Open an editor to write a snap message per component. Optionally specify the editor-name (defaults to vim)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-tests"
+          ],
+          "description": "Skip running component tests during snap process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-auto-snap"
+          ],
+          "description": "Skip auto snapping dependents",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-snap-pipeline"
+          ],
+          "description": "Skip the snap pipeline. This will for instance skip packing and publishing component version for install, and app deployment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-build-errors"
+          ],
+          "description": "Proceed to snap pipeline even when build pipeline fails",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-issues",
+            "-i"
+          ],
+          "description": "Ignore component issues (shown in \"bit status\" as \"issues found\"), issues to ignore: [MissingPackagesDependenciesOnFs, MissingManuallyConfiguredPackages, MissingComponents, UntrackedDependencies, ResolveErrors, RelativeComponents, RelativeComponentsAuthored, ParseErrors, MissingDists, LegacyInsideHarmony, MissingDependenciesOnFs, ImportNonMainFiles, MultipleEnvs, MissingLinksFromNodeModulesToSrc, CircularDependencies, DuplicateComponentAndPackage, MergeConfigHasConflict, NonLoadedEnv, ExternalEnvWithoutVersion, RemovedDependencies] to ignore multiple issues, separate them by a comma and wrap with quotes. To ignore all issues, specify \"*\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "DEPRECATED (not needed anymore, now the default). Snap all new and modified components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-fast"
+          ],
+          "description": "Stop pipeline execution on the first failed task (by default a task is skipped only when its dependency failed)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "DEPRECATED (use \"--skip-tests\" or \"--unmodified\" instead). Force-snap even if tests are failing and even when component has not changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": "Component name, component ID, or component pattern. Use component pattern to select multiple components. Use comma to separate patterns and \"!\" to exclude. E.g. \"ui/**, !ui/button\". Wrap the pattern with quotes. By default, only new and modified components are snapped (add --unmodified to snap all components in the workspace)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Automatically recompile modified components (on save). By default, the watcher doesn't use polling, to keep the CPU idle. In some rare cases, this could result in missing file events (files are not watched). To fix it, try to stop other watchers on the same machine. Alternatively, to use polling, run \"bit config set watch_use_polling true\".\n\nbit watch",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Show all watch events and compiler verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-pre-compilation"
+          ],
+          "description": "Skip compilation step before starting to watch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check-types",
+            "-t"
+          ],
+          "description": "EXPERIMENTAL. Show errors/warnings for types. Options are [file, project] to investigate only changed file or entire project. Defaults to project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Set aspects in the workspace/scope config to make them loadable by the workspace/scope.\n\nbit use <component-id>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": "The component ID of the aspect",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ws-config",
+      "aliases": [
+        "workspace-config"
+      ],
+      "description": "Manage workspace config files.\n\nbit ws-config <sub-command>",
+      "subcommands": [
+        {
+          "name": "ws-config write",
+          "aliases": [],
+          "description": "EXPERIMENTAL. Write config files in the workspace. Useful for IDEs.\n\nws-config write",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--clean",
+                "-c"
+              ],
+              "description": "Delete existing config files from the workspace. Highly recommended to run it with \"--dry-run\" first",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--writers",
+                "-w"
+              ],
+              "description": "Only write config files for the given writers. Use comma to separate multiple writers. Use ws-config list to see all writers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--silent",
+                "-s"
+              ],
+              "description": "Do not prompt for confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-dedupe"
+              ],
+              "description": "Write configs inside each one of the component's dir, avoid deduping",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Show the paths that configs will be written per env",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run-with-content"
+              ],
+              "description": "Use with --json flag. Show the config content and the paths that will be written per env",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbose",
+                "-v"
+              ],
+              "description": "Showing verbose output for writing",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ws-config clean",
+          "aliases": [],
+          "description": "EXPERIMENTAL. Clean (delete) written config files in the workspace. Useful for IDEs.\n\nws-config clean",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--silent",
+                "-s"
+              ],
+              "description": "Do not prompt for confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--writers",
+                "-w"
+              ],
+              "description": "Only clean config files for the given writers. Use comma to separate multiple writers. Use ws-config list to see all writers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Show the paths of configs that will be cleaned",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ws-config list",
+          "aliases": [],
+          "description": "EXPERIMENTAL. List config writers.\n\nws-config list",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json",
+                "-j"
+              ],
+              "description": "JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for bit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

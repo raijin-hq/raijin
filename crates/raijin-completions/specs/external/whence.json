@@ -1,0 +1,117 @@
+{
+  "name": "whence",
+  "aliases": [],
+  "description": "For each name, indicate how it should be interpreted",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Produce verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Print results in a csh-like format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w"
+      ],
+      "description": "For each name, print 'name: word', where 'word' is the kind of command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Display contents of shell functions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Do a path search for the name, even if it's an alias/function/builtin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Don't stop at the first match on the path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "The arguments are taken as patterns (pattern characters must be quoted)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "If the pathname contains symlinks, print the symlink-free name as well",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Print intermediate symlinks and the resolved name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Expand tabs when outputting shell function",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "names",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

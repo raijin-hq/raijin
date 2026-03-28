@@ -1,0 +1,193 @@
+{
+  "name": "ddosify",
+  "aliases": [],
+  "description": "High-performance load testing tool, written in Golang",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Target website URL. Example: https://ddosify.com",
+      "takes_arg": true,
+      "arg_name": "URL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Total request count. Default: 100",
+      "takes_arg": true,
+      "arg_name": "RequestCount",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Test duration in seconds. Default: 10",
+      "takes_arg": true,
+      "arg_name": "Duration",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Type of the request. Default: linear",
+      "takes_arg": true,
+      "arg_name": "RequestType",
+      "arg_template": {
+        "custom": [
+          "linear",
+          "incremental",
+          "waved"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "HTTP Methods. Default: GET",
+      "takes_arg": true,
+      "arg_name": "HTTPMethod",
+      "arg_template": {
+        "custom": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "HEAD",
+          "PATCH",
+          "OPTIONS"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Body for the request",
+      "takes_arg": true,
+      "arg_name": "Body",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Basic authentication",
+      "takes_arg": true,
+      "arg_name": "BasicAuth",
+      "arg_template": {
+        "custom": [
+          "username:password"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Headers of the request. You can provide multiple headers",
+      "takes_arg": true,
+      "arg_name": "header",
+      "arg_template": {
+        "custom": [
+          "Content-Type: application/json",
+          "User-Agent: DdosifyLoadGenerator/0.8.1"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Timeout in seconds. Default: 5",
+      "takes_arg": true,
+      "arg_name": "Timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Proxy address",
+      "takes_arg": true,
+      "arg_name": "Proxy",
+      "arg_template": {
+        "custom": [
+          "http://user:pass@proxy_host.com:port"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Test result output format. Default: stdout",
+      "takes_arg": true,
+      "arg_name": "OutputFormat",
+      "arg_template": {
+        "custom": [
+          "stdout",
+          "stdout-json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Config file of the load test i.e example_ddosify_config.json",
+      "takes_arg": true,
+      "arg_name": "ConfigFile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Prints version, git commit, built date (utc)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Iterates the scenario once and prints curl-like verbose result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Prints CLI flags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

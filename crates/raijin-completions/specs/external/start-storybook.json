@@ -1,0 +1,194 @@
+{
+  "name": "start-storybook",
+  "aliases": [],
+  "description": "Storybook start CLI tools",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-p",
+        "--port"
+      ],
+      "description": "Port to run Storybook",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--host"
+      ],
+      "description": "Host to run Storybook",
+      "takes_arg": true,
+      "arg_name": "host",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Display usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--static-dir"
+      ],
+      "description": "Directory where to load static files from, comma-separated list",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config-dir"
+      ],
+      "description": "Directory where to load Storybook configurations from",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--https"
+      ],
+      "description": "Serve Storybook over HTTPS. Note: You must provide your own certificate information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-ca"
+      ],
+      "description": "Provide an SSL certificate authority. (Optional with --https, required if using a self-signed certificate)",
+      "takes_arg": true,
+      "arg_name": "certificate authority",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-cert"
+      ],
+      "description": "Provide an SSL certificate. (Required with --https)",
+      "takes_arg": true,
+      "arg_name": "certificate",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-key"
+      ],
+      "description": "Provide an SSL key. (Required with --https)",
+      "takes_arg": true,
+      "arg_name": "key",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--smoke-test"
+      ],
+      "description": "Exit after successful start",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ci"
+      ],
+      "description": "CI mode (skip interactive prompts, don't open browser)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Suppress verbose build output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-dll"
+      ],
+      "description": "Do not use dll reference (no-op)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug-webpack"
+      ],
+      "description": "Display final webpack configurations for debugging purposes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--webpack-stats-json"
+      ],
+      "description": "Write Webpack Stats JSON to disk",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--docs"
+      ],
+      "description": "Starts Storybook in documentation mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-manager-cache"
+      ],
+      "description": "Disables Storybook's manager caching mechanism. NOTE: this flag disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

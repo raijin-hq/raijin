@@ -1,0 +1,504 @@
+{
+  "name": "watchman",
+  "aliases": [],
+  "description": "A file watching service",
+  "subcommands": [
+    {
+      "name": "clock",
+      "aliases": [],
+      "description": "Returns the current clock value for a watched root",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to directory",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "find",
+      "aliases": [],
+      "description": "Finds all files that match the optional list of patterns under the specified dir",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to directory",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "flush-subscriptions",
+      "aliases": [],
+      "description": "This is designed to be used by interactive programs that have a background process or daemon maintaining a subscription to Watchman",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get-config",
+      "aliases": [],
+      "description": "Returns the .watchmanconfig for the root",
+      "subcommands": [
+        {
+          "name": "path",
+          "aliases": [],
+          "description": "The path to root",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get-sockname",
+      "aliases": [],
+      "description": "Get socket path",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list-capabilities",
+      "aliases": [],
+      "description": "Returns the full list of supported capabilities offered by the watchman server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Generates a log line in the watchman log",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "level",
+          "description": "The log level",
+          "template": {
+            "custom": [
+              "debug",
+              "error",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "log-level",
+      "aliases": [],
+      "description": "Changes the log level of your connection to the watchman service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "level",
+          "description": "The log level",
+          "template": {
+            "custom": [
+              "debug",
+              "error",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "query",
+      "aliases": [],
+      "description": "Executes a query against the specified root",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "shutdown-server",
+      "aliases": [],
+      "description": "This causes your watchman service to exit with a normal status code",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "since",
+      "aliases": [],
+      "description": "Finds all files that were modified since the specified clockspec that match the optional list of patterns",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to directory",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "state-enter",
+      "aliases": [],
+      "description": "This causes a watch to be marked as being in a particular named state",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "state-leave",
+      "aliases": [],
+      "description": "This causes a watch to no longer be marked as being in a particular named state",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "subscribe",
+      "aliases": [],
+      "description": "Subscribes to changes against a specified root and requests that they be sent to the client via its connection",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "trigger",
+      "aliases": [],
+      "description": "This will create or replace a trigger",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to directory",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "trigger-del",
+      "aliases": [],
+      "description": "Deletes a named trigger from the list of registered triggers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "trigger-list",
+      "aliases": [],
+      "description": "Returns the set of registered triggers associated with a root directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "unsubscribe",
+      "aliases": [],
+      "description": "Cancels a named subscription against the specified root",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "The version and build information for the currently running watchman service",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch-del",
+      "aliases": [],
+      "description": "Removes a watch and any associated triggers",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to directory",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch-del-all",
+      "aliases": [],
+      "description": "Removes all watches and associated triggers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch-list",
+      "aliases": [],
+      "description": "Returns a list of watched dirs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch-project",
+      "aliases": [],
+      "description": "Requests that the project containing the requested dir is watched for changes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for watchman",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inetd"
+      ],
+      "description": "Spawning from an inetd style supervisor",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--no-site-spawner"
+      ],
+      "description": "Don't use the site or system spawner",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version number for watchman",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--named-pipe-path"
+      ],
+      "description": "Specify alternate named pipe path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Specify alternate unix domain socket path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unix-listener-path"
+      ],
+      "description": "Specify alternate unix domain socket path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Specify the path to logfile",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logfile"
+      ],
+      "description": "Specify the path to logfile",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-level"
+      ],
+      "description": "Set the log level",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "0",
+          "1",
+          "2"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pidfile"
+      ],
+      "description": "Specify path to pidfile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--persistent"
+      ],
+      "description": "Persist and wait for further responses",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-save-state"
+      ],
+      "description": "Don't save state between invocations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--statefile"
+      ],
+      "description": "Specify path to file to hold watch and trigger state",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--json-command"
+      ],
+      "description": "Instead of parsing CLI arguments, take a single json object from stdin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-encoding"
+      ],
+      "description": "CLI output encoding",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": {
+        "custom": [
+          "json",
+          "bser"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--server-encoding"
+      ],
+      "description": "CLI<->server encoding",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": {
+        "custom": [
+          "bser",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--foreground"
+      ],
+      "description": "Run the service in the foreground",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-pretty"
+      ],
+      "description": "Don't pretty print JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-spawn"
+      ],
+      "description": "Don't try to start the service if it is not available",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-local"
+      ],
+      "description": "When no-spawn is enabled, don't try to handle request in client mode if service is unavailable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

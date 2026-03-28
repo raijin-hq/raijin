@@ -1,0 +1,138 @@
+{
+  "name": "wasm-pack",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build an npm package",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [
+        "adduser",
+        "add-user"
+      ],
+      "description": "Add an npm registry user account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new project with a template",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pack",
+      "aliases": [],
+      "description": "Create a tarball of the npm package (does not publish)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Pack and publish a package to npm",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run tests for WebAssembly module",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for wasm-pack or for the given subcommand(s)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Suppress output from stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Show version for wasm-pack",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Log verbosity is based off the number of v used",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-level",
+        "-l"
+      ],
+      "description": "The maximum level of messages that should be logged by wasm-pack",
+      "takes_arg": true,
+      "arg_name": "log-level",
+      "arg_template": {
+        "custom": [
+          "info",
+          "warn",
+          "error"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

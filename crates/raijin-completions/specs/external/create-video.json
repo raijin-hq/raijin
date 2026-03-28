@@ -1,0 +1,8 @@
+{
+  "name": "create-video",
+  "aliases": [],
+  "description": "CLI used to create remotion video project",
+  "subcommands": [],
+  "options": [],
+  "args": []
+}

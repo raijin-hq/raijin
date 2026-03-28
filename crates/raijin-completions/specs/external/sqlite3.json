@@ -1,0 +1,307 @@
+{
+  "name": "sqlite3",
+  "aliases": [],
+  "description": "A command line interface for SQLite version 3",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-append"
+      ],
+      "description": "Append the database to the end of the file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-ascii"
+      ],
+      "description": "Set output mode to 'ascii'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-bail"
+      ],
+      "description": "Stop after hitting an error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-batch"
+      ],
+      "description": "Force batch I/O",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-column"
+      ],
+      "description": "Set output mode to 'column'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-cmd"
+      ],
+      "description": "Run \"COMMAND\" before reading stdin",
+      "takes_arg": true,
+      "arg_name": "COMMAND",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-csv"
+      ],
+      "description": "Set output mode to 'csv'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-echo"
+      ],
+      "description": "Print commands before execution",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-init"
+      ],
+      "description": "Read/process named file",
+      "takes_arg": true,
+      "arg_name": "FILENAME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-header"
+      ],
+      "description": "Turn headers on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-noheader"
+      ],
+      "description": "Turn headers off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-help"
+      ],
+      "description": "Show help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-html"
+      ],
+      "description": "Set output mode to HTML",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-interactive"
+      ],
+      "description": "Force interactive I/O",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-line"
+      ],
+      "description": "Set output mode to 'line'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-list"
+      ],
+      "description": "Set output mode to 'list'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-lookaside"
+      ],
+      "description": "Use N entries of SZ bytes for lookaside memory",
+      "takes_arg": true,
+      "arg_name": "SIZE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-memtrace"
+      ],
+      "description": "Trace all memory allocations and deallocations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-mmap"
+      ],
+      "description": "Default mmap size set to N",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-newline"
+      ],
+      "description": "Set output row separator",
+      "takes_arg": true,
+      "arg_name": "SEP",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-nofollow"
+      ],
+      "description": "Refuse to open symbolic links to database files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-nullvalue"
+      ],
+      "description": "Set text string for NULL values",
+      "takes_arg": true,
+      "arg_name": "TEXT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-pagecache"
+      ],
+      "description": "Use N slots of SZ bytes each for page cache memory",
+      "takes_arg": true,
+      "arg_name": "SIZE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-quote"
+      ],
+      "description": "Set output mode to 'quote'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-readonly"
+      ],
+      "description": "Open the database read-only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-separator"
+      ],
+      "description": "Set output column separator",
+      "takes_arg": true,
+      "arg_name": "SEP",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-stats"
+      ],
+      "description": "Print memory stats before each finalize",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-version"
+      ],
+      "description": "Show SQLite version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-vfs"
+      ],
+      "description": "Use NAME as the default VFS",
+      "takes_arg": true,
+      "arg_name": "NAME",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "FILENAME",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

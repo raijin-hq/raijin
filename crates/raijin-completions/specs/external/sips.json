@@ -1,0 +1,465 @@
+{
+  "name": "sips",
+  "aliases": [],
+  "description": "Scriptable image processing system",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-g",
+        "--getProperty"
+      ],
+      "description": "Output the property value for key to stdout",
+      "takes_arg": true,
+      "arg_name": "key",
+      "arg_template": {
+        "custom": [
+          "all",
+          "allxml",
+          "dpiHeight",
+          "dpiWidth",
+          "pixelHeight",
+          "pixelWidth",
+          "typeIdentifier",
+          "format",
+          "formatOptions",
+          "space",
+          "samplesPerPixel",
+          "bitsPerSample",
+          "creation",
+          "make",
+          "model",
+          "software",
+          "description",
+          "copyright",
+          "artist",
+          "profile",
+          "hasAlpha",
+          "size",
+          "cmm",
+          "version",
+          "class",
+          "pcs",
+          "platform",
+          "quality",
+          "deviceManufacturer",
+          "deviceModel",
+          "deviceAttributes0",
+          "deviceAttributes1",
+          "renderingIntent",
+          "creator",
+          "md5"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--setProperty"
+      ],
+      "description": "Set a property value for key to value",
+      "takes_arg": true,
+      "arg_name": "key",
+      "arg_template": {
+        "custom": [
+          "all",
+          "allxml",
+          "dpiHeight",
+          "dpiWidth",
+          "pixelHeight",
+          "pixelWidth",
+          "typeIdentifier",
+          "format",
+          "formatOptions",
+          "space",
+          "samplesPerPixel",
+          "bitsPerSample",
+          "creation",
+          "make",
+          "model",
+          "software",
+          "description",
+          "copyright",
+          "artist",
+          "profile",
+          "hasAlpha",
+          "size",
+          "cmm",
+          "version",
+          "class",
+          "pcs",
+          "platform",
+          "quality",
+          "deviceManufacturer",
+          "deviceModel",
+          "deviceAttributes0",
+          "deviceAttributes1",
+          "renderingIntent",
+          "creator",
+          "md5"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--deleteProperty"
+      ],
+      "description": "Remove a property value for key",
+      "takes_arg": true,
+      "arg_name": "key",
+      "arg_template": {
+        "custom": [
+          "all",
+          "allxml",
+          "dpiHeight",
+          "dpiWidth",
+          "pixelHeight",
+          "pixelWidth",
+          "typeIdentifier",
+          "format",
+          "formatOptions",
+          "space",
+          "samplesPerPixel",
+          "bitsPerSample",
+          "creation",
+          "make",
+          "model",
+          "software",
+          "description",
+          "copyright",
+          "artist",
+          "profile",
+          "hasAlpha",
+          "size",
+          "cmm",
+          "version",
+          "class",
+          "pcs",
+          "platform",
+          "quality",
+          "deviceManufacturer",
+          "deviceModel",
+          "deviceAttributes0",
+          "deviceAttributes1",
+          "renderingIntent",
+          "creator",
+          "md5"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--extractTag"
+      ],
+      "description": "Extract a profile tag element to tagFile",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verify"
+      ],
+      "description": "Verify any profile problems and log output to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--extractProfile"
+      ],
+      "description": "Get the embedded profile from image and write it to profile",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deleteTag"
+      ],
+      "description": "Remove the tag element from a profile",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--copyTag"
+      ],
+      "description": "Copy the srcTag element of a profile to dstTag",
+      "takes_arg": true,
+      "arg_name": "srcTag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--loadTag"
+      ],
+      "description": "Set the tag element of a profile to the contents of tagFile",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--repair"
+      ],
+      "description": "Repair any profile problems and log output to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--embedProfile"
+      ],
+      "description": "Embed profile in image",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--embedProfileIfNone"
+      ],
+      "description": "Embed profile in image only if image doesn't have a profile",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--matchTo"
+      ],
+      "description": "Color match image to profile",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--matchToWithIntent"
+      ],
+      "description": "Color match image to profile with rendering intent perceptual | relative | saturation | absolute",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deleteColorManagementProperties"
+      ],
+      "description": "Delete color management properties in TIFF, PNG, and EXIF dictionaries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--rotate"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "degreesCW",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--flip"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "axis",
+      "arg_template": {
+        "custom": [
+          "horizontal",
+          "vertical"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--cropToHeightWidth"
+      ],
+      "description": "Crop image to fit specified size",
+      "takes_arg": true,
+      "arg_name": "pixelsH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--padToHeightWidth"
+      ],
+      "description": "Pad image with pixels to fit specified size",
+      "takes_arg": true,
+      "arg_name": "pixelsH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-padColor"
+      ],
+      "description": "Use this color when padding.  White=FFFFFF, Red=FF0000, Default=Black=000000",
+      "takes_arg": true,
+      "arg_name": "hexcolor",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z",
+        "--resampleHeightWidth"
+      ],
+      "description": "Resample image at specified size. Image apsect ratio may be altered",
+      "takes_arg": true,
+      "arg_name": "pixelsH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--resampleWidth"
+      ],
+      "description": "Resample image to specified width",
+      "takes_arg": true,
+      "arg_name": "pixelsW",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--resampleHeight"
+      ],
+      "description": "Resample image to specified height",
+      "takes_arg": true,
+      "arg_name": "pixelsH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Z",
+        "--resampleHeightWidthMax"
+      ],
+      "description": "Resample image so height and width aren't greater than specified size",
+      "takes_arg": true,
+      "arg_name": "pixelsWH",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--addIcon"
+      ],
+      "description": "Add a Finder icon to image file",
+      "takes_arg": true,
+      "arg_name": "icon",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable debugging output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--helpProperties"
+      ],
+      "description": "Show help for properties",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--man"
+      ],
+      "description": "Generate man pages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--formats"
+      ],
+      "description": "Show the read/write formats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

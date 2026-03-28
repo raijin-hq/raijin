@@ -1,0 +1,230 @@
+{
+  "name": "npx",
+  "aliases": [],
+  "description": "Execute binaries from npm packages",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--package",
+        "-p"
+      ],
+      "description": "Package to be installed",
+      "takes_arg": true,
+      "arg_name": "package",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Location of the npm cache",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--always-spawn"
+      ],
+      "description": "Always spawn a child process to execute the command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-y"
+      ],
+      "description": "Execute npx command without prompting for confirmation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-install"
+      ],
+      "description": "Skip installation if a package is missing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--userconfig"
+      ],
+      "description": "Path to user npmrc",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--call",
+        "-c"
+      ],
+      "description": "Execute string as if inside `npm run-script`",
+      "takes_arg": true,
+      "arg_name": "script",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell",
+        "-s"
+      ],
+      "description": "Shell to execute the command with, if any",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": {
+        "custom": [
+          "bash",
+          "fish",
+          "zsh"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell-auto-fallback"
+      ],
+      "description": "Generate shell code to use npx as the \"command not found\" fallback",
+      "takes_arg": true,
+      "arg_name": "shell-fallback",
+      "arg_template": {
+        "custom": [
+          "bash",
+          "fish",
+          "zsh"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-existing"
+      ],
+      "description": "Ignores existing binaries in $PATH, or in the localproject. This forces npx to do a temporary install and use the latest version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Suppress output from npx itself. Subcommands will not be affected",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--npm"
+      ],
+      "description": "Npm binary to use for internal operations",
+      "takes_arg": true,
+      "arg_name": "path to binary",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--node-arg",
+        "-n"
+      ],
+      "description": "Extra node argument when calling a node binary",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "command",
+      "description": null,
+      "template": {
+        "custom": [
+          "autocannon",
+          "vite",
+          "babel",
+          "create-react-native-app",
+          "react-native",
+          "tailwindcss",
+          "next",
+          "nuxi",
+          "gltfjsx",
+          "prisma",
+          "eslint",
+          "prettier",
+          "tsc",
+          "typeorm",
+          "@withfig/autocomplete-tools",
+          "create-completion-spec",
+          "@fig/publish-spec-to-team",
+          "fig-teams@latest",
+          "create-next-app",
+          "create-t3-app",
+          "create-discord-bot",
+          "create-video",
+          "remotion",
+          "create-remix",
+          "remix",
+          "playwright",
+          "ignite-cli",
+          "vsce",
+          "degit",
+          "@preset/cli",
+          "mikro-orm",
+          "pod-install",
+          "capacitor",
+          "cap",
+          "@magnolia/cli",
+          "stencil",
+          "swagger-typescript-api",
+          "sta",
+          "@wordpress/create-block",
+          "astro",
+          "ampx"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

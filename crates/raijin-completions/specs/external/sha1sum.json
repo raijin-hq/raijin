@@ -1,0 +1,142 @@
+{
+  "name": "sha1sum",
+  "aliases": [],
+  "description": "Print or check SHA1 (160-bit) checksums",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-b",
+        "--binary"
+      ],
+      "description": "Read in binary mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--check"
+      ],
+      "description": "Read SHA1 sums from the FILEs and check them",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tag"
+      ],
+      "description": "Create a BSD-style checksum",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--text"
+      ],
+      "description": "Read in text mode (default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z",
+        "--zero"
+      ],
+      "description": "End each output line with NUL, not newline, and disable file name escaping",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-missing"
+      ],
+      "description": "Don't fail or report status for missing files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Don't print OK for each successfully verified file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--status"
+      ],
+      "description": "Don't output anything, status code shows success",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict"
+      ],
+      "description": "Exit non-zero for improperly formatted checksum lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--warn"
+      ],
+      "description": "Warn about improperly formatted checksum lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Output help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "With no FILE, or when FILE is -, read standard input",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

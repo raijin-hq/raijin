@@ -1,0 +1,157 @@
+{
+  "name": "htop",
+  "aliases": [],
+  "description": "Improved top (interactive process viewer)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for htop",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color",
+        "-C"
+      ],
+      "description": "Use a monochrome color scheme",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--delay",
+        "-d"
+      ],
+      "description": "Delay between updates, in tenths of sec",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": {
+        "custom": [
+          "10",
+          "1",
+          "60"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filter",
+        "-F"
+      ],
+      "description": "Filter commands",
+      "takes_arg": true,
+      "arg_name": "filter",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--highlight-changes",
+        "-H"
+      ],
+      "description": "Highlight new and old processes",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": {
+        "custom": [
+          "10",
+          "1",
+          "60"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-mouse",
+        "-M"
+      ],
+      "description": "Disable the mouse",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pid",
+        "-p"
+      ],
+      "description": "Show only the given PIDs",
+      "takes_arg": true,
+      "arg_name": "PID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort-key",
+        "-s"
+      ],
+      "description": "Sort by COLUMN in list view",
+      "takes_arg": true,
+      "arg_name": "column",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tree",
+        "-t"
+      ],
+      "description": "Show the tree view",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user",
+        "-u"
+      ],
+      "description": "Show only processes for a given user (or $USER)",
+      "takes_arg": true,
+      "arg_name": "user",
+      "arg_template": {
+        "custom": [
+          "$USER"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-unicode",
+        "-U"
+      ],
+      "description": "Do not use unicode but plain ASCII",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

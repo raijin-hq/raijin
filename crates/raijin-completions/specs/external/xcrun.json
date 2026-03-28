@@ -1,0 +1,267 @@
+{
+  "name": "xcrun",
+  "aliases": [],
+  "description": "Find and execute the named command line tool from the active xCode developer directory",
+  "subcommands": [
+    {
+      "name": "scntool",
+      "aliases": [],
+      "description": "SceneKit CLI utilities",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--convert"
+          ],
+          "description": "File to convert",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Format to convert to",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "scn",
+              "dae",
+              "c3d"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "Path to the output file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-y-up"
+          ],
+          "description": "Convert objects to use y axis up",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-interleaved"
+          ],
+          "description": "Interleave the vertex data for multiple semantics in the same array to achieve better rendering performance",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefer-compressed-textures"
+          ],
+          "description": "Use .ktx, .astc and .pvrtc files for textures if available in the asset catalog",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Get pretty error message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "xcodebuild",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "simctl",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the xcrun version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Show verbose logging output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sdk"
+      ],
+      "description": "Find the tool for the given SDK name",
+      "takes_arg": true,
+      "arg_name": "sdk name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--toolchain"
+      ],
+      "description": "Find the tool for the given toolchain",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--log"
+      ],
+      "description": "Show command path to be executed (and --run)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--find"
+      ],
+      "description": "Find and print the tool path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--run"
+      ],
+      "description": "(Default) find and execute the tool",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-cache"
+      ],
+      "description": "Do not use the lookup cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k",
+        "--kill-cache"
+      ],
+      "description": "Invalidate all existing cache entries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-sdk-path"
+      ],
+      "description": "Show selected SDK install path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-sdk-version"
+      ],
+      "description": "Show selected SDK version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-sdk-build-version"
+      ],
+      "description": "Show selected SDK build version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-sdk-platform-path"
+      ],
+      "description": "Show selected SDK platform path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-sdk-platform-version"
+      ],
+      "description": "Show selected SDK platform version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

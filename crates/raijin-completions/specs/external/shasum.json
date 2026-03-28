@@ -1,0 +1,178 @@
+{
+  "name": "shasum",
+  "aliases": [],
+  "description": "Print or Check SHA Checksums",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-a",
+        "--algorithm"
+      ],
+      "description": "Select SHA algorithm",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "1",
+          "224",
+          "256",
+          "384",
+          "512",
+          "512224",
+          "512256"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--binary"
+      ],
+      "description": "Read in binary mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--check"
+      ],
+      "description": "Read SHA sums from the FILEs and check them",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tag"
+      ],
+      "description": "Create a BSD-style checksum",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--text"
+      ],
+      "description": "Read in text mode (default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--UNIVERSAL"
+      ],
+      "description": "Read in Universal Newlines mode - produces same digest on Windows/Unix/Mac",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-0",
+        "--01"
+      ],
+      "description": "Read in BITS mode - ASCII '0' as 0-bit, ASCII '1' as 1-bit, others ignored",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-missing"
+      ],
+      "description": "Don't fail or report status for missing files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Don't print OK for each successfully verified file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--status"
+      ],
+      "description": "Don't output anything, status code shows success",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict"
+      ],
+      "description": "Exit non-zero for improperly formatted checksum lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--warn"
+      ],
+      "description": "Warn about improperly formatted checksum lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "FILE",
+      "description": "Files to compute/check SHA checksums. With no FILE, or when FILE is -, read standard input",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

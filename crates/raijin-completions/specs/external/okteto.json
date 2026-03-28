@@ -1,0 +1,5121 @@
+{
+  "name": "okteto",
+  "aliases": [],
+  "description": "Okteto - Remote Development Environments powered by Kubernetes",
+  "subcommands": [
+    {
+      "name": "analytics",
+      "aliases": [],
+      "description": "Enable / Disable analytics",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable",
+            "-d"
+          ],
+          "description": "Disable analytics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for analytics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build (and optionally push) a Docker image",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-arg"
+          ],
+          "description": "Set build-time variables",
+          "takes_arg": true,
+          "arg_name": "build-arg",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--cache-from"
+          ],
+          "description": "Cache source images",
+          "takes_arg": true,
+          "arg_name": "cache-from",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Name of the Dockerfile (Default is 'PATH/Dockerfile')",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace"
+          ],
+          "description": "Namespace against which the image will be consumed. Default is the one defined at okteto context or okteto manifest",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use cache when building the image",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--progress"
+          ],
+          "description": "Show plain/tty build output",
+          "takes_arg": true,
+          "arg_name": "progress",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--secret"
+          ],
+          "description": "Secret files exposed to the build. Format: id=mysecret,src=/local/secret",
+          "takes_arg": true,
+          "arg_name": "secret",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--tag",
+            "-t"
+          ],
+          "description": "Name and optionally a tag in the 'name:tag' format (it is automatically pushed)",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Set the target build stage to build",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for bash",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for fish",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for powershell",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for zsh",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for completion",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ctx",
+      "aliases": [
+        "context"
+      ],
+      "description": "Set the default context",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for delete",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List available contexts",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Print the current context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for show",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "use",
+          "aliases": [],
+          "description": "Set the default context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--builder",
+                "-b"
+              ],
+              "description": "Url of the builder service",
+              "takes_arg": true,
+              "arg_name": "builder",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Namespace of your okteto context",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--okteto"
+              ],
+              "description": "Only shows okteto cluster options",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--token",
+                "-t"
+              ],
+              "description": "API token for authentication",
+              "takes_arg": true,
+              "arg_name": "token",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--builder",
+            "-b"
+          ],
+          "description": "Url of the builder service",
+          "takes_arg": true,
+          "arg_name": "builder",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace of your okteto context",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--okteto"
+          ],
+          "description": "Only shows okteto cluster options",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--token",
+            "-t"
+          ],
+          "description": "API token for authentication",
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for context",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Generate a zip file with the okteto logs",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the up command was executing",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the up command was executing",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for doctor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "down",
+      "aliases": [],
+      "description": "Deactivate your development container",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the down command is executed",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the down command is executed",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volumes",
+            "-v"
+          ],
+          "description": "Remove persistent volume",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for down",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a command in your development container",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the exec command is executed",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the exec command is executed",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for exec",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Automatically generate your okteto manifest file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context target for generating the okteto manifest",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace target for generating the okteto manifest",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--overwrite"
+          ],
+          "description": "Overwrite existing manifest file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for init",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "kubeconfig",
+      "aliases": [],
+      "description": "Download credentials for the Kubernetes cluster selected via 'okteto context'",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for kubeconfig",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ns",
+      "aliases": [
+        "namespace"
+      ],
+      "description": "Configure the current namespace of the okteto context",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a namespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--members",
+                "-m"
+              ],
+              "description": "Members of the namespace, it can the username or email",
+              "takes_arg": true,
+              "arg_name": "members",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for create",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a namespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for delete",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List namespaces managed by Okteto in your current context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ns",
+          "aliases": [
+            "use"
+          ],
+          "description": "Configure the current namespace of the okteto context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--personal"
+              ],
+              "description": "Load personal account",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "arg",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--personal"
+          ],
+          "description": "Load personal account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pipeline",
+      "aliases": [],
+      "description": "Pipeline management commands",
+      "subcommands": [
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy an okteto pipeline",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--branch",
+                "-b"
+              ],
+              "description": "The branch to deploy (defaults to the current branch)",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filename"
+              ],
+              "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name",
+                "-p"
+              ],
+              "description": "Name of the pipeline (defaults to the git config name)",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Namespace where the up command is executed (defaults to the current namespace)",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--repository",
+                "-r"
+              ],
+              "description": "The repository to deploy (defaults to the current repository)",
+              "takes_arg": true,
+              "arg_name": "repository",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-if-exists"
+              ],
+              "description": "Skip the pipeline deployment if the pipeline already exists in the namespace (defaults to false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout",
+                "-t"
+              ],
+              "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--var",
+                "-v"
+              ],
+              "description": "Set a pipeline variable (can be set more than once)",
+              "takes_arg": true,
+              "arg_name": "var",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--wait",
+                "-w"
+              ],
+              "description": "Wait until the pipeline finishes (defaults to false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for deploy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Destroy an okteto pipeline",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name",
+                "-p"
+              ],
+              "description": "Name of the pipeline (defaults to the git config name)",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Namespace where the up command is executed (defaults to the current namespace)",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout",
+                "-t"
+              ],
+              "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--volumes",
+                "-v"
+              ],
+              "description": "Destroy persistent volumes created by the pipeline (defaults to false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait",
+                "-w"
+              ],
+              "description": "Wait until the pipeline finishes (defaults to false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for destroy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for pipeline",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "preview",
+      "aliases": [],
+      "description": "Preview environment management commands",
+      "subcommands": [
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy a preview environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--branch",
+                "-b"
+              ],
+              "description": "The branch to deploy (defaults to the current branch)",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filename"
+              ],
+              "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--repository",
+                "-r"
+              ],
+              "description": "The repository to deploy (defaults to the current repository)",
+              "takes_arg": true,
+              "arg_name": "repository",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--scope",
+                "-s"
+              ],
+              "description": "The scope of preview environment to create. Accepted values are ['personal', 'global']",
+              "takes_arg": true,
+              "arg_name": "scope",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--sourceUrl"
+              ],
+              "description": "The URL of the original pull/merge request",
+              "takes_arg": true,
+              "arg_name": "sourceUrl",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout",
+                "-t"
+              ],
+              "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--var",
+                "-v"
+              ],
+              "description": "Set a pipeline variable (can be set more than once)",
+              "takes_arg": true,
+              "arg_name": "var",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--wait",
+                "-w"
+              ],
+              "description": "Wait until the preview environment deployment finishes (defaults to false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for deploy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Destroy a preview environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for destroy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "endpoints",
+          "aliases": [],
+          "description": "Show endpoints for a preview environment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for endpoints",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all preview environments",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for preview",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Build, push and redeploy source code to the target app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the push command is executed",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deploy",
+            "-d"
+          ],
+          "description": "Create deployment when the app doesn't exist in a namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Name of the app to push to",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the push command is executed",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use cache when building the image",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--progress"
+          ],
+          "description": "Show plain/tty build output",
+          "takes_arg": true,
+          "arg_name": "progress",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-t"
+          ],
+          "description": "Image tag to build, push and redeploy",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for push",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart the deployments listed in the services field of the okteto manifest",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the restart command is executed",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the restart command is executed",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stack",
+      "aliases": [],
+      "description": "Stack management commands",
+      "subcommands": [
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy a stack",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build"
+              ],
+              "description": "Build images before starting any Stack service",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Path to the stack manifest files. If more than one is passed the latest will overwrite the fields from the previous",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Overwrites the stack name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Overwrites the stack namespace where the stack is deployed",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-cache"
+              ],
+              "description": "Do not use cache when building the image",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--progress"
+              ],
+              "description": "Show plain/tty build output (default \"tty\")",
+              "takes_arg": true,
+              "arg_name": "progress",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout",
+                "-t"
+              ],
+              "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait"
+              ],
+              "description": "Wait until a minimum number of containers are in a ready state for every service",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for deploy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Destroy a stack",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Path to the stack manifest file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Overwrites the stack name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Overwrites the stack namespace where the stack is destroyed",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--volumes",
+                "-v"
+              ],
+              "description": "Remove persistent volumes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for destroy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "endpoints",
+          "aliases": [],
+          "description": "Show endpoints for a stack",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Path to the stack manifest files. If more than one is passed the latest will overwrite the fields from the previous",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Overwrites the stack name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "Overwrites the stack namespace where the stack is deployed",
+              "takes_arg": true,
+              "arg_name": "namespace",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for endpoints",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for stack",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Status of the synchronization process",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the up command is executing",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--info",
+            "-i"
+          ],
+          "description": "Show syncthing links for troubleshooting the synchronization service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the up command is executing",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch",
+            "-w"
+          ],
+          "description": "Watch for changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "up",
+      "aliases": [],
+      "description": "Activate your development container",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "Build on-the-fly the dev image using the info provided by the 'build' okteto manifest field",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context",
+            "-c"
+          ],
+          "description": "Context where the up command is executed",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deploy",
+            "-d"
+          ],
+          "description": "Create deployment when it doesn't exist in a namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Path to the manifest file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace",
+            "-n"
+          ],
+          "description": "Namespace where the up command is executed",
+          "takes_arg": true,
+          "arg_name": "namespace",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pull"
+          ],
+          "description": "Force dev image pull",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote",
+            "-r"
+          ],
+          "description": "Configures remote execution on the specified port",
+          "takes_arg": true,
+          "arg_name": "remote",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset"
+          ],
+          "description": "Reset the file synchronization database",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for up",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update okteto version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "View the version of the okteto binary",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "analytics",
+          "aliases": [],
+          "description": "Enable / Disable analytics",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for analytics",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Build (and optionally push) a Docker image",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for bash",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for fish",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for powershell",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for zsh",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for completion",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ctx",
+          "aliases": [
+            "context"
+          ],
+          "description": "Set the default context",
+          "subcommands": [
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a context",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for delete",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List available contexts",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for list",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Print the current context",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for show",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "use",
+              "aliases": [],
+              "description": "Set the default context",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--builder",
+                    "-b"
+                  ],
+                  "description": "Url of the builder service",
+                  "takes_arg": true,
+                  "arg_name": "builder",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Namespace of your okteto context",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--okteto"
+                  ],
+                  "description": "Only shows okteto cluster options",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token",
+                    "-t"
+                  ],
+                  "description": "API token for authentication",
+                  "takes_arg": true,
+                  "arg_name": "token",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for use",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for context",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "doctor",
+          "aliases": [],
+          "description": "Generate a zip file with the okteto logs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for doctor",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "down",
+          "aliases": [],
+          "description": "Deactivate your development container",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for down",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "exec",
+          "aliases": [],
+          "description": "Execute a command in your development container",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for exec",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Automatically generate your okteto manifest file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for init",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "kubeconfig",
+          "aliases": [],
+          "description": "Download credentials for the Kubernetes cluster selected via 'okteto context'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for kubeconfig",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ns",
+          "aliases": [
+            "namespace"
+          ],
+          "description": "Configure the current namespace of the okteto context",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a namespace",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--members",
+                    "-m"
+                  ],
+                  "description": "Members of the namespace, it can the username or email",
+                  "takes_arg": true,
+                  "arg_name": "members",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for create",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a namespace",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for delete",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List namespaces managed by Okteto in your current context",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for list",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "ns",
+              "aliases": [
+                "use"
+              ],
+              "description": "Configure the current namespace of the okteto context",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--personal"
+                  ],
+                  "description": "Load personal account",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for use",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for namespace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "pipeline",
+          "aliases": [],
+          "description": "Pipeline management commands",
+          "subcommands": [
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy an okteto pipeline",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--branch",
+                    "-b"
+                  ],
+                  "description": "The branch to deploy (defaults to the current branch)",
+                  "takes_arg": true,
+                  "arg_name": "branch",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file",
+                    "-f"
+                  ],
+                  "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+                  "takes_arg": true,
+                  "arg_name": "file",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--filename"
+                  ],
+                  "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--name",
+                    "-p"
+                  ],
+                  "description": "Name of the pipeline (defaults to the git config name)",
+                  "takes_arg": true,
+                  "arg_name": "name",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Namespace where the up command is executed (defaults to the current namespace)",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--repository",
+                    "-r"
+                  ],
+                  "description": "The repository to deploy (defaults to the current repository)",
+                  "takes_arg": true,
+                  "arg_name": "repository",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-if-exists"
+                  ],
+                  "description": "Skip the pipeline deployment if the pipeline already exists in the namespace (defaults to false)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--timeout",
+                    "-t"
+                  ],
+                  "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+                  "takes_arg": true,
+                  "arg_name": "timeout",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--var",
+                    "-v"
+                  ],
+                  "description": "Set a pipeline variable (can be set more than once)",
+                  "takes_arg": true,
+                  "arg_name": "var",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--wait",
+                    "-w"
+                  ],
+                  "description": "Wait until the pipeline finishes (defaults to false)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for deploy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "destroy",
+              "aliases": [],
+              "description": "Destroy an okteto pipeline",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--name",
+                    "-p"
+                  ],
+                  "description": "Name of the pipeline (defaults to the git config name)",
+                  "takes_arg": true,
+                  "arg_name": "name",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Namespace where the up command is executed (defaults to the current namespace)",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--timeout",
+                    "-t"
+                  ],
+                  "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+                  "takes_arg": true,
+                  "arg_name": "timeout",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--volumes",
+                    "-v"
+                  ],
+                  "description": "Destroy persistent volumes created by the pipeline (defaults to false)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--wait",
+                    "-w"
+                  ],
+                  "description": "Wait until the pipeline finishes (defaults to false)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for destroy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for pipeline",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "preview",
+          "aliases": [],
+          "description": "Preview environment management commands",
+          "subcommands": [
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy a preview environment",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--branch",
+                    "-b"
+                  ],
+                  "description": "The branch to deploy (defaults to the current branch)",
+                  "takes_arg": true,
+                  "arg_name": "branch",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file",
+                    "-f"
+                  ],
+                  "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+                  "takes_arg": true,
+                  "arg_name": "file",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--filename"
+                  ],
+                  "description": "Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml)",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--repository",
+                    "-r"
+                  ],
+                  "description": "The repository to deploy (defaults to the current repository)",
+                  "takes_arg": true,
+                  "arg_name": "repository",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--scope",
+                    "-s"
+                  ],
+                  "description": "The scope of preview environment to create. Accepted values are ['personal', 'global']",
+                  "takes_arg": true,
+                  "arg_name": "scope",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--sourceUrl"
+                  ],
+                  "description": "The URL of the original pull/merge request",
+                  "takes_arg": true,
+                  "arg_name": "sourceUrl",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--timeout",
+                    "-t"
+                  ],
+                  "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+                  "takes_arg": true,
+                  "arg_name": "timeout",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--var",
+                    "-v"
+                  ],
+                  "description": "Set a pipeline variable (can be set more than once)",
+                  "takes_arg": true,
+                  "arg_name": "var",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--wait",
+                    "-w"
+                  ],
+                  "description": "Wait until the preview environment deployment finishes (defaults to false)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for deploy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "destroy",
+              "aliases": [],
+              "description": "Destroy a preview environment",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for destroy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "endpoints",
+              "aliases": [],
+              "description": "Show endpoints for a preview environment",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for endpoints",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all preview environments",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for list",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for preview",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Build, push and redeploy source code to the target app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for push",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart the deployments listed in the services field of the okteto manifest",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for restart",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "stack",
+          "aliases": [],
+          "description": "Stack management commands",
+          "subcommands": [
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy a stack",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--build"
+                  ],
+                  "description": "Build images before starting any Stack service",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file",
+                    "-f"
+                  ],
+                  "description": "Path to the stack manifest files. If more than one is passed the latest will overwrite the fields from the previous",
+                  "takes_arg": true,
+                  "arg_name": "file",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Overwrites the stack name",
+                  "takes_arg": true,
+                  "arg_name": "name",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Overwrites the stack namespace where the stack is deployed",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-cache"
+                  ],
+                  "description": "Do not use cache when building the image",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--progress"
+                  ],
+                  "description": "Show plain/tty build output (default \"tty\")",
+                  "takes_arg": true,
+                  "arg_name": "progress",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--timeout",
+                    "-t"
+                  ],
+                  "description": "The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h",
+                  "takes_arg": true,
+                  "arg_name": "timeout",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--wait"
+                  ],
+                  "description": "Wait until a minimum number of containers are in a ready state for every service",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for deploy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "destroy",
+              "aliases": [],
+              "description": "Destroy a stack",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file",
+                    "-f"
+                  ],
+                  "description": "Path to the stack manifest file",
+                  "takes_arg": true,
+                  "arg_name": "file",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Overwrites the stack name",
+                  "takes_arg": true,
+                  "arg_name": "name",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Overwrites the stack namespace where the stack is destroyed",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--volumes",
+                    "-v"
+                  ],
+                  "description": "Remove persistent volumes",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for destroy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "endpoints",
+              "aliases": [],
+              "description": "Show endpoints for a stack",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--loglevel",
+                    "-l"
+                  ],
+                  "description": "Amount of information outputted (debug, info, warn, error)",
+                  "takes_arg": true,
+                  "arg_name": "loglevel",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--output",
+                    "-o"
+                  ],
+                  "description": "Output format (tty, plain, json)",
+                  "takes_arg": true,
+                  "arg_name": "output",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file",
+                    "-f"
+                  ],
+                  "description": "Path to the stack manifest files. If more than one is passed the latest will overwrite the fields from the previous",
+                  "takes_arg": true,
+                  "arg_name": "file",
+                  "arg_template": null,
+                  "is_repeatable": true
+                },
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Overwrites the stack name",
+                  "takes_arg": true,
+                  "arg_name": "name",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--namespace",
+                    "-n"
+                  ],
+                  "description": "Overwrites the stack namespace where the stack is deployed",
+                  "takes_arg": true,
+                  "arg_name": "namespace",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for endpoints",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for stack",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Status of the synchronization process",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for status",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "up",
+          "aliases": [],
+          "description": "Activate your development container",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for up",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update okteto version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for update",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "View the version of the okteto binary",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--loglevel",
+                "-l"
+              ],
+              "description": "Amount of information outputted (debug, info, warn, error)",
+              "takes_arg": true,
+              "arg_name": "loglevel",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format (tty, plain, json)",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--loglevel",
+            "-l"
+          ],
+          "description": "Amount of information outputted (debug, info, warn, error)",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format (tty, plain, json)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--loglevel",
+        "-l"
+      ],
+      "description": "Amount of information outputted (debug, info, warn, error)",
+      "takes_arg": true,
+      "arg_name": "loglevel",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Output format (tty, plain, json)",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Help for okteto",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

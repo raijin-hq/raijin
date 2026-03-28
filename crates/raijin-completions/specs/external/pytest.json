@@ -1,0 +1,970 @@
+{
+  "name": "pytest",
+  "aliases": [],
+  "description": null,
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--assert"
+      ],
+      "description": "Control assertion debugging tools. 'plain' performs no assertion debugging. 'rewrite' (the default) rewrites assert statements in test modules on import to provide assert expression information",
+      "takes_arg": true,
+      "arg_name": "Mode",
+      "arg_template": {
+        "custom": [
+          "plain",
+          "rewrite"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--basetemp"
+      ],
+      "description": "Base temporary directory for this test run.(warning: this directory is removed if it exists)",
+      "takes_arg": true,
+      "arg_name": "Directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Load configuration from `file` instead of trying to locate one of the implicit configuration files",
+      "takes_arg": true,
+      "arg_name": "File",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-clear"
+      ],
+      "description": "Remove all cache contents at start of test run",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-show"
+      ],
+      "description": "Show cache contents, don't perform collection or tests. Optional argument: glob (default: '*')",
+      "takes_arg": true,
+      "arg_name": "Glob",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--capture"
+      ],
+      "description": "Per-test capturing method",
+      "takes_arg": true,
+      "arg_name": "Method",
+      "arg_template": {
+        "custom": [
+          "fd",
+          "sys",
+          "no",
+          "tee-sys"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--code-highlight"
+      ],
+      "description": "Whether code should be highlighted (only if --color is also enabled)",
+      "takes_arg": true,
+      "arg_name": "Highlight",
+      "arg_template": {
+        "custom": [
+          "yes",
+          "no"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--co",
+        "--collect-only"
+      ],
+      "description": "Only collect tests, don't execute them",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--collect-in-virtualenv"
+      ],
+      "description": "Don't ignore tests in a local virtualenv directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Color terminal output",
+      "takes_arg": true,
+      "arg_name": "Color",
+      "arg_template": {
+        "custom": [
+          "yes",
+          "no",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--confcutdir"
+      ],
+      "description": "Only load conftest.py's relative to specified dir",
+      "takes_arg": true,
+      "arg_name": "Dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--continue-on-collection-errors"
+      ],
+      "description": "Force test execution even if collection errors occur",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Store internal tracing debug information in this log file. This file is opened with 'w' and truncated as a result, care advised. Defaults to 'pytestdebug.log'",
+      "takes_arg": true,
+      "arg_name": "Debug File Name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--durations"
+      ],
+      "description": "Show N slowest setup/test durations (N=0 for all)",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--durations-min"
+      ],
+      "description": "Minimal duration in seconds for inclusion in slowest list",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deselect"
+      ],
+      "description": "Deselect item (via node id prefix) during collection (multi-allowed)",
+      "takes_arg": true,
+      "arg_name": "nodeid_prefix",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--disable-warnings",
+        "--disable-pytest-warnings"
+      ],
+      "description": "Disable warnings summary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctest-continue-on-failure"
+      ],
+      "description": "For a given doctest, continue to run after the first failure",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctest-ignore-import-errors"
+      ],
+      "description": "Ignore doctest ImportErrors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctest-modules"
+      ],
+      "description": "Run doctests in all .py modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctest-report"
+      ],
+      "description": "Choose another output format for diffs on doctest failure",
+      "takes_arg": true,
+      "arg_name": "Output format",
+      "arg_template": {
+        "custom": [
+          "none",
+          "cdiff",
+          "ndiff",
+          "udiff",
+          "only_first_failure"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctest-glob"
+      ],
+      "description": "Doctests file matching pattern, default: test*.txt",
+      "takes_arg": true,
+      "arg_name": "Pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exitfirst",
+        "-x"
+      ],
+      "description": "Exit instantly on first error or failed test",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--failed-first",
+        "--ff"
+      ],
+      "description": "Run all tests, but run the last failures first",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fixtures"
+      ],
+      "description": "Shows builtin and custom fixtures. Note that this command omits fixtures with leading _ unless the -v option is added",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fixtures-per-test"
+      ],
+      "description": "Show fixtures per test",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--full-trace"
+      ],
+      "description": "Don't cut any tracebacks (default is to cut)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "This shows help on command line and config-line options",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore"
+      ],
+      "description": "Ignore path during collection (multi-allowed)",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--ignore-glob"
+      ],
+      "description": "Ignore path pattern during collection (multi-allowed)",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--import-mode"
+      ],
+      "description": "Prepend/append to sys.path when importing test modules and conftest files, default is to prepend",
+      "takes_arg": true,
+      "arg_name": "Mode",
+      "arg_template": {
+        "custom": [
+          "prepend",
+          "append",
+          "importlib"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--junit-xml"
+      ],
+      "description": "Create junit-xml style report file at given path",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--junit-prefix"
+      ],
+      "description": "Prepend prefix to classnames in junit-xml output",
+      "takes_arg": true,
+      "arg_name": "Str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k"
+      ],
+      "description": "Only run tests which match the given substring expression. An expression is a python evaluatable expression where all names are substring-matched against test names and their parent classes. Example: -k 'test_method or test_other' matches all test functions and classes whose name contains 'test_method' or 'test_other', while -k 'not test_method' matches those that don't contain 'test_method' in their names. -k 'not test_method and not test_other' will eliminate the matches. Additionally keywords are matched to classes and functions containing extra names in their 'extra_keyword_matches' set, as well as functions which have names assigned directly to them. The matching is case- insensitive",
+      "takes_arg": true,
+      "arg_name": "Expression",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--keep-duplicates"
+      ],
+      "description": "Keep duplicate tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--showlocals",
+        "-l"
+      ],
+      "description": "Show locals in tracebacks (disabled by default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--last-failed-no-failures",
+        "--lfnf"
+      ],
+      "description": "Which tests to run with no previously (known) failures",
+      "takes_arg": true,
+      "arg_name": "Tests",
+      "arg_template": {
+        "custom": [
+          "all",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--last-failed",
+        "--lf"
+      ],
+      "description": "Rerun only the tests that failed at the last run (or all if none failed)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-auto-indent"
+      ],
+      "description": "Auto-indent multiline messages passed to the logging module. Accepts true|on, false|off or an integer",
+      "takes_arg": true,
+      "arg_name": "Log Auto Indent Setting",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-cli-level"
+      ],
+      "description": "Cli logging level",
+      "takes_arg": true,
+      "arg_name": "Log CLI Level",
+      "arg_template": {
+        "custom": [
+          "CRITICAL",
+          "ERROR",
+          "WARNING",
+          "INFO",
+          "DEBUG"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-cli-format"
+      ],
+      "description": "Log format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log CLI Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-cli-date-format"
+      ],
+      "description": "Log date format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log CLI Date Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-date-format"
+      ],
+      "description": "Log date format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log Date Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-format"
+      ],
+      "description": "Log format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file"
+      ],
+      "description": "Path to a file where logging will be written to",
+      "takes_arg": true,
+      "arg_name": "Log File Path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file-level"
+      ],
+      "description": "Log file logging level",
+      "takes_arg": true,
+      "arg_name": "Log File Level",
+      "arg_template": {
+        "custom": [
+          "CRITICAL",
+          "ERROR",
+          "WARNING",
+          "INFO",
+          "DEBUG"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file-date-format"
+      ],
+      "description": "Log date format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log File Date Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file-format"
+      ],
+      "description": "Log format as used by the logging module",
+      "takes_arg": true,
+      "arg_name": "Log File Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-level"
+      ],
+      "description": "Level of messages to catch/display. Not set by default, so it depends on the root/parent log handler's effective level, where it is `WARNING` by default",
+      "takes_arg": true,
+      "arg_name": "Level",
+      "arg_template": {
+        "custom": [
+          "CRITICAL",
+          "ERROR",
+          "WARNING",
+          "INFO",
+          "DEBUG"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Only run tests matching given mark expression",
+      "takes_arg": true,
+      "arg_name": "Mark Expression",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--markers"
+      ],
+      "description": "Show markers (builtin, plugin and per-project ones)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--maxfail"
+      ],
+      "description": "Exit after first num failures or errors",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--new-first",
+        "--nf"
+      ],
+      "description": "Run tests from new files first, then the rest of the tests sorted by file mtime",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noconftest"
+      ],
+      "description": "Don't load any conftest.py files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-header"
+      ],
+      "description": "Disable header",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-summary"
+      ],
+      "description": "Disable summary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-ini",
+        "-o"
+      ],
+      "description": "Override ini option with `option=value` style`",
+      "takes_arg": true,
+      "arg_name": "Override INI",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Early-load given plugin module name or entry point (multi-allowed)",
+      "takes_arg": true,
+      "arg_name": "Plugin name",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--pastebin"
+      ],
+      "description": "Send failed|all info to bpaste.net pastebin service",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "failed",
+          "all"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pdb"
+      ],
+      "description": "Start the interactive Python debugger on errors or KeyboardInterrupt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pdbcls"
+      ],
+      "description": "Specify a custom interactive Python debugger for use with --pdb",
+      "takes_arg": true,
+      "arg_name": "modulename:classname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pyargs"
+      ],
+      "description": "Try to interpret all arguments as python packages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Decrease verbosity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Show extra test summary info as specified by chars: (f)ailed, (E)rror, (s)kipped, (x)failed, (X)passed, (p)assed, (P)assed with output, (a)ll except passed (p/P), or (A)ll. (w)arnings are enabled by default (see --disable-warnings), 'N' can be used to reset the list. (default: 'fE')",
+      "takes_arg": true,
+      "arg_name": "chars",
+      "arg_template": {
+        "custom": [
+          "a",
+          "A",
+          "E",
+          "f",
+          "N",
+          "p",
+          "P",
+          "s",
+          "w",
+          "x",
+          "X"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rootdir"
+      ],
+      "description": "Define root directory for tests. Can be relative path: 'root_dir', './root_dir', 'root_dir/another_dir/'; absolute path: '/home/user/root_dir'; path with variables:'$HOME/root_dir'",
+      "takes_arg": true,
+      "arg_name": "Root Dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--runxfail"
+      ],
+      "description": "Report the results of xfail tests as if they were not marked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Shortcut for --capture=no",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup-only"
+      ],
+      "description": "Only setup fixtures, do not execute tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup-show"
+      ],
+      "description": "Show setup of fixtures while executing tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup-plan"
+      ],
+      "description": "Show what fixtures and tests would be executed but don't execute anything",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-capture"
+      ],
+      "description": "Controls how captured stdout/stderr/log is shown on failed tests",
+      "takes_arg": true,
+      "arg_name": "Capture method",
+      "arg_template": {
+        "custom": [
+          "no",
+          "stdout",
+          "stderr",
+          "log",
+          "all"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stepwise",
+        "--sw"
+      ],
+      "description": "Exit on test failure and continue from last failing test next time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stepwise-skip",
+        "--sw-skip"
+      ],
+      "description": "Ignore the first failing test but stop on the next failing test",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict"
+      ],
+      "description": "Alias to --strict-markers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-config"
+      ],
+      "description": "Any warnings encountered while parsing the `pytest` section of the configuration file raise errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-markers"
+      ],
+      "description": "Markers not registered in the `markers` section of the configuration file raise errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tb"
+      ],
+      "description": "Traceback print mode",
+      "takes_arg": true,
+      "arg_name": "Traceback print mode",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "long",
+          "short",
+          "line",
+          "native",
+          "no"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trace"
+      ],
+      "description": "Immediately break when running each test",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trace-config"
+      ],
+      "description": "Trace considerations of conftest.py files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Increase verbosity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--verbosity"
+      ],
+      "description": "Set verbosity. Default is 0",
+      "takes_arg": true,
+      "arg_name": "Verbosity level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Display pytest version and information about plugins. When given twice, also display information about plugins",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pythonwarnings",
+        "-W"
+      ],
+      "description": "Set which warnings to report, see -W option of python itself",
+      "takes_arg": true,
+      "arg_name": "Warnings to report",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "File or Directory",
+      "description": "The test file or directory you want to run pytest on. If omitted, pytest will run all       of the files of the form test_*.py or *_test.py in the current directory       and its subdirectories",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

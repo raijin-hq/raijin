@@ -1,0 +1,103 @@
+{
+  "name": "yo",
+  "aliases": [],
+  "description": "Yeoman generator",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Print info and generator's options and usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Overwrite files that already exist",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Disable color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--insight"
+      ],
+      "description": "Enable anonymous tracking",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-insight"
+      ],
+      "description": "Disable anonymous tracking",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--generators"
+      ],
+      "description": "Print available generators",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--local-only"
+      ],
+      "description": "Disable lookup of globally-installed generators",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "generator",
+      "description": null,
+      "template": {
+        "custom": [
+          "doctor",
+          "completion"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

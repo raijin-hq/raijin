@@ -1,0 +1,349 @@
+{
+  "name": "bwdc",
+  "aliases": [],
+  "description": "Bitwarden Directory Connector",
+  "subcommands": [
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to Directory Connector",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "client_id",
+          "description": "Organisation API client_id",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "client_secret",
+          "description": "Organisation API client_secret",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of Directory Connector",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Prints a JSON formatted array of groups and users that would be synced to your Bitwarden organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--last"
+          ],
+          "description": "Test only the changes since the last successful sync",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Run a live sync operation and push data to your Bitwarden organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "last-sync",
+      "aliases": [],
+      "description": "The last-sync command returns an ISO 8601 timestamp for the last sync operation that was performed for users or groups. You must specify either users or groups as an <object> to run the command against- Returns an empty response if no sync has been performed for the given object",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Object",
+          "description": "You must specify either users or groups as an <object> to run the command against",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "The config command allows you to specify your directory settings",
+      "subcommands": [
+        {
+          "name": "server",
+          "aliases": [],
+          "description": "URL of your self-hosted installation (e.g. https://my.url.com) or https://vault.bitwarden.eu",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "server-url",
+              "description": "Specify the server URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "directory",
+          "aliases": [],
+          "description": "Type of directory to use",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "directory-type",
+              "description": "Active Directory/LDAP : 0\nAzure Active Directory : 1\nGoogle Workspace/GSuite : 2\nOkta : 3\nOneLogin : 4",
+              "template": {
+                "custom": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ldap.password",
+          "aliases": [],
+          "description": "Password for connection to the LDAP server",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "password",
+              "description": "Specify the password",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "azure.key",
+          "aliases": [],
+          "description": "Azure AD secret key",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key",
+              "description": "Specify the AD secret key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "gsuite.key",
+          "aliases": [],
+          "description": "Google Workspace/GSuite private key",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key",
+              "description": "Specify the Google Workspace/GSuite private key",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "okta.token",
+          "aliases": [],
+          "description": "Okta token",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "token",
+              "description": "Specify the Okta token",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "onelogin.secret",
+          "aliases": [],
+          "description": "OneLogin client secret",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "secret",
+              "description": "Specify the OneLogin client secret",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "setting",
+          "description": "Specify the setting to configure",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "Specify the value assigned to the setting",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "data-file",
+      "aliases": [],
+      "description": "Path to data.json database file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clear-cache",
+      "aliases": [],
+      "description": "The clear-cache command allows you to clear cached data that the application stores while performing sync operations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "The update command allows you to check if your Directory Connector CLI is up-to-date",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for bwdc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

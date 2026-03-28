@@ -1,0 +1,197 @@
+{
+  "name": "tangram",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "app",
+      "aliases": [],
+      "description": "Run the app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "The path to a config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Migrate your app database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--database-url"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "DATABASE_URL",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "predict",
+      "aliases": [],
+      "description": "Make predictions with a model",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--file"
+          ],
+          "description": "The path to read examples from, defaults to stdin",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--model"
+          ],
+          "description": "The path to the model to make predictions with",
+          "takes_arg": true,
+          "arg_name": "MODEL",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "The path to write the predictions to, defaults to stdout",
+          "takes_arg": true,
+          "arg_name": "OUTPUT",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--probabilities"
+          ],
+          "description": "Output probabilities instead of class labels, only relevant for classifier models",
+          "takes_arg": true,
+          "arg_name": "PROBABILITIES",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "train",
+      "aliases": [],
+      "description": "Train a model",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "The path to a config file",
+          "takes_arg": true,
+          "arg_name": "CONFIG",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--file"
+          ],
+          "description": "The path to your .csv file",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file-test"
+          ],
+          "description": "The path to your .csv file used for testing",
+          "takes_arg": true,
+          "arg_name": "FILE_TEST",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file-train"
+          ],
+          "description": "The path to your .csv file used for training",
+          "takes_arg": true,
+          "arg_name": "FILE_TRAIN",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "The path to write the .tangram file to",
+          "takes_arg": true,
+          "arg_name": "OUTPUT",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--target"
+          ],
+          "description": "The name of the column to predict",
+          "takes_arg": true,
+          "arg_name": "TARGET",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,48 @@
+{
+  "name": "create-vite",
+  "aliases": [],
+  "description": "Create a new project powered by Vite",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--template"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "template",
+      "arg_template": {
+        "custom": [
+          "vanilla",
+          "vanilla-ts",
+          "vue",
+          "vue-ts",
+          "react",
+          "react-ts",
+          "react-swc",
+          "react-swc-ts",
+          "preact",
+          "preact-ts",
+          "lit",
+          "lit-ts",
+          "svelte",
+          "svelte-ts",
+          "solid",
+          "solid-ts",
+          "qwik",
+          "qwik-ts"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "projectName",
+      "description": "Project name",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

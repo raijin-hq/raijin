@@ -1,0 +1,317 @@
+{
+  "name": "pkill",
+  "aliases": [],
+  "description": "Send  the  specified  signal  (by default SIGTERM) to each specified process",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--signal"
+      ],
+      "description": "Signal to send (either number or name)",
+      "takes_arg": true,
+      "arg_name": "signal",
+      "arg_template": {
+        "custom": [
+          "SIGABRT",
+          "SIGALRM",
+          "SIGBUS",
+          "SIGCHLD",
+          "SIGCLD",
+          "SIGCONT",
+          "SIGEMT",
+          "SIGFPE",
+          "SIGHUP",
+          "SIGILL",
+          "SIGINFO",
+          "SIGINT",
+          "SIGIO",
+          "SIGIOT",
+          "SIGKILL",
+          "SIGLOST",
+          "SIGPIPE",
+          "SIGPOLL",
+          "SIGPROF",
+          "SIGPWR",
+          "SIGQUIT",
+          "SIGSEGV",
+          "SIGSTKFLT",
+          "SIGSTOP",
+          "SIGTSTP",
+          "SIGSYS",
+          "SIGTERM",
+          "SIGTRAP",
+          "SIGTTIN",
+          "SIGTTOU",
+          "SIGUNUSED",
+          "SIGURG",
+          "SIGUSR1",
+          "SIGUSR2",
+          "SIGVTALRM",
+          "SIGXCPU",
+          "SIGXFSZ",
+          "SIGWINCH"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--queue"
+      ],
+      "description": "Integer value to be sent with the signal",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--echo"
+      ],
+      "description": "Display what is killed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--full"
+      ],
+      "description": "Use full process name to match",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--pgroup"
+      ],
+      "description": "Match listed process group IDs",
+      "takes_arg": true,
+      "arg_name": "PGID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--group"
+      ],
+      "description": "Match real group IDs",
+      "takes_arg": true,
+      "arg_name": "GID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--ignore-case"
+      ],
+      "description": "Match case insensitively",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--newest"
+      ],
+      "description": "Select most recently started",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--oldest"
+      ],
+      "description": "Select least recently started",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O",
+        "--older"
+      ],
+      "description": "Select where older than seconds",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--parent"
+      ],
+      "description": "Match only child processes of the given parent",
+      "takes_arg": true,
+      "arg_name": "PPID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--session"
+      ],
+      "description": "Match session IDs",
+      "takes_arg": true,
+      "arg_name": "SID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--terminal"
+      ],
+      "description": "Match by controlling terminal",
+      "takes_arg": true,
+      "arg_name": "tty",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--euid"
+      ],
+      "description": "Match by effective IDs",
+      "takes_arg": true,
+      "arg_name": "ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--uid"
+      ],
+      "description": "Match by real IDs",
+      "takes_arg": true,
+      "arg_name": "ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--exact"
+      ],
+      "description": "Match exactly with the command name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--pidfile"
+      ],
+      "description": "Read PIDs from file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "logpidfile"
+      ],
+      "description": "Fail if PID file is not locked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--runstates"
+      ],
+      "description": "Match runstates",
+      "takes_arg": true,
+      "arg_name": "state",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ns"
+      ],
+      "description": "Match the processes that belong to a specified PID",
+      "takes_arg": true,
+      "arg_name": "PID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nslist"
+      ],
+      "description": "List which namespaces will be considered for the --ns option",
+      "takes_arg": true,
+      "arg_name": "ns",
+      "arg_template": {
+        "custom": [
+          "ipc",
+          "mnt",
+          "net",
+          "pid",
+          "user",
+          "uts"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "pattern",
+      "description": "Specifies an Extended Regular Expression for matching against the process names or command lines",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

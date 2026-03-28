@@ -1,0 +1,859 @@
+{
+  "name": "jupyter",
+  "aliases": [],
+  "description": "An interactive computing environment for notebook programming",
+  "subcommands": [
+    {
+      "name": "bundlerextension",
+      "aliases": [],
+      "description": "Work with Jupyter bundler extensions",
+      "subcommands": [
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable a bundler extension",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable a bundler extension",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List bundler extensions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user"
+          ],
+          "description": "Apply the operation only for the given user",
+          "takes_arg": true,
+          "arg_name": "user",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--system"
+          ],
+          "description": "Apply the operation system-wide",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sys-prefix"
+          ],
+          "description": "Use sys.prefix as the prefix for installing nbextensions (for environments, packaging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--py",
+            "--python"
+          ],
+          "description": "Install from a Python package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "kernel",
+      "aliases": [],
+      "description": "Run a kernel locally in a subprocess",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kernel"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "KernelApp.kernel_name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ip"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "KernelManager.ip",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "kernelspec",
+      "aliases": [],
+      "description": "Manage Jupyter kernel specifications",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output spec name and location as json",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Install a kernel specification directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--log-level"
+              ],
+              "description": "Set the log level by value or name",
+              "takes_arg": true,
+              "arg_name": "level",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Choose a config file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Set log level to logging.DEBUG (maximize logging output)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Show this message",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "kernel",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Alias for remove",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "kernel",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove one or more Jupyter kernelspecs by name",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "kernel",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Migrate configuration and data from .ipython prior to 4.0 to Jupyter locations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--generate-config"
+          ],
+          "description": "Generate default config file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Answer yes to any questions instead of prompting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "nbconvert",
+      "aliases": [],
+      "description": "This application is used to convert notebook files (*.ipynb) to various other formats",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "nbextension",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Install an nbextension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "extension",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Uninstall an nbextension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "extension",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable an nbextension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "extension",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable an nbextension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "extension",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List nbextensions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "notebook",
+      "aliases": [],
+      "description": "Run the Jupyter notebook server",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List currently running notebook servers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop currently running notebook server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "password",
+          "aliases": [],
+          "description": "Set a password for the notebook server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a notebook",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serverextension",
+      "aliases": [],
+      "description": "Manage server extensions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "troubleshoot",
+      "aliases": [],
+      "description": "Log for troubleshooting",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "trust",
+      "aliases": [],
+      "description": "Manage trust",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Set log level to logging.DEBUG (maximize logging output)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show this message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level"
+          ],
+          "description": "Set the log level by value or name",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Choose a config file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for jupyter",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the jupyter command's version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-dir"
+      ],
+      "description": "Show Jupyter config dir",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--data-dir"
+      ],
+      "description": "Show Jupyter data dir",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--runtime-dir"
+      ],
+      "description": "Show Jupyter runtime dir",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--paths"
+      ],
+      "description": "Show all Jupyter paths. Add --json for machine-readable format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Output paths as machine-readable json",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Output debug information about paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

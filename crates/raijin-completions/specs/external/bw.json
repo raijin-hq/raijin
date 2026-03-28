@@ -1,0 +1,2275 @@
+{
+  "name": "bw",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log into a user account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--method"
+          ],
+          "description": "Two-step login method",
+          "takes_arg": true,
+          "arg_name": "method",
+          "arg_template": {
+            "custom": [
+              "0",
+              "1",
+              "3"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--code"
+          ],
+          "description": "Two-step login code",
+          "takes_arg": true,
+          "arg_name": "code",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sso"
+          ],
+          "description": "Log in with Single-Sign On",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apikey"
+          ],
+          "description": "Log in with an Api Key",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordenv"
+          ],
+          "description": "Environment variable storing your password",
+          "takes_arg": true,
+          "arg_name": "passwordenv",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordfile"
+          ],
+          "description": "Path to a file containing your password as its first line",
+          "takes_arg": true,
+          "arg_name": "passwordfile",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Check login status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for login command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "email",
+          "description": "Email Address of Bitwarden Account",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "Master Password of Bitwarden Vault",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of the current user account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for logout command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lock",
+      "aliases": [],
+      "description": "Lock the vault and destroy active session keys",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for lock command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unlock",
+      "aliases": [],
+      "description": "Unlock the vault and return a new session key",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Check lock status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordenv"
+          ],
+          "description": "Supply an environment variable storing your password",
+          "takes_arg": true,
+          "arg_name": "passwordenv",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordfile"
+          ],
+          "description": "Path to a file containing your password as its first line",
+          "takes_arg": true,
+          "arg_name": "passwordfile",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for unlock command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "password",
+          "description": "Master Password for the Vault to be unlocked",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Pull the latest vault data from server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Force a full sync",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--last"
+          ],
+          "description": "Show details of the last sync",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for sync command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Generate a password/passphrase",
+      "subcommands": [
+        {
+          "name": "-p",
+          "aliases": [
+            "--passphrase"
+          ],
+          "description": "Generate a passphrase",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--words"
+              ],
+              "description": "Number of words to include in passphrase",
+              "takes_arg": true,
+              "arg_name": "Number of words",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--capitalize"
+              ],
+              "description": "Title case passphrase",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--separator"
+              ],
+              "description": "Define word separator",
+              "takes_arg": true,
+              "arg_name": "separator",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--includeNumber"
+              ],
+              "description": "Include a number in output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-u",
+            "--uppercase"
+          ],
+          "description": "Include uppercase characters",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--lowercase"
+          ],
+          "description": "Include lowercase characters",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--number"
+          ],
+          "description": "Include numeric characters",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--special"
+          ],
+          "description": "Include special characters",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--length"
+          ],
+          "description": "Define password length",
+          "takes_arg": true,
+          "arg_name": "length",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for generate command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "encode",
+      "aliases": [],
+      "description": "Base 64 encode stdin",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for encode command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Configure CLI settings",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--web-vault"
+          ],
+          "description": "Provides a custom web vault URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--api"
+          ],
+          "description": "Provides a custom API URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--identity"
+          ],
+          "description": "Provides a custom identity URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--icons"
+          ],
+          "description": "Provides a custom icon service URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notifications"
+          ],
+          "description": "Provides a custom notifications URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--events"
+          ],
+          "description": "Provides a custom events URL that differs from the base URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-connector"
+          ],
+          "description": "Provides the URL for your Key Connector server",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the config command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "setting",
+          "description": "Setting to configure",
+          "template": {
+            "custom": [
+              "server"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "Value to set",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Check for updates",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for update command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "Shell to generate completions for",
+          "takes_arg": true,
+          "arg_name": "shell",
+          "arg_template": {
+            "custom": [
+              "zsh"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for completion command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show server details, last sync time & date, user information, and vault status",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for status command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Start a RESTful API webserver",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--hostname"
+          ],
+          "description": "The hostname to bind your API webserver to",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The port to run your API webserver on",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for serve command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Retrieves an array of objects (items, folders, collections, org-collections, org-members, organizations) from your Vault",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--search"
+          ],
+          "description": "Perform a search on the listed objects",
+          "takes_arg": true,
+          "arg_name": "search",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Filter items of type login with a url-match search",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--folderid"
+          ],
+          "description": "Filter items by folder id",
+          "takes_arg": true,
+          "arg_name": "folderid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--collectionid"
+          ],
+          "description": "Filter items by collection id",
+          "takes_arg": true,
+          "arg_name": "collectionid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Filter items or collections by organization id",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trash"
+          ],
+          "description": "Filter items that are in the trash",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": null,
+          "template": {
+            "custom": [
+              "items",
+              "folders",
+              "collections",
+              "org-collections",
+              "org-members",
+              "organizations"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Get an object from the vault",
+      "subcommands": [
+        {
+          "name": "template",
+          "aliases": [],
+          "description": "Type of template to get",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "object",
+              "description": null,
+              "template": {
+                "custom": [
+                  "item",
+                  "item.field",
+                  "item.login",
+                  "item.login.uri",
+                  "item.card",
+                  "item.identity",
+                  "item.securenote",
+                  "folder",
+                  "collection",
+                  "item-collections",
+                  "org-collection",
+                  "send.text",
+                  "send.file"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "attachment",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--itemid"
+              ],
+              "description": "Vault Item ID containing attachment",
+              "takes_arg": true,
+              "arg_name": "itemid",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Output directory and/or filename",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": "folders",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Exact id of the object",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Organization id for an organization object",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the get command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "Type of object to get from the Vault",
+          "template": {
+            "custom": [
+              "item",
+              "username",
+              "password",
+              "uri",
+              "totp",
+              "exposed",
+              "folder",
+              "collection"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "id",
+          "description": "Search term or object's globally unique id",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create an object in the vault",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "Path to file for attachment",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--itemid"
+          ],
+          "description": "Attachment's item id",
+          "takes_arg": true,
+          "arg_name": "itemid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Organization id for an organization object",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the create command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "Object to be created",
+          "template": {
+            "custom": [
+              "item",
+              "attachment",
+              "folder",
+              "org-collection"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "encodedJson",
+          "description": "Encoded Json instead of uploading to Vault",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Edit an object from the vault",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Organization id for an organization object",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the edit command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "Type of Vault Object to edit",
+          "template": {
+            "custom": [
+              "item",
+              "item-collections",
+              "folder",
+              "org-collection"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "id",
+          "description": "Object's globally unique id",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "encodedJson",
+          "description": "Encoded json of the object to create",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete an object from the vault",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--itemid"
+          ],
+          "description": "Attachment's item id",
+          "takes_arg": true,
+          "arg_name": "itemid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Organization id for an organization object",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--permanent"
+          ],
+          "description": "Permanently deletes the item instead of soft-deleting it (item only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the delete command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "Object to delete",
+          "template": {
+            "custom": [
+              "item",
+              "attachment",
+              "folder",
+              "org-collection"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "id",
+          "description": "Unique Vault ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "restore",
+      "aliases": [],
+      "description": "Restores an object from the trash",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the restore command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "aliases": [],
+      "description": "Transfers a Vault item to an Organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the move command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "organizationId",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "encodedJson",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "confirm",
+      "aliases": [],
+      "description": "Confirm an object to the organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Organization id for an organization object",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the confirm command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "object",
+          "description": "Valid objects are: org-member",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "id",
+          "description": "Organization id for an organization object",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import vault data from a file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--formats"
+          ],
+          "description": "List supported file formats",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "ID of the organization to import to",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the import command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "format",
+          "description": "Format of import file",
+          "template": {
+            "custom": [
+              "1password1pif",
+              "1password1pux",
+              "1passwordmaccsv",
+              "1passwordwincsv",
+              "ascendocsv",
+              "avastcsv",
+              "avastjson",
+              "aviracsv",
+              "bitwardencsv",
+              "bitwardenjson",
+              "blackberrycsv",
+              "blurcsv",
+              "buttercupcsv",
+              "chromecsv",
+              "clipperzhtml",
+              "codebookcsv",
+              "dashlanecsv",
+              "dashlanejson",
+              "encryptrcsv",
+              "enpasscsv",
+              "enpassjson",
+              "firefoxcsv",
+              "fsecurefsk",
+              "gnomejson",
+              "kasperskytxt",
+              "keepass2xml",
+              "keepassxcsv",
+              "keepercsv",
+              "lastpasscsv",
+              "logmeoncecsv",
+              "meldiumcsv",
+              "msecurecsv",
+              "mykicsv",
+              "nordpasscsv",
+              "operacsv",
+              "padlockcsv",
+              "passboltcsv",
+              "passkeepcsv",
+              "passmanjson",
+              "passpackcsv",
+              "passwordagentcsv",
+              "passwordbossjson",
+              "passworddragonxml",
+              "passwordwallettxt",
+              "pwsafexml",
+              "remembearcsv",
+              "roboformcsv",
+              "safaricsv",
+              "safeincloudxml",
+              "saferpasscsv",
+              "securesafecsv",
+              "splashidcsv",
+              "stickypasswordxml",
+              "truekeycsv",
+              "upmcsv",
+              "vivaldicsv",
+              "yoticsv",
+              "zohovaultcsv"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "input",
+          "description": "File to be imported",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Export vault data to a CSV or JSON file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "Set output directory or filename",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Export file format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "csv",
+              "json",
+              "encrypted_json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Use a password to encrypt instead of your Bitwarden account encryption key. Only applies to the encrypted_json format",
+          "takes_arg": true,
+          "arg_name": "password",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organizationid"
+          ],
+          "description": "Enter organization id for an organization",
+          "takes_arg": true,
+          "arg_name": "organizationid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the export command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "--DEPRECATED-- Move an item to an organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the share command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "description": "Object's globally unique ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "organizationId",
+          "description": "Organization's globally unique ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "encodedJson",
+          "description": "Encoded json of an array of collection ids. Can also be piped into stdin",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "send",
+      "aliases": [],
+      "description": "Work with Bitwarden Sends. A Send can be quickly created using this command or subcommands can be used to fine-tune the Send",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all the Sends owned by you",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the Send command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "template",
+          "aliases": [],
+          "description": "Get json templates for Send objects",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the template sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "object",
+              "description": "Json template to fetch",
+              "template": {
+                "custom": [
+                  "send.text",
+                  "send.file"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get Sends owned by you",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Output directory or filename for attachment",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--text"
+              ],
+              "description": "Specifies to return the text content of a Send",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the Send get sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Send ID",
+              "description": "Send ID",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "receive",
+          "aliases": [],
+          "description": "Access a Bitwarden Send from a url",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "Password needed to access the Send",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--passwordenv"
+              ],
+              "description": "Environment variable storing the Send's password",
+              "takes_arg": true,
+              "arg_name": "passwordenv",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--passwordfile"
+              ],
+              "description": "Path to a file containing the Send's password as its first line",
+              "takes_arg": true,
+              "arg_name": "passwordfile",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--obj"
+              ],
+              "description": "Return the Send's json object rather than the Send's content",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Specify a file path to save a File-type Send to",
+              "takes_arg": true,
+              "arg_name": "location",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the receive sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Send URL",
+              "description": "URL of Send to download",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a Send",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--file"
+              ],
+              "description": "File to Send. Can also be specified in parent's JSON",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--text"
+              ],
+              "description": "Text to Send. Can also be specified in parent's JSON",
+              "takes_arg": true,
+              "arg_name": "text",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--hidden"
+              ],
+              "description": "Text hidden flag. Valid only with the --text option",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "Optional password to access this Send. Can also be specified in JSON",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the create sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "encodedJson",
+              "description": "Encoded Json to be uploaded",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a Send",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--itemid"
+              ],
+              "description": "Overrides the itemId provided in [encodedJson]",
+              "takes_arg": true,
+              "arg_name": "itemid",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the edit sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "encodedJson",
+              "description": "Encoded Json",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove-password",
+          "aliases": [],
+          "description": "Removes the saved password from a Send",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the remove-password sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Send ID",
+              "description": "ID of the Send to remove password from",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a Send",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the delete sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Send ID",
+              "description": "ID of the Send to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for the Send command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--file"
+          ],
+          "description": "Specifies that <data> is a filepath",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--deleteInDays"
+          ],
+          "description": "The number of days in the future to set deletion date (defaults to 7 if not specified)",
+          "takes_arg": true,
+          "arg_name": "days",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--maxAccessCount"
+          ],
+          "description": "The max number of accesses allowed for this Send",
+          "takes_arg": true,
+          "arg_name": "amount",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hidden"
+          ],
+          "description": "Hide <data> in web by default. Valid only if --file is not set",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "The name of the Send. Defaults to a guid for text Sends and the filename for files",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notes"
+          ],
+          "description": "Notes to add to the Send",
+          "takes_arg": true,
+          "arg_name": "notes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fullObject"
+          ],
+          "description": "Specifies that the full Send object should be returned rather than just the access url",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the Send command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "data",
+          "description": "Encoded Json data",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "device-approval",
+      "aliases": [],
+      "description": "Manage device approval requests sent to organizations that use SSO with trusted devices",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all pending requests for an organisation",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the list sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organizationid"
+              ],
+              "description": "The organisation id (required)",
+              "takes_arg": true,
+              "arg_name": "organizationid",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "approve",
+          "aliases": [],
+          "description": "Approve a pending request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the approve sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "requestId"
+              ],
+              "description": "The id of the request to approve",
+              "takes_arg": true,
+              "arg_name": "requestId",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organizationid"
+              ],
+              "description": "The organisation id (required)",
+              "takes_arg": true,
+              "arg_name": "organizationid",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "approve-all",
+          "aliases": [],
+          "description": "Approve all pending requests for an organisation",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the approve-all sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organizationid"
+              ],
+              "description": "The organisation id (required)",
+              "takes_arg": true,
+              "arg_name": "organizationid",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deny",
+          "aliases": [],
+          "description": "Deny a pending request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the deny sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "requestId"
+              ],
+              "description": "The id of the request to deny",
+              "takes_arg": true,
+              "arg_name": "requestId",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organizationid"
+              ],
+              "description": "The organisation id (required)",
+              "takes_arg": true,
+              "arg_name": "organizationid",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deny-all",
+          "aliases": [],
+          "description": "Deny all pending requests for an organisation",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for the deny-all sub-command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organizationid"
+              ],
+              "description": "The organisation id (required)",
+              "takes_arg": true,
+              "arg_name": "organizationid",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "receive",
+      "aliases": [],
+      "description": "Access a Bitwarden Send from a url",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--password"
+          ],
+          "description": "Password needed to access the Send",
+          "takes_arg": true,
+          "arg_name": "password",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordenv"
+          ],
+          "description": "Environment variable storing the Send's password",
+          "takes_arg": true,
+          "arg_name": "passwordenv",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--passwordfile"
+          ],
+          "description": "Path to a file containing the Send's password as its first line",
+          "takes_arg": true,
+          "arg_name": "passwordfile",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--obj"
+          ],
+          "description": "Return the Send's json object rather than the Send's content",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "Specify a file path to save a File-type Send to",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for the receive sub-command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Send URL",
+          "description": "URL of Send to download",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for the Bitwarden CLI tool",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Subcommand to display help for",
+          "template": {
+            "custom": [
+              "login",
+              "logout",
+              "lock",
+              "unlock",
+              "sync",
+              "generate",
+              "encode",
+              "config",
+              "update",
+              "completion",
+              "status",
+              "serve",
+              "list",
+              "get",
+              "create",
+              "edit",
+              "delete",
+              "restore",
+              "move",
+              "confirm",
+              "import",
+              "export",
+              "share",
+              "send",
+              "receive",
+              "device-approval"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--pretty"
+      ],
+      "description": "Format output. JSON is tabbed with two spaces",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--raw"
+      ],
+      "description": "Return raw output instead of a descriptive message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--response"
+      ],
+      "description": "Return a JSON formatted version of response output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cleanexit"
+      ],
+      "description": "Exit with a success exit code (0) unless an error is thrown",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Don't return anything to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nointeraction"
+      ],
+      "description": "Do not prompt for interactive user input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--session"
+      ],
+      "description": "Pass session key instead of reading from env",
+      "takes_arg": true,
+      "arg_name": "session",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output BW CLI tool version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

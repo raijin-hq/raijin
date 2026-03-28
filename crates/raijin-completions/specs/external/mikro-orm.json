@@ -1,0 +1,574 @@
+{
+  "name": "mikro-orm",
+  "aliases": [],
+  "description": "TypeScript ORM for Node.js based on Data Mapper, Unit of Work and Identity Map patterns. Supports MongoDB, MySQL, MariaDB, PostgreSQL and SQLite databases",
+  "subcommands": [
+    {
+      "name": "cache:clear",
+      "aliases": [],
+      "description": "Clear metadata cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cache:generate",
+      "aliases": [],
+      "description": "Generate metadata cache for production",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "generate-entities",
+      "aliases": [],
+      "description": "Generate entities based on current database schema",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--save"
+          ],
+          "description": "Saves entities to directory defined by --path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dump"
+          ],
+          "description": "Dumps all entities to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "Sets path to directory where to save entities",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Generates entities only for given schema",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "database:create",
+      "aliases": [],
+      "description": "Create your database if it does not exist",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "database:import",
+      "aliases": [],
+      "description": "Imports the SQL file to the database",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "seeder:run",
+      "aliases": [],
+      "description": "Seed the database using the seeder class",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "seeder:create",
+      "aliases": [],
+      "description": "Create a new seeder class",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--class"
+          ],
+          "description": "Seeder class to run",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:create",
+      "aliases": [],
+      "description": "Create database schema based on current metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--run"
+          ],
+          "description": "Runs queries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dump"
+          ],
+          "description": "Dumps all queries to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fk-checks"
+          ],
+          "description": "Do not skip foreign key checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Set the current schema for wildcard schema entities",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Allows to seed the database on create or drop and recreate",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:drop",
+      "aliases": [],
+      "description": "Drop database schema based on current metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--run"
+          ],
+          "description": "Runs queries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dump"
+          ],
+          "description": "Dumps all queries to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fk-checks"
+          ],
+          "description": "Do not skip foreign key checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Set the current schema for wildcard schema entities",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--drop-migrations-table"
+          ],
+          "description": "Drop also migrations table",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--drop-db"
+          ],
+          "description": "Drop the whole database",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:update",
+      "aliases": [],
+      "description": "Update database schema based on current metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--run"
+          ],
+          "description": "Runs queries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dump"
+          ],
+          "description": "Dumps all queries to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fk-checks"
+          ],
+          "description": "Do not skip foreign key checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Set the current schema for wildcard schema entities",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--safe"
+          ],
+          "description": "Allows to disable table and column dropping",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--drop-tables"
+          ],
+          "description": "Allows to disable table dropping",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:fresh",
+      "aliases": [],
+      "description": "Drop and recreate database schema based on current metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--run"
+          ],
+          "description": "Runs queries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Set the current schema for wildcard schema entities",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Allows to seed the database on create or drop and recreate",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:create",
+      "aliases": [],
+      "description": "Create new migration with current schema diff",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b",
+            "--blank"
+          ],
+          "description": "Create blank migration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--initial"
+          ],
+          "description": "Create initial migration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dump"
+          ],
+          "description": "Dumps all queries to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "Sets path to directory where to save entities",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:up",
+      "aliases": [],
+      "description": "Migrate up to the latest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t",
+            "--to"
+          ],
+          "description": "Migrate up to specific version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--from"
+          ],
+          "description": "Start migration from specific version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--only"
+          ],
+          "description": "Migrate only specified versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:down",
+      "aliases": [],
+      "description": "Migrate one step down",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t",
+            "--to"
+          ],
+          "description": "Migrate down to specific version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--from"
+          ],
+          "description": "Start migration from specific version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--only"
+          ],
+          "description": "Migrate only specified versions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:list",
+      "aliases": [],
+      "description": "List all executed migrations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "migration:pending",
+      "aliases": [],
+      "description": "List all pending migrations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "migration:fresh",
+      "aliases": [],
+      "description": "Clear the database and rerun all migrations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Allows to seed the database on create or drop and recreate",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Debug CLI configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

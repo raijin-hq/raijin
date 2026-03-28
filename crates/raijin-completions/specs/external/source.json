@@ -1,0 +1,16 @@
+{
+  "name": "source",
+  "aliases": [],
+  "description": "Source files in shell",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "File to source",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

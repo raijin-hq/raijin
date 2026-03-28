@@ -1,0 +1,83 @@
+{
+  "name": "degit",
+  "aliases": [],
+  "description": "Straightforward project scaffolding",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Overwrite existing files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--cache"
+      ],
+      "description": "Use a cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Be verbose?",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--mode"
+      ],
+      "description": "Clone mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "git",
+          "tar"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "user/repo",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "location",
+      "description": null,
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

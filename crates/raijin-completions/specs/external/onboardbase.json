@@ -1,0 +1,642 @@
+{
+  "name": "onboardbase",
+  "aliases": [],
+  "description": "Onboardbase manages app secrets and credentials securely with team work and contractors in mind",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Run a command with secrets injected into the environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": "project name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--command"
+          ],
+          "description": "Command to run",
+          "takes_arg": true,
+          "arg_name": "Command to Run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--prefix"
+          ],
+          "description": "Prefix",
+          "takes_arg": true,
+          "arg_name": "Project Prefix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--passphrase"
+          ],
+          "description": "Passphrase",
+          "takes_arg": true,
+          "arg_name": "Encryption Passphrase",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config:get-token",
+      "aliases": [],
+      "description": "Get all tokens",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-S",
+            "--scope"
+          ],
+          "description": "Scope",
+          "takes_arg": true,
+          "arg_name": "project scope",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config:set",
+      "aliases": [],
+      "description": "Update your onboardbase config",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--scope"
+          ],
+          "description": "Scope",
+          "takes_arg": true,
+          "arg_name": "project scope",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--token"
+          ],
+          "description": "Auth Token",
+          "takes_arg": true,
+          "arg_name": "Auth Token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--api-host"
+          ],
+          "description": "API Host",
+          "takes_arg": true,
+          "arg_name": "Api Host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--dashboard-host"
+          ],
+          "description": "Dashboard Host",
+          "takes_arg": true,
+          "arg_name": "Dashboard Host",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config:set-token",
+      "aliases": [],
+      "description": "Set up Configuration token manually",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-S",
+            "--scope"
+          ],
+          "description": "Scope",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "token",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Cleanup Onboardbase artifacts including backup and authentication",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "environment:create",
+      "aliases": [],
+      "description": "Create an environment under a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment Title",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Describe the command here",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--overwrite"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of the CLI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "project:create",
+      "aliases": [],
+      "description": "Create a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--title"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--description"
+          ],
+          "description": "Project description",
+          "takes_arg": true,
+          "arg_name": "Project Description",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "default environment",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "recommendation:create",
+      "aliases": [],
+      "description": "Create a recommendation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": "project name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--note"
+          ],
+          "description": "Note",
+          "takes_arg": true,
+          "arg_name": "project description",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "secrets",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Log secrets in JSON file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": "project name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "default environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "secrets:delete",
+      "aliases": [],
+      "description": "Update secrets on Onboardbase",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "Environment to update",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "secrets",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secrets:update",
+      "aliases": [],
+      "description": "Update secrets on Onboardbase",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "Environment to update",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "secrets",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secrets:upload",
+      "aliases": [],
+      "description": "Upload secrets",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Name of project",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run by default",
+          "takes_arg": true,
+          "arg_name": "Environment to update",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "secrets",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "aliases": [],
+      "description": "Setup the Onboardbase CLI for managing secrets",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "Share your local onboardbase.yaml secrets with a teammate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show CLI help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Project name",
+          "takes_arg": true,
+          "arg_name": "project name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for <%= config.bin %>",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "See all commands in CLI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": "Command to show help for",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

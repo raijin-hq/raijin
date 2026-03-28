@@ -1,0 +1,608 @@
+{
+  "name": "volta",
+  "aliases": [],
+  "description": "The JavaScript Launcher",
+  "subcommands": [
+    {
+      "name": "fetch",
+      "aliases": [],
+      "description": "Fetches a tool to the local machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool | tool@version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Installs a tool in your toolchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool@version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstalls a tool from your toolchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pin",
+      "aliases": [],
+      "description": "Pins your project's runtime or package manager",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool@version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Displays the current toolchain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--current"
+          ],
+          "description": "Show the currently-active tool(s)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--default"
+          ],
+          "description": "Show your default tool(s)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Specify output format",
+          "takes_arg": true,
+          "arg_name": "output format",
+          "arg_template": {
+            "custom": [
+              "human",
+              "plain"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "Generates Volta completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Write over an existing file, if any",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "File to write generated completions to",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell",
+          "description": "Shell to generate completions for",
+          "template": {
+            "custom": [
+              "zsh",
+              "bash",
+              "fish",
+              "powershell",
+              "elivsh"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Locates the actual binary that will be called by Volta",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "binary",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "aliases": [],
+      "description": "Enables Volta for the current user",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Prints help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a command with custom Node, npm, and/or Yarn versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle"
+          ],
+          "description": "Forces npm to be the version bundled with Node",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-yarn"
+          ],
+          "description": "Disables Yarn",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enables verbose diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Prevents unnecessary output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node"
+          ],
+          "description": "Set the custom Node version",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--npm"
+          ],
+          "description": "Set the custom npm version",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yarn"
+          ],
+          "description": "Set the custom Yarn version",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Set an environment variable (can be used multiple times)",
+          "takes_arg": true,
+          "arg_name": "NAME=value",
+          "arg_template": null,
+          "is_repeatable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enables verbose diagnostics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Prevents unnecessary output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Prints the current version of Volta",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

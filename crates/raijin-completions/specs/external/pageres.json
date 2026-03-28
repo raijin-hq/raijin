@@ -1,0 +1,212 @@
+{
+  "name": "pageres",
+  "aliases": [],
+  "description": "Capture website screenshots",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Verbose output to see errors if you need to troubleshoot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crop",
+        "-c"
+      ],
+      "description": "Crop to the set height",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--delay",
+        "-d"
+      ],
+      "description": "Delay screenshot capture",
+      "takes_arg": true,
+      "arg_name": "time",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filename"
+      ],
+      "description": "Custom filename",
+      "takes_arg": true,
+      "arg_name": "template",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--overwrite"
+      ],
+      "description": "Overwrite destination file if it exists. Defaults to appending (n) to the file name if --overwrite is not set",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--selector"
+      ],
+      "description": "Capture DOM element",
+      "takes_arg": true,
+      "arg_name": "element",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hide"
+      ],
+      "description": "Hide DOM element. Can be set multiple times",
+      "takes_arg": true,
+      "arg_name": "element",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-crop"
+      ],
+      "description": "Override a global crop option within a group",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--css"
+      ],
+      "description": "Apply custom CSS to the webpage. Specify some CSS or the path to a CSS file",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cookie"
+      ],
+      "description": "Browser cookie. Can be set multiple times",
+      "takes_arg": true,
+      "arg_name": "cookie",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--header"
+      ],
+      "description": "Custom HTTP request header. Can be set multiple times",
+      "takes_arg": true,
+      "arg_name": "header",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--username"
+      ],
+      "description": "Username for HTTP auth",
+      "takes_arg": true,
+      "arg_name": "username",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--password"
+      ],
+      "description": "Password for HTTP auth",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scale"
+      ],
+      "description": "Scale webpage n of times",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format"
+      ],
+      "description": "Image format. Either png (default) or jpg",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "png",
+          "jpg"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user-agent"
+      ],
+      "description": "Custom user agent",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--transparent"
+      ],
+      "description": "Set background color to transparent instead of white if no background is set",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--darkMode"
+      ],
+      "description": "Emulate preference of dark color scheme",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "url | filepath",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    },
+    {
+      "name": "resolution",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

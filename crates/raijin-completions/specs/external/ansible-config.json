@@ -1,0 +1,413 @@
+{
+  "name": "ansible-config",
+  "aliases": [],
+  "description": "View ansible configuration",
+  "subcommands": [
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List and output available configs",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to configuration file, defaults to first file found in precedence",
+          "takes_arg": true,
+          "arg_name": "CONFIG_FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Filter down to a specific plugin type",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": {
+            "custom": [
+              "all",
+              "base",
+              "become",
+              "cache",
+              "callback",
+              "cliconf",
+              "connection",
+              "httpapi",
+              "inventory",
+              "lookup",
+              "netconf",
+              "shell",
+              "vars"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "description": "Specific plugin to target, requires type of plugin to be set",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "dump",
+      "aliases": [],
+      "description": "Shows the current settings, merges ansible.cfg if specified",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--only-changed",
+            "--changed-only"
+          ],
+          "description": "Only show configurations that have changed from the default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to configuration file, defaults to first file found in precedence",
+          "takes_arg": true,
+          "arg_name": "CONFIG_FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Filter down to a specific plugin type",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": {
+            "custom": [
+              "all",
+              "base",
+              "become",
+              "cache",
+              "callback",
+              "cliconf",
+              "connection",
+              "httpapi",
+              "inventory",
+              "lookup",
+              "netconf",
+              "shell",
+              "vars"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "description": "Specific plugin to target, requires type of plugin to be set",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "view",
+      "aliases": [],
+      "description": "Displays the current config file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to configuration file, defaults to first file found in precedence",
+          "takes_arg": true,
+          "arg_name": "CONFIG_FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Filter down to a specific plugin type",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": {
+            "custom": [
+              "all",
+              "base",
+              "become",
+              "cache",
+              "callback",
+              "cliconf",
+              "connection",
+              "httpapi",
+              "inventory",
+              "lookup",
+              "netconf",
+              "shell",
+              "vars"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "description": "Specific plugin to target, requires type of plugin to be set",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes a new config file (to stdout)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--disabled"
+          ],
+          "description": "Prefixes all entries with a comment character to disable them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Output format for init",
+          "takes_arg": true,
+          "arg_name": "FORMAT",
+          "arg_template": {
+            "custom": [
+              "ini",
+              "env",
+              "vars"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to configuration file, defaults to first file found in precedence",
+          "takes_arg": true,
+          "arg_name": "CONFIG_FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "Filter down to a specific plugin type",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": {
+            "custom": [
+              "all",
+              "base",
+              "become",
+              "cache",
+              "callback",
+              "cliconf",
+              "connection",
+              "httpapi",
+              "inventory",
+              "lookup",
+              "netconf",
+              "shell",
+              "vars"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "description": "Specific plugin to target, requires type of plugin to be set",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Shows version number, config file location, module search path, module location, executable location and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,418 @@
+{
+  "name": "eslint",
+  "aliases": [],
+  "description": "Pluggable JavaScript linter",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--no-eslintrc"
+      ],
+      "description": "Disable use of configuration from .eslintrc.*",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Use this configuration, overriding .eslintrc.* config options if present",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env"
+      ],
+      "description": "Specify environments",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ext"
+      ],
+      "description": "Specify JavaScript file extensions",
+      "takes_arg": true,
+      "arg_name": "Extension",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--global"
+      ],
+      "description": "Define global variables",
+      "takes_arg": true,
+      "arg_name": "Variables",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parser"
+      ],
+      "description": "Specify the parser to be used",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parser-options"
+      ],
+      "description": "Specify parser options",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--resolve-plugins-relative-to"
+      ],
+      "description": "A folder where plugins should be resolved from",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rulesdir"
+      ],
+      "description": "Use additional rules from this directory",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--plugin"
+      ],
+      "description": "Specify plugins",
+      "takes_arg": true,
+      "arg_name": "Plugin",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rule"
+      ],
+      "description": "Specify rules",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix"
+      ],
+      "description": "Automatically fix problems",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix-dry-run"
+      ],
+      "description": "Automatically fix problems without saving the changes to the file system",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix-type"
+      ],
+      "description": "Specify the types of fixes to apply",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "problem",
+          "suggestion",
+          "layout"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-path"
+      ],
+      "description": "Specify path of ignore file",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Disable use of ignore files and patterns",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-pattern"
+      ],
+      "description": "Pattern of files to ignore (in addition to those in .eslintignore)",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdin"
+      ],
+      "description": "Lint code provided on <STDIN>",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdin-filename"
+      ],
+      "description": "Specify filename to process STDIN as",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Report errors only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-warnings"
+      ],
+      "description": "Number of warnings to trigger nonzero exit code",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output-file"
+      ],
+      "description": "Specify file to write report to",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": "Use a specific output format",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "checkstyle",
+          "codeframe",
+          "compact",
+          "html",
+          "jslint-xml",
+          "json",
+          "junit",
+          "stylish",
+          "table",
+          "tap",
+          "unix",
+          "visualstudio"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Force enabling of color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Force disabling of color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-inline-config"
+      ],
+      "description": "Prevent comments from changing config or rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--report-unused-disable-directives"
+      ],
+      "description": "Adds reported errors for unused eslint-disable-directives",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Only check changed files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-location"
+      ],
+      "description": "Path to the cache file or directory",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-strategy"
+      ],
+      "description": "Strategy to use for detecting changed files",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "metadata",
+          "content"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--init"
+      ],
+      "description": "Run config initialization wizard",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env-info"
+      ],
+      "description": "Output execution environment information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-error-on-unmatched-pattern"
+      ],
+      "description": "Prevent errors when pattern is unmatched",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Output debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-config"
+      ],
+      "description": "Print the configuration for the give file",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file|dir|glob",
+      "description": "File(s) to lint",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

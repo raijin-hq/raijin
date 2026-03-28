@@ -1,0 +1,849 @@
+{
+  "name": "mypy",
+  "aliases": [],
+  "description": "Mypy is a static type checker for Python",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--module"
+      ],
+      "description": "Asks mypy to type check the provided module",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--package"
+      ],
+      "description": "Asks mypy to type check the provided package",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--command"
+      ],
+      "description": "Asks mypy to type check the provided string as a program",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude"
+      ],
+      "description": "A regular expression that matches file names, directory names and paths which mypy should ignore while recursively discovering files to check",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "More verbose messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-file"
+      ],
+      "description": "This flag makes mypy read configuration settings from the given file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-unused-configs"
+      ],
+      "description": "This flag makes mypy warn about unused [mypy-<pattern>] config file sections",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--explicit-package-bases"
+      ],
+      "description": "This flag tells mypy that top-level packages will be based in either the current directory, or a member of the MYPYPATH environment variable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-missing-imports"
+      ],
+      "description": "This flag makes mypy ignore all missing imports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "silent"
+      ],
+      "description": "This flag adjusts how mypy follows imported modules that were not explicitly passed in via the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--python-executable"
+      ],
+      "description": "This flag will have mypy collect type information from PEP561 compliant packages installed for the Python executable EXECUTABLE",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-site-packages"
+      ],
+      "description": "This flag will disable searching for PEP561 compliant packages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-silence-site-packages"
+      ],
+      "description": "By default, mypy will suppress any error messages generated within PEP561 compliant packages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fast-module-lookup"
+      ],
+      "description": "The default logic used to scan through search paths to resolve imports has a quadratic worse-case behavior in some cases, which is for instance triggered by a large number of folders sharing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-namespace-packages"
+      ],
+      "description": "This flag disables import discovery of namespace packages (see PEP420)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--python-version"
+      ],
+      "description": "This flag will make mypy type check your code as if it were run under Python version X",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--platform"
+      ],
+      "description": "This flag will make mypy type check your code as if it were run under the given operating system",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--always-true"
+      ],
+      "description": "This flag will treat all variables named NAME as compile-time constants that are always true",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--always-false"
+      ],
+      "description": "This flag will treat all variables named NAME as compile-time constants that are always false",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-any-unimported"
+      ],
+      "description": "This flag disallows usage of types that come from unfollowed imports (such types become aliases for Any)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-any-expr"
+      ],
+      "description": "This flag disallows all expressions in the module that have type Any",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-any-decorated"
+      ],
+      "description": "This flag disallows functions that have Any in their signature after decorator transformation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-any-explicit"
+      ],
+      "description": "This flag disallows explicit Any in type positions such as type annotations and generic type parameters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-any-generics"
+      ],
+      "description": "This flag disallows usage of generic types that do not specify explicit type parameters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-subclassing-any"
+      ],
+      "description": "This flag reports an error whenever a class subclasses a value of type Any",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-untyped-calls"
+      ],
+      "description": "This flag reports an error whenever a function with type annotations calls a function defined without annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--untyped-calls-exclude"
+      ],
+      "description": "This flag allows to selectively disable option--disallow-untyped-calls for functions and methods defined in specific packages, modules, or classes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-untyped-defs"
+      ],
+      "description": "This flag reports an error whenever it encounters a function definition without type annotations or with incomplete type annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-incomplete-defs"
+      ],
+      "description": "This flag reports an error whenever it encounters a partly annotated function definition, while still allowing entirely unannotated definitions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check-untyped-defs"
+      ],
+      "description": "This flag is less severe than the previous two options -- it type checks the body of every function, regardless of whether it has type annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-untyped-decorators"
+      ],
+      "description": "This flag reports an error whenever a function with type annotations is decorated with a decorator without annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--implicit-optional"
+      ],
+      "description": "This flag causes mypy to treat arguments with a None default value as having an implicit pydata~typing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-strict-optional"
+      ],
+      "description": "This flag disables strict checking of pydata~typing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-redundant-casts"
+      ],
+      "description": "This flag will make mypy report an error whenever your code uses an unnecessary cast that can safely be removed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-unused-ignores"
+      ],
+      "description": "This flag will make mypy report an error whenever your code uses a # type ignore comment on a line that is not actually generating an error message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-warn-no-return"
+      ],
+      "description": "By default, mypy will generate errors when a function is missing return statements in some execution paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-return-any"
+      ],
+      "description": "This flag causes mypy to generate a warning when returning a value with type Any from a function declared with a non-Any return type",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-unreachable"
+      ],
+      "description": "This flag will make mypy report an error whenever it encounters code determined to be unreachable or redundant after performing type analysis",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-untyped-globals"
+      ],
+      "description": "This flag causes mypy to suppress errors caused by not being able to fully infer the types of global and class variables",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-redefinition"
+      ],
+      "description": "By default, mypy won't allow a variable to be redefined with an unrelated type",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--local-partial-types"
+      ],
+      "description": "In mypy, the most common cases for partial types are variables initialized using None, but without explicit Optional annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-implicit-reexport"
+      ],
+      "description": "By default, imported values to a module are treated as exported and mypy allows other modules to import them",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-equality"
+      ],
+      "description": "By default, mypy allows always-false comparisons like 42 == 'no'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extra-checks"
+      ],
+      "description": "This flag enables additional checks that are technically correct but may be impractical in real code",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict"
+      ],
+      "description": "This flag mode enables all optional error checking flags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-error-code"
+      ],
+      "description": "This flag allows disabling one or multiple error codes globally",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-error-code"
+      ],
+      "description": "This flag allows enabling one or multiple error codes globally",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-error-context"
+      ],
+      "description": "This flag will precede all errors with 'note' messages explaining the context of the error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-column-numbers"
+      ],
+      "description": "This flag will add column offsets to error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-error-end"
+      ],
+      "description": "This flag will make mypy show not just that start position where an error was detected, but also the end position of the relevant expression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hide-error-codes"
+      ],
+      "description": "This flag will hide the error code [<code>] from error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pretty"
+      ],
+      "description": "Use visually nicer output in error messages use soft word wrap, show source code snippets, and show error location markers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color-output"
+      ],
+      "description": "This flag will disable color output in error messages, enabled by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-error-summary"
+      ],
+      "description": "This flag will disable error summary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-absolute-path"
+      ],
+      "description": "Show absolute paths to files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--soft-error-limit"
+      ],
+      "description": "This flag will adjust the limit after which mypy will (sometimes) disable reporting most additional errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-incremental"
+      ],
+      "description": "This flag disables incremental mode mypy will no longer reference the cache when re-run",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-dir"
+      ],
+      "description": "By default, mypy stores all cache data inside of a folder named",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sqlite-cache"
+      ],
+      "description": "Use an SQLite_ database to store the cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-fine-grained"
+      ],
+      "description": "Include fine-grained dependency information in the cache for the mypy daemon",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-version-check"
+      ],
+      "description": "By default, mypy will ignore cache data generated by a different version of mypy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-cache-mtime-checks"
+      ],
+      "description": "Skip cache internal consistency checks based on mtime",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pdb"
+      ],
+      "description": "This flag will invoke the Python debugger when mypy encounters a fatal error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tb"
+      ],
+      "description": "If set, this flag will display a full traceback when mypy encounters a fatal error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--raise-exceptions"
+      ],
+      "description": "Raise exception on fatal error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--custom-typing-module"
+      ],
+      "description": "This flag lets you use a custom module as a substitute for the pymodtyping module",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--custom-typeshed-dir"
+      ],
+      "description": "This flag specifies the directory where mypy looks for standard library typeshed stubs, instead of the typeshed that ships with mypy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-incomplete-stub"
+      ],
+      "description": "This flag modifies both the option--disallow-untyped-defs and option--disallow-incomplete-defs flags so they also report errors if stubs in typeshed are missing type annotations or has incomplete annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shadow-file"
+      ],
+      "description": "When mypy is asked to type check SOURCE_FILE, this flag makes mypy read from and type check the contents of SHADOW_FILE instead",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--any-exprs-report"
+      ],
+      "description": "Causes mypy to generate a text file report documenting how many expressions of type Any are present within your codebase",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cobertura-xml-report"
+      ],
+      "description": "Causes mypy to generate a Cobertura XML type checking coverage report",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--html-report"
+      ],
+      "description": "Causes mypy to generate an HTML type checking coverage report",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--linecount-report"
+      ],
+      "description": "Causes mypy to generate a text file report documenting the functions and lines that are typed and untyped within your codebase",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--linecoverage-report"
+      ],
+      "description": "Causes mypy to generate a JSON file that maps each source file's absolute filename to a list of line numbers that belong to typed functions in that file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--lineprecision-report"
+      ],
+      "description": "Causes mypy to generate a flat text file report with per-module statistics of how many lines are typechecked etc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--txt-report"
+      ],
+      "description": "Causes mypy to generate a text file type checking coverage report",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--xml-report"
+      ],
+      "description": "Causes mypy to generate an XML type checking coverage report",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--install-types"
+      ],
+      "description": "This flag causes mypy to install known missing stub packages for third-party libraries using pip",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--non-interactive"
+      ],
+      "description": "When used together with option--install-types <mypy --install-types>, this causes mypy to install all suggested stub packages using pip without asking for confirmation, and then continues to perform type checking using the installed stubs, if some files or modules are provided to type check",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--junit-xml"
+      ],
+      "description": "Causes mypy to generate a JUnit XML test result document with type checking results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--find-occurrences"
+      ],
+      "description": "This flag will make mypy print out all usages of a class member based on static type information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scripts-are-modules"
+      ],
+      "description": "This flag will give command line arguments that appear to be scripts",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,2197 @@
+{
+  "name": "starkli",
+  "aliases": [],
+  "description": "Starkli, a ⚡ blazing ⚡ fast ⚡ CLI tool for Starknet powered by 🦀 starknet-rs 🦀",
+  "subcommands": [
+    {
+      "name": "account",
+      "aliases": [],
+      "description": "Account management commands",
+      "subcommands": [
+        {
+          "name": "fetch",
+          "aliases": [],
+          "description": "Fetch account config from an already deployed account contract",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--rpc"
+              ],
+              "description": "Starknet JSON-RPC endpoint",
+              "takes_arg": true,
+              "arg_name": "RPC",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--network"
+              ],
+              "description": "Starknet network",
+              "takes_arg": true,
+              "arg_name": "NETWORK",
+              "arg_template": {
+                "custom": [
+                  "mainnet",
+                  "goerli-1",
+                  "goerli-2",
+                  "integration"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Overwrite the file if it already exists",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Path to save the account config file",
+              "takes_arg": true,
+              "arg_name": "OUTPUT",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log-traffic"
+              ],
+              "description": "Log raw request/response traffic of providers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ADDRESS",
+              "description": "Contract address",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy account contract with a DeployAccount transaction",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--rpc"
+              ],
+              "description": "Starknet JSON-RPC endpoint",
+              "takes_arg": true,
+              "arg_name": "RPC",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--network"
+              ],
+              "description": "Starknet network",
+              "takes_arg": true,
+              "arg_name": "NETWORK",
+              "arg_template": {
+                "custom": [
+                  "mainnet",
+                  "goerli-1",
+                  "goerli-2",
+                  "integration"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--keystore"
+              ],
+              "description": "Path to keystore JSON file",
+              "takes_arg": true,
+              "arg_name": "KEYSTORE",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--keystore-password"
+              ],
+              "description": "Supply keystore password from command line option instead of prompt",
+              "takes_arg": true,
+              "arg_name": "keystore password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--private-key"
+              ],
+              "description": "Private key in hex in plain text",
+              "takes_arg": true,
+              "arg_name": "PRIVATE_KEY",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--max-fee"
+              ],
+              "description": "Maximum transaction fee in Ether (18 decimals)",
+              "takes_arg": true,
+              "arg_name": "MAX_FEE",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--max-fee-raw"
+              ],
+              "description": "Maximum transaction fee in Wei",
+              "takes_arg": true,
+              "arg_name": "MAX_FEE_RAW",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--estimate-only"
+              ],
+              "description": "Only estimate transaction fee without sending transaction",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log-traffic"
+              ],
+              "description": "Log raw request/response traffic of providers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "FILE",
+              "description": "Path to the account config file",
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "oz",
+          "aliases": [],
+          "description": "Create and manage OpenZeppelin account contracts",
+          "subcommands": [
+            {
+              "name": "init",
+              "aliases": [],
+              "description": "Create a new account configuration without actually deploying",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "block",
+      "aliases": [],
+      "description": "Get Starknet block",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full"
+          ],
+          "description": "Fetch full transactions instead of hashes only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "BLOCK_ID",
+          "description": "Block number, hash, or tag (latest/pending)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "block-hash",
+      "aliases": [],
+      "description": "Get latest block hash",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "block-number",
+      "aliases": [],
+      "description": "Get latest block number",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "block-time",
+      "aliases": [],
+      "description": "Get Starknet block timestamp only",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unix"
+          ],
+          "description": "Show block time in Unix timestamp format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rfc2822"
+          ],
+          "description": "Show block time in RFC 2822 format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "BLOCK_ID",
+          "description": "Block number, hash, or tag (latest/pending)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "call",
+      "aliases": [],
+      "description": "Call contract functions without sending transactions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "CONTRACT_ADDRESS",
+          "description": "Contract address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "SELECTOR",
+          "description": "Name of the function being called",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "CALLDATA",
+          "description": "Raw function call arguments",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "chain-id",
+      "aliases": [],
+      "description": "Get Starknet network ID",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-decode"
+          ],
+          "description": "Do not show the decoded text",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dec"
+          ],
+          "description": "Display the decimal instead of hexadecimal representation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "BLOCK_ID",
+          "description": "Block number, hash, or tag (latest/pending)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "class-at",
+      "aliases": [],
+      "description": "Get contract class deployed at a certain address",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ADDRESS",
+          "description": "Contract address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "class-by-hash",
+      "aliases": [],
+      "description": "Get contract class by hash",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "HASH",
+          "description": "Class hash",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "class-hash",
+      "aliases": [],
+      "description": "Calculate class hash from any contract artifacts (Sierra, casm, legacy)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": "Path to contract artifact file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "class-hash-at",
+      "aliases": [],
+      "description": "Get contract class hash deployed at a certain address",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ADDRESS",
+          "description": "Contract address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "Generate shell completions script",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "declare",
+      "aliases": [],
+      "description": "Declare a contract class",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore"
+          ],
+          "description": "Path to keystore JSON file",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore-password"
+          ],
+          "description": "Supply keystore password from command line option instead of prompt",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE_PASSWORD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--private-key"
+          ],
+          "description": "Private key in hex in plain text",
+          "takes_arg": true,
+          "arg_name": "PRIVATE_KEY",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compiler-version"
+          ],
+          "description": "Statically-linked Sierra compiler version",
+          "takes_arg": true,
+          "arg_name": "COMPILER_VERSION",
+          "arg_template": {
+            "custom": [
+              "2.0.1"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--casm-hash"
+          ],
+          "description": "Override Sierra compilation and use CASM hash directly",
+          "takes_arg": true,
+          "arg_name": "CASM_HASH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--account"
+          ],
+          "description": "Path to account config JSON file",
+          "takes_arg": true,
+          "arg_name": "ACCOUNT",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee"
+          ],
+          "description": "Maximum transaction fee in Ether (18 decimals)",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee-raw"
+          ],
+          "description": "Maximum transaction fee in Wei",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE_RAW",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--estimate-only"
+          ],
+          "description": "Only estimate transaction fee without sending transaction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Wait for the transaction to confirm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": "Path to contract artifact file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy contract via the Universal Deployer Contract",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore"
+          ],
+          "description": "Path to keystore JSON file",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore-password"
+          ],
+          "description": "Supply keystore password from command line option instead of prompt",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE_PASSWORD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--private-key"
+          ],
+          "description": "Private key in hex in plain text",
+          "takes_arg": true,
+          "arg_name": "PRIVATE_KEY",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--not-unique"
+          ],
+          "description": "Do not derive contract address from deployer address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--account"
+          ],
+          "description": "Path to account config JSON file",
+          "takes_arg": true,
+          "arg_name": "ACCOUNT",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee"
+          ],
+          "description": "Maximum transaction fee in Ether (18 decimals)",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee-raw"
+          ],
+          "description": "Maximum transaction fee in Wei",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE_RAW",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--estimate-only"
+          ],
+          "description": "Only estimate transaction fee without sending transaction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--salt"
+          ],
+          "description": "Use the given salt to compute contract deploy address",
+          "takes_arg": true,
+          "arg_name": "SALT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Wait for the transaction to confirm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "CLASS_HASH",
+          "description": "Class hash",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "CTOR_ARGS",
+          "description": "Raw constructor arguments",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "invoke",
+      "aliases": [],
+      "description": "Send an invoke transaction from an account contract",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore"
+          ],
+          "description": "Path to keystore JSON file",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keystore-password"
+          ],
+          "description": "Supply keystore password from command line option instead of prompt",
+          "takes_arg": true,
+          "arg_name": "KEYSTORE_PASSWORD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--private-key"
+          ],
+          "description": "Private key in hex in plain text",
+          "takes_arg": true,
+          "arg_name": "PRIVATE_KEY",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--account"
+          ],
+          "description": "Path to account config JSON file",
+          "takes_arg": true,
+          "arg_name": "ACCOUNT",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee"
+          ],
+          "description": "Maximum transaction fee in Ether (18 decimals)",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-fee-raw"
+          ],
+          "description": "Maximum transaction fee in Wei",
+          "takes_arg": true,
+          "arg_name": "MAX_FEE_RAW",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--estimate-only"
+          ],
+          "description": "Only estimate transaction fee without sending transaction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Wait for the transaction to confirm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "CALLS",
+          "description": "One or more contract calls. See documentation for more details",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "mont",
+      "aliases": [],
+      "description": "Print the montgomery representation of a field element",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--hex"
+          ],
+          "description": "Emit array elements in hexadecimal format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FELT",
+          "description": "Encoded string value in felt, in decimal or hexadecimal representation",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "nonce",
+      "aliases": [],
+      "description": "Get nonce for a certain contract",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ADDRESS",
+          "description": "Contract address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "parse-cairo-string",
+      "aliases": [],
+      "description": "Decode string from felt with the Cairo short string representation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FELT",
+          "description": "Encoded string value in felt, in decimal or hexadecimal representation",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "selector",
+      "aliases": [],
+      "description": "Calculate selector from name",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "NAME",
+          "description": "Selector name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "signer",
+      "aliases": [],
+      "description": "Signer management commands",
+      "subcommands": [
+        {
+          "name": "keystore",
+          "aliases": [],
+          "description": "Keystore management commands",
+          "subcommands": [
+            {
+              "name": "new",
+              "aliases": [],
+              "description": "Randomly generate a new keystore",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--password"
+                  ],
+                  "description": "Supply password from command line option instead of prompt",
+                  "takes_arg": true,
+                  "arg_name": "PASSWORD",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Overwrite the file if it already exists",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print help",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "FILE",
+                  "description": "Path to save the JSON keystore",
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "from-key",
+              "aliases": [],
+              "description": "Create a keystore file from an existing private key",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Overwrite the file if it already exists",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--private-key-stdin"
+                  ],
+                  "description": "Take the private key from stdin instead of prompt",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--password"
+                  ],
+                  "description": "Supply password from command line option instead of prompt",
+                  "takes_arg": true,
+                  "arg_name": "PASSWORD",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print help",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "FILE",
+                  "description": "Path to save the JSON keystore",
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "inspect",
+              "aliases": [],
+              "description": "Check the public key of an existing keystore file",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--password"
+                  ],
+                  "description": "Supply password from command line option instead of prompt",
+                  "takes_arg": true,
+                  "arg_name": "PASSWORD",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--raw"
+                  ],
+                  "description": "Print the public key only",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print help",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "FILE",
+                  "description": "Path to the JSON keystore",
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "inspect-private",
+              "aliases": [],
+              "description": "Check the private key of an existing keystore file",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--password"
+                  ],
+                  "description": "Supply password from command line option instead of prompt",
+                  "takes_arg": true,
+                  "arg_name": "PASSWORD",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--raw"
+                  ],
+                  "description": "Print the private key only",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print help",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "FILE",
+                  "description": "Path to the JSON keystore",
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "gen-keypair",
+          "aliases": [],
+          "description": "Randomly generate a new key pair",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "state-update",
+      "aliases": [],
+      "description": "Get state update from a certain block",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "BLOCK_ID",
+          "description": "Block number, hash, or tag (latest/pending)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "storage",
+      "aliases": [],
+      "description": "Get storage value for a slot at a contract",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ADDRESS",
+          "description": "Contract address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "KEY",
+          "description": "Storage key",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "syncing",
+      "aliases": [],
+      "description": "Get node syncing status",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "to-cairo-string",
+      "aliases": [],
+      "description": "Encode string into felt with the Cairo short string representation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dec"
+          ],
+          "description": "Display the encoded value in decimal representation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "TEXT",
+          "description": "Text to be encoded in felt",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "transaction",
+      "aliases": [],
+      "description": "Get Starknet transaction by hash",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "HASH",
+          "description": "Transaction hash",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "transaction-receipt",
+      "aliases": [],
+      "description": "Get transaction receipt by hash",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rpc"
+          ],
+          "description": "Starknet JSON-RPC endpoint",
+          "takes_arg": true,
+          "arg_name": "RPC",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Starknet network",
+          "takes_arg": true,
+          "arg_name": "NETWORK",
+          "arg_template": {
+            "custom": [
+              "mainnet",
+              "goerli-1",
+              "goerli-2",
+              "integration"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-traffic"
+          ],
+          "description": "Log raw request/response traffic of providers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "HASH",
+          "description": "Transaction hash",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

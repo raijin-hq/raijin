@@ -1,0 +1,307 @@
+{
+  "name": "okta",
+  "aliases": [],
+  "description": "The Okta CLI is the easiest way to get started with Okta!",
+  "subcommands": [
+    {
+      "name": "register",
+      "aliases": [],
+      "description": "Sign up for a new Okta account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--company"
+          ],
+          "description": "Company/organization used when registering a new Okta account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--email"
+          ],
+          "description": "Email used when registering a new Okta account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--first-name"
+          ],
+          "description": "First name used when registering a new Okta account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--last-name"
+          ],
+          "description": "Last name used when registering a new Okta account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Authorizes the Okta CLI tool",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "apps",
+      "aliases": [],
+      "description": "Manage Okta apps",
+      "subcommands": [
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Show an Okta app's configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app"
+              ],
+              "description": "The App ID",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new Okta app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app-name"
+              ],
+              "description": "Application name to be created, defaults to current directory name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--authorization-server-id"
+              ],
+              "description": "Okta Authorization Server Id",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config-file"
+              ],
+              "description": "Application config file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--redirect-uri"
+              ],
+              "description": "OIDC Redirect URI",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Deletes an Okta app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Deactivate and delete applications without confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "appIds",
+              "description": "List of application IDs to be deleted",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Creates an Okta Sample Application",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the sample app to create",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Displays help information about the specified command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "register"
+          ],
+          "description": "Sign up for a new Okta account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "login"
+          ],
+          "description": "Authorizes the Okta CLI tool",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "apps"
+          ],
+          "description": "Manage Okta apps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "start"
+          ],
+          "description": "Creates an Okta Sample Application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "help"
+          ],
+          "description": "Displays help information about the specified command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "generate-completion"
+          ],
+          "description": "Generate bash/zsh completion script for Okta",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "generate-completion",
+      "aliases": [],
+      "description": "Generate bash/zsh completion script for Okta",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for Okta CLI",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Verbose logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--batch"
+      ],
+      "description": "Batch mode, will not prompt for user input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

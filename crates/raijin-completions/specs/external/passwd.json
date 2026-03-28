@@ -1,0 +1,46 @@
+{
+  "name": "passwd",
+  "aliases": [],
+  "description": "Modify a user's password",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Specify where the password update should be applied",
+      "takes_arg": true,
+      "arg_name": "infosystem",
+      "arg_template": {
+        "custom": [
+          "PAM",
+          "opendirectory",
+          "file",
+          "nis"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Causes the password to be updated in the given location of the chosen directory system",
+      "takes_arg": true,
+      "arg_name": "location",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Specify the user name to use when authenticating to the directory node",
+      "takes_arg": true,
+      "arg_name": "authname",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

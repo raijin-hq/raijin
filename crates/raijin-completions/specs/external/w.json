@@ -1,0 +1,37 @@
+{
+  "name": "w",
+  "aliases": [],
+  "description": "Display who is logged in and what they are doing",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Suppress the heading",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Output is sorted by idle time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "user",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

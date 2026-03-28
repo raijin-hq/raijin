@@ -1,0 +1,194 @@
+{
+  "name": "serve",
+  "aliases": [],
+  "description": "Static file serving and directory listing",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Shows help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Displays the current version of serve",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--listen"
+      ],
+      "description": "Specify a URI endpoint on which to listen - more than one may be specified to listen in multiple places",
+      "takes_arg": true,
+      "arg_name": "listen_uri",
+      "arg_template": {
+        "custom": [
+          "port",
+          "host/port",
+          "unix domain",
+          "windows pipe"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Specify custom port",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Show debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--single"
+      ],
+      "description": "Rewrite all not-found requests to `index.html`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Specify custom path to `serve.json`",
+      "takes_arg": true,
+      "arg_name": "path to config file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--cors"
+      ],
+      "description": "Enable CORS, sets `Access-Control-Allow-Origin` to `*`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-clipboard"
+      ],
+      "description": "Do not copy the local address to the clipboard",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--no-compression"
+      ],
+      "description": "Do not compress files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-etag"
+      ],
+      "description": "Send `Last-Modified` header instead of `ETag`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--symlinks"
+      ],
+      "description": "Resolve symlinks instead of showing 404 errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-cert"
+      ],
+      "description": "Optional path to an SSL/TLS certificate to serve with HTTPS",
+      "takes_arg": true,
+      "arg_name": "path to SSL/TLS certificate",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-key"
+      ],
+      "description": "Optional path to the SSL/TLS certificate's private key",
+      "takes_arg": true,
+      "arg_name": "path to private key",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-pass"
+      ],
+      "description": "Optional path to the SSL/TLS certificate's passphrase",
+      "takes_arg": true,
+      "arg_name": "path to passphrase",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-port-switching"
+      ],
+      "description": "Do not open a port other than the one specified when it's taken",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "location",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

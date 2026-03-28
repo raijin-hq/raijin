@@ -1,0 +1,47 @@
+{
+  "name": "banner",
+  "aliases": [],
+  "description": "Prints a large, high quality banner on the standard output",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Enable trace",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Enable debug",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w"
+      ],
+      "description": "Change the output from a width of 132 to width, suitable for a narrow terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "text",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,836 @@
+{
+  "name": "tmutil",
+  "aliases": [],
+  "description": "Time Machine utility",
+  "subcommands": [
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the current version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "enable",
+      "aliases": [],
+      "description": "Turn on automatic backups (required root + full disk access)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "disable",
+      "aliases": [],
+      "description": "Turn off automatic backups (required root + full disk access)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "startbackup",
+      "aliases": [],
+      "description": "Begin a backup if one is not already running",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--auto"
+          ],
+          "description": "Run the backup in a mode similar to system-scheduled backups",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--block"
+          ],
+          "description": "Wait (block) until the backup is finished before exiting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--rotation"
+          ],
+          "description": "Allow automatic destination rotation during backup",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--destination"
+          ],
+          "description": "Perform the backup to the destination corresponding to the specified ID",
+          "takes_arg": true,
+          "arg_name": "destination id",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stopbackup",
+      "aliases": [],
+      "description": "Cancel a backup currently in progress",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Deletes backups with the specified timestamp from the backup volume mounted at the given mountpoint",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Delete from the given mount point",
+          "takes_arg": true,
+          "arg_name": "backup mount point",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Delete backups with this timestamp",
+          "takes_arg": true,
+          "arg_name": "timestamp",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "A specific path to delete (HFS backup disk)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deleteinprogress",
+      "aliases": [],
+      "description": "Delete all in-progress backups for a machine directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "machine directory",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "restore",
+      "aliases": [],
+      "description": "Restore the item `source`, which is inside a backup, to the location `destination`. Same semantics as `cp`",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Be verbose, showing files as they are copied",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "destination",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compare",
+      "aliases": [],
+      "description": "Perform a backup diff",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-@"
+          ],
+          "description": "Compare extended attributes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Compare all supported metadata",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c"
+          ],
+          "description": "Compare creation times",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Compare file data forks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Compare ACLs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Compare file flags",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g"
+          ],
+          "description": "Compare GIDs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Unknown",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "Unknown",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Compare file modes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n"
+          ],
+          "description": "No metadata comparison",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Compare sizes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Compare modification times",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u"
+          ],
+          "description": "Compare UIDs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Don't take exclusions into account when comparing items inside volumes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U"
+          ],
+          "description": "Ignore logical volume identity (volume UUIDs) when directly comparing a local volume or volume store to a volume store",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-X"
+          ],
+          "description": "Print output in XML property list format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Limit traversal depth to depth levels from the beginning of iteration",
+          "takes_arg": true,
+          "arg_name": "depth",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-I"
+          ],
+          "description": "Ignore paths with a path component equal to name during iteration",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "backup or path",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path (if not backup)",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setdestination",
+      "aliases": [],
+      "description": "Configure a local HFS+ or APFS volume, AFP share, or SMB share as a backup destination (requires root + Full Disk Access)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Add the arg to the list of destinations, instead of replacing the list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Enter a password in a non-echoing interactive prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "destination",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "removedestination",
+      "aliases": [],
+      "description": "Remove the destination with the specified unique identifier from the Time Machine configuration (requires root + Full Disk Access)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "destination id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "destinationinfo",
+      "aliases": [],
+      "description": "Print information about destinations currently configured for use with Time Machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-X"
+          ],
+          "description": "Print output in XML plist format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "addexclusion",
+      "aliases": [],
+      "description": "Configure an exclusion that tells Time Machine not to backup a file, directory, or volume during future backups",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Configure fixed-path exclusions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Configure volume exclusions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "item",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "removeexclusion",
+      "aliases": [],
+      "description": "Configure  Time Machine to backup a file, directory, or volume during future backups",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Configure fixed-path exclusions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Configure volume exclusions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "item",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "isexcluded",
+      "aliases": [],
+      "description": "Determine if a file, directory, or volume are excluded from Time Machine backups",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "item",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "inheritbackup",
+      "aliases": [],
+      "description": "Claim a machine directory or sparsebundle for use by the current machine",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "machine directory or sparsebundle",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "associatedisk",
+      "aliases": [],
+      "description": "Bind a volume store directory to the specified local disk, thereby reconfiguring the backup history (requires root + Full Disk Access)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Find all volume stores in the same machine directory that match the identity of the volume backup directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "mount point",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "volume backup directory",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "latestbackup",
+      "aliases": [],
+      "description": "List this computer's latest completed backup",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Specify a destination volume to list backups from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Attempt to mount the backups and list their mounted paths",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Only show the backup timestampt rather than the full name or path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "listbackups",
+      "aliases": [],
+      "description": "List all of this computer's completed backups",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Specify a destination volume to list backups from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m"
+          ],
+          "description": "Attempt to mount the backups and list their mounted paths",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t"
+          ],
+          "description": "Only show the backup timestampt rather than the full name or path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "machinedirectory",
+      "aliases": [],
+      "description": "Print the path to the current machine directory for this computer",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "calculatedrift",
+      "aliases": [],
+      "description": "Analyze the backups in an HFS machine directory and determine the amount of change between each",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "machine directory",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uniquesize",
+      "aliases": [],
+      "description": "Analyze the specified path in an HFS+ backup or path to an APFS backup and determine its unique size",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "verifychecksums",
+      "aliases": [],
+      "description": "Compute a checksum of data contained within a backup and verify the results against checksum information computed at the time of backup",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "localsnapshot",
+      "aliases": [],
+      "description": "Create new local Time Machine snapshots of all APFS volumes included in the Time Machine backup",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "listlocalsnapshots",
+      "aliases": [],
+      "description": "List local Time Machine snapshots of the specified volume",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "mount point",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "listlocalsnapshotdates",
+      "aliases": [],
+      "description": "List the creation dates of all local Time Machine snapshots",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "mount point",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deletelocalsnapshots",
+      "aliases": [],
+      "description": "Delete all local Time Machine snapshots on all mounted disks for the specified date or on the given disk",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "mount point or snapshot date",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "thinlocalsnapshots",
+      "aliases": [],
+      "description": "Think local Time Machine snapshots for the specified volume",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "mount point",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "purge amount (bytes)",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "urgency",
+          "description": null,
+          "template": {
+            "custom": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

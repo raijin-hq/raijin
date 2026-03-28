@@ -1,0 +1,711 @@
+{
+  "name": "rollup",
+  "aliases": [],
+  "description": "Next-generation ES module bundler",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Use this config file (if argument is used but value is unspecified, defaults to rollup.config.js)",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--dir"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "dirname",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--external"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "ids",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "amd",
+          "cjs",
+          "es",
+          "iife",
+          "umd",
+          "system"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--globals"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "pairs",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--input"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--sourcemap"
+      ],
+      "description": "Generate sourcemap (`-m inline` for inline map)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--name"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--file"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--plugin"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "plugin",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--watch"
+      ],
+      "description": "Watch files in bundle and rebuild on changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--amd.id"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--amd.autoId"
+      ],
+      "description": "Generate the AMD ID based off the chunk name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--amd.basePath"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "prefix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--amd.define"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--assetFileNames"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--banner"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chunkFileNames"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compact"
+      ],
+      "description": "Minify wrapper code",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--context"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "variable",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--entryFileNames"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--environment"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "values",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-esModule"
+      ],
+      "description": "Do not add __esmodule property",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exports"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extend"
+      ],
+      "description": "Extend global variable defined by --name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-externalLiveBindings"
+      ],
+      "description": "Do not generate code to support live bindings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--failAfterWarnings"
+      ],
+      "description": "Exit with an error if the build produced warnings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--footer"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-freeze"
+      ],
+      "description": "Do not freeze namespace objects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-hoistTransistiveImports"
+      ],
+      "description": "Do not hoist transistive imports into entry chunks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-indent"
+      ],
+      "description": "Don't indent result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-interop"
+      ],
+      "description": "Do not include interop block",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inlineDynamicImports"
+      ],
+      "description": "Create a single bundle when using dynamic imports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--intro"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--minifyInternalImports"
+      ],
+      "description": "Force or disable minification of internal imports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--namespaceToStringTag"
+      ],
+      "description": "Create proper '.toString' methods for namespaces",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noConflict"
+      ],
+      "description": "Generate a noConflict method for UMD globals",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--outro"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preferConst"
+      ],
+      "description": "Use 'const' instead of 'var' for exports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-preserveEntrySignatures"
+      ],
+      "description": "Avoid facade chunks for entry points",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preserveModules"
+      ],
+      "description": "Preserve module structure",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preserveModulesRoot"
+      ],
+      "description": "Put preserved modules under this path at root level",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preserveSymlinks"
+      ],
+      "description": "Do not follow symlinks when resolving files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-sanitizeFileName"
+      ],
+      "description": "Do not replace invalid characters in file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shimMissingExports"
+      ],
+      "description": "Create shim variables for missing exports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent"
+      ],
+      "description": "Don't print warnings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sourcemapExcludeSources"
+      ],
+      "description": "Do not include source code in source maps",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sourcemapFile"
+      ],
+      "description": "Specify bundle position for source maps",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdin=ext"
+      ],
+      "description": "Specify file extension used for stdin input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-stdin"
+      ],
+      "description": "Do not read \"-\" from stdin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-strict"
+      ],
+      "description": "Don't emit '\"use strict\"; in the generated modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strictDeprecations"
+      ],
+      "description": "Throw errors for deprecated features",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--systemNullSetters"
+      ],
+      "description": "Replace empty SystemJS setters with 'null'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake"
+      ],
+      "description": "Disable tree-shaking optimizations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake.annotations"
+      ],
+      "description": "Ignore pure call annotations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake.moduleSideEffects"
+      ],
+      "description": "Assume modules have no side effects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake.propertyReadSideEffects"
+      ],
+      "description": "Ignore property access side-effects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake.tryCatchDeoptimization"
+      ],
+      "description": "Do not turn off try-catch-tree-shaking",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-treeshake.unknownGlobalSideEffects"
+      ],
+      "description": "Assume unknown globals do not throw",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--waitForBuildInput"
+      ],
+      "description": "Wait for bundle input files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch.buildDelay"
+      ],
+      "description": "Throttle watch rebuilds",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-watch.clearScreen"
+      ],
+      "description": "Do not clear the screen when rebuilding",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch.skipWrite"
+      ],
+      "description": "Do not write files to disk when watching",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch.exclude"
+      ],
+      "description": "Exclude files from being watched",
+      "takes_arg": true,
+      "arg_name": "files",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch.include"
+      ],
+      "description": "Limit watching to specified files",
+      "takes_arg": true,
+      "arg_name": "files",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--validate"
+      ],
+      "description": "Validate output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

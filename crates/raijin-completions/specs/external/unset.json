@@ -1,0 +1,27 @@
+{
+  "name": "unset",
+  "aliases": [],
+  "description": "Named variable shall be undefined",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Variable definition will be unset",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "string",
+      "description": null,
+      "template": "env_vars",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

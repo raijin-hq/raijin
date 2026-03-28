@@ -1,0 +1,100 @@
+{
+  "name": "vr",
+  "aliases": [],
+  "description": "The npm-style script runner for Deno",
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a script",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "script",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Export one or more scripts as standalone executable files",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "script",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade Velociraptor to the latest version or to a specific one",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--out-dir"
+          ],
+          "description": "The folder where the scripts will be exported",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for Velociraptor",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Show the version number for Velociraptor",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "script",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

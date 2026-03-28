@@ -1,0 +1,184 @@
+{
+  "name": "wd",
+  "aliases": [],
+  "description": "Warp to directories without using cd",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Adds the current working directory to your warp points",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "point",
+          "description": "Name of the warp point to be created",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [],
+      "description": "Removes the given warp point",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "point",
+          "description": "Name of the warp point to be removed",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Print path to given warp point",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "point",
+          "description": "Name of the warp point",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Print all stored warp points",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "Show files from given warp point (ls)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "point",
+          "description": "Name of the warp point",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "path",
+      "aliases": [],
+      "description": "Show the path to given warp point (pwd)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "point",
+          "description": "Name of the warp point",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Remove points warping to nonexistent directories (will prompt unless --force is used)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Shows help for wd",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Exit after execution with exit codes (for testing)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Specify config file (default ~/.warprc)",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Suppress all output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Allows overwriting without warning (for add & clean)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "point",
+      "description": "Warp point to the specified directory",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "path",
+      "description": "Appended path",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

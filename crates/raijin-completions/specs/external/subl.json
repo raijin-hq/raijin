@@ -1,0 +1,134 @@
+{
+  "name": "subl",
+  "aliases": [],
+  "description": "Sublime Text",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--project"
+      ],
+      "description": "Load the given project",
+      "takes_arg": true,
+      "arg_name": "project",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--command"
+      ],
+      "description": "Run the given command",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--new-window"
+      ],
+      "description": "Open a new window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--add"
+      ],
+      "description": "Add folders to the current window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--launch-or-new-window"
+      ],
+      "description": "Only open a new window if the application is open",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wait"
+      ],
+      "description": "Wait for the files to be closed before returning",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--background"
+      ],
+      "description": "Don't activate the application",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--stay"
+      ],
+      "description": "Keep the application activated after closing the file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe-mode"
+      ],
+      "description": "Launch using a clean environment",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show a help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show the version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "files|directories",
+      "description": null,
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

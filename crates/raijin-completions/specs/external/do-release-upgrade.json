@@ -1,0 +1,92 @@
+{
+  "name": "do-release-upgrade",
+  "aliases": [],
+  "description": "Upgrade Ubuntu to latest release",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--devel-release"
+      ],
+      "description": "If using the latest supported release, upgrade to the development release",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--proposed"
+      ],
+      "description": "Try upgrading to the latest release using the upgrader from Ubuntu-proposed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Run in a special upgrade mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "desktop",
+          "server"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mode"
+      ],
+      "description": "Run in a special upgrade mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "desktop",
+          "server"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Run the specified frontend",
+      "takes_arg": true,
+      "arg_name": "frontend",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--frontend"
+      ],
+      "description": "Run the specified frontend",
+      "takes_arg": true,
+      "arg_name": "frontend",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

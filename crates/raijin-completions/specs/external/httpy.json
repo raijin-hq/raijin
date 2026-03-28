@@ -1,0 +1,119 @@
+{
+  "name": "httpy",
+  "aliases": [],
+  "description": "Programmable command-line HTTP client for the API",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--exec",
+        "-x"
+      ],
+      "description": "Execute httpy command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--status",
+        "-S"
+      ],
+      "description": "Print only the response status",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--header",
+        "-H"
+      ],
+      "description": "Print only the response headers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--body",
+        "-B"
+      ],
+      "description": "Print only the response body",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-redirect",
+        "-r"
+      ],
+      "description": "Allow requests to be redirected",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-V"
+      ],
+      "description": "Show request and response in verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for httpy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version for httpy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "URL",
+      "description": "The scheme defaults to 'http://' if the URL does not include one",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "METHOD",
+      "description": "The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...)",
+      "template": {
+        "custom": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

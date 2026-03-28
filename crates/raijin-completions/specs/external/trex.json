@@ -1,0 +1,239 @@
+{
+  "name": "trex",
+  "aliases": [],
+  "description": "Advanced package management for deno, based on import_map.json",
+  "subcommands": [
+    {
+      "name": "i",
+      "aliases": [
+        "install"
+      ],
+      "description": "Install a package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-m",
+            "--map"
+          ],
+          "description": "Install package from deno.land",
+          "takes_arg": true,
+          "arg_name": "package name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nest"
+          ],
+          "description": "Install package from nest.land",
+          "takes_arg": true,
+          "arg_name": "package name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pkg"
+          ],
+          "description": "Install package from some repository",
+          "takes_arg": true,
+          "arg_name": "repository",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete a package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade trex",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--canary"
+          ],
+          "description": "Install from dev branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tree",
+      "aliases": [],
+      "description": "View dependency tree",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a script alias in a file run.json",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "Use reboot script alias protocol (rsap)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-wv"
+          ],
+          "description": "Verbose output in --watch mode (rsap)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script alias",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "purge",
+      "aliases": [],
+      "description": "Remove a package or url from cache",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package | url",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "Shows the list of installed packages",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a cli tool with out install then",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--perms"
+          ],
+          "description": "Specify cli permisions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "cli tool",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check deno.land [std/x] dependencies updates",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--fix"
+          ],
+          "description": "Update outdated dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--custom"
+      ],
+      "description": "Install custom package",
+      "takes_arg": true,
+      "arg_name": "custom package",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

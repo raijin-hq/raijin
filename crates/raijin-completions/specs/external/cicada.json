@@ -1,0 +1,690 @@
+{
+  "name": "cicada",
+  "aliases": [],
+  "description": "Write CI/CD Pipelines in TypeScript",
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a cicada pipeline",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--secret"
+          ],
+          "description": "Name of the secret to use, these come from environment variables",
+          "takes_arg": true,
+          "arg_name": "secret",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--dotenv"
+          ],
+          "description": "Load a custom .env file",
+          "takes_arg": true,
+          "arg_name": "dotenv",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--secrets-json"
+          ],
+          "description": "Load secrets from a json file",
+          "takes_arg": true,
+          "arg_name": "secrets_json",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--cicada-dockerfile"
+          ],
+          "description": "A custom dockerfile to load the cicada bin from",
+          "takes_arg": true,
+          "arg_name": "cicada_dockerfile",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--oci-backend"
+          ],
+          "description": "The OCI backend to use",
+          "takes_arg": true,
+          "arg_name": "oci_backend",
+          "arg_template": {
+            "custom": [
+              "docker",
+              "podman"
+            ]
+          },
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--no-dotenv"
+          ],
+          "description": "Do not load .env file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Disable caching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help (see more with '--help')",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pipeline",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "step",
+      "aliases": [],
+      "description": "Run a step in a cicada workflow",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "workflow",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "step",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a cicada project, you can optionally specify a pipeline to create",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pipeline",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a cicada pipeline",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pipeline",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update cicada",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "List all available completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "elvish",
+              "fish",
+              "powershell",
+              "zsh"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fig-completion",
+      "aliases": [],
+      "description": "Create fig completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open a pipeline in your editor",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pipeline",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Check for common issues",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--oci-backend"
+          ],
+          "description": "The OCI backend to use",
+          "takes_arg": true,
+          "arg_name": "oci_backend",
+          "arg_template": {
+            "custom": [
+              "docker",
+              "podman"
+            ]
+          },
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Debug commands",
+      "subcommands": [
+        {
+          "name": "daemon-info",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--oci-backend"
+              ],
+              "description": "The OCI backend to use",
+              "takes_arg": true,
+              "arg_name": "oci_backend",
+              "arg_template": {
+                "custom": [
+                  "docker",
+                  "podman"
+                ]
+              },
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "-j",
+                "--json"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "disk-usage",
+          "aliases": [
+            "du"
+          ],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--oci-backend"
+              ],
+              "description": "The OCI backend to use",
+              "takes_arg": true,
+              "arg_name": "oci_backend",
+              "arg_template": {
+                "custom": [
+                  "docker",
+                  "podman"
+                ]
+              },
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "-j",
+                "--json"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "workers",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--oci-backend"
+              ],
+              "description": "The OCI backend to use",
+              "takes_arg": true,
+              "arg_name": "oci_backend",
+              "arg_template": {
+                "custom": [
+                  "docker",
+                  "podman"
+                ]
+              },
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "-j",
+                "--json"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Print this message or the help of the given subcommand(s)",
+          "subcommands": [
+            {
+              "name": "daemon-info",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "disk-usage",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "workers",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "help",
+              "aliases": [],
+              "description": "Print this message or the help of the given subcommand(s)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print this message or the help of the given subcommand(s)",
+      "subcommands": [
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run a cicada pipeline",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "step",
+          "aliases": [],
+          "description": "Run a step in a cicada workflow",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize a cicada project, you can optionally specify a pipeline to create",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a cicada pipeline",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update cicada",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completions",
+          "aliases": [],
+          "description": "List all available completions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fig-completion",
+          "aliases": [],
+          "description": "Create fig completions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open a pipeline in your editor",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "doctor",
+          "aliases": [],
+          "description": "Check for common issues",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "debug",
+          "aliases": [],
+          "description": "Debug commands",
+          "subcommands": [
+            {
+              "name": "daemon-info",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "disk-usage",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "workers",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Print this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

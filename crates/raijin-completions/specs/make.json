@@ -1,0 +1,290 @@
+{
+  "name": "make",
+  "aliases": [],
+  "description": null,
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-j"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f",
+        "--makefile"
+      ],
+      "description": "Read FILE as a makefile",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--directory"
+      ],
+      "description": "Change to DIRECTORY before doing anything",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "--always-make"
+      ],
+      "description": "Unconditionally make all targets",
+      "takes_arg": true,
+      "arg_name": "target",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--environment-overrides"
+      ],
+      "description": "Environment variables override makefiles",
+      "takes_arg": true,
+      "arg_name": "target",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print this message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--ignore-errors"
+      ],
+      "description": "Ignore errors from commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k",
+        "--keep-going"
+      ],
+      "description": "Keep going when some targets can't be made",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--check-symlink-times"
+      ],
+      "description": "Use the latest mtime between symlinks and target",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--print-data-base"
+      ],
+      "description": "Print make's internal database",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--question"
+      ],
+      "description": "Run no commands; exit status says if up to date",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--no-builtin-rules"
+      ],
+      "description": "Disable the built-in implicit rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--no-builtin-variables"
+      ],
+      "description": "Disable the built-in variable settings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--touch"
+      ],
+      "description": "Touch targets instead of remaking them",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print the version number of make and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--print-directory"
+      ],
+      "description": "Print the current directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Print lots of debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Print various types of debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--include-dir"
+      ],
+      "description": "Search directory for included makefiles",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--load-average"
+      ],
+      "description": "Don't start multiple jobs unless load is below N",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--old-file"
+      ],
+      "description": "Consider file to be very old and don't remake it",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-print-directory"
+      ],
+      "description": "Turn off -w, even if it was turned on implicitly",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--what-if",
+        "--new-file",
+        "--assume-new"
+      ],
+      "description": "Consider file to be infinitely new",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-undefined-variables"
+      ],
+      "description": "Warn when an undefined variable is referenced",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--Next-option"
+      ],
+      "description": "Turn on value of next option",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "target",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

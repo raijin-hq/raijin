@@ -1,0 +1,209 @@
+{
+  "name": "xxd",
+  "aliases": [],
+  "description": "Make a hexdump or do the reverse",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-help",
+        "-h"
+      ],
+      "description": "Show help for xxd",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-autoskip",
+        "-a"
+      ],
+      "description": "Toggle autoskip: A single '*' replaces nul-lines.  Default off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-bits",
+        "-b"
+      ],
+      "description": "Switch to bits (binary digits) dump, rather than hexdump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-cols",
+        "-c"
+      ],
+      "description": "Format <cols> octets per line. Default 16",
+      "takes_arg": true,
+      "arg_name": "cols",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-capitalize",
+        "-C"
+      ],
+      "description": "Capitalize variable names in C include file style, when using -i",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-EBCDIC",
+        "-E"
+      ],
+      "description": "Change the character encoding in the righthand column from ASCII to EBCDIC",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Switch to little-endian hexdump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-groupsize",
+        "-g"
+      ],
+      "description": "Separate the output of every <bytes> bytes",
+      "takes_arg": true,
+      "arg_name": "bytes",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-include",
+        "-i"
+      ],
+      "description": "Output in C include file style",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-len",
+        "-l"
+      ],
+      "description": "Stop after writing <len> octets",
+      "takes_arg": true,
+      "arg_name": "len",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-name",
+        "-n"
+      ],
+      "description": "Override the variable name output when -i is used",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Add <offset> to the displayed file position",
+      "takes_arg": true,
+      "arg_name": "offset",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-postscript",
+        "-plain",
+        "-ps",
+        "-p"
+      ],
+      "description": "Output in postscript continuous hexdump style",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-revert",
+        "-r"
+      ],
+      "description": "Reverse operation: convert (or patch) hexdump into binary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-seek"
+      ],
+      "description": "When used after -r: revert with <offset> added to file positions found in hexdump",
+      "takes_arg": true,
+      "arg_name": "offset",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Use upper case hex letters. Default is lower case",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-version",
+        "-v"
+      ],
+      "description": "Show version string",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "infile",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "outfile",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

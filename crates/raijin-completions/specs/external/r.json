@@ -1,0 +1,2745 @@
+{
+  "name": "R",
+  "aliases": [],
+  "description": "Start R or invoke an R tool using CMD",
+  "subcommands": [
+    {
+      "name": "RHOME",
+      "aliases": [],
+      "description": "Print path to R home directory and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "CMD",
+      "aliases": [],
+      "description": "Invoke an R tool",
+      "subcommands": [
+        {
+          "name": "BATCH",
+          "aliases": [],
+          "description": "Batch Execution of R",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-timing"
+              ],
+              "description": "Do not report the timings",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--"
+              ],
+              "description": "End processing of options",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "infile",
+              "description": "A file with R code to be executed",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "outfile",
+              "description": "A file to which to write output. If not given, the name used is that of infile, with a possible .R extension stripped, and .Rout appended",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "COMPILE",
+          "aliases": [],
+          "description": "Compile files for use with R (not available on Windows)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "files",
+              "description": "Source files to be compiled",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "SHLIB",
+          "aliases": [],
+          "description": "Compile the given source files and then link all specified object files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--clean",
+                "-c"
+              ],
+              "description": "Remove files created during compilation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--preclean"
+              ],
+              "description": "Remove files created during a previous run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Name for the built library",
+              "takes_arg": true,
+              "arg_name": "LIB",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run",
+                "-n"
+              ],
+              "description": "Dry run; shows commands that would be used",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-LTO"
+              ],
+              "description": "Use Link-Time Optimization",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-use-LTO"
+              ],
+              "description": "Do not use Link-Time Optimization",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug",
+                "-d"
+              ],
+              "description": "Build a debug DLL (Windows only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "files",
+              "description": "The object files to be included in the shared object/DLL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "INSTALL",
+          "aliases": [],
+          "description": "Utility for installing add-on packages",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--clean",
+                "-c"
+              ],
+              "description": "Remove files created during compilation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--preclean"
+              ],
+              "description": "Remove files created during a previous run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug",
+                "-d"
+              ],
+              "description": "Turn on debugging messages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--library",
+                "-l"
+              ],
+              "description": "Install packages to library tree LIB",
+              "takes_arg": true,
+              "arg_name": "LIB",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-configure"
+              ],
+              "description": "Do not use the package's configure script",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-docs"
+              ],
+              "description": "Do not install HTML, LaTeX or examples help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--html"
+              ],
+              "description": "Build HTML help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-html"
+              ],
+              "description": "Do not build HTML help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--latex"
+              ],
+              "description": "Install LaTeX help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--example"
+              ],
+              "description": "Install R code for help examples",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--fake"
+              ],
+              "description": "Do minimal install for testing purposes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-lock"
+              ],
+              "description": "Install on top of any existing installation without using a lock directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lock"
+              ],
+              "description": "Use a per-library lock directory (default)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pkglock"
+              ],
+              "description": "Use a per-package lock directory (default for a single package)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build"
+              ],
+              "description": "Build binaries of the installed package(s)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--install-tests"
+              ],
+              "description": "Install package-specific tests (if any)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-R"
+              ],
+              "description": "Suppress installation of the package R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-libs"
+              ],
+              "description": "Suppress installation of the package libs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-data"
+              ],
+              "description": "Suppress installation of the package data",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-help"
+              ],
+              "description": "Suppress installation of the package help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-demo"
+              ],
+              "description": "Suppress installation of the package demo",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-exec"
+              ],
+              "description": "Suppress installation of the 'exec' directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-inst"
+              ],
+              "description": "Suppress installation of the 'inst' directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-multiarch"
+              ],
+              "description": "Build only the main architecture",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--libs-only"
+              ],
+              "description": "Only install the libs directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-compress"
+              ],
+              "description": "Compression to be used for lazy-loading of data",
+              "takes_arg": true,
+              "arg_name": "compression",
+              "arg_template": {
+                "custom": [
+                  "gzip",
+                  "none",
+                  "bzip2",
+                  "xz"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--resave-data"
+              ],
+              "description": "Re-save data files as compactly as possible",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compact-docs"
+              ],
+              "description": "Re-compress PDF files under inst/doc",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--with-keep.source"
+              ],
+              "description": "'keep.source' for R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--without-keep.source"
+              ],
+              "description": "Do not use 'keep.source' for R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--with-keep.parse.data"
+              ],
+              "description": "Use 'keep.parse.data' for R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--without-keep.parse.data"
+              ],
+              "description": "Do not 'keep.parse.data' for R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--byte-compile"
+              ],
+              "description": "Byte-compile R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-byte-compile"
+              ],
+              "description": "Do not byte-compile R code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--staged-install"
+              ],
+              "description": "Install to a temporary directory and then move to the target directory (default)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-staged-install"
+              ],
+              "description": "Install directly to the target directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-test-load"
+              ],
+              "description": "Skip test of loading installed package",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-clean-on-error"
+              ],
+              "description": "Do not remove installed package on error",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--merge-multiarch"
+              ],
+              "description": "Multi-arch by merging (from a single tarball only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-vanilla"
+              ],
+              "description": "Do not read any Renviron or Rprofile files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-LTO"
+              ],
+              "description": "Use Link-Time Optimization",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-use-LTO"
+              ],
+              "description": "Do not use Link-Time Optimization",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configure-args"
+              ],
+              "description": "Set arguments for the configure scripts",
+              "takes_arg": true,
+              "arg_name": "ARGS",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configure-vars"
+              ],
+              "description": "Set variables for the configure scripts",
+              "takes_arg": true,
+              "arg_name": "ARGS",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--strip"
+              ],
+              "description": "Strip shared object(s) (Unix only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--strip-lib"
+              ],
+              "description": "Strip static/dynamic libraries under 'lib/' (Unix only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dsym"
+              ],
+              "description": "Generate dSYM directory (macOS only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--built-timestamp"
+              ],
+              "description": "Set timestamp for 'Built' entry in DESCRIPTION (Unix only)",
+              "takes_arg": true,
+              "arg_name": "STAMP",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force-biarch"
+              ],
+              "description": "Attempt to build both architectures (Windows only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compile-both"
+              ],
+              "description": "Compile both architectures on 32-bit Windows (Windows only)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "packages",
+              "description": "Directories with the package sources",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "REMOVE",
+          "aliases": [],
+          "description": "Remove add-on packages",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--library",
+                "-l"
+              ],
+              "description": "The library tree to remove from",
+              "takes_arg": true,
+              "arg_name": "LIB",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "packages",
+              "description": "Packages to remove",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Build R packages from package sources",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Force removal of INDEX file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--keep-empty-dirs"
+              ],
+              "description": "Do not remove empty dirs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build-vignettes"
+              ],
+              "description": "Do not (re)build package vignettes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-manual"
+              ],
+              "description": "Do not build the PDF manual",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--resave-data"
+              ],
+              "description": "Re-save data files as compactly as possible",
+              "takes_arg": true,
+              "arg_name": "Compression method",
+              "arg_template": {
+                "custom": [
+                  "best",
+                  "gzip",
+                  "no"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-resave-data"
+              ],
+              "description": "Do not save data",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compact-vignettes"
+              ],
+              "description": "Try to compact PDF files under 'inst/doc'",
+              "takes_arg": true,
+              "arg_name": "Compression method",
+              "arg_template": {
+                "custom": [
+                  "no",
+                  "qpdf",
+                  "gs",
+                  "gs+qpdf",
+                  "both"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compression"
+              ],
+              "description": "Type of compression to be used on tarball",
+              "takes_arg": true,
+              "arg_name": "Compression method",
+              "arg_template": {
+                "custom": [
+                  "gzip",
+                  "none",
+                  "bzip2",
+                  "xz"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--md5"
+              ],
+              "description": "Add MD5 sums",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log to file 'pkg-00build.log' when processing the pkgdir with basename 'pkg'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "pakgdirs",
+              "description": "Package directories",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Check R packages from package sources",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--library",
+                "-lib"
+              ],
+              "description": "Library used for test installation of packages",
+              "takes_arg": true,
+              "arg_name": "LIB",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Directory for output",
+              "takes_arg": true,
+              "arg_name": "directory",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-clean"
+              ],
+              "description": "Do not clean 'outdir' before using it",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-codoc"
+              ],
+              "description": "Do not check for code/documentation mismatches",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-examples"
+              ],
+              "description": "Do not run the examples in the Rd files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-install"
+              ],
+              "description": "Skip installation and associated tests",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-tests"
+              ],
+              "description": "Do not run code in 'tests' subdirectory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-manual"
+              ],
+              "description": "Do not produce the PDF manual",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-vignettes"
+              ],
+              "description": "Do not run R code in vignettes nor build outputs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build-vignettes"
+              ],
+              "description": "Do not build vignette outputs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-vignettes"
+              ],
+              "description": "Skip all tests on vignettes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-dontrun"
+              ],
+              "description": "Do run `dontrun{}` sections in the Rd files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-donttest"
+              ],
+              "description": "Do run `donttest{}` sections in the Rd files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-gct"
+              ],
+              "description": "Use `gctorture(TRUE)` when running examples, tests",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-valgrind"
+              ],
+              "description": "Use `valgrind` when running examples, tests, vignettes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timings"
+              ],
+              "description": "Record timings for examples",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--install-args"
+              ],
+              "description": "Command-line args to be passed to INSTALL",
+              "takes_arg": true,
+              "arg_name": "args",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--test-dir"
+              ],
+              "description": "Look in this subdirectory for test scripts",
+              "takes_arg": true,
+              "arg_name": "directory",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-stop-on-test-error"
+              ],
+              "description": "Do not stop running tests after first error",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--check-subdirs"
+              ],
+              "description": "Run checks on the package subdirectories",
+              "takes_arg": true,
+              "arg_name": "yes-or-no",
+              "arg_template": {
+                "custom": [
+                  "default",
+                  "yes",
+                  "no"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--as-cran"
+              ],
+              "description": "Select customizations similar to those used by CRAN",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--extra-arch"
+              ],
+              "description": "Do only runtime tests needed for an additional sub-architecture",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--multiarch"
+              ],
+              "description": "Do runtime tests on all installed sub-archs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-multiarch"
+              ],
+              "description": "Do runtime tests only on the main sub-architecture",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force-multiarch"
+              ],
+              "description": "Run tests on all sub-archs even for packages with no compiled code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "packages",
+              "description": "Packages to check",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "LINK",
+          "aliases": [],
+          "description": "Perform the specified linkcmd",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "linkcmd",
+              "description": "Command for linkcmd",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rprof",
+          "aliases": [],
+          "description": "Post-process profiling information from `Rprof()`",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lines"
+              ],
+              "description": "Print line information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--total"
+              ],
+              "description": "Print only by total",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--self"
+              ],
+              "description": "Print only by self",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--linesonly"
+              ],
+              "description": "Print only by line",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--min%total"
+              ],
+              "description": "Minimum % to print for 'by total'",
+              "takes_arg": true,
+              "arg_name": "min % total",
+              "arg_template": {
+                "custom": [
+                  "1",
+                  "10",
+                  "50"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--min%self"
+              ],
+              "description": "Minimum % to print for 'by self'",
+              "takes_arg": true,
+              "arg_name": "min % self",
+              "arg_template": {
+                "custom": [
+                  "1",
+                  "10",
+                  "50"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Rprof output file",
+              "description": "File generated by `Rprof()`",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Rdconv",
+          "aliases": [],
+          "description": "Convert R documentation to other formats",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type",
+                "-t"
+              ],
+              "description": "Output format type",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": {
+                "custom": [
+                  "txt",
+                  "html",
+                  "latex",
+                  "example"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encoding"
+              ],
+              "description": "Encoding of the output",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--package"
+              ],
+              "description": "Package name",
+              "takes_arg": true,
+              "arg_name": "package",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "The output file",
+              "takes_arg": true,
+              "arg_name": "output file",
+              "arg_template": {
+                "custom": [
+                  "\"\"",
+                  "-"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--os",
+                "--OS"
+              ],
+              "description": "Set name of OS ('unix' or 'windows')",
+              "takes_arg": true,
+              "arg_name": "OS",
+              "arg_template": {
+                "custom": [
+                  "unix",
+                  "windows"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--RdMacros"
+              ],
+              "description": "Packages from which to get Rd macros",
+              "takes_arg": true,
+              "arg_name": "package list",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": "R doc file to convert",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Rd2pdf",
+          "aliases": [],
+          "description": "Generate PDF output from R documentation files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--batch"
+              ],
+              "description": "No interaction between files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-clean"
+              ],
+              "description": "Do not remove created temporary files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-preview"
+              ],
+              "description": "Do not preview generated PDF file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encoding"
+              ],
+              "description": "Set the default input encoding",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--outputEncoding"
+              ],
+              "description": "Set the default output encoding",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--os",
+                "--OS"
+              ],
+              "description": "Set name of OS ('unix' or 'windows')",
+              "takes_arg": true,
+              "arg_name": "OS",
+              "arg_template": {
+                "custom": [
+                  "unix",
+                  "windows"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Write output to a file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Overwrite output file if it exists",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Set the title of the document",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-index"
+              ],
+              "description": "Do not index output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-description"
+              ],
+              "description": "Do not typeset the description of a package",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--internals"
+              ],
+              "description": "Typeset 'internal' documentation (usually skipped)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build_dir"
+              ],
+              "description": "Set the working directory",
+              "takes_arg": true,
+              "arg_name": "working dir",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--RdMacros"
+              ],
+              "description": "Packages from which to get Rd macros",
+              "takes_arg": true,
+              "arg_name": "package list",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "files or pkgs",
+              "description": "Rd files, or a directory with the sources of a pkg, or an installed pkg",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Rd2txt",
+          "aliases": [],
+          "description": "Convert R documentation to text",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type",
+                "-t"
+              ],
+              "description": "Output format type",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": {
+                "custom": [
+                  "txt",
+                  "html",
+                  "latex",
+                  "example"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encoding"
+              ],
+              "description": "Encoding of the output",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--package"
+              ],
+              "description": "Package name",
+              "takes_arg": true,
+              "arg_name": "package",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "The output file",
+              "takes_arg": true,
+              "arg_name": "output file",
+              "arg_template": {
+                "custom": [
+                  "\"\"",
+                  "-"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--os",
+                "--OS"
+              ],
+              "description": "Set name of OS ('unix' or 'windows')",
+              "takes_arg": true,
+              "arg_name": "OS",
+              "arg_template": {
+                "custom": [
+                  "unix",
+                  "windows"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--RdMacros"
+              ],
+              "description": "Packages from which to get Rd macros",
+              "takes_arg": true,
+              "arg_name": "package list",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": "R doc file to convert",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Stangle",
+          "aliases": [],
+          "description": "A front-end for Stangle and other vignette engines",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--engine"
+              ],
+              "description": "Use named vignette engine",
+              "takes_arg": true,
+              "arg_name": "pkg::engine",
+              "arg_template": {
+                "custom": [
+                  "Stangle",
+                  "knitr::knit",
+                  "utils::Sweave"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encoding"
+              ],
+              "description": "Set the encoding for file",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--options"
+              ],
+              "description": "Comma-separated list of Stangle options",
+              "takes_arg": true,
+              "arg_name": "options",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": "File to process",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Sweave",
+          "aliases": [],
+          "description": "A front-end for Sweave and other vignette engines",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--driver"
+              ],
+              "description": "Use named Sweave driver",
+              "takes_arg": true,
+              "arg_name": "driver",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--engine"
+              ],
+              "description": "Use named vignette engine",
+              "takes_arg": true,
+              "arg_name": "pkg::engine",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encoding=enc"
+              ],
+              "description": "Default encoding 'enc' for file",
+              "takes_arg": true,
+              "arg_name": "enc",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--clean"
+              ],
+              "description": "Remove some of the created files",
+              "takes_arg": true,
+              "arg_name": "method",
+              "arg_template": {
+                "custom": [
+                  "default",
+                  "keepOuts"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--options"
+              ],
+              "description": "Comma-separated list of Sweave/engine options",
+              "takes_arg": true,
+              "arg_name": "options",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pdf"
+              ],
+              "description": "Convert to PDF document",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compact"
+              ],
+              "description": "Try to compact PDF document",
+              "takes_arg": true,
+              "arg_name": "Compacting method",
+              "arg_template": {
+                "custom": [
+                  "no",
+                  "qpdf",
+                  "gs",
+                  "gs+qpdf",
+                  "both"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": "Vignette to build",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "Rdiff",
+          "aliases": [],
+          "description": "Diff R output files, discarding the R startup message",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "from",
+              "description": "'From' R output file (or '-' for stdin)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "to",
+              "description": "'To' R output file",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Get the value of a basic R configure variable",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cppflags"
+              ],
+              "description": "Print pre-processor flags required to compile a C/C++ file as part of a front-end using R as a library",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ldflags"
+              ],
+              "description": "Print linker flags needed for linking a front-end against the R library",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-user-files"
+              ],
+              "description": "Ignore customization files under '~/.R'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-site-files"
+              ],
+              "description": "Ignore site customization files under 'R_HOME/etc'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Print names and values of all variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "variable",
+              "description": "R config variable",
+              "template": {
+                "custom": [
+                  "AR",
+                  "BLAS_LIBS",
+                  "CC",
+                  "CFLAGS",
+                  "CPICFLAGS",
+                  "CPPFLAGS",
+                  "CXX",
+                  "CXXFLAGS",
+                  "CXXPICFLAGS",
+                  "CXX11",
+                  "CXX11STD",
+                  "CXX11FLAGS",
+                  "CXX11PICFLAGS",
+                  "CXX14",
+                  "CXX14STD",
+                  "CXX14FLAGS",
+                  "CXX14PICFLAGS",
+                  "CXX17",
+                  "CXX17STD",
+                  "CXX17FLAGS",
+                  "CXX17PICFLAGS",
+                  "CXX20",
+                  "CXX20STD",
+                  "CXX20FLAGS",
+                  "CXX20PICFLAGS",
+                  "DYLIB_EXT",
+                  "DYLIB_LD",
+                  "DYLIB_LDFLAGS",
+                  "FC",
+                  "FFLAGS",
+                  "FCFLAGS",
+                  "FLIBS",
+                  "FPICFLAGS",
+                  "JAR",
+                  "JAVA",
+                  "JAVAC",
+                  "JAVAH",
+                  "JAVA_HOME",
+                  "JAVA_LIBS",
+                  "JAVA_CPPFLAGS",
+                  "LAPACK_LIBS",
+                  "LIBnn",
+                  "LDFLAGS",
+                  "LTO",
+                  "MAKE",
+                  "NM",
+                  "OBJC",
+                  "OBJCFLAGS",
+                  "RANLIB",
+                  "SAFE_FFLAGS",
+                  "SHLIB_CFLAGS",
+                  "SHLIB_CXXFLAGS",
+                  "SHLIB_CXXLD",
+                  "SHLIB_CXXLDFLAGS",
+                  "SHLIB_EXT",
+                  "SHLIB_FFLAGS",
+                  "SHLIB_LD",
+                  "SHLIB_LDFLAGS",
+                  "TCLTK_CPPFLAGS",
+                  "TCLTK_LIBS"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "javareconf",
+          "aliases": [],
+          "description": "Detect current Java setup and update the corresponding configuration in R",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Perform Java detection, but don't touch any configuration files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e"
+              ],
+              "description": "Same as -n but exports all detected variables and runs '<prog>'",
+              "takes_arg": true,
+              "arg_name": "program",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "expression",
+              "description": "Evaluate the corresponding expression",
+              "template": {
+                "custom": [
+                  "JAVA_HOME=/usr/lib/java",
+                  "JAVAC=/usr/bin/javac",
+                  "JAR=/usr/bin/jar"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rtags",
+          "aliases": [],
+          "description": "Tag C, R, and Rd files under a directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Print help message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Print version info and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Write output to a file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-c"
+              ],
+              "description": "Do not tag C (.c, .h) files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-R"
+              ],
+              "description": "Do not tag R (.R, .r, .S, .s) files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-Rd"
+              ],
+              "description": "Do not tag Rd (.Rd) files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ctags"
+              ],
+              "description": "Write Ctags format (default is Etags)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--append",
+                "-a"
+              ],
+              "description": "Append to output file (overwrites by default)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbose",
+                "-V"
+              ],
+              "description": "Echo the name of files processed",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "path",
+              "description": "Directory in which files will be tagged",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print version info and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--encoding"
+      ],
+      "description": "Specify encoding to be used for stdin",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": {
+        "custom": [
+          "UTF-8"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--save"
+      ],
+      "description": "Save workspace at the end of the session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-save"
+      ],
+      "description": "Do not save workspace at the end of the session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-environ"
+      ],
+      "description": "Do not read the site and user environment files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-site-file"
+      ],
+      "description": "Do not read the site-wide Rprofile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-init-file"
+      ],
+      "description": "Do not read the user R profile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--restore"
+      ],
+      "description": "Do restore previously saved objects at startup",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-restore-data"
+      ],
+      "description": "Do not restore previously saved objects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-restore-history"
+      ],
+      "description": "Do not restore the R history file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-restore"
+      ],
+      "description": "Do not restore anything",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vanilla"
+      ],
+      "description": "Combine --no-save, --no-restore, --no-site-file, --no-init-file and --no-environ",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-readline"
+      ],
+      "description": "Do not use readline for command-line editing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-ppsize"
+      ],
+      "description": "Set max size of protect stack",
+      "takes_arg": true,
+      "arg_name": "max size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min-nsize"
+      ],
+      "description": "Set min number of fixed size obj's ('cons cells')",
+      "takes_arg": true,
+      "arg_name": "min size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min-vsize"
+      ],
+      "description": "Set vector heap minimum (in bytes or '4M' = 4 MegaB)",
+      "takes_arg": true,
+      "arg_name": "min vsize",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "--silent",
+        "-q"
+      ],
+      "description": "Do not print startup message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-echo",
+        "-s"
+      ],
+      "description": "Make R run as quietly as possible",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive"
+      ],
+      "description": "Force an interactive session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Print more information about progress",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debugger",
+        "-d"
+      ],
+      "description": "Run R through a debugger",
+      "takes_arg": true,
+      "arg_name": "debugger",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debugger-args"
+      ],
+      "description": "Pass arguments to the debugger",
+      "takes_arg": true,
+      "arg_name": "args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gui",
+        "-g"
+      ],
+      "description": "Type of GUI to use",
+      "takes_arg": true,
+      "arg_name": "gui",
+      "arg_template": {
+        "custom": [
+          "X11",
+          "Tk"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--arch"
+      ],
+      "description": "Specify a sub-architecture",
+      "takes_arg": true,
+      "arg_name": "arch",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--args"
+      ],
+      "description": "Skip the rest of the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Take input from a file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Execute and R expression and exit",
+      "takes_arg": true,
+      "arg_name": "expr",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

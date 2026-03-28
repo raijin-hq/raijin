@@ -1,0 +1,2553 @@
+{
+  "name": "netlify",
+  "aliases": [],
+  "description": "Netlify command line tool",
+  "subcommands": [
+    {
+      "name": "addons:auth",
+      "aliases": [
+        "addon:auth"
+      ],
+      "description": "Login to add-on provider",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Add-on slug",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "addons:config",
+      "aliases": [
+        "addon:config"
+      ],
+      "description": "Configure add-on settings",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Add-on namespace",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "addons:create",
+      "aliases": [
+        "addon:create"
+      ],
+      "description": "Add an add-on extension to your site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Add-on namespace",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "addons:delete",
+      "aliases": [
+        "addon:delete"
+      ],
+      "description": "Remove an add-on extension to your site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Delete without prompting (useful for CI)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Add-on namespace",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "addons:list",
+      "aliases": [
+        "addon:list"
+      ],
+      "description": "List currently installed add-ons for site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output return values as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "api",
+      "aliases": [],
+      "description": "Run any Netlify API method",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--data"
+          ],
+          "description": "Data to use",
+          "takes_arg": true,
+          "arg_name": "data",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List out available API methods",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "apiMethod",
+          "description": "Open API method to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "(Beta) Build on your local machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--offline"
+          ],
+          "description": "Disables any features that require network access",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--context"
+          ],
+          "description": "Build context",
+          "takes_arg": true,
+          "arg_name": "context",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry"
+          ],
+          "description": "Dry run: show instructions without running them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "(Beta) Generate shell completion script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--shell"
+          ],
+          "description": "Name of shell (bash|fish|zsh)",
+          "takes_arg": true,
+          "arg_name": "shell",
+          "arg_template": {
+            "custom": [
+              "bash",
+              "fish",
+              "zsh"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion:generate",
+      "aliases": [],
+      "description": "Generates completion script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--shell"
+          ],
+          "description": "(required) Name of shell [bash|fish|zsh]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion:generate:alias",
+      "aliases": [],
+      "description": "Generates completion script for alias",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--shell"
+          ],
+          "description": "(required) Name of shell [bash|fish|zsh]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Create a new deploy from the contents of a folder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--auth"
+          ],
+          "description": "Netlify auth token to deploy with",
+          "takes_arg": true,
+          "arg_name": "auth",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--branch"
+          ],
+          "description": "Serves the same functionality as --alias. Deprecated and will be removed in future versions",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Specify a folder to deploy",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions folder to deploy",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "A short message to include in the deploy log",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--open"
+          ],
+          "description": "Open site after deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--prod"
+          ],
+          "description": "Deploy to production",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--site"
+          ],
+          "description": "A site ID to deploy to",
+          "takes_arg": true,
+          "arg_name": "site",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--alias"
+          ],
+          "description": "Specifies the alias for deployment, the string at the beginning of the deploy subdomain",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "Run build command before deploying",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output deployment data as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prodIfUnlocked"
+          ],
+          "description": "Deploy to production if unlocked, create a draft otherwise",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-functions-cache"
+          ],
+          "description": "Ignore any functions created as part of a previous `build` or `deploy` commands, forcing them to be bundled again as part of the deployment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Timeout to wait for deployment to finish",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "trigger"
+          ],
+          "description": "Trigger a new build of your site on Netlify without uploading local files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Local dev server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--command"
+          ],
+          "description": "Command to run",
+          "takes_arg": true,
+          "arg_name": "command",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Dir with static files",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions folder to serve",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--live"
+          ],
+          "description": "Start a public live session",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--offline"
+          ],
+          "description": "Disables any features that require network access",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Port of netlify dev",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--framework"
+          ],
+          "description": "Framework to use. Defaults to #auto which automatically detects a framework",
+          "takes_arg": true,
+          "arg_name": "framework",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--targetPort"
+          ],
+          "description": "Port of target app server",
+          "takes_arg": true,
+          "arg_name": "targetPort",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dev:exec",
+      "aliases": [],
+      "description": "Exec command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dev:trace",
+      "aliases": [],
+      "description": "Trace command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-H",
+            "--header"
+          ],
+          "description": "Request header, this flag can be used multiple times. Example: \"Host: netlify.test\"",
+          "takes_arg": true,
+          "arg_name": "header",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-X",
+            "--request"
+          ],
+          "description": "Specifies a custom request method [default: GET]",
+          "takes_arg": true,
+          "arg_name": "request",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-B",
+            "--cookie"
+          ],
+          "description": "Request cookie, this flag can be used multiple times. Example: \"nf_jwt=token\"",
+          "takes_arg": true,
+          "arg_name": "cookie",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "Path to the publish directory",
+          "takes_arg": true,
+          "arg_name": "watch",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "url",
+          "description": "Sets the request URL",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "env",
+      "aliases": [],
+      "description": "(Beta) Control environment variables for the current site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "env:get",
+      "aliases": [],
+      "description": "Get resolved value of specified environment variable (includes netlify.toml)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "env:import",
+      "aliases": [],
+      "description": "Import and set environment variables from .env file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--replaceExisting"
+          ],
+          "description": "Replace all existing variables instead of merging them with the current ones",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filename",
+          "description": ".env file to import",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "env:list",
+      "aliases": [],
+      "description": "Lists resolved environment variables for site (includes netlify.toml)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "env:set",
+      "aliases": [],
+      "description": "Set value of environment variable",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Environment variable name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "Value to set to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "env:unset",
+      "aliases": [
+        "env:delete",
+        "env:remove"
+      ],
+      "description": "Unset an environment variable which removes it from the UI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Environment variable name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "functions:build",
+      "aliases": [
+        "function:build"
+      ],
+      "description": "Build functions locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions directory to build to",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--src"
+          ],
+          "description": "Specify the source directory for the functions",
+          "takes_arg": true,
+          "arg_name": "src",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "functions:create",
+      "aliases": [
+        "function:create"
+      ],
+      "description": "Create a new function locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Function name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--url"
+          ],
+          "description": "Pull template from URL",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Name of your new function file inside your functions directory",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "functions:invoke",
+      "aliases": [
+        "function:trigger"
+      ],
+      "description": "Trigger a function while in netlify dev with simulated data, good for testing function calls including Netlify's Event Triggered Functions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions folder to parse, overriding netlify.toml",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Function name to invoke",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--payload"
+          ],
+          "description": "Supply POST payload in stringified json, or a path to a json file",
+          "takes_arg": true,
+          "arg_name": "payload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--querystring"
+          ],
+          "description": "Querystring to add to your function invocation",
+          "takes_arg": true,
+          "arg_name": "querystring",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--identity"
+          ],
+          "description": "Simulate Netlify Identity authentication JWT",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-identity"
+          ],
+          "description": "Affirm unauthenticated request",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "port"
+          ],
+          "description": "Port where netlify dev is accessible. e.g. 8888",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Function name to invoke",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "functions:list",
+      "aliases": [
+        "function:list"
+      ],
+      "description": "List functions that exist locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions directory to list",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name to print",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output function data as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "functions:serve",
+      "aliases": [
+        "function:server"
+      ],
+      "description": "(Beta) Serve functions locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--functions"
+          ],
+          "description": "Specify a functions folder to deploy",
+          "takes_arg": true,
+          "arg_name": "functions",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--offline"
+          ],
+          "description": "Disables any features that require network access",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Port of netlify dev",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Configure continuous deployment for a new or existing site. To create a new site without continuous deployment, use `netlify sites:create`",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-m",
+            "--manual"
+          ],
+          "description": "Manually configure a git remote for CI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Reinitialize CI hooks if the linked site is already configured to use CI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gitRemoteName"
+          ],
+          "description": "Name of Git remote to use. e.g. \"origin\"",
+          "takes_arg": true,
+          "arg_name": "gitRemoteName",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link a local repo or project folder to an existing site on Netlify",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--gitRemoteName"
+          ],
+          "description": "Name of Git remote to use. e.g. \"origin\"",
+          "takes_arg": true,
+          "arg_name": "gitRemoteName",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "ID of site to link to",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Name of site to link to",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lm",
+      "aliases": [],
+      "description": "Handle Netlify Large Media operations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lm:info",
+      "aliases": [],
+      "description": "Show large media requirements information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lm:install",
+      "aliases": [
+        "lm:init"
+      ],
+      "description": "Configures your computer to use Netlify Large Media",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Force the credentials helper installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lm:setup",
+      "aliases": [],
+      "description": "Configures your site to use Netlify Large Media",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force-install"
+          ],
+          "description": "Force the credentials helper installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--skip-install"
+          ],
+          "description": "Skip the credentials helper installation check",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to your Netlify account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--auth"
+          ],
+          "description": "Netlify auth token",
+          "takes_arg": true,
+          "arg_name": "auth",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output return values as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--new"
+          ],
+          "description": "Login to new Netlify account",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": "Silence CLI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open settings for the site linked to the current folder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--admin"
+          ],
+          "description": "Open Netlify site",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Open site",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open:admin",
+      "aliases": [],
+      "description": "Opens current site admin UI in Netlify",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open:site",
+      "aliases": [],
+      "description": "Opens current site url in browser",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sites:create",
+      "aliases": [],
+      "description": "Create an empty site (advanced)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--account-slug"
+          ],
+          "description": "Account slug to create the site under",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--with-ci"
+          ],
+          "description": "Initialize CI hooks during site creation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--manual"
+          ],
+          "description": "Force manual CI setup. Used --with-ci flag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of site",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sites:delete",
+      "aliases": [],
+      "description": "Delete a site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Delete without prompting (useful for CI)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "siteId",
+          "description": "Site ID to delete",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sites:list",
+      "aliases": [],
+      "description": "List all sites you have access to",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output site data as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Print status information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "verbose"
+          ],
+          "description": "Output system info",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status:hooks",
+      "aliases": [],
+      "description": "Print hook information of the linked site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Unlink a local folder from a Netlify site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Watch for site deploy to finish",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print debugging information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxy"
+          ],
+          "description": "Proxy server address to route requests through",
+          "takes_arg": true,
+          "arg_name": "httpProxy",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--httpProxyCertificateFilename"
+          ],
+          "description": "Certificate file to use when connecting using a proxy server",
+          "takes_arg": true,
+          "arg_name": "httpProxyCertificateFilename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "List available sub-commands",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": "The command to display help for",
+          "template": {
+            "custom": [
+              "addons:auth",
+              "addon:auth",
+              "addons:config",
+              "addon:config",
+              "addons:create",
+              "addon:create",
+              "addons:delete",
+              "addon:delete",
+              "addons:list",
+              "addon:list",
+              "api",
+              "build",
+              "completion",
+              "completion:generate",
+              "completion:generate:alias",
+              "deploy",
+              "dev",
+              "dev:exec",
+              "dev:trace",
+              "env",
+              "env:get",
+              "env:import",
+              "env:list",
+              "env:set",
+              "env:unset",
+              "env:delete",
+              "env:remove",
+              "functions:build",
+              "function:build",
+              "functions:create",
+              "function:create",
+              "functions:invoke",
+              "function:trigger",
+              "functions:list",
+              "function:list",
+              "functions:serve",
+              "function:server",
+              "init",
+              "link",
+              "lm",
+              "lm:info",
+              "lm:install",
+              "lm:init",
+              "lm:setup",
+              "login",
+              "open",
+              "open:admin",
+              "open:site",
+              "sites:create",
+              "sites:delete",
+              "sites:list",
+              "status",
+              "status:hooks",
+              "unlink",
+              "watch"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--telemetry-disable"
+      ],
+      "description": "Opt out of sharing usage data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--telemetry-enable"
+      ],
+      "description": "Allow your usage to help shape development",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

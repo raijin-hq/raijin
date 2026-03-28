@@ -1,0 +1,240 @@
+{
+  "name": "git-quick-stats",
+  "aliases": [],
+  "description": "Git quick statistics is a simple and efficient way to access various statistics in git repository",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for git-quick-stats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--suggest-reviewers",
+        "-r"
+      ],
+      "description": "Show the best people to contact to review code",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--detailed-git-stats",
+        "-T"
+      ],
+      "description": "Give a detailed list of git stats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "---git-stats-by-branch",
+        "-R"
+      ],
+      "description": "Show detailed list of git stats by branch",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changelogs",
+        "-c"
+      ],
+      "description": "Show changelogs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changelogs-by-author",
+        "-L"
+      ],
+      "description": "Show changelogs by author",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--my-daily-stats",
+        "-S"
+      ],
+      "description": "Show your current daily stats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--my-csv-output-by-branch-stats",
+        "-V"
+      ],
+      "description": "Output daily stats by branch in CSV format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json-output",
+        "-j"
+      ],
+      "description": "Save git log as a JSON formatted file to a specified area",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--branch-tree",
+        "-b"
+      ],
+      "description": "Show an ASCII graph of the git repo branch history",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--branches-by-date",
+        "-D"
+      ],
+      "description": "Show branches by date",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--contributors",
+        "-C"
+      ],
+      "description": "See a list of everyone who contributed to the repo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-per-author",
+        "-a"
+      ],
+      "description": "Displays a list of commits per author",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-per-day",
+        "-d"
+      ],
+      "description": "Displays a list of commits per day",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-month",
+        "-m"
+      ],
+      "description": "Displays a list of commits per month",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-year",
+        "-Y"
+      ],
+      "description": "Displays a list of commits per year",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-weekday",
+        "-w"
+      ],
+      "description": "Displays a list of commits per weekday",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-hour",
+        "-o"
+      ],
+      "description": "Displays a list of commits per hour",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-author-by-hour",
+        "-A"
+      ],
+      "description": "Displays a list of commits per hour by author",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-timezone",
+        "-z"
+      ],
+      "description": "Displays a list of commits per timezone",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--commits-by-author-by-timezone",
+        "-Z"
+      ],
+      "description": "Displays a list of commits per timezone by author",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,357 @@
+{
+  "name": "pkg-config",
+  "aliases": [],
+  "description": "Return metainformation about installed libraries",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--mod-version"
+      ],
+      "description": "Display the version information of the libraries specified on the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Display the version of pkg-config and terminates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--atleast-pkgconfig-version"
+      ],
+      "description": "Require at least the given version of pkg-config",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Displays a help message and terminates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-errors"
+      ],
+      "description": "Print errors if modules cannot be found or if an error occurs in parsing a .pc file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--short-errors"
+      ],
+      "description": "Print short error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silence-errors"
+      ],
+      "description": "Print errors if modules cannot be found or if an error occurs in parsing a .pc file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--errors-to-stdout"
+      ],
+      "description": "If printing errors, print them to stdout rather than the default stderr",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Print debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cflags"
+      ],
+      "description": "Print pre-processor and compile flags required to compile the packages on the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cflags-only-I"
+      ],
+      "description": "Print parts of \"--cflags\" that define the header search path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cflags-only-other"
+      ],
+      "description": "Print parts of \"--cflags\" not covered by \"--cflags-only-I\"",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--libs"
+      ],
+      "description": "Print link flags required to compile the packages on the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--libs-only-L"
+      ],
+      "description": "Print parts of \"-libs\" that define library search path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--libs-only-l"
+      ],
+      "description": "Print parts of \"-libs\" that specify which libraries to link to",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--libs-only-other"
+      ],
+      "description": "Print parts of \"-libs\" not covered by \"--libs-only-L\" and \"--libs-only-l\"",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--variable"
+      ],
+      "description": "Return the value of a variable defined in a package's .pc file",
+      "takes_arg": true,
+      "arg_name": "variable-name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--define-variable"
+      ],
+      "description": "Set a global value for a variable, overriding the value in any .pc files",
+      "takes_arg": true,
+      "arg_name": "variable",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-variables"
+      ],
+      "description": "Return a list of all variables defined in the package",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uninstalled"
+      ],
+      "description": "Return successfully if any \"-uninstalled\" packages are being used, and return failure otherwise",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exists"
+      ],
+      "description": "Test whether the packages on the command line exist",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--atleast-version"
+      ],
+      "description": "Test whether the packages on the command line exist and are at least the specified version",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exact-version"
+      ],
+      "description": "Test whether the packages on the command line exist and are exactly the specified version",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-version"
+      ],
+      "description": "Test whether the packages on the command line exist and are at most the specified version",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--validate"
+      ],
+      "description": "Check the syntax of a package's .pc file for validity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--msvc-syntax"
+      ],
+      "description": "Output -l and -L flags in the form recognized by the Microsoft Visual C++ command-line compiler",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--define-prefix"
+      ],
+      "description": "Use the installed location of the .pc file to determine the prefix",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dont-define-prefix"
+      ],
+      "description": "Use the specified prefix variable value defined in the .pc file as the prefix",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prefix-variable"
+      ],
+      "description": "Set the name of the variable to be overridden instead of prefix when using --define-prefix",
+      "takes_arg": true,
+      "arg_name": "variable-name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--static"
+      ],
+      "description": "Output libraries suitable for static linking",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-all"
+      ],
+      "description": "List all modules found in the pkg-config path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-provides"
+      ],
+      "description": "List all modules the given packages provides",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-requires"
+      ],
+      "description": "List all modules the given packages requires",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-requires-private"
+      ],
+      "description": "List all modules the given packages requires for static linking",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "libraries...",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

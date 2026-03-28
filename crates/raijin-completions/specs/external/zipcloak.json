@@ -1,0 +1,94 @@
+{
+  "name": "zipcloak",
+  "aliases": [],
+  "description": "Encrypt entries in a zipfile",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show a short help for zipcloak",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--decrypt",
+        "-d"
+      ],
+      "description": "Decrypt encrypted entries (copy if given wrong password)",
+      "takes_arg": true,
+      "arg_name": "zipfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--license",
+        "-L"
+      ],
+      "description": "Show software license",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Quiet operation. Suppresses some informational messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-file",
+        "-O"
+      ],
+      "description": "Write output to new archive zipfile, leaving original archive as is",
+      "takes_arg": true,
+      "arg_name": "zipfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--temp-path",
+        "-b"
+      ],
+      "description": "Use the directory given by path for the temporary zip file",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "zipfile",
+      "description": "Zipped file to encrypt entries into",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

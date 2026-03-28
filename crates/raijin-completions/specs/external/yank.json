@@ -1,0 +1,79 @@
+{
+  "name": "yank",
+  "aliases": [],
+  "description": "Yank terminal output to clipboard",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Ignore case differences between pattern and the input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Use the default delimiters except for space",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Use alternate screen",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "All input characters not present in delim will be recognized as fields",
+      "takes_arg": true,
+      "arg_name": "delim",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Use pattern to recognize fields",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--"
+      ],
+      "description": "Use a command as the yank command",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

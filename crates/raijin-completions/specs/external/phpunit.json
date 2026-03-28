@@ -1,0 +1,390 @@
+{
+  "name": "phpunit",
+  "aliases": [],
+  "description": "The PHPUnit is a command-line test runner that can be invoked through the phpunit command",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--coverage-clover"
+      ],
+      "description": "Generate code coverage report in Clover XML format,",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-crap4j"
+      ],
+      "description": "Generate code coverage report in Crap4J XML format",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-html"
+      ],
+      "description": "Generate code coverage report in HTML format",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-php"
+      ],
+      "description": "Export PHP_CodeCoverage object to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-text"
+      ],
+      "description": "Generate code coverage report in text format [default: standard output]",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-xml"
+      ],
+      "description": "Generate code coverage report in PHPUnit XML format",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-cache"
+      ],
+      "description": "Cache static analysis results",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warm-coverage-cache"
+      ],
+      "description": "Warm static analysis cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--coverage-filter"
+      ],
+      "description": "Include <dir> in code coverage analysis",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--path-coverage"
+      ],
+      "description": "Perform path coverage analysis",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-coverage-ignore"
+      ],
+      "description": "Disable annotations for ignoring code coverage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-coverage"
+      ],
+      "description": "Ignore code coverage configuration",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dont-report-useless-tests"
+      ],
+      "description": "Do not report tests that do not test anything",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-coverage"
+      ],
+      "description": "Be strict about @covers annotation usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-global-state"
+      ],
+      "description": "Be strict about changes to global state",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-test-output"
+      ],
+      "description": "Be strict about output during tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-resource-usage"
+      ],
+      "description": "Be strict about resource usage during small tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enforce-time-limit"
+      ],
+      "description": "Enforce time limit based on test size",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-time-limit"
+      ],
+      "description": "Timeout in seconds for tests without @small, @medium or @large",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disallow-todo-tests"
+      ],
+      "description": "Disallow @todo-annotated tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-junit"
+      ],
+      "description": "Log test execution in JUnit XML format to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-teamcity"
+      ],
+      "description": "Log test execution in TeamCity format to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--testdox-html"
+      ],
+      "description": "Write agile documentation in HTML format to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--testdox-text"
+      ],
+      "description": "Write agile documentation in Text format to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--testdox-xml"
+      ],
+      "description": "Write agile documentation in HTML format to file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reverse-list"
+      ],
+      "description": "Print defects in reverse order",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-logging"
+      ],
+      "description": "Ignore logging configuration",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prepend"
+      ],
+      "description": "A PHP script that is included as early as possible",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bootstrap"
+      ],
+      "description": "A PHP script that is included before the tests run",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--configuration"
+      ],
+      "description": "Read configuration from XML file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-configuration"
+      ],
+      "description": "Ignore default configuration file (phpunit.xml)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extensions"
+      ],
+      "description": "A comma separated list of PHPUnit extensions to load",
+      "takes_arg": true,
+      "arg_name": "extensions",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-extensions"
+      ],
+      "description": "Do not load PHPUnit extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-path"
+      ],
+      "description": "Prepend PHP's include_path with given path(s)",
+      "takes_arg": true,
+      "arg_name": "path(s)",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Sets a php.ini value",
+      "takes_arg": true,
+      "arg_name": "key[=value]",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache-result-file"
+      ],
+      "description": "Specify result cache path and filename",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--generate-configuration"
+      ],
+      "description": "Generate configuration file with suggested settings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--migrate-configuration"
+      ],
+      "description": "Migrate configuration file to current format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

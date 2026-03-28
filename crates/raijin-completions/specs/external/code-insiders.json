@@ -1,0 +1,410 @@
+{
+  "name": "code-insiders",
+  "aliases": [],
+  "description": "Visual Studio Code",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-"
+      ],
+      "description": "Read from stdin (e.g. 'ps aux | grep code | code -')",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--diff"
+      ],
+      "description": "Compare two files with each other",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--merge"
+      ],
+      "description": "Perform a three-way merge by providing paths for two modified versions of a file, the common origin of both modified versions and the output file to save merge results",
+      "takes_arg": true,
+      "arg_name": "path1",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--add"
+      ],
+      "description": "Add folder(s) to the last active window",
+      "takes_arg": true,
+      "arg_name": "folder",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--goto"
+      ],
+      "description": "Open a file at the path on the specified line and character position",
+      "takes_arg": true,
+      "arg_name": "file:line[:character]",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--new-window"
+      ],
+      "description": "Force to open a new window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--reuse-window"
+      ],
+      "description": "Force to open a file or folder in an already opened window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wait"
+      ],
+      "description": "Wait for the files to be closed before returning",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--locale"
+      ],
+      "description": "The locale to use (e.g. en-US or zh-TW)",
+      "takes_arg": true,
+      "arg_name": "locale",
+      "arg_template": {
+        "custom": [
+          "en",
+          "zh-CN",
+          "zh-TW",
+          "fr",
+          "de",
+          "it",
+          "es",
+          "ja",
+          "ko",
+          "ru",
+          "bg",
+          "hu",
+          "pt-br",
+          "tr"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user-data-dir"
+      ],
+      "description": "Specifies the directory that user data is kept in. Can be used to open multiple distinct instances of Code",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--profile"
+      ],
+      "description": "Opens the provided folder or workspace with the given profile and associates the profile with the workspace. If the profile does not exist, a new empty one is created. A folder or workspace must be provided for the profile to take effect",
+      "takes_arg": true,
+      "arg_name": "settingsProfileName",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extensions-dir"
+      ],
+      "description": "Set the root path for extensions",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-extensions"
+      ],
+      "description": "List the installed extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-versions"
+      ],
+      "description": "Show versions of installed extensions, when using --list-extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--category"
+      ],
+      "description": "Filters installed extensions by provided category, when using --list-extensions",
+      "takes_arg": true,
+      "arg_name": "category",
+      "arg_template": {
+        "custom": [
+          "azure",
+          "data science",
+          "debuggers",
+          "extension packs",
+          "education",
+          "formatters",
+          "keymaps",
+          "language packs",
+          "linters",
+          "machine learning",
+          "notebooks",
+          "programming languages",
+          "scm providers",
+          "snippets",
+          "testing",
+          "themes",
+          "visualization",
+          "other"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--install-extension"
+      ],
+      "description": "Installs or updates an extension. The argument is either an extension id or a path to a VSIX. The identifier of an extension is '${publisher}.${name}'. Use '--force' argument to update to latest version. To install a specific version provide '@${version}'. For example: 'vscode.csharp@1.2.3'",
+      "takes_arg": true,
+      "arg_name": "extension-id[@version] | path-to-vsix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pre-release"
+      ],
+      "description": "Installs the pre-release version of the extension, when using --install-extension",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uninstall-extension"
+      ],
+      "description": "Uninstalls an extension",
+      "takes_arg": true,
+      "arg_name": "extension-id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-proposed-api"
+      ],
+      "description": "Enables proposed API features for extensions. Can receive one or more extension IDs to enable individually",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Print verbose output (implies --wait)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log"
+      ],
+      "description": "Log level to use. Default is 'info' when unspecified",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "critical",
+          "error",
+          "warn",
+          "info",
+          "debug",
+          "trace",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--status"
+      ],
+      "description": "Print process usage and diagnostics information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prof-startup"
+      ],
+      "description": "Run CPU profiler during startup",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-extensions"
+      ],
+      "description": "Disable all installed extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-extension"
+      ],
+      "description": "Disable an extension",
+      "takes_arg": true,
+      "arg_name": "extension-id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sync"
+      ],
+      "description": "Turn sync on or off",
+      "takes_arg": true,
+      "arg_name": "sync",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inspect-extensions"
+      ],
+      "description": "Allow debugging and profiling of extensions. Check the developer tools for the connection URI",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inspect-brk-extensions"
+      ],
+      "description": "Allow debugging and profiling of extensions with the extension host being paused after start. Check the developer tools for the connection URI",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-gpu"
+      ],
+      "description": "Disable GPU hardware acceleration",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-memory"
+      ],
+      "description": "Max memory size for a window (in Mbytes)",
+      "takes_arg": true,
+      "arg_name": "memory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--telemetry"
+      ],
+      "description": "Shows all telemetry events which VS code collects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

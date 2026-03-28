@@ -1,0 +1,94 @@
+{
+  "name": "bc",
+  "aliases": [],
+  "description": "An arbitrary precision calculator language",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print the usage and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive",
+        "-i"
+      ],
+      "description": "Force interactive mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mathlib",
+        "-l"
+      ],
+      "description": "Define the standard math library",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn",
+        "-w"
+      ],
+      "description": "Give warnings for extensions to POSIX bc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--standard",
+        "-s"
+      ],
+      "description": "Process exactly the POSIX bc language",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Do not print the normal GNU bc welcome",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print the version number and copyright and quit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

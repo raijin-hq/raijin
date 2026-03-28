@@ -1,0 +1,549 @@
+{
+  "name": "minectl",
+  "aliases": [],
+  "description": "Create Minecraft Server on different cloud provider",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create an Minecraft Server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--filename",
+            "-f"
+          ],
+          "description": "Location of the manifest file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait",
+            "-w"
+          ],
+          "description": "Wait for Minecraft Server is started",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete an Minecraft Server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--filename",
+            "-f"
+          ],
+          "description": "Location of the manifest file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Contains the server id",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Automatically delete the server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all Minecraft Server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--provider",
+            "-p"
+          ],
+          "description": "The cloud provider - civo|scaleway|do|hetzner|akamai|ovh|equinix|gce|vultr|azure|oci|ionos|aws|vexxhost|multipass|exoscale",
+          "takes_arg": true,
+          "arg_name": "provider",
+          "arg_template": {
+            "custom": [
+              "civo",
+              "scaleway",
+              "do",
+              "hetzner",
+              "linode",
+              "ovh",
+              "equinix",
+              "gce",
+              "vultr",
+              "azure",
+              "oci",
+              "ionos",
+              "aws",
+              "vexxhost",
+              "multipass",
+              "exoscale"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-r"
+          ],
+          "description": "The region (gce: zone) for your cloud provider - civo|gce",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "plugins",
+      "aliases": [],
+      "description": "Manage your plugins for a specific server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--destination",
+            "-d"
+          ],
+          "description": "Plugin destination folder",
+          "takes_arg": true,
+          "arg_name": "destination",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filename",
+            "-f"
+          ],
+          "description": "Location of the manifest file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Contains the server id",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin",
+            "-p"
+          ],
+          "description": "Location of the plugin",
+          "takes_arg": true,
+          "arg_name": "plugin",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-key",
+            "-k"
+          ],
+          "description": "Specify a specific path for the SSH key",
+          "takes_arg": true,
+          "arg_name": "ssh-key",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "rcon",
+      "aliases": [],
+      "description": "RCON client to your Minecraft server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--filename",
+            "-f"
+          ],
+          "description": "Location of the manifest file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Contains the server id",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update an Minecraft Server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--filename",
+            "-f"
+          ],
+          "description": "Location of the manifest file",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Contains the server id",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-key",
+            "-k"
+          ],
+          "description": "Specify a specific path for the SSH key",
+          "takes_arg": true,
+          "arg_name": "ssh-key",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Display the clients version information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wizard",
+      "aliases": [],
+      "description": "Calls the minectl wizard to create interactively a minectl 🗺 config",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output folder for the configuration file for minectl 🗺 (default: ~/.minectl)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create an Minecraft Server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an Minecraft Server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all Minecraft Server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "plugins",
+          "aliases": [],
+          "description": "Manage your plugins for a specific server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rcon",
+          "aliases": [],
+          "description": "RCON client to your Minecraft server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update an Minecraft Server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Display the clients version information",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "wizard",
+          "aliases": [],
+          "description": "Calls the minectl wizard to create interactively a minectl 🗺 config",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--headless"
+      ],
+      "description": "Set this value to if mincetl is called by a CI system. Enables logging and disables human-readable output rendering (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-encoding"
+      ],
+      "description": "Set the log encoding: console|json (default: console)",
+      "takes_arg": true,
+      "arg_name": "log-encoding",
+      "arg_template": {
+        "custom": [
+          "console",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enable verbose logging: debug|info|warn|error|dpanic|panic|fatal",
+      "takes_arg": true,
+      "arg_name": "verbose",
+      "arg_template": {
+        "custom": [
+          "debug",
+          "info",
+          "warn",
+          "error",
+          "dpanic",
+          "panic",
+          "fatal"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

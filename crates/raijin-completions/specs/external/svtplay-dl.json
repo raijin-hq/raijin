@@ -1,0 +1,555 @@
+{
+  "name": "svtplay-dl",
+  "aliases": [],
+  "description": "Download videos from your favourite play services",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for svtplay-dl",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show program's version number and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Outputs to the given filename or folder",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--subfolder"
+      ],
+      "description": "Create a subfolder titled as the show, non-series gets in folder movies",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Specify configuration file",
+      "takes_arg": true,
+      "arg_name": "configfile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Overwrite if file exists already",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--resume"
+      ],
+      "description": "Resume a download (RTMP obsolete)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--live"
+      ],
+      "description": "Enable for live streams (RTMP based ones)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--capture_time"
+      ],
+      "description": "Define capture time in minutes of a live stream",
+      "takes_arg": true,
+      "arg_name": "capture_time",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--silent"
+      ],
+      "description": "Be less verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent-semi"
+      ],
+      "description": "Only show a message when the file is downloaded",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--username"
+      ],
+      "description": "Username (if applicable)",
+      "takes_arg": true,
+      "arg_name": "username",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--password"
+      ],
+      "description": "Password (if applicable)",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--thumbnail"
+      ],
+      "description": "Download thumbnail from the site if available",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--get-url"
+      ],
+      "description": "Do not download any video, but instead print the URL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--get-only-episode-url"
+      ],
+      "description": "Do not get video URLs, only print the episode URL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dont-verify-ssl-cert"
+      ],
+      "description": "Don't attempt to verify SSL certificates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--http-header"
+      ],
+      "description": "A header to add to each HTTP request",
+      "takes_arg": true,
+      "arg_name": "header1=value;header2=value2",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cookies"
+      ],
+      "description": "A cookies to add to each HTTP request",
+      "takes_arg": true,
+      "arg_name": "cookie1=value;cookie2=value2",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude"
+      ],
+      "description": "Exclude videos with the WORD(s) in the filename. Comma separated",
+      "takes_arg": true,
+      "arg_name": "WORD1,WORD2,...",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--after-date"
+      ],
+      "description": "Only videos published on or after this date",
+      "takes_arg": true,
+      "arg_name": "yyyy-MM-dd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--proxy"
+      ],
+      "description": "Use the specified HTTP/HTTPS/SOCKS proxy. To enable experimental SOCKS proxy, specify a proper scheme. For example socks5://127.0.0.1:1080/",
+      "takes_arg": true,
+      "arg_name": "proxy",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Explain what is going on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nfo"
+      ],
+      "description": "Create a NFO file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-nfo"
+      ],
+      "description": "Download only NFO if used with --nfo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-audio"
+      ],
+      "description": "Only download audio if audio and video is separated",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-video"
+      ],
+      "description": "Only download video if audio and video is separated",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quality"
+      ],
+      "description": "Choose what format to download based on bitrate/video resolution. It will download the best format by default",
+      "takes_arg": true,
+      "arg_name": "quality",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Q",
+        "--flexible-quality"
+      ],
+      "description": "Allow given quality (as above) to differ by an amount",
+      "takes_arg": true,
+      "arg_name": "amount",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--preferred"
+      ],
+      "description": "Preferred download method (dash, hls, or http)",
+      "takes_arg": true,
+      "arg_name": "preferred",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-quality"
+      ],
+      "description": "List the quality for a video",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stream-priority"
+      ],
+      "description": "If two streams have the same quality, choose the one you prefer",
+      "takes_arg": true,
+      "arg_name": "dash,hls,http",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format-preferred"
+      ],
+      "description": "Choose the format you prefer, use --list-quality to show which one to choose from",
+      "takes_arg": true,
+      "arg_name": "h264,h264-51",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--audio-language"
+      ],
+      "description": "Choose the language of the audio (it can override the default one), use --list-quality to show which one to choose from",
+      "takes_arg": true,
+      "arg_name": "AUDIO_LANGUAGE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--audio-role"
+      ],
+      "description": "Choose the role of the audio (it can override the default one), use --list-quality to show which one to choose from",
+      "takes_arg": true,
+      "arg_name": "AUDIO_ROLE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--subtitle"
+      ],
+      "description": "Download subtitle from the site if available",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--merge-subtitle"
+      ],
+      "description": "Merge subtitle with video/audio file with corresponding ISO639-3 language code. This invokes --remux automatically",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-subtitle"
+      ],
+      "description": "Download only subtitle if its used with -S",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--require-subtitle"
+      ],
+      "description": "Download only if a subtitle is available",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--all-subtitles"
+      ],
+      "description": "Download all available subtitles for the video",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--raw-subtitles"
+      ],
+      "description": "Also download the subtitles in their native format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--convert-subtitle-colors"
+      ],
+      "description": "Converts the color information in subtitles, to <font color=\"\"> tags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--all-episodes"
+      ],
+      "description": "Try to download all episodes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--all-last"
+      ],
+      "description": "Get last NN episodes instead of all episodes",
+      "takes_arg": true,
+      "arg_name": "NN",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-clips"
+      ],
+      "description": "Include clips from websites when using -A",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cmore-operatorlist"
+      ],
+      "description": "Show operatorlist for cmore",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cmore-operator"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "operator",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-remux"
+      ],
+      "description": "Do not automatically remux to mp4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-merge"
+      ],
+      "description": "Do not automatically merge video, audio and possibly also subtitle(s) together",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-postprocess"
+      ],
+      "description": "Do not postprocess anything",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--keep-original"
+      ],
+      "description": "Do postprocessing while also keeping original files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-format"
+      ],
+      "description": "Format you want resulting file in (mkv or mp4), mp4 is default",
+      "takes_arg": true,
+      "arg_name": "mp4,mkv",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "urls",
+      "description": "URLs for the videos you want to download",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

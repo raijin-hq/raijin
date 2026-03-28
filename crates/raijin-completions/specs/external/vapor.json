@@ -1,0 +1,214 @@
+{
+  "name": "vapor",
+  "aliases": [],
+  "description": "Vapor Toolbox (Server-side Swift web framework)",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Builds an app in the console",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Generates a new app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--template",
+            "-T"
+          ],
+          "description": "The URL of a Git repository to use as a template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--branch"
+          ],
+          "description": "Template repository branch to use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "The directory to place the new project in",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-commit"
+          ],
+          "description": "Skips adding a first commit to the newly created repo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Name of project and folder",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Cleans temporary files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--update",
+            "-u"
+          ],
+          "description": "Delete Package.resolved file if it exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global",
+            "-g"
+          ],
+          "description": "Clean Xcode's global DerivedData cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--swiftpm",
+            "-s"
+          ],
+          "description": "Delete .swiftpm folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "heroku",
+      "aliases": [],
+      "description": "Commands for working with Heroku",
+      "subcommands": [
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Configures app for deployment to Heroku",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Deploys app to Heroku",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs an app from the console. Equivalent to `swift run --enable-test-discovery Run`",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "supervisor",
+      "aliases": [],
+      "description": "Commands for working with Supervisord",
+      "subcommands": [
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Creates a Supervisor entry for the current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restarts current project in Supervisor",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Updates Supervisor entry for current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "xcode",
+      "aliases": [],
+      "description": "Opens an app in Xcode",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for vapor",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": {
+        "custom": [
+          "clean",
+          "heroku",
+          "new",
+          "run",
+          "supervisor",
+          "xcode",
+          "build"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

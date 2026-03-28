@@ -1,0 +1,344 @@
+{
+  "name": "enapter",
+  "aliases": [],
+  "description": "Cross-platform device management command-line tool for Enapter Energy Management System Toolkit",
+  "subcommands": [
+    {
+      "name": "devices",
+      "aliases": [],
+      "description": "Device information and management commands",
+      "subcommands": [
+        {
+          "name": "upload",
+          "aliases": [],
+          "description": "Upload blueprint to a device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--hardware-id"
+              ],
+              "description": "Hardware ID (UCM ID) of the device; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--blueprint-dir"
+              ],
+              "description": "Directory which contains blueprint file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "Time to wait for blueprint uploading (default: 30s)",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Stream logs from a device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--hardware-id"
+              ],
+              "description": "Hardware ID (UCM ID) of the device; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upload-logs",
+          "aliases": [],
+          "description": "Show blueprint uploading logs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--hardware-id"
+              ],
+              "description": "Hardware ID (UCM ID) of the device; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "execute",
+          "aliases": [],
+          "description": "Execute command on device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--hardware-id"
+              ],
+              "description": "Hardware ID (UCM ID) of the device; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--command"
+              ],
+              "description": "Command name",
+              "takes_arg": true,
+              "arg_name": "command",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--arguments"
+              ],
+              "description": "Command arguments as JSON object",
+              "takes_arg": true,
+              "arg_name": "arguments",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--show-progress"
+              ],
+              "description": "Enable in-progress responses streaming (default: false)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "rules",
+      "aliases": [],
+      "description": "Rules information and management commands",
+      "subcommands": [
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update rule",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--rule-id"
+              ],
+              "description": "Rule ID; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--rule-path"
+              ],
+              "description": "Path to file with rule Lua code",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--execution-interval"
+              ],
+              "description": "Rule execution interval in milliseconds (default: chosen by the server)",
+              "takes_arg": true,
+              "arg_name": "interval",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stdlib-version"
+              ],
+              "description": "Version of standard library used by the rule (default: chosen by the server)",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "Time to wait for rule update (default: 30s)",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Stream logs from a rule",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--rule-id"
+              ],
+              "description": "Rule ID; can be obtained in cloud.enapter.com",
+              "takes_arg": true,
+              "arg_name": "ID",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Show help",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Shows a list of commands or help for one command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

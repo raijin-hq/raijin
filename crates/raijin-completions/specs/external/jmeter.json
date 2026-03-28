@@ -1,0 +1,338 @@
+{
+  "name": "jmeter",
+  "aliases": [],
+  "description": "Apache JMeter - 100% Java Load Testing Tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print the JMeter version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print usage information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--propfile"
+      ],
+      "description": "The jmeter property file to use",
+      "takes_arg": true,
+      "arg_name": "property",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--addprop"
+      ],
+      "description": "Additional JMeter property file(s)",
+      "takes_arg": true,
+      "arg_name": "files...",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--testfile"
+      ],
+      "description": "The JMeter test(.jmx) file to run. \"-t LAST\" will load last used file",
+      "takes_arg": true,
+      "arg_name": "testfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--logfile"
+      ],
+      "description": "The file to log samples to",
+      "takes_arg": true,
+      "arg_name": "logfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--jmeterlogconf"
+      ],
+      "description": "JMeter logging configuration file",
+      "takes_arg": true,
+      "arg_name": "jmeterlogconf",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--jmeterlogfile"
+      ],
+      "description": "JMeter run log file",
+      "takes_arg": true,
+      "arg_name": "jmeterlogfile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--nongui"
+      ],
+      "description": "Run JMeter in nongui mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--server"
+      ],
+      "description": "Run the JMeter server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--proxyScheme"
+      ],
+      "description": "Set a proxy scheme to use for the proxy server",
+      "takes_arg": true,
+      "arg_name": "proxyScheme",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--proxyHost"
+      ],
+      "description": "Set a proxy server for JMeter to use",
+      "takes_arg": true,
+      "arg_name": "server",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--proxyPort"
+      ],
+      "description": "Set proxy server port for JMeter to use",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--nonProxyHosts"
+      ],
+      "description": "Set nonproxy host list (e.g. *.apache.org|localhost)",
+      "takes_arg": true,
+      "arg_name": "nonProxyHosts",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--username"
+      ],
+      "description": "Set username for proxy server that JMeter is to use",
+      "takes_arg": true,
+      "arg_name": "username",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--password"
+      ],
+      "description": "Set password for proxy server that JMeter is to use",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J",
+        "--jmeterproperty"
+      ],
+      "description": "Define additional JMeter properties <argument>=<value>",
+      "takes_arg": true,
+      "arg_name": "jmeterproperty",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--globalproperty"
+      ],
+      "description": "Define Global properties (sent to servers) e.g. -Gport=123 or -Gglobal.properties",
+      "takes_arg": true,
+      "arg_name": "globalproperty",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--systemproperty"
+      ],
+      "description": "Define additional system properties <argument>=<value>",
+      "takes_arg": true,
+      "arg_name": "systemproperty",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--systemPropertyFile"
+      ],
+      "description": "Additional system property file(s)",
+      "takes_arg": true,
+      "arg_name": "systemPropertyFile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--forceDeleteResultFile"
+      ],
+      "description": "Force delete existing results files and web report folder",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--loglevel"
+      ],
+      "description": "[category=]level e.g. jorphan=INFO, jmeter.util=DEBUG or com.example.foo=WARN",
+      "takes_arg": true,
+      "arg_name": "loglevel",
+      "arg_template": {
+        "custom": [
+          "OFF",
+          "FATAL",
+          "WARN",
+          "INFO",
+          "DEBUG",
+          "TRACE",
+          "ALL"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--runremote"
+      ],
+      "description": "Start remote servers (as defined in remote_hosts)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--remotestart"
+      ],
+      "description": "Start these remote servers (overrides remote_hosts)",
+      "takes_arg": true,
+      "arg_name": "servers",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--homedir"
+      ],
+      "description": "The JMeter home directory to use",
+      "takes_arg": true,
+      "arg_name": "homedir",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--remoteexit"
+      ],
+      "description": "Exit the remote servers at end  of test (non-GUI)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--reportonly"
+      ],
+      "description": "Generate report dashboard only, from a test results file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--reportatendofloadtests"
+      ],
+      "description": "Generate report dashboard after load test",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--reportoutputfolder"
+      ],
+      "description": "Output folder for report dashboard",
+      "takes_arg": true,
+      "arg_name": "reportoutputfolder",
+      "arg_template": "folders",
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,535 @@
+{
+  "name": "tree",
+  "aliases": [],
+  "description": "Display directories as trees (with optional color/HTML output)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "All files are listed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "List directories only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Follow symbolic links like directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Print the full path prefix for each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Stay on current filesystem only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Descend only level directories deep",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R"
+      ],
+      "description": "Rerun tree when max dir level reached",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "List only those files that match the pattern given",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Do not list files that match the given pattern",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-case"
+      ],
+      "description": "Ignore case when pattern matching",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--matchdirs"
+      ],
+      "description": "Include directory names in -P pattern matching",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noreport"
+      ],
+      "description": "Turn off file/directory count at end of tree listing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--charset"
+      ],
+      "description": "Use charset X for terminal/HTML and indentation line output",
+      "takes_arg": true,
+      "arg_name": "charset",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filelimit"
+      ],
+      "description": "Do not descend dirs with more than # files in them",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timefmt"
+      ],
+      "description": "Print and format time according to the format <f>",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Output to file instead of stdout",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "Print non-printable characters as '?'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N"
+      ],
+      "description": "Print non-printable characters as is",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Q"
+      ],
+      "description": "Quote filenames with double quotes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Print the protections for each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Displays file owner or UID number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Displays file group owner or GID number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Print the size in bytes of each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Print the size in a more human readable way",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--si"
+      ],
+      "description": "Like -h but use SI units (powers of 1000) instead",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--du"
+      ],
+      "description": "For each directory report its size as the accumulation of sizes of all its files and sub-directories (and their files, and so on). The total amount of used space is also given in the final report (like the 'du -c' command.) This option requires tree to read the entire directory tree before emitting it, see BUGS AND NOTES below. Implies -s",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Print the date of the last modification time or if -c is used, the last status change time for the file listed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Appends '/', '=', '*', '@', '|' or '>' as per ls -F",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inodes"
+      ],
+      "description": "Print inode number of each file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--device"
+      ],
+      "description": "Print device ID number to which each file belongs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Sort files alphanumerically by version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Sort files by last modification time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Sort files by last status change time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U"
+      ],
+      "description": "Leave files unsorted",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Reverse the order of the sort",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dirsfirst"
+      ],
+      "description": "List directories before files (-U disables)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": "Select sort",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "name",
+          "version",
+          "size",
+          "mtime",
+          "ctime"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Don't print indentation lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A"
+      ],
+      "description": "Print ANSI lines graphic indentation lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Print with CP437 (console) graphics indentation lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Turn colorization off always (-C overrides)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C"
+      ],
+      "description": "Turn colorization on always",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X"
+      ],
+      "description": "Prints out an XML representation of the tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J"
+      ],
+      "description": "Prints out an JSON representation of the tree",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H"
+      ],
+      "description": "Prints out HTML format with baseHREF as top directory",
+      "takes_arg": true,
+      "arg_name": "baseHREF",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Replace the default HTML title and H1 header with string",
+      "takes_arg": true,
+      "arg_name": "title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nolinks"
+      ],
+      "description": "Turn off hyperlinks in HTML output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fromfile"
+      ],
+      "description": "Reads paths from files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Print usage and this help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--"
+      ],
+      "description": "Options processing terminator",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

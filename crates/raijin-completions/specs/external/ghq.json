@@ -1,0 +1,261 @@
+{
+  "name": "ghq",
+  "aliases": [],
+  "description": "'ghq' provides a way to organize remote repository clones, like go get does. When you clone a remote repository by ghq get, ghq makes a directory under a specific root directory (by default ~/ghq) using the remote repository URL’s host and path",
+  "subcommands": [
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Clone/sync with a remote repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-u",
+            "--update"
+          ],
+          "description": "Update local repository if cloned already (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Clone with SSH (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shallow"
+          ],
+          "description": "Do a shallow clone (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--look"
+          ],
+          "description": "Look after get (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vcs"
+          ],
+          "description": "Specify vcs backend for cloning",
+          "takes_arg": true,
+          "arg_name": "vcs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Clone or update silently (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-recursive"
+          ],
+          "description": "Prevent recursive fetching (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--branch"
+          ],
+          "description": "Specify branch name. This flag implies --single-branch on Git",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--parallel"
+          ],
+          "description": "Import parallelly (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bare"
+          ],
+          "description": "Do a bare clone (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "<repository URL>|<project>|<user>/<project>|<host>/<user>/<project>",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List local repositories",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e",
+            "--exact"
+          ],
+          "description": "Perform an exact match (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vcs"
+          ],
+          "description": "Specify vcs backend for matching",
+          "takes_arg": true,
+          "arg_name": "vcs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--full-path"
+          ],
+          "description": "Print full paths (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unique"
+          ],
+          "description": "Print unique subpaths (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "query",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "root",
+      "aliases": [],
+      "description": "Show repositories' root",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Show all roots (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--vcs"
+          ],
+          "description": "Specify vcs backend explicitly",
+          "takes_arg": true,
+          "arg_name": "vcs",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "<project>|<user>/<project>|<host>/<user>/<project>",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help",
+        "h",
+        "help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

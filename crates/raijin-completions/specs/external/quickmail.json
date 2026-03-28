@@ -1,0 +1,278 @@
+{
+  "name": "quickmail",
+  "aliases": [],
+  "description": "Quickmail is a terminal-based solution to send mails",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialise cli",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Get help regarding init command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "aliases": [],
+      "description": "Clear the files stored locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Get help regarding clear command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-j",
+            "--justdoit"
+          ],
+          "description": "Clear entire cli storage including token",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "send",
+      "aliases": [],
+      "description": "Send mail",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Get help regarding send command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--receiver"
+          ],
+          "description": "Receiver's email address",
+          "takes_arg": true,
+          "arg_name": "receiver",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sub",
+            "--subject"
+          ],
+          "description": "Subject of mail",
+          "takes_arg": true,
+          "arg_name": "Subject",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--template"
+          ],
+          "description": "Templates for mail body",
+          "takes_arg": true,
+          "arg_name": "Template",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--body"
+          ],
+          "description": "Body of the mail",
+          "takes_arg": true,
+          "arg_name": "Body",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--attachment"
+          ],
+          "description": "Path to attachment file",
+          "takes_arg": true,
+          "arg_name": "Attachment file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--lessgo"
+          ],
+          "description": "Skip confirmation, and send mail",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "template",
+      "aliases": [],
+      "description": "Manage templates",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a new template",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Get help regarding template add subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n"
+              ],
+              "description": "Set template id",
+              "takes_arg": true,
+              "arg_name": "Template id",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "listall",
+          "aliases": [],
+          "description": "List all templates stored",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Get help regarding template listall subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit any particular template",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Get help regarding template edit subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n"
+              ],
+              "description": "Edit template by id",
+              "takes_arg": true,
+              "arg_name": "Template id",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Get help regarding template command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output cli version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output cli help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

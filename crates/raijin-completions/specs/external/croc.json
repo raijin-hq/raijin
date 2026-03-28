@@ -1,0 +1,359 @@
+{
+  "name": "croc",
+  "aliases": [],
+  "description": "Croc is a tool that allows any two computers to simply and securely transfer files and folders",
+  "subcommands": [
+    {
+      "name": "send",
+      "aliases": [],
+      "description": "Send file(s), or folder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--code",
+            "-c"
+          ],
+          "description": "Codephrase used to connect to relay",
+          "takes_arg": true,
+          "arg_name": "codephrase",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hash"
+          ],
+          "description": "Hash algorithm",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "xxhash",
+              "imohash",
+              "md5"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--text",
+            "-t"
+          ],
+          "description": "Send some text",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-local"
+          ],
+          "description": "Disable local relay when sending",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-multi"
+          ],
+          "description": "Disable multiplexing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ports"
+          ],
+          "description": "Ports of the local relay",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "relay",
+      "aliases": [],
+      "description": "Start your own relay",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Host of the relay",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ports"
+          ],
+          "description": "Ports of the local relay",
+          "takes_arg": true,
+          "arg_name": "ports",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [
+        "h"
+      ],
+      "description": "Shows a list of commands or help for one command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for croc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--internal-dns"
+      ],
+      "description": "Use a built-in DNS stub resolver rather than the host operating system",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remember"
+      ],
+      "description": "Save these settings to reuse next time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Toggle debug mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--yes"
+      ],
+      "description": "Automatically agree to all prompts",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdout"
+      ],
+      "description": "Redirect file to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-compress"
+      ],
+      "description": "Disable compression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ask"
+      ],
+      "description": "Make sure sender and recipient are prompted",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--local"
+      ],
+      "description": "Force to use only local connections",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-stdin"
+      ],
+      "description": "Ignore piped stdin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--overwrite"
+      ],
+      "description": "Do not prompt to overwrite",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--curve"
+      ],
+      "description": "Choose an encryption curve",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "p521",
+          "p256",
+          "p384",
+          "siec"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ip"
+      ],
+      "description": "Set sender ip if known",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--relay"
+      ],
+      "description": "Address of the relay",
+      "takes_arg": true,
+      "arg_name": "ipv4 address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--relay6"
+      ],
+      "description": "Ipv6 address of the relay",
+      "takes_arg": true,
+      "arg_name": "ipv6 address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--out"
+      ],
+      "description": "Specify an output folder to receive the file",
+      "takes_arg": true,
+      "arg_name": "output folder",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pass"
+      ],
+      "description": "Password for the relay (default: \"pass123\")",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--socks5"
+      ],
+      "description": "Add a socks5 proxy",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--throttleUpload"
+      ],
+      "description": "Throttle the upload speed e.g. 500k",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "secret-code",
+      "description": "Receive a file using code",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

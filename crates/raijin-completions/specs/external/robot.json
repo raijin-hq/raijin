@@ -1,0 +1,743 @@
+{
+  "name": "robot",
+  "aliases": [],
+  "description": "CLI for running Robot Framework automation tests",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "-?",
+        "--help"
+      ],
+      "description": "Print usage instructions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rpa"
+      ],
+      "description": "Turn on the generic automation mode. Mainly affects terminology so that \"test\" is replaced with \"task\" in logs and reports",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--extension"
+      ],
+      "description": "Parse only files with this extension when executing a directory",
+      "takes_arg": true,
+      "arg_name": "extension",
+      "arg_template": {
+        "custom": [
+          "txt",
+          "robot:txt"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--name"
+      ],
+      "description": "Set a name of the top level suite",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--doc"
+      ],
+      "description": "Set a documentation of the top level suite",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M",
+        "--metadata"
+      ],
+      "description": "Set metadata of the top level suite",
+      "takes_arg": true,
+      "arg_name": "name:value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--settag"
+      ],
+      "description": "Sets given tag to all executed tests",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--test"
+      ],
+      "description": "Select tests by name or by long name containing also parent suite name like `Parent.Test`",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--task"
+      ],
+      "description": "Alias to --test. Especially applicable with --rpa",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--suite"
+      ],
+      "description": "Select suites by name",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--include"
+      ],
+      "description": "Select test cases by tag",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--exclude"
+      ],
+      "description": "Select test cases not to run by tag",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R",
+        "--rerunfailed"
+      ],
+      "description": "Select failed tests from an earlier output file to be re-executed",
+      "takes_arg": true,
+      "arg_name": "output file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--rerunfailedsuites"
+      ],
+      "description": "Select failed suites from an earlier output file to be re-executed",
+      "takes_arg": true,
+      "arg_name": "output file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--runemptysuite"
+      ],
+      "description": "Executes suite even if it contains no tests",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip"
+      ],
+      "description": "Tests having given tag will be skipped",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skiponfailure"
+      ],
+      "description": "Tests having given tag will be skipped if they fail",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--variable"
+      ],
+      "description": "Set variables in the test data",
+      "takes_arg": true,
+      "arg_name": "variable",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--variablefile"
+      ],
+      "description": "Python or YAML file file to read variables from",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--outputdir"
+      ],
+      "description": "Where to create output files. The default is the directory where tests are run from",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "XML output file relative to --outputdir unless given as an absolute path. Default: output.xml",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": {
+        "custom": [
+          "output.xml"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--log"
+      ],
+      "description": "HTML log file. Can be disabled by giving a special value `NONE`. Default: log.html",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": {
+        "custom": [
+          "log.html",
+          "NONE"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--report"
+      ],
+      "description": "HTML report file. Can be disabled with `NONE` similarly as --log. Default: report.html",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": {
+        "custom": [
+          "report.html",
+          "NONE"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--xunit"
+      ],
+      "description": "XUnit compatible result file. Not created unless this option is specified",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": {
+        "custom": [
+          "xunit.xml"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--debugfile"
+      ],
+      "description": "Debug file written during execution. Not created unless this option is specified",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--timestampoutputs"
+      ],
+      "description": "Adds timestamp in a format `YYYYMMDD-hhmmss` to all generated output files between their basename and extension",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--splitlog"
+      ],
+      "description": "Split the log file into smaller pieces that open in browsers transparently",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logtitle"
+      ],
+      "description": "Title for the generated log file. The default title is `<SuiteName> Log.`",
+      "takes_arg": true,
+      "arg_name": "title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reporttitle"
+      ],
+      "description": "Title for the generated report file. The default title is `<SuiteName> Report`",
+      "takes_arg": true,
+      "arg_name": "title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reportbackground"
+      ],
+      "description": "Background colors to use in the report file. Given in format `passed:failed:skipped` where the `:skipped` part can be omitted",
+      "takes_arg": true,
+      "arg_name": "colors",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--maxerrorlines"
+      ],
+      "description": "Maximum number of error message lines to show in report when tests fail. Default is 40, minimum is 10 and `NONE` can be used to show the full message",
+      "takes_arg": true,
+      "arg_name": "lines",
+      "arg_template": {
+        "custom": [
+          "40",
+          "10",
+          "NONE"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--maxassignlength"
+      ],
+      "description": "Maximum number of characters to show in log when variables are assigned. Zero or negative values can be used to avoid showing assigned values at all. Default is 200",
+      "takes_arg": true,
+      "arg_name": "characters",
+      "arg_template": {
+        "custom": [
+          "200",
+          "0"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--loglevel"
+      ],
+      "description": "Threshold level for logging",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "TRACE",
+          "DEBUG",
+          "INFO",
+          "WARN",
+          "NONE"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--suitestatlevel"
+      ],
+      "description": "How many levels to show in `Statistics by Suite` in log and report",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tagstatinclude"
+      ],
+      "description": "Include only matching tags in `Statistics by Tag` in log and report",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tagstatexclude"
+      ],
+      "description": "Exclude matching tags from `Statistics by Tag`",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tagstatcombine"
+      ],
+      "description": "Create combined statistics based on tags. These statistics are added into `Statistics by Tag`",
+      "takes_arg": true,
+      "arg_name": "tags:name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tagdoc"
+      ],
+      "description": "Add documentation to tags matching the given pattern",
+      "takes_arg": true,
+      "arg_name": "pattern:doc",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tagstatlink"
+      ],
+      "description": "Add external links into `Statistics by Tag`. Pattern can use `*`, `?` and `[]` as wildcards",
+      "takes_arg": true,
+      "arg_name": "pattern:link:title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--expandkeywords"
+      ],
+      "description": "Matching keywords will be automatically expanded in the log file",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": {
+        "custom": [
+          "name:<pattern>",
+          "tag:<pattern>"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--removekeywords"
+      ],
+      "description": "Remove keyword data from the generated log file",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": {
+        "custom": [
+          "all",
+          "passed",
+          "for",
+          "while",
+          "wuks",
+          "name:<pattern>",
+          "tag:<pattern>"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--flattenkeywords"
+      ],
+      "description": "Flattens matching keywords in the generated log file",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": {
+        "custom": [
+          "for",
+          "while",
+          "iteration",
+          "name:<pattern>",
+          "tag:<pattern>"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--listener"
+      ],
+      "description": "A class for monitoring test execution. Gets notifications e.g. when tests start and end",
+      "takes_arg": true,
+      "arg_name": "class",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nostatusrc"
+      ],
+      "description": "Sets the return code to zero regardless of failures in test cases. Error codes are returned normally",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dryrun"
+      ],
+      "description": "Sets the return code to zero regardless of failures in test cases. Error codes are returned normally",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--exitonfailure"
+      ],
+      "description": "Stops test execution if any test fails",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exitonerror"
+      ],
+      "description": "Stops test execution if any error occurs when parsing test data, importing libraries, and so on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skipteardownonexit"
+      ],
+      "description": "Causes teardowns to be skipped if test execution is stopped prematurely",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--randomize"
+      ],
+      "description": "Randomizes the test execution order",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "all",
+          "suites",
+          "tests",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prerunmodifier"
+      ],
+      "description": "Class to programmatically modify the suite structure before execution",
+      "takes_arg": true,
+      "arg_name": "class",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prerebotmodifier"
+      ],
+      "description": "Class to programmatically modify the result model before creating reports and logs",
+      "takes_arg": true,
+      "arg_name": "class",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--console"
+      ],
+      "description": "How to report execution on the console",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "verbose",
+          "dotted",
+          "quiet",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-.",
+        "--dotted"
+      ],
+      "description": "Shortcut for `--console dotted`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet"
+      ],
+      "description": "Shortcut for `--console quiet`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--consolewidth"
+      ],
+      "description": "Width of the console output. Default is 78",
+      "takes_arg": true,
+      "arg_name": "chars",
+      "arg_template": {
+        "custom": [
+          "78"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--consolecolors"
+      ],
+      "description": "Use colors on console output or not",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "on",
+          "ansi",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-K",
+        "--consolemarkers"
+      ],
+      "description": "Show markers on the console when top level keywords in a test case end",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--pythonpath"
+      ],
+      "description": "Additional locations (directories, ZIPs) where to search libraries and other extensions when they are imported",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--argumentfile"
+      ],
+      "description": "Text file to read more arguments from. Use special path `STDIN` to read contents from the standard input stream",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "robot script",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

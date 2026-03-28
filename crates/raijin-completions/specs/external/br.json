@@ -1,0 +1,425 @@
+{
+  "name": "broot",
+  "aliases": [],
+  "description": "Broot lets you explore file hierarchies with a tree-like view, manipulate files, launch actions, and define your own shortcuts. broot is best launched as br: this shell function gives you access to more commands, especially cd. The br shell function is interactively installed on first broot launch. Flags and options can be classically passed on launch but also written in the configuration file. Each flag has a counter-flag so that you can cancel at command line a flag which has been set in the configuration file",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--dates",
+        "-d"
+      ],
+      "description": "Show the last modified date of files and directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-dates",
+        "-D"
+      ],
+      "description": "Don't show the last modified date",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-folders",
+        "-f"
+      ],
+      "description": "Only show folders",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-only-folders",
+        "-F"
+      ],
+      "description": "Show folders and files alike",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-root-fs"
+      ],
+      "description": "Show filesystem info on top",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-git-info",
+        "-g"
+      ],
+      "description": "Show git statuses on files and stats of repository",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-show-git-info",
+        "-G"
+      ],
+      "description": "Don't show git statuses on files nor stats",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--git-status"
+      ],
+      "description": "Only show files having an interesting git status, including hidden ones",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden",
+        "-h"
+      ],
+      "description": "Show hidden files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-hidden",
+        "-H"
+      ],
+      "description": "Don't show hidden files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-gitignored",
+        "-i"
+      ],
+      "description": "Show files which should be ignored according to git",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-show-gitignored",
+        "-I"
+      ],
+      "description": "Don't show gitignored files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--permissions",
+        "-p"
+      ],
+      "description": "Show permissions with owner and group",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-permissions",
+        "-P"
+      ],
+      "description": "Don't show permissions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sizes",
+        "-s"
+      ],
+      "description": "Show the sizes of files and directories. When this mode is on, children aren't shown so that the biggest entries at the selected level can be sorted first",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-sizes",
+        "-S"
+      ],
+      "description": "Don't show sizes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort-by-count"
+      ],
+      "description": "Sort by count (only show one level of the tree)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort-by-date"
+      ],
+      "description": "Sort by date (only show one level of the tree)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort-by-size"
+      ],
+      "description": "Sort by size (only show one level of the tree)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--whale-spotting",
+        "-w"
+      ],
+      "description": "Sort by size, show ignored and hidden files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-sort"
+      ],
+      "description": "Don't sort",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trim-root",
+        "-t"
+      ],
+      "description": "Trim the root: remove elements which would exceed the screen size. This removes the scrollbar",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-trim-root",
+        "-T"
+      ],
+      "description": "Don't trim the root (still trim the deeper levels). A scrollbar may be used when there are too many elements to show on screen",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--install"
+      ],
+      "description": "Install or reinstall the br shell function",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--get-root"
+      ],
+      "description": "Ask for the current root of the remote broot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Controls styling of the output (default: auto). If set to auto, all styling is removed when output is piped",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "yes",
+          "no",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Prints a help page, with more or less the same content as this man page",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Prints the version of broot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--outcmd"
+      ],
+      "description": "Where to write a command if broot produces one",
+      "takes_arg": true,
+      "arg_name": "cmd-export-path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cmd",
+        "-c"
+      ],
+      "description": "Semicolon separated commands to execute on start of broot",
+      "takes_arg": true,
+      "arg_name": "commands",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--conf"
+      ],
+      "description": "Semicolon separated paths to specific config files",
+      "takes_arg": true,
+      "arg_name": "conf",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--height"
+      ],
+      "description": "Height to use if you don't want to fill the screen or for file export (by default the terminal height is used)",
+      "takes_arg": true,
+      "arg_name": "height",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--out",
+        "-o"
+      ],
+      "description": "Where to write the produced path, if any",
+      "takes_arg": true,
+      "arg_name": "file-export-path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--set-install-state"
+      ],
+      "description": "Set the installation state. This is mostly useful in installation scripts to override the normal installation process",
+      "takes_arg": true,
+      "arg_name": "state",
+      "arg_template": {
+        "custom": [
+          "undefined",
+          "refused",
+          "installed"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-shell-function"
+      ],
+      "description": "Print to stdout the br function for the given shell. This can be used in your own installation process overriden the standard one",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": {
+        "custom": [
+          "bash",
+          "fish",
+          "zsh"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--listen"
+      ],
+      "description": "Listen for commands",
+      "takes_arg": true,
+      "arg_name": "listen",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--send"
+      ],
+      "description": "Send commands to a remote broot then quits",
+      "takes_arg": true,
+      "arg_name": "send",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "ROOT",
+      "description": "Sets the root directory",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

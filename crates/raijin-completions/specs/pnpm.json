@@ -1,0 +1,2779 @@
+{
+  "name": "pnpm",
+  "aliases": [],
+  "description": "Fast, disk space efficient package manager",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Installs a package and any packages that it depends on. By default, any new package is installed as a production dependency",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--offline"
+          ],
+          "description": "If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefer-offline"
+          ],
+          "description": "If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-scripts"
+          ],
+          "description": "Do not execute any scripts defined in the project package.json and its dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reporter"
+          ],
+          "description": "Allows you to choose the reporter that will log debug info to the terminal about the installation progress",
+          "takes_arg": true,
+          "arg_name": "Reporter Type",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "default",
+              "append-only",
+              "ndjson"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--save-prod"
+          ],
+          "description": "Install the specified packages as regular dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--save-dev"
+          ],
+          "description": "Install the specified packages as devDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-O",
+            "--save-optional"
+          ],
+          "description": "Install the specified packages as optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-save"
+          ],
+          "description": "Prevents saving to `dependencies`",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-E",
+            "--save-exact"
+          ],
+          "description": "Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save-peer"
+          ],
+          "description": "Using --save-peer will add one or more packages to peerDependencies and install them as dev dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-workspace-root-check",
+            "-W#"
+          ],
+          "description": "Adding a new dependency to the root workspace package fails, unless the --ignore-workspace-root-check or -W flag is used.\nFor instance, pnpm add debug -W",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global",
+            "-g"
+          ],
+          "description": "Install a package globally",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace"
+          ],
+          "description": "Only adds the new dependency if it is found in the workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [
+        "i"
+      ],
+      "description": "Pnpm install is used to install all dependencies for a project.\nIn a CI environment, installation fails if a lockfile is present but needs an update.\nInside a workspace, pnpm install installs all dependencies in all the projects.\nIf you want to disable this behavior, set the recursive-install setting to false",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "install-test",
+      "aliases": [
+        "it"
+      ],
+      "description": "Runs pnpm install followed immediately by pnpm test. It takes exactly the same arguments as pnpm install",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--offline"
+          ],
+          "description": "If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefer-offline"
+          ],
+          "description": "If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-scripts"
+          ],
+          "description": "Do not execute any scripts defined in the project package.json and its dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reporter"
+          ],
+          "description": "Allows you to choose the reporter that will log debug info to the terminal about the installation progress",
+          "takes_arg": true,
+          "arg_name": "Reporter Type",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "default",
+              "append-only",
+              "ndjson"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--save-prod"
+          ],
+          "description": "Pnpm will not install any package listed in devDependencies if the NODE_ENV environment variable is set to production.\nUse this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--save-dev"
+          ],
+          "description": "Only devDependencies are installed regardless of the NODE_ENV",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "OptionalDependencies are not installed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lockfile-only"
+          ],
+          "description": "When used, only updates pnpm-lock.yaml and package.json instead of checking node_modules and downloading dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--frozen-lockfile"
+          ],
+          "description": "If true, pnpm doesn't generate a lockfile and fails to install if the lockfile is out of sync with the manifest / an update is needed or no lockfile is present",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-store-server"
+          ],
+          "description": "Starts a store server in the background. The store server will keep running after installation is done. To stop the store server, run pnpm server stop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shamefully-hoist"
+          ],
+          "description": "Creates a flat node_modules structure, similar to that of npm or yarn. WARNING: This is highly discouraged",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [
+        "upgrade",
+        "up"
+      ],
+      "description": "Pnpm update updates packages to their latest version based on the specified range.\nWhen used without arguments, updates all dependencies. You can use patterns to update specific dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Concurrently runs update in all subdirectories with a package.json (excluding node_modules)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--latest",
+            "-L"
+          ],
+          "description": "Ignores the version range specified in package.json. Instead, the version specified by the latest tag will be used (potentially upgrading the packages across major versions)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "Update global packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--save-prod"
+          ],
+          "description": "Only update packages in dependencies and optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--save-dev"
+          ],
+          "description": "Only update packages in devDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Don't update packages in optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive",
+            "-i"
+          ],
+          "description": "Show outdated dependencies and select which ones to update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace"
+          ],
+          "description": "Tries to link all packages from the workspace. Versions are updated to match the versions of packages inside the workspace.\nIf specific packages are updated, the command will fail if any of the updated dependencies are not found inside the workspace. For instance, the following command fails if express is not a workspace package: pnpm up -r --workspace express",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [
+        "rm",
+        "uninstall",
+        "un"
+      ],
+      "description": "Removes packages from node_modules and from the project's package.json",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "When used inside a workspace, removes a dependency (or dependencies) from every workspace package.\nWhen used not inside a workspace, removes a dependency (or dependencies) from every package found in subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "Remove a global package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--save-prod"
+          ],
+          "description": "Only remove the dependency from dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--save-dev"
+          ],
+          "description": "Only remove the dependency from devDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save-optional",
+            "-O"
+          ],
+          "description": "Only remove the dependency from optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "aliases": [
+        "ln"
+      ],
+      "description": "Makes the current local package accessible system-wide, or in another location",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-C"
+          ],
+          "description": "Changes the link location to <dir>",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "Links the specified package (<pkg>) from global node_modules to the node_nodules of package from where this command was executed or specified via --dir option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Unlinks a system-wide package (inverse of pnpm link).\nIf called without arguments, all linked dependencies will be unlinked.\nThis is similar to yarn unlink, except pnpm re-installs the dependency after removing the external link",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Unlink in every package found in subdirectories or in every workspace package, when executed inside a workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Pnpm import generates a pnpm-lock.yaml from an npm package-lock.json (or npm-shrinkwrap.json) file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "rebuild",
+      "aliases": [
+        "rb"
+      ],
+      "description": "Rebuild a package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "This command runs the pnpm rebuild command in every package of the monorepo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        },
+        {
+          "name": "arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prune",
+      "aliases": [],
+      "description": "Removes unnecessary packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--prod"
+          ],
+          "description": "Remove the packages specified in devDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Remove the packages specified in optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fetch",
+      "aliases": [],
+      "description": "EXPERIMENTAL FEATURE: Fetch packages from a lockfile into virtual store, package manifest is ignored: https://pnpm.io/cli/fetch",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--prod"
+          ],
+          "description": "Development packages will not be fetched",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Only development packages will be fetched",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "patch",
+      "aliases": [],
+      "description": "This command will cause a package to be extracted in a temporary directory intended to be editable at will",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--edit-dir"
+          ],
+          "description": "The package that needs to be patched will be extracted to this directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "patch-commit",
+      "aliases": [],
+      "description": "Generate a patch out of a directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "dir",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "patch-remove",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "audit",
+      "aliases": [],
+      "description": "Checks for known security issues with the installed packages.\nIf security issues are found, try to update your dependencies via pnpm update.\nIf a simple update does not fix all the issues, use overrides to force versions that are not vulnerable.\nFor instance, if lodash@<2.1.0 is vulnerable, use overrides to force lodash@^2.1.0.\nDetails at: https://pnpm.io/cli/audit",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--audit-level"
+          ],
+          "description": "Only print advisories with severity greater than or equal to <severity>",
+          "takes_arg": true,
+          "arg_name": "Audit Level",
+          "arg_template": {
+            "custom": [
+              "low",
+              "moderate",
+              "high",
+              "critical"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix"
+          ],
+          "description": "Add overrides to the package.json file in order to force non-vulnerable versions of the dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output audit report in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev",
+            "-D"
+          ],
+          "description": "Only audit dev dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod",
+            "-P"
+          ],
+          "description": "Only audit production dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Don't audit optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-registry-errors"
+          ],
+          "description": "If the registry responds with a non-200 status code, the process should exit with 0. So the process will fail only if the registry actually successfully responds with found vulnerabilities",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "ls"
+      ],
+      "description": "This command will output all the versions of packages that are installed, as well as their dependencies, in a tree-structure.\nPositional arguments are name-pattern@version-range identifiers, which will limit the results to only the packages named. For example, pnpm list \"babel-*\" \"eslint-*\" semver@5",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Perform command on every package in subdirectories or on every workspace package, when executed inside a workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Log output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--long"
+          ],
+          "description": "Show extended information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parseable"
+          ],
+          "description": "Outputs package directories in a parseable format instead of their tree view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "List packages in the global install directory instead of in the current project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--depth"
+          ],
+          "description": "Max display depth of the dependency tree.\npnpm ls --depth 0 will list direct dependencies only. pnpm ls --depth -1 will list projects only. Useful inside a workspace when used with the -r option",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev",
+            "-D"
+          ],
+          "description": "Only list dev dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod",
+            "-P"
+          ],
+          "description": "Only list production dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Don't list optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "outdated",
+      "aliases": [],
+      "description": "Checks for outdated packages. The check can be limited to a subset of the installed packages by providing arguments (patterns are supported)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Check for outdated dependencies in every package found in subdirectories, or in every workspace package when executed inside a workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--long"
+          ],
+          "description": "Print details",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "List outdated global packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-table"
+          ],
+          "description": "Prints the outdated dependencies in a list format instead of the default table. Good for small consoles",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compatible"
+          ],
+          "description": "Prints only versions that satisfy specifications in package.json",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev",
+            "-D"
+          ],
+          "description": "Only list dev dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod",
+            "-P"
+          ],
+          "description": "Only list production dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-optional"
+          ],
+          "description": "Doesn't check optionalDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "why",
+      "aliases": [],
+      "description": "Shows all packages that depend on the specified package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Show the dependency tree for the specified package on every package in subdirectories or on every workspace package when executed inside a workspace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Log output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--long"
+          ],
+          "description": "Show verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parseable"
+          ],
+          "description": "Show parseable output instead of tree view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "List packages in the global install directory instead of in the current project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev",
+            "-D"
+          ],
+          "description": "Only display the dependency tree for packages in devDependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod",
+            "-P"
+          ],
+          "description": "Only display the dependency tree for packages in dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Scripts",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [
+        "run-script"
+      ],
+      "description": "Runs a script defined in the package's manifest file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--recursive"
+          ],
+          "description": "This runs an arbitrary command from each package's \"scripts\" object. If a package doesn't have the command, it is skipped. If none of the packages have the command, the command fails",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--if-present"
+          ],
+          "description": "You can use the --if-present flag to avoid exiting with a non-zero exit code when the script is undefined. This lets you run potentially undefined scripts without breaking the execution chain",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Completely disregard concurrency and topological sorting, running a given script immediately in all matching packages with prefixed streaming output. This is the preferred flag for long-running processes over many packages, for instance, a lengthy build process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stream"
+          ],
+          "description": "Stream output from child processes immediately, prefixed with the originating package directory. This allows output from different packages to be interleaved",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Scripts",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a shell command in scope of a project.\nnode_modules/.bin is added to the PATH, so pnpm exec allows executing commands of dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--recursive"
+          ],
+          "description": "Execute the shell command in every project of the workspace.\nThe name of the current package is available through the environment variable PNPM_PACKAGE_NAME (supported from pnpm v2.22.0 onwards)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Completely disregard concurrency and topological sorting, running a given script immediately in all matching packages with prefixed streaming output. This is the preferred flag for long-running processes over many packages, for instance, a lengthy build process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Scripts",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [
+        "t",
+        "tst"
+      ],
+      "description": "Runs an arbitrary command specified in the package's test property of its scripts object.\nThe intended usage of the property is to specify a command that runs unit or integration testing for your program",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Runs an arbitrary command specified in the package's start property of its scripts object. If no start property is specified on the scripts object, it will attempt to run node server.js as a default, failing if neither are present.\nThe intended usage of the property is to specify a command that starts your program",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Publishes a package to the registry.\nWhen publishing a package inside a workspace, the LICENSE file from the root of the workspace is packed with the package (unless the package has a license of its own).\nYou may override some fields before publish, using the publishConfig field in package.json. You also can use the publishConfig.directory to customize the published subdirectory (usually using third party build tools).\nWhen running this command recursively (pnpm -r publish), pnpm will publish all the packages that have versions not yet published to the registry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--tag"
+          ],
+          "description": "Publishes the package with the given tag. By default, pnpm publish updates the latest tag",
+          "takes_arg": true,
+          "arg_name": "<tag>",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Does everything a publish would do except actually publishing to the registry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-scripts"
+          ],
+          "description": "Ignores any publish related lifecycle scripts (prepublishOnly, postpublish, and the like)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-git-checks"
+          ],
+          "description": "Don't check if current branch is your publish branch, clean, and up-to-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--access"
+          ],
+          "description": "Tells the registry whether the published package should be public or restricted",
+          "takes_arg": true,
+          "arg_name": "Type",
+          "arg_template": {
+            "custom": [
+              "public",
+              "private"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Try to publish packages even if their current version is already found in the registry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--report-summary"
+          ],
+          "description": "Save the list of published packages to pnpm-publish-summary.json. Useful when some other tooling is used to report the list of published packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "Branch",
+          "description": null,
+          "template": "git_branches",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "recursive",
+      "aliases": [
+        "m",
+        "multi",
+        "-r"
+      ],
+      "description": "Runs a pnpm command recursively on all subdirectories in the package or every available workspace",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Installs a package and any packages that it depends on. By default, any new package is installed as a production dependency",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prefer-offline"
+              ],
+              "description": "If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-scripts"
+              ],
+              "description": "Do not execute any scripts defined in the project package.json and its dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--reporter"
+              ],
+              "description": "Allows you to choose the reporter that will log debug info to the terminal about the installation progress",
+              "takes_arg": true,
+              "arg_name": "Reporter Type",
+              "arg_template": {
+                "custom": [
+                  "silent",
+                  "default",
+                  "append-only",
+                  "ndjson"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-P",
+                "--save-prod"
+              ],
+              "description": "Install the specified packages as regular dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--save-dev"
+              ],
+              "description": "Install the specified packages as devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-O",
+                "--save-optional"
+              ],
+              "description": "Install the specified packages as optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-save"
+              ],
+              "description": "Prevents saving to `dependencies`",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-E",
+                "--save-exact"
+              ],
+              "description": "Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--save-peer"
+              ],
+              "description": "Using --save-peer will add one or more packages to peerDependencies and install them as dev dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-workspace-root-check",
+                "-W#"
+              ],
+              "description": "Adding a new dependency to the root workspace package fails, unless the --ignore-workspace-root-check or -W flag is used.\nFor instance, pnpm add debug -W",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Install a package globally",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--workspace"
+              ],
+              "description": "Only adds the new dependency if it is found in the workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "package",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "install",
+          "aliases": [
+            "i"
+          ],
+          "description": "Pnpm install is used to install all dependencies for a project.\nIn a CI environment, installation fails if a lockfile is present but needs an update.\nInside a workspace, pnpm install installs all dependencies in all the projects.\nIf you want to disable this behavior, set the recursive-install setting to false",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "package",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "aliases": [
+            "upgrade",
+            "up"
+          ],
+          "description": "Pnpm update updates packages to their latest version based on the specified range.\nWhen used without arguments, updates all dependencies. You can use patterns to update specific dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "Concurrently runs update in all subdirectories with a package.json (excluding node_modules)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--latest",
+                "-L"
+              ],
+              "description": "Ignores the version range specified in package.json. Instead, the version specified by the latest tag will be used (potentially upgrading the packages across major versions)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global"
+              ],
+              "description": "Update global packages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-P",
+                "--save-prod"
+              ],
+              "description": "Only update packages in dependencies and optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--save-dev"
+              ],
+              "description": "Only update packages in devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-optional"
+              ],
+              "description": "Don't update packages in optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--interactive",
+                "-i"
+              ],
+              "description": "Show outdated dependencies and select which ones to update",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--workspace"
+              ],
+              "description": "Tries to link all packages from the workspace. Versions are updated to match the versions of packages inside the workspace.\nIf specific packages are updated, the command will fail if any of the updated dependencies are not found inside the workspace. For instance, the following command fails if express is not a workspace package: pnpm up -r --workspace express",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Package",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [
+            "rm",
+            "uninstall",
+            "un"
+          ],
+          "description": "Removes packages from node_modules and from the project's package.json",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "When used inside a workspace, removes a dependency (or dependencies) from every workspace package.\nWhen used not inside a workspace, removes a dependency (or dependencies) from every package found in subdirectories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global"
+              ],
+              "description": "Remove a global package",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-P",
+                "--save-prod"
+              ],
+              "description": "Only remove the dependency from dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--save-dev"
+              ],
+              "description": "Only remove the dependency from devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--save-optional",
+                "-O"
+              ],
+              "description": "Only remove the dependency from optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Package",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "unlink",
+          "aliases": [],
+          "description": "Unlinks a system-wide package (inverse of pnpm link).\nIf called without arguments, all linked dependencies will be unlinked.\nThis is similar to yarn unlink, except pnpm re-installs the dependency after removing the external link",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "Unlink in every package found in subdirectories or in every workspace package, when executed inside a workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Package",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            },
+            {
+              "name": "arg",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rebuild",
+          "aliases": [
+            "rb"
+          ],
+          "description": "Rebuild a package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "This command runs the pnpm rebuild command in every package of the monorepo",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Package",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            },
+            {
+              "name": "arg",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "This command will output all the versions of packages that are installed, as well as their dependencies, in a tree-structure.\nPositional arguments are name-pattern@version-range identifiers, which will limit the results to only the packages named. For example, pnpm list \"babel-*\" \"eslint-*\" semver@5",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "Perform command on every package in subdirectories or on every workspace package, when executed inside a workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Log output in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--long"
+              ],
+              "description": "Show extended information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--parseable"
+              ],
+              "description": "Outputs package directories in a parseable format instead of their tree view",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global"
+              ],
+              "description": "List packages in the global install directory instead of in the current project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--depth"
+              ],
+              "description": "Max display depth of the dependency tree.\npnpm ls --depth 0 will list direct dependencies only. pnpm ls --depth -1 will list projects only. Useful inside a workspace when used with the -r option",
+              "takes_arg": true,
+              "arg_name": "number",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dev",
+                "-D"
+              ],
+              "description": "Only list dev dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod",
+                "-P"
+              ],
+              "description": "Only list production dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-optional"
+              ],
+              "description": "Don't list optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "outdated",
+          "aliases": [],
+          "description": "Checks for outdated packages. The check can be limited to a subset of the installed packages by providing arguments (patterns are supported)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "Check for outdated dependencies in every package found in subdirectories, or in every workspace package when executed inside a workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--long"
+              ],
+              "description": "Print details",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global"
+              ],
+              "description": "List outdated global packages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-table"
+              ],
+              "description": "Prints the outdated dependencies in a list format instead of the default table. Good for small consoles",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--compatible"
+              ],
+              "description": "Prints only versions that satisfy specifications in package.json",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dev",
+                "-D"
+              ],
+              "description": "Only list dev dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod",
+                "-P"
+              ],
+              "description": "Only list production dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-optional"
+              ],
+              "description": "Doesn't check optionalDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "why",
+          "aliases": [],
+          "description": "Shows all packages that depend on the specified package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recursive",
+                "-r"
+              ],
+              "description": "Show the dependency tree for the specified package on every package in subdirectories or on every workspace package when executed inside a workspace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Log output in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--long"
+              ],
+              "description": "Show verbose output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--parseable"
+              ],
+              "description": "Show parseable output instead of tree view",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global"
+              ],
+              "description": "List packages in the global install directory instead of in the current project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dev",
+                "-D"
+              ],
+              "description": "Only display the dependency tree for packages in devDependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod",
+                "-P"
+              ],
+              "description": "Only display the dependency tree for packages in dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Scripts",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "run",
+          "aliases": [
+            "run-script"
+          ],
+          "description": "Runs a script defined in the package's manifest file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-r",
+                "--recursive"
+              ],
+              "description": "This runs an arbitrary command from each package's \"scripts\" object. If a package doesn't have the command, it is skipped. If none of the packages have the command, the command fails",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--if-present"
+              ],
+              "description": "You can use the --if-present flag to avoid exiting with a non-zero exit code when the script is undefined. This lets you run potentially undefined scripts without breaking the execution chain",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--parallel"
+              ],
+              "description": "Completely disregard concurrency and topological sorting, running a given script immediately in all matching packages with prefixed streaming output. This is the preferred flag for long-running processes over many packages, for instance, a lengthy build process",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stream"
+              ],
+              "description": "Stream output from child processes immediately, prefixed with the originating package directory. This allows output from different packages to be interleaved",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Scripts",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "exec",
+          "aliases": [],
+          "description": "Execute a shell command in scope of a project.\nnode_modules/.bin is added to the PATH, so pnpm exec allows executing commands of dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-r",
+                "--recursive"
+              ],
+              "description": "Execute the shell command in every project of the workspace.\nThe name of the current package is available through the environment variable PNPM_PACKAGE_NAME (supported from pnpm v2.22.0 onwards)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--parallel"
+              ],
+              "description": "Completely disregard concurrency and topological sorting, running a given script immediately in all matching packages with prefixed streaming output. This is the preferred flag for long-running processes over many packages, for instance, a lengthy build process",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Scripts",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "aliases": [
+            "t",
+            "tst"
+          ],
+          "description": "Runs an arbitrary command specified in the package's test property of its scripts object.\nThe intended usage of the property is to specify a command that runs unit or integration testing for your program",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "publish",
+          "aliases": [],
+          "description": "Publishes a package to the registry.\nWhen publishing a package inside a workspace, the LICENSE file from the root of the workspace is packed with the package (unless the package has a license of its own).\nYou may override some fields before publish, using the publishConfig field in package.json. You also can use the publishConfig.directory to customize the published subdirectory (usually using third party build tools).\nWhen running this command recursively (pnpm -r publish), pnpm will publish all the packages that have versions not yet published to the registry",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--tag"
+              ],
+              "description": "Publishes the package with the given tag. By default, pnpm publish updates the latest tag",
+              "takes_arg": true,
+              "arg_name": "<tag>",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Does everything a publish would do except actually publishing to the registry",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-scripts"
+              ],
+              "description": "Ignores any publish related lifecycle scripts (prepublishOnly, postpublish, and the like)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-git-checks"
+              ],
+              "description": "Don't check if current branch is your publish branch, clean, and up-to-date",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--access"
+              ],
+              "description": "Tells the registry whether the published package should be public or restricted",
+              "takes_arg": true,
+              "arg_name": "Type",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Try to publish packages even if their current version is already found in the registry",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--report-summary"
+              ],
+              "description": "Save the list of published packages to pnpm-publish-summary.json. Useful when some other tooling is used to report the list of published packages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--filter"
+              ],
+              "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+              "takes_arg": true,
+              "arg_name": "Filepath / Package",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Branch",
+              "description": null,
+              "template": "git_branches",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--link-workspace-packages"
+          ],
+          "description": "Link locally available packages in workspaces of a monorepo into node_modules instead of re-downloading them from the registry. This emulates functionality similar to yarn workspaces.\nWhen this is set to deep, local packages can also be linked to subdependencies.\nBe advised that it is encouraged instead to use npmrc for this setting, to enforce the same behaviour in all environments. This option exists solely so you may override that if necessary",
+          "takes_arg": true,
+          "arg_name": "bool or `deep`",
+          "arg_template": {
+            "custom": [
+              "dee["
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace-concurrency"
+          ],
+          "description": "Set the maximum number of tasks to run simultaneously. For unlimited concurrency use Infinity",
+          "takes_arg": true,
+          "arg_name": "<number>",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bail"
+          ],
+          "description": "Stops when a task throws an error",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-bail"
+          ],
+          "description": "Don't stop when a task throws an error",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sort"
+          ],
+          "description": "Packages are sorted topologically (dependencies before dependents)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "Disable packages sorting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reverse"
+          ],
+          "description": "The order of packages is reversed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filtering allows you to restrict commands to specific subsets of packages.\npnpm supports a rich selector syntax for picking packages by name or by relation.\nMore details: https://pnpm.io/filtering",
+          "takes_arg": true,
+          "arg_name": "Filepath / Package",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "server",
+      "aliases": [],
+      "description": "Manage a store server",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Starts a server that performs all interactions with the store. Other commands will delegate any store-related tasks to this server",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--background"
+              ],
+              "description": "Runs the server in the background, similar to daemonizing on UNIX systems",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--network-concurrency"
+              ],
+              "description": "The maximum number of network requests to process simultaneously",
+              "takes_arg": true,
+              "arg_name": "number",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--protocol"
+              ],
+              "description": "The communication protocol used by the server. When this is set to auto, IPC is used on all systems except for Windows, which uses TCP",
+              "takes_arg": true,
+              "arg_name": "Type",
+              "arg_template": {
+                "custom": [
+                  "auto",
+                  "tcp",
+                  "ipc"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port"
+              ],
+              "description": "The port number to use when TCP is used for communication. If a port is specified and the protocol is set to auto, regardless of system type, the protocol is automatically set to use TCP",
+              "takes_arg": true,
+              "arg_name": "port number",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--store-dir"
+              ],
+              "description": "The directory to use for the content addressable store",
+              "takes_arg": true,
+              "arg_name": "Path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lock"
+              ],
+              "description": "Set to make the package store immutable to external processes while the server is running or not",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-lock"
+              ],
+              "description": "Set to make the package store mutable to external processes while the server is running or not",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-stop-requests"
+              ],
+              "description": "Prevents you from stopping the server using pnpm server stop",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-upload-requests"
+              ],
+              "description": "Prevents creating a new side effect cache during install",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stops the store server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Prints information about the running server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "store",
+      "aliases": [],
+      "description": "Managing the package store",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Checks for modified packages in the store.\nReturns exit code 0 if the content of the package is the same as it was at the time of unpacking",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Functionally equivalent to pnpm add,\nexcept this adds new packages to the store directly without modifying any projects or files outside of the store",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "prune",
+          "aliases": [],
+          "description": "Removes orphan packages from the store.\nPruning the store will save disk space, however may slow down future installations involving pruned packages.\nUltimately, it is a safe operation, however not recommended if you have orphaned packages from a package you intend to reinstall.\nPlease read the FAQ for more information on unreferenced packages and best practices.\nPlease note that this is prohibited when a store server is running",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "path",
+          "aliases": [],
+          "description": "Returns the path to the active store directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Creates a basic package.json file in the current directory, if it doesn't exist already",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Checks for known common issues with pnpm configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-C",
+        "--dir"
+      ],
+      "description": "Run as if pnpm was started in <path> instead of the current working directory",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--workspace-root"
+      ],
+      "description": "Run as if pnpm was started in the root of the <workspace> instead of the current working directory",
+      "takes_arg": true,
+      "arg_name": "workspace",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show pnpm's version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Scripts",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "name": "mailsy",
+  "aliases": [],
+  "description": "⚡️ Quickly generate a disposable email straight from terminal",
+  "subcommands": [
+    {
+      "name": "g",
+      "aliases": [],
+      "description": "Generate a new email",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "m",
+      "aliases": [],
+      "description": "Fetch messages from the inbox",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "d",
+      "aliases": [],
+      "description": "Delete account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "me",
+      "aliases": [],
+      "description": "Show details of the account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Get help for a command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

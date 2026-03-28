@@ -1,0 +1,8 @@
+{
+  "name": "rails",
+  "aliases": [],
+  "description": "Ruby on Rails CLI",
+  "subcommands": [],
+  "options": [],
+  "args": []
+}

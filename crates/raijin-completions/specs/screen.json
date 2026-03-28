@@ -1,0 +1,504 @@
+{
+  "name": "screen",
+  "aliases": [],
+  "description": "Screen manager with VT100/ANSI terminal emulation",
+  "subcommands": [
+    {
+      "name": "-d",
+      "aliases": [],
+      "description": "Does not start screen, but detaches the elsewhere running screen session",
+      "subcommands": [
+        {
+          "name": "-r",
+          "aliases": [],
+          "description": "Reattach a session and if necessary detach it first",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "-R",
+          "aliases": [],
+          "description": "Reattach a session and if necessary detach or even create it first",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "-RR",
+          "aliases": [],
+          "description": "Reattach a session and if necessary detach or create it. Use the first session if more than one session is available",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-D",
+      "aliases": [],
+      "description": "Does not start screen, but detaches the elsewhere running screen session",
+      "subcommands": [
+        {
+          "name": "-r",
+          "aliases": [],
+          "description": "Reattach a session. If necessary detach and logout remotely first",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "-R",
+          "aliases": [],
+          "description": "Attach here and now. In detail this means: If a session is running, then reattach. If necessary detach and logout remotely first",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "-RR",
+          "aliases": [],
+          "description": "Attach here and now. Whatever that means, just do it",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "identifier",
+              "description": null,
+              "template": {
+                "custom": [
+                  "pid",
+                  "pid.tty",
+                  "pid.tty.host",
+                  "sessionowner/pid",
+                  "sessionowner/pid.tty",
+                  "sessionowner/pid.tty.host"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-r",
+      "aliases": [],
+      "description": "Resumes a detached screen session",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "identifier",
+          "description": null,
+          "template": {
+            "custom": [
+              "pid",
+              "pid.tty",
+              "pid.tty.host",
+              "sessionowner/pid",
+              "sessionowner/pid.tty",
+              "sessionowner/pid.tty.host"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-R",
+      "aliases": [],
+      "description": "Attempts to resume the first detached screen session it finds",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "identifier",
+          "description": null,
+          "template": {
+            "custom": [
+              "pid",
+              "pid.tty",
+              "pid.tty.host",
+              "sessionowner/pid",
+              "sessionowner/pid.tty",
+              "sessionowner/pid.tty.host"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-dmS",
+      "aliases": [],
+      "description": "Start as daemon: Screen session in detached mode",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "Name of the screen session",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Force all capabilities into each window's termcap",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A"
+      ],
+      "description": "Adapt all windows to the new display width & height",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Read configuration file instead of '.screenrc'",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Change command characters",
+      "takes_arg": true,
+      "arg_name": "xy",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Flow control on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-fn"
+      ],
+      "description": "Flow control off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-fa"
+      ],
+      "description": "Flow control automatic",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Set the size of the scrollback history buffer",
+      "takes_arg": true,
+      "arg_name": "h",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Interrupt output sooner when flow control is on",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-list",
+        "-ls"
+      ],
+      "description": "Do nothing, just list our SockDir",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Turn on output logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Ignore $STY variable, do create a new screen session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Choose optimal output rather than exact vt100 emulation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Preselect the named window if it exists",
+      "takes_arg": true,
+      "arg_name": "window",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "Quiet startup. Exits with non-zero return code if unsuccessful",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Shell to execute rather than $SHELL",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Name this session <pid>.sockname instead of <pid>.<tty>.<host>",
+      "takes_arg": true,
+      "arg_name": "sockname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Set title. (window's name)",
+      "takes_arg": true,
+      "arg_name": "title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T"
+      ],
+      "description": "Use term as $TERM for windows, rather than 'screen'",
+      "takes_arg": true,
+      "arg_name": "term",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U"
+      ],
+      "description": "Tell screen to use UTF-8 encoding",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print 'Screen version 4.00.03 (FAU) 23-Oct-06'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-wipe"
+      ],
+      "description": "Do nothing, just clean up SockDir",
+      "takes_arg": true,
+      "arg_name": "match",
+      "arg_template": {
+        "custom": [
+          "sessionowner/[pid.tty.host]"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Attach to a not detached screen. (Multi display mode)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X"
+      ],
+      "description": "Execute <cmd> as a screen command in the specified session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "cmd",
+      "description": "Command to invoke",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "args",
+      "description": "Arguments to pass",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

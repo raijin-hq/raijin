@@ -1,0 +1,236 @@
+{
+  "name": "dust",
+  "aliases": [],
+  "description": "Like du but more intuitive",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for dust",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-percent-bars",
+        "-b"
+      ],
+      "description": "No percent bars or percentages will be displayed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-colors",
+        "-c"
+      ],
+      "description": "No colors will be printed (Useful for commands like: watch)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--depth",
+        "-d"
+      ],
+      "description": "Depth to show",
+      "takes_arg": true,
+      "arg_name": "depth",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filter",
+        "-e"
+      ],
+      "description": "Only include filepaths matching this regex. For png files type: -e \"\\.png$\"",
+      "takes_arg": true,
+      "arg_name": "filter",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filecount",
+        "-f"
+      ],
+      "description": "Directory 'size' is number of child files/dirs not disk size",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--si",
+        "-H"
+      ],
+      "description": "Print sizes in powers of 1000 (e.g., 1.1G)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore_hidden",
+        "-i"
+      ],
+      "description": "Do not display hidden files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--number-of-lines",
+        "-n"
+      ],
+      "description": "Number of lines of output to show. (Default is terminal_height - 10)",
+      "takes_arg": true,
+      "arg_name": "number_of_lines",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--full-paths",
+        "-p"
+      ],
+      "description": "Subdirectories will not have their path shortened",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reverse",
+        "-r"
+      ],
+      "description": "Print tree upside down (biggest highest)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--apparent-size",
+        "-s"
+      ],
+      "description": "Use file length instead of blocks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-total"
+      ],
+      "description": "No total row will be displayed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file_types",
+        "-t"
+      ],
+      "description": "Show only these file types",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--invert-filter",
+        "-v"
+      ],
+      "description": "Exclude filepaths matching this regex. To ignore png files type: -v \"\\.png$\"",
+      "takes_arg": true,
+      "arg_name": "invert_filter",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--terminal_width",
+        "-w"
+      ],
+      "description": "Specify width of output overriding the auto detection of terminal width",
+      "takes_arg": true,
+      "arg_name": "width",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--limit-filesystem",
+        "-x"
+      ],
+      "description": "Only count the files and directories on the same filesystem as the supplied directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-directory",
+        "-X"
+      ],
+      "description": "Exclude any file or directory with this name",
+      "takes_arg": true,
+      "arg_name": "ignore_directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--min-size",
+        "-z"
+      ],
+      "description": "Minimum size file to include in output",
+      "takes_arg": true,
+      "arg_name": "min_size",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "inputs",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

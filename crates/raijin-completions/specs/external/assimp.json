@@ -1,0 +1,431 @@
+{
+  "name": "assimp",
+  "aliases": [],
+  "description": "Open Asset Import Library",
+  "subcommands": [
+    {
+      "name": "listext",
+      "aliases": [],
+      "description": "List all known file extensions available for import",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "listexport",
+      "aliases": [],
+      "description": "List all supported export formats",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "knowext",
+      "aliases": [],
+      "description": "List all known file extensions available for import",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "extension",
+          "description": "Check whether a particular file extension is known by us",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exportinfo",
+      "aliases": [],
+      "description": "Show basic information on a specific export format",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "extension",
+          "description": "Specific file extension",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Load a model file and print basic statistics. Full postprocessing is applied unless the `-r` switch is specified",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--raw"
+          ],
+          "description": "No postprocessing, do a raw import",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Print verbose info such as node transform data",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Print only minimal info",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Detailed help on a command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": "Print basic structure of a 3D model",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Export a file to one of the supported output formats",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--format"
+          ],
+          "description": "Export file formats supported by Assimp",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Detailed help on a command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "model",
+          "description": "Relative or absolute path to the input model",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "out",
+          "description": "Relative or absolute path to write the output export to",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "extract",
+      "aliases": [],
+      "description": "Extract embedded texture images",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-t",
+            "--texture"
+          ],
+          "description": "Zero-based index of the texture to be extracted",
+          "takes_arg": true,
+          "arg_name": "index",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ba",
+            "–-bmp-with-alpha"
+          ],
+          "description": "Specifies whether output BMPs contain an alpha channel or not",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--format"
+          ],
+          "description": "Specifies the output file format. Supported formats are BMP and TGA. The default value is BMP (if a full output filename is specified, the output file format is taken from its extension)",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "bmp",
+              "tga"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "–-nosuffix"
+          ],
+          "description": "Prevents the tool from adding the _img<n> suffix to all filenames. This option must be specified together with -t to ensure that just one image is written",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cfast"
+          ],
+          "description": "Fast post processing preset, runs just a few important steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cdefault"
+          ],
+          "description": "Default post processing: runs all recommended steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cfull"
+          ],
+          "description": "Fires almost all post processing steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Detailed help on a command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "model",
+          "description": "Relative or absolute path to the input model",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "out",
+          "description": "Relative or absolute path to write the output images to",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dump",
+      "aliases": [],
+      "description": "Convert models to a binary or textual dump (ASSBIN/ASSXML)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b",
+            "--binary"
+          ],
+          "description": "If true, the dump is written in binary format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--short"
+          ],
+          "description": "If true, the dump is shortened to include only min/max values for all vertex components and animation channels",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-z",
+            "--compressed"
+          ],
+          "description": "If true, Compressed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cfast"
+          ],
+          "description": "Fast post processing preset, runs just a few important steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cdefault"
+          ],
+          "description": "Default post processing: runs all recommended steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cfull"
+          ],
+          "description": "Fires almost all post processing steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Detailed help on a command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "model",
+          "description": "Relative or absolute path to the input model",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "out",
+          "description": "Relative or absolute path to write the output dump to. If it is omitted, the dump is written to '<model>-dump.txt'",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cmpdump",
+      "aliases": [],
+      "description": "Compare dumps created using 'assimp dump <file> -s ...'",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Detailed help on a command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "actual",
+          "description": "Mini dump now",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "expected",
+          "description": "Archived dump from some point in the past",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Display Assimp version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display some basic help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

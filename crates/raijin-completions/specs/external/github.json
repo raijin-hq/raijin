@@ -1,0 +1,106 @@
+{
+  "name": "github",
+  "aliases": [],
+  "description": "Open a git repository in GitHub Desktop",
+  "subcommands": [
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clone a repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--branch",
+            "-b"
+          ],
+          "description": "The branch to checkout after cloning",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "url|slug",
+          "description": null,
+          "template": {
+            "custom": [
+              "https://github.com/",
+              "https://gitlab.com/",
+              "https://bitbucket.com/"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open a git repository in GitHub Desktop",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show the help page for a command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "clone",
+              "open",
+              "help"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show the help page for a command",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": {
+        "custom": [
+          "clone",
+          "open",
+          "help"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

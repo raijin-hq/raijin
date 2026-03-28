@@ -1,0 +1,70 @@
+{
+  "name": "top",
+  "aliases": [],
+  "description": "Display Linux tasks",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "-v"
+      ],
+      "description": "Show library version and usage prompt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Starts top in Batch mode",
+      "takes_arg": true,
+      "arg_name": "operation",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Starts top with last remembered c state reversed",
+      "takes_arg": true,
+      "arg_name": "toggle",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Starts top with the last remembered 'i' state reversed. When this toggle is Off, tasks that are idled or zombied will not be displayed",
+      "takes_arg": true,
+      "arg_name": "toggle",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Starts top with secure mode forced",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-pid"
+      ],
+      "description": "Monitor pids",
+      "takes_arg": true,
+      "arg_name": "process ids",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

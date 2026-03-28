@@ -1,0 +1,16 @@
+{
+  "name": "while",
+  "aliases": [],
+  "description": "Repeat a command while this is true",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

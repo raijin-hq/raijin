@@ -1,0 +1,267 @@
+{
+  "name": "elixir",
+  "aliases": [],
+  "description": "Elixir Language",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-e",
+        "--eval"
+      ],
+      "description": "Evaluates the given command",
+      "takes_arg": true,
+      "arg_name": "EXPRESSION",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints this message and exits",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Requires the given files/patterns",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Finds and executes the given script in $PATH",
+      "takes_arg": true,
+      "arg_name": "SCRIPT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-pr"
+      ],
+      "description": "Requires the given files/patterns in parallel",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-pa"
+      ],
+      "description": "Prepends the given path to Erlang code path",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-pz"
+      ],
+      "description": "Appends the given path to Erlang code path",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Prints Elixir version and exits",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--app"
+      ],
+      "description": "Starts the given app and its dependencies",
+      "takes_arg": true,
+      "arg_name": "APP",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--erl"
+      ],
+      "description": "Switches to be passed down to Erlang",
+      "takes_arg": true,
+      "arg_name": "SWITCHES",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--logger-otp-reports"
+      ],
+      "description": "Enables or disables OTP reporting",
+      "takes_arg": true,
+      "arg_name": "BOOL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logger-sasl-reports"
+      ],
+      "description": "Enables or disables SASL reporting",
+      "takes_arg": true,
+      "arg_name": "BOOL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-halt"
+      ],
+      "description": "Does not halt the Erlang VM after execution",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--werl"
+      ],
+      "description": "Uses Erlang's Windows shell GUI (Windows only)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cookie"
+      ],
+      "description": "Sets a cookie for this distributed node",
+      "takes_arg": true,
+      "arg_name": "COOKIE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden"
+      ],
+      "description": "Makes a hidden node",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--name"
+      ],
+      "description": "Makes and assigns a name to the distributed node",
+      "takes_arg": true,
+      "arg_name": "NAME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rpc-eval"
+      ],
+      "description": "Evaluates the given command on the given remote node",
+      "takes_arg": true,
+      "arg_name": "NODE",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--sname"
+      ],
+      "description": "Makes and assigns a short name to the distributed node",
+      "takes_arg": true,
+      "arg_name": "NAME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--boot"
+      ],
+      "description": "Uses the given FILE.boot to start the system",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--boot-var"
+      ],
+      "description": "Makes $VAR available as VALUE to FILE.boot",
+      "takes_arg": true,
+      "arg_name": "VAR",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--erl-config"
+      ],
+      "description": "Loads configuration in FILE.config written in Erlang",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--pipe-to"
+      ],
+      "description": "Starts the Erlang VM as a named PIPEDIR and LOGDIR",
+      "takes_arg": true,
+      "arg_name": "PIPEDIR",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vm-args"
+      ],
+      "description": "Passes the contents in file as arguments to the VM",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": ".exs file",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "data",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

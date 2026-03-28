@@ -1,0 +1,30 @@
+{
+  "name": "nu",
+  "aliases": [],
+  "description": "Use the right package manage - upgrade",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Display the outdated packages before performing any upgrade",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

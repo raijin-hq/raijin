@@ -1,0 +1,803 @@
+{
+  "name": "tailscale",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "up",
+      "aliases": [],
+      "description": "Connect to Tailscale, logging in if needed",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--accept-dns"
+          ],
+          "description": "Accept DNS configuration from the admin panel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--accept-routes"
+          ],
+          "description": "Accept routes advertised by other Tailscale nodes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--advertise-exit-node"
+          ],
+          "description": "Offer to be an exit node for internet traffic for the tailnet",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--advertise-routes"
+          ],
+          "description": "Routes to advertise to other nodes (comma-separated, e.g. \"10.0.0.0/8,192.168.0.0/24\") or empty string to not advertise routes",
+          "takes_arg": true,
+          "arg_name": "routes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--advertise-tags"
+          ],
+          "description": "Comma-separated ACL tags to request; each must start with \"tag:\" (e.g. \"tag:eng,tag:montreal,tag:ssh\")",
+          "takes_arg": true,
+          "arg_name": "tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auth-key"
+          ],
+          "description": "Node authorization key; if it begins with \"file:\", then it's a path to a file containing the authkey",
+          "takes_arg": true,
+          "arg_name": "authkey",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exit-node"
+          ],
+          "description": "Tailscale exit node (IP or base name) for internet traffic, or empty string to not use an exit node",
+          "takes_arg": true,
+          "arg_name": "exitnode",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exit-node-allow-lan-access"
+          ],
+          "description": "Allow direct access to the local network when routing traffic via an exit node",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-reauth"
+          ],
+          "description": "Force reauthentication",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-routes"
+          ],
+          "description": "Install host routes to other Tailscale nodes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hostname"
+          ],
+          "description": "Hostname to use instead of the one provided by the OS",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--login-server"
+          ],
+          "description": "Login server to use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--operator"
+          ],
+          "description": "Unix username to allow to operate on tailscaled without sudo",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": {
+            "custom": [
+              "$USER"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--qr"
+          ],
+          "description": "Show QR code for login URLs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset"
+          ],
+          "description": "Reset unspecified settings to their default values",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shields-up"
+          ],
+          "description": "Don't allow incoming connections",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh"
+          ],
+          "description": "Run an SSH server, permitting access per tailnet admin's declared policy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "down",
+      "aliases": [],
+      "description": "Disconnect from Tailscale",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Disconnect from Tailscale and expire current node key",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "netcheck",
+      "aliases": [],
+      "description": "Print an analysis of local network conditions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--every"
+          ],
+          "description": "If non-zero, do an incremental report with the given frequency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "json-line",
+              "human-readable"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ip",
+      "aliases": [],
+      "description": "Show Tailscale IP addresses",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--1"
+          ],
+          "description": "Only print one IP address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--4"
+          ],
+          "description": "Only print IPv4 address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--6"
+          ],
+          "description": "Only print IPv6 address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show state of tailscaled and its connections",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--active"
+          ],
+          "description": "Filter output to only peers with active sessions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browser"
+          ],
+          "description": "Open a browser in web mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen"
+          ],
+          "description": "Listen address for web mode; use port 0 for automatic (default 127.0.0.1:8384)",
+          "takes_arg": true,
+          "arg_name": "address",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--peers"
+          ],
+          "description": "Show status of peers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--self"
+          ],
+          "description": "Show status of local machine",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web"
+          ],
+          "description": "Run webserver with HTML showing status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ping",
+      "aliases": [],
+      "description": "Ping a host at the Tailscale layer, see how it routed",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--c"
+          ],
+          "description": "Max number of pings to send",
+          "takes_arg": true,
+          "arg_name": "count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Timeout before giving up on a ping",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tsmp"
+          ],
+          "description": "Do a TSMP-level ping (through IP + wireguard, but not involving host OS stack)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--until-direct"
+          ],
+          "description": "Stop once a direct path is established",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Verbose logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "nc",
+      "aliases": [],
+      "description": "Connect to a port on a host, connected to stdin/stdout",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "hosname-or-ip",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "port",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "SSH to a Tailscale machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "[user@]<host>",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print Tailscale version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--daemon"
+          ],
+          "description": "Also print local node's daemon version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "web",
+      "aliases": [],
+      "description": "Run a web server for controlling Tailscale",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cgi"
+          ],
+          "description": "Run as CGI script",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen"
+          ],
+          "description": "Listen address; use port 0 for automatic (default localhost:8088)",
+          "takes_arg": true,
+          "arg_name": "address",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "file",
+      "aliases": [],
+      "description": "Send or receive files",
+      "subcommands": [
+        {
+          "name": "cp",
+          "aliases": [],
+          "description": "Copy file(s) to a host",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "file",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "file or host",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Move files out of the Tailscale file inbox",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "target-directory",
+              "description": null,
+              "template": "folders",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bugreport",
+      "aliases": [],
+      "description": "Print a shareable identifier to help diagnose issues",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "note",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "cert",
+      "aliases": [],
+      "description": "Get TLS certs",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cert-file"
+          ],
+          "description": "Output cert file or \"-\" for stdout",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-file"
+          ],
+          "description": "Output cert file or \"-\" for stdout",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--serve-demo"
+          ],
+          "description": "Serve on port :443 using the cert as a demo, instead of writing out the files to disk",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--socket"
+      ],
+      "description": "Path to tailscaled's unix socket",
+      "takes_arg": true,
+      "arg_name": "socket",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

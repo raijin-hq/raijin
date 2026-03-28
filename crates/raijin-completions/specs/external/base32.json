@@ -1,0 +1,81 @@
+{
+  "name": "base32",
+  "aliases": [],
+  "description": "Base32 encode/decode data and print to standard output",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display this help and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--decode",
+        "-d"
+      ],
+      "description": "Decode data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-garbage",
+        "-i"
+      ],
+      "description": "When decoding, ignore non-alphabet characters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wrap",
+        "-w"
+      ],
+      "description": "Wrap encoded lines after COLS character (default 76).  Use 0 to disable line wrapping",
+      "takes_arg": true,
+      "arg_name": "COLS",
+      "arg_template": {
+        "custom": [
+          "76",
+          "78",
+          "80",
+          "100",
+          "120",
+          "160",
+          "0"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "FILE",
+      "description": "File to base32 encode/decode",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

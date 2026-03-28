@@ -1,0 +1,61 @@
+{
+  "name": "electron",
+  "aliases": [],
+  "description": "Build cross platform desktop apps with JavaScript, HTML and CSS",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-i",
+        "--interactive"
+      ],
+      "description": "Open a REPL to the main process",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--require"
+      ],
+      "description": "Module to preload",
+      "takes_arg": true,
+      "arg_name": "module",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--abi"
+      ],
+      "description": "Print the Node ABI version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path",
+      "description": "A path to an electron app",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

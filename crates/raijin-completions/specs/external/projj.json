@@ -1,0 +1,160 @@
+{
+  "name": "projj",
+  "aliases": [],
+  "description": "Manage repository easily",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate completion script",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "repository url",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "find",
+      "aliases": [],
+      "description": "Find repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "repository name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import repositories from existing directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "directory",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "repository name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run hook in current directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hook name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "runall",
+      "aliases": [],
+      "description": "Run hook in every repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hook name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Sync data from directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "directory",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for projj",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

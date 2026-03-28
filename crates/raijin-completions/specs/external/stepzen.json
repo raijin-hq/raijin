@@ -1,0 +1,128 @@
+{
+  "name": "StepZen",
+  "aliases": [],
+  "description": "The StepZen CLI is the primary way to build, deploy and test your schemas on StepZen",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for StepZen",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Command name for which to display help",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to StepZen",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout of StepZen",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Deploy, watch and develop your API",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir"
+          ],
+          "description": "The working directory for StepZen assets",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--endpoint"
+          ],
+          "description": "The folder/endpoint to deploy to",
+          "takes_arg": true,
+          "arg_name": "endpoint",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The port number to use for the GraphiQL explorer",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import pre-configured schemas to Your API",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir"
+          ],
+          "description": "The directory to which the schema will be imported",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the generator to import",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List the assets of a specified type that are linked to the StepZen account",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "The type of asset to list (schemas or configurationsets)",
+          "template": {
+            "custom": [
+              "schemas",
+              "configurationsets"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

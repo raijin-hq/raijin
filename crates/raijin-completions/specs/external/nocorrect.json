@@ -1,0 +1,16 @@
+{
+  "name": "nocorrect",
+  "aliases": [],
+  "description": "ZSH pre-command modifier that disables correction",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

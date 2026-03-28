@@ -1,0 +1,108 @@
+{
+  "name": "btop",
+  "aliases": [],
+  "description": "Beautifuler htop (interactive process viewer)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Shows help for btop",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--low-color",
+        "-lc"
+      ],
+      "description": "Disables truecolor, converts 24-bit colors to 256-color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tty_on",
+        "-t"
+      ],
+      "description": "Forces ON tty mode, max 16 colors and tty friendly graph symbol",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tty_off",
+        "+t"
+      ],
+      "description": "Forces OFF tty mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preset",
+        "-p"
+      ],
+      "description": "Start with preset",
+      "takes_arg": true,
+      "arg_name": "id",
+      "arg_template": {
+        "custom": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--utf-force"
+      ],
+      "description": "Force start even if no UTF-8 locale was detected",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Starts in DEBUG mode: shows microsecond timer for information collect and screen draw functions and sets loglevel to DEBUG",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Shows the version of btop",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

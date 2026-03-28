@@ -1,0 +1,518 @@
+{
+  "name": "asr",
+  "aliases": [],
+  "description": "Asr efficiently copies disk images onto volumes, either directly or via a multicast network stream",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Displays asr usage information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Displays asr version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "restore",
+      "aliases": [],
+      "description": "Restores a disk image or volume to another volume",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "Can be a disk image, /dev entry, or volume mountpoint",
+          "takes_arg": true,
+          "arg_name": "source",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Can be a /dev entry, or volume mountpoint",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "When performing a multicast restore, --file can be specified instead of --target",
+          "takes_arg": true,
+          "arg_name": "source",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--erase"
+          ],
+          "description": "Erases target and is required. --erase must always be used, as file copies are no longer supported by asr",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Specifies the destination filesystem format",
+          "takes_arg": true,
+          "arg_name": "HFS+ | HFSX",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--noprompt"
+          ],
+          "description": "Suppresses the prompt which usually occurs before target",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Specifies num seconds that a multicast client should wait when no payload data has been received over a multicast stream before exiting",
+          "takes_arg": true,
+          "arg_name": "num",
+          "arg_template": {
+            "custom": [
+              "0"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--puppetstrings"
+          ],
+          "description": "Provide progress output that is easy for another program to parse",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--noverify"
+          ],
+          "description": "Skips the verification steps normally taken to ensure that a volume has been properly restored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allowfragmentedcatalog"
+          ],
+          "description": "Allows restores to proceed even if the source's catalog file is fragmented",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--SHA256"
+          ],
+          "description": "Forces the restore to use the SHA-256 hash in the image during verification",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sourcevolumename"
+          ],
+          "description": "Tells asr which volume in the source container to invert when doing an APFS restore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sourcevolumeUUID"
+          ],
+          "description": "Tells asr which volume in the source container to invert when doing an APFS restore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--useReplication"
+          ],
+          "description": "Forces asr to use replication for restoring APFS volumes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--useInverter"
+          ],
+          "description": "Forces asr to use the inverter for restoring APFS volumes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toSnapshot"
+          ],
+          "description": "Specifies the snapshot on the source APFS volume to restore to the target APFS volume",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fromSnapshot"
+          ],
+          "description": "Names a snapshot on the source APFS volume to use in combination with --toSnapshot to specify a snapshot delta to restore to the target APFS volume",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "restoreexact",
+      "aliases": [],
+      "description": "Same as restore verb, except that for an HFS Plus volume, the target partition is resized to match the size of the source partition/ volume",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "Can be a disk image, /dev entry, or volume mountpoint",
+          "takes_arg": true,
+          "arg_name": "source",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Can be a /dev entry, or volume mountpoint",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "When performing a multicast restore, --file can be specified instead of --target",
+          "takes_arg": true,
+          "arg_name": "source",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--erase"
+          ],
+          "description": "Erases target and is required. --erase must always be used, as file copies are no longer supported by asr",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Specifies the destination filesystem format",
+          "takes_arg": true,
+          "arg_name": "HFS+ | HFSX",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--noprompt"
+          ],
+          "description": "Suppresses the prompt which usually occurs before target",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Specifies num seconds that a multicast client should wait when no payload data has been received over a multicast stream before exiting",
+          "takes_arg": true,
+          "arg_name": "num",
+          "arg_template": {
+            "custom": [
+              "0"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--puppetstrings"
+          ],
+          "description": "Provide progress output that is easy for another program to parse",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--noverify"
+          ],
+          "description": "Skips the verification steps normally taken to ensure that a volume has been properly restored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allowfragmentedcatalog"
+          ],
+          "description": "Allows restores to proceed even if the source's catalog file is fragmented",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--SHA256"
+          ],
+          "description": "Forces the restore to use the SHA-256 hash in the image during verification",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sourcevolumename"
+          ],
+          "description": "Tells asr which volume in the source container to invert when doing an APFS restore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sourcevolumeUUID"
+          ],
+          "description": "Tells asr which volume in the source container to invert when doing an APFS restore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--useReplication"
+          ],
+          "description": "Forces asr to use replication for restoring APFS volumes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--useInverter"
+          ],
+          "description": "Forces asr to use the inverter for restoring APFS volumes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toSnapshot"
+          ],
+          "description": "Specifies the snapshot on the source APFS volume to restore to the target APFS volume",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fromSnapshot"
+          ],
+          "description": "Names a snapshot on the source APFS volume to use in combination with --toSnapshot to specify a snapshot delta to restore to the target APFS volume",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "server",
+      "aliases": [],
+      "description": "Multicasts source over the network",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--source"
+          ],
+          "description": "Source has to be a UDIF disk image",
+          "takes_arg": true,
+          "arg_name": "source",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interface"
+          ],
+          "description": "The network interface to be used for multicasting",
+          "takes_arg": true,
+          "arg_name": "interface",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Server requires a configuration file to be passed",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "imagescan",
+      "aliases": [],
+      "description": "Calculate checksums of the data in the provided image and store them in the image",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Report the image metadata which was placed in the image by a previous use of the imagescan verb",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--plist"
+          ],
+          "description": "Writes its output as an XML-formatted plist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--buffers"
+      ],
+      "description": "One of the options that control how asr uses memory",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--buffersize"
+      ],
+      "description": "One of the options that control how asr uses memory",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--csumbuffers"
+      ],
+      "description": "One of the options that control how asr uses memory",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--csumbuffersize"
+      ],
+      "description": "One of the options that control how asr uses memory",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enables verbose progress and error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enables other progress and error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

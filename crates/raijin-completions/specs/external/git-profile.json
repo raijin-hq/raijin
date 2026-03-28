@@ -1,0 +1,48 @@
+{
+  "name": "git-profile",
+  "aliases": [],
+  "description": "Switch profiles",
+  "subcommands": [
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Use a profile",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "profile",
+          "description": "Profile you want to apply in this repository",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Help for git-profile script",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-c"
+      ],
+      "description": "Config file (default \"~/.gitprofile\")",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,276 @@
+{
+  "name": "hardhat",
+  "aliases": [],
+  "description": "Ethereum development environment",
+  "subcommands": [
+    {
+      "name": "accounts",
+      "aliases": [],
+      "description": "Prints the list of accounts",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check whatever you need",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Clears the cache and deletes all artifacts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "Clear the global cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compiles the entire project, building all artifacts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force compilation ignoring cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Makes the compilation process less verbose",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Opens a hardhat console",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-compile"
+          ],
+          "description": "Don't compile before running this task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "flatten",
+      "aliases": [],
+      "description": "Flattens and prints contracts and their dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "node",
+      "aliases": [],
+      "description": "Starts a JSON-RPC server on top of Hardhat Network",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--fork"
+          ],
+          "description": "The URL of the JSON-RPC server to fork from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fork-block-number"
+          ],
+          "description": "The block number to fork from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hostname"
+          ],
+          "description": "The host to which to bind to for new connections",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The port on which to listen for new connections (default: 8545)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs a user-defined script after compiling the project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-compile"
+          ],
+          "description": "Don't compile before running this task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Runs mocha tests",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-compile"
+          ],
+          "description": "Don't compile before running this task",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "config"
+      ],
+      "description": "A Hardhat config file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--emoji"
+      ],
+      "description": "Use emoji in messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-memory"
+      ],
+      "description": "The maximum amount of memory that Hardhat can use",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Shows the help text or task's help if name is provided",
+      "takes_arg": true,
+      "arg_name": "task",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--network"
+      ],
+      "description": "The network to connect to",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "---show-stack-traces"
+      ],
+      "description": "Show stack traces",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enables Hardhat verbose logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Shows hardhat's version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

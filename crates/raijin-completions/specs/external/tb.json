@@ -1,0 +1,1181 @@
+{
+  "name": "tb",
+  "aliases": [],
+  "description": "Tinybird CLI",
+  "subcommands": [
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check file syntax",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Print internal representation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dependencies",
+      "aliases": [],
+      "description": "Print all data sources dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-deps"
+          ],
+          "description": "Print only data sources with no pipes using them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--match"
+          ],
+          "description": "Retrieve any resource matching the pattern",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pipe"
+          ],
+          "description": "Retrieve any resource used by pipe",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--datasource"
+          ],
+          "description": "Retrieve resources depending on this Data Source",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check-for-partial-replace"
+          ],
+          "description": "Retrieve dependant Data Sources that will have their data replaced if a partial replace is executed in the Data Source selected",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive"
+          ],
+          "description": "Calculate recursive dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Diffs local datafiles to the corresponding remote files in the workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--fmt"
+          ],
+          "description": "Format files before doing the diff, default is True so both files match the format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-fmt"
+          ],
+          "description": "Format files before doing the diff, default is True so both files match the format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Don't colorize diff",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--main"
+          ],
+          "description": "Diffs local datafiles to the corresponding remote files in the main workspace. Only works when authenticated on a branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "drop-prefix",
+      "aliases": [],
+      "description": "Drop all the resources inside a project with prefix. This command is dangerous because it removes everything, use with care",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Do not ask for confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Run the command without removing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Formats a .datasource, .pipe or .incl file\n\nThis command removes comments starting with # from the file, use DESCRIPTION instead.\n\nThe format command tries to parse the datafile so syntax errors might rise.\n\n.incl files must contain a NODE definition",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--line-length"
+          ],
+          "description": "A number indicating the maximum characters per line in the node SQL, lines will be splitted based on the SQL syntax and the number of characters passed as a parameter",
+          "takes_arg": true,
+          "arg_name": "integer",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Don't ask to override the local file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Do not ask for confirmation to overwrite the local file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize folder layout",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--generate-datasources"
+          ],
+          "description": "Generate datasources based on CSV, NDJSON and Parquet files in this folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--folder"
+          ],
+          "description": "Folder where files will be placed",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Overrides existing files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "materialize",
+      "aliases": [],
+      "description": "[BETA] Given a local Pipe datafile path (FILENAME) and optionally a Materialized View name (TARGET_DATASOURCE), choose one of its nodes to materialize.\n\nThis command guides you to generate the Materialized View with name TARGET_DATASOURCE, the only requirement is having a valid Pipe datafile locally. Use `tb pull` to download resources from your workspace when needed.\n\nSyntax: tb materialize path/to/pipe.pipe",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--prefix"
+          ],
+          "description": "Use prefix for all the resources",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--push-deps"
+          ],
+          "description": "Push dependencies, disabled by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace_map"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--workspace"
+          ],
+          "description": "Add a workspace path to the list of external workspaces, usage: --workspace name path/to/folder",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--no-versions"
+          ],
+          "description": "When set, resource dependency versions are not used, it pushes the dependencies as-is",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Prints more log",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-populate"
+          ],
+          "description": "Subset or full",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unlink-on-populate-error"
+          ],
+          "description": "If the populate job fails the Materialized View is unlinked and new data won't be ingested in the Materialized View. First time a populate job fails, the Materialized View is always unlinked",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override-pipe"
+          ],
+          "description": "Override pipe if exists or prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override-datasource"
+          ],
+          "description": "Override data source if exists or prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prompt",
+      "aliases": [],
+      "description": "Learn how to include info about the CLI in your shell PROMPT",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Retrieve latest versions for project files from Tinybird",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--folder"
+          ],
+          "description": "Folder where files will be placed",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto"
+          ],
+          "description": "Saves datafiles automatically into their default directories (/datasources or /pipes)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--match"
+          ],
+          "description": "Retrieve any resourcing matching the pattern. eg --match _test",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefix"
+          ],
+          "description": "Download only resources with this prefix",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Override existing files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push files to Tinybird\n",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--prefix"
+          ],
+          "description": "Use prefix for all the resources",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Run the command without creating resources on the Tinybird account or any side effect",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Enable/Disable output checking, enabled by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Enable/Disable output checking, enabled by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--push-deps"
+          ],
+          "description": "Push dependencies, disabled by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Prints internal representation, can be combined with any command to get more information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Override pipes when they already exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--override-datasource"
+          ],
+          "description": "When pushing a pipe with a Materialized node if the target Data Source exists it will try to override it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--populate"
+          ],
+          "description": "Populate materialized nodes when pushing them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--subset"
+          ],
+          "description": "Populate with a subset percent of the data (limited to a maximum of 2M rows), this is useful to quickly test a materialized node with some data. The subset must be greater than 0 and lower than 0.1. A subset of 0.1 means a 10 percent of the data in the source Data Source will be used to populate the materialized view. Use it together with --populate, it has precedence over --sql-condition",
+          "takes_arg": true,
+          "arg_name": "float",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sql-condition"
+          ],
+          "description": "Populate with a SQL condition to be applied to the trigger Data Source of the Materialized View. For instance, `--sql-condition='date == toYYYYMM(now())'` it'll populate taking all the rows from the trigger Data Source which `date` is the current month. Use it together with --populate. --sql-condition is not taken into account if the --subset param is present. Including in the ``sql_condition`` any column present in the Data Source ``engine_sorting_key`` will make the populate job process less data",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unlink-on-populate-error"
+          ],
+          "description": "If the populate job fails the Materialized View is unlinked and new data won't be ingested in the Materialized View. First time a populate job fails, the Materialized View is always unlinked",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fixtures"
+          ],
+          "description": "Append fixtures to data sources",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait"
+          ],
+          "description": "To be used along with --populate command. Waits for populate jobs to finish, showing a progress bar. Disabled by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Do not ask for confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--only-response-times"
+          ],
+          "description": "Checks only response times, when --force push a pipe",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workspace_map"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--workspace"
+          ],
+          "description": "Add a workspace path to the list of external workspaces, usage: --workspace name path/to/folder",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--no-versions"
+          ],
+          "description": "When set, resource dependency versions are not used, it pushes the dependencies as-is",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Timeout you want to use for the job populate",
+          "takes_arg": true,
+          "arg_name": "float",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--limit"
+          ],
+          "description": "Number of requests to validate",
+          "takes_arg": true,
+          "arg_name": "integer range",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sample-by-params"
+          ],
+          "description": "When set, we will aggregate the pipe_stats_rt requests by extractURLParameterNames(assumeNotNull(url)) and for each combination we will take a sample of N requests",
+          "takes_arg": true,
+          "arg_name": "integer range",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ff",
+            "--failfast"
+          ],
+          "description": "When set, the checker will exit as soon one test fails",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-order"
+          ],
+          "description": "When set, the checker will ignore the order of list properties",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--validate-processed-bytes"
+          ],
+          "description": "When set, the checker will validate that the new version doesn't process more than 25% than the current version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--last-requests-from-main"
+          ],
+          "description": "When set, the checker will get top requests requests from main",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "sql",
+      "aliases": [],
+      "description": "Run SQL query over data sources and pipes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rows_limit"
+          ],
+          "description": "Max number of rows retrieved",
+          "takes_arg": true,
+          "arg_name": "integer",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pipeline"
+          ],
+          "description": "The name of the Pipe to run the SQL Query",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pipe"
+          ],
+          "description": "The path to the .pipe file to run the SQL Query of a specific NODE",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node"
+          ],
+          "description": "The NODE name",
+          "takes_arg": true,
+          "arg_name": "text",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Output format",
+          "takes_arg": true,
+          "arg_name": "choice",
+          "arg_template": {
+            "custom": [
+              "json",
+              "csv",
+              "human"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stats"
+          ],
+          "description": "Show query stats",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-stats"
+          ],
+          "description": "Show query stats",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Prints internal representation, can be combined with any command to get more information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-debug"
+      ],
+      "description": "Prints internal representation, can be combined with any command to get more information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--token"
+      ],
+      "description": "Use auth token, defaults to TB_TOKEN envvar, then to the .tinyb file",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--host"
+      ],
+      "description": "Use custom host, defaults to TB_HOST envvar, then to https://api.tinybird.co",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gcp-project-id"
+      ],
+      "description": "The Google Cloud project ID",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gcs-bucket"
+      ],
+      "description": "The Google Cloud Storage bucket to write temp files when using the connectors",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--google-application-credentials"
+      ],
+      "description": "Set GOOGLE_APPLICATION_CREDENTIALS",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-account"
+      ],
+      "description": "The Snowflake Account (e.g. your-domain.west-europe.azure)",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-warehouse"
+      ],
+      "description": "The Snowflake warehouse name",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-database"
+      ],
+      "description": "The Snowflake database name",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-schema"
+      ],
+      "description": "The Snowflake schema name",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-role"
+      ],
+      "description": "The Snowflake role name",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-user"
+      ],
+      "description": "The Snowflake user name",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-password"
+      ],
+      "description": "The Snowflake password",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-storage-integration"
+      ],
+      "description": "The Snowflake GCS storage integration name (leave empty to auto-generate one)",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sf-stage"
+      ],
+      "description": "The Snowflake GCS stage name (leave empty to auto-generate one)",
+      "takes_arg": true,
+      "arg_name": "text",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--with-headers"
+      ],
+      "description": "Flag to enable connector to export with headers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version-warning"
+      ],
+      "description": "Don't print version warning message if there's a new available version. You can use TB_VERSION_WARNING envar",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-version-warning"
+      ],
+      "description": "Don't print version warning message if there's a new available version. You can use TB_VERSION_WARNING envar",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hide-tokens"
+      ],
+      "description": "Disable the output of tokens",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show this message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

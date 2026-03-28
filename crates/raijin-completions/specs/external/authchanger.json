@@ -1,0 +1,180 @@
+{
+  "name": "authchanger",
+  "aliases": [],
+  "description": "Authchanger is a utility included with Jamf Connect to help you manage the authorization database used by macOS to determine how the login process progresses",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-help",
+        "-h"
+      ],
+      "description": "Show help for authchanger",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-version"
+      ],
+      "description": "Prints the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-print"
+      ],
+      "description": "Prints the current list of authorization mechanisms",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-debug"
+      ],
+      "description": "Does a dry run of the changes and prints out what would have happened",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-reset"
+      ],
+      "description": "Resets the login screen to the factory settings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-demobilize"
+      ],
+      "description": "Sets up Jamf Connect Login to only demobilze accounts",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-notify"
+      ],
+      "description": "Adds the DEP Notify addition to the corresponding -AD, or -Setup argument",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-setup"
+      ],
+      "description": "Adds the DEP Notify addition to the corresponding -AD, or -Setup argument",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-jamfconnect"
+      ],
+      "description": "Enables Jamf Connect 2.0 login mechanisms",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-verbose"
+      ],
+      "description": "Enables verbose logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-prelogin"
+      ],
+      "description": "Mechs to be used before the actual UI is shown",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-preauth"
+      ],
+      "description": "Mechs to be used between the login UI and actual authentication",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-postauth"
+      ],
+      "description": "Mechs to be used after system authentication",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-customrule"
+      ],
+      "description": "Allows the printout of any authorizationDB rule as well as setting of that rule to any custom mechanism(s)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-sysprefs"
+      ],
+      "description": "Enables Azure authentication for the Network Preference Pane",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-sysprefsreset"
+      ],
+      "description": "Removes Azure authentication for the Network Preference Pane",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-defaultjcright"
+      ],
+      "description": "Adds the mechanism to be used with the sudosaml binary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

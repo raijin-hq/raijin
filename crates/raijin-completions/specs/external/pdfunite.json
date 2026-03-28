@@ -1,0 +1,39 @@
+{
+  "name": "pdfunite",
+  "aliases": [],
+  "description": "Combine multiple pdfs",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print copyright and version info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help",
+        "-?"
+      ],
+      "description": "Print usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

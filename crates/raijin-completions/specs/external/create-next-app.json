@@ -1,0 +1,91 @@
+{
+  "name": "create-next-app",
+  "aliases": [],
+  "description": null,
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ts",
+        "--typescript"
+      ],
+      "description": "Initialize as a TypeScript project",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-npm"
+      ],
+      "description": "Explicitly tell the CLI to bootstrap the app using npm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-pnpm"
+      ],
+      "description": "Explicitly tell the CLI to bootstrap the app using pnpm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--example"
+      ],
+      "description": "An example to bootstrap the app with. You can use an example name from the official Next.js repo or a GitHub URL. The URL can use any branch and/or subdirectory",
+      "takes_arg": true,
+      "arg_name": "name|github-url",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--example-path"
+      ],
+      "description": "In a rare case, your GitHub URL might contain a branch name with a slash (e.g. bug/fix-1) and the path to the example (e.g. foo/bar). In this case, you must specify the path to the example separately: --example-path foo/bar",
+      "takes_arg": true,
+      "arg_name": "path-to-example",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "project-directory",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

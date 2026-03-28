@@ -1,0 +1,16 @@
+{
+  "name": "if",
+  "aliases": [],
+  "description": "Conditionally execute based on the return value of a command",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

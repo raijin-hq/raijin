@@ -1,0 +1,1065 @@
+{
+  "name": "apt",
+  "aliases": [],
+  "description": "Package manager for Debian-based Linux distributions",
+  "subcommands": [
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update the package database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Install all available upgrades",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "Package(s) to upgrade",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "full-upgrade",
+      "aliases": [],
+      "description": "Install available upgrades, removing currently installed packages if needed to upgrade the system as a whole",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install package(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reinstall"
+          ],
+          "description": "Reinstall the package if it is already installed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--fix-broken"
+          ],
+          "description": "Attempt to fix broken packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to install",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "reinstall",
+      "aliases": [],
+      "description": "Reinstall package(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to reinstall",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove package(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--fix-broken"
+          ],
+          "description": "Attempt to fix broken packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "purge",
+      "aliases": [],
+      "description": "Remove package(s) and their configuration files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to purge",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "autoremove",
+      "aliases": [
+        "auto-remove"
+      ],
+      "description": "Remove unused packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--installed"
+          ],
+          "description": "List installed packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--upgradable"
+          ],
+          "description": "List upgradable packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Search for packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "query",
+          "description": "The query to search for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show package details",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to show",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "satisfy",
+      "aliases": [],
+      "description": "Satisfy package dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to satisfy",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Remove downloaded package files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "edit-sources",
+      "aliases": [],
+      "description": "Edit the list of package sources",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "source",
+      "aliases": [],
+      "description": "Fetch package source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compile"
+          ],
+          "description": "Compile the package to a binary using dpkg-buildpackage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--only-source"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-architecture"
+          ],
+          "description": "The architecture to build for",
+          "takes_arg": true,
+          "arg_name": "architecture",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to get source files for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "build-dep",
+      "aliases": [],
+      "description": "Install/remove packages in an attempt to satisfy the build dependencies for a source package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-architecture"
+          ],
+          "description": "The architecture to build for",
+          "takes_arg": true,
+          "arg_name": "architecture",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--only-source"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to build dependencies for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "download",
+      "aliases": [],
+      "description": "Download package binary into the current directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to download",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "autoclean",
+      "aliases": [
+        "auto-clean"
+      ],
+      "description": "Like clean, but only removes package files that can no longer be downloaded",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--simulate"
+          ],
+          "description": "Simulate running this command and show it's output, without actually changing anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "changelog",
+      "aliases": [],
+      "description": "Show the changelog for a package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--download-only"
+          ],
+          "description": "For any operation that would download packages, download them, but do nothing else",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-download"
+          ],
+          "description": "Do not download packages, attempt to use already downloaded packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Assume yes to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assume-no"
+          ],
+          "description": "Assume no to all prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": "The package you want to show the changelog for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

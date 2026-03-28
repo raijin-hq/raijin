@@ -1,0 +1,1680 @@
+{
+  "name": "tsuru",
+  "aliases": [],
+  "description": "Tsuru is the command line utility used by application developers, that will allow users to create, list, bind and manage apps",
+  "subcommands": [
+    {
+      "name": "app",
+      "aliases": [],
+      "description": "App commands",
+      "subcommands": [
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Builds a tsuru app image respecting",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--files-only"
+              ],
+              "description": "Enables single file build into the root of the app's tree",
+              "takes_arg": true,
+              "arg_name": "file-or-dir-n",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--tag"
+              ],
+              "description": "The image tag",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Creates a new app using the given name and platform",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-o",
+                "--pool"
+              ],
+              "description": "Filter applications by pool",
+              "takes_arg": true,
+              "arg_name": "pool",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--team"
+              ],
+              "description": "Team that will own the app",
+              "takes_arg": true,
+              "arg_name": "team",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--plan"
+              ],
+              "description": "Plan to be used by the app",
+              "takes_arg": true,
+              "arg_name": "plan",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--description"
+              ],
+              "description": "Description of the app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-g",
+                "--tag"
+              ],
+              "description": "Tag to be used by the app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--router-opts"
+              ],
+              "description": "Router options",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "app",
+              "description": "App name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "platform",
+              "description": "Platform of the app",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploys set of files and/or directories to tsuru server",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List information about deploys for an application",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rebuild",
+              "aliases": [],
+              "description": "Rebuild and deploy the last app image",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--new-version"
+                  ],
+                  "description": "Creates a new version for the current deployment while preserving existing versions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--override-old-versions"
+                  ],
+                  "description": "Force replace all deployed versions by this new deploy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rollback",
+              "aliases": [],
+              "description": "Deploys an existing image for an app",
+              "subcommands": [
+                {
+                  "name": "update",
+                  "aliases": [],
+                  "description": "Locks an existing image of an app",
+                  "subcommands": [],
+                  "options": [
+                    {
+                      "names": [
+                        "-a",
+                        "--app"
+                      ],
+                      "description": "App name",
+                      "takes_arg": true,
+                      "arg_name": "app",
+                      "arg_template": null,
+                      "is_repeatable": false
+                    },
+                    {
+                      "names": [
+                        "-d",
+                        "--disable"
+                      ],
+                      "description": "Enables or disables the rollback on a specific image version",
+                      "takes_arg": false,
+                      "arg_name": null,
+                      "arg_template": null,
+                      "is_repeatable": false
+                    },
+                    {
+                      "names": [
+                        "-i",
+                        "--image"
+                      ],
+                      "description": "The image name for an app version",
+                      "takes_arg": false,
+                      "arg_name": null,
+                      "arg_template": null,
+                      "is_repeatable": false
+                    },
+                    {
+                      "names": [
+                        "-r",
+                        "--reason"
+                      ],
+                      "description": "The reason why the rollback has to be disabled",
+                      "takes_arg": false,
+                      "arg_name": null,
+                      "arg_template": null,
+                      "is_repeatable": false
+                    }
+                  ],
+                  "args": []
+                }
+              ],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--new-version"
+                  ],
+                  "description": "Creates a new version for the current deployment while preserving existing versions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--override-old-versions"
+                  ],
+                  "description": "Force replace all deployed versions by this new deploy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "y",
+                    "--yes"
+                  ],
+                  "description": "Answer yes to all questions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--files-only"
+              ],
+              "description": "Enables single file deployment into the root of the app's tree",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--image"
+              ],
+              "description": "The image to deploy in app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--message"
+              ],
+              "description": "A message describing this deploy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--new-version"
+              ],
+              "description": "Creates a new version for the current deployment while preserving existing versions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--override-old-versions"
+              ],
+              "description": "Force replace all deployed versions by this new deploy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file-or-dir-n",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "grant",
+          "aliases": [],
+          "description": "Allows a team to access an application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "team",
+              "description": "Team name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Shows information about an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all apps",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-n",
+                "--name"
+              ],
+              "description": "Filter applications by name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--pool"
+              ],
+              "description": "Filter applications by pool",
+              "takes_arg": true,
+              "arg_name": "pool",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--platform"
+              ],
+              "description": "Filter applications by platform",
+              "takes_arg": true,
+              "arg_name": "platform",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Display only applications name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--status"
+              ],
+              "description": "Filter applications by unit status. Accepts multiple values separated by commas. Possible values can be: building, created, starting, error, started, stopped, asleep",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--team"
+              ],
+              "description": "Team that will own the app",
+              "takes_arg": true,
+              "arg_name": "team",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--user"
+              ],
+              "description": "Filter applications by owner",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "log",
+          "aliases": [],
+          "description": "Shows the logs of an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--follow"
+              ],
+              "description": "Follow log output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--lines"
+              ],
+              "description": "Number of lines to show",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "no-data"
+              ],
+              "description": "No date information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--source"
+              ],
+              "description": "The log from the given source",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--unit"
+              ],
+              "description": "The log from the given unit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "metadata",
+          "aliases": [],
+          "description": "Manage metadata for an app",
+          "subcommands": [
+            {
+              "name": "get",
+              "aliases": [],
+              "description": "Retrieves metadata for an application",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Sets metadata for an application",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-restart"
+                  ],
+                  "description": "Do not restart the app after the metadata is set",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-t",
+                    "--type"
+                  ],
+                  "description": "Metadata type: annotation or label",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "<NAME=value>",
+                  "description": "The metadata key",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": true
+                }
+              ]
+            },
+            {
+              "name": "unset",
+              "aliases": [],
+              "description": "Unsets metadata for an application",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-restart"
+                  ],
+                  "description": "Do not restart the app after the metadata is set",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-t",
+                    "--type"
+                  ],
+                  "description": "Metadata type: annotation or label",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "NAME",
+                  "description": "The metadata key",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": true
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "quota",
+          "aliases": [],
+          "description": "Shows the quota of an app",
+          "subcommands": [
+            {
+              "name": "change",
+              "aliases": [],
+              "description": "Changes the limit of units that an app can have",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "limit",
+                  "description": "The new limit of units",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "view",
+              "aliases": [],
+              "description": "Displays the current usage and limit of the given app",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Removes an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restarts an application, or one of the processes of the application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--process"
+              ],
+              "description": "Process name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "revoke",
+          "aliases": [],
+          "description": "Removes a team access to an application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "team",
+              "description": "Team name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "router",
+          "aliases": [],
+          "description": "Manage routers for an app",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [],
+              "description": "Adds a router to an app",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-o",
+                    "--opts"
+                  ],
+                  "description": "Custom options sent directly to router implementation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "router",
+                  "description": "Router name",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List routers for an app",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "remove",
+              "aliases": [],
+              "description": "Removes a router from an app",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "router",
+                  "description": "Router name",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Updates a router for an app",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-o",
+                    "--opts"
+                  ],
+                  "description": "Custom options sent directly to router implementation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "version",
+              "aliases": [],
+              "description": "Manage router versions for an app",
+              "subcommands": [
+                {
+                  "name": "add",
+                  "aliases": [],
+                  "description": "Adds a router version to an app",
+                  "subcommands": [],
+                  "options": [
+                    {
+                      "names": [
+                        "-a",
+                        "--app"
+                      ],
+                      "description": "App name",
+                      "takes_arg": true,
+                      "arg_name": "app",
+                      "arg_template": null,
+                      "is_repeatable": false
+                    }
+                  ],
+                  "args": [
+                    {
+                      "name": "version",
+                      "description": null,
+                      "template": null,
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                },
+                {
+                  "name": "remove",
+                  "aliases": [],
+                  "description": "Removes a router version from an app",
+                  "subcommands": [],
+                  "options": [
+                    {
+                      "names": [
+                        "-a",
+                        "--app"
+                      ],
+                      "description": "App name",
+                      "takes_arg": true,
+                      "arg_name": "app",
+                      "arg_template": null,
+                      "is_repeatable": false
+                    }
+                  ],
+                  "args": [
+                    {
+                      "name": "version",
+                      "description": null,
+                      "template": null,
+                      "is_optional": false,
+                      "is_variadic": false
+                    }
+                  ]
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "routes",
+          "aliases": [],
+          "description": "List all routers",
+          "subcommands": [
+            {
+              "name": "rebuild",
+              "aliases": [],
+              "description": "Rebuild routes for an application",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-a",
+                    "--app"
+                  ],
+                  "description": "App name",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Runs a command inside an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--isolated"
+              ],
+              "description": "Running in ephemeral container",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--once"
+              ],
+              "description": "Running only one unit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "shell",
+          "aliases": [],
+          "description": "Opens a remote shell inside unit, using the API server as a proxy",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "app",
+              "description": "App name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Starts an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--process"
+              ],
+              "description": "Process name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Version number",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stops an application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--process"
+              ],
+              "description": "Process name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Version number",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "swap",
+          "aliases": [],
+          "description": "Swaps routing between two apps",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--cname-only"
+              ],
+              "description": "Swap only the cname",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Force Swap among apps with different number of units or different platform",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "unlock",
+          "aliases": [],
+          "description": "Forces the removal of an application lock",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y",
+                "--assume-yes"
+              ],
+              "description": "Don't ask for confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Updates an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cpu"
+              ],
+              "description": "CPU limit for app, this will override the plan cpu value. One cpu is equivalent to 1 vCPU/Core, fractional requests are allowed and the expression 0.1 is equivalent to the expression 100m",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--description"
+              ],
+              "description": "Changes description for the app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-g",
+                "--tag"
+              ],
+              "description": "Add tags for the app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--image-reset"
+              ],
+              "description": "Forces next deploy to build app image from scratch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--platform"
+              ],
+              "description": "Filter applications by platform",
+              "takes_arg": true,
+              "arg_name": "platform",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--memory"
+              ],
+              "description": "Memory limit for app, this will override the plan memory value. You can express memory as a bytes integer or using one of these suffixes: E, P, T, G, M, K, Ei, Pi, Ti, Gi, Mi, Ki",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-restart"
+              ],
+              "description": "Prevent tsuru from restarting the application",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--pool"
+              ],
+              "description": "Filter applications by pool",
+              "takes_arg": true,
+              "arg_name": "pool",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--plan"
+              ],
+              "description": "Plan to be used by the app",
+              "takes_arg": true,
+              "arg_name": "plan",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--team"
+              ],
+              "description": "Team that will own the app",
+              "takes_arg": true,
+              "arg_name": "team",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "env",
+      "aliases": [],
+      "description": "App environment variables",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get environment variables from an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set environment variables to an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--private"
+              ],
+              "description": "Private environment variables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-restart"
+              ],
+              "description": "Don't restart the app after setting the env vars",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Unset environment variables from an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--app"
+              ],
+              "description": "App name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-restart"
+              ],
+              "description": "Don't restart the app after setting the env vars",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--app"
+          ],
+          "description": "App name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--private"
+          ],
+          "description": "Private environment variables",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-restart"
+          ],
+          "description": "Don't restart the app after setting the env vars",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cluster",
+      "aliases": [],
+      "description": "Cluster commands",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a new cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all clusters",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update a cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "certificate",
+      "aliases": [],
+      "description": "Certificate commands",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List App TLS certificates",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Creates or update a TLS certificate into the specific app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Unset a TLS certificate from a specific app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to tsuru server",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "email",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout from tsuru server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for tsuru",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

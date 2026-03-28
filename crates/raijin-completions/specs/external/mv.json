@@ -1,0 +1,64 @@
+{
+  "name": "mv",
+  "aliases": [],
+  "description": "Move & rename files and folders",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Do not prompt for confirmation before overwriting the destination path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Cause mv to write a prompt to standard error before moving a file that would overwrite an existing file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Do not overwrite existing file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Cause mv to be verbose, showing files after they are moved",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "source",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    },
+    {
+      "name": "target",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "name": "coda",
+  "aliases": [],
+  "description": "Coda Local development CLI tool. It comes bundled with the Pack SDK and makes it easy to build and manage Packs from the CLI",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize an empty project with the recommended settings and dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "execute",
+      "aliases": [],
+      "description": "Execute the formula and print the output to the terminal",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dynamicUrl"
+          ],
+          "description": "To run a sync for a dynamic sync table, use this parameter to specify which URL to sync from",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "formula",
+          "description": "Formula name to execute",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "params",
+          "description": "Arguments to pass to the formula",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Set up authentication in your development environment so that you can execute Pack formulas with authentication applied to them",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "register",
+      "aliases": [],
+      "description": "Create a new API token or register an existing one to be used with future commands",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "apiToken",
+          "description": "The API token to register",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new Pack on Coda’s servers and get assigned a Pack ID. Run this command just once for each Pack you create",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Specify a name for the Pack. You can always set or update the name in the Pack management UI later",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--description"
+          ],
+          "description": "Specify a description for the Pack. You can always set or update the description in the Pack management UI later",
+          "takes_arg": true,
+          "arg_name": "description",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upload",
+      "aliases": [],
+      "description": "Use this command to upload a new version of your Pack based on your latest code",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "aliases": [],
+      "description": "Release a Pack version and make it live for your users",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": "The release version. Must always be greater than that of any of your previous releases",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Migrate the development of a Pack from the Pack Studio to a new local CLI Pack development",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "urlOrPackId",
+          "description": "The URL or ID of the Pack. E.g. https://coda.io/p/123456 or 123456",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link the development of a Pack from the Pack studio to an existing local CLI Pack development",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "urlOrPackId",
+          "description": "The URL or ID of the Pack. E.g. https://coda.io/p/123456 or 123456",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Looks up information about the API token that is registered in this environment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "apiToken",
+          "description": "The API token to look up",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Generate a bundle for your Pack",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "validate",
+      "aliases": [],
+      "description": "Validate your Pack definition",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setOption",
+      "aliases": [],
+      "description": "Set a persistent build option for the Pack. This will be used for all builds of the Pack",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path/to/pack.ts",
+          "description": "The path to the pack.ts file. E.g. src/pack.ts",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "option",
+          "description": "Currently the only supported option is 'timerStrategy'",
+          "template": {
+            "custom": [
+              "timerStrategy"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "Value to set for the option",
+          "template": {
+            "custom": [
+              "none",
+              "error",
+              "fake"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

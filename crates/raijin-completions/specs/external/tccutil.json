@@ -1,0 +1,70 @@
+{
+  "name": "tccutil",
+  "aliases": [],
+  "description": "Manage the privacy database",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "command",
+      "description": null,
+      "template": {
+        "custom": [
+          "reset"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "service",
+      "description": null,
+      "template": {
+        "custom": [
+          "AppleEvents",
+          "BluetoothAlways",
+          "Calendar",
+          "Camera",
+          "ContactsFull",
+          "ContactsLimited",
+          "FileProviderDomain",
+          "FileProviderPresence",
+          "Location",
+          "MediaLibrary",
+          "Microphone",
+          "Motion",
+          "Photos",
+          "PhotosAdd",
+          "Prototype3Rights",
+          "Prototype4Rights",
+          "Reminders",
+          "ScreenCapture",
+          "Siri",
+          "SpeechRecognition",
+          "SystemPolicyDesktopFolder",
+          "SystemPolicyDeveloperFiles",
+          "SystemPolicyDocumentsFolder",
+          "SystemPolicyDownloadsFolder",
+          "SystemPolicyNetworkVolumes",
+          "SystemPolicyRemovableVolumes",
+          "SystemPolicySysAdminFiles",
+          "Willow",
+          "SystemPolicyAllFiles",
+          "Accessibility",
+          "PostEvent",
+          "ListenEvent",
+          "DeveloperTool"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "bundle id",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

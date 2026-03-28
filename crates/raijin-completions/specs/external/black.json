@@ -1,0 +1,317 @@
+{
+  "name": "black",
+  "aliases": [],
+  "description": "Python code formatter",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--code",
+        "-c"
+      ],
+      "description": "Format the code passed in as a string",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--line-length",
+        "-l"
+      ],
+      "description": "How many characters per line to allow",
+      "takes_arg": true,
+      "arg_name": "line length",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--target-version",
+        "-t"
+      ],
+      "description": "Python versions that should be supported",
+      "takes_arg": true,
+      "arg_name": "python version",
+      "arg_template": {
+        "custom": [
+          "py33",
+          "py34",
+          "py35",
+          "py36",
+          "py37",
+          "py38",
+          "py39",
+          "py310"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--pyi"
+      ],
+      "description": "Format all input files regardless of file extension",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ipynb"
+      ],
+      "description": "Format all input files like Jupyter Notebooks regardless of file extension",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--python-cell-magics"
+      ],
+      "description": "Add the given magic to the list of known python-magics",
+      "takes_arg": true,
+      "arg_name": "python-magic",
+      "arg_template": {
+        "custom": [
+          "python",
+          "python3",
+          "timeit",
+          "prun",
+          "time",
+          "pypy",
+          "capture"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--skip-string-normalization",
+        "-S"
+      ],
+      "description": "Don't normalize string quotes or prefixes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-magic-trailing-comma",
+        "-C"
+      ],
+      "description": "Don't use trailing commas as a reason to split lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preview"
+      ],
+      "description": "Enable potentially disruptive style changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check"
+      ],
+      "description": "Don't write the files back, just return the status",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--diff"
+      ],
+      "description": "Don't write the files back, just output a diff for each file on stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Show colored diff",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Show uncolored diff",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fast"
+      ],
+      "description": "Skip temporary sanity checks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe"
+      ],
+      "description": "Run temporary sanity checks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--required-version"
+      ],
+      "description": "Require a specific version of Black",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include"
+      ],
+      "description": "Regex that matches files and directories that should be included on recursive searches",
+      "takes_arg": true,
+      "arg_name": "Regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude"
+      ],
+      "description": "Regex that matches files and directories that should be excluded on recursive searches",
+      "takes_arg": true,
+      "arg_name": "Regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extend-exclude"
+      ],
+      "description": "Additional exlusions",
+      "takes_arg": true,
+      "arg_name": "Regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-exclude"
+      ],
+      "description": "Exlude matching files and folders even when passed explicitly",
+      "takes_arg": true,
+      "arg_name": "Regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdin-filename"
+      ],
+      "description": "The name of the file when passing it through stdin",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workers",
+        "-W"
+      ],
+      "description": "Number of parallel workers",
+      "takes_arg": true,
+      "arg_name": "integer",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Don't emit non-error messages to stderr",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Also emit messages about files that were not changed or were ignored due to exclusion patterns",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Read configuration from filepath",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file or directory",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,1860 @@
+{
+  "name": "networksetup",
+  "aliases": [],
+  "description": "Configuration tool for network settings in System Preferences",
+  "subcommands": [
+    {
+      "name": "-listnetworkserviceorder",
+      "aliases": [],
+      "description": "Displays a list of network services in the order they are contacted for a connection, along with the corresponding port and device for each",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-listallnetworkservices",
+      "aliases": [],
+      "description": "Displays a list of all the network services on the server's hardware ports",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-listallhardwareports",
+      "aliases": [],
+      "description": "Displays list of hardware ports with corresponding device name and ethernet address",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-detectnewhardware",
+      "aliases": [],
+      "description": "Detects new network hardware and creates a default network service on the hardware",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-getmacaddress",
+      "aliases": [],
+      "description": "Displays ethernet (or Wi-Fi) address for hardwareport or device specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getcomputername",
+      "aliases": [],
+      "description": "Displays the computer name",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-setcomputername",
+      "aliases": [],
+      "description": "Sets computer name to <computername>. This name is used by AFP",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "computername",
+          "description": "The new name for your computer on the network",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getinfo",
+      "aliases": [],
+      "description": "Displays the IP address, subnet mask, router, and hardware address for the <networkservice> that you specify",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setmanual",
+      "aliases": [],
+      "description": "Set the TCP/IP configuration for <networkservice> to manual with IP address set to <ip>, Subnet Mask set to <subnet>, and Router address set to <router>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "ip",
+          "description": "The IP address to set for the network service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "subnet",
+          "description": "The subnet mask to apply",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "router",
+          "description": "The router address to set",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setdhcp",
+      "aliases": [],
+      "description": "Use this command to set the TCP/IP configuration for the specified <networkservice> to use DHCP. The client ID is optional. Specify \"Empty\" for [clientid] to clear the DHCP client id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "clientid",
+          "description": "Optional DHCP client ID. Use 'Empty' to clear it",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setbootp",
+      "aliases": [],
+      "description": "Use this command to set the TCP/IP configuration for the specified <networkservice> to use BOOTP",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setmanualwithdhcprouter",
+      "aliases": [],
+      "description": "Use this command to specify a manual IP address to use for DHCP for the specified <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "ip",
+          "description": "The IP address to set for the network service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getadditionalroutes",
+      "aliases": [],
+      "description": "Use this command to display the list of additional IPv4 routes configured for the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setadditionalroutes",
+      "aliases": [],
+      "description": "Use this command to set the list of IPv4 additional routes configured for the service. Each route is specified as a (destination address, subnet mask, gateway address) tuple. Specifying no tuples clears the list of routes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "dest mask gate",
+          "description": "One or more tuples of (destination address, subnet mask, gateway address). Specify 'Empty' to clear routes",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-setv4off",
+      "aliases": [],
+      "description": "Use this command to turn IPv4 off on the specified <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setv6off",
+      "aliases": [],
+      "description": "Use this command to turn IPv6 off on the specified <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setv6automatic",
+      "aliases": [],
+      "description": "Use this command to set IPv6 to get its addresses automatically for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setv6linklocal",
+      "aliases": [],
+      "description": "Use this command to set IPv6 to only use link local for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setv6manual",
+      "aliases": [],
+      "description": "Use this command to set IPv6 to get its addresses manually for <networkservice>. Specify the ip address, the prefix length and the router",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ip",
+          "description": "The IPv6 address to assign",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "prefixlength",
+          "description": "The prefix length for the IPv6 address (e.g., 64)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "router",
+          "description": "The IPv6 address of the router",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getv6additionalroutes",
+      "aliases": [],
+      "description": "Use this command to display the list of additional IPv6 routes configured for the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setv6additionalroutes",
+      "aliases": [],
+      "description": "Use this command to set the list of additional routes configured for the service. Each route is specified as a (destination address, prefix length, gateway address) tuple. Specifying no tuples clears the list of routes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "dest prefixlength gate",
+          "description": "The list of routes, each specified as a tuple of destination address, prefix length, and gateway address. Provide multiple routes or omit this to clear all routes",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-getdnsservers",
+      "aliases": [],
+      "description": "Displays DNS info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setdnsservers",
+      "aliases": [],
+      "description": "Use this command to specify the IP addresses of servers you want the specified <networkservice> to use to resolve domain names. You can list any number of servers (replace dns1, dns2, and so on with the IP addresses of domain name servers). If you want to clear all DNS entries for the specified network service, type \"empty\" in place of the DNS server names",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "dns",
+          "description": "IP addresses of DNS servers. Use 'empty' to clear all DNS entries",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-getsearchdomains",
+      "aliases": [],
+      "description": "Displays Domain Name info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setsearchdomains",
+      "aliases": [],
+      "description": "Use this command to designate the search domain for the specified <networkservice>. You can list any number of search domains (replace domain1, domain2, and so on with the name of a local domain). If you want to clear all search domain entries for the specified network service, type “empty” in place of the domain name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "domain",
+          "description": "List of search domains. Use 'empty' to clear all existing domains",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-create6to4service",
+      "aliases": [],
+      "description": "Use this command to create a new 6 to 4 service with name <newnetworkservicename>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "newnetworkservicename",
+          "description": "The name of the new 6 to 4 service to be created",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-set6to4automatic",
+      "aliases": [],
+      "description": "Use this command to set the 6 to 4 service such that it will get the relay address automatically",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "newnetworkservicename",
+          "description": "The name of the 6 to 4 service to be configured for automatic relay address retrieval",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-set6to4manual",
+      "aliases": [],
+      "description": "Use this command to set the 6 to 4 service such that it will get the relay address manually. Specify the <relayaddress> that you would like to set",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "newnetworkservicename",
+          "description": "The name of the 6 to 4 service to be configured",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "relayaddress",
+          "description": "The manually specified relay address to be used by the 6 to 4 service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getwebproxy",
+      "aliases": [],
+      "description": "Displays Web proxy (server, port, enabled value) info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setwebproxy",
+      "aliases": [],
+      "description": "Set Web proxy for <networkservice> with <domain> and <port number>. Turns proxy on. Optionally, specify <on> or <off> for <authenticated> to enable and disable authenticated proxy support. Specify <username> and <password> if you turn authenticated proxy support on",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "domain",
+          "description": "The domain name or IP address of the proxy server",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "portnumber",
+          "description": "The port number for the proxy server",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "authenticated",
+          "description": "Specify whether proxy authentication is required",
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "username",
+          "description": "The username for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "The password for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setwebproxystate",
+      "aliases": [],
+      "description": "Set Web proxy on <networkservice> to either <on> or <off>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getsecurewebproxy",
+      "aliases": [],
+      "description": "Displays Secure Web proxy (server, port, enabled value) info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setsecurewebproxy",
+      "aliases": [],
+      "description": "Set Secure Web proxy for <networkservice> with <domain> and <port number>. Turns proxy on. Optionally, specify <on> or <off> for <authenticated> to enable and disable authenticated proxy support. Specify <username> and <password> if you turn authenticated proxy support on",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "domain",
+          "description": "The proxy server's domain or IP address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "portnumber",
+          "description": "The port number for the proxy server",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "authenticated",
+          "description": "Specify whether proxy authentication is required",
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "username",
+          "description": "The username for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "The password for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setsecurewebproxystate",
+      "aliases": [],
+      "description": "Set Secure Web proxy on <networkservice> to either <on> or <off>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getsocksfirewallproxy",
+      "aliases": [],
+      "description": "Displays SOCKS Firewall proxy (server, port, enabled value) info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setsocksfirewallproxy",
+      "aliases": [],
+      "description": "Set SOCKS Firewall proxy for <networkservice> with <domain> and <port number>. Turns proxy on.  Optionally, specify <on> or <off> for <authenticated> to enable and disable authenticated proxy support. Specify <username> and <password> if you turn authenticated proxy support on",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "domain",
+          "description": "The proxy server's domain or IP address",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "portnumber",
+          "description": "The port number for the proxy server",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "authenticated",
+          "description": "Specify whether proxy authentication is required",
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "username",
+          "description": "The username for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "The password for proxy authentication",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setsocksfirewallproxystate",
+      "aliases": [],
+      "description": "Set SOCKS Firewall proxy to  either <on> or <off>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getproxybypassdomains",
+      "aliases": [],
+      "description": "Displays Bypass Domain Names for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setproxybypassdomains",
+      "aliases": [],
+      "description": "Set the Bypass Domain Name Servers for <networkservice> to <domain1> [domain2] [...]. Any number of Domain Name servers can be specified. Specify \"Empty\" for <domain1> to clear all Domain Name entries",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "domain",
+          "description": "Domains to bypass proxy for. Use 'Empty' to clear all bypass domains",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-getproxyautodiscovery",
+      "aliases": [],
+      "description": "Displays Proxy Auto Discover for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setproxyautodiscovery",
+      "aliases": [],
+      "description": "Set Proxy Auto Discover for <networkservice> to either <on> or <off>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setautoproxyurl",
+      "aliases": [],
+      "description": "Set proxy auto-config to url for <networkservice> and enable it",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "url",
+          "description": "The URL of the proxy auto-config (PAC) file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getautoproxyurl",
+      "aliases": [],
+      "description": "Displays proxy auto-config (url, enabled) info for <networkservice>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getairportnetwork",
+      "aliases": [],
+      "description": "Displays current Wi-Fi Network",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setairportnetwork",
+      "aliases": [],
+      "description": "Set Wi-Fi Network to <network> using optional [password] if specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "network",
+          "description": "The name of the Wi-Fi network to connect to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "Optional password for the Wi-Fi network",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getairportpower",
+      "aliases": [],
+      "description": "Displays whether Wi-Fi power is on or off",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setairportpower",
+      "aliases": [],
+      "description": "Set Wi-Fi power to either <on> or <off>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listpreferredwirelessnetworks",
+      "aliases": [],
+      "description": "List the preferred wireless networks for <hardwareport>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-addpreferredwirelessnetworkatindex",
+      "aliases": [],
+      "description": "Add wireless network named <network> to preferred list for <hardwareport> at <index>. Store the optional password in the keychain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "network",
+          "description": "The name of the Wi-Fi network to add",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "index",
+          "description": "The position in the preferred list",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "securitytype",
+          "description": "The security type of the network",
+          "template": {
+            "custom": [
+              "OPEN",
+              "WPA",
+              "WPA2",
+              "WPA/WPA2",
+              "WPAE",
+              "WPA2E",
+              "WPAE/WPA2E",
+              "WEP",
+              "8021XWEP"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "Optional password for the network",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-removepreferredwirelessnetwork",
+      "aliases": [],
+      "description": "Remove <network> from the preferred wireless network list for <hardwareport>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "network",
+          "description": "The name of the Wi-Fi network to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-removeallpreferredwirelessnetworks",
+      "aliases": [],
+      "description": "Remove all networks from the preferred wireless network list for <hardwareport>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getnetworkserviceenabled",
+      "aliases": [],
+      "description": "Displays whether a service is on or off (enabled or disabled)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setnetworkserviceenabled",
+      "aliases": [],
+      "description": "Use this command to turn the specified network service on or off (enable or disable)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "on | off",
+          "description": null,
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-createnetworkservice",
+      "aliases": [],
+      "description": "Create a service named <networkservice> on port <hardwareport>. The new service will be enabled by default",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservicename",
+          "description": "The name for the new network service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-renamenetworkservice",
+      "aliases": [],
+      "description": "Use this command to rename the specified network service <networkservice> to <newnetworkservicename>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "newnetworkservicename",
+          "description": "The new name for the network service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-duplicatenetworkservice",
+      "aliases": [],
+      "description": "Use this command to duplicate an existing network service <networkservice> and rename it to the specified name <newnetworkservicename>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "newnetworkservicename",
+          "description": "The new name for the duplicated network service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-removenetworkservice",
+      "aliases": [],
+      "description": "Use this command to delete a network service <networkservice>. You cannot use this command to delete the last remaining service for a hardware port. To do so, you use the -setnetworkserviceenabled command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "networkservice",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-ordernetworkservices",
+      "aliases": [],
+      "description": "Use this command to designate the order network services are contacted on the specified hardware port. Name the network you want contacted first, then the second, and so on. Use \"listnetworkserviceorder\" to view current service order. Note: use quotes around service names which contain spaces (ie. \"Built-in Ethernet\")",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-setMTUAndMediaAutomatically",
+      "aliases": [],
+      "description": "Set hardwareport or device specified back to automatically setting the MTU and Media",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwarePort",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getMTU",
+      "aliases": [],
+      "description": "Get the MTU value for hardwareport or device specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwarePort",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setMTU",
+      "aliases": [],
+      "description": "Set MTU for hardwareport or device specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwarePort",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "The MTU value to set, typically an integer representing the maximum packet size",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listValidMTURange",
+      "aliases": [],
+      "description": "List the valid MTU range for hardwareport or device specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-getMedia",
+      "aliases": [],
+      "description": "Show both the current setting for media and the active media on hardwareport or device specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setMedia",
+      "aliases": [],
+      "description": "Set media for hardwareport or device specified to subtype. Specify optional [option1] and additional options depending on subtype. Any number of valid options can be specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwarePort",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "subtype",
+          "description": "The media subtype to set for the hardware port or device",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "option",
+          "description": "Additional options relevant to the <subtype>. Can include multiple values depending on the subtype",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-listValidMedia",
+      "aliases": [],
+      "description": "List valid media options for hardwareport or device name. Enumerates available subtypes and options per subtype",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "hardwareport",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-createVLAN",
+      "aliases": [],
+      "description": "Create a VLAN with the name <name> over the parent device <parentdevice> and with the tag <tag>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name to assign to the new VLAN",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "parentdevice",
+          "description": "The parent device over which the VLAN will be created",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "tag",
+          "description": "The VLAN tag to assign to the new VLAN",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-deleteVLAN",
+      "aliases": [],
+      "description": "Delete the VLAN with the name <name> over the parent device <parentdevice> and with the tag <tag>",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the VLAN to be deleted",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "parentdevice",
+          "description": "The parent device on which the VLAN is configured",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "tag",
+          "description": "The VLAN tag of the VLAN to be deleted",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listVLANs",
+      "aliases": [],
+      "description": "List the VLANs that have been created",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-listdevicesthatsupportVLAN",
+      "aliases": [],
+      "description": "List the devices that support VLANs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-isBondSupported",
+      "aliases": [],
+      "description": "Displays YES if the device can be added to a bond. NO if it cannot",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "device",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-createBond",
+      "aliases": [],
+      "description": "Create a bond with the user-defined-name name and optionally add any listed devices if they support bonding",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The user-defined name for the new bond",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "device",
+          "description": "The devices to include in the bond. Any number of devices can be specified",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-deleteBond",
+      "aliases": [],
+      "description": "Delete the bond with the specified device-name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "bond",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-addDeviceToBond",
+      "aliases": [],
+      "description": "Add device to bond",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "device",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "bond",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-removeDeviceFromBond",
+      "aliases": [],
+      "description": "Remove device from bond",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "device",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "bond",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listBonds",
+      "aliases": [],
+      "description": "List of all bonds",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-showBondStatus",
+      "aliases": [],
+      "description": "Display the status of the specified bond",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "bond",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listpppoeservices",
+      "aliases": [],
+      "description": "List all PPPoE services in the current set",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-showpppoestatus",
+      "aliases": [],
+      "description": "Display the status of the PPPoE service with the specified name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-createpppoeservice",
+      "aliases": [],
+      "description": "Create a PPPoE service on the specified device with the service name specified",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "device",
+          "description": "The network device to create the PPPoE service on",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "name",
+          "description": "The name for the new PPPoE service",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "account",
+          "description": "The PPPoE account name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "The PPPoE account password",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "pppoeName",
+          "description": "Optional name for the PPPoE service",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-deletepppoeservice",
+      "aliases": [],
+      "description": "Delete the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setpppoeaccountname",
+      "aliases": [],
+      "description": "Set the account name for the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "account",
+          "description": "The PPPoE account name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-setpppoepassword",
+      "aliases": [],
+      "description": "Set the password for the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "The PPPoE account password",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-connectpppoeservice",
+      "aliases": [],
+      "description": "Connect the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-disconnectpppoeservice",
+      "aliases": [],
+      "description": "Disconnect the service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-listlocations",
+      "aliases": [],
+      "description": "List all network locations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-getcurrentlocation",
+      "aliases": [],
+      "description": "Display the name of the current set",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-createlocation",
+      "aliases": [],
+      "description": "Create a set with the user-defined-name name and optionally populate it with the default services",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "location",
+          "description": "The name for the new location",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "populate",
+          "description": "Specify 'true' to populate with default services or 'false' to create an empty location",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-deletelocation",
+      "aliases": [],
+      "description": "Delete the set",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "location",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-switchtolocation",
+      "aliases": [],
+      "description": "Make the specified set the current set",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "location",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-version",
+      "aliases": [],
+      "description": "Displays version of networksetup tool",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-help",
+      "aliases": [],
+      "description": "Displays a list of all the commands available in the Network Setup Tool, with explanatory information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-printcommands",
+      "aliases": [],
+      "description": "Displays a list of commands with no detail",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

@@ -1,0 +1,419 @@
+{
+  "name": "vite",
+  "aliases": [],
+  "description": "Native ESM-powered web dev build tool",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build for production",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Transpile target (must be a valid esbuild target)",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--outDir"
+          ],
+          "description": "Output directory",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assetsDir"
+          ],
+          "description": "Directory under outDir to place assets in",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--assetsInlineLimit"
+          ],
+          "description": "Static asset base64 inline threshold in bytes",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssr"
+          ],
+          "description": "Build specified entry for server-side rendering",
+          "takes_arg": true,
+          "arg_name": "entry",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sourcemap"
+          ],
+          "description": "Output sourcemaps for build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minify"
+          ],
+          "description": "Enable minification",
+          "takes_arg": true,
+          "arg_name": "minifier",
+          "arg_template": {
+            "custom": [
+              "terser",
+              "esbuild"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--manifest"
+          ],
+          "description": "Emit build manifest json",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssrManifest"
+          ],
+          "description": "Emit ssr manifest json",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--emptyOutDir"
+          ],
+          "description": "Force empty outDir when it's outside of root",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "Rebuilds when modules have changed on disk",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "root",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "optimize",
+      "aliases": [],
+      "description": "Pre-bundle dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "For the optimizer to re-bundle",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "root",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "preview",
+      "aliases": [],
+      "description": "Locally preview the production build",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Specify the hostname",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Specify the port",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "Use TLS + HTTP/2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Open browser on startup",
+          "takes_arg": true,
+          "arg_name": "browser",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strictPort"
+          ],
+          "description": "Exit if the port is already in use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "root",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--host"
+      ],
+      "description": "Specify the hostname",
+      "takes_arg": true,
+      "arg_name": "host",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--port"
+      ],
+      "description": "Specify the port",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--https"
+      ],
+      "description": "Use TLS + HTTP/2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--open"
+      ],
+      "description": "Open browser on startup",
+      "takes_arg": true,
+      "arg_name": "browser",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cors"
+      ],
+      "description": "Enable CORS",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strictPort"
+      ],
+      "description": "Exit if the port is already in use",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force"
+      ],
+      "description": "For the optimizer to re-bundle",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Use the specified config file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--base"
+      ],
+      "description": "Public base path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--logLevel"
+      ],
+      "description": "Set the log level",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "info",
+          "warn",
+          "error",
+          "silent"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clearScreen"
+      ],
+      "description": "Enable screen clearing when logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Show debug logs",
+      "takes_arg": true,
+      "arg_name": "feat",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--filter"
+      ],
+      "description": "Filter debug logs",
+      "takes_arg": true,
+      "arg_name": "filter",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--mode"
+      ],
+      "description": "Set env mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Display version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "root",
+      "description": null,
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

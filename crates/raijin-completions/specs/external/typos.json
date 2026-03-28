@@ -1,0 +1,325 @@
+{
+  "name": "typos",
+  "aliases": [],
+  "description": "Source code spelling correction",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Custom config file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--isolated"
+      ],
+      "description": "Ignore implicit configuration files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--diff"
+      ],
+      "description": "Print a diff of what would change",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--write-changes"
+      ],
+      "description": "Write fixes out",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files"
+      ],
+      "description": "Debug: Print each file that would be spellchecked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--identifiers"
+      ],
+      "description": "Debug: Print each identifier that would be spellchecked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--words"
+      ],
+      "description": "Debug: Print each word that would be spellchecked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dump-config"
+      ],
+      "description": "Write the current configuration to file with `-` for stdout",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-list"
+      ],
+      "description": "Show all supported file types",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format"
+      ],
+      "description": "Set the output format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "silent",
+          "brief",
+          "long",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--threads"
+      ],
+      "description": "The approximate number of threads to use",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude"
+      ],
+      "description": "Ignore files & directories matching the glob",
+      "takes_arg": true,
+      "arg_name": "glob",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden"
+      ],
+      "description": "Search hidden files and directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Don't respect ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-dot"
+      ],
+      "description": "Don't respect .ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-global"
+      ],
+      "description": "Don't respect global ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-parent"
+      ],
+      "description": "Don't respect ignore files in parent directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-vcs"
+      ],
+      "description": "Don't respect ignore files in vcs directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary"
+      ],
+      "description": "Search binary files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-check-filenames"
+      ],
+      "description": "Skip verifying spelling in file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-check-files"
+      ],
+      "description": "Skip verifying spelling in files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-unicode"
+      ],
+      "description": "Only allow ASCII characters in identifiers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--locale"
+      ],
+      "description": "Set the locale to use",
+      "takes_arg": true,
+      "arg_name": "locale",
+      "arg_template": {
+        "custom": [
+          "en",
+          "en-us",
+          "en-gb",
+          "en-ca",
+          "en-au"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Controls when to use color",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "always",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "More output per occurrence",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Less output per occurrence",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "name": "capacitor",
+  "aliases": [],
+  "description": "The Capacitor command-line interface (CLI) tool is used to develop Capacitor apps",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add a native platform project to your app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "copy",
+      "aliases": [],
+      "description": "Copy the web app build and Capacitor configuration file into the native platform project. Run this each time you make changes to your web app or change a configuration value",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "List all installed Cordova and Capacitor plugins",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Opens the native project workspace in the specified native IDE (Xcode for iOS, Android Studio for Android)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Opens the native project workspace in the specified native IDE (Xcode for iOS, Android Studio for Android)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "Print a list of target devices available to the given platform",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Run on a specific target device",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "This command runs copy and then update",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--deployment"
+          ],
+          "description": "Podfile.lock won't be deleted and pod install will use --deployment option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inline"
+          ],
+          "description": "After syncing, all JS source maps will be inlined allowing for debugging an Android Web View in Chromium based browsers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Updates the native plugins and dependencies referenced in package.json",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--deployment"
+          ],
+          "description": "Podfile.lock won't be deleted and pod install will use --deployment option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "android",
+              "ios"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Output usage information. Can be used with individual commands too",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

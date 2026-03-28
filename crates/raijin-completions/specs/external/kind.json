@@ -1,0 +1,498 @@
+{
+  "name": "kind",
+  "aliases": [],
+  "description": "Kubernetes IN Docker - local clusters for testing Kubernetes",
+  "subcommands": [
+    {
+      "name": "Build",
+      "aliases": [],
+      "description": "Build one of [node-image]",
+      "subcommands": [
+        {
+          "name": "node-image",
+          "aliases": [],
+          "description": "Builds a node image",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--arch"
+              ],
+              "description": "Architecture to build for, defaults to the host architecture",
+              "takes_arg": true,
+              "arg_name": "architecture",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--base-image"
+              ],
+              "description": "Base image to use for the node image",
+              "takes_arg": true,
+              "arg_name": "base image",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--image"
+              ],
+              "description": "Name:tag of the resulting image to be built",
+              "takes_arg": true,
+              "arg_name": "name:tag",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kube-root"
+              ],
+              "description": "Path to the Kubernetes source directory",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Type of node image to build",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Creates a cluster",
+      "subcommands": [
+        {
+          "name": "cluster",
+          "aliases": [],
+          "description": "Creates a cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Path to a kind config file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--image"
+              ],
+              "description": "Node docker image to use for booting the cluster",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kubeconfig"
+              ],
+              "description": "Sets kubeconfig path instead of $KUBECONFIG or $HOME/.kube/config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--retain"
+              ],
+              "description": "Retain nodes for debugging when cluster creation fails",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait"
+              ],
+              "description": "Wait for control-plane node to be ready",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generates shell completion scripts",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Output shell completions for bash",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Output shell completions for fish",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Output shell completions for zsh",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Deletes one or more clusters",
+      "subcommands": [
+        {
+          "name": "cluster",
+          "aliases": [],
+          "description": "Delete Cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "clusters",
+          "aliases": [],
+          "description": "Delete Clusters",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-A",
+                "--all"
+              ],
+              "description": "Delete all clusters",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kubeconfig"
+              ],
+              "description": "Sets kubeconfig path instead of $KUBECONFIG or $HOME/.kube/config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Exports a cluster's kubeconfig",
+      "subcommands": [
+        {
+          "name": "kubeconfig",
+          "aliases": [],
+          "description": "Exports a cluster's kubeconfig",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--internal"
+              ],
+              "description": "Use internal address instead of externalt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kubeconfig"
+              ],
+              "description": "Sets kubeconfig path instead of $KUBECONFIG or $HOME/.kube/config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Exports logs to a tempdir or [output-dir] if specified",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Gets one of [clusters, nodes, kubeconfig]",
+      "subcommands": [
+        {
+          "name": "clusters",
+          "aliases": [],
+          "description": "Lists existing kind clusters by their name",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "kubeconfig",
+          "aliases": [],
+          "description": "Prints cluster kubeconfig",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--internal"
+              ],
+              "description": "Use internal address instead of external",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "nodes",
+          "aliases": [],
+          "description": "Lists existing kind nodes by their name",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-A",
+                "--all"
+              ],
+              "description": "List all nodes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "load",
+      "aliases": [],
+      "description": "Loads images into node from an archive or image on host",
+      "subcommands": [
+        {
+          "name": "docker-image",
+          "aliases": [],
+          "description": "Loads docker images from host into all or specified nodes by name",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--nodes"
+              ],
+              "description": "Comma separated list of nodes to load images into",
+              "takes_arg": true,
+              "arg_name": "nodes",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "image-archive",
+          "aliases": [],
+          "description": "Loads docker images from archive into all or specified nodes by name",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Cluster name",
+              "takes_arg": true,
+              "arg_name": "cluster name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--nodes"
+              ],
+              "description": "Comma separated list of nodes to load images into",
+              "takes_arg": true,
+              "arg_name": "nodes",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Prints the kind CLI version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for kind",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Silence all stderr output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbosity"
+      ],
+      "description": "Info log verbosity, higher value produces more output",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

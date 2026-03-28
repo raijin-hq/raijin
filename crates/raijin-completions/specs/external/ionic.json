@@ -1,0 +1,3027 @@
+{
+  "name": "ionic",
+  "aliases": [],
+  "description": "The Ionic command-line interface (CLI) is the go-to tool for developing Ionic apps",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build web assets and prepare your app for any platform targets",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--engine"
+          ],
+          "description": "Target engine (e.g. browser, cordova)",
+          "takes_arg": true,
+          "arg_name": "engine",
+          "arg_template": {
+            "custom": [
+              "browser",
+              "cordova"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--platform"
+          ],
+          "description": "Target platform on chosen engine (e.g. ios, android)",
+          "takes_arg": true,
+          "arg_name": "platform",
+          "arg_template": {
+            "custom": [
+              "ios",
+              "android"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod"
+          ],
+          "description": "Flag to use the production configuration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "Specify the configuration to use",
+          "takes_arg": true,
+          "arg_name": "conf",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source-map"
+          ],
+          "description": "Output source maps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Rebuild when files change",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Enables tab-completion for Ionic CLI commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "Open the Ionic documentation website",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--browser",
+            "-w"
+          ],
+          "description": "Specifies the browser to use (safari, firefox, google chrome)",
+          "takes_arg": true,
+          "arg_name": "browser",
+          "arg_template": {
+            "custom": [
+              "safari",
+              "firefox",
+              "google chrome"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Print project, system, and environment information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Print system/environment info in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize existing projects with Ionic",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--type"
+          ],
+          "description": "Type of project (e.g. angular, react, vue, custom)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "angular",
+              "react",
+              "vue",
+              "custom"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Initialize even if a project already exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--multi-app"
+          ],
+          "description": "Initialize a multi-app project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-id"
+          ],
+          "description": "Specify a slug for your app",
+          "takes_arg": true,
+          "arg_name": "slug",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default"
+          ],
+          "description": "Mark the initialized app as the default project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of your project (e.g. myApp, \"My App\")",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Connect local apps to Ionic",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "id",
+          "description": "The Appflow ID of the app to link (e.g. a1b2c3d4)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to Ionic",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "email",
+          "description": "Your email address",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "password",
+          "description": "Your password",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of Ionic",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "repair",
+      "aliases": [],
+      "description": "Remove and recreate dependencies and generated files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cordova"
+          ],
+          "description": "Only perform the repair steps for Cordova platforms and plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Start a local dev server for app dev/testing",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--external"
+          ],
+          "description": "Host dev server on all network interfaces (i.e. --host=0.0.0.0)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Use specific host for the dev server",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Use specific port for the dev server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--public-host"
+          ],
+          "description": "The host used for the browser or web view",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-livereload"
+          ],
+          "description": "Do not spin up dev server--just serve files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lab-host"
+          ],
+          "description": "Use specific host for Ionic Lab server",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lab-port"
+          ],
+          "description": "Use specific port for Ionic Lab server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-open"
+          ],
+          "description": "Do not open a browser window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browser",
+            "-w"
+          ],
+          "description": "Specifies the browser to use (safari, firefox, google chrome)",
+          "takes_arg": true,
+          "arg_name": "browser",
+          "arg_template": {
+            "custom": [
+              "safari",
+              "firefox",
+              "google chrome"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browseroption",
+            "-o"
+          ],
+          "description": "Specifies a path to open to (/#/tab/dash)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lab",
+            "-l"
+          ],
+          "description": "Test your apps on multiple platform types in the browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssl"
+          ],
+          "description": "Use HTTPS for the dev server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prod"
+          ],
+          "description": "Flag to use the production configuration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--consolelogs"
+          ],
+          "description": "Print app console logs to the terminal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--consolelogs-port"
+          ],
+          "description": "Use specific port for console logs server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--configuration",
+            "-c"
+          ],
+          "description": "Specify the configuration to use",
+          "takes_arg": true,
+          "arg_name": "conf",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--source-map"
+          ],
+          "description": "Output sourcemaps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "signup",
+      "aliases": [],
+      "description": "Create an Ionic account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Create a new project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list",
+            "-l"
+          ],
+          "description": "List available starter templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type"
+          ],
+          "description": "Type of project to start (e.g. vue, angular, react, ionic-angular, ionic1)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "vue",
+              "angular",
+              "react",
+              "ionic-angular",
+              "ionic1"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cordova"
+          ],
+          "description": "Include Cordova integration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--capacitor"
+          ],
+          "description": "Include Capacitor integration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-deps"
+          ],
+          "description": "Do not install npm/yarn dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-git"
+          ],
+          "description": "Do not initialize a git repo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--link"
+          ],
+          "description": "Connect your new app to Ionic",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Specify an Ionic App ID to link",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-id"
+          ],
+          "description": "Specify a slug for your app (used for the directory name and package name)",
+          "takes_arg": true,
+          "arg_name": "slug",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--package-id"
+          ],
+          "description": "Specify the bundle ID/application ID for your app (reverse-DNS notation)",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of your new project (e.g. myApp, \"My App\")",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "template",
+          "description": "The starter template to use (e.g. blank, tabs; use --list to see all)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Config commands for Ionic",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Print config values",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Use global CLI config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output config values in JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--root"
+              ],
+              "description": "Operate on root of ionic.config.json",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "property",
+              "description": "The property name you wish to get",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set config values",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Use global CLI config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Always interpret value as JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Always overwrite existing values",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--root"
+              ],
+              "description": "Operate on root of ./ionic.config.json",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "property",
+              "description": "The property name you wish to set",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "value",
+              "description": "The new value of the given property",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Delete config values",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--global",
+                "-g"
+              ],
+              "description": "Use global CLI config",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--root"
+              ],
+              "description": "Operate on root of ./ionic.config.json",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "property",
+              "description": "The property name you wish to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "capacitor",
+      "aliases": [],
+      "description": "Capacitor commands Ionic",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a native platform to your Ionic project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to add (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Build an Ionic project for a given platform",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-open"
+              ],
+              "description": "Do not invoke Capacitor open",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Rebuild when files change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to build for (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "copy",
+          "aliases": [],
+          "description": "Copy web assets to native platforms",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke an Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Rebuild when files change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to copy (e.g. android, ios)",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open the IDE for a given native platform project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to open (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run an Ionic project on a connected device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--list"
+              ],
+              "description": "List all available targets",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--target"
+              ],
+              "description": "Deploy to a specific device by its ID (use --list to see all)",
+              "takes_arg": true,
+              "arg_name": "target",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--open"
+              ],
+              "description": "Open native IDE instead of using capacitor run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--external"
+              ],
+              "description": "Host dev server on all network interfaces (i.e. --host=0.0.0.0)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host"
+              ],
+              "description": "Use specific host for the dev server",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "Use specific port for the dev server",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public-host"
+              ],
+              "description": "The host used for the browser or web view",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload",
+                "-l"
+              ],
+              "description": "Spin up dev server to live-reload www files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload-url"
+              ],
+              "description": "Provide a custom URL to the dev server",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Rebuild when files change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to run (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sync",
+          "aliases": [],
+          "description": "Sync (copy + update) an Ionic project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke an Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Rebuild when files change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to sync (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update Capacitor native platforms, install Capacitor/Cordova plugins",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to update (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "AppFlow deploy commands for Ionic",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds Appflow Deploy to the project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app-id"
+              ],
+              "description": "Your Appflow app ID",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--channel-name"
+              ],
+              "description": "The channel to check for updates from",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--update-method"
+              ],
+              "description": "The update method that dictates the behavior of the plugin",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--max-store"
+              ],
+              "description": "The maximum number of downloaded versions to store on the device",
+              "takes_arg": true,
+              "arg_name": "quantity",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--min-background-duration"
+              ],
+              "description": "The minimum duration after which the app checks for an update in the background",
+              "takes_arg": true,
+              "arg_name": "seconds",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Create a deploy build on Appflow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--environment"
+              ],
+              "description": "The group of environment variables exposed to your build",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--channel"
+              ],
+              "description": "The channel you want to auto deploy the build to. This can be repeated multiple times if multiple channels need to be specified",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--commit"
+              ],
+              "description": "Commit (defaults to HEAD)",
+              "takes_arg": true,
+              "arg_name": "sha1",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-download"
+              ],
+              "description": "Skip downloading build artifacts after command succeeds",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "configure",
+          "aliases": [],
+          "description": "Overrides Appflow Deploy configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app-id"
+              ],
+              "description": "Your Appflow app ID",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--channel-name"
+              ],
+              "description": "The channel to check for updates from",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--update-method"
+              ],
+              "description": "The update method that dictates the behavior of the plugin",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--max-store"
+              ],
+              "description": "The maximum number of downloaded versions to store on the device",
+              "takes_arg": true,
+              "arg_name": "quantity",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--min-background-duration"
+              ],
+              "description": "The minimum duration after which the app checks for an update in the background",
+              "takes_arg": true,
+              "arg_name": "seconds",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The native platform (e.g. ios, android)",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "manifest",
+          "aliases": [],
+          "description": "Generates a manifest file for the deploy service from a built app directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "git",
+      "aliases": [],
+      "description": "Git commands for Ionic",
+      "subcommands": [
+        {
+          "name": "remote",
+          "aliases": [],
+          "description": "Adds/updates the Appflow git remote to your local Ionic app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "package",
+      "aliases": [],
+      "description": "Package commands for Ionic",
+      "subcommands": [
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Create a package build on Appflow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--signing-certificate"
+              ],
+              "description": "Signing certificate",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--environment"
+              ],
+              "description": "The group of environment variables exposed to your build",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--native-config"
+              ],
+              "description": "The group of native config variables exposed to your build",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--destination"
+              ],
+              "description": "The configuration to deploy the build artifact to the app store",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--commit"
+              ],
+              "description": "Commit (defaults to HEAD)",
+              "takes_arg": true,
+              "arg_name": "sha1",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-stack"
+              ],
+              "description": "Target platform (\"Android\", \"iOS - Xcode 11 (Preferred)\", \"iOS - Xcode 10\")",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": {
+                "custom": [
+                  "Android",
+                  "iOS - Xcode 11 (Preferred)",
+                  "iOS - Xcode 10"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-file-name"
+              ],
+              "description": "The name for the downloaded build file",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ipa-name"
+              ],
+              "description": "The name for the downloaded ipa file",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dsym-name"
+              ],
+              "description": "The name for the downloaded dsym file",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--apk-name"
+              ],
+              "description": "The name for the downloaded apk file",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--aab-name"
+              ],
+              "description": "The name for the downloaded aab file",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--artifact-type"
+              ],
+              "description": "The artifact type (aab, apk, ipa, dsym)",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": {
+                "custom": [
+                  "aab",
+                  "apl",
+                  "ipa",
+                  "dysm"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-download"
+              ],
+              "description": "Skip downloading build artifacts after command succeeds",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to package (android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "type",
+              "description": "The build type (debug, release, development, ad-hoc, app-store, enterprise)",
+              "template": {
+                "custom": [
+                  "debug",
+                  "release",
+                  "development",
+                  "ad-hoc",
+                  "app-stpre",
+                  "enterprise"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploys a binary to a destination, such as an app store using Appflow",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "build-id",
+              "description": "The build id of the desired successful package build",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "destination",
+              "description": "The destination to deploy the build artifact to the app store",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ssl",
+      "aliases": [],
+      "description": "SSL commands for Ionic",
+      "subcommands": [
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generates an SSL key & certificate",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--key-path"
+              ],
+              "description": "Destination of private key file",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cert-path"
+              ],
+              "description": "Destination of certificate file",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--country-name"
+              ],
+              "description": "The country name (C) of the SSL certificate",
+              "takes_arg": true,
+              "arg_name": "C",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--state-or-province-name"
+              ],
+              "description": "The state or province name (ST) of the SSL certificate",
+              "takes_arg": true,
+              "arg_name": "ST",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--locality-name"
+              ],
+              "description": "The locality name (L) of the SSL certificate",
+              "takes_arg": true,
+              "arg_name": "L",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organization-name"
+              ],
+              "description": "The organization name (O) of the SSL certificate",
+              "takes_arg": true,
+              "arg_name": "O",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--common-name"
+              ],
+              "description": "The common name (CN) of the SSL certificate",
+              "takes_arg": true,
+              "arg_name": "CN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--bits",
+                "-b"
+              ],
+              "description": "Number of bits in the key",
+              "takes_arg": true,
+              "arg_name": "bits",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "SSH commands for Ionic",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add an SSH public key to Ionic",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--use"
+              ],
+              "description": "Use the newly added key as your default SSH key for Ionic",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "pubkey-path",
+              "description": "Location of public key file to add to Ionic",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an SSH public key from Ionic",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key-id",
+              "description": "The ID of the public key to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generates a private and public SSH key pair",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--type",
+                "-t"
+              ],
+              "description": "The type of key to generate: ecdsa, ed25519, rsa",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": {
+                "custom": [
+                  "ecdsa",
+                  "ed25519",
+                  "rsa"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--bits",
+                "-b"
+              ],
+              "description": "Number of bits in the key",
+              "takes_arg": true,
+              "arg_name": "bits",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--annotation",
+                "-C"
+              ],
+              "description": "Annotation (comment) in public key. Your Ionic email address will be used",
+              "takes_arg": true,
+              "arg_name": "annotation",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "key-path",
+              "description": "Destination of private key file",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List your SSH public keys on Ionic",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output SSH keys in JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "setup",
+          "aliases": [],
+          "description": "Setup your Ionic SSH keys automatically",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "use",
+          "aliases": [],
+          "description": "Set your active Ionic SSH key",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key-path",
+              "description": "Location of private key file to use",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Doctor commands for Ionic",
+      "subcommands": [
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Check the health of your Ionic project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "The issue identifier",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all issues and their identifiers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "treat",
+          "aliases": [],
+          "description": "Attempt to fix issues in your Ionic project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "id",
+              "description": "The issue identifier",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "integrations",
+      "aliases": [],
+      "description": "Integration commands for Ionic",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable an integration",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The integration to disable (e.g. capacitor, cordova, enterprise)",
+              "template": {
+                "custom": [
+                  "capacitor",
+                  "cordova",
+                  "enterprise"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Add & enable integrations to your app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--add"
+              ],
+              "description": "Download and add the integration even if enabled",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--root"
+              ],
+              "description": "Specify an alternative destination to download into when adding",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Less verbose output, ignore integration errors",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "The integration to enable (e.g. capacitor, cordova, enterprise)",
+              "template": {
+                "custom": [
+                  "capacitor",
+                  "cordova",
+                  "enterprise"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available and active integrations in your app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "enterprise",
+      "aliases": [],
+      "description": "Enterprise commands for Ionic",
+      "subcommands": [
+        {
+          "name": "register",
+          "aliases": [],
+          "description": "Register your Product Key with this app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app-id"
+              ],
+              "description": "The Ionic App ID",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--key"
+              ],
+              "description": "The Product Key",
+              "takes_arg": true,
+              "arg_name": "key",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cordova",
+      "aliases": [],
+      "description": "Cordova commands for Ionic",
+      "subcommands": [
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Use Cordova to build for Android and iOS platform targets",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke an Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Mark as a debug build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--release"
+              ],
+              "description": "Mark as a release build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--device"
+              ],
+              "description": "Deploy build to a device",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--emulator"
+              ],
+              "description": "Deploy build to an emulator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--buildConfig"
+              ],
+              "description": "Use the specified build configuration",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to build (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "compile",
+          "aliases": [],
+          "description": "Compile native platform code",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Mark as a debug build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--release"
+              ],
+              "description": "Mark as a release build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--device"
+              ],
+              "description": "Deploy build to a device",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--emulator"
+              ],
+              "description": "Deploy build to an emulator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--buildConfig"
+              ],
+              "description": "Use the specified build configuration",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to compile (android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "emulate",
+          "aliases": [],
+          "description": "Emulate an Ionic project on a simulator/emulator",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--list"
+              ],
+              "description": "List all available targets",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--external"
+              ],
+              "description": "Host dev server on all network interfaces (i.e. --host=0.0.0.0)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host"
+              ],
+              "description": "Use specific host for the dev server",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "Use specific port for the dev server",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public-host"
+              ],
+              "description": "The host used for the browser or web view",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload",
+                "-l"
+              ],
+              "description": "Spin up dev server to live-reload www files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload-url"
+              ],
+              "description": "Provide a custom URL to the dev server",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Mark as a debug build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--release"
+              ],
+              "description": "Mark as a release build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--device"
+              ],
+              "description": "Deploy build to a device",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--emulator"
+              ],
+              "description": "Deploy build to an emulator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--buildConfig"
+              ],
+              "description": "Use the specified build configuration",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--target"
+              ],
+              "description": "Deploy build to a device (use --list to see all)",
+              "takes_arg": true,
+              "arg_name": "target",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-native-run"
+              ],
+              "description": "Do not use native-run to run the app; use Cordova instead",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--connect"
+              ],
+              "description": "Tie the running app to the process",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output targets in JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssl"
+              ],
+              "description": "Use HTTPS for the dev serve",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--consolelogs"
+              ],
+              "description": "Print app console logs to the terminal",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--consolelogs-port"
+              ],
+              "description": "Use specific port for console logs server",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--buildconfig"
+              ],
+              "description": "Use the specified build configuration",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to run (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "platform",
+          "aliases": [],
+          "description": "Manage Cordova platform targets",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-resources"
+              ],
+              "description": "Do not pregenerate icons and splash screen resources (corresponds to add)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "action",
+              "description": "Add, remove, or update a platform; ls, check, or save all project platforms",
+              "template": {
+                "custom": [
+                  "add",
+                  "remove",
+                  "update",
+                  "ls",
+                  "check",
+                  "save"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "platform",
+              "description": "The platform that you would like to add (android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "plugin",
+          "aliases": [],
+          "description": "Manage Cordova plugins",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Force overwrite the plugin if it exists (corresponds to add)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable"
+              ],
+              "description": "Specify plugin variables",
+              "takes_arg": true,
+              "arg_name": "KEY=VALUE",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "action",
+              "description": "Add or remove a plugin; ls or save all project plugins",
+              "template": {
+                "custom": [
+                  "add",
+                  "remove",
+                  "ls",
+                  "save"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "plugin",
+              "description": "The name of the plugin (corresponds to add and remove)",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "prepare",
+          "aliases": [],
+          "description": "Copies assets to Cordova platforms, preparing them for native builds",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke an Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-map"
+              ],
+              "description": "Output source maps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Rebuild when files change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform you would like to prepare (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "requirements",
+          "aliases": [],
+          "description": "Checks and print out all the requirements for platforms",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform for which you would like to gather requirements (android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "resources",
+          "aliases": [],
+          "description": "Automatically create icon and splash screen resources",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--icon",
+                "-i"
+              ],
+              "description": "Generate icon resources",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--splash",
+                "-s"
+              ],
+              "description": "Generate splash screen resources",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform for which you would like to generate resources (ios, android)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run an Ionic project on a connected device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--list"
+              ],
+              "description": "List all available targets",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build"
+              ],
+              "description": "Do not invoke Ionic build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--external"
+              ],
+              "description": "Host dev server on all network interfaces (i.e. --host=0.0.0.0)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host"
+              ],
+              "description": "Use specific host for the dev server",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "Use specific port for the dev server",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public-host"
+              ],
+              "description": "The host used for the browser or web view",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload",
+                "-l"
+              ],
+              "description": "Spin up dev server to live-reload www files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--livereload-url"
+              ],
+              "description": "Provide a custom URL to the dev server",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Mark as a debug build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--release"
+              ],
+              "description": "Mark as a release build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--device"
+              ],
+              "description": "Deploy build to a device",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--emulator"
+              ],
+              "description": "Deploy build to an emulator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--buildConfig"
+              ],
+              "description": "Use the specified build configuration",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--target"
+              ],
+              "description": "Deploy build to a device (use --list to see all)",
+              "takes_arg": true,
+              "arg_name": "target",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-native-run"
+              ],
+              "description": "Do not use native-run to run the app; use Cordova instead",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--connect"
+              ],
+              "description": "Tie the running app to the process",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output targets in JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ssl"
+              ],
+              "description": "Use HTTPS for the dev server",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prod"
+              ],
+              "description": "Flag to use the production configuration",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--consolelogs"
+              ],
+              "description": "Print app console logs to the terminal",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--consolelogs-port"
+              ],
+              "description": "Use specific port for console logs server",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--configuration",
+                "-c"
+              ],
+              "description": "Specify the configuration to use",
+              "takes_arg": true,
+              "arg_name": "conf",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "platform",
+              "description": "The platform to run (e.g. android, ios)",
+              "template": {
+                "custom": [
+                  "ios",
+                  "android"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

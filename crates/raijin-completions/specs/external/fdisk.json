@@ -1,0 +1,260 @@
+{
+  "name": "fdisk",
+  "aliases": [],
+  "description": "Manipulate disk partition table",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for fdisk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Show version for lsblk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sector-size",
+        "-b"
+      ],
+      "description": "Specify the sector size of the disk",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "512",
+          "1024",
+          "2048",
+          "4096"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--protect-boot",
+        "-B"
+      ],
+      "description": "Don't erase the beginning of the first disk sector when creating a new disk label",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compatibility",
+        "-c"
+      ],
+      "description": "Specify the compatibility mode, 'dos' or 'nondos'",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "dos",
+          "nondos"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color",
+        "-L"
+      ],
+      "description": "Colorize the output",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "always",
+          "never",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list",
+        "-l"
+      ],
+      "description": "List the partition tables for the specified devices and then exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-details",
+        "-x"
+      ],
+      "description": "Like --list, but provides more details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--lock"
+      ],
+      "description": "Use exclusive BSD lock for device or file it operates",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "yes",
+          "no",
+          "nonblock"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noauto-pt",
+        "-n"
+      ],
+      "description": "Don't automatically create a default partition table on empty device",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Desc",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--getsz",
+        "-s"
+      ],
+      "description": "Print the size in 512-byte sectors of each given block device. This option is DEPRECATED in favour of blockdev(8)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type",
+        "-t"
+      ],
+      "description": "Enable support only for disklabels of the specified type, and disable support for all other types",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--units",
+        "-u"
+      ],
+      "description": "When listing partition tables, show sizes in 'sectors' or in 'cylinders'",
+      "takes_arg": true,
+      "arg_name": "unit",
+      "arg_template": {
+        "custom": [
+          "sectors",
+          "cylinders"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cylinders",
+        "-C"
+      ],
+      "description": "Specify the number of cylinders of the disk",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--heads",
+        "-H"
+      ],
+      "description": "Specify the number of heads of the disk. (Not the physical number, of course, but the number used for partition tables.)",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sectors",
+        "-S"
+      ],
+      "description": "Specify the number of sectors per track of the disk. (Not the physical number, of course, but the number used for partition tables.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wipe",
+        "-w"
+      ],
+      "description": "Wipe filesystem, RAID and partition-table signatures from the device, in order to avoid possible collisions",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "never",
+          "always"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wipe-partitions",
+        "-W"
+      ],
+      "description": "Wipe filesystem, RAID and partition-table signatures from a newly created partitions, in order to avoid possible collisions",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "description": "Device to list",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

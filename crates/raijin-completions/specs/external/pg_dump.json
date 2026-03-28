@@ -1,0 +1,647 @@
+{
+  "name": "pg_dump",
+  "aliases": [],
+  "description": "Dumps a database as a text file or to other formats",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-?"
+      ],
+      "description": "Show help for pg_dump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Output file or directory name",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format",
+        "-F"
+      ],
+      "description": "Output file format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "c",
+          "d",
+          "t",
+          "p"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jobs",
+        "-j"
+      ],
+      "description": "Number of parallel job to dump",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Output version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compress",
+        "-Z"
+      ],
+      "description": "Compression level for compressed formats",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--lock-wait-timeout"
+      ],
+      "description": "Fail after waiting <timeout> for a table lock",
+      "takes_arg": true,
+      "arg_name": "timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-sync"
+      ],
+      "description": "Do not wait for changes to be written safely to disk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--data-only",
+        "-a"
+      ],
+      "description": "Dump only the data, not the schema",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--blobs",
+        "-b"
+      ],
+      "description": "Include large objects in dump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-blobs",
+        "-B"
+      ],
+      "description": "Exclude large objects in dump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clean",
+        "-c"
+      ],
+      "description": "Clean (drop) database objects before recreating",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--create",
+        "-C"
+      ],
+      "description": "Include commands to create database in dump",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extension",
+        "-e"
+      ],
+      "description": "Dump the specified extension(s) only",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--encoding",
+        "-E"
+      ],
+      "description": "Dump the data in encoding <encoding>",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--schema",
+        "-n"
+      ],
+      "description": "Dump the specified schema(s) only",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--exclude-schema",
+        "-N"
+      ],
+      "description": "Do NOT dump the specified schema(s)",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--no-owner",
+        "-O"
+      ],
+      "description": "Skip restoration of object ownership in plain-text format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--schema-only",
+        "-s"
+      ],
+      "description": "Dump only the schema, no data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--superuser",
+        "-S"
+      ],
+      "description": "Superuser user name to use in plain-text format",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--table",
+        "-t"
+      ],
+      "description": "Dump the specified table(s) only",
+      "takes_arg": true,
+      "arg_name": "table",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--exclude-table",
+        "-T"
+      ],
+      "description": "Do NOT dump the specified table(s)",
+      "takes_arg": true,
+      "arg_name": "table",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--no-privileges",
+        "-x",
+        "--no-acl"
+      ],
+      "description": "Do not dump privileges (grant/revoke)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary-upgrade"
+      ],
+      "description": "For use by upgrade utilities only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--column-inserts",
+        "--attribute-inserts"
+      ],
+      "description": "Dump data as INSERT commands with column names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-dollar-quoting"
+      ],
+      "description": "Disable dollar quoting, use SQL standard quoting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-triggers"
+      ],
+      "description": "Disable triggers during data-only restore",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-row-security"
+      ],
+      "description": "Enable row security (dump only content user has access to)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude-table-data"
+      ],
+      "description": "Do NOT dump data for the specified table(s)",
+      "takes_arg": true,
+      "arg_name": "table",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--extra-float-digits"
+      ],
+      "description": "Override default setting for extra_float_digits",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--if-exists"
+      ],
+      "description": "Use IF EXISTS when dropping objects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-foreign-data"
+      ],
+      "description": "Include data of foreign tables on foreign servers matching PATTERN",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inserts"
+      ],
+      "description": "Dump data as INSERT commands, rather than COPY",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--load-via-partition-root"
+      ],
+      "description": "Load partitions via the root table",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-comments"
+      ],
+      "description": "Do not dump comments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-publications"
+      ],
+      "description": "Do not dump publications",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-security-labels"
+      ],
+      "description": "Do not dump security label assignments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-subscriptions"
+      ],
+      "description": "Do not dump subscriptions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-synchronized-snapshots"
+      ],
+      "description": "Do not use synchronized snapshots in parallel jobs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-tablespaces"
+      ],
+      "description": "Do not dump tablespace assignments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-toast-compression"
+      ],
+      "description": "Do not dump TOAST compression methods",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-unlogged-table-data"
+      ],
+      "description": "Do not dump unlogged table data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--on-conflict-do-nothing"
+      ],
+      "description": "Add ON CONFLICT DO NOTHING to INSERT commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quote-all-identifiers"
+      ],
+      "description": "Quote all identifiers, even if not key words",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rows-per-insert"
+      ],
+      "description": "Number of rows per INSERT; implies --inserts",
+      "takes_arg": true,
+      "arg_name": "numbers",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--section"
+      ],
+      "description": "Dump named section (pre-data, data, or post-data)",
+      "takes_arg": true,
+      "arg_name": "section",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--serializable-deferrable"
+      ],
+      "description": "Wait until the dump can run without anomalies",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--snapshot"
+      ],
+      "description": "Use given snapshot for the dump",
+      "takes_arg": true,
+      "arg_name": "snapshot",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-names"
+      ],
+      "description": "Require table and/or schema include patterns to match at least one entity each",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-set-session-authorization"
+      ],
+      "description": "Use SET SESSION AUTHORIZATION commands instead of ALTER OWNER commands to set ownership",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dbname",
+        "-d"
+      ],
+      "description": "Database to dump",
+      "takes_arg": true,
+      "arg_name": "database",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--host",
+        "-h"
+      ],
+      "description": "Database server host or socket directory",
+      "takes_arg": true,
+      "arg_name": "host",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--port",
+        "-p"
+      ],
+      "description": "Database server port number",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--username",
+        "-U"
+      ],
+      "description": "Connect as specified database user",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-password",
+        "-w"
+      ],
+      "description": "Never prompt for password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--password",
+        "-W"
+      ],
+      "description": "Force password prompt (should happen automatically)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--role"
+      ],
+      "description": "Do SET ROLE before dump",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "dbname",
+      "description": "Name of the database to dump",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

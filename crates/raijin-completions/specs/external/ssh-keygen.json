@@ -1,0 +1,462 @@
+{
+  "name": "ssh-keygen",
+  "aliases": [],
+  "description": "Generates, manages and converts authentication keys for ssh",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-A"
+      ],
+      "description": "For each of the key types (rsa, dsa, ecdsa and ed25519) for which host keys do not exist, generate the host keys with the default key file path, an empty passphrase, default bits for the key type, and default comment",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "When saving a private key, this option specifies the number of KDF",
+      "takes_arg": true,
+      "arg_name": "rounds",
+      "arg_template": {
+        "custom": [
+          "16"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B"
+      ],
+      "description": "Show the bubblebabble digest of specified private or public key file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Specifies the number of bits in the key to create",
+      "takes_arg": true,
+      "arg_name": "bits",
+      "arg_template": {
+        "custom": [
+          "3072"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C"
+      ],
+      "description": "Provides a new comment",
+      "takes_arg": true,
+      "arg_name": "comment",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Requests changing the comment in the private and public key files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Download the public keys provided by the PKCS#11",
+      "takes_arg": true,
+      "arg_name": "pkcs11",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E"
+      ],
+      "description": "Specifies the hash algorithm used",
+      "takes_arg": true,
+      "arg_name": "fingerprint_hash",
+      "arg_template": {
+        "custom": [
+          "md5",
+          "sha256"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Read a OpenSSH key file and print to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Search for the specified hostname (with optional port number)",
+      "takes_arg": true,
+      "arg_name": "hostname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Specifies the filename of the key file",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Use generic DNS format when printing fingerprint resource records",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H"
+      ],
+      "description": "Hash a known_hosts file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Create a host certificate instead of a user",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Specify the key identity when signing a public key",
+      "takes_arg": true,
+      "arg_name": "certificate_identity",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Read an unencrypted private (or public) key file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-K"
+      ],
+      "description": "Download resident keys from a FIDO\tauthenticator",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k"
+      ],
+      "description": "Generate a\tKRL file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Generate a\tKRL file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Show fingerprint of specified public key file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M"
+      ],
+      "description": "Use for Moduli generation",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": {
+        "custom": [
+          "generate",
+          "screen"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Specify a key format for key generation",
+      "takes_arg": true,
+      "arg_name": "key_format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N"
+      ],
+      "description": "Provides the new passphrase",
+      "takes_arg": true,
+      "arg_name": "new_passphrase",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Specify one or more principals (user or host names) to be included in a certificate when signing a key",
+      "takes_arg": true,
+      "arg_name": "principals",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Specify a key/value option",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Provides the (old) passphrase",
+      "takes_arg": true,
+      "arg_name": "passphrase",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Requests changing the passphrase of a private key file instead of creating a new private key",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Q"
+      ],
+      "description": "Test whether keys have been revoked in a KRL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "Silence ssh-keygen",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R"
+      ],
+      "description": "Removes all keys belonging to hostname",
+      "takes_arg": true,
+      "arg_name": "hostname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Print the SSHFP fingerprint resource record named hostname for the specified public key file",
+      "takes_arg": true,
+      "arg_name": "hostname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Certify (sign) a public key using the specified CA\tkey",
+      "takes_arg": true,
+      "arg_name": "ca_key",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Specifies the type of key to create",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": {
+        "custom": [
+          "dsa",
+          "ecdsa-sk",
+          "ed25519",
+          "ed25519-sk",
+          "rsa"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U"
+      ],
+      "description": "When used in combination with -s, this option indicates that a CA key resides in a ssh-agent(1)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Update a KRL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V"
+      ],
+      "description": "Specify a validity interval when signing a certificate",
+      "takes_arg": true,
+      "arg_name": "validity_interval",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-w"
+      ],
+      "description": "Specifies a path to a library that will be used when creating FIDO authenticator-hosted keys",
+      "takes_arg": true,
+      "arg_name": "provider",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Y"
+      ],
+      "description": "Multiple functions: find principals, match principals, check novalidate, sign, verify",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": {
+        "custom": [
+          "find-principals",
+          "check-novalidate",
+          "sign",
+          "verify"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-y"
+      ],
+      "description": "Read a private OpenSSH format file and print an OpenSSH public key to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Z"
+      ],
+      "description": "Specifies the cipher to use for encryption when writing an OpenSSH-format private key file",
+      "takes_arg": true,
+      "arg_name": "cipher",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z"
+      ],
+      "description": "Specifies a serial number to be embedded in the certificate to distinguish this certificate from others from the same CA",
+      "takes_arg": true,
+      "arg_name": "serial_number",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

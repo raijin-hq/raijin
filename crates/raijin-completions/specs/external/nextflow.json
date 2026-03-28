@@ -1,0 +1,1787 @@
+{
+  "name": "nextflow",
+  "aliases": [],
+  "description": "Nextflow enables scalable and reproducible scientific workflows using software containers. It allows the adaptation of pipelines written in the most common scripting languages",
+  "subcommands": [
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Clean up project cache and work directories (Default: last run)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-after"
+          ],
+          "description": "Clean up runs executed after the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-before"
+          ],
+          "description": "Clean up runs executed before the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-but"
+          ],
+          "description": "Clean up all runs except the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "-dry-run"
+          ],
+          "description": "Print names of file to be removed without deleting them (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "-force"
+          ],
+          "description": "Force clean command (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "-keep-logs"
+          ],
+          "description": "Removes only temporary files but retains execution log entries and metadata (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "-quiet"
+          ],
+          "description": "Do not print names of files removed (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "run_name|session_id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clone a project into a folder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-hub"
+          ],
+          "description": "Service hub where the project is hosted (Default: GitHub)",
+          "takes_arg": true,
+          "arg_name": "gitlab|github|bitbucket",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r"
+          ],
+          "description": "Revision to clone - It can be a git branch, tag or revision number",
+          "takes_arg": true,
+          "arg_name": "revision",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-user"
+          ],
+          "description": "Private repository user name",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "namespace/repository_name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Print a project configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-flat"
+          ],
+          "description": "Print config using flat notation (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-profile"
+          ],
+          "description": "Choose a configuration profile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-properties"
+          ],
+          "description": "Prints config using Java properties notatio (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "-show-profiles"
+          ],
+          "description": "Show all configuration profiles",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sort"
+          ],
+          "description": "Sort config attributes (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Launch Nextflow interactive console",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "drop",
+      "aliases": [],
+      "description": "Delete the local copy of a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Delete the repository without taking care of local changes (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name of the project to drop",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print the usage help for a command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Print project and system runtime information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-u",
+            "-check-updates"
+          ],
+          "description": "Check for remote updates (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Show detailed information (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Output format, either: text (default), json, yaml",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "kuberun",
+      "aliases": [],
+      "description": "Execute a workflow in a Kubernetes cluster (experimental)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Exports all current system environment (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ansi-log"
+          ],
+          "description": "Enable/disable ANSI console logging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-bucket-dir"
+          ],
+          "description": "Remote bucket where intermediate result files are stored",
+          "takes_arg": true,
+          "arg_name": "remote bucket",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cache"
+          ],
+          "description": "Enable/disable processes caching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-disable-jobs-cancellation"
+          ],
+          "description": "Prevent the cancellation of child jobs on execution termination",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dsl1"
+          ],
+          "description": "Execute the workflow using DSL1 syntax (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dsl2"
+          ],
+          "description": "Execute the workflow using DSL2 syntax (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dump-channels"
+          ],
+          "description": "Dump channels for debugging purpose",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dump-hashes"
+          ],
+          "description": "Dump task hash keys for debugging purpose (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Add the specified variable to execution environment. Syntax: -e.key=value (Default: {})",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-entry"
+          ],
+          "description": "Entry workflow name to be executed",
+          "takes_arg": true,
+          "arg_name": "entry workflow name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-head-cpus"
+          ],
+          "description": "Specify number of CPUs requested for the Nextflow pod (Default: 0)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-head-memory"
+          ],
+          "description": "Specify amount of memory requested for the Nextflow pod",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-hub"
+          ],
+          "description": "Service hub where the project is hosted (Default: github)",
+          "takes_arg": true,
+          "arg_name": "service hub",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-latest"
+          ],
+          "description": "Pull latest changes before run (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lib"
+          ],
+          "description": "Library extension path",
+          "takes_arg": true,
+          "arg_name": "library extension path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-main-script"
+          ],
+          "description": "The script file to be executed when launching a project directory or repository",
+          "takes_arg": true,
+          "arg_name": "script file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-name"
+          ],
+          "description": "Assign a mnemonic name to the a pipeline run",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "-namespace"
+          ],
+          "description": "Specify the K8s namespace to use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-offline"
+          ],
+          "description": "Do not check for remote project updates (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-params-file"
+          ],
+          "description": "Load script parameters from a JSON/YAML file",
+          "takes_arg": true,
+          "arg_name": "JSON/YAML file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-plugins"
+          ],
+          "description": "Specify the plugins to be applied for this run e.g. nf-amazon,nf-tower",
+          "takes_arg": true,
+          "arg_name": "plugins ids separated by comma",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-pod-image"
+          ],
+          "description": "Specify the container image for the Nextflow pod",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-process"
+          ],
+          "description": "Set process options. Syntax: -process.key=value (Default: {}",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-profile"
+          ],
+          "description": "Choose a configuration profile",
+          "takes_arg": true,
+          "arg_name": "profile",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-qs",
+            "-queue-size"
+          ],
+          "description": "Max number of processes that can be executed in parallel by each executor",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-remoteProfile"
+          ],
+          "description": "Choose a configuration profile in the remoteConfig",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-resume"
+          ],
+          "description": "Execute the script using the cached results, useful to continue executions that was stopped by an error",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "-revision"
+          ],
+          "description": "Revision of the project to run (either a git branch, tag or commit SHA number)",
+          "takes_arg": true,
+          "arg_name": "project revision (tag/branch/hash",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-stub-run",
+            "-stub"
+          ],
+          "description": "Execute the workflow replacing process scripts with command stubs (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-test"
+          ],
+          "description": "Test a script function with the name specified",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-user"
+          ],
+          "description": "Private repository user name",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "-volume-mount"
+          ],
+          "description": "Volume claim mounts eg. my-pvc:/mnt/path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-charliecloud"
+          ],
+          "description": "Enable process execution in a Charliecloud container runtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-conda"
+          ],
+          "description": "Use the specified Conda environment package or file (must end with .yml|.yaml suffix)",
+          "takes_arg": true,
+          "arg_name": "conda .yml/.yaml file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-dag"
+          ],
+          "description": "Create pipeline DAG file",
+          "takes_arg": true,
+          "arg_name": "filename, e.g. dag.dot",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-docker"
+          ],
+          "description": "Enable process execution in a Docker container",
+          "takes_arg": true,
+          "arg_name": "a docker container image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N",
+            "-with-notification"
+          ],
+          "description": "Send a notification email on workflow completion to the specified recipients",
+          "takes_arg": true,
+          "arg_name": "email",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-podman"
+          ],
+          "description": "Enable process execution in a Podman container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-report"
+          ],
+          "description": "Create processes execution html report",
+          "takes_arg": true,
+          "arg_name": "report filename e.g. report.html",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-singularity"
+          ],
+          "description": "Enable process execution in a Singularity container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-timeline"
+          ],
+          "description": "Create processes execution timeline file",
+          "takes_arg": true,
+          "arg_name": "timeline filename e.g. timeline.html",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-tower"
+          ],
+          "description": "Monitor workflow execution with Seqera Tower service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-trace"
+          ],
+          "description": "Create processes execution tracing file",
+          "takes_arg": true,
+          "arg_name": "trace text filename e.g. trace.txt",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-weblog"
+          ],
+          "description": "Send workflow status messages via HTTP to target URL",
+          "takes_arg": true,
+          "arg_name": "target web URL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-without-docker"
+          ],
+          "description": "Disable process execution with Docker (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-without-podman"
+          ],
+          "description": "Disable process execution in a Podman container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "-work-dir"
+          ],
+          "description": "Directory where intermediate result files are stored",
+          "takes_arg": true,
+          "arg_name": "work dir",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all downloaded projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Print executions log and runtime info",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-after"
+          ],
+          "description": "Show log entries for runs executed after the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-before"
+          ],
+          "description": "Show log entries for runs executed before the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-but"
+          ],
+          "description": "Show log entries of all runs except the specified one",
+          "takes_arg": true,
+          "arg_name": "run name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "-fields"
+          ],
+          "description": "Comma separated list of fields to include in the printed log -- Use the `-l` option to show the list of available fields",
+          "takes_arg": true,
+          "arg_name": "field1,field2,...",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F",
+            "filter"
+          ],
+          "description": "Filter log entries by a custom expression e.g. process =~ /foo.*/ && status == 'COMPLETED'",
+          "takes_arg": true,
+          "arg_name": "expression",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "-list-fields"
+          ],
+          "description": "Show all available fields (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "-quiet"
+          ],
+          "description": "Show only run names (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Character used to separate column values (Default: )",
+          "takes_arg": true,
+          "arg_name": "character",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "-template"
+          ],
+          "description": "Text template used to each record in the log",
+          "takes_arg": true,
+          "arg_name": "template",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "run name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Download or update a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-all"
+          ],
+          "description": "Update all downloaded projects (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-hub"
+          ],
+          "description": "Service hub where the project is hosted",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "-revision"
+          ],
+          "description": "Revision of the project to run (either a git branch, tag or commit SHA number)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-user"
+          ],
+          "description": "Private repository user name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name or repository url to pull",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Execute a pipeline project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-E"
+          ],
+          "description": "Exports all current system environment (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ansi-log"
+          ],
+          "description": "Enable/disable ANSI console logging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-bucket-dir"
+          ],
+          "description": "Remote bucket where intermediate result files are stored",
+          "takes_arg": true,
+          "arg_name": "remote bucket",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cache"
+          ],
+          "description": "Enable/disable processes caching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-disable-jobs-cancellation"
+          ],
+          "description": "Prevent the cancellation of child jobs on execution termination",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dsl1"
+          ],
+          "description": "Execute the workflow using DSL1 syntax (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dsl2"
+          ],
+          "description": "Execute the workflow using DSL2 syntax (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dump-channels"
+          ],
+          "description": "Dump channels for debugging purpose",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dump-hashes"
+          ],
+          "description": "Dump task hash keys for debugging purpose (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e."
+          ],
+          "description": "Add the specified variable to execution environment. Syntax: -e.key=value (Default: {})",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-entry"
+          ],
+          "description": "Entry workflow name to be executed",
+          "takes_arg": true,
+          "arg_name": "entry workflow name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-hub"
+          ],
+          "description": "Service hub where the project is hosted (Default: github)",
+          "takes_arg": true,
+          "arg_name": "service hub",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-latest"
+          ],
+          "description": "Pull latest changes before run (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lib"
+          ],
+          "description": "Library extension path",
+          "takes_arg": true,
+          "arg_name": "library extension path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-main-script"
+          ],
+          "description": "The script file to be executed when launching a project directory or repository",
+          "takes_arg": true,
+          "arg_name": "script file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-name"
+          ],
+          "description": "Assign a mnemonic name to the a pipeline run",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-offline"
+          ],
+          "description": "Do not check for remote project updates (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-params-file"
+          ],
+          "description": "Load script parameters from a JSON/YAML file",
+          "takes_arg": true,
+          "arg_name": "JSON/YAML file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-plugins"
+          ],
+          "description": "Specify the plugins to be applied for this run e.g. nf-amazon,nf-tower",
+          "takes_arg": true,
+          "arg_name": "plugins ids separated by comma",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-process."
+          ],
+          "description": "Set process options. Syntax: -process.key=value (Default: {}",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-profile"
+          ],
+          "description": "Choose a configuration profile",
+          "takes_arg": true,
+          "arg_name": "profile",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-qs",
+            "-queue-size"
+          ],
+          "description": "Max number of processes that can be executed in parallel by each executor",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-resume"
+          ],
+          "description": "Execute the script using the cached results, useful to continue executions that was stopped by an error",
+          "takes_arg": true,
+          "arg_name": "session ID",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "-revision"
+          ],
+          "description": "Revision of the project to run (either a git branch, tag or commit SHA number)",
+          "takes_arg": true,
+          "arg_name": "project revision (tag/branch/hash",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-stub-ru",
+            "-stub"
+          ],
+          "description": "Execute the workflow replacing process scripts with command stubs (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-test"
+          ],
+          "description": "Test a script function with the name specified",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-user"
+          ],
+          "description": "Private repository user name",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-charliecloud"
+          ],
+          "description": "Enable process execution in a Charliecloud container runtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-conda"
+          ],
+          "description": "Use the specified Conda environment package or file (must end with .yml|.yaml suffix)",
+          "takes_arg": true,
+          "arg_name": "conda .yml/.yaml file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-dag"
+          ],
+          "description": "Create pipeline DAG file",
+          "takes_arg": true,
+          "arg_name": "filename, e.g. dag.dot",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-docker"
+          ],
+          "description": "Enable process execution in a Docker container",
+          "takes_arg": true,
+          "arg_name": "a docker container image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-N",
+            "-with-notification"
+          ],
+          "description": "Send a notification email on workflow completion to the specified recipients",
+          "takes_arg": true,
+          "arg_name": "email",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-podman"
+          ],
+          "description": "Enable process execution in a Podman container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-report"
+          ],
+          "description": "Create processes execution html report",
+          "takes_arg": true,
+          "arg_name": "report filename e.g. report.html",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-singularity"
+          ],
+          "description": "Enable process execution in a Singularity container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-timeline"
+          ],
+          "description": "Create processes execution timeline file",
+          "takes_arg": true,
+          "arg_name": "timeline filename e.g. timeline.html",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-tower"
+          ],
+          "description": "Monitor workflow execution with Seqera Tower service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-trace"
+          ],
+          "description": "Create processes execution tracing file",
+          "takes_arg": true,
+          "arg_name": "trace text filename e.g. trace.txt",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-with-weblog"
+          ],
+          "description": "Send workflow status messages via HTTP to target URL",
+          "takes_arg": true,
+          "arg_name": "target web URL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-without-docker"
+          ],
+          "description": "Disable process execution with Docker (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-without-podman"
+          ],
+          "description": "Disable process execution in a Podman container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "-work-dir"
+          ],
+          "description": "Directory where intermediate result files are stored",
+          "takes_arg": true,
+          "arg_name": "work dir",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name, repository url, or local path",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Handle and manage sensitive information for pipeline execution in a safe manner",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "list"
+          ],
+          "description": "List secrets available in the current store e.g. nextflow secrets list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "get"
+          ],
+          "description": "Allows retrieving a secret value e.g. nextflow secrets get FOO",
+          "takes_arg": true,
+          "arg_name": "secret name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "set"
+          ],
+          "description": "Allows creating creating a new secret or overriding an existing one e.g. nextflow secrets set FOO \"Hello world\"",
+          "takes_arg": true,
+          "arg_name": "secret name and value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "delete"
+          ],
+          "description": "Allows deleting an existing secret e.g. nextflow secrets delete FOO",
+          "takes_arg": true,
+          "arg_name": "secret name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "self-update",
+      "aliases": [],
+      "description": "Update nextflow runtime to the latest available version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "view",
+      "aliases": [],
+      "description": "View project script file(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-help"
+          ],
+          "description": "Print the command usage (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l"
+          ],
+          "description": "List repository content (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Hide header line (Default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-C"
+      ],
+      "description": "Use the specified configuration file(s) overriding any defaults",
+      "takes_arg": true,
+      "arg_name": "configuration file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Set JVM properties",
+      "takes_arg": true,
+      "arg_name": "custom Java system property",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-bg"
+      ],
+      "description": "Execute nextflow in background",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "-config"
+      ],
+      "description": "Add the specified file to configuration set",
+      "takes_arg": true,
+      "arg_name": "configuration file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "-dockerize"
+      ],
+      "description": "Launch nextflow via Docker (experimental)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Print this help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-log"
+      ],
+      "description": "Set nextflow log file path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "-quiet"
+      ],
+      "description": "Do not print information messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-syslog"
+      ],
+      "description": "Send logs to syslog server (eg. localhost:514)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "-version"
+      ],
+      "description": "Print the program version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

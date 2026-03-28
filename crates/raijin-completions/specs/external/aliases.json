@@ -1,0 +1,340 @@
+{
+  "name": "aliases",
+  "aliases": [],
+  "description": "Bash aliases on steroids, dynamic alias functions for bash",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add an alias via the cli",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the alias",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": "The command you want to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clone external aliases",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-E",
+            "--enable"
+          ],
+          "description": "Whether to enable the user if they are not currently enabled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "username",
+          "description": "The username of the aliases you want to clone",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "repo_url",
+          "description": "The git repo url of the aliases (defaults to github/<username>/dot-aliases)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "directories",
+      "aliases": [],
+      "description": "List all directories initialized with aliases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute an alias for a given directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "directory",
+          "description": "Directory where the alias is defined",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "name",
+          "description": "Name of alias",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints help information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a directory for aliases",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-g",
+            "--global"
+          ],
+          "description": "Returns the global initialization for the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Initialize aliases for a specific user",
+          "takes_arg": true,
+          "arg_name": "user",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List the aliases available",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-g",
+            "--global"
+          ],
+          "description": "List only global aliases",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--local"
+          ],
+          "description": "List only local aliases",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--directory"
+          ],
+          "description": "List aliases for a specific directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "name"
+          ],
+          "description": "List aliases for with a specific name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull a cloned user's aliases",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "username",
+          "description": "The username of the aliases you want to pull, leave blank to pull all user aliases",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rehash",
+      "aliases": [],
+      "description": "Update the aliases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove an alias via the cli",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "The name of the alias",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "aliases": [],
+      "description": "List the users",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable a user's aliases",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable a user's aliases",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "move",
+          "aliases": [],
+          "description": "Move a user up or down the prioritization list",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "prioritization",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "use",
+          "aliases": [],
+          "description": "Assign a user to the top of the priority list",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

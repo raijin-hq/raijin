@@ -1,0 +1,684 @@
+{
+  "name": "asdf",
+  "aliases": [],
+  "description": "Extendable version manager with support for Ruby, Node.js, Elixir, Erlang & more",
+  "subcommands": [
+    {
+      "name": "plugin",
+      "aliases": [],
+      "description": "Plugin management sub-commands",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a plugin from the plugin repo OR, add a Git repo as a plugin by specifying the name and repo url",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "git-url",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List installed plugins. Optionally show git urls and git-ref",
+          "subcommands": [
+            {
+              "name": "all",
+              "aliases": [],
+              "description": "List plugins registered on asdf-plugins repository with URLs",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--urls"
+              ],
+              "description": "Show git urls",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--refs"
+              ],
+              "description": "Show git refs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove plugin and package versions",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update a plugin to latest commit on default branch or a particular git-ref",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Update all plugins to latest commit on default branch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "git-ref",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "plugin-add",
+      "aliases": [],
+      "description": "Add a plugin from the plugin repo OR, add a Git repo as a plugin by specifying the name and repo url",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "git-url",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "plugin-list",
+      "aliases": [],
+      "description": "List installed plugins. Optionally show git urls and git-ref",
+      "subcommands": [
+        {
+          "name": "all",
+          "aliases": [],
+          "description": "List plugins registered on asdf-plugins repository with URLs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--urls"
+          ],
+          "description": "Show git urls",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--refs"
+          ],
+          "description": "Show git refs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "plugin-list-all",
+      "aliases": [],
+      "description": "List plugins registered on asdf-plugins repository with URLs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "plugin-remove",
+      "aliases": [],
+      "description": "Remove plugin and package versions",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "plugin-update",
+      "aliases": [],
+      "description": "Update a plugin to latest commit on default branch or a particular git-ref",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Update all plugins to latest commit on default branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "git-ref",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install plugin at stated version, or all from .tools-versions",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Remove a specific version of a package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "current",
+      "aliases": [],
+      "description": "Display current versions for named package (else all)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "where",
+      "aliases": [],
+      "description": "Display install path for given package at optional specified version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Display path to an executable",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "local",
+      "aliases": [],
+      "description": "Set package local version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "global",
+      "aliases": [],
+      "description": "Set package global version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "shell",
+      "aliases": [],
+      "description": "Set the package version to ASDF_${LANG}_VERSION` in the current shell",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "latest",
+      "aliases": [],
+      "description": "Display latest version available to install for a named package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List installed versions of a package",
+      "subcommands": [
+        {
+          "name": "all",
+          "aliases": [],
+          "description": "List all available (remote) versions of a package",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "version",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list-all",
+      "aliases": [],
+      "description": "List all available (remote) versions of a package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Output documentation for plugin and tool",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Executes the command shim for the current version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "env",
+      "aliases": [],
+      "description": "Prints or runs an executable under a command environment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Print os, shell and asdf debug information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reshim",
+      "aliases": [],
+      "description": "Recreate shims for version of a package",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "shim",
+      "aliases": [],
+      "description": "Shim management sub-commands",
+      "subcommands": [
+        {
+          "name": "versions",
+          "aliases": [],
+          "description": "List for given command which plugins and versions provide it",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "shim-versions",
+      "aliases": [],
+      "description": "List for given command which plugins and versions provide it",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update ASDF to the latest stable release (unless --head)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--head"
+          ],
+          "description": "Using HEAD commit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Version for asdf",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Version for asdf",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for asdf",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

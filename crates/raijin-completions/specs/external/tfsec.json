@@ -1,0 +1,362 @@
+{
+  "name": "tfsec",
+  "aliases": [],
+  "description": "Tfsec is a simple tool to detect potential security vulnerabilities in your terraformed infrastructure",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--concise-output"
+      ],
+      "description": "Reduce the amount of output and no statistics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-file"
+      ],
+      "description": "Config file to use during run",
+      "takes_arg": true,
+      "arg_name": "config-file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--custom-check-dir"
+      ],
+      "description": "Explicitly the custom checks dir location",
+      "takes_arg": true,
+      "arg_name": "custom-check-dir",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable debug logging (same as verbose)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--disable-grouping"
+      ],
+      "description": "Disable grouping of similar results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--exclude"
+      ],
+      "description": "Provide comma-separated list of rule IDs to exclude from run",
+      "takes_arg": true,
+      "arg_name": "excludeList",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude-downloaded-modules"
+      ],
+      "description": "Remove results for downloaded modules in .terraform folder",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude-path"
+      ],
+      "description": "Folder path to exclude, can be used multiple times and evaluated in order of specification",
+      "takes_arg": true,
+      "arg_name": "excludePath",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filter-results"
+      ],
+      "description": "Filter results to return specific checks only (supports comma-delimited input)",
+      "takes_arg": true,
+      "arg_name": "filterResults",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-all-dirs"
+      ],
+      "description": "Don't search for tf files, include everything below provided directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": "Select output format: default, json, csv, checkstyle, junit, sarif. To use multiple formats, separate with a comma and specify a base output filename with --out. A file will be written for each type. The first format will additionally be written stdout",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "default",
+          "json",
+          "csv",
+          "checkstyle",
+          "junit",
+          "sarif"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for tfsec",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-hcl-errors"
+      ],
+      "description": "Stop and report an error if an HCL parse error is encountered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-ignored"
+      ],
+      "description": "Include ignored checks in the result output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-passed"
+      ],
+      "description": "Include passed checks in the result output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--migrate-ignores"
+      ],
+      "description": "Migrate ignore codes to the new ID structure",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--minimum-severity"
+      ],
+      "description": "The minimum severity to report. One of CRITICAL, HIGH, MEDIUM, LOW",
+      "takes_arg": true,
+      "arg_name": "minimumSeverity",
+      "arg_template": {
+        "custom": [
+          "CRITICAL",
+          "HIGH",
+          "MEDIUM",
+          "LOW"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Disable colored output (American style!)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-colour"
+      ],
+      "description": "Disable coloured output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignores"
+      ],
+      "description": "Do not apply any ignore rules - normally ignored checks will fail",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-module-downloads"
+      ],
+      "description": "Do not download remote modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O",
+        "--out"
+      ],
+      "description": "Set output file. This filename will have a format descriptor appended if multiple formats are specified with --format",
+      "takes_arg": true,
+      "arg_name": "outputFile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-rego-input"
+      ],
+      "description": "Print a JSON representation of the input supplied to rego policies",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rego-policy-dir"
+      ],
+      "description": "Directory to load rego policies from (recursively)",
+      "takes_arg": true,
+      "arg_name": "regoPolicyDir",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--run-statistics"
+      ],
+      "description": "View statistics table of current findings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--single-thread"
+      ],
+      "description": "Run checks using a single thread",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--soft-fail"
+      ],
+      "description": "Runs checks but suppresses error code",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tfvars-file"
+      ],
+      "description": "Path to .tfvars file, can be used multiple times and evaluated in order of specification",
+      "takes_arg": true,
+      "arg_name": "tfvarsFilePath",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--update"
+      ],
+      "description": "Update to latest version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enable verbose logging (same as debug)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--workspace"
+      ],
+      "description": "Specify a workspace for ignore limits (default \"default\")",
+      "takes_arg": true,
+      "arg_name": "workspace",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "directory",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

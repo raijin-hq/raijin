@@ -1,0 +1,47 @@
+{
+  "name": "hostname",
+  "aliases": [],
+  "description": "Set or print name of current host system",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Include domain information in the printed name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Trim off any domain information from the printed name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Only print domain information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "hostname",
+      "description": "The hostname to use for this machine",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

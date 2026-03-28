@@ -1,0 +1,535 @@
+{
+  "name": "splash-cli",
+  "aliases": [],
+  "description": "Get stunning wallpapers from Unsplash",
+  "subcommands": [
+    {
+      "name": "settings",
+      "aliases": [],
+      "description": "Manage settings",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "config key",
+              "description": "Config key",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Setup the configuration",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "restore",
+          "aliases": [],
+          "description": "Restore default settings",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "aliases",
+      "aliases": [],
+      "description": "Manage aliases",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get an alias",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "alias",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set an alias",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "value",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help menu",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "collection",
+      "aliases": [],
+      "description": "Manage collections",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get a collection",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "collection id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a collection",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "collection id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a collection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "photos:add",
+          "aliases": [],
+          "description": "Add photos to a collection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "photos:remove",
+          "aliases": [],
+          "description": "Remove photos to a collection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help for this command",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dir",
+      "aliases": [],
+      "description": "Manage SplashCLI download directory",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get the download directory path",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set the download directory path",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Delete all the downloaded photos",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "count",
+          "aliases": [],
+          "description": "Count all the downloaded photos",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help for this command",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "user",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login with your Unsplash account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Removes all user data",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "liked",
+          "aliases": [],
+          "description": "List last 10 liked photos",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "collections",
+          "aliases": [],
+          "description": "List all user's collections",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get user infos",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [
+            "update"
+          ],
+          "description": "Update user infos",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Help Menu",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Help Message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Prints `splash-cli` version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scale"
+      ],
+      "description": "Scale of the image",
+      "takes_arg": true,
+      "arg_name": "scale",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "fill",
+          "fit",
+          "stretch",
+          "center"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--screen"
+      ],
+      "description": "Set wallpaper on selected screen",
+      "takes_arg": true,
+      "arg_name": "screen",
+      "arg_template": {
+        "custom": [
+          "all",
+          "main"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--save"
+      ],
+      "description": "Save photo without setting as wallpaper",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--set"
+      ],
+      "description": "Set wallpaper from local file",
+      "takes_arg": true,
+      "arg_name": "filepath",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--info"
+      ],
+      "description": "Show image exif data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Hide output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rotate"
+      ],
+      "description": "Rotate image",
+      "takes_arg": true,
+      "arg_name": "degrees",
+      "arg_template": {
+        "custom": [
+          "90",
+          "180",
+          "270"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colorspace"
+      ],
+      "description": "Define image colorspace",
+      "takes_arg": true,
+      "arg_name": "colorspace",
+      "arg_template": {
+        "custom": [
+          "srgb",
+          "rgb",
+          "cmyk",
+          "lab",
+          "b-w"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--flip"
+      ],
+      "description": "Flip image on the Y axis",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--featured"
+      ],
+      "description": "Limit to only featured photos",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--query"
+      ],
+      "description": "Filter by keywords",
+      "takes_arg": true,
+      "arg_name": "querystring",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--orientation"
+      ],
+      "description": "Filter by orientation",
+      "takes_arg": true,
+      "arg_name": "orientation",
+      "arg_template": {
+        "custom": [
+          "landscape",
+          "portrait",
+          "squarish"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--curated"
+      ],
+      "description": "Random Curated photo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--user"
+      ],
+      "description": "Random photo from user",
+      "takes_arg": true,
+      "arg_name": "username",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--collection"
+      ],
+      "description": "Random photo from collection",
+      "takes_arg": true,
+      "arg_name": "collection id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--id"
+      ],
+      "description": "Get photo by ID",
+      "takes_arg": true,
+      "arg_name": "photo_id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--day"
+      ],
+      "description": "Photo of the day",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

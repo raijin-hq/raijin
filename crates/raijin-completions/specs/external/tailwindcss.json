@@ -1,0 +1,281 @@
+{
+  "name": "tailwindcss",
+  "aliases": [],
+  "description": "Tailwindcss CLI tools",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Creates Tailwind config file. Default: tailwind.config.js",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--postcss"
+          ],
+          "description": "Initialize a 'postcss.config.js' file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--full"
+          ],
+          "description": "Initialize a full 'tailwind.config.js' file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build CSS file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--input"
+          ],
+          "description": "Specify input file",
+          "takes_arg": true,
+          "arg_name": "input file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specify output file",
+          "takes_arg": true,
+          "arg_name": "output file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify config file to use",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--postcss"
+          ],
+          "description": "Load custom PostCSS configuration",
+          "takes_arg": true,
+          "arg_name": "postcss config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--purge"
+          ],
+          "description": "Content paths to use for removing unused classes. [Deprecated]: use `--content` instead",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--content"
+          ],
+          "description": "Content paths to use for removing unused classes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch",
+            "-w"
+          ],
+          "description": "Watch for changes and rebuild as needed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--minify",
+            "-m"
+          ],
+          "description": "Minify the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-autoprefixer"
+          ],
+          "description": "Disable autoprefixer",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-i",
+        "--input"
+      ],
+      "description": "Specify input file",
+      "takes_arg": true,
+      "arg_name": "input file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Specify output file",
+      "takes_arg": true,
+      "arg_name": "output file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Specify config file to use",
+      "takes_arg": true,
+      "arg_name": "config file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--postcss"
+      ],
+      "description": "Load custom PostCSS configuration",
+      "takes_arg": true,
+      "arg_name": "postcss config file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--purge"
+      ],
+      "description": "Content paths to use for removing unused classes. [Deprecated]: use `--content` instead",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--content"
+      ],
+      "description": "Content paths to use for removing unused classes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch",
+        "-w"
+      ],
+      "description": "Watch for changes and rebuild as needed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--minify",
+        "-m"
+      ],
+      "description": "Minify the output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-autoprefixer"
+      ],
+      "description": "Disable autoprefixer",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

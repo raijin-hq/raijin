@@ -1,0 +1,21 @@
+{
+  "name": "cd",
+  "aliases": [],
+  "description": "Change the shell working directory",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": {
+        "custom": [
+          "-",
+          "~"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

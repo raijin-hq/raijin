@@ -1,0 +1,57 @@
+{
+  "name": "unzip",
+  "aliases": [],
+  "description": "Extract compressed files in a ZIP archive",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "List the contents of a zip file without extracting",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-0"
+      ],
+      "description": "Extract a zip file created in windows, containing files with non-ascii (chinese) filenames",
+      "takes_arg": true,
+      "arg_name": "gbk",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "destination",
+      "arg_template": "folders",
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

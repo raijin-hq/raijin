@@ -1,0 +1,110 @@
+{
+  "name": "iconv",
+  "aliases": [],
+  "description": "Character set conversion",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for iconv",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--from-code"
+      ],
+      "description": "Specifies the encoding of the input",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--to-code"
+      ],
+      "description": "Specifies the encoding of the output",
+      "takes_arg": true,
+      "arg_name": "encoding",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Discard unconvertible characters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list"
+      ],
+      "description": "List the supported encodings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unicode-subst"
+      ],
+      "description": "Substitution for unconvertible Unicode characters",
+      "takes_arg": true,
+      "arg_name": "FORMATSTRING",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--byte-subst"
+      ],
+      "description": "Substitution for unconvertible bytes",
+      "takes_arg": true,
+      "arg_name": "FORMATSTRING",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--widechar-subst"
+      ],
+      "description": "Substitution for unconvertible wide characters",
+      "takes_arg": true,
+      "arg_name": "FORMATSTRING",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "inputfile",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

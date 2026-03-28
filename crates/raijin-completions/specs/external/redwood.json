@@ -1,0 +1,2392 @@
+{
+  "name": "redwood",
+  "aliases": [],
+  "description": "Redwood provides a first-class CLI that helps you at every stage of development, from your first commit to your first deploy",
+  "subcommands": [
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Start development servers for api and web",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--forward",
+            "--fwd"
+          ],
+          "description": "String of one or more Webpack Dev Server config options",
+          "takes_arg": true,
+          "arg_name": "options",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "description": "Which side(s) to build",
+          "template": {
+            "custom": [
+              "api",
+              "web"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy your redwood project to a hosting provider target",
+      "subcommands": [
+        {
+          "name": "aws",
+          "aliases": [],
+          "description": "Deploy to AWS using the selected provider",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--side"
+              ],
+              "description": "Show help for command",
+              "takes_arg": true,
+              "arg_name": "side",
+              "arg_template": {
+                "custom": [
+                  "api",
+                  "web"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "provider",
+              "description": "AWS Deploy provider to configure",
+              "template": {
+                "custom": [
+                  "serverless"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "netlify",
+          "aliases": [],
+          "description": "Build command for Netlify deploy",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--build"
+              ],
+              "description": "Build for production [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prisma"
+              ],
+              "description": "Apply database migrations [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-migrate",
+                "--dm"
+              ],
+              "description": "Migrate the data in your database [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "render",
+          "aliases": [],
+          "description": "Build (web) and Start (api) command for Render deploy",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--serve"
+              ],
+              "description": "Run server for api in production [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prisma"
+              ],
+              "description": "Apply database migrations [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-migrate",
+                "--dm"
+              ],
+              "description": "Migrate the data in your database [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "side",
+              "description": "Select side to build",
+              "template": {
+                "custom": [
+                  "api",
+                  "web"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "vercel",
+          "aliases": [],
+          "description": "Build command for Vercel deploy",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--build"
+              ],
+              "description": "Build for production [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prisma"
+              ],
+              "description": "Apply database migrations [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-migrate",
+                "--dm"
+              ],
+              "description": "Migrate the data in your database [default: \"true\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [
+        "d"
+      ],
+      "description": "Rollback changes made by the generate command",
+      "subcommands": [
+        {
+          "name": "cell",
+          "aliases": [],
+          "description": "Destroy a cell component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the cell component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "component",
+          "aliases": [],
+          "description": "Destroy a component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "function",
+          "aliases": [],
+          "description": "Destroy a Function",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the Function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "layout",
+          "aliases": [],
+          "description": "Destroy a layout component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the layout component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "page",
+          "aliases": [],
+          "description": "Destroy a page and route component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the page",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "path",
+              "description": "URL path to the page. Defaults to name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "scaffold",
+          "aliases": [],
+          "description": "Destroy pages, SDL, and Services files based on a given DB schema Model",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the scaffold",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sdl",
+          "aliases": [],
+          "description": "Destroy a GraphQL schema and service component based on a given DB schema Model",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the sdl",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "service",
+          "aliases": [],
+          "description": "Destroy a service component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the service",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [
+        "g"
+      ],
+      "description": "Save time by generating boilerplate code",
+      "subcommands": [
+        {
+          "name": "cell",
+          "aliases": [],
+          "description": "Generate a cell component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--list"
+              ],
+              "description": "Use this flag to generate a list cell. This flag is needed when dealing with irregular words whose plural and singular is identical such as equipment or pokemon",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tests"
+              ],
+              "description": "Generate test files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stories"
+              ],
+              "description": "Generate Storybook files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the cell component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "component",
+          "aliases": [],
+          "description": "Generate a component component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tests"
+              ],
+              "description": "Generate test files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stories"
+              ],
+              "description": "Generate Storybook files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "dataMigration",
+          "aliases": [],
+          "description": "Generate a data migration component",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "directive",
+          "aliases": [],
+          "description": "Generate a directive",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Directive type [Choices: \"validator\", \"transformer\"]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the directive",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "function",
+          "aliases": [],
+          "description": "Generate a Function",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the Function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "layout",
+          "aliases": [],
+          "description": "Generate a layout component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tests"
+              ],
+              "description": "Generate test files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stories"
+              ],
+              "description": "Generate Storybook files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skipLink"
+              ],
+              "description": "Generate a layout with a skip link [default: false]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the layout component",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "page",
+          "aliases": [],
+          "description": "Generate a page component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tests"
+              ],
+              "description": "Generate test files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stories"
+              ],
+              "description": "Generate Storybook files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the page",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "path",
+              "description": "URL path to the page. Defaults to name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "scaffold",
+          "aliases": [],
+          "description": "Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts <path/model>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "model",
+              "description": "Model to scaffold. You can also use <path/model> to nest files by type at the given path directory (or directories). For example, redwood g scaffold admin/post",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sdl",
+          "aliases": [],
+          "description": "Generate a GraphQL schema and service object",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--crud"
+              ],
+              "description": "Also generate mutations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "model",
+              "description": "Model to generate the sdl for",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "service",
+          "aliases": [],
+          "description": "Generate a service component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tests"
+              ],
+              "description": "Generate test files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--stories"
+              ],
+              "description": "Generate Storybook files [default: true]",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the service",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "types",
+          "aliases": [],
+          "description": "Generate types and supplementary code",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "script",
+          "aliases": [],
+          "description": "Generate a script that can use your services/libs to execute with redwood exec script <name>",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--typescript",
+                "--ts"
+              ],
+              "description": "Generate TypeScript files Enabled by default if we detect your project is TypeScript",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the service",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute scripts generated by yarn redwood generate script to run one-off operations, long-running jobs, or utility scripts",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "script",
+          "description": "Name of the script to execute",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build the api and web",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--stats"
+          ],
+          "description": "Use Webpack Bundle Analyzer to visualize the size of Webpack output files via an interactive zoomable treemap",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Print more information while building",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "description": "Which side(s) to build",
+          "template": {
+            "custom": [
+              "api",
+              "web"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "diagnostics",
+      "aliases": [
+        "check"
+      ],
+      "description": "Get structural diagnostics for a Redwood project (experimental)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [
+        "c"
+      ],
+      "description": "Launch an interactive Redwood shell (experimental)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Print your system environment information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade all @redwoodjs packages via an interactive CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dry-run",
+            "-d"
+          ],
+          "description": "Check for outdated packages without upgrading",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-t"
+          ],
+          "description": "Choices are \"canary\", \"rc\", or a specific version (e.g. \"0.19.3\"). WARNING: Unstable releases in the case of \"canary\" and \"rc\", which will force upgrade packages to the most recent release of the specified tag",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": {
+            "custom": [
+              "canary",
+              "rc"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pr"
+          ],
+          "description": "Installs packages for the given PR",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Runs a server that serves both the api and the web sides",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "What port should the server run on [default: 8911]",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--socket"
+          ],
+          "description": "The socket the server should run. This takes precedence over port",
+          "takes_arg": true,
+          "arg_name": "socket",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiRootPath"
+          ],
+          "description": "The root path where your api functions are served",
+          "takes_arg": true,
+          "arg_name": "apiRootPath",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiHost"
+          ],
+          "description": "Forwards requests from the apiProxyPath (defined in redwood.toml) to the specified host",
+          "takes_arg": true,
+          "arg_name": "apiHost",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "description": "Which side(s) to check (Default to both)",
+          "template": {
+            "custom": [
+              "api",
+              "web"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "type-check",
+      "aliases": [
+        "tsc",
+        "tc"
+      ],
+      "description": "Runs a TypeScript compiler check on both the api and the web sides",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "side",
+          "description": "Which side(s) to check (Default to both)",
+          "template": {
+            "custom": [
+              "api",
+              "web"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run Jest tests for api and web",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watchAll"
+          ],
+          "description": "Run all tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--collectCoverage"
+          ],
+          "description": "Show test coverage summary and output info to coverage directory in project root. See this directory for an .html coverage report",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clearCache"
+          ],
+          "description": "Delete the Jest cache directory and exit without running tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db-push"
+          ],
+          "description": "Syncs the test database with your Prisma schema without requiring a migration. It creates a test database if it doesn't already exist [default: true]. This flag is ignored if your project doesn't have an api side",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "sides or filter",
+          "description": "Which side(s) to test, and/or a regular expression to match against your test files to filter by",
+          "template": {
+            "custom": [
+              "api",
+              "web"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "storybook",
+      "aliases": [],
+      "description": "Starts Storybook locally",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Open Storybook in your browser on start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "Build Storybook",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Which port to run Storybook on (defaults to 7910)",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Lint your files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--fix"
+          ],
+          "description": "Try to fix linting errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open your project in your browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "setup",
+      "aliases": [],
+      "description": "Initialize project config and install packages",
+      "subcommands": [
+        {
+          "name": "auth",
+          "aliases": [],
+          "description": "Setup auth configuration for a provider",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "provider",
+              "description": "Auth provider to configure",
+              "template": {
+                "custom": [
+                  "auth0",
+                  "firebase",
+                  "goTrue",
+                  "magicLink",
+                  "netlify"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "custom-web-index",
+          "aliases": [],
+          "description": "Setup an index.js file in web/src so you can customize how your Redwood App mounts to the DOM",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "generator",
+          "aliases": [],
+          "description": "SCopies a given generator's template files to your local app for customization. The next time you generate that type again, it will use your custom template instead of Redwood's default",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing copied template files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the generator template(s) to copy (see help for list)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "tsconfig",
+          "aliases": [],
+          "description": "Setup tsconfig.json on both web and api sides",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Setup auth configuration for a provider",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--database",
+                "-d"
+              ],
+              "description": "Database deployment for Render only  [default: \"postgresql\"]",
+              "takes_arg": true,
+              "arg_name": "database",
+              "arg_template": {
+                "custom": [
+                  "none",
+                  "postgresql",
+                  "sqlite"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Overwrite existing files",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "provider",
+              "description": "Auth provider to configure",
+              "template": {
+                "custom": [
+                  "aws-serverless",
+                  "netlify",
+                  "render",
+                  "vercel"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "data-migrate",
+      "aliases": [
+        "dm",
+        "dataMigrate"
+      ],
+      "description": "Data migration tools",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "install",
+              "up"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prisma",
+      "aliases": [],
+      "description": "Prisma commands",
+      "subcommands": [
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Setup Prisma for your app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display this help message",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--datasource-provider"
+              ],
+              "description": "Define the datasource provider to use",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "PostgreSQL",
+                  "MySQL",
+                  "SQLite",
+                  "SQLServer",
+                  "MongoDB",
+                  "CockroachDB"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--url"
+              ],
+              "description": "Define a custom datasource url",
+              "takes_arg": true,
+              "arg_name": "full url",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generate artifacts (e.g. Prisma Client)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display this help message",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema"
+              ],
+              "description": "Custom path to your Prisma schema",
+              "takes_arg": true,
+              "arg_name": "Schema path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-proxy"
+              ],
+              "description": "Enable the Data Proxy in the Prisma Client",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-hints"
+              ],
+              "description": "Hides the hint messages but still outputs errors and warnings",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-engine"
+              ],
+              "description": "Generate a client for use with Accelerate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Watch the Prisma schema and rerun after a change",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--allow-no-models"
+              ],
+              "description": "Allow generating a client without models",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "studio",
+          "aliases": [],
+          "description": "Open Prisma Studio",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display this help message",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema"
+              ],
+              "description": "Custom path to your Prisma schema",
+              "takes_arg": true,
+              "arg_name": "Schema path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--port"
+              ],
+              "description": "Port to start Studio on",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--browser"
+              ],
+              "description": "Browser to open Studio in",
+              "takes_arg": true,
+              "arg_name": "Browser choice",
+              "arg_template": {
+                "custom": [
+                  "firefox",
+                  "chrome",
+                  "safari",
+                  "none"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--hostname"
+              ],
+              "description": "Hostname to bind the Express server to",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "format",
+          "aliases": [],
+          "description": "Format your schema",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display this help message",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema"
+              ],
+              "description": "Custom path to your Prisma schema",
+              "takes_arg": true,
+              "arg_name": "Schema path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "migrate",
+          "aliases": [],
+          "description": "Migrate your database",
+          "subcommands": [
+            {
+              "name": "dev",
+              "aliases": [],
+              "description": "The migrate dev command updates your database using migrations files during development",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-seed"
+                  ],
+                  "description": "Skip triggering seed",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-generate"
+                  ],
+                  "description": "Skip triggering generators (e.g. Prisma Client)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--create-only"
+                  ],
+                  "description": "Create a new migration but do not apply it. The migration will be empty if there are no changes in Prisma schema",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-n",
+                    "--name"
+                  ],
+                  "description": "The name of the migration. If no name is provided, the CLI will prompt you",
+                  "takes_arg": true,
+                  "arg_name": "filename",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "reset",
+              "aliases": [],
+              "description": "Reset your database and apply all migrations, all data will be lost",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-seed"
+                  ],
+                  "description": "Skip triggering seed",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-generate"
+                  ],
+                  "description": "Skip triggering generators (e.g. Prisma Client)",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f",
+                    "--force"
+                  ],
+                  "description": "Skip the confirmation prompt",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Apply pending migrations to update the database schema in production/staging",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "resolve",
+              "aliases": [],
+              "description": "Resolve issues with database migrations in deployment databases",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--applied"
+                  ],
+                  "description": "Record a specific migration as applied",
+                  "takes_arg": true,
+                  "arg_name": "migration file path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--rolled-back"
+                  ],
+                  "description": "Record a specific migration as rolled back",
+                  "takes_arg": true,
+                  "arg_name": "migration file path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Check the status of your database migrations",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "diff",
+              "aliases": [],
+              "description": "Compares the database schema from two arbitrary sources, and outputs the differences either as a human-readable summary (by default) or an executable script",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--from-url"
+                  ],
+                  "description": "A datasource url",
+                  "takes_arg": true,
+                  "arg_name": "full url",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--to-url"
+                  ],
+                  "description": "A datasource url",
+                  "takes_arg": true,
+                  "arg_name": "full url",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--from-empty"
+                  ],
+                  "description": "Flag to assume from is an empty datamodel",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--to-empty"
+                  ],
+                  "description": "Flag to assume to is an empty datamodel",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--from-schema-datamodel"
+                  ],
+                  "description": "Path to a Prisma schema file, uses the 'datamodel' for the diff",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--to-schema-datamodel"
+                  ],
+                  "description": "Path to a Prisma schema file, uses the 'datamodel' for the diff",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--from-schema-datasource"
+                  ],
+                  "description": "Path to a Prisma schema file, uses the 'datasource url' for the diff",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--to-schema-datasource"
+                  ],
+                  "description": "Path to a Prisma schema file, uses the 'datasource url' for the diff",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--from-migrations"
+                  ],
+                  "description": "Path to the Prisma Migrate migrations directory",
+                  "takes_arg": true,
+                  "arg_name": "folder",
+                  "arg_template": "folders",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--to-migrations"
+                  ],
+                  "description": "Path to the Prisma Migrate migrations directory",
+                  "takes_arg": true,
+                  "arg_name": "folder",
+                  "arg_template": "folders",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--shadow-database-url"
+                  ],
+                  "description": "URL for the shadow database. Only required if using --from-migrations or --to-migrations",
+                  "takes_arg": true,
+                  "arg_name": "full url",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--script"
+                  ],
+                  "description": "Render a SQL script to stdout instead of the default human readable summary (not supported on MongoDB)",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--exit-code"
+                  ],
+                  "description": "Change the exit code behavior to signal if the diff is empty or not (Empty: 0, Error: 1, Not empty: 2). Default behavior is Success: 0, Error: 1.`",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "db",
+          "aliases": [],
+          "description": "Manage your database schema and lifecycle (Preview)",
+          "subcommands": [
+            {
+              "name": "pull",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Ignore current Prisma schema file",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--print"
+                  ],
+                  "description": "Print the introspected Prisma schema to stdout",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--url"
+                  ],
+                  "description": "The datasource url",
+                  "takes_arg": true,
+                  "arg_name": "full url",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--composite-type-depth"
+                  ],
+                  "description": "Specify the depth for introspecting composite types (e.g. Embedded Documents in MongoDB). Number, default is -1 for infinite depth, 0 = off",
+                  "takes_arg": true,
+                  "arg_name": "number",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "push",
+              "aliases": [],
+              "description": "This command pushes the state of your Prisma schema file to the database without using migrations files",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--skip-generate"
+                  ],
+                  "description": "Skip generation of artifacts such as Prisma Client",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force-reset"
+                  ],
+                  "description": "Resets the database and then updates the schema - useful if you need to start from scratch due to unexecutable migrations",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--accept-data-loss"
+                  ],
+                  "description": "Ignore data loss warnings. This option is required if as a result of making the schema changes, data may be lost",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "seed",
+              "aliases": [],
+              "description": "Seed your database",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "execute",
+              "aliases": [],
+              "description": "Execute native commands to your database",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Display this help message",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--schema"
+                  ],
+                  "description": "Custom path to your Prisma schema",
+                  "takes_arg": true,
+                  "arg_name": "Schema path",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--url"
+                  ],
+                  "description": "The datasource url",
+                  "takes_arg": true,
+                  "arg_name": "full url",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--file"
+                  ],
+                  "description": "Path to a file. The content will be sent as the script to be executed",
+                  "takes_arg": true,
+                  "arg_name": "filepath",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--stdin"
+                  ],
+                  "description": "Use the terminal standard input as the script to be executed",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [
+            "-v"
+          ],
+          "description": "Print current version of Prisma components",
+          "subcommands": [
+            {
+              "name": "--json",
+              "aliases": [],
+              "description": "Output JSON",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for redwood",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,1848 @@
+{
+  "name": "nest",
+  "aliases": [],
+  "description": "Nest CLI",
+  "subcommands": [
+    {
+      "name": "new",
+      "aliases": [
+        "n"
+      ],
+      "description": "Creates a new nest project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project",
+          "description": "The name of the project",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [
+        "g"
+      ],
+      "description": "Generate and/or modifies files based on a schematic",
+      "subcommands": [
+        {
+          "name": "application",
+          "aliases": [],
+          "description": "Generate a new application workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "application",
+              "description": "The name of the application",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "class",
+          "aliases": [
+            "cl"
+          ],
+          "description": "Generate a new class",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "class",
+              "description": "The name of the class",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "configuration",
+          "aliases": [
+            "config"
+          ],
+          "description": "Generate a CLI configuration file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "configuration",
+              "description": "The name of the configuration",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "controller",
+          "aliases": [
+            "co"
+          ],
+          "description": "Generate a controller declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "controller",
+              "description": "The name of the controller",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "decorator",
+          "aliases": [
+            "d"
+          ],
+          "description": "Generate a custom decorator",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "decorator",
+              "description": "The name of the decorator",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "filter",
+          "aliases": [
+            "f"
+          ],
+          "description": "Generate a filter declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "filter",
+              "description": "The name of the filter",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "gateway",
+          "aliases": [
+            "ga"
+          ],
+          "description": "Generate a gateway declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "gateway",
+              "description": "The name of the gateway",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "guard",
+          "aliases": [
+            "gu"
+          ],
+          "description": "Generate a guard declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "guard",
+              "description": "The name of the guard",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "interceptor",
+          "aliases": [
+            "in"
+          ],
+          "description": "Generate an interceptor declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "interceptor",
+              "description": "The name of the interceptor",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "interface",
+          "aliases": [],
+          "description": "Generate an interface",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "interface",
+              "description": "The name of the interface",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "middleware",
+          "aliases": [
+            "mi"
+          ],
+          "description": "Generate a middleware declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "middleware",
+              "description": "The name of the middleware",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "module",
+          "aliases": [
+            "mo"
+          ],
+          "description": "Generate a module declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "module",
+              "description": "The name of the module",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "pipe",
+          "aliases": [
+            "p"
+          ],
+          "description": "Generate a pipe declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "pipe",
+              "description": "The name of the pipe",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "provider",
+          "aliases": [
+            "pr"
+          ],
+          "description": "Generate a provider declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "provider",
+              "description": "The name of the provider",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "resolver",
+          "aliases": [
+            "r"
+          ],
+          "description": "Generate a GraphQL resolver declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "resolver",
+              "description": "The name of the resolver",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "service",
+          "aliases": [
+            "s"
+          ],
+          "description": "Generate a service declaration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "service",
+              "description": "The name of the service",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "library",
+          "aliases": [
+            "lib"
+          ],
+          "description": "Generate a new library within a monorepo",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "library",
+              "description": "The name of the library",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sub-app",
+          "aliases": [
+            "app"
+          ],
+          "description": "Generate a new application within a monorepo",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "sub-app",
+              "description": "The name of the sub-app",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "resource",
+          "aliases": [
+            "res"
+          ],
+          "description": "Generate a new CRUD resource",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--dry-run"
+              ],
+              "description": "Report actions that would be taken without writing out results",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Project in which to generate files",
+              "takes_arg": true,
+              "arg_name": "project",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Enforce flat structure of generated element",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--spec"
+              ],
+              "description": "Enforce spec files generation (default: true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-spec"
+              ],
+              "description": "Disable spec files generation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--collection"
+              ],
+              "description": "Schematics collection to use",
+              "takes_arg": true,
+              "arg_name": "collection",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "resource",
+              "description": "The name of the resource",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Builds Nest application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--dry-run"
+          ],
+          "description": "Report actions that would be taken without writing out results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Project in which to generate files",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flat"
+          ],
+          "description": "Enforce flat structure of generated element",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--spec"
+          ],
+          "description": "Enforce spec files generation (default: true)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-spec"
+          ],
+          "description": "Disable spec files generation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--collection"
+          ],
+          "description": "Schematics collection to use",
+          "takes_arg": true,
+          "arg_name": "collection",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "app",
+          "description": "The name of the app",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Run Nest application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--dry-run"
+          ],
+          "description": "Report actions that would be taken without writing out results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Project in which to generate files",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flat"
+          ],
+          "description": "Enforce flat structure of generated element",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--spec"
+          ],
+          "description": "Enforce spec files generation (default: true)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-spec"
+          ],
+          "description": "Disable spec files generation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--collection"
+          ],
+          "description": "Schematics collection to use",
+          "takes_arg": true,
+          "arg_name": "collection",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "app",
+          "description": "The name of the app",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [
+        "i"
+      ],
+      "description": "Display Nest project details",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [
+        "u"
+      ],
+      "description": "Update Nest dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--dry-run"
+          ],
+          "description": "Report actions that would be taken without writing out results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--project"
+          ],
+          "description": "Project in which to generate files",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flat"
+          ],
+          "description": "Enforce flat structure of generated element",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--spec"
+          ],
+          "description": "Enforce spec files generation (default: true)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-spec"
+          ],
+          "description": "Disable spec files generation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--collection"
+          ],
+          "description": "Schematics collection to use",
+          "takes_arg": true,
+          "arg_name": "collection",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for nest",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

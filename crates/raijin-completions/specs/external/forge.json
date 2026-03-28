@@ -1,0 +1,1249 @@
+{
+  "name": "@forge/cli",
+  "aliases": [],
+  "description": "A command line interface for managing Atlassian-hosted apps",
+  "subcommands": [
+    {
+      "name": "autocomplete",
+      "aliases": [],
+      "description": "Configures autocomplete for the Forge CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "install|uninstall",
+          "description": null,
+          "template": {
+            "custom": [
+              "install",
+              "uninstall"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create an app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--template"
+          ],
+          "description": "Specify the template to use",
+          "takes_arg": true,
+          "arg_name": "template name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--directory"
+          ],
+          "description": "Specify the directory to create (uses the template name by default)",
+          "takes_arg": true,
+          "arg_name": "directory name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy your app to an environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--no-verify"
+          ],
+          "description": "Disable pre-deployment checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Specify the environment from options: development, staging, production (default: development)",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Run the command without input prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "feedback",
+      "aliases": [],
+      "description": "Let us know what you think about Forge",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Manage app installations",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List app installations",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Specify the environment from options: development, staging, production (default: development)",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--site"
+          ],
+          "description": "Site URL (example.atlassian.net)",
+          "takes_arg": true,
+          "arg_name": "site",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--product"
+          ],
+          "description": "Product (Jira, Confluence, Compass)",
+          "takes_arg": true,
+          "arg_name": "product",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--upgrade"
+          ],
+          "description": "Upgrade an existing installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--confirm-scopes"
+          ],
+          "description": "Skip confirmation of scopes for the app before installing or upgrading the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Run the command without input prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Check the source files for common errors",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix"
+          ],
+          "description": "Attempt to automatically fix any issues encountered",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Specify the environment from options: development, staging, production (default: development)",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to your Atlassian account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--email"
+          ],
+          "description": "Specify the email to use",
+          "takes_arg": true,
+          "arg_name": "user email",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--token"
+          ],
+          "description": "Specify the API token to use",
+          "takes_arg": true,
+          "arg_name": "api token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--non-interactive"
+          ],
+          "description": "Run the command without input prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out of your Atlassian account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "View app logs",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Specify the environment from options: development, staging, production (default: development)",
+          "takes_arg": true,
+          "arg_name": "environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--invocation"
+          ],
+          "description": "View logs for a given invocation ID",
+          "takes_arg": true,
+          "arg_name": "invocation",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--limit"
+          ],
+          "description": "Number of invocations to return",
+          "takes_arg": true,
+          "arg_name": "limit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--since"
+          ],
+          "description": "View logs since the specified time. valid formats: YYYY-MM-DD, ISO 8061 timestamp or a relative time (e.g: 5m, 10h, 2d)",
+          "takes_arg": true,
+          "arg_name": "since",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g",
+            "--grouped"
+          ],
+          "description": "Group logs by invocation ID",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "providers",
+      "aliases": [],
+      "description": "Manage external providers",
+      "subcommands": [
+        {
+          "name": "configure",
+          "aliases": [],
+          "description": "Configure provider credentials",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--oauth-client-secret"
+              ],
+              "description": "Client secret",
+              "takes_arg": true,
+              "arg_name": "oauthClientSecret",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--environment"
+              ],
+              "description": "Specify the environment from options: development, staging, production (default: development)",
+              "takes_arg": true,
+              "arg_name": "environment",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "providerKey",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "register",
+      "aliases": [],
+      "description": "Register an app you didn't create so you can run commands for it",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "aliases": [],
+      "description": "Manage Forge CLI settings",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List Forge CLI settings",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Update Forge CLI setting (choices: usage-analytics)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "setting",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "boolean",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tunnel",
+      "aliases": [],
+      "description": "Start a tunnel to connect your local code with the app running in the development environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--debug"
+          ],
+          "description": "Enable debugger mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall the app from an Atlassian site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "installationId",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "variables",
+      "aliases": [],
+      "description": "Manage app environment variables",
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set an environment variable",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--encrypt"
+              ],
+              "description": "Encrypt variable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--environment"
+              ],
+              "description": "Specify the environment from options: development, staging, production (default: development)",
+              "takes_arg": true,
+              "arg_name": "environment",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "value",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Remove an environment variable",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--environment"
+              ],
+              "description": "Specify the environment from options: development, staging, production (default: development)",
+              "takes_arg": true,
+              "arg_name": "environment",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List the environment variables",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Enable verbose mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--environment"
+              ],
+              "description": "Specify the environment from options: development, staging, production (default: development)",
+              "takes_arg": true,
+              "arg_name": "environment",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Display help for command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "webtrigger",
+      "aliases": [],
+      "description": "Get a web trigger URL",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--functionKey"
+          ],
+          "description": "Web trigger key from the manifest.yml file",
+          "takes_arg": true,
+          "arg_name": "function",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "installationId",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Display the account information of the logged in user",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Enable verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Display help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enable verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

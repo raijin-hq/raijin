@@ -1,0 +1,195 @@
+{
+  "name": "next",
+  "aliases": [],
+  "description": "Next.js CLI to start, build and export your application",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Create an optimized production build of your application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Enable production profiling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Enable more verbose build output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Next.js application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Start the application in development mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "A port number on which to start the application",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--hostname"
+          ],
+          "description": "Hostname on which to start the application",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Next.js application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start the application in production mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "A port number on which to start the application",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--hostname"
+          ],
+          "description": "Hostname on which to start the application",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Next.js application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Exports the application for production deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Do not print any messages to console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Next.js application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "telemetry",
+      "aliases": [],
+      "description": "Allows you to control Next.js' telemetry collection",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "status",
+          "description": "Turn Next.js' telemetry collection on or off",
+          "template": {
+            "custom": [
+              "enable",
+              "disable"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,90 @@
+{
+  "name": "xc",
+  "aliases": [],
+  "description": "List tasks from an xc-compatible markdown file",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s",
+        "-short"
+      ],
+      "description": "List task names in a short format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "-help"
+      ],
+      "description": "Print this help text",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "-file"
+      ],
+      "description": "Specify a markdown file that contains tasks (default: \"README.md\")",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "-heading"
+      ],
+      "description": "Specify the heading for xc tasks (default: \"Tasks\")",
+      "takes_arg": true,
+      "arg_name": "heading",
+      "arg_template": {
+        "custom": [
+          "Tasks",
+          "Usage",
+          "Examples"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "-version"
+      ],
+      "description": "Show xc version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-complete"
+      ],
+      "description": "Install shell completion for xc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-uncomplete"
+      ],
+      "description": "Uninstall shell completion for xc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

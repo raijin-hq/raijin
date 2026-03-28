@@ -1,0 +1,229 @@
+{
+  "name": "ng",
+  "aliases": [],
+  "description": "CLI interface for Angular",
+  "subcommands": [
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new Angular app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--create-application"
+          ],
+          "description": "Create a default application?",
+          "takes_arg": true,
+          "arg_name": "project",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Generate new files",
+      "subcommands": [
+        {
+          "name": "application",
+          "aliases": [],
+          "description": "Generates a new application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--style"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "extension",
+              "arg_template": {
+                "custom": [
+                  "css",
+                  "scss",
+                  "sass",
+                  "less",
+                  "styl"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Name of the new app",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "component",
+          "aliases": [],
+          "description": "Generate a new component",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project"
+              ],
+              "description": "Project name",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--change-detection",
+                "-c"
+              ],
+              "description": "The change detection strategy to use",
+              "takes_arg": true,
+              "arg_name": "strategy",
+              "arg_template": {
+                "custom": [
+                  "Default",
+                  "OnPush"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--display-block",
+                "-b"
+              ],
+              "description": "Add :host block to styles",
+              "takes_arg": true,
+              "arg_name": "boolean",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--flat"
+              ],
+              "description": "Create at the top level",
+              "takes_arg": true,
+              "arg_name": "boolean",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": "Component name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "library",
+          "aliases": [],
+          "description": "Generates a new library",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "class",
+          "aliases": [],
+          "description": "Generates a class",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project"
+              ],
+              "description": "Project name",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "schematic",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "View your Angular CLI version (update for Angular 14+)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "View your Angular CLI version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

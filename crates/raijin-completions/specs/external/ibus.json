@@ -1,0 +1,113 @@
+{
+  "name": "ibus",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "engine",
+      "aliases": [],
+      "description": "Set or get engine",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exit",
+      "aliases": [],
+      "description": "Exit ibus-daemon",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list-engine",
+      "aliases": [],
+      "description": "Show available engines",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Not implemented",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "read-cache",
+      "aliases": [],
+      "description": "Show the content of registry cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "write-cache",
+      "aliases": [],
+      "description": "Create registry cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "address",
+      "aliases": [],
+      "description": "Print the D-Bus address of ibus-daemon",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "read-config",
+      "aliases": [],
+      "description": "Show the configuration values",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reset-config",
+      "aliases": [],
+      "description": "Reset the configuration values",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "emoji",
+      "aliases": [],
+      "description": "Save emoji on dialog to clipboard",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show this information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

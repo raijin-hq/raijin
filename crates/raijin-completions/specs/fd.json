@@ -1,0 +1,280 @@
+{
+  "name": "fd",
+  "aliases": [],
+  "description": "A simple, fast and user-friendly alternative to 'find'",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-H",
+        "--hidden"
+      ],
+      "description": "Search hidden files and directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--no-ignore"
+      ],
+      "description": "Do not respect .(git|fd)ignore files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--case-sensitive"
+      ],
+      "description": "Case-sensitive search (default: smart case)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--ignore-case"
+      ],
+      "description": "Case-insensitive search (default: smart case)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--glob"
+      ],
+      "description": "Glob-based search (default: regular expression)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--absolute-path"
+      ],
+      "description": "Show absolute instead of relative paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list-details"
+      ],
+      "description": "Use a long listing format with file metadata",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--follow"
+      ],
+      "description": "Follow symbolic links",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--full-path"
+      ],
+      "description": "Search full path (default: file-/dirname only)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-0",
+        "--print0"
+      ],
+      "description": "Separate results by the null character",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--max-depth"
+      ],
+      "description": "Set maximum search depth",
+      "takes_arg": true,
+      "arg_name": "depth",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--type"
+      ],
+      "description": "Filter by type",
+      "takes_arg": true,
+      "arg_name": "filetype",
+      "arg_template": {
+        "custom": [
+          "f",
+          "d",
+          "l",
+          "x",
+          "e",
+          "s",
+          "p"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-e",
+        "--extension"
+      ],
+      "description": "Filter by file extension",
+      "takes_arg": true,
+      "arg_name": "file extension",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-x",
+        "--exec"
+      ],
+      "description": "Execute a command for each search result",
+      "takes_arg": true,
+      "arg_name": "cmd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--exec-batch"
+      ],
+      "description": "Execute a command with all search results at once",
+      "takes_arg": true,
+      "arg_name": "cmd",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--exclude"
+      ],
+      "description": "Exclude entries that match the given glob pattern",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-c",
+        "--color"
+      ],
+      "description": "When to use colors",
+      "takes_arg": true,
+      "arg_name": "when",
+      "arg_template": {
+        "custom": [
+          "never",
+          "auto",
+          "always"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--size"
+      ],
+      "description": "Limit results based on the size of files",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changed-within"
+      ],
+      "description": "Filter by file modification time (newer than)",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changed-before"
+      ],
+      "description": "Filter by file modification time (older than)",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "pattern",
+      "description": "The search pattern - a regular expression unless '--glob' is used (optional)",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "path",
+      "description": "The root directories for the filesystem search",
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "name": "aftman",
+  "aliases": [],
+  "description": "A toolchain manager, enabling project-specific command line tools",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Creates a new aftman.toml file in the given directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The folder to initialize the manifest file in. Defaults to the current directory",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Adds a new tool to Aftman and installs it",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--global"
+          ],
+          "description": "Install this tool globally",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tool",
+          "description": "What tool and version to install",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "alias",
+          "description": "The name that will be used to run the tool",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install all tools listed in aftman.toml files based on your current directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-trust-check"
+          ],
+          "description": "All tools will be installed, regardless of whether they are known",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "self-install",
+      "aliases": [],
+      "description": "Installs Aftman, upgrades any references to Aftman, and adds aftman to your system PATH if supported",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "trust",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "tool",
+          "description": "The tool to mark as trusted",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for aftman",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Show aftman's version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

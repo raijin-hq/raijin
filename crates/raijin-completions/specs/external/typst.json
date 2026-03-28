@@ -1,0 +1,541 @@
+{
+  "name": "typst",
+  "aliases": [],
+  "description": "The Typst compiler",
+  "subcommands": [
+    {
+      "name": "compile",
+      "aliases": [
+        "c"
+      ],
+      "description": "Compiles an input file into a supported output format",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--root"
+          ],
+          "description": "Configures the project root (for absolute paths)",
+          "takes_arg": true,
+          "arg_name": "root",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--font-path"
+          ],
+          "description": "Adds additional directories to search for fonts",
+          "takes_arg": true,
+          "arg_name": "font_paths",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--diagnostic-format"
+          ],
+          "description": "The format to emit diagnostics in",
+          "takes_arg": true,
+          "arg_name": "diagnostic_format",
+          "arg_template": {
+            "custom": [
+              "human",
+              "short"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--format"
+          ],
+          "description": "The format of the output file, inferred from the extension by default",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "pdf",
+              "png",
+              "svg"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Opens the output file using the default viewer after compilation",
+          "takes_arg": true,
+          "arg_name": "open",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ppi"
+          ],
+          "description": "The PPI (pixels per inch) to use for PNG export",
+          "takes_arg": true,
+          "arg_name": "ppi",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flamegraph"
+          ],
+          "description": "Produces a flamegraph of the compilation process",
+          "takes_arg": true,
+          "arg_name": "flamegraph",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "description": "Path to input Typst file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": "Path to output file (PDF, PNG, or SVG)",
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "aliases": [
+        "w"
+      ],
+      "description": "Watches an input file and recompiles on changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--root"
+          ],
+          "description": "Configures the project root (for absolute paths)",
+          "takes_arg": true,
+          "arg_name": "root",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--font-path"
+          ],
+          "description": "Adds additional directories to search for fonts",
+          "takes_arg": true,
+          "arg_name": "font_paths",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--diagnostic-format"
+          ],
+          "description": "The format to emit diagnostics in",
+          "takes_arg": true,
+          "arg_name": "diagnostic_format",
+          "arg_template": {
+            "custom": [
+              "human",
+              "short"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--format"
+          ],
+          "description": "The format of the output file, inferred from the extension by default",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "pdf",
+              "png",
+              "svg"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Opens the output file using the default viewer after compilation",
+          "takes_arg": true,
+          "arg_name": "open",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ppi"
+          ],
+          "description": "The PPI (pixels per inch) to use for PNG export",
+          "takes_arg": true,
+          "arg_name": "ppi",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flamegraph"
+          ],
+          "description": "Produces a flamegraph of the compilation process",
+          "takes_arg": true,
+          "arg_name": "flamegraph",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "description": "Path to input Typst file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": "Path to output file (PDF, PNG, or SVG)",
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "query",
+      "aliases": [],
+      "description": "Processes an input file to extract provided metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--root"
+          ],
+          "description": "Configures the project root (for absolute paths)",
+          "takes_arg": true,
+          "arg_name": "root",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--font-path"
+          ],
+          "description": "Adds additional directories to search for fonts",
+          "takes_arg": true,
+          "arg_name": "font_paths",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--diagnostic-format"
+          ],
+          "description": "The format to emit diagnostics in",
+          "takes_arg": true,
+          "arg_name": "diagnostic_format",
+          "arg_template": {
+            "custom": [
+              "human",
+              "short"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--field"
+          ],
+          "description": "Extracts just one field from all retrieved elements",
+          "takes_arg": true,
+          "arg_name": "field",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "The format to serialize in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "yaml"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one"
+          ],
+          "description": "Expects and retrieves exactly one element",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "description": "Path to input Typst file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "selector",
+          "description": "Defines which elements to retrieve",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fonts",
+      "aliases": [],
+      "description": "Lists all discovered fonts in system and custom font paths",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--font-path"
+          ],
+          "description": "Adds additional directories to search for fonts",
+          "takes_arg": true,
+          "arg_name": "font_paths",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--variants"
+          ],
+          "description": "Also lists style variants of each font family",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Self update the Typst CLI (disabled)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Forces a downgrade to an older version (required for downgrading)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--revert"
+          ],
+          "description": "Reverts to the version from before the last update (only possible if `typst update` has previously ran)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "Which version to update to (defaults to latest)",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print this message or the help of the given subcommand(s)",
+      "subcommands": [
+        {
+          "name": "compile",
+          "aliases": [],
+          "description": "Compiles an input file into a supported output format",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "watch",
+          "aliases": [],
+          "description": "Watches an input file and recompiles on changes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "query",
+          "aliases": [],
+          "description": "Processes an input file to extract provided metadata",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fonts",
+          "aliases": [],
+          "description": "Lists all discovered fonts in system and custom font paths",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Self update the Typst CLI (disabled)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Print this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--cert"
+      ],
+      "description": "Path to a custom CA certificate to use when making network requests",
+      "takes_arg": true,
+      "arg_name": "cert",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbosity"
+      ],
+      "description": "Sets the level of logging verbosity: -v = warning & error, -vv = info, -vvv = debug, -vvvv = trace",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

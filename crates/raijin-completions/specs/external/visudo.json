@@ -1,0 +1,108 @@
+{
+  "name": "visudo",
+  "aliases": [],
+  "description": "Visudo edits the sudoers file, which defines the users and groups with administrator rights",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--check",
+        "-c"
+      ],
+      "description": "Checking existing sudoers file for syntax errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Set an alternative sudoers file location",
+      "takes_arg": true,
+      "arg_name": "New sudoers location",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display a short help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Enable quiet mode (syntax error not printed)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict",
+        "-s"
+      ],
+      "description": "Enable strict checking of the sudoers file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Display version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--export",
+        "-x"
+      ],
+      "description": "Export JSON and write it to output_file",
+      "takes_arg": true,
+      "arg_name": "Output file name",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--perms",
+        "-P"
+      ],
+      "description": "Enforce default mode for the sudoers file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--owner",
+        "-O"
+      ],
+      "description": "Enforce the default ownership for the sudoers file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

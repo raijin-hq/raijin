@@ -1,0 +1,2600 @@
+{
+  "name": "arduino-cli",
+  "aliases": [],
+  "description": "Arduino Command Line Interface",
+  "subcommands": [
+    {
+      "name": "board",
+      "aliases": [],
+      "description": "Arduino board commands",
+      "subcommands": [
+        {
+          "name": "attach",
+          "aliases": [],
+          "description": "Sets the default values for port and FQBN. If no port or FQBN are specified, the current default port and FQBN are displayed",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--discovery-timeout"
+              ],
+              "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for attach",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--port"
+              ],
+              "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--protocol"
+              ],
+              "description": "Upload port protocol, example: 'serial'",
+              "takes_arg": true,
+              "arg_name": "protocol",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "details",
+          "aliases": [],
+          "description": "Show information about a board, in particular if the board has options to be specified in the FQBN'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--full"
+              ],
+              "description": "Show full board details",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for details",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--list-programmers"
+              ],
+              "description": "Show list of available programmers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--show-properties"
+              ],
+              "description": "Show build properties. The properties are expanded, use \"--show-properties=unexpanded\" if you want them exactly as they are defined. (default \"disabled\")",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Detects and displays a list of boards connected to the current computer",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--discovery-timeout"
+              ],
+              "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--watch"
+              ],
+              "description": "Command keeps running and prints list of connected boards whenever there is a change",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "listall",
+          "aliases": [],
+          "description": "List all boards that have the support platform installed, You can search for a specific board if you specify the board name",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for listall",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-a",
+                "--show-hidden"
+              ],
+              "description": "Show also boards marked as 'hidden' in the platform",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "search",
+          "aliases": [],
+          "description": "Search for a board in the Boards Manager using the specified keywords",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for search",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-a",
+                "--show-hidden"
+              ],
+              "description": "Show also boards marked as 'hidden' in the platform",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for board",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "attach, list...",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "burn-bootloader",
+      "aliases": [],
+      "description": "Upload the bootloader on the board using an external programmer",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--board-options"
+          ],
+          "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discovery-timeout"
+          ],
+          "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--fqbn"
+          ],
+          "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+          "takes_arg": true,
+          "arg_name": "FQBN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for burn-bootloader",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--programmer"
+          ],
+          "description": "Programmer to use, example: 'atmel_ice'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--protocol"
+          ],
+          "description": "Upload port protocol, example: 'serial'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Turns on verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--verify"
+          ],
+          "description": "Verify uploaded binary after upload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Arduino cache commands",
+      "subcommands": [
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Delete contents of the directories.downloads folder, where archive files are staged during installation of libraries and boards platforms",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for clean",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "clean",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compiles Arduino sketches",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--board-options"
+          ],
+          "description": "List of board options separated by commas. Or can be used multiple times for multiple option",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-cache-path"
+          ],
+          "description": "Builds of 'core.a' are saved into this path to be cached and reused",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-path"
+          ],
+          "description": "Path where to save compiled files. If omitted, a directory will be created in the default temporary path of your OS",
+          "takes_arg": true,
+          "arg_name": "filepath",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-property"
+          ],
+          "description": "Override a build property with a custom value. Can be used multiple times for multiple properties",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean"
+          ],
+          "description": "Optional, cleanup the build folder and do not use any cached build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discovery-timeout"
+          ],
+          "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dump-profile"
+          ],
+          "description": "Create and print a profile configuration from the build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--encrypt-key"
+          ],
+          "description": "The name of the custom encryption key to use to encrypt a binary during the compile process. Used only by the platforms that support it",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "e",
+            "--export-binaries"
+          ],
+          "description": "If set built binaries will be exported to the sketch folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--fqbn"
+          ],
+          "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+          "takes_arg": true,
+          "arg_name": "FQBN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for compile",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keys-keychain"
+          ],
+          "description": "The path of the dir to search for the custom keys to sign and encrypt a binary. Used only by the platforms that support it",
+          "takes_arg": true,
+          "arg_name": "filepath",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--libraries"
+          ],
+          "description": "Path to a collection of libraries. Can be used multiple times or entries can be comma separated",
+          "takes_arg": true,
+          "arg_name": "filepath",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--library"
+          ],
+          "description": "Path to a single library’s root folder. Can be used multiple times or entries can be comma separated",
+          "takes_arg": true,
+          "arg_name": "filepath",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--only-compilation-database"
+          ],
+          "description": "Just produce the compilation database, without actually compiling. All build commands are skipped except pre* hooks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--optimize-for-debug"
+          ],
+          "description": "Optional, optimize compile output for debugging, rather than for release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-dir"
+          ],
+          "description": "Save build artifacts in this directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preprocess"
+          ],
+          "description": "Print preprocessed code to stdout instead of compiling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--profile"
+          ],
+          "description": "Sketch profile to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--programmer"
+          ],
+          "description": "Programmer to use, example: 'atmel_ice'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--protocol"
+          ],
+          "description": "Upload port protocol, example: 'serial'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Optional, suppresses almost every output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-properties"
+          ],
+          "description": "Show build properties. The properties are expanded, use \"--show-properties=unexpanded\" if you want them exactly as they are defined. (default \"disabled\")",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sign-key"
+          ],
+          "description": "The name of the custom signing key to use to sign a binary during the compile process. Used only by the platforms that support it",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--upload"
+          ],
+          "description": "Upload the binary after the compilation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Optional, turns on verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--verify"
+          ],
+          "description": "Verify uploaded binary after the upload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--warnings"
+          ],
+          "description": "Optional, can be: none, default, more, all. Used to tell gcc which warning level to use (-W flag). (default \"none\")",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "none",
+              "default",
+              "more",
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generates completion scripts for various shells",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for completion",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-description"
+          ],
+          "description": "Disable completion description for shells that support it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Arduino configuration commands",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds one or more values to a setting",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for add",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Deletes a settings key and all its sub keys",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for delete",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "dump",
+          "aliases": [],
+          "description": "Prints the current configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for dump",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Creates or updates the configuration file in the data directory or custom directory with the current configuration settings",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dest-dir"
+              ],
+              "description": "Sets where to save the configuration file",
+              "takes_arg": true,
+              "arg_name": "directory",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dest-file"
+              ],
+              "description": "Sets where to save the configuration file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for init",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--overwrite"
+              ],
+              "description": "Overwrite existing config file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Removes one or more values from a setting",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for remove",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Sets a setting value",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for set",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for config",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "init, dump...",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "core",
+      "aliases": [],
+      "description": "Arduino core operations",
+      "subcommands": [
+        {
+          "name": "download",
+          "aliases": [],
+          "description": "Downloads one or more cores and corresponding tool dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for download",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Installs one or more cores and corresponding tool dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for install",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-overwrite"
+              ],
+              "description": "Do not overwrite already installed platforms",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-post-install"
+              ],
+              "description": "Force run of post-install scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-pre-uninstall"
+              ],
+              "description": "Force run of pre-uninstall scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-post-install"
+              ],
+              "description": "Force skip of post-install scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-pre-uninstall"
+              ],
+              "description": "Force skip of pre-uninstall scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Show the list of installed platforms",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "all"
+              ],
+              "description": "If set return all installable and installed cores, including manually installed",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--updatable"
+              ],
+              "description": "List updatable platforms",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "search",
+          "aliases": [],
+          "description": "Search for a core in Boards Manager using the specified keywords",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "all"
+              ],
+              "description": "Show all available core versions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for search",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Uninstalls one or more cores and corresponding tool dependencies if no longer used",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for uninstall",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-post-install"
+              ],
+              "description": "Force run of post-install scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-pre-uninstall"
+              ],
+              "description": "Force run of pre-uninstall scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-post-install"
+              ],
+              "description": "Force skip of post-install scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-pre-uninstall"
+              ],
+              "description": "Force skip of pre-uninstall scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update-index",
+          "aliases": [],
+          "description": "Updates the index of cores to the latest version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for update-index",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrades one or all installed platforms to the latest version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for upgrade",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-post-install"
+              ],
+              "description": "Force run of post-install scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--run-pre-uninstall"
+              ],
+              "description": "Force run of pre-uninstall scripts (if the CLI is not running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-post-install"
+              ],
+              "description": "Force skip of post-install scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-pre-uninstall"
+              ],
+              "description": "Force skip of pre-uninstall scripts (if the CLI is running interactively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for core",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "install, list...",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "daemon",
+      "aliases": [],
+      "description": "Run as a daemon on port: 50051, the initialization of cores and libraries is done only once",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--daemonize"
+          ],
+          "description": "Do not terminate daemon process if the parent process dies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Enable debug logging of gRPC calls",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug-file"
+          ],
+          "description": "Append debug logging to the specified file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug-filter"
+          ],
+          "description": "Display only the provided gRPC calls",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The TCP port the daemon will listen to",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Debug Arduino sketches. (this command opens an interactive gdb session)",
+      "subcommands": [
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Check if the given board/programmer combination supports debugging",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--discovery-timeout"
+              ],
+              "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for check",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--interpreter"
+              ],
+              "description": "Debug interpreter, example: console, mi, mi1, mi2, mi3 (default \"console\")",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "console",
+                  "mi",
+                  "mi1",
+                  "mi2",
+                  "mi3"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--port"
+              ],
+              "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-P",
+                "--programmer"
+              ],
+              "description": "Programmer to use, example: 'atmel_ice'",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--protocol"
+              ],
+              "description": "Upload port protocol, example: 'serial'",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--board-options"
+          ],
+          "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discovery-timeout"
+          ],
+          "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--fqbn"
+          ],
+          "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+          "takes_arg": true,
+          "arg_name": "FQBN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-I",
+            "--info"
+          ],
+          "description": "Show metadata about the debug session instead of starting the debugger",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--input-dir"
+          ],
+          "description": "Directory containing binaries for debug",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "Debug interpreter, example: console, mi, mi1, mi2, mi3 (default \"console\")",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "console",
+              "mi",
+              "mi1",
+              "mi2",
+              "mi3"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--programmer"
+          ],
+          "description": "Programmer to use, example: 'atmel_ice'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--protocol"
+          ],
+          "description": "Upload port protocol, example: 'serial'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "check",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help provides help for any command in the application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lib",
+      "aliases": [],
+      "description": "Arduino commands about libraries",
+      "subcommands": [
+        {
+          "name": "deps",
+          "aliases": [],
+          "description": "Check dependencies status for the specified library",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for deps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "download",
+          "aliases": [],
+          "description": "Downloads one or more libraries without installing them",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for download",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "examples",
+          "aliases": [],
+          "description": "Shows the list of the examples for libraries. A name may be given as argument to search a specific library",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for examples",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Installs one or more specified libraries into the system",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--git-url"
+              ],
+              "description": "Enter git url for libraries hosted on repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for install",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--install-in-builtin-dir"
+              ],
+              "description": "Install libraries in the IDE-Builtin directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-deps"
+              ],
+              "description": "Do not install dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-overwrite"
+              ],
+              "description": "Do not overwrite already installed libraries",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--zip-path"
+              ],
+              "description": "Enter a path to zip file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Shows a list of installed libraries. If the LIBNAME parameter is specified the listing is limited to that specific library. By default the libraries provided as built-in by platforms/core are not listed, they can be listed by adding the --all flag",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Include built-in libraries (from platforms and IDE) in listing",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--board-options"
+              ],
+              "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--fqbn"
+              ],
+              "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+              "takes_arg": true,
+              "arg_name": "FQBN",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--updatable"
+              ],
+              "description": "List updatable libraries",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "search",
+          "aliases": [],
+          "description": "Search for one or more libraries data (case insensitive search)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--h",
+                "--help"
+              ],
+              "description": "Help for search",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--names"
+              ],
+              "description": "Show library names only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--omit-releases-details"
+              ],
+              "description": "Omit library details far all versions except the latest (produce a more compact JSON output)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "uninstall",
+          "aliases": [],
+          "description": "Uninstalls one or more libraries",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--h",
+                "--help"
+              ],
+              "description": "Help for uninstall",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update-index",
+          "aliases": [],
+          "description": "Updates the libraries index to the latest version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--h",
+                "--help"
+              ],
+              "description": "Help for update-index",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrades installed libraries. This command upgrades an installed library to the latest available version. Multiple libraries can be passed separated by a space. If no arguments are provided, the command will upgrade all the installed libraries where an update is available",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--h",
+                "--help"
+              ],
+              "description": "Help for upgrade",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for lib",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "deps, update-index...",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "monitor",
+      "aliases": [],
+      "description": "Open a communication port with a board",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--board-options"
+          ],
+          "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Configure communication port settings. The format is <ID>=<value>[,<ID>=<value>]",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--describe"
+          ],
+          "description": "Show all the settings of the communication port",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discovery-timeout"
+          ],
+          "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--fqbn"
+          ],
+          "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+          "takes_arg": true,
+          "arg_name": "FQBN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for monitor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Upload port address, example: 'COM3 or /dev/ttyACM2'",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--protocol"
+          ],
+          "description": "Upload port protocol, example: 'serial'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Run in silent mode, show only monitor input and output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--raw"
+          ],
+          "description": "Set terminal in raw mode (unbuffered)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timestamp"
+          ],
+          "description": "Timestamp each incoming line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "outdated",
+      "aliases": [],
+      "description": "This commands shows a list of installed cores and/or libraries that can be upgraded. If nothing needs to be updated the output is empty",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for outdated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sketch",
+      "aliases": [],
+      "description": "Arduino CLI sketch commands",
+      "subcommands": [
+        {
+          "name": "archive",
+          "aliases": [],
+          "description": "Creates a zip file containing all sketch files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-build-dir"
+              ],
+              "description": "Includes build in directory in the archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--overwrite"
+              ],
+              "description": "Overwrites an already existing archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a new Sketch",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--overwrite"
+              ],
+              "description": "Overwrites an already existing .ino sketch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for sketch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "archive, new",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Updates the index of cores and libraries to the latest versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-outdated"
+          ],
+          "description": "Show outdated cores and libraries after index update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrades installed cores and libraries to latest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for update",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--run-post-install"
+          ],
+          "description": "Force run of post-install scripts (if the CLI is not running interactively)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--run-pre-uninstall"
+          ],
+          "description": "Force run of pre-uninstall scripts (if the CLI is not running interactively)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-post-install"
+          ],
+          "description": "Force skip of post-install scripts (if the CLI is running interactively)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-pre-uninstall"
+          ],
+          "description": "Force skip of pre-uninstall scripts (if the CLI is running interactively)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upload",
+      "aliases": [],
+      "description": "Upload Arduino sketches. This does NOT compile the sketch prior to upload",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--board-options"
+          ],
+          "description": "List of board options separated by commas. Or can be used multiple times for multiple options",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--discovery-timeout"
+          ],
+          "description": "Max time to wait for port discovery, example: '30s, 1m (default 1s)'",
+          "takes_arg": true,
+          "arg_name": "duration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--fqbn"
+          ],
+          "description": "Fully Qualified Board Name, example: 'arduino:avr:uno'",
+          "takes_arg": true,
+          "arg_name": "FQBN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for upload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--input-dir"
+          ],
+          "description": "Directory containing binaries to upload",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--input-file"
+          ],
+          "description": "Binary file to upload",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Binary file to upload, example: 'COM3 or /dev/ttyACM2'",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--profile"
+          ],
+          "description": "Sketch profile to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--programmer"
+          ],
+          "description": "Programmer to use, example: 'atmel_ice'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--protocol"
+          ],
+          "description": "Upload port protocol, example: 'serial'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F",
+            "--upload-field"
+          ],
+          "description": "Set a value for a field required to upload, 'key=value'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Optional, turns on verbose mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--verify"
+          ],
+          "description": "Verify uploaded binary after the upload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Shows the version number of Arduino CLI which is installed on your system",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--additional-urls"
+      ],
+      "description": "Comma-separated list of additional URLs for the Boards Manager",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-file"
+      ],
+      "description": "The custom config file (if not specified the default will be used)",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format"
+      ],
+      "description": "The output format for the logs, can be: text, json, jsonmini, yaml (default 'text')",
+      "takes_arg": true,
+      "arg_name": "data_format",
+      "arg_template": {
+        "custom": [
+          "text",
+          "json",
+          "jsonmini",
+          "yaml"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for arduino-cli",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log"
+      ],
+      "description": "Print the logs on the standard output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file"
+      ],
+      "description": "Path to the file where logs will be written",
+      "takes_arg": true,
+      "arg_name": "filepath",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-format"
+      ],
+      "description": "The output format for the logs, can be: text, json",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "text",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-level"
+      ],
+      "description": "Messages with this level and above will be logged. Valid levels are: trace, debug, info, warn, error, fatal, panic",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "trace",
+          "debug",
+          "info",
+          "warn",
+          "error",
+          "fatal",
+          "panic"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Disable colored output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

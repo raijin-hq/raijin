@@ -1,0 +1,1150 @@
+{
+  "name": "launchctl",
+  "aliases": [],
+  "description": "Interfaces with launchd",
+  "subcommands": [
+    {
+      "name": "bootstrap",
+      "aliases": [],
+      "description": "Bootstraps a domain or a service into a domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "service-path",
+          "description": "Service path(s)",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "bootout",
+      "aliases": [],
+      "description": "Tears down a domain or removes a service from a domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "service-path",
+          "description": "Service path(s)",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "aliases": [],
+      "description": "Enables an existing service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "disable",
+      "aliases": [],
+      "description": "Disables an existing service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "kickstart",
+      "aliases": [],
+      "description": "Forces an existing service to start",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill instance before restarting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Print PID",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "attach",
+      "aliases": [],
+      "description": "Attach the system's debugger to a service",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Kill instance",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s"
+          ],
+          "description": "Force the service to start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x"
+          ],
+          "description": "Attach xpcproxy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Configures the next invocation of a service for debugging",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--program"
+          ],
+          "description": "Use program path as executable",
+          "takes_arg": true,
+          "arg_name": "program-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--guard-malloc"
+          ],
+          "description": "Turn on libgmalloc",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--malloc-stack-logging"
+          ],
+          "description": "Turn on malloc(3) stack logging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--malloc-nano-allocator"
+          ],
+          "description": "Turn on malloc(3) nano allocator",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug-libraries"
+          ],
+          "description": "Set the DYLD_IMAGE_SUFFIX",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--introspection-libraries"
+          ],
+          "description": "Add introspection libraries to the DYLD_IMAGE_PATH",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--NSZombie"
+          ],
+          "description": "Enables NSZombie",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--32"
+          ],
+          "description": "Runs service on appropriate 32-bit architecture",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin"
+          ],
+          "description": "Sets the stdin path",
+          "takes_arg": true,
+          "arg_name": "stdin-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdout"
+          ],
+          "description": "Sets the stdout path",
+          "takes_arg": true,
+          "arg_name": "stdout-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stderr"
+          ],
+          "description": "Sets the stderr path",
+          "takes_arg": true,
+          "arg_name": "stderr-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--environment"
+          ],
+          "description": "Sets environment variables",
+          "takes_arg": true,
+          "arg_name": "environment-variables",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "argv",
+          "description": "Variable args: argv0 argv1",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "kill",
+      "aliases": [],
+      "description": "Sends a signal to the service instance",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "signal",
+          "description": "Specify signal-name or signal-number",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "blame",
+      "aliases": [],
+      "description": "Prints the reason a service is running",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "print",
+      "aliases": [],
+      "description": "Prints a description of a domain or service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "print-cache",
+      "aliases": [],
+      "description": "Prints information about the service cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "print-disabled",
+      "aliases": [],
+      "description": "Prints which services are disabled",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "domain-target",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "plist",
+      "aliases": [],
+      "description": "Prints a property list embedded in a binary (targets the Info.plist by default)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "segment",
+          "description": "Segment or section",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "Mach-O",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "procinfo",
+      "aliases": [],
+      "description": "Prints port information about a process",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pid",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "hostinfo",
+      "aliases": [],
+      "description": "Prints port information about the host",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "resolveport",
+      "aliases": [],
+      "description": "Resolves a port name from a process to an endpoint in launchd",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "owner-pid",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "port-name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "limit",
+      "aliases": [],
+      "description": "Reads or modifies launchd's resource limits",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "cpu"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "filesize"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "data"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "stack"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "core"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "rss"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "memlock"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "maxproc"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "maxfiles"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "[both]",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "runstats",
+      "aliases": [],
+      "description": "Prints performance statistics for a service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": "Service or domain target",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "examine",
+      "aliases": [],
+      "description": "Runs the specified analysis tool against launchd in a non-re-entrant manner",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "tool",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "[args | @PID]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Modifies persistent configuration parameters for launchd domains",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "[system | user]",
+          "description": null,
+          "template": {
+            "custom": [
+              "system"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "param",
+          "description": "A key for a key/value pair",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "A value for a key/value pair",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dumpstate",
+      "aliases": [],
+      "description": "Dumps launchd state to stdout",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dumpjpcategory",
+      "aliases": [],
+      "description": "Dumps the jetsam properties category for all services",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reboot",
+      "aliases": [],
+      "description": "Initiates a system reboot of the specified type",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "system"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "userspace"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "halt"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "logout"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "apps"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "load",
+      "aliases": [],
+      "description": "Recommended alternatives: bootstrap | enable. Bootstraps a service or directory of services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Enable if disabled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Force load",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S"
+          ],
+          "description": "Session",
+          "takes_arg": true,
+          "arg_name": "session",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Load files from specified domain",
+          "takes_arg": true,
+          "arg_name": "domain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "unload",
+      "aliases": [],
+      "description": "Recommended alternatives: bootout | disable. Unloads a service or directory of services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-w"
+          ],
+          "description": "Enable if disabled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-F"
+          ],
+          "description": "Force load",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S"
+          ],
+          "description": "Session",
+          "takes_arg": true,
+          "arg_name": "session",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D"
+          ],
+          "description": "Load files from specified domain",
+          "takes_arg": true,
+          "arg_name": "domain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Unloads the specified service name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Lists information about services",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Starts the specified service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stops the specified service if it is running",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setenv",
+      "aliases": [],
+      "description": "Sets the specified environment variables for all services within the domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unsetenv",
+      "aliases": [],
+      "description": "Unsets the specified environment variables for all services within the domain",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "getenv",
+      "aliases": [],
+      "description": "Gets the value of an environment variable from within launchd",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "bsexec",
+      "aliases": [],
+      "description": "Execute a program in another process' bootstrap context",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "args",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "asuser",
+      "aliases": [],
+      "description": "Execute a program in the bootstrap context of a given user",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "UID",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "args",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "submit",
+      "aliases": [],
+      "description": "Submit a basic job from the command line",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p"
+          ],
+          "description": "Program to execute",
+          "takes_arg": true,
+          "arg_name": "executable",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Std out path",
+          "takes_arg": true,
+          "arg_name": "stdout-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e"
+          ],
+          "description": "Std err path",
+          "takes_arg": true,
+          "arg_name": "stderr-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "-l",
+          "description": "Label flag",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "label",
+          "description": "Unique label to assign to launchd",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": "Command to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "managerpid",
+      "aliases": [],
+      "description": "Prints the PID of the launchd controlling the session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "manageruid",
+      "aliases": [],
+      "description": "Prints the UID of the current launchd session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "managername",
+      "aliases": [],
+      "description": "Prints the name of the current launchd session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "error",
+      "aliases": [],
+      "description": "Prints a description of an error",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "Error domain type",
+          "template": {
+            "custom": [
+              "posix",
+              "mach",
+              "bootstrap"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "code",
+          "description": "Numeric code",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "variant",
+      "aliases": [],
+      "description": "Prints the launchd variant",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Prints the launchd version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints the usage for a given subcommand",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

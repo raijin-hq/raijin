@@ -1,0 +1,1420 @@
+{
+  "name": "pijul",
+  "aliases": [],
+  "description": "A distributed version control system that is at the same time theoretically sound, fast and easy to learn and use",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Adds a path to the tree",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--recursive"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PATHS",
+          "description": "Paths to add to the internal tree",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Applies changes to a channel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Apply change to this channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deps-only"
+          ],
+          "description": "Only apply the dependencies of the change, not the change itself. Only applicable for a single change",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "CHANGE",
+          "description": "The change that need to be applied. If this value is missing, read the change in text format on the standard input",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "archive",
+      "aliases": [],
+      "description": "Creates an archive of the repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--change"
+          ],
+          "description": "Apply these changes after switching to the channel",
+          "takes_arg": true,
+          "arg_name": "CHANGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Use this channel, instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Do not check certificates (HTTPS remotes only, this option might be dangerous)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o"
+          ],
+          "description": "Name of the output file",
+          "takes_arg": true,
+          "arg_name": "NAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefix"
+          ],
+          "description": "Append this path in front of each path inside the archive",
+          "takes_arg": true,
+          "arg_name": "PREFIX",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote"
+          ],
+          "description": "Ask the remote to send an archive",
+          "takes_arg": true,
+          "arg_name": "REMOTE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--state"
+          ],
+          "description": "Archive in this state",
+          "takes_arg": true,
+          "arg_name": "STATE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--umask"
+          ],
+          "description": "Append this path in front of each path inside the archive",
+          "takes_arg": true,
+          "arg_name": "UMASK",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "change",
+      "aliases": [],
+      "description": "Shows information about a particular change",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Use the repository at PATH instead of the current directory",
+          "takes_arg": true,
+          "arg_name": "PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "HASH",
+          "description": "The hash of the change to show, or an unambiguous prefix thereof",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "channel",
+      "aliases": [],
+      "description": "Manages different channels",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a channel. The channel must not be the current channel",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "DELETE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Print this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a new, empty channel",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Rename a channel",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "FROM",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "TO",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "switch",
+          "aliases": [],
+          "description": "Switch to a channel. There must not be unrecorded changes in the working copy",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clones an existing pijul repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--change"
+          ],
+          "description": "Clone this change and its dependencies",
+          "takes_arg": true,
+          "arg_name": "CHANGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Set the remote channel [default: main]",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Do not check certificates (HTTPS remotes only, this option might be dangerous)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Clone this path only",
+          "takes_arg": true,
+          "arg_name": "PARTIAL_PATHS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--state"
+          ],
+          "description": "Clone this state",
+          "takes_arg": true,
+          "arg_name": "STATE",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "REMOTE",
+          "description": "Clone this remote",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "PATH",
+          "description": "Path where to clone the repository. If missing, the inferred name of the remote repository is used",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "SALT",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "credit",
+      "aliases": [],
+      "description": "Shows which change last affected each line of the given file(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Use this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": "The file to annotate",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Shows difference between two channels/changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Compare with this channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output the diff in JSON format instead of the default change text format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--short"
+          ],
+          "description": "Show a short version of the diff",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag"
+          ],
+          "description": "Add all the changes of this channel as dependencies (except changes implied transitively), instead of the minimal dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--untracked"
+          ],
+          "description": "Include the untracked files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PREFIXES",
+          "description": "Only diff those paths (files or directories). If missing, diff the entire repository",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fork",
+      "aliases": [],
+      "description": "Create a new channel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--change"
+          ],
+          "description": "Apply this change after creating the channel",
+          "takes_arg": true,
+          "arg_name": "CHANGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Make the new channel from this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "TO",
+          "description": "The name of the new channel",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes an empty pijul repository",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Set the name of the current channel (defaults to “main”)",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kind"
+          ],
+          "description": "Project kind; if Pijul knows about your project kind, the .ignore file will be populated with a conservative list of commonly ignored entries. Example: pijul init --kind=rust",
+          "takes_arg": true,
+          "arg_name": "KIND",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PATH",
+          "description": "Path where the repository should be initialized",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Show the entire log of changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Show logs for this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--description"
+          ],
+          "description": "Include full change description in the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hash-only"
+          ],
+          "description": "Only show the change hashes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--limit"
+          ],
+          "description": "Output at most this many changes",
+          "takes_arg": true,
+          "arg_name": "LIMIT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--offset"
+          ],
+          "description": "Start after this many changes",
+          "takes_arg": true,
+          "arg_name": "OFFSET",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-format"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "OUTPUT_FORMAT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--state"
+          ],
+          "description": "Include state identifiers in the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILTERS",
+          "description": "Filter log output, showing only log entries that touched the specified files. Accepted as a list of paths relative to your current directory. Currently, filters can only be applied when logging the channel that’s in use",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "mv",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pulls changes from a remote upstream",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Pull all changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force-cache"
+          ],
+          "description": "Force an update of the local remote cache. May effect some reporting of unrecords/concurrent changes in the remote",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from-channel"
+          ],
+          "description": "Pull from this remote channel",
+          "takes_arg": true,
+          "arg_name": "FROM_CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full"
+          ],
+          "description": "Download full changes, even when not necessary",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Do not check certificates (HTTPS remotes only, this option might be dangerous)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Only pull to these paths",
+          "takes_arg": true,
+          "arg_name": "PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to-channel"
+          ],
+          "description": "Pull into this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "TO_CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FROM",
+          "description": "Pulls from this remote",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "CHANGES",
+          "description": "Pull changes from the local repository, not necessarily from a channel",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Pushes changes to a remote upstream",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Push all changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force-cache"
+          ],
+          "description": "Force an update of the local remote cache. May effect some reporting of unrecords/concurrent changes in the remote",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from-channel"
+          ],
+          "description": "Push from this channel instead of the default channel",
+          "takes_arg": true,
+          "arg_name": "FROM_CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k"
+          ],
+          "description": "Do not check certificates (HTTPS remotes only, this option might be dangerous)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Push changes only relating to these paths",
+          "takes_arg": true,
+          "arg_name": "PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Path to the repository. Uses the current repository if the argument is omitted",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to-channel"
+          ],
+          "description": "Push to this remote channel instead of the remote’s default channel",
+          "takes_arg": true,
+          "arg_name": "TO_CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "TO",
+          "description": "Push to this remote",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "CHANGES",
+          "description": "Push only these changes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "record",
+      "aliases": [],
+      "description": "Creates a new change",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Record all paths that have changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--amend"
+          ],
+          "description": "Amend this change instead of creating a new change",
+          "takes_arg": true,
+          "arg_name": "AMEND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--author"
+          ],
+          "description": "Set the author field",
+          "takes_arg": true,
+          "arg_name": "AUTHOR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Record the change in this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-missing"
+          ],
+          "description": "Ignore missing (deleted) files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "Set the change message",
+          "takes_arg": true,
+          "arg_name": "MESSAGE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timestamp"
+          ],
+          "description": "Set the timestamp field",
+          "takes_arg": true,
+          "arg_name": "TIMESTAMP",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--working-copy"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "WORKING_COPY",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PREFIXES",
+          "description": "Paths in which to record the changes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "remote",
+      "aliases": [],
+      "description": "Manages remote repositories",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Deletes the remote",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "REMOTE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Print this message or the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Removes a file from the tree of tracked files (pijul record will then record this as a deletion)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PATHS",
+          "description": "The paths need to be removed",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Resets the working copy to the last recorded change.\nIn other words, discards all unrecorded changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Reset the working copy to this channel, and change the current channel to this channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Print this file to the standard output, without modifying the repository (works for a single file only)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Reset even if there are unrecorded changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILES",
+          "description": "Only reset these files",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unrecord",
+      "aliases": [],
+      "description": "Unrecords a list of changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--channel"
+          ],
+          "description": "Unrecord changes from this channel instead of the current channel",
+          "takes_arg": true,
+          "arg_name": "CHANNEL",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repository"
+          ],
+          "description": "Set the repository where this command should run. Defaults to the first ancestor of the current directory that contains a .pijul directory",
+          "takes_arg": true,
+          "arg_name": "REPO_PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reset"
+          ],
+          "description": "Also undo the changes in the working copy (preserving unrecorded changes if there are any)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-changes"
+          ],
+          "description": "Show N changes in a text editor if no s were given. Defaults to the value of unrecord_changes in your global configuration",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "CHANGE_ID",
+          "description": "The hash of a change (unambiguous prefixes are accepted)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

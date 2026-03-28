@@ -1,0 +1,484 @@
+{
+  "name": "mvn",
+  "aliases": [],
+  "description": "Maven - a Java based project management and comprehension tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--also-make",
+        "-am"
+      ],
+      "description": "Also build projects required by project list",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--also-make-dependents",
+        "-amd"
+      ],
+      "description": "Also build projects that depend on projects in the project list",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--batch-mode",
+        "-B"
+      ],
+      "description": "Run in non-interactive (batch)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--builder",
+        "-b"
+      ],
+      "description": "Specify the build strategy to use",
+      "takes_arg": true,
+      "arg_name": "id of build strategy",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strict-checksums",
+        "-C"
+      ],
+      "description": "Fail if checksums do not match",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--lax-checksums",
+        "-c"
+      ],
+      "description": "Warn if checksums do not match",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Specify the color mode of the output",
+      "takes_arg": true,
+      "arg_name": "color mode",
+      "arg_template": {
+        "custom": [
+          "always",
+          "never",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check-plugin-updates",
+        "-cpu"
+      ],
+      "description": "Ineffective. Only kept for backward compatibility",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--define",
+        "-D"
+      ],
+      "description": "Define a system property",
+      "takes_arg": true,
+      "arg_name": "system property",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--errors",
+        "-e"
+      ],
+      "description": "Produce execution error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--encrypt-master-password",
+        "-emp"
+      ],
+      "description": "Encrypt the master security password",
+      "takes_arg": true,
+      "arg_name": "master password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--encrypt-password",
+        "-ep"
+      ],
+      "description": "Encrypt the server password",
+      "takes_arg": true,
+      "arg_name": "server password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Force the use of an alternate POM file (or directory with pom.xml)",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fail-at-end",
+        "-fae"
+      ],
+      "description": "Only fail the build afterwards; allow all non-impacted builds to continue",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fail-fast",
+        "-ff"
+      ],
+      "description": "Stop at first failure in reactorized builds",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fail-never",
+        "-fn"
+      ],
+      "description": "Never fail the build, regardless of project result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--global-settings",
+        "-gs"
+      ],
+      "description": "Specify the global settings file to use",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--global-toolchains",
+        "-gt"
+      ],
+      "description": "Specify the global toolchains file to use",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-file",
+        "-l"
+      ],
+      "description": "Specify the file to log to",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--legacy-local-repository",
+        "-llr"
+      ],
+      "description": "Use the Maven2 legacy local repository behaviour",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--non-recursive",
+        "-N"
+      ],
+      "description": "Do not recurse into sub-projects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-plugin-registry",
+        "-npr"
+      ],
+      "description": "Ineffective. Only kept for backward compatibility",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-plugin-updates",
+        "-npu"
+      ],
+      "description": "Ineffective. Only kept for backward compatibility",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-snapshot-updates",
+        "-nsu"
+      ],
+      "description": "Suppress SNAPSHOT updates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-transfer-progress",
+        "-ntp"
+      ],
+      "description": "Do not display transfer progress when downloading or uploading",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--offline",
+        "-o"
+      ],
+      "description": "Work offline",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--activate-profiles",
+        "-P"
+      ],
+      "description": "Activate the specified profiles (comma delimited)",
+      "takes_arg": true,
+      "arg_name": "profiles",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--projects",
+        "-pl"
+      ],
+      "description": "Specify the projects to build",
+      "takes_arg": true,
+      "arg_name": "project list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Quiet output - only shows errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--resume-from",
+        "-rf"
+      ],
+      "description": "Resume from the specified project",
+      "takes_arg": true,
+      "arg_name": "project",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--settings",
+        "-s"
+      ],
+      "description": "Specify the user settings file to use",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--toolchains",
+        "-t"
+      ],
+      "description": "Specify the toolchains file to use",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--threads",
+        "-T"
+      ],
+      "description": "Specify the number of threads to use",
+      "takes_arg": true,
+      "arg_name": "threads",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--update-snapshots",
+        "-U"
+      ],
+      "description": "Forces a check for missing releases and updated snapshots on remote repositories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--update-plugins",
+        "-up"
+      ],
+      "description": "Ineffective. Only kept for backward compatibility",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Display version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-version",
+        "-V"
+      ],
+      "description": "Display version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug",
+        "-X"
+      ],
+      "description": "Produce execution debug output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "goal/phase",
+      "description": "Goal or phase to execute",
+      "template": {
+        "custom": [
+          "pre-clean",
+          "clean",
+          "post-clean",
+          "validate",
+          "initialize",
+          "generate-sources",
+          "process-sources",
+          "generate-resources",
+          "process-resources",
+          "compile",
+          "process-classes",
+          "generate-test-sources",
+          "process-test-sources",
+          "generate-test-resources",
+          "process-test-resources",
+          "test-compile",
+          "process-test-classes",
+          "test",
+          "prepare-package",
+          "package",
+          "pre-integration-test",
+          "integration-test",
+          "post-integration-test",
+          "verify",
+          "install",
+          "deploy",
+          "pre-site",
+          "site",
+          "post-site",
+          "site-deploy"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

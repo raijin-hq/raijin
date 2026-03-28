@@ -1,0 +1,261 @@
+{
+  "name": "gatsby",
+  "aliases": [],
+  "description": "Gatsby CLI",
+  "subcommands": [
+    {
+      "name": "develop",
+      "aliases": [],
+      "description": "Start the Gatsby development server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-H",
+            "--host"
+          ],
+          "description": "Set host. Defaults to localhost",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Set port. Defaults to env.PORT or 8000",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--open"
+          ],
+          "description": "Open the site in your (default) browser for you",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--https"
+          ],
+          "description": "Use HTTPS",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Opens a port for debugging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Compile your application and make it ready for deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--prefix-paths"
+          ],
+          "description": "Build site with link paths prefixed (set pathPrefix in your config)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-uglify"
+          ],
+          "description": "Build site without uglifying JS bundles (for debugging)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Build site with react profiling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open-tracing-config-file"
+          ],
+          "description": "Use Tracer configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graphql-tracing"
+          ],
+          "description": "Trace every graphql resolver, may have performance implications",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color",
+            "--no-colors"
+          ],
+          "description": "Disables colored terminal output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Serve the production build of your site for testing",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-H",
+            "--host"
+          ],
+          "description": "Set host. Defaults to localhost",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Set port. Defaults to env.PORT or 8000",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--open"
+          ],
+          "description": "Open the site in your (default) browser for you",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefix-paths"
+          ],
+          "description": "Serve site with link paths prefixed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Wipe out the cache (.cache folder) and public directories",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Get helpful environment information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-C",
+            "--clipboard"
+          ],
+          "description": "Copy environment information to your clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "plugin",
+      "aliases": [],
+      "description": "Run commands pertaining to gatsby plugins",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "docs"
+          ],
+          "description": "Documentation about using and creating plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "repl",
+      "aliases": [],
+      "description": "Gatsby will prompt you to type in commands and explore",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "View your current Gatsby CLI version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,826 @@
+{
+  "name": "molecule",
+  "aliases": [],
+  "description": "Molecule aids in the development and testing of Ansible roles",
+  "subcommands": [
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Use the provisioner to perform a Dry-Run (destroy, dependency, create, prepare, converge)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Enable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-parallel"
+          ],
+          "description": "Disable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cleanup",
+      "aliases": [],
+      "description": "Use the provisioner to cleanup any changes made to external systems during the stages of testing",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "converge",
+      "aliases": [],
+      "description": "Use the provisioner to configure instances (dependency, create, prepare converge)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Use the provisioner to start the instances",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--driver-name",
+            "-d"
+          ],
+          "description": "Name of driver to use. (delegated)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "delegated",
+              "docker",
+              "podman",
+              "vagrant",
+              "azure",
+              "hetzner"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dependency",
+      "aliases": [],
+      "description": "Manage the role's dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Use the provisioner to destroy the instances",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--driver-name",
+            "-d"
+          ],
+          "description": "Name of driver to use. (delegated)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "delegated",
+              "docker",
+              "podman",
+              "vagrant",
+              "azure",
+              "hetzner"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Destroy all scenarios. Default is False",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-all"
+          ],
+          "description": "Do not destroy all scenarios",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Enable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-parallel"
+          ],
+          "description": "Disable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "drivers",
+      "aliases": [],
+      "description": "List drivers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Change output format. (simple)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "simple",
+              "plain"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "idempotence",
+      "aliases": [],
+      "description": "Use the provisioner to configure the instances and parse the output to determine idempotence",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a new role or scenario",
+      "subcommands": [
+        {
+          "name": "role",
+          "aliases": [],
+          "description": "Initialize a new role for use with Molecule, namespace is required outside collections, like acme.myrole",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dependency-name"
+              ],
+              "description": "Name of dependency to initialize. (galaxy)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "galaxy"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--driver-name",
+                "-d"
+              ],
+              "description": "Name of driver to use. (delegated)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "delegated",
+                  "docker",
+                  "podman",
+                  "vagrant",
+                  "azure",
+                  "hetzner"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lint-name"
+              ],
+              "description": "Name of lint to initialize. (yamllint)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "yamllint"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--provisioner-name"
+              ],
+              "description": "Name of provisioner to initialize. (ansible)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "ansible"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verifier-name"
+              ],
+              "description": "Name of verifier to initialize. (ansible)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "ansible",
+                  "testinfra"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ROLE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "scenario",
+          "aliases": [],
+          "description": "Initialize a new scenario for use with Molecule",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dependency-name"
+              ],
+              "description": "Name of dependency to initialize. (galaxy)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "galaxy"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--driver-name",
+                "-d"
+              ],
+              "description": "Name of driver to use. (delegated)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "delegated",
+                  "docker",
+                  "podman",
+                  "vagrant",
+                  "azure",
+                  "hetzner"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lint-name"
+              ],
+              "description": "Name of lint to initialize. (yamllint)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "yamllint"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--provisioner-name"
+              ],
+              "description": "Name of provisioner to initialize. (ansible)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "ansible"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--role-name",
+                "-r"
+              ],
+              "description": "Name of the role to create",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verifier-name"
+              ],
+              "description": "Name of verifier to initialize. (ansible)",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": {
+                "custom": [
+                  "ansible",
+                  "testinfra"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SCENARIO_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Lint the role (dependency, lint)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List status of instances",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Change output format. (simple)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "simple",
+              "plain",
+              "yaml"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Log in to one instance",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--host",
+            "-h"
+          ],
+          "description": "Host to access",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "matrix",
+      "aliases": [],
+      "description": "List matrix of steps used to test instances",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "prepare",
+      "aliases": [],
+      "description": "Use the provisioner to prepare the instances into a particular starting state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--driver-name",
+            "-d"
+          ],
+          "description": "Name of driver to use. (delegated)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "delegated",
+              "docker",
+              "podman",
+              "vagrant",
+              "azure",
+              "hetzner"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Enable force mode. Default is disabled",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-force"
+          ],
+          "description": "Disable force mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Reset molecule temporary folders",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "side-effect",
+      "aliases": [],
+      "description": "Use the provisioner to perform side-effects to the instances",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "syntax",
+      "aliases": [],
+      "description": "Use the provisioner to syntax check the role",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Test (dependency, lint, cleanup, destroy, syntax, create, prepare, converge, idempotence, side_effect, verify, cleanup, destroy)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scenario-name",
+            "-s"
+          ],
+          "description": "Name of the scenario to target. (default)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--driver-name",
+            "-d"
+          ],
+          "description": "Name of driver to use. (delegated)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "delegated",
+              "docker",
+              "podman",
+              "vagrant",
+              "azure",
+              "hetzner"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Test all scenarios. Default is False",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-all"
+          ],
+          "description": "Do not test all scenarios",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--destroy"
+          ],
+          "description": "The destroy strategy used at the conclusion of a Molecule run (always)",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": {
+            "custom": [
+              "always",
+              "never"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Enable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-parallel"
+          ],
+          "description": "Disable parallel mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show molecule version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

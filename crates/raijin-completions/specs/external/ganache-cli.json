@@ -1,0 +1,343 @@
+{
+  "name": "ganache-cli",
+  "aliases": [],
+  "description": "Fast Ethereum RPC client",
+  "subcommands": [
+    {
+      "name": "forkCacheSize",
+      "aliases": [],
+      "description": "The maximum size, in bytes, of the in-memory cache for queries on a chain fork. Defaults to 1_073_741_824 bytes (1 gigabyte)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "number",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-a",
+        "--accounts"
+      ],
+      "description": "Specify the number of accounts to generate at startup",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--defaultBalanceEther"
+      ],
+      "description": "Amount of ether to assign each test account. Default is 100",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--blockTime"
+      ],
+      "description": "Specify blockTime in seconds for automatic mining. If you don't specify this flag, ganache will instantly mine a new block for every transaction",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--deterministic"
+      ],
+      "description": "Generate deterministic addresses based on a pre-defined mnemonic",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--secure"
+      ],
+      "description": "Lock available accounts by default (good for third party transaction signing)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--mnemonic"
+      ],
+      "description": "Use a bip39 mnemonic phrase for generating a PRNG seed, which is in turn used for hierarchical deterministic (HD) account generation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--port"
+      ],
+      "description": "Port number to listen on. Defaults to 8545",
+      "takes_arg": true,
+      "arg_name": "port number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--host"
+      ],
+      "description": "Hostname to listen on. Defaults to 127.0.0.1 (defaults to 0.0.0.0 for Docker instances of ganache-cli)",
+      "takes_arg": true,
+      "arg_name": "Hostname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--seed"
+      ],
+      "description": "Use arbitrary data to generate the HD wallet mnemonic to be used",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g",
+        "--gasPrice"
+      ],
+      "description": "The price of gas in wei (defaults to 20000000000)",
+      "takes_arg": true,
+      "arg_name": "price",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--gasLimit"
+      ],
+      "description": "The block gas limit (defaults to 0x6691b7)",
+      "takes_arg": true,
+      "arg_name": "limit",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--callGasLimit"
+      ],
+      "description": "Sets the transaction gas limit for eth_call and eth_estimateGas calls",
+      "takes_arg": true,
+      "arg_name": "limit",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k",
+        "--hardfork"
+      ],
+      "description": "Allows users to specify which hardfork should be used",
+      "takes_arg": true,
+      "arg_name": "hardfork",
+      "arg_template": {
+        "custom": [
+          "byzantium",
+          "constantinople",
+          "petersburg",
+          "istanbul",
+          "muirGlacier"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--fork"
+      ],
+      "description": "Fork from another currently running Ethereum client at a given block. Input should be the HTTP location and port of the other client",
+      "takes_arg": true,
+      "arg_name": "HTTP location & port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--networkId"
+      ],
+      "description": "Specify the network id ganache-cli will use to identify itself (defaults to the current time or the network id of the forked blockchain if configured)",
+      "takes_arg": true,
+      "arg_name": "Network ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chainId"
+      ],
+      "description": "Specify the Chain ID ganache-cli will use for eth_chainId RPC and the CHAINID opcode",
+      "takes_arg": true,
+      "arg_name": "Chain ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--db"
+      ],
+      "description": "Specify a path to a directory to save the chain database. If a database already exists, ganache-cli will initialize that chain instead of creating a new one",
+      "takes_arg": true,
+      "arg_name": "folder",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Output VM opcodes for debugging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mem"
+      ],
+      "description": "Output ganache-cli memory usage statistics. This replaces normal output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Run ganache-cli without any logs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-?",
+        "--help"
+      ],
+      "description": "Display help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Display the version of ganache-cli",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--account_keys_path",
+        "--acctKeys"
+      ],
+      "description": "Specifies a file to save accounts and private keys to, for testing",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noVMErrorsOnRPCResponse"
+      ],
+      "description": "Do not transmit transaction failures as RPC errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allowUnlimitedContractSize"
+      ],
+      "description": "Allows unlimited contract sizes while debugging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--keepAliveTimeout"
+      ],
+      "description": "Sets the HTTP server's keepAliveTimeout in milliseconds",
+      "takes_arg": true,
+      "arg_name": "timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--time"
+      ],
+      "description": "Date (ISO 8601) that the first block should start",
+      "takes_arg": true,
+      "arg_name": "date",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--account"
+      ],
+      "description": "Specify any number of times passing arbitrary private keys and their associated balances to generate initial addresses",
+      "takes_arg": true,
+      "arg_name": "<privatekey>, balance",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--unlock"
+      ],
+      "description": "Specify any number of times passing either an address or an account index to unlock specific accounts",
+      "takes_arg": true,
+      "arg_name": "address or account index",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

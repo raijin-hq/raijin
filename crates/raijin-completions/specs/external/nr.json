@@ -1,0 +1,28 @@
+{
+  "name": "nr",
+  "aliases": [],
+  "description": "Use the right package manager - run",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "script",
+      "description": "The script to run",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

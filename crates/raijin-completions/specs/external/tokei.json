@@ -1,0 +1,194 @@
+{
+  "name": "tokei",
+  "aliases": [],
+  "description": "Count your code, quickly",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-f",
+        "--files"
+      ],
+      "description": "Will print out statistics on individual files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hidden"
+      ],
+      "description": "Count hidden files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--languages"
+      ],
+      "description": "Prints out supported languages and their extensions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Don't respect ignore files (.gitignore, .ignore, etc.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-dot"
+      ],
+      "description": "Don't respect .ignore and .tokeignore files, including those in parent directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-parent"
+      ],
+      "description": "Don't respect ignore files (.gitignore, .ignore, etc.) in parent directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-vcs"
+      ],
+      "description": "Don't respect VCS ignore files (.gitignore, .hgignore, etc.), including those in parent directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Set log output level:",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-c",
+        "--columns"
+      ],
+      "description": "Sets a strict column width of the output, only available for terminal output",
+      "takes_arg": true,
+      "arg_name": "columns",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--exclude"
+      ],
+      "description": "Ignore all files & directories matching the pattern",
+      "takes_arg": true,
+      "arg_name": "exclude",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-i",
+        "--input"
+      ],
+      "description": "Gives statistics from a previous tokei run. Can be given a file path, or \"stdin\" to read from stdin",
+      "takes_arg": true,
+      "arg_name": "input",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Outputs Tokei in a specific format",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": {
+        "custom": [
+          "cbor",
+          "json",
+          "yaml"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--sort"
+      ],
+      "description": "Sort languages based on column",
+      "takes_arg": true,
+      "arg_name": "sort",
+      "arg_template": {
+        "custom": [
+          "files",
+          "lines",
+          "blanks",
+          "code",
+          "comments"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--type"
+      ],
+      "description": "Filters output by language type, seperated by a comma. i.e. -t=Rust,Markdown",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

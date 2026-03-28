@@ -1,0 +1,75 @@
+{
+  "name": "seq",
+  "aliases": [],
+  "description": "Print sequences of numbers. (Defaults to increments of 1)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-w",
+        "--fixed-width"
+      ],
+      "description": "Equalize the widths of all numbers by padding with zeros as necessary",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--separator"
+      ],
+      "description": "String separator between numbers. Default is newline",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": "Use a printf(3) style format to print each number",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--terminator"
+      ],
+      "description": "Use string to terminate sequence of numbers",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "first",
+      "description": "Starting number in sequence",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "step",
+      "description": "Increment interval",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    },
+    {
+      "name": "last",
+      "description": "Last number in sequence",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

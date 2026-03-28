@@ -1,0 +1,125 @@
+{
+  "name": "asar",
+  "aliases": [],
+  "description": "A simple extensive tar-like archive format with indexing",
+  "subcommands": [
+    {
+      "name": "pack",
+      "aliases": [
+        "p"
+      ],
+      "description": "Create asar archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "directory",
+          "description": "The directory you want to archive",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": "The name of the output file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "l"
+      ],
+      "description": "List files of asar archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "archive",
+          "description": "The archive file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "extract-file",
+      "aliases": [
+        "ef"
+      ],
+      "description": "Extract one file from archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "archive",
+          "description": "The archive file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "filename",
+          "description": "The name of the file you want to extract",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "extract",
+      "aliases": [
+        "e"
+      ],
+      "description": "Extract archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "archive",
+          "description": "The archive file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "directory",
+          "description": "The directory you want to extract to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for asar",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,4724 @@
+{
+  "name": "deno",
+  "aliases": [],
+  "description": "A modern JavaScript and TypeScript runtime",
+  "subcommands": [
+    {
+      "name": "bench",
+      "aliases": [],
+      "description": "Run benchmarks",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-read"
+          ],
+          "description": "Allow file system read access",
+          "takes_arg": true,
+          "arg_name": "allow-read",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-write"
+          ],
+          "description": "Allow file system write access",
+          "takes_arg": true,
+          "arg_name": "allow-write",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-net"
+          ],
+          "description": "Allow network access",
+          "takes_arg": true,
+          "arg_name": "allow-net",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-env"
+          ],
+          "description": "Allow environment access",
+          "takes_arg": true,
+          "arg_name": "allow-env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-run"
+          ],
+          "description": "Allow running subprocesses",
+          "takes_arg": true,
+          "arg_name": "allow-run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-ffi"
+          ],
+          "description": "Allow loading dynamic libraries",
+          "takes_arg": true,
+          "arg_name": "allow-ffi",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore files",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Run benchmarks with this string or pattern in the bench name",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-hrtime"
+          ],
+          "description": "Allow high resolution time measurement",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--allow-all"
+          ],
+          "description": "Allow all permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Deprecated: Fallback to prompt if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prompt"
+          ],
+          "description": "Always throw if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        },
+        {
+          "name": "script_arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "bundle",
+      "aliases": [],
+      "description": "Bundle module and dependencies into single file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source_file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "out_file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Cache the dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Type-check the dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote"
+          ],
+          "description": "Type-check all modules, including remote",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "UNSTABLE: Compile the script into a self contained executable",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-read"
+          ],
+          "description": "Allow file system read access",
+          "takes_arg": true,
+          "arg_name": "allow-read",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-write"
+          ],
+          "description": "Allow file system write access",
+          "takes_arg": true,
+          "arg_name": "allow-write",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-net"
+          ],
+          "description": "Allow network access",
+          "takes_arg": true,
+          "arg_name": "allow-net",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-env"
+          ],
+          "description": "Allow environment access",
+          "takes_arg": true,
+          "arg_name": "allow-env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-run"
+          ],
+          "description": "Allow running subprocesses",
+          "takes_arg": true,
+          "arg_name": "allow-run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-ffi"
+          ],
+          "description": "Allow loading dynamic libraries",
+          "takes_arg": true,
+          "arg_name": "allow-ffi",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Output file (defaults to $PWD/<inferred-name>)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Target OS architecture",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": {
+            "custom": [
+              "x86_64-unknown-linux-gnu",
+              "x86_64-pc-windows-msvc",
+              "x86_64-apple-darwin",
+              "aarch64-apple-darwin"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-hrtime"
+          ],
+          "description": "Allow high resolution time measurement",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--allow-all"
+          ],
+          "description": "Allow all permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Deprecated: Fallback to prompt if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prompt"
+          ],
+          "description": "Always throw if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script_arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "completions",
+      "aliases": [],
+      "description": "Generate shell completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "fish",
+              "powershell",
+              "zsh",
+              "fig"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "coverage",
+      "aliases": [],
+      "description": "Print coverage reports",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore coverage files",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include"
+          ],
+          "description": "Include source files in the report",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude source files from the report",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "Output file (defaults to stdout) for lcov",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lcov"
+          ],
+          "description": "Output coverage report in lcov format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "doc",
+      "aliases": [],
+      "description": "Show documentation for a module",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output documentation in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--private"
+          ],
+          "description": "Output private documentation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source_file",
+          "description": null,
+          "template": {
+            "custom": [
+              "--builtin"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "filter",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "eval",
+      "aliases": [],
+      "description": "Eval script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "inspect",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect-brk"
+          ],
+          "description": "Activate inspector on host:port and break at start of user script",
+          "takes_arg": true,
+          "arg_name": "inspect-brk",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ext"
+          ],
+          "description": "Set standard input (stdin) content type",
+          "takes_arg": true,
+          "arg_name": "ext",
+          "arg_template": {
+            "custom": [
+              "ts",
+              "tsx",
+              "js",
+              "jsx"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--ts"
+          ],
+          "description": "Treat eval input as TypeScript",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--print"
+          ],
+          "description": "Print result to stdout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "code_arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Format source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ext"
+          ],
+          "description": "Set standard input (stdin) content type",
+          "takes_arg": true,
+          "arg_name": "ext",
+          "arg_template": {
+            "custom": [
+              "ts",
+              "tsx",
+              "js",
+              "jsx",
+              "md",
+              "json",
+              "jsonc"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore formatting particular source files",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-line-width"
+          ],
+          "description": "Define maximum line width. Defaults to 80",
+          "takes_arg": true,
+          "arg_name": "options-line-width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-indent-width"
+          ],
+          "description": "Define indentation width. Defaults to 2",
+          "takes_arg": true,
+          "arg_name": "options-indent-width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-prose-wrap"
+          ],
+          "description": "Define how prose should be wrapped. Defaults to always",
+          "takes_arg": true,
+          "arg_name": "options-prose-wrap",
+          "arg_template": {
+            "custom": [
+              "always",
+              "never",
+              "preserve"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Check if the source files are formatted",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-use-tabs"
+          ],
+          "description": "Use tabs instead of spaces for indentation. Defaults to false",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options-single-quote"
+          ],
+          "description": "Use single quotes. Defaults to false",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a new project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Show info about cache or info related to source file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Show files used for origin bound APIs like the Web Storage API when running a script with '--location=<HREF>'",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "UNSTABLE: Outputs the information in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install script as an executable",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-read"
+          ],
+          "description": "Allow file system read access",
+          "takes_arg": true,
+          "arg_name": "allow-read",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-write"
+          ],
+          "description": "Allow file system write access",
+          "takes_arg": true,
+          "arg_name": "allow-write",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-net"
+          ],
+          "description": "Allow network access",
+          "takes_arg": true,
+          "arg_name": "allow-net",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-env"
+          ],
+          "description": "Allow environment access",
+          "takes_arg": true,
+          "arg_name": "allow-env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-run"
+          ],
+          "description": "Allow running subprocesses",
+          "takes_arg": true,
+          "arg_name": "allow-run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-ffi"
+          ],
+          "description": "Allow loading dynamic libraries",
+          "takes_arg": true,
+          "arg_name": "allow-ffi",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "inspect",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect-brk"
+          ],
+          "description": "Activate inspector on host:port and break at start of user script",
+          "takes_arg": true,
+          "arg_name": "inspect-brk",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Executable file name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--root"
+          ],
+          "description": "Installation root",
+          "takes_arg": true,
+          "arg_name": "root",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-hrtime"
+          ],
+          "description": "Allow high resolution time measurement",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--allow-all"
+          ],
+          "description": "Allow all permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Deprecated: Fallback to prompt if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prompt"
+          ],
+          "description": "Always throw if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forcefully overwrite existing installation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "cmd",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a script previously installed with deno install",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--root"
+          ],
+          "description": "Installation root",
+          "takes_arg": true,
+          "arg_name": "root",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "lsp",
+      "aliases": [],
+      "description": "Start the language server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "lint",
+      "aliases": [],
+      "description": "Lint source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rules-tags"
+          ],
+          "description": "Use set of rules with a tag",
+          "takes_arg": true,
+          "arg_name": "rules-tags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rules-include"
+          ],
+          "description": "Include lint rules",
+          "takes_arg": true,
+          "arg_name": "rules-include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rules-exclude"
+          ],
+          "description": "Exclude lint rules",
+          "takes_arg": true,
+          "arg_name": "rules-exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore linting particular source files",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rules"
+          ],
+          "description": "List available rules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output lint result in JSON format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "repl",
+      "aliases": [],
+      "description": "Read Eval Print Loop",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "inspect",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect-brk"
+          ],
+          "description": "Activate inspector on host:port and break at start of user script",
+          "takes_arg": true,
+          "arg_name": "inspect-brk",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--eval-file"
+          ],
+          "description": "Evaluates the provided file(s) as scripts when the REPL starts. Accepts file paths and URLs",
+          "takes_arg": true,
+          "arg_name": "eval-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--eval"
+          ],
+          "description": "Evaluates the provided code when the REPL starts",
+          "takes_arg": true,
+          "arg_name": "eval",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a JavaScript or TypeScript program",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-read"
+          ],
+          "description": "Allow file system read access",
+          "takes_arg": true,
+          "arg_name": "allow-read",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-write"
+          ],
+          "description": "Allow file system write access",
+          "takes_arg": true,
+          "arg_name": "allow-write",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-net"
+          ],
+          "description": "Allow network access",
+          "takes_arg": true,
+          "arg_name": "allow-net",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-env"
+          ],
+          "description": "Allow environment access",
+          "takes_arg": true,
+          "arg_name": "allow-env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-run"
+          ],
+          "description": "Allow running subprocesses",
+          "takes_arg": true,
+          "arg_name": "allow-run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-ffi"
+          ],
+          "description": "Allow loading dynamic libraries",
+          "takes_arg": true,
+          "arg_name": "allow-ffi",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "inspect",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect-brk"
+          ],
+          "description": "Activate inspector on host:port and break at start of user script",
+          "takes_arg": true,
+          "arg_name": "inspect-brk",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": true,
+          "arg_name": "watch",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-hrtime"
+          ],
+          "description": "Allow high resolution time measurement",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--allow-all"
+          ],
+          "description": "Allow all permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Deprecated: Fallback to prompt if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prompt"
+          ],
+          "description": "Always throw if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script_arg",
+          "description": null,
+          "template": {
+            "custom": [
+              "-"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "aliases": [],
+      "description": "Run a task defined in the configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Specify the directory to run the task in",
+          "takes_arg": true,
+          "arg_name": "cwd",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "task_name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "task_args",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run tests",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check"
+          ],
+          "description": "Skip type-checking modules",
+          "takes_arg": true,
+          "arg_name": "no-check",
+          "arg_template": {
+            "custom": [
+              "remote"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check"
+          ],
+          "description": "Type-check modules",
+          "takes_arg": true,
+          "arg_name": "check",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-read"
+          ],
+          "description": "Allow file system read access",
+          "takes_arg": true,
+          "arg_name": "allow-read",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-write"
+          ],
+          "description": "Allow file system write access",
+          "takes_arg": true,
+          "arg_name": "allow-write",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-net"
+          ],
+          "description": "Allow network access",
+          "takes_arg": true,
+          "arg_name": "allow-net",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsafely-ignore-certificate-errors"
+          ],
+          "description": "DANGER: Disables verification of TLS certificates",
+          "takes_arg": true,
+          "arg_name": "unsafely-ignore-certificate-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-env"
+          ],
+          "description": "Allow environment access",
+          "takes_arg": true,
+          "arg_name": "allow-env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-run"
+          ],
+          "description": "Allow running subprocesses",
+          "takes_arg": true,
+          "arg_name": "allow-run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-ffi"
+          ],
+          "description": "Allow loading dynamic libraries",
+          "takes_arg": true,
+          "arg_name": "allow-ffi",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "inspect",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect-brk"
+          ],
+          "description": "Activate inspector on host:port and break at start of user script",
+          "takes_arg": true,
+          "arg_name": "inspect-brk",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--location"
+          ],
+          "description": "Value of 'globalThis.location' used by some web APIs",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--v8-flags"
+          ],
+          "description": "Set V8 command line options",
+          "takes_arg": true,
+          "arg_name": "v8-flags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seed"
+          ],
+          "description": "Set the random number generator seed",
+          "takes_arg": true,
+          "arg_name": "seed",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore files",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-fast"
+          ],
+          "description": "Stop after N errors. Defaults to stopping after first failure",
+          "takes_arg": true,
+          "arg_name": "fail-fast",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Run tests with this string or pattern in the test name",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shuffle"
+          ],
+          "description": "(UNSTABLE): Shuffle the order in which the tests are run",
+          "takes_arg": true,
+          "arg_name": "shuffle",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coverage"
+          ],
+          "description": "UNSTABLE: Collect coverage profile data into DIR",
+          "takes_arg": true,
+          "arg_name": "coverage",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-j",
+            "--jobs"
+          ],
+          "description": "Deprecated: Number of parallel workers, defaults to number of available CPUs when no value is provided. Defaults to 1 when the option is not present",
+          "takes_arg": true,
+          "arg_name": "jobs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-remote"
+          ],
+          "description": "Do not resolve remote modules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock-write"
+          ],
+          "description": "Write lock file (use with --lock)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-hrtime"
+          ],
+          "description": "Allow high resolution time measurement",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-A",
+            "--allow-all"
+          ],
+          "description": "Allow all permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Deprecated: Fallback to prompt if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prompt"
+          ],
+          "description": "Always throw if required permission wasn't passed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cached-only"
+          ],
+          "description": "Require that remote dependencies are already cached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-testing-features-do-not-use"
+          ],
+          "description": "INTERNAL: Enable internal features used during integration testing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compat"
+          ],
+          "description": "UNSTABLE: Node compatibility mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-run"
+          ],
+          "description": "Cache test modules, but don't run tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trace-ops"
+          ],
+          "description": "Enable tracing of async ops. Useful when debugging leaking ops in test, but impacts test execution time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--doc"
+          ],
+          "description": "UNSTABLE: type-check code blocks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--allow-none"
+          ],
+          "description": "Don't return error code if no test files are found",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Run test modules in parallel. Parallelism defaults to the number of available CPUs or the value in the DENO_JOBS environment variable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch for file changes and restart automatically",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear-screen"
+          ],
+          "description": "Do not clear terminal screen when under watch mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        },
+        {
+          "name": "script_arg",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "types",
+      "aliases": [],
+      "description": "Print runtime TypeScript declarations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade deno executable to given version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "The version to upgrade to",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "The path to output the updated version to",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Perform all checks without replacing old exe",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Replace current exe even if not out-of-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--canary"
+          ],
+          "description": "Upgrade to canary builds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "vendor",
+      "aliases": [],
+      "description": "Vendor remote modules into a local directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "The directory to output the vendored modules to",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify the configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--import-map"
+          ],
+          "description": "Load import map file",
+          "takes_arg": true,
+          "arg_name": "import-map",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lock"
+          ],
+          "description": "Check the specified lock file",
+          "takes_arg": true,
+          "arg_name": "lock",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reload"
+          ],
+          "description": "Reload source code cache (recompile TypeScript)",
+          "takes_arg": true,
+          "arg_name": "reload",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert"
+          ],
+          "description": "Load certificate authority from PEM encoded file",
+          "takes_arg": true,
+          "arg_name": "cert",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forcefully overwrite conflicting files in existing output directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-config"
+          ],
+          "description": "Disable automatic loading of the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "specifiers",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-L",
+            "--log-level"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "info"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unstable"
+          ],
+          "description": "Enable unstable features and APIs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Suppress diagnostic output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-L",
+        "--log-level"
+      ],
+      "description": "Set log level",
+      "takes_arg": true,
+      "arg_name": "log-level",
+      "arg_template": {
+        "custom": [
+          "debug",
+          "info"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unstable"
+      ],
+      "description": "Enable unstable features and APIs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Suppress diagnostic output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

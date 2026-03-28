@@ -1,0 +1,330 @@
+{
+  "name": "turbo",
+  "aliases": [],
+  "description": "Turborepo is a high-performance build system for JavaScript and TypeScript codebases",
+  "subcommands": [
+    {
+      "name": "bin",
+      "aliases": [],
+      "description": "Get the path to the turbo binary",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link your local directory to a Vercel organization and enable remote caching",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-gitignore"
+          ],
+          "description": "Do not create or modify .gitignore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to your Vercel account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sso-team"
+          ],
+          "description": "Attempt to authenticate to the specified team using SSO",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout of your Vercel account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "prune",
+      "aliases": [],
+      "description": "Prepare a subset of your monorepo",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Specify package to act as entry point for pruned monorepo",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docker"
+          ],
+          "description": "Output pruned workspace into 'fill' and 'json' directories optimized for Docker layer caching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Unlink the current directory from your Vercel organization and disable remote caching",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run tasks in your monorepo",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Specify packages to act as entry points for task execution",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cache-dir"
+          ],
+          "description": "Specify local filesystem cache directory",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "Limit the concurrency of task execution (use `1` for serial)",
+          "takes_arg": true,
+          "arg_name": "limit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--continue"
+          ],
+          "description": "Continue execution even if a task exits with an error",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Ignore the existing cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Generate a Dot graph of the task execution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--global-deps"
+          ],
+          "description": "Specify glob of global filesystem dependencies to be hashed (useful for .env and files in the root directory)",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Limit/set scope to changed packages since a mergebase",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--team"
+          ],
+          "description": "The slug of a turborepo.com team",
+          "takes_arg": true,
+          "arg_name": "slug",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--token"
+          ],
+          "description": "A turborepo.com access token",
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Files to ignore when calculating changed files (supports globs)",
+          "takes_arg": true,
+          "arg_name": "files",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "File to write turbo's performance profile into",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Execute all tasks in parallel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include the dependencies of tasks in execution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-deps"
+          ],
+          "description": "Exclude dependent task consumers from execution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Avoid saving task results to the cache (useful for development/watch tasks)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-logs"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "new-only",
+              "hash-only",
+              "full",
+              "none"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry",
+            "--dry-run"
+          ],
+          "description": "List the packages in scope and the tasks that would be run",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tasks",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Print a help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

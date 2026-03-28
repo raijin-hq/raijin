@@ -1,0 +1,350 @@
+{
+  "name": "awsume",
+  "aliases": [],
+  "description": "Awsume",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for awsume",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Display the current version of awsume",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-profile",
+        "-o"
+      ],
+      "description": "A profile to output credentials to",
+      "takes_arg": true,
+      "arg_name": "output_profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clean"
+      ],
+      "description": "Clean expired output profiles",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--refresh",
+        "-r"
+      ],
+      "description": "Force refresh credentials",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-commands",
+        "-s"
+      ],
+      "description": "Show the commands to set the credentials",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unset",
+        "-u"
+      ],
+      "description": "Unset your aws environment variables",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auto-refresh",
+        "-a"
+      ],
+      "description": "Auto refresh credentials",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kill-refresher",
+        "-k"
+      ],
+      "description": "Kill autoawsume",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-profiles",
+        "-l"
+      ],
+      "description": "List profiles, \"more\" for detail (slow)",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--refresh-autocomplete"
+      ],
+      "description": "Refresh all plugin autocomplete profiles",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--role-arn"
+      ],
+      "description": "Role ARN or <partition>:<account_id>:<role_name>",
+      "takes_arg": true,
+      "arg_name": "role_arn",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--principal-arn"
+      ],
+      "description": "Principal ARN or <partition>:<account_id>:<provider_name>",
+      "takes_arg": true,
+      "arg_name": "principal_arn",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--source-profile"
+      ],
+      "description": "Source_profile to use(role-arn only)",
+      "takes_arg": true,
+      "arg_name": "source_profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--external-id"
+      ],
+      "description": "External ID to pass to the assume_role",
+      "takes_arg": true,
+      "arg_name": "external_id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mfa-token"
+      ],
+      "description": "Your mfa token",
+      "takes_arg": true,
+      "arg_name": "mfa-token",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--region"
+      ],
+      "description": "The region you want to awsume into",
+      "takes_arg": true,
+      "arg_name": "region",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--session-name"
+      ],
+      "description": "Set a custom role session name",
+      "takes_arg": true,
+      "arg_name": "session_name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--role-duration"
+      ],
+      "description": "Seconds to get role creds for",
+      "takes_arg": true,
+      "arg_name": "role_duration",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--with-saml"
+      ],
+      "description": "Use saml (requires plugin)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--with-web-identity"
+      ],
+      "description": "Use web identity (requires plugin)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json"
+      ],
+      "description": "Use json credentials",
+      "takes_arg": true,
+      "arg_name": "json",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--credentials-file"
+      ],
+      "description": "Target a shared credentials file",
+      "takes_arg": true,
+      "arg_name": "credentials_file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-file"
+      ],
+      "description": "Target a config file",
+      "takes_arg": true,
+      "arg_name": "config_file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Configure awsume",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-plugins"
+      ],
+      "description": "List installed plugins",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--info"
+      ],
+      "description": "Print any info logs to stderr",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Print any debug logs to stderr",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--console",
+        "-c"
+      ],
+      "description": "Open AWS console",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--console-link",
+        "-cl"
+      ],
+      "description": "Get a sign-on url",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--console-service",
+        "-cs"
+      ],
+      "description": "Open the console to a specific service",
+      "takes_arg": true,
+      "arg_name": "service",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-cls",
+        "-csl"
+      ],
+      "description": "Get a sign-on url to a specific service",
+      "takes_arg": true,
+      "arg_name": "service",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "profile",
+      "description": null,
+      "template": "history",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

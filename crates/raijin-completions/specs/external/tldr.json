@@ -1,0 +1,121 @@
+{
+  "name": "tldr",
+  "aliases": [],
+  "description": "A simpler man page than the existing man page",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--search"
+      ],
+      "description": "Search all pages for the query",
+      "takes_arg": true,
+      "arg_name": "query",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--linux"
+      ],
+      "description": "Show command page for Linux",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--osx"
+      ],
+      "description": "Show command page for OSX",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sunos"
+      ],
+      "description": "Show command page for SunOS",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list"
+      ],
+      "description": "Show all pages for current platform",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--update"
+      ],
+      "description": "Download the latest pages and generate search index",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--clear-cache"
+      ],
+      "description": "Delete the entire local cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--platform",
+        "-p"
+      ],
+      "description": "Select platform",
+      "takes_arg": true,
+      "arg_name": "platform",
+      "arg_template": {
+        "custom": [
+          "linux",
+          "osx",
+          "sunos",
+          "windows",
+          "common"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

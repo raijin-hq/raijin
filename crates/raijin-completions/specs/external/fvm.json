@@ -1,0 +1,351 @@
+{
+  "name": "fvm",
+  "aliases": [],
+  "description": "Flutter Version Management: A cli to manage Flutter SDK versions",
+  "subcommands": [
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Set configuration for FVM",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cache-path"
+          ],
+          "description": "Set the path which FVM will cache the version. Priority over FVM_HOME",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--skip-setup",
+            "--no-skip-setup"
+          ],
+          "description": "Skip setup after a version install",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g",
+            "--git-cache",
+            "--no-git-cache"
+          ],
+          "description": "ADVANCED: Will cache a local version of Flutter repo for faster version install",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dart",
+      "aliases": [],
+      "description": "Proxies Dart commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Shows information about environment, and project configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "flavor",
+      "aliases": [],
+      "description": "Switches between different project flavors",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "flavor-name",
+          "description": "The flavor to switch to",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "flutter",
+      "aliases": [],
+      "description": "Proxies Flutter commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "global",
+      "aliases": [],
+      "description": "Sets Flutter SDK version as global",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Flutter SDK to set for global flutter command",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Installs Flutter SDK version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--skip-setup"
+          ],
+          "description": "Skips Flutter setup after install",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "stable",
+              "beta",
+              "dev"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Lists installed Flutter SDK versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "releases",
+      "aliases": [],
+      "description": "View all Flutter SDK releases available for install",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Removes Flutter SDK version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Skips version global check",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "The installed Flutter version to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "spawn",
+      "aliases": [],
+      "description": "Spawn a Flutter SDK version command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "The Flutter version from which to spawn a command",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Sets a Flutter SDK version to be used in a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Skips command guards that does Flutter project checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pin"
+          ],
+          "description": "If version provided is a channel. Will pin the latest release of the channel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flavor"
+          ],
+          "description": "Sets version for a project flavor",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "The Flutter SDK version to use",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print this usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Print verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Current FVM version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

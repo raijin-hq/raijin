@@ -1,0 +1,303 @@
+{
+  "name": "idea",
+  "aliases": [],
+  "description": "InteliJ IDEA cli",
+  "subcommands": [
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Open the diff viewer to see the differences between two specified files",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path2",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path3-optional",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "merge",
+      "aliases": [],
+      "description": "Open the Merge dialog to merge the specified files",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "path2",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "base-optional",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "format",
+      "aliases": [],
+      "description": "Apply code style formatting to the specified files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h"
+          ],
+          "description": "Show help for format command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "-mask"
+          ],
+          "description": "Specify a comma-separated list of file masks that define the files to be processed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "-R"
+          ],
+          "description": "Process specified directories recursively",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "-settings"
+          ],
+          "description": "Specify the code style settings file to use for formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-allowDefaults"
+          ],
+          "description": "Use the default code style settings when the code style is not defined for a file or a group of files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-charset"
+          ],
+          "description": "Preserve encoding and enforce the charset for reading and writing source files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "-dry"
+          ],
+          "description": "Run the formatter in the validation mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path...",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inspect",
+      "aliases": [],
+      "description": "Perform code inspection on the specified project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-changes"
+          ],
+          "description": "Run inspections only on local uncommitted changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Specify the full path to the subdirectory if you don't want to inspect the whole project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-format"
+          ],
+          "description": "Specify the format of the output file with inspection results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Set the verbosity level of the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "project",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "inspection-profile",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "installPlugins",
+      "aliases": [],
+      "description": "Install plugins by plugin ID from JetBrains Marketplace or a custom plugin repository",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin-id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "repository-url ",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "nosplash"
+      ],
+      "description": "Do not show the splash screen when loading InteliJ IDEA",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "dontReopenProjects"
+      ],
+      "description": "Do not reopen projects and show the welcome screen",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "disableNonBundledPlugins"
+      ],
+      "description": "Do not load manually installed plugins",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait"
+      ],
+      "description": "Wait for the files to be closed before returning to the command prompt",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "path",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

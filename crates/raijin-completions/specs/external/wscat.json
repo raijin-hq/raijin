@@ -1,0 +1,313 @@
+{
+  "name": "wscat",
+  "aliases": [],
+  "description": "Communicate over websocket",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--connect"
+      ],
+      "description": "Connect to a WebSocket server",
+      "takes_arg": true,
+      "arg_name": "url",
+      "arg_template": "history",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auth"
+      ],
+      "description": "Add basic HTTP authentication header (--connect only)",
+      "takes_arg": true,
+      "arg_name": "username:password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ca"
+      ],
+      "description": "Specify a Certificate Authority (--connect only)",
+      "takes_arg": true,
+      "arg_name": "ca",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cert"
+      ],
+      "description": "Specify a Client SSL Certificate (--connect only)",
+      "takes_arg": true,
+      "arg_name": "cert",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--host"
+      ],
+      "description": "Optional host",
+      "takes_arg": true,
+      "arg_name": "host",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--key"
+      ],
+      "description": "Specify a Client SSL Certificate's key (--connect only)",
+      "takes_arg": true,
+      "arg_name": "key",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-redirects"
+      ],
+      "description": "Maximum number of redirects allowed (--connect only) (default: 10)",
+      "takes_arg": true,
+      "arg_name": "num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Run without color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--passphrase"
+      ],
+      "description": "Specify a Client SSL Certificate Key's passphrase (--connect only). If you don't provide a value, it will be prompted for",
+      "takes_arg": true,
+      "arg_name": "passphrase",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--proxy"
+      ],
+      "description": "Connect via a proxy. Proxy must support CONNECT method",
+      "takes_arg": true,
+      "arg_name": "[protocol://]host[:port]",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--slash"
+      ],
+      "description": "Enable slash commands for control frames (/ping, /pong, /close [code [, reason]])",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--header"
+      ],
+      "description": "Set an HTTP header. Repeat to set multiple (--connect only) (default: [])",
+      "takes_arg": true,
+      "arg_name": "header:value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--location"
+      ],
+      "description": "Follow redirects (--connect only)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--listen"
+      ],
+      "description": "Listen on port",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-check"
+      ],
+      "description": "Do not check for unauthorized certificates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--origin"
+      ],
+      "description": "Optional origin",
+      "takes_arg": true,
+      "arg_name": "origin",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--protocol"
+      ],
+      "description": "Optional protocol version",
+      "takes_arg": true,
+      "arg_name": "protocol",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--show-ping-pong"
+      ],
+      "description": "Print a notification when a ping or pong is received",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--subprotocol"
+      ],
+      "description": "Optional subprotocol (default: [])",
+      "takes_arg": true,
+      "arg_name": "protocol",
+      "arg_template": {
+        "custom": [
+          "MBWS.huawei.com",
+          "MBLWS.huawei.com",
+          "soap",
+          "wamp",
+          "v10.stomp",
+          "v11.stomp",
+          "v12.stomp",
+          "ocpp1.2",
+          "ocpp1.5",
+          "ocpp1.6",
+          "ocpp2.0",
+          "ocpp2.0.1",
+          "rfb",
+          "sip",
+          "notificationchannel-netapi-rest.openmobilealliance.org",
+          "wpcp",
+          "amqp\t",
+          "mqtt",
+          "jsflow",
+          "rwpcp",
+          "xmpp",
+          "ship",
+          "mielecloudconnect",
+          "v10.pcp.sap.com",
+          "msrp",
+          "v1.saltyrtc.org",
+          "TLCP-2.0.0.lightstreamer.com",
+          "bfcp",
+          "sldp.softvelum.com",
+          "opcua+uacp",
+          "opcua+uajson",
+          "v1.swindon-lattice+json",
+          "v1.usp",
+          "mles-websocket",
+          "coap",
+          "TLCP-2.1.0.lightstreamer.com",
+          "sqlnet.oracle.com",
+          "oneM2M.R2.0.json",
+          "oneM2M.R2.0.xml",
+          "oneM2M.R2.0.cbor",
+          "transit",
+          "2016.serverpush.dash.mpeg.org",
+          "2018.mmt.mpeg.org",
+          "clue",
+          "webrtc.softvelum.com",
+          "cobra.v2.json",
+          "drp",
+          "hub.bsc.bacnet.org",
+          "dc.bsc.bacnet.org",
+          "jmap",
+          "t140",
+          "done",
+          "TLCP-2.2.0.lightstreamer.com",
+          "collection-update",
+          "TLCP-2.3.0.lightstreamer.com",
+          "text.ircv3.net",
+          "binary.ircv3.net",
+          "v3.penguin-stats.live+proto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wait"
+      ],
+      "description": "Wait given seconds after executing command",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--execute"
+      ],
+      "description": "Execute command after connecting",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

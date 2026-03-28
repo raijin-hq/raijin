@@ -1,0 +1,104 @@
+{
+  "name": "create-react-native-app",
+  "aliases": [],
+  "description": "Creates a new React Native project",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--template"
+      ],
+      "description": "The name of a template from expo/examples or URL to a GitHub repo that contains an example",
+      "takes_arg": true,
+      "arg_name": "template",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--template-path"
+      ],
+      "description": "The path inside of a GitHub repo where the example lives",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--yes"
+      ],
+      "description": "Use the default options for creating a project",
+      "takes_arg": true,
+      "arg_name": "boolean",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-install"
+      ],
+      "description": "Skip installing npm packages or CocoaPods",
+      "takes_arg": true,
+      "arg_name": "boolean",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-npm"
+      ],
+      "description": "Use npm to install dependencies. (default when Yarn is not installed)",
+      "takes_arg": true,
+      "arg_name": "boolean",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "name",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

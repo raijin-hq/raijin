@@ -1,0 +1,300 @@
+{
+  "name": "mkinitcpio",
+  "aliases": [],
+  "description": "Create an initial ramdisk environment",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for mkinitcpio",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Display version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--addhooks",
+        "-A"
+      ],
+      "description": "Add additional hooks to the image",
+      "takes_arg": true,
+      "arg_name": "hooks",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-c"
+      ],
+      "description": "Use config file to generate the ramdisk",
+      "takes_arg": true,
+      "arg_name": "config",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--generatedir",
+        "-d"
+      ],
+      "description": "Set directory as the location where the initramfs is built",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hookdir",
+        "-D"
+      ],
+      "description": "Set directory as the location where hooks will be searched for when generating the image",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--generate",
+        "-g"
+      ],
+      "description": "Generate a CPIO image as filename",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hookhelp",
+        "-H"
+      ],
+      "description": "Output help for hookname",
+      "takes_arg": true,
+      "arg_name": "hookname",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kernel",
+        "-k"
+      ],
+      "description": "Use kernelversion, instead of the current running kernel",
+      "takes_arg": true,
+      "arg_name": "kernelversion",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--listhooks",
+        "-L"
+      ],
+      "description": "List all available hooks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--automods",
+        "-M"
+      ],
+      "description": "Display modules found via autodetection",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nocolor",
+        "-n"
+      ],
+      "description": "Disable color output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uefi",
+        "-U"
+      ],
+      "description": "Generate a UEFI executable as filename",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allpresets",
+        "-P"
+      ],
+      "description": "Process all presets contained in /etc/mkinitcpio.d",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preset",
+        "-p"
+      ],
+      "description": "Build initramfs image(s) according to specified preset",
+      "takes_arg": true,
+      "arg_name": "preset",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--moduleroot",
+        "-r"
+      ],
+      "description": "Specifies the root directory to find modules in",
+      "takes_arg": true,
+      "arg_name": "root",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skiphooks",
+        "-S"
+      ],
+      "description": "Skip hooks when generating the image",
+      "takes_arg": true,
+      "arg_name": "hooks",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--save",
+        "-s"
+      ],
+      "description": "Saves the build directory for the initial ramdisk",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--builddir",
+        "-t"
+      ],
+      "description": "Use tmpdir as the temporary build directory instead of /tmp",
+      "takes_arg": true,
+      "arg_name": "tmpdir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compress",
+        "-z"
+      ],
+      "description": "Override the compression method with the compress program",
+      "takes_arg": true,
+      "arg_name": "compress",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cmdline"
+      ],
+      "description": "Use kernel command line with UEFI executable",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--splash"
+      ],
+      "description": "UEFI executables can show a bitmap file on boot",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uefistub"
+      ],
+      "description": "UEFI stub image used for UEFI executable generation",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kernelimage"
+      ],
+      "description": "Include a kernel image for the UEFI executable",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--microcode"
+      ],
+      "description": "Include microcode into the UEFI executable",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--osrelease"
+      ],
+      "description": "Include a os-release file for the UEFI executable",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

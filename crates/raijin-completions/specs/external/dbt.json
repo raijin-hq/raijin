@@ -1,0 +1,1262 @@
+{
+  "name": "dbt",
+  "aliases": [],
+  "description": "CLI for dbt - Data Build Tool",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Run models, test tests, snapshot snapshots, and seed seeds",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--full-refresh"
+          ],
+          "description": "Treat incremental models as table models",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--fail-fast"
+          ],
+          "description": "Exit immediately if a single model fails to build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Use the selected profile",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Target profile configuration i.e. prod/dev",
+          "takes_arg": true,
+          "arg_name": "profile",
+          "arg_template": {
+            "custom": [
+              "dev",
+              "prod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vars"
+          ],
+          "description": "Variable values to override dbt_project.yml",
+          "takes_arg": true,
+          "arg_name": "variables",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--threads"
+          ],
+          "description": "Number of concurrent database jobs",
+          "takes_arg": true,
+          "arg_name": "THREADS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--select"
+          ],
+          "description": "Select subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs the models in a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--full-refresh"
+          ],
+          "description": "Treat incremental models as table models",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--fail-fast"
+          ],
+          "description": "Exit immediately if a single model fails to build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-colors"
+          ],
+          "description": "Default value -- colorize run logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-use-colors"
+          ],
+          "description": "Disable log colorizing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Select the profile to use",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "The target profile",
+          "takes_arg": true,
+          "arg_name": "Target profile",
+          "arg_template": {
+            "custom": [
+              "dev",
+              "prod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vars"
+          ],
+          "description": "Variable values to override dbt_project.yml",
+          "takes_arg": true,
+          "arg_name": "variables",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--threads"
+          ],
+          "description": "Number of concurrent database jobs",
+          "takes_arg": true,
+          "arg_name": "threads",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--select"
+          ],
+          "description": "Select subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Debugs dbt connections and projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config-dir"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes a new dbt project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--adapter"
+          ],
+          "description": "Add an adapter",
+          "takes_arg": true,
+          "arg_name": "adapter",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compiles (but does not run) the models in a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Select the profile to use",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "The target profile",
+          "takes_arg": true,
+          "arg_name": "Target profile",
+          "arg_template": {
+            "custom": [
+              "dev",
+              "prod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vars"
+          ],
+          "description": "Variable values to override dbt_project.yml",
+          "takes_arg": true,
+          "arg_name": "Variable values",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--threads"
+          ],
+          "description": "Number of concurrent database jobs",
+          "takes_arg": true,
+          "arg_name": "THREADS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select"
+          ],
+          "description": "Select subset of models",
+          "takes_arg": true,
+          "arg_name": "Select subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "Exclude subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--selector"
+          ],
+          "description": "This flag specifies one or more named selectors, defined in a <selector name>.yml file",
+          "takes_arg": true,
+          "arg_name": "YAML selector file name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--defer"
+          ],
+          "description": "Defer",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Executes tests defined in a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-x",
+            "--fail-fast"
+          ],
+          "description": "Exit immediately if a single model fails to build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Select the profile to use",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data"
+          ],
+          "description": "Run only custom data tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Run only schema tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--select"
+          ],
+          "description": "Select subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--selector"
+          ],
+          "description": "This flag specifies one or more named selectors, defined in a <selector name>.yml file",
+          "takes_arg": true,
+          "arg_name": "YAML selector file name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--defer"
+          ],
+          "description": "Defer",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deps",
+      "aliases": [],
+      "description": "Downloads dependencies for a project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "snapshot",
+      "aliases": [],
+      "description": "Executes 'snapshot' jobs defined in a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "profiles directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--fail-fast"
+          ],
+          "description": "Exit immediately if a single model fails to build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Select the profile to use",
+          "takes_arg": true,
+          "arg_name": "Profile name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "The target profile",
+          "takes_arg": true,
+          "arg_name": "Target profile",
+          "arg_template": {
+            "custom": [
+              "dev",
+              "prod"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vars"
+          ],
+          "description": "Variable values to override dbt_project.yml",
+          "takes_arg": true,
+          "arg_name": "Variable values",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--threads"
+          ],
+          "description": "Number of concurrent database jobs",
+          "takes_arg": true,
+          "arg_name": "thread",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select"
+          ],
+          "description": "Select subset of models",
+          "takes_arg": true,
+          "arg_name": "subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "Exclude subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Deletes artifacts present in the dbt project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "seed",
+      "aliases": [],
+      "description": "Loads CSV files into the database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profiles-dir"
+          ],
+          "description": "Set the profiles directory",
+          "takes_arg": true,
+          "arg_name": "profiles directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Select the profile to use",
+          "takes_arg": true,
+          "arg_name": "Profile name",
+          "arg_template": {
+            "custom": [
+              "default"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--fail-fast"
+          ],
+          "description": "Exit immediately if a single model fails to build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select"
+          ],
+          "description": "Run specific seeds",
+          "takes_arg": true,
+          "arg_name": "Select subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude subset of models",
+          "takes_arg": true,
+          "arg_name": "Exclude subset",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bypass-cache"
+          ],
+          "description": "Bypass the cache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--selector"
+          ],
+          "description": "This flag specifies one or more named selectors, defined in a <selector name>.yml file",
+          "takes_arg": true,
+          "arg_name": "YAML selector file name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "Generates documentation for a project",
+      "subcommands": [
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generate your project's documentation website",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-compile"
+              ],
+              "description": "Skip re-compilation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "serve",
+          "aliases": [],
+          "description": "Serve your documentation on a local webserver (default prot 8000)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--profiles-dir"
+              ],
+              "description": "Skip re-compilation",
+              "takes_arg": true,
+              "arg_name": "PROFILES_DIR",
+              "arg_template": "folders",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--profile"
+              ],
+              "description": "Choose a profile",
+              "takes_arg": true,
+              "arg_name": "PROFILE NAME",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--target"
+              ],
+              "description": "The target profile",
+              "takes_arg": true,
+              "arg_name": "Target profile",
+              "arg_template": {
+                "custom": [
+                  "dev",
+                  "prod"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port"
+              ],
+              "description": "Choose a port",
+              "takes_arg": true,
+              "arg_name": "port number",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "source",
+      "aliases": [],
+      "description": "Provides tools for working with source data (including validating that sources are 'fresh')",
+      "subcommands": [
+        {
+          "name": "snapshot-freshness",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Override the destination for sources.json",
+              "takes_arg": true,
+              "arg_name": "FILEPATH",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--select"
+              ],
+              "description": "This flag specifies one or more selection-type arguments used to filter the nodes returned by the dbt ls command",
+              "takes_arg": true,
+              "arg_name": "Select subset",
+              "arg_template": {
+                "custom": [
+                  "path:",
+                  "tag:",
+                  "config:",
+                  "test_type:",
+                  "test_name:"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run-operation",
+      "aliases": [],
+      "description": "Runs arbitrary maintenance SQL against the database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--args"
+          ],
+          "description": "Supply arguments to the macro",
+          "takes_arg": true,
+          "arg_name": "ARGS",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "MACRO",
+          "description": "Dbt will call this macro with the supplied arguments and then exit",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rpc",
+      "aliases": [],
+      "description": "Runs an RPC server that clients can submit queries to",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Specify the host to listen on",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "The port to use",
+          "takes_arg": true,
+          "arg_name": "PORT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [
+        "list"
+      ],
+      "description": "Lists resources defined in a dbt project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--resource-type"
+          ],
+          "description": "This flag limits the 'resource types' that dbt will return in the dbt ls command. By default, the following resources are included in the results of dbt ls: models, snapshots, seeds, tests, and sources",
+          "takes_arg": true,
+          "arg_name": "resource-type",
+          "arg_template": {
+            "custom": [
+              "source",
+              "analysis",
+              "model",
+              "snapshot",
+              "test",
+              "seed",
+              "default",
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--select"
+          ],
+          "description": "This flag specifies one or more selection-type arguments used to filter the nodes returned by the dbt ls command",
+          "takes_arg": true,
+          "arg_name": "SELECTION_ARG",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Specify selectors that should be excluded from the list of returned nodes",
+          "takes_arg": true,
+          "arg_name": "SELECTOR",
+          "arg_template": {
+            "custom": [
+              "path:",
+              "tag:",
+              "config:",
+              "test_type:",
+              "test_name:"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--selector"
+          ],
+          "description": "This flag specifies one or more named selectors, defined in a <selector name>.yml file",
+          "takes_arg": true,
+          "arg_name": "YAML selector file name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output"
+          ],
+          "description": "This flag controls the format of output from the dbt ls command",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": {
+            "custom": [
+              "json",
+              "name",
+              "path",
+              "selector"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "parse",
+      "aliases": [],
+      "description": "Parse dbt project and write detailed timing information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Currently installed version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--record-timing-info"
+      ],
+      "description": "Create a new file to record timing info",
+      "takes_arg": true,
+      "arg_name": "file name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--debug"
+      ],
+      "description": "Redirect debug logs to standard out",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-format"
+      ],
+      "description": "Specify how dbt's logs should be formatted",
+      "takes_arg": true,
+      "arg_name": "log format",
+      "arg_template": {
+        "custom": [
+          "text",
+          "json",
+          "default"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-write-json"
+      ],
+      "description": "Prevent dbt from writing JSOn artifacts to the 'target/' directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--strict"
+      ],
+      "description": "Perform extra validation of dbt objects and internal consistency checks during compilation. Use only during development",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--warn-error"
+      ],
+      "description": "Convert dbt warnings into errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--partial-parse"
+      ],
+      "description": "Configure partial parsing for your project",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-partial-parse"
+      ],
+      "description": "Turn off partial parsing for your project",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-colors"
+      ],
+      "description": "Default value -- colorize run logs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-use-colors"
+      ],
+      "description": "Disable log colorizing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

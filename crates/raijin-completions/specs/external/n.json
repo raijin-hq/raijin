@@ -1,0 +1,494 @@
+{
+  "name": "n",
+  "aliases": [],
+  "description": "Node version management",
+  "subcommands": [
+    {
+      "name": "i",
+      "aliases": [
+        "install"
+      ],
+      "description": "Install a Node.js version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [
+        "–"
+      ],
+      "description": "Remove a Node.js version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "prune",
+      "aliases": [],
+      "description": "Remove all cached Node.js versions except the installed version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Display diagnostics to help resolve problems",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Remove the installed Node.js",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [
+        "list"
+      ],
+      "description": "Output downloaded versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lsr",
+      "aliases": [
+        "ls-remote",
+        "list-remote"
+      ],
+      "description": "Output matching versions available for download",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Ls-remote displays all matches instead of last 20",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "aliases": [
+        "bin"
+      ],
+      "description": "Output path for downloaded node version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [
+        "use",
+        "as"
+      ],
+      "description": "Execute downloaded Node.js version with args",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e",
+            "--eval=..."
+          ],
+          "description": "Evaluate script",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Watch input files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch-path"
+          ],
+          "description": "Specify a watch directory or file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--watch-preserve-output"
+          ],
+          "description": "Disable the clearing of the console when watch mode restarts the process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Specify a file containing environment variables",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "-p",
+            "--print"
+          ],
+          "description": "Evaluate script and print result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--check"
+          ],
+          "description": "Syntax check script without executing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Print Node.js version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--interactive"
+          ],
+          "description": "Always enter the REPL even if stdin does not appear to be a terminal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print node command line options (currently set)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inspect"
+          ],
+          "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          "takes_arg": true,
+          "arg_name": "[host:]port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preserve-symlinks"
+          ],
+          "description": "Follows symlinks to directories when examining source code and templates for translation strings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "node script",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute command with modified PATH, so downloaded node version and npm first",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "latest",
+              "current",
+              "lts",
+              "auto",
+              "engine"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "cmd",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "args",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output version of n",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--preserve"
+      ],
+      "description": "Preserve npm and npx during install of Node.js",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-preserve"
+      ],
+      "description": "Do not preserve npm and npx during install of Node.js",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Disable curl output. Disable log messages processing \"auto\" and \"engine\" labels",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--download"
+      ],
+      "description": "Download only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--arch"
+      ],
+      "description": "Override system architecture",
+      "takes_arg": true,
+      "arg_name": "Architecture",
+      "arg_template": {
+        "custom": [
+          "x64",
+          "x86_64",
+          "arm64",
+          "aarch64",
+          "armv8l",
+          "x86",
+          "i386",
+          "i686",
+          "armv6l",
+          "armv7l"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--insecure"
+      ],
+      "description": "Turn off certificate checking for https requests (may be needed from behind a proxy server)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-xz"
+      ],
+      "description": "Override automatic detection of xz support and enable use of xz compressed node downloads",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-use-xz"
+      ],
+      "description": "Override automatic detection of xz support and disable use of xz compressed node downloads",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "version",
+      "description": null,
+      "template": {
+        "custom": [
+          "latest",
+          "current",
+          "lts",
+          "auto",
+          "engine"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

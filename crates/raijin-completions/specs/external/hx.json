@@ -1,0 +1,85 @@
+{
+  "name": "hx",
+  "aliases": [],
+  "description": "A post-modern text editor",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tutor"
+      ],
+      "description": "Open the tutorial",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--health"
+      ],
+      "description": "Check for errors in editor setup",
+      "takes_arg": true,
+      "arg_name": "language",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Increases logging verbosity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-g",
+        "--grammar"
+      ],
+      "description": "Fetch or build tree-sitter grammars",
+      "takes_arg": true,
+      "arg_name": "action",
+      "arg_template": {
+        "custom": [
+          "fetch",
+          "build"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "files",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "composer",
+  "aliases": [],
+  "description": "Composer Command",
+  "subcommands": [],
+  "options": [],
+  "args": []
+}

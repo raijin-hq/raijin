@@ -1,0 +1,270 @@
+{
+  "name": "laravel",
+  "aliases": [],
+  "description": "Laravel Installer",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "The output format (txt, xml, json, or md)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "txt",
+              "xml",
+              "json",
+              "md"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--raw"
+          ],
+          "description": "To output raw command list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "The output format (txt, xml, json, or md)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "txt",
+              "xml",
+              "json",
+              "md"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--raw"
+          ],
+          "description": "To output raw command list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new Laravel application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Installs the latest \"development\" release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--git"
+          ],
+          "description": "Initialize a Git repository",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--branch"
+          ],
+          "description": "The branch that should be created for a new repository",
+          "takes_arg": true,
+          "arg_name": "BRANCH",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--github"
+          ],
+          "description": "Create a new repository on GitHub",
+          "takes_arg": true,
+          "arg_name": "GITHUB",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--jet"
+          ],
+          "description": "Installs the Laravel Jetstream scaffolding",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stack"
+          ],
+          "description": "The Jetstream stack that should be installed",
+          "takes_arg": true,
+          "arg_name": "STACK",
+          "arg_template": {
+            "custom": [
+              "livewire",
+              "inertia"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--teams"
+          ],
+          "description": "Indicates whether Jetstream should be scaffolded with team support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt-jetstream"
+          ],
+          "description": "Issues a prompt to determine if Jetstream should be installed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces install even if the directory already exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display the help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Do not output any message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display this application version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ansi"
+      ],
+      "description": "Force ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Disable ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--no-interaction"
+      ],
+      "description": "Do not ask any interactive question",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    }
+  ],
+  "args": []
+}

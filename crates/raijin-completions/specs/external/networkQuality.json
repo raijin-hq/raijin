@@ -1,0 +1,69 @@
+{
+  "name": "networkQuality",
+  "aliases": [],
+  "description": "Measure the different aspects of network quality",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Show help for networkQuality",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Produce computer readable output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Run tests sequentially instead of in parallel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C"
+      ],
+      "description": "Use a custom configuration URL",
+      "takes_arg": true,
+      "arg_name": "URL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Bind test to interface",
+      "takes_arg": true,
+      "arg_name": "interface",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,447 @@
+{
+  "name": "killall",
+  "aliases": [],
+  "description": "Kill processes by name",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Be verbose (dry run) and display number of user processes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Use the effective user ID instead of the real user ID for matching processes with -u",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-help"
+      ],
+      "description": "Display help and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Request confirmation before killing each process",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "List the names of the available signals and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Match the process name as a regular expression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Be verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Be verbose (dry run)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGHUP"
+      ],
+      "description": "Send HUP instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGINT"
+      ],
+      "description": "Send INT instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGQUIT"
+      ],
+      "description": "Send QUIT instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGILL"
+      ],
+      "description": "Send ILL instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGTRAP"
+      ],
+      "description": "Send TRAP instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGABRT"
+      ],
+      "description": "Send ABRT instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGEMT"
+      ],
+      "description": "Send EMT instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGFPE"
+      ],
+      "description": "Send FPE instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGKILL"
+      ],
+      "description": "Send KILL instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGBUS"
+      ],
+      "description": "Send BUS instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGSEGV"
+      ],
+      "description": "Send SEGV instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGSYS"
+      ],
+      "description": "Send SYS instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGPIPE"
+      ],
+      "description": "Send PIPE instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGALRM"
+      ],
+      "description": "Send ALRM instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGURG"
+      ],
+      "description": "Send URG instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGSTOP"
+      ],
+      "description": "Send STOP instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGTSTP"
+      ],
+      "description": "Send TSTP instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGCONT"
+      ],
+      "description": "Send CONT instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGCHLD"
+      ],
+      "description": "Send CHLD instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGTTIN"
+      ],
+      "description": "Send TTIN instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGTTOU"
+      ],
+      "description": "Send TTOU instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGIO"
+      ],
+      "description": "Send IO instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGXCPU"
+      ],
+      "description": "Send XCPU instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGXFSZ"
+      ],
+      "description": "Send XFSZ instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGVTALRM"
+      ],
+      "description": "Send VTALRM instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGPROF"
+      ],
+      "description": "Send PROF instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGWINCH"
+      ],
+      "description": "Send WINCH instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGINFO"
+      ],
+      "description": "Send INFO instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGUSR1"
+      ],
+      "description": "Send USR1 instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-SIGUSR2"
+      ],
+      "description": "Send USR2 instead of TERM",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Limit potentially matching processes to those belonging to the user",
+      "takes_arg": true,
+      "arg_name": "user",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Limit matching processes to those running on the specified TTY",
+      "takes_arg": true,
+      "arg_name": "tty",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Limit matching processes to those matching the given name",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q"
+      ],
+      "description": "Suppress error message if no processes are matched",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z"
+      ],
+      "description": "Do not skip zombies",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "process_name",
+      "description": null,
+      "template": "process_ids",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

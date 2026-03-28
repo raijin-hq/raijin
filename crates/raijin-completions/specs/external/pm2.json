@@ -1,0 +1,5123 @@
+{
+  "name": "pm2",
+  "aliases": [],
+  "description": "Daemon process manager",
+  "subcommands": [
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Starts and daemonizes an app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file, json, stdin, app name, pm id, etc",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "trigger",
+      "aliases": [],
+      "description": "Deploy your json",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Proc Name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "Action Name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "Params",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy your json",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "File or environment",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "startOrRestart",
+      "aliases": [],
+      "description": "Start or restart JSON file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "json",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "startOrReload",
+      "aliases": [],
+      "description": "Start or gracefully reload JSON file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "json",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pid",
+      "aliases": [],
+      "description": "Return pid of the specified app or all",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "app name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "startOrGracefulReload",
+      "aliases": [],
+      "description": "Start or gracefully reolad JSON file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "json",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop a process",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id, name, all, json, stdin, etc",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart a process",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id, name, all, json, stdin, etc",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "scale",
+      "aliases": [],
+      "description": "Scale up/down a process in cluster mode depending on the `number` param",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "app name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "number",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "snapshot",
+      "aliases": [],
+      "description": "Snapshot PM2 memory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "profile",
+      "aliases": [],
+      "description": "Profile CPU",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reload",
+      "aliases": [],
+      "description": "Reload processes (for apps using HTTP/HTTPS)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name or all",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "gracefulReload",
+      "aliases": [],
+      "description": "Gracefully reload a process. Send a “shutdown” message to close all connections",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name or all",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "id",
+      "aliases": [],
+      "description": "Get process id by name",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Stops and deletes a process from pm2 process list",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name, id, script, all, json, stdin, etc",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sendSignal",
+      "aliases": [],
+      "description": "Send a system signal to the target process",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "signal",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "pm2_id or name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ping",
+      "aliases": [],
+      "description": "Ping pm2 daemon - if not it will launch up",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "updatePM2",
+      "aliases": [],
+      "description": "Update in-memory PM2 with local PM2",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "(alias) update in-memory PM2 with local PM2",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [
+        "module:install"
+      ],
+      "description": "Install or update a module and run it forever",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "module or git://",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "module:generate",
+      "aliases": [],
+      "description": "Generate a sample module in current folder",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "app name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [
+        "module:uninstall"
+      ],
+      "description": "Stop and uninstall a module",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "module",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "publish",
+      "aliases": [
+        "module:publish"
+      ],
+      "description": "Publish the module you are currently on",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "set",
+      "aliases": [],
+      "description": "Sets the specified config",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "multiset",
+      "aliases": [],
+      "description": "Multiset eg `key1 val1 key2 val2`",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key value",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Get value for the specified key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "conf",
+      "aliases": [],
+      "description": "Get / set module config values",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Get / set module config values",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unset",
+      "aliases": [],
+      "description": "Clears the specified config key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "report",
+      "aliases": [],
+      "description": "Give a full pm2 report for https://github.com/Unitech/pm2/issues",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [
+        "interact"
+      ],
+      "description": "Linking action to keymetrics.io",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "secret",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "public",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Linking action to keymetrics.io",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "unmonitor",
+      "aliases": [],
+      "description": "Unmonitor target process",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "monitor",
+      "aliases": [],
+      "description": "<Unm>onitor target process",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open dashboard in browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "register",
+      "aliases": [],
+      "description": "Create an account on keymetrics",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to keymetrics and link current PM2",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "web",
+      "aliases": [],
+      "description": "Launch a health API on 0.0.0.0:9615",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dump",
+      "aliases": [
+        "save"
+      ],
+      "description": "Dump all processes for resurrecting them later",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "send",
+      "aliases": [],
+      "description": "Send stdin to pm id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pm id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "line",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "attach",
+      "aliases": [],
+      "description": "Attach stdin/stdout to application identified by pm id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pm id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "resurrect",
+      "aliases": [],
+      "description": "Resurrect previously dumped processes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "unstartup",
+      "aliases": [],
+      "description": "Disable and clear auto startup",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "systemd",
+              "upstart",
+              "launchd",
+              "rcd"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "startup",
+      "aliases": [],
+      "description": "Setup script for pm2 at boot",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "platform",
+          "description": null,
+          "template": {
+            "custom": [
+              "systemd",
+              "upstart",
+              "launchd",
+              "rcd"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logrotate",
+      "aliases": [],
+      "description": "Copy default logrotate configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ecosystem",
+      "aliases": [
+        "init"
+      ],
+      "description": "Generate a process conf file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "mode",
+          "description": null,
+          "template": {
+            "custom": [
+              "null",
+              "simple"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Reset counters for process",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name, id, or all",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "describe",
+      "aliases": [],
+      "description": "Describe all parameters of a process id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "desc",
+      "aliases": [
+        "info",
+        "show"
+      ],
+      "description": "(alias) Describe all parameters of a process id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "id",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "ls"
+      ],
+      "description": "List all processes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "l",
+      "aliases": [
+        "ps",
+        "status"
+      ],
+      "description": "(alias) list all processes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "jlist",
+      "aliases": [],
+      "description": "List all processes in JSON format",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "prettylist",
+      "aliases": [],
+      "description": "Print json in a prettified JSON",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "monit",
+      "aliases": [],
+      "description": "Launch termcaps monitoring",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "imonit",
+      "aliases": [],
+      "description": "Launch legacy termcaps monitoring",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dashboard",
+      "aliases": [
+        "dash"
+      ],
+      "description": "Launch dashboard with monitoring and logs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "flush",
+      "aliases": [],
+      "description": "Flush logs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reloadLogs",
+      "aliases": [],
+      "description": "Reload all logs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Stream logs logs file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-V",
+            "--version"
+          ],
+          "description": "Outputs the version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Gets version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--silent"
+          ],
+          "description": "Hides all messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--mini-list"
+          ],
+          "description": "Displays a compacted list without formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces actions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-logs"
+          ],
+          "description": "Do not write logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Sets a name for script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--instances"
+          ],
+          "description": "Launches [number] instances (for networked app)(load balanced)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Number of parallel actions (for restart/reload)",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Specifies entire log file (error and out are both included)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specifies out log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--error"
+          ],
+          "description": "Specifies error log file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pid"
+          ],
+          "description": "Specify pid file",
+          "takes_arg": true,
+          "arg_name": "pid",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-k",
+            "--kill-timeout"
+          ],
+          "description": "Delays before sending final SIGKILL signal to process",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-timeout"
+          ],
+          "description": "Listen timeout on application reload",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-memory-restart"
+          ],
+          "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restart-delay"
+          ],
+          "description": "Specify a delay between restarts (in milliseconds)",
+          "takes_arg": true,
+          "arg_name": "delay",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": "Specify environment to get specific env variables",
+          "takes_arg": true,
+          "arg_name": "Environment Name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-type"
+          ],
+          "description": "Specify log output style (raw by default, json optional)",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-x",
+            "--execute-command"
+          ],
+          "description": "Execute a program using fork system",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-restarts"
+          ],
+          "description": "Only Restart the script COUNT times",
+          "takes_arg": true,
+          "arg_name": "Count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--user"
+          ],
+          "description": "Defines user when generating startup script",
+          "takes_arg": true,
+          "arg_name": "username",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Runs target script with <uid> rights",
+          "takes_arg": true,
+          "arg_name": "uid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Runs target script with <gid> rights",
+          "takes_arg": true,
+          "arg_name": "gid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Runs target script as <username>",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hp"
+          ],
+          "description": "Defines home path when generating startup script",
+          "takes_arg": true,
+          "arg_name": "home path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-ip"
+          ],
+          "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-name"
+          ],
+          "description": "Defines service name when generating startup script",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cron"
+          ],
+          "description": "Restarts a running process based on a cron pattern",
+          "takes_arg": true,
+          "arg_name": "Cron Pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--write"
+          ],
+          "description": "Writes configuration in local folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter"
+          ],
+          "description": "The interpreter pm2 should use for executing app (bash, python…)",
+          "takes_arg": true,
+          "arg_name": "interpreter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interpreter-args"
+          ],
+          "description": "Interprets options (alias of –node-args)",
+          "takes_arg": true,
+          "arg_name": "Arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-date-format"
+          ],
+          "description": "Adds custom prefix timestamp to logs",
+          "takes_arg": true,
+          "arg_name": "Date Format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-daemon"
+          ],
+          "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--update-env"
+          ],
+          "description": "Updates environment on restart/reload (-a <=> apply)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-only"
+          ],
+          "description": "With json declaration, allow to only act on one application",
+          "takes_arg": true,
+          "arg_name": "app name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-source-map-support"
+          ],
+          "description": "Force source map support",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-wait-ready"
+          ],
+          "description": "Asks pm2 to wait for ready event from your app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-merge-logs"
+          ],
+          "description": "Merges logs from different instances but keep error and out separated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-watch"
+          ],
+          "description": "Watches application folder for changes (default: )",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-ignore-watch"
+          ],
+          "description": "Folder/files to be ignored watching",
+          "takes_arg": true,
+          "arg_name": "Folder or Files",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-node-args"
+          ],
+          "description": "Space delimited arguments to pass to node in cluster mode",
+          "takes_arg": true,
+          "arg_name": "Node Args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-color"
+          ],
+          "description": "Skip colors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-vizion"
+          ],
+          "description": "Starts an app without vizion feature (versioning control)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-autorestart"
+          ],
+          "description": "Starts an app without automatic restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-treekill"
+          ],
+          "description": "Only kills the main process, not detached children",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-pmx"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-no-automation"
+          ],
+          "description": "Starts an app without apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-trace"
+          ],
+          "description": "Enables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-disable-trace"
+          ],
+          "description": "Disables transaction tracing with km",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-attach"
+          ],
+          "description": "Attaches logging after your start/restart/stop/reload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-sort"
+          ],
+          "description": "Sort process according to field’s name",
+          "takes_arg": true,
+          "arg_name": "field name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-v8"
+          ],
+          "description": "Enables v8 data collecting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-event-loop-inspector"
+          ],
+          "description": "Enables event-loop-inspector dump in apm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "–-deep-monitoring"
+          ],
+          "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "–-help"
+          ],
+          "description": "Outputs usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id or name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "kill",
+      "aliases": [],
+      "description": "Kill daemon",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Updates repository for a given app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "commit id",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "forward",
+      "aliases": [],
+      "description": "Updates repository to the next commit for a given app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "backward",
+      "aliases": [],
+      "description": "Downgrades repository to the previous commit for a given app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "gc",
+      "aliases": [],
+      "description": "Force PM2 to trigger garbage collection",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deepUpdate",
+      "aliases": [],
+      "description": "Performs a deep update of PM2",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [
+        "expose"
+      ],
+      "description": "Serves a directory over http via port",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "port",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Outputs the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Gets version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--silent"
+      ],
+      "description": "Hides all messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m",
+        "--mini-list"
+      ],
+      "description": "Displays a compacted list without formatting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Forces actions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-logs"
+      ],
+      "description": "Do not write logs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--name"
+      ],
+      "description": "Sets a name for script",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--instances"
+      ],
+      "description": "Launches [number] instances (for networked app)(load balanced)",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--parallel"
+      ],
+      "description": "Number of parallel actions (for restart/reload)",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--log"
+      ],
+      "description": "Specifies entire log file (error and out are both included)",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Specifies out log file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--error"
+      ],
+      "description": "Specifies error log file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--pid"
+      ],
+      "description": "Specify pid file",
+      "takes_arg": true,
+      "arg_name": "pid",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k",
+        "--kill-timeout"
+      ],
+      "description": "Delays before sending final SIGKILL signal to process",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--listen-timeout"
+      ],
+      "description": "Listen timeout on application reload",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-memory-restart"
+      ],
+      "description": "Specify max memory amount used to autorestart (in octet or use syntax like 100M)",
+      "takes_arg": true,
+      "arg_name": "memory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--restart-delay"
+      ],
+      "description": "Specify a delay between restarts (in milliseconds)",
+      "takes_arg": true,
+      "arg_name": "delay",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env"
+      ],
+      "description": "Specify environment to get specific env variables",
+      "takes_arg": true,
+      "arg_name": "Environment Name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-type"
+      ],
+      "description": "Specify log output style (raw by default, json optional)",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--execute-command"
+      ],
+      "description": "Execute a program using fork system",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-restarts"
+      ],
+      "description": "Only Restart the script COUNT times",
+      "takes_arg": true,
+      "arg_name": "Count",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--user"
+      ],
+      "description": "Defines user when generating startup script",
+      "takes_arg": true,
+      "arg_name": "username",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uid"
+      ],
+      "description": "Runs target script with <uid> rights",
+      "takes_arg": true,
+      "arg_name": "uid",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gid"
+      ],
+      "description": "Runs target script with <gid> rights",
+      "takes_arg": true,
+      "arg_name": "gid",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd"
+      ],
+      "description": "Runs target script as <username>",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hp"
+      ],
+      "description": "Defines home path when generating startup script",
+      "takes_arg": true,
+      "arg_name": "home path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait-ip"
+      ],
+      "description": "Overrides systemd script to wait for full internet connectivity to launch pm2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--service-name"
+      ],
+      "description": "Defines service name when generating startup script",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--cron"
+      ],
+      "description": "Restarts a running process based on a cron pattern",
+      "takes_arg": true,
+      "arg_name": "Cron Pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--write"
+      ],
+      "description": "Writes configuration in local folder",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interpreter"
+      ],
+      "description": "The interpreter pm2 should use for executing app (bash, python…)",
+      "takes_arg": true,
+      "arg_name": "interpreter",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interpreter-args"
+      ],
+      "description": "Interprets options (alias of –node-args)",
+      "takes_arg": true,
+      "arg_name": "Arguments",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--log-date-format"
+      ],
+      "description": "Adds custom prefix timestamp to logs",
+      "takes_arg": true,
+      "arg_name": "Date Format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-daemon"
+      ],
+      "description": "Runs pm2 daemon in the foreground if it doesn’t exist already",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--update-env"
+      ],
+      "description": "Updates environment on restart/reload (-a <=> apply)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-source-map-support"
+      ],
+      "description": "Force source map support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-only"
+      ],
+      "description": "With json declaration, allow to only act on one application",
+      "takes_arg": true,
+      "arg_name": "app name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-disable-source-map-support"
+      ],
+      "description": "Force source map support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-wait-ready"
+      ],
+      "description": "Asks pm2 to wait for ready event from your app",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-merge-logs"
+      ],
+      "description": "Merges logs from different instances but keep error and out separated",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-watch"
+      ],
+      "description": "Watches application folder for changes (default: )",
+      "takes_arg": true,
+      "arg_name": "paths",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-ignore-watch"
+      ],
+      "description": "Folder/files to be ignored watching",
+      "takes_arg": true,
+      "arg_name": "Folder or Files",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-node-args"
+      ],
+      "description": "Space delimited arguments to pass to node in cluster mode",
+      "takes_arg": true,
+      "arg_name": "Node Args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-color"
+      ],
+      "description": "Skip colors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-vizion"
+      ],
+      "description": "Starts an app without vizion feature (versioning control)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-autorestart"
+      ],
+      "description": "Starts an app without automatic restart",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-treekill"
+      ],
+      "description": "Only kills the main process, not detached children",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-pmx"
+      ],
+      "description": "Starts an app without apm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-no-automation"
+      ],
+      "description": "Starts an app without apm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-trace"
+      ],
+      "description": "Enables transaction tracing with km",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-disable-trace"
+      ],
+      "description": "Disables transaction tracing with km",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-attach"
+      ],
+      "description": "Attaches logging after your start/restart/stop/reload",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-sort"
+      ],
+      "description": "Sort process according to field’s name",
+      "takes_arg": true,
+      "arg_name": "field name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-v8"
+      ],
+      "description": "Enables v8 data collecting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-event-loop-inspector"
+      ],
+      "description": "Enables event-loop-inspector dump in apm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "–-deep-monitoring"
+      ],
+      "description": "Enables all monitoring tools (equivalent to –v8 –event-loop-inspector –trace)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "–-help"
+      ],
+      "description": "Outputs usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

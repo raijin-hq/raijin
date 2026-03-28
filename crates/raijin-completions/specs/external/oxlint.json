@@ -1,0 +1,322 @@
+{
+  "name": "oxlint",
+  "aliases": [],
+  "description": "A high performance linter for the Oxidation Compiler",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Path to Oxlint JSON configuration file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tsconfig"
+      ],
+      "description": "Path to tsconfig.json path for reading path aliases and project references for import plugin",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-path"
+      ],
+      "description": "Specify the file to use as your .eslintignore",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-pattern"
+      ],
+      "description": "Specify file patterns to ignore (in addition to those in .eslintignore)",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore"
+      ],
+      "description": "Disable exluding of files from .eslintignore files, --ignore-path, and --ignore-pattern",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--symlinks"
+      ],
+      "description": "Follow symlinks when linting, which are ignored by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsdoc-plugin"
+      ],
+      "description": "Enable the JSDoc plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jest-plugin"
+      ],
+      "description": "Enable the Jest plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vitest-plugin"
+      ],
+      "description": "Enable the Vitest plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nextjs-plugin"
+      ],
+      "description": "Enable the Next.js plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--react-perf-plugin"
+      ],
+      "description": "Enable the React Performance plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--promise-plugin"
+      ],
+      "description": "Enable the Promise plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-react-plugin"
+      ],
+      "description": "Disable the React plugin, which is turned on by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-unicorn-plugin"
+      ],
+      "description": "Disable the Unicorn plugin, which is turned on by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-oxc-plugin"
+      ],
+      "description": "Disable the Oxc plugin, which is turned on by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-typescript-plugin"
+      ],
+      "description": "Disable the TypeScript plugin, which is turned on by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-import-plugin"
+      ],
+      "description": "Disable the Import plugin, which is turned on by default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--deny"
+      ],
+      "description": "Deny a lint rule or category (enable a lint as an error)",
+      "takes_arg": true,
+      "arg_name": "lint",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--warn"
+      ],
+      "description": "Warn about a lint rule or category (enable a lint as a warning)",
+      "takes_arg": true,
+      "arg_name": "lint",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--allow"
+      ],
+      "description": "Allow a lint rule or category (suppress a lint)",
+      "takes_arg": true,
+      "arg_name": "lint",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix"
+      ],
+      "description": "Fix as many issues as possible. Only unfixed issues are reported in the output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent"
+      ],
+      "description": "Do not display any diagnostics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deny-warnings"
+      ],
+      "description": "Exit with a non-zero code if there are any warnings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-warnings"
+      ],
+      "description": "Exit with a non-zero code if there are more than `max` warnings",
+      "takes_arg": true,
+      "arg_name": "max",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--format"
+      ],
+      "description": "Use a specific output format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "default",
+          "json",
+          "unix",
+          "checkstyle",
+          "github"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--threads"
+      ],
+      "description": "Number of threads to use. Set to 1 to use only 1 CPU core",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rules"
+      ],
+      "description": "List all available rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Show version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file|dir|glob",
+      "description": "File(s) to lint",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

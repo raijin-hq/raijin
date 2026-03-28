@@ -1,0 +1,598 @@
+{
+  "name": "https",
+  "aliases": [],
+  "description": "HTTPie: command-line HTTP client for the API era",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--json",
+        "-j"
+      ],
+      "description": "Data items from the command line are serialized as a JSON object. The Content-Type and Accept headers are set to application/json",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--form",
+        "-f"
+      ],
+      "description": "FData items from the command line are serialized as form fields.\nThe Content-Type is set to application/x-www-form-urlencoded (if not\nspecified). The presence of any file fields results in a\nmultipart/form-data request",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--multipart"
+      ],
+      "description": "Similar to --form, but always sends a multipart/form-data request (i.e., even without files)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--boundary"
+      ],
+      "description": "Specify a custom boundary string for multipart/form-data requests. Has effect only together with --form",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compress",
+        "-x"
+      ],
+      "description": "Content compressed (encoded) with Deflate algorithm. The Content-Encoding header is set to deflate",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pretty"
+      ],
+      "description": "Controls output processing. The value can be \"none\" to not prettify\nthe output (default for redirected output), \"all\" to apply both colors\nand formatting (default for terminal output), \"colors\", or \"format\"",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "all",
+          "colors",
+          "format",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--style",
+        "-s"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "STYLE",
+      "arg_template": {
+        "custom": [
+          "abap",
+          "algol",
+          "algol_nu",
+          "arduino",
+          "auto",
+          "autumn",
+          "borland",
+          "bw",
+          "colorful",
+          "default",
+          "emacs",
+          "friendly",
+          "fruity",
+          "igor",
+          "inkpot",
+          "lovelace",
+          "manni",
+          "monokai",
+          "murphy",
+          "native",
+          "paraiso-dark",
+          "paraiso-light",
+          "pastie",
+          "perldoc",
+          "rainbow_dash",
+          "rrt",
+          "sas",
+          "solarized",
+          "solarized-dark",
+          "solarized-light",
+          "stata",
+          "stata-dark",
+          "stata-light",
+          "tango",
+          "trac",
+          "vim",
+          "vs",
+          "xcode"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unsorted"
+      ],
+      "description": "Disables all sorting while formatting output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sorted"
+      ],
+      "description": "Re-enables all sorting options while formatting output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format-options"
+      ],
+      "description": "Controls output formatting",
+      "takes_arg": true,
+      "arg_name": "FORMAT_OPTIONS",
+      "arg_template": {
+        "custom": [
+          "headers.sort:true",
+          "json.format:true",
+          "json.indent:4",
+          "json.sort_keys:true"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--print",
+        "-p"
+      ],
+      "description": "String specifying what the output should contain",
+      "takes_arg": true,
+      "arg_name": "WHAT",
+      "arg_template": {
+        "custom": [
+          "H",
+          "B",
+          "h",
+          "b"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headers",
+        "-h"
+      ],
+      "description": "Print only the response headers. Shortcut for --print=h",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--body",
+        "-b"
+      ],
+      "description": "Print only the response body. Shortcut for --print=b",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Verbose output. Print the whole request as well as the response. Also print\nany intermediary requests/responses (such as redirects).\nIt's a shortcut for: --all --print=BHbh",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--all"
+      ],
+      "description": "By default, only the final request/response is shown. Use this flag to show\nany intermediary requests/responses as well. Intermediary requests include\nfollowed redirects (with --follow), the first unauthorized request when\nDigest auth is used (--auth=digest), etc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--history-print",
+        "-P"
+      ],
+      "description": "The same as --print, -p but applies only to intermediary requests/responses\n(such as redirects) when their inclusion is enabled with --all. If this\noptions is not specified, then they are formatted the same way as the final\nresponse",
+      "takes_arg": true,
+      "arg_name": "WHAT",
+      "arg_template": {
+        "custom": [
+          "H",
+          "B",
+          "h",
+          "b"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stream",
+        "-S"
+      ],
+      "description": "Always stream the response body by line, i.e., behave like `tail -f'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Save output to FILE instead of stdout. If --download is also set, then only\nthe response body is saved to FILE. Other parts of the HTTP exchange are\nprinted to stderr",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--download",
+        "-d"
+      ],
+      "description": "Do not print the response body to stdout. Rather, download it and store it\nin a file. The filename is guessed unless specified with --output\n[filename]. This action is similar to the default behaviour of wget",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--continue",
+        "-c"
+      ],
+      "description": "Resume an interrupted download. Note that the --output option needs to be specified as well",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Do not print to stdout or stderr.\nstdout is still redirected if --output is specified.\nFlag doesn't affect behaviour of download beyond not printing to terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--session"
+      ],
+      "description": "Create, or reuse and update a session. Within a session, custom headers,\nauth credential, as well as any cookies sent by the server persist between\nrequests",
+      "takes_arg": true,
+      "arg_name": "SESSION_NAME_OR_PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--session-read-only"
+      ],
+      "description": "Create or read a session without updating it form the request/response exchange",
+      "takes_arg": true,
+      "arg_name": "SESSION_NAME_OR_PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auth",
+        "-a"
+      ],
+      "description": "If only the username is provided (-a username), HTTPie will prompt for the password",
+      "takes_arg": true,
+      "arg_name": "USER[:PASS]",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auth-type",
+        "-A"
+      ],
+      "description": "The authentication mechanism to be used. Defaults to \"basic\"",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "basic",
+          "digest"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-netrc"
+      ],
+      "description": "Ignore credentials from .netrc",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--offline"
+      ],
+      "description": "Build the request and print it but don’t actually send it",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--proxy"
+      ],
+      "description": "String mapping protocol to the URL of the proxy\n(e.g. http:http://foo.bar:3128). You can specify multiple proxies with\ndifferent protocols. The environment variables $ALL_PROXY, $HTTP_PROXY,\nand $HTTPS_proxy are supported as well",
+      "takes_arg": true,
+      "arg_name": "PROTOCOL:PROXY_URL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--follow",
+        "-F"
+      ],
+      "description": "Follow 30x Location redirects",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-redirects"
+      ],
+      "description": "By default, requests have a limit of 30 redirects (works with --follow)",
+      "takes_arg": true,
+      "arg_name": "MAX_REDIRECTS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-headers"
+      ],
+      "description": "The maximum number of response headers to be read before giving up (default 0, i.e., no limit)",
+      "takes_arg": true,
+      "arg_name": "MAX_HEADERS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout"
+      ],
+      "description": "The connection timeout of the request in seconds.\nThe default value is 0, i.e., there is no timeout limit",
+      "takes_arg": true,
+      "arg_name": "SECONDS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check-status"
+      ],
+      "description": "By default, HTTPie exits with 0 when no network or other fatal errors\noccur. This flag instructs HTTPie to also check the HTTP status code and\nexit with an error if the status indicates one",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--path-as-is"
+      ],
+      "description": "Bypass dot segment (/../ or /./) URL squashing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chunked"
+      ],
+      "description": "Enable streaming via chunked transfer encoding",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verify"
+      ],
+      "description": "Set to \"no\" (or \"false\") to skip checking the host's SSL certificate.\nDefaults to \"yes\" (\"true\"). You can also pass the path to a CA_BUNDLE file\nfor private certs",
+      "takes_arg": true,
+      "arg_name": "VERIFY",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl"
+      ],
+      "description": "The desired protocol version to use. This will default to\nSSL v2.3 which will negotiate the highest protocol that both\nthe server and your installation of OpenSSL support",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "ssl2.3",
+          "tls1",
+          "tls1.1",
+          "tls1.2"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ciphers"
+      ],
+      "description": "A string in the OpenSSL cipher list format",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cert"
+      ],
+      "description": "You can specify a local cert to use as client side SSL certificate.\nThis file may either contain both private key and certificate or you may\nspecify --cert-key separately",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cert-key"
+      ],
+      "description": "The private key to use with SSL. Only needed if --cert is given and the certificate file does not contain the private key",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-stdin",
+        "-I"
+      ],
+      "description": "Do not attempt to read stdin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show the help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--traceback"
+      ],
+      "description": "Prints the exception traceback should one occur",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-scheme"
+      ],
+      "description": "The default scheme to use if not specified in the URL",
+      "takes_arg": true,
+      "arg_name": "DEFAULT_SCHEME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Prints the exception traceback should one occur, as well as other\ninformation useful for debugging HTTPie itself and for reporting bugs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "METHOD",
+      "description": "The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...)",
+      "template": {
+        "custom": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "HEAD"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    },
+    {
+      "name": "URL",
+      "description": "The scheme defaults to 'http://' if the URL does not include one",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "REQUEST_ITEM",
+      "description": "Optional key-value pairs to be included in the request. The separator used determines the type",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

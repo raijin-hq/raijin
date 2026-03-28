@@ -1,0 +1,169 @@
+{
+  "name": "fisher",
+  "aliases": [],
+  "description": "A plugin manager for Fish",
+  "subcommands": [
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install plugin",
+      "subcommands": [
+        {
+          "name": "IlanCosman/tide@v5",
+          "aliases": [],
+          "description": "[Prompt] - 🌊 The ultimate Fish prompt",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pure-fish/pure",
+          "aliases": [],
+          "description": "[Prompt] - Pretty, minimal, and fast prompt for Fish from Zsh",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "jorgebucaran/hydro",
+          "aliases": [],
+          "description": "[Prompt] - Minimal, lag-free prompt with async Git status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "jethrokuan/z",
+          "aliases": [],
+          "description": "[Plugin] - Pure-fish z directory jumping",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "PatrickF1/fzf.fish",
+          "aliases": [],
+          "description": "[Plugin] - Augment your fish command line with fzf key bindings",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "jorgebucaran/nvm.fish",
+          "aliases": [],
+          "description": "[Plugin] -  Node.js version manager lovingly made for Fish",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "franciscolourenco/done",
+          "aliases": [],
+          "description": "[Plugin] - A fish-shell package to automatically receive notifications when long processes finish",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "jorgebucaran/replay.fish",
+          "aliases": [],
+          "description": "[Plugin] - Run Bash commands replaying changes in Fish. 🍤",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "jorgebucaran/spark.fish",
+          "aliases": [],
+          "description": "[Plugin] - Visualize a range of numbers right in your terminal",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "joseluisq/gitnow@2.10.0",
+          "aliases": [],
+          "description": "[Plugin] - Speed up your Git workflow. 🐠",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove plugins",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "installed plugins",
+          "description": "The plugin you want to remove",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update plugins",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "installed plugins",
+          "description": "The plugin you want to update",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List plugins",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "RegEx",
+          "description": "Search in list with regular expression",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for fisher",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show fisher version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,1870 @@
+{
+  "name": "kafkactl",
+  "aliases": [],
+  "description": "Command-line interface for Apache Kafka",
+  "subcommands": [
+    {
+      "name": "edit",
+      "aliases": [
+        "alter"
+      ],
+      "description": "Alter topics, partitions",
+      "subcommands": [
+        {
+          "name": "partition",
+          "aliases": [],
+          "description": "Alter a partition",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--replicas",
+                "-r"
+              ],
+              "description": "Set replicas for a partition",
+              "takes_arg": true,
+              "arg_name": "replicas",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--validate-only",
+                "-v"
+              ],
+              "description": "Validate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "topic",
+          "aliases": [],
+          "description": "Alter a topic",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Configs in format `key=value`",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--partitions",
+                "-p"
+              ],
+              "description": "Number of partitions",
+              "takes_arg": true,
+              "arg_name": "partitions",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--replication-factor",
+                "-r"
+              ],
+              "description": "Replication factor",
+              "takes_arg": true,
+              "arg_name": "replication-factor",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--validate-only",
+                "-v"
+              ],
+              "description": "Validate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "attach",
+      "aliases": [],
+      "description": "Run kafkactl pod in kubernetes and attach to it",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clone",
+      "aliases": [],
+      "description": "Clone topics, consumerGroups",
+      "subcommands": [
+        {
+          "name": "cg",
+          "aliases": [
+            "consumer-group"
+          ],
+          "description": "Clone existing consumerGroup with all offsets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "topic",
+          "aliases": [],
+          "description": "Clone existing topic (number of partitions, replication factor, config entries) to new one",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell auto-completion file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Show and edit configurations",
+      "subcommands": [
+        {
+          "name": "currentContext",
+          "aliases": [
+            "current-context"
+          ],
+          "description": "Show current context",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "getContexts",
+          "aliases": [
+            "get-contexts"
+          ],
+          "description": "List configured contexts",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: compact",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "useContext",
+          "aliases": [
+            "use-context"
+          ],
+          "description": "Switch active context",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "Show contents of config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "consume",
+      "aliases": [],
+      "description": "Consume messages from a topic",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exit",
+            "-e"
+          ],
+          "description": "Stop consuming when latest offset is reached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--from-beginning",
+            "-b"
+          ],
+          "description": "Set offset for consumer to the oldest offset",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group",
+            "-g"
+          ],
+          "description": "Consumer group to join",
+          "takes_arg": true,
+          "arg_name": "group",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-encoding"
+          ],
+          "description": "Key encoding (auto-detected by default). One of: none|hex|base64",
+          "takes_arg": true,
+          "arg_name": "key-encoding",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-proto-type"
+          ],
+          "description": "Key protobuf message type",
+          "takes_arg": true,
+          "arg_name": "key-proto-type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-messages"
+          ],
+          "description": "Stop consuming after n messages have been read",
+          "takes_arg": true,
+          "arg_name": "max-messages",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--offset"
+          ],
+          "description": "Offsets in format `partition=offset (for partitions not specified, other parameters apply)`",
+          "takes_arg": true,
+          "arg_name": "offset",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output format. One of: json|yaml",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--partitions",
+            "-p"
+          ],
+          "description": "Partitions to consume. The default is to consume from all partitions",
+          "takes_arg": true,
+          "arg_name": "partitions",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--print-headers"
+          ],
+          "description": "Print message headers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print-keys",
+            "-k"
+          ],
+          "description": "Print message keys",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print-schema",
+            "-a"
+          ],
+          "description": "Print details about avro schema used for decoding",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print-timestamps",
+            "-t"
+          ],
+          "description": "Print message timestamps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--proto-file"
+          ],
+          "description": "Additional protobuf description file for searching message description",
+          "takes_arg": true,
+          "arg_name": "proto-file",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--proto-import-path"
+          ],
+          "description": "Additional path to search files listed in proto 'import' directive",
+          "takes_arg": true,
+          "arg_name": "proto-import-path",
+          "arg_template": "folders",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--protoset-file"
+          ],
+          "description": "Additional compiled protobuf description file for searching message description",
+          "takes_arg": true,
+          "arg_name": "protoset-file",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--separator",
+            "-s"
+          ],
+          "description": "Separator to split key and value",
+          "takes_arg": true,
+          "arg_name": "separator",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tail"
+          ],
+          "description": "Show only the last n messages on the topic",
+          "takes_arg": true,
+          "arg_name": "tail",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value-encoding"
+          ],
+          "description": "Value encoding (auto-detected by default). One of: none|hex|base64",
+          "takes_arg": true,
+          "arg_name": "value-encoding",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value-proto-type"
+          ],
+          "description": "Value protobuf message type",
+          "takes_arg": true,
+          "arg_name": "value-proto-type",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create topics, consumerGroups, acls",
+      "subcommands": [
+        {
+          "name": "acl",
+          "aliases": [
+            "access-control-list"
+          ],
+          "description": "Create an acl",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--allow",
+                "-a"
+              ],
+              "description": "Acl of permissionType 'allow' (choose this or 'deny')",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cluster",
+                "-c"
+              ],
+              "description": "Create acl for the cluster",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--deny",
+                "-d"
+              ],
+              "description": "Acl of permissionType 'deny' (choose this or 'allow')",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group",
+                "-g"
+              ],
+              "description": "Create acl for a consumer group",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host"
+              ],
+              "description": "Hosts to allow",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--operation",
+                "-o"
+              ],
+              "description": "Operations of acl",
+              "takes_arg": true,
+              "arg_name": "operation",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--pattern"
+              ],
+              "description": "Pattern type. one of (match, prefixed, literal)",
+              "takes_arg": true,
+              "arg_name": "pattern",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--principal",
+                "-p"
+              ],
+              "description": "Principal to be authenticated",
+              "takes_arg": true,
+              "arg_name": "principal",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "Create acl for a topic",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--validate-only",
+                "-v"
+              ],
+              "description": "Validate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "cg",
+          "aliases": [
+            "consumer-group"
+          ],
+          "description": "Create a consumerGroup",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--newest"
+              ],
+              "description": "Set the offset to newest offset (for all partitions or the specified partition)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offset"
+              ],
+              "description": "Set offset to this value. offset with value -1 is ignored",
+              "takes_arg": true,
+              "arg_name": "offset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--oldest"
+              ],
+              "description": "Set the offset to oldest offset (for all partitions or the specified partition)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--partition",
+                "-p"
+              ],
+              "description": "Partition to create group for. -1 stands for all partitions",
+              "takes_arg": true,
+              "arg_name": "partition",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "One or more topics to create group for",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": true
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "topic",
+          "aliases": [],
+          "description": "Create a topic",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Configs in format `key=value`",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--partitions",
+                "-p"
+              ],
+              "description": "Number of partitions",
+              "takes_arg": true,
+              "arg_name": "partitions",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--replication-factor",
+                "-r"
+              ],
+              "description": "Replication factor",
+              "takes_arg": true,
+              "arg_name": "replication-factor",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--validate-only",
+                "-v"
+              ],
+              "description": "Validate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete topics, consumerGroups, consumer-group-offset, acls",
+      "subcommands": [
+        {
+          "name": "acl",
+          "aliases": [
+            "access-control-list"
+          ],
+          "description": "Delete an acl",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--allow",
+                "-a"
+              ],
+              "description": "Acl of permissionType 'allow'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cluster",
+                "-c"
+              ],
+              "description": "Delete acl for the cluster",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--deny",
+                "-d"
+              ],
+              "description": "Acl of permissionType 'deny'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--groups",
+                "-g"
+              ],
+              "description": "Delete acl for a consumer group",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--operation",
+                "-o"
+              ],
+              "description": "Operation of acl",
+              "takes_arg": true,
+              "arg_name": "operation",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pattern"
+              ],
+              "description": "Pattern type. one of (any, match, prefixed, literal)",
+              "takes_arg": true,
+              "arg_name": "pattern",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topics",
+                "-t"
+              ],
+              "description": "Delete acl for a topic",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--validate-only",
+                "-v"
+              ],
+              "description": "Validate only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "consumer-groups",
+          "aliases": [
+            "consumer-group"
+          ],
+          "description": "Delete a consumer-group",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cgo",
+          "aliases": [
+            "offset",
+            "consumer-group-offset"
+          ],
+          "description": "Delete a consumer-group-offset",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--partition",
+                "-p"
+              ],
+              "description": "Delete offset for this partition. -1 stands for all partitions",
+              "takes_arg": true,
+              "arg_name": "partition",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "Delete offset for this topic",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "topic",
+          "aliases": [],
+          "description": "Delete a topic",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "describe",
+      "aliases": [],
+      "description": "Describe topics, consumerGroups, brokers",
+      "subcommands": [
+        {
+          "name": "broker",
+          "aliases": [],
+          "description": "Describe a broker",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|wide",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "cg",
+          "aliases": [
+            "consumer-group"
+          ],
+          "description": "Describe a consumerGroup",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--only-with-lag",
+                "-l"
+              ],
+              "description": "Show only partitions that have a lag",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|wide",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--print-members",
+                "-m"
+              ],
+              "description": "Print group members",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--print-topics",
+                "-T"
+              ],
+              "description": "Print topic details",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "Show group details for given topic only",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "topic",
+          "aliases": [],
+          "description": "Describe a topic",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|wide",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--print-configs",
+                "-c"
+              ],
+              "description": "Print configs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-empty",
+                "-s"
+              ],
+              "description": "Show only partitions that have a messages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "get"
+      ],
+      "description": "Get info about topics, consumerGroups, acls, brokers",
+      "subcommands": [
+        {
+          "name": "acl",
+          "aliases": [
+            "access-control-list"
+          ],
+          "description": "List available acls",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--allow",
+                "-a"
+              ],
+              "description": "Acl of permissionType 'allow'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cluster",
+                "-c"
+              ],
+              "description": "List acl for the cluster",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--deny",
+                "-d"
+              ],
+              "description": "Acl of permissionType 'deny'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--groups",
+                "-g"
+              ],
+              "description": "List acl for consumer groups",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--operation"
+              ],
+              "description": "Operation of acl",
+              "takes_arg": true,
+              "arg_name": "operation",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pattern"
+              ],
+              "description": "Pattern type. one of (any, match, prefixed, literal)",
+              "takes_arg": true,
+              "arg_name": "pattern",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topics",
+                "-t"
+              ],
+              "description": "List acl for topics",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "brokers",
+          "aliases": [],
+          "description": "List brokers",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|compact",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "cg",
+          "aliases": [
+            "consumer-groups"
+          ],
+          "description": "List available consumerGroups",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|wide|compact",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "Show groups for given topic only",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "topics",
+          "aliases": [],
+          "description": "List available topics",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml|wide|compact",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "produce",
+      "aliases": [],
+      "description": "Produce messages to a topic",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "File to read input from",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--header",
+            "-H"
+          ],
+          "description": "Headers in format `key:value`",
+          "takes_arg": true,
+          "arg_name": "header",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--key",
+            "-k"
+          ],
+          "description": "Key to use for all messages",
+          "takes_arg": true,
+          "arg_name": "key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-encoding"
+          ],
+          "description": "Key encoding (none by default). One of: none|hex|base64",
+          "takes_arg": true,
+          "arg_name": "key-encoding",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-proto-type"
+          ],
+          "description": "Key protobuf message type",
+          "takes_arg": true,
+          "arg_name": "key-proto-type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key-schema-version",
+            "-K"
+          ],
+          "description": "Avro schema version that should be used for key serialization (default is latest)",
+          "takes_arg": true,
+          "arg_name": "key-schema-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lineSeparator",
+            "-L"
+          ],
+          "description": "Separator to split multiple messages from stdin or file",
+          "takes_arg": true,
+          "arg_name": "lineSeparator",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-message-bytes"
+          ],
+          "description": "The maximum permitted size of a message (defaults to 1000000)",
+          "takes_arg": true,
+          "arg_name": "max-message-bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--null-value"
+          ],
+          "description": "Produce a null value (can be used instead of providing a value with --value)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--partition",
+            "-p"
+          ],
+          "description": "Partition to produce to",
+          "takes_arg": true,
+          "arg_name": "partition",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--partitioner",
+            "-P"
+          ],
+          "description": "The partitioning scheme to use. Can be `murmur2`, `hash`, `hash-ref` `manual`, or `random`. (default is murmur2)",
+          "takes_arg": true,
+          "arg_name": "partitioner",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--proto-file"
+          ],
+          "description": "Additional protobuf description file for searching message description",
+          "takes_arg": true,
+          "arg_name": "proto-file",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--proto-import-path"
+          ],
+          "description": "Additional path to search files listed in proto 'import' directive",
+          "takes_arg": true,
+          "arg_name": "proto-import-path",
+          "arg_template": "folders",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--protoset-file"
+          ],
+          "description": "Additional compiled protobuf description file for searching message description",
+          "takes_arg": true,
+          "arg_name": "protoset-file",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--rate",
+            "-r"
+          ],
+          "description": "Amount of messages per second to produce on the topic",
+          "takes_arg": true,
+          "arg_name": "rate",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--required-acks"
+          ],
+          "description": "Required acks. One of `NoResponse`, `WaitForLocal`, `WaitForAll`. (default is WaitForLocal)",
+          "takes_arg": true,
+          "arg_name": "required-acks",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--separator",
+            "-S"
+          ],
+          "description": "Separator to split key and value from stdin or file",
+          "takes_arg": true,
+          "arg_name": "separator",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent",
+            "-s"
+          ],
+          "description": "Do not write to standard output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value",
+            "-v"
+          ],
+          "description": "Value to produce",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value-encoding"
+          ],
+          "description": "Value encoding (none by default). One of: none|hex|base64",
+          "takes_arg": true,
+          "arg_name": "value-encoding",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value-proto-type"
+          ],
+          "description": "Value protobuf message type",
+          "takes_arg": true,
+          "arg_name": "value-proto-type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--value-schema-version",
+            "-i"
+          ],
+          "description": "Avro schema version that should be used for value serialization (default is latest)",
+          "takes_arg": true,
+          "arg_name": "value-schema-version",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Reset consumerGroupsOffset",
+      "subcommands": [
+        {
+          "name": "cgo",
+          "aliases": [
+            "offset",
+            "consumer-group-offset"
+          ],
+          "description": "Reset a consumer group offset",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all-topics"
+              ],
+              "description": "Do the operation for all topics in the consumer group",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--execute",
+                "-e"
+              ],
+              "description": "Execute the reset (as default only the results are displayed for validation)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--newest"
+              ],
+              "description": "Set the offset to newest offset (for all partitions or the specified partition)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offset"
+              ],
+              "description": "Set offset to this value. offset with value -1 is ignored",
+              "takes_arg": true,
+              "arg_name": "offset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--oldest"
+              ],
+              "description": "Set the offset to oldest offset (for all partitions or the specified partition)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output",
+                "-o"
+              ],
+              "description": "Output format. One of: json|yaml",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--partition",
+                "-p"
+              ],
+              "description": "Partition to apply the offset. -1 stands for all partitions",
+              "takes_arg": true,
+              "arg_name": "partition",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic",
+                "-t"
+              ],
+              "description": "One ore more topics to change offset for",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": true
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version of kafkactl",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "edit",
+          "aliases": [
+            "alter"
+          ],
+          "description": "Alter topics, partitions",
+          "subcommands": [
+            {
+              "name": "partition",
+              "aliases": [],
+              "description": "Alter a partition",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topic",
+              "aliases": [],
+              "description": "Alter a topic",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "attach",
+          "aliases": [],
+          "description": "Run kafkactl pod in kubernetes and attach to it",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "clone",
+          "aliases": [],
+          "description": "Clone topics, consumerGroups",
+          "subcommands": [
+            {
+              "name": "cg",
+              "aliases": [
+                "consumer-group"
+              ],
+              "description": "Clone existing consumerGroup with all offsets",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topic",
+              "aliases": [],
+              "description": "Clone existing topic (number of partitions, replication factor, config entries) to new one",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate shell auto-completion file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Show and edit configurations",
+          "subcommands": [
+            {
+              "name": "currentContext",
+              "aliases": [
+                "current-context"
+              ],
+              "description": "Show current context",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "getContexts",
+              "aliases": [
+                "get-contexts"
+              ],
+              "description": "List configured contexts",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "useContext",
+              "aliases": [
+                "use-context"
+              ],
+              "description": "Switch active context",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "view",
+              "aliases": [],
+              "description": "Show contents of config file",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "consume",
+          "aliases": [],
+          "description": "Consume messages from a topic",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create topics, consumerGroups, acls",
+          "subcommands": [
+            {
+              "name": "acl",
+              "aliases": [
+                "access-control-list"
+              ],
+              "description": "Create an acl",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "cg",
+              "aliases": [
+                "consumer-group"
+              ],
+              "description": "Create a consumerGroup",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topic",
+              "aliases": [],
+              "description": "Create a topic",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete topics, consumerGroups, consumer-group-offset, acls",
+          "subcommands": [
+            {
+              "name": "acl",
+              "aliases": [
+                "access-control-list"
+              ],
+              "description": "Delete an acl",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "consumer-groups",
+              "aliases": [
+                "consumer-group"
+              ],
+              "description": "Delete a consumer-group",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "cgo",
+              "aliases": [
+                "offset",
+                "consumer-group-offset"
+              ],
+              "description": "Delete a consumer-group-offset",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topic",
+              "aliases": [],
+              "description": "Delete a topic",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe topics, consumerGroups, brokers",
+          "subcommands": [
+            {
+              "name": "broker",
+              "aliases": [],
+              "description": "Describe a broker",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "cg",
+              "aliases": [
+                "consumer-group"
+              ],
+              "description": "Describe a consumerGroup",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topic",
+              "aliases": [],
+              "description": "Describe a topic",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "get"
+          ],
+          "description": "Get info about topics, consumerGroups, acls, brokers",
+          "subcommands": [
+            {
+              "name": "acl",
+              "aliases": [
+                "access-control-list"
+              ],
+              "description": "List available acls",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "brokers",
+              "aliases": [],
+              "description": "List brokers",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "cg",
+              "aliases": [
+                "consumer-groups"
+              ],
+              "description": "List available consumerGroups",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "topics",
+              "aliases": [],
+              "description": "List available topics",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "produce",
+          "aliases": [],
+          "description": "Produce messages to a topic",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset consumerGroupsOffset",
+          "subcommands": [
+            {
+              "name": "cgo",
+              "aliases": [
+                "offset",
+                "consumer-group-offset"
+              ],
+              "description": "Reset a consumer group offset",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Print the version of kafkactl",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--config-file",
+        "-C"
+      ],
+      "description": "Config file. one of: [$HOME/.config/kafkactl $HOME/.kafkactl $SNAP_REAL_HOME/.config/kafkactl $SNAP_DATA/kafkactl /etc/kafkactl]",
+      "takes_arg": true,
+      "arg_name": "config-file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-V"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

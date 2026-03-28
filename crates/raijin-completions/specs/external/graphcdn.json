@@ -1,0 +1,165 @@
+{
+  "name": "graphcdn",
+  "aliases": [],
+  "description": "GraphCDN CLI",
+  "subcommands": [
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Authenticate the CLI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--token"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new GraphCDN service",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Skip all the questions and just init",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull the latest service configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--service"
+          ],
+          "description": "Name of the service to pull from (only required without graphcdn.yml)",
+          "takes_arg": true,
+          "arg_name": "service",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push and deploy the latest app configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "field",
+          "description": null,
+          "template": {
+            "custom": [
+              "schema",
+              "rules"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": null,
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

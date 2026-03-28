@@ -1,0 +1,212 @@
+{
+  "name": "omz",
+  "aliases": [],
+  "description": "Oh My Zsh",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print the help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "changelog",
+      "aliases": [],
+      "description": "Print the changelog",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "plugin",
+      "aliases": [],
+      "description": "Manage plugins",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable plugin(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "plugin",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable plugin(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "plugin",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Get information of a plugin",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "plugin",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all available Oh My Zsh plugins",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "load",
+          "aliases": [],
+          "description": "Load plugin(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "plugin",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pr",
+      "aliases": [],
+      "description": "Manage Oh My Zsh Pull Requests",
+      "subcommands": [
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Delete all PR branches (ohmyzsh/pull-*)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "test",
+          "aliases": [],
+          "description": "Fetch PR #NUMBER and rebase against master",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "PR_number_or_URL",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reload",
+      "aliases": [],
+      "description": "Reload the current zsh session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "theme",
+      "aliases": [],
+      "description": "Manage themes",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all available Oh My Zsh themes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a theme in your .zshrc file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "theme",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "use",
+          "aliases": [],
+          "description": "Load a theme",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "theme",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update Oh My Zsh",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show the version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

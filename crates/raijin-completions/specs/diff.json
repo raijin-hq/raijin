@@ -1,0 +1,537 @@
+{
+  "name": "diff",
+  "aliases": [],
+  "description": "Compare files line by line",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-i",
+        "--ignore-case"
+      ],
+      "description": "Ignore case differences in file contents",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-file-name-case"
+      ],
+      "description": "Ignore case when comparing file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-file-name-case"
+      ],
+      "description": "Consider case when comparing file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--ignore-tab-expansion"
+      ],
+      "description": "Ignore changes due to tab expansion",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b",
+        "--ignore-space-change"
+      ],
+      "description": "Ignore changes in the amount of white space",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--ignore-all-space"
+      ],
+      "description": "Ignore all white space",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "--ignore-blank-lines"
+      ],
+      "description": "Ignore changes whose lines are all blank",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--ignore-matching-lines"
+      ],
+      "description": "Ignore changes whose lines all match RE",
+      "takes_arg": true,
+      "arg_name": "RE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strip-trailing-cr"
+      ],
+      "description": "Strip trailing carriage return on input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--text"
+      ],
+      "description": "Treat all files as text",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "-C",
+        "--context"
+      ],
+      "description": "Output NUM lines of copied context",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "-U",
+        "--unified"
+      ],
+      "description": "Output NUM lines of unified context",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--label"
+      ],
+      "description": "Use LABEL instead of file name",
+      "takes_arg": true,
+      "arg_name": "LABEL",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--show-c-function"
+      ],
+      "description": "Show which C function each change is in",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--show-function-line"
+      ],
+      "description": "Show the most recent line matching RE",
+      "takes_arg": true,
+      "arg_name": "RE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--brief"
+      ],
+      "description": "Output only whether files differ",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--ed"
+      ],
+      "description": "Output an ed script",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--normal"
+      ],
+      "description": "Output a normal diff",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--rcs"
+      ],
+      "description": "Output an RCS format diff",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-y",
+        "--side-by-side"
+      ],
+      "description": "Output in two columns",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--width"
+      ],
+      "description": "Output at most NUM (default 130) print columns",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--left-column"
+      ],
+      "description": "Output only the left column of common lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--suppress-common-lines"
+      ],
+      "description": "Do not output common lines",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--ifdef"
+      ],
+      "description": "Output merged file to show `#ifdef NAME' diffs",
+      "takes_arg": true,
+      "arg_name": "NAME",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--paginate"
+      ],
+      "description": "Pass the output through `pr' to paginate it",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--expand-tabs"
+      ],
+      "description": "Expand tabs to spaces in output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--initial-tab"
+      ],
+      "description": "Make tabs line up by prepending a tab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--recursive"
+      ],
+      "description": "Recursively compare any subdirectories found",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--new-file"
+      ],
+      "description": "Treat absent files as empty",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unidirectional-new-file"
+      ],
+      "description": "Treat absent first files as empty",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--report-identical-files"
+      ],
+      "description": "Report when two files are the same",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--exclude"
+      ],
+      "description": "Exclude files that match PAT",
+      "takes_arg": true,
+      "arg_name": "PAT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--exclude-from"
+      ],
+      "description": "Exclude files that match any pattern in FILE",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--starting-file"
+      ],
+      "description": "Start with FILE when comparing directories",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--from-file"
+      ],
+      "description": "Compare FILE1 to all operands. FILE1 can be a directory",
+      "takes_arg": true,
+      "arg_name": "FILE1",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--to-file"
+      ],
+      "description": "Compare all operands to FILE2. FILE2 can be a directory",
+      "takes_arg": true,
+      "arg_name": "FILE2",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--horizon-lines"
+      ],
+      "description": "Keep NUM lines of the common prefix and suffix",
+      "takes_arg": true,
+      "arg_name": "NUM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--minimal"
+      ],
+      "description": "Try hard to find a smaller set of changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--speed-large-files"
+      ],
+      "description": "Assume large files and many scattered small changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output version info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--old-group-format"
+      ],
+      "description": "Similar, but format old input groups with GFTM",
+      "takes_arg": true,
+      "arg_name": "GFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--new-group-format"
+      ],
+      "description": "Similar, but format new input groups with GFTM",
+      "takes_arg": true,
+      "arg_name": "GFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unchanged-group-format"
+      ],
+      "description": "Similar, but format unchanged input groups with GFTM",
+      "takes_arg": true,
+      "arg_name": "GFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--changed-group-format"
+      ],
+      "description": "Similar, but format changed input groups with GFTM",
+      "takes_arg": true,
+      "arg_name": "GFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--line-format"
+      ],
+      "description": "Format all input lines with LFMT",
+      "takes_arg": true,
+      "arg_name": "LFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--old-line-format"
+      ],
+      "description": "Format old input lines with LFTM",
+      "takes_arg": true,
+      "arg_name": "LFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--new-line-format"
+      ],
+      "description": "Format new input lines with LFTM",
+      "takes_arg": true,
+      "arg_name": "LFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unchanged-line-format"
+      ],
+      "description": "Format unchanged input lines with LFTM",
+      "takes_arg": true,
+      "arg_name": "LFTM",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

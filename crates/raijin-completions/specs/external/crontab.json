@@ -1,0 +1,49 @@
+{
+  "name": "crontab",
+  "aliases": [],
+  "description": "Maintain crontab file for individual users",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Edit the current crontab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Display the current crontab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Remove the current crontab",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Specify the name of the user whose crontab is to be tweaked",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

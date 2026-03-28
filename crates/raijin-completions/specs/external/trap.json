@@ -1,0 +1,46 @@
+{
+  "name": "trap",
+  "aliases": [],
+  "description": "Automatically execute commands after receiving signals by processes or the operating system",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--print",
+        "-p"
+      ],
+      "description": "Prints all defined signal handlers",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Displays help about using this command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "function name",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    },
+    {
+      "name": "reason",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

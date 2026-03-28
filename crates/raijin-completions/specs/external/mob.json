@@ -1,0 +1,266 @@
+{
+  "name": "mob",
+  "aliases": [],
+  "description": "Fast git handover for remote collaboration with mob.sh",
+  "subcommands": [
+    {
+      "name": "start",
+      "aliases": [
+        "s"
+      ],
+      "description": "Start session from base branch in wip branch",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--include-uncommitted-changes",
+            "-i"
+          ],
+          "description": "Move uncommitted changes to wip branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--branch",
+            "-b"
+          ],
+          "description": "Set wip branch to 'mob/<base-branch>/<branch-postfix>'",
+          "takes_arg": true,
+          "arg_name": "branch-postfix",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "minutes",
+          "description": "Start a <minutes> timer",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "aliases": [
+        "n"
+      ],
+      "description": "Handover changes in wip branch to next person",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--stay",
+            "-s"
+          ],
+          "description": "Stay on wip branch (default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--return-to-base-branch",
+            "-r"
+          ],
+          "description": "Return to base branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--message",
+            "-m"
+          ],
+          "description": "Override commit message",
+          "takes_arg": true,
+          "arg_name": "commit-message",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "done",
+      "aliases": [
+        "d"
+      ],
+      "description": "Squashes all changes in wip branch to index in base branch",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-squash"
+          ],
+          "description": "Squash no commits from wip branch, only merge wip branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--squash"
+          ],
+          "description": "Squash all commits from wip branch",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--squash-wip"
+          ],
+          "description": "Squash wip commits from wip branch, maintaining manual commits",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Removes local and remote wip branch",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--branch",
+            "-b"
+          ],
+          "description": "Set wip branch to 'mob/<base-branch>/<branch-postfix>'",
+          "takes_arg": true,
+          "arg_name": "branch-postfix",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Removes all orphan wip branches",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "timer",
+      "aliases": [
+        "t"
+      ],
+      "description": "Start a <minutes> timer",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "minutes",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "break",
+      "aliases": [],
+      "description": "Start a <minutes> break timer",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "minutes",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show the status of the current session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "fetch",
+      "aliases": [],
+      "description": "Fetch remote state",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "branch",
+      "aliases": [
+        "b"
+      ],
+      "description": "Show remote wip branches",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Show all configuration options",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show the version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "moo",
+      "aliases": [],
+      "description": "Moo!",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable verbose logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

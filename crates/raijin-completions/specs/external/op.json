@@ -1,0 +1,2077 @@
+{
+  "name": "op",
+  "aliases": [],
+  "description": "Official 1Password CLI",
+  "subcommands": [
+    {
+      "name": "account",
+      "aliases": [],
+      "description": "Manage your locally configured 1Password accounts",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add an account to sign in to for the first time",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--address"
+              ],
+              "description": "The sign-in address for your account",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--email"
+              ],
+              "description": "The email address associated with your account",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--raw"
+              ],
+              "description": "Only return the session token",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--shorthand"
+              ],
+              "description": "Set the short account name",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get details about your account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "List users and accounts set up on this device",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "forget",
+          "aliases": [],
+          "description": "Remove a 1Password account from this device",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Forget all authenticated accounts",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "account",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "connect",
+      "aliases": [],
+      "description": "Manage Connect instances and Connect tokens in your 1Password account",
+      "subcommands": [
+        {
+          "name": "group",
+          "aliases": [],
+          "description": "Manage group access to Secrets Automation",
+          "subcommands": [
+            {
+              "name": "grant",
+              "aliases": [],
+              "description": "Grant a group access to manage Secrets Automation",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--all-servers"
+                  ],
+                  "description": "Grant access to all current and future servers in the authenticated account",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "The group to receive access",
+                  "takes_arg": true,
+                  "arg_name": "group",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke a group's access to manage Secrets Automation",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--all-servers"
+                  ],
+                  "description": "Revoke access to all current and future servers in the authenticated account",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "The group to revoke access from",
+                  "takes_arg": true,
+                  "arg_name": "group",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "server",
+          "aliases": [],
+          "description": "Manage Connect servers",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Set up a Connect server",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "get",
+              "aliases": [],
+              "description": "Get a Connect server",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "serverName | serverID",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "-"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "edit",
+              "aliases": [],
+              "description": "Rename a Connect server",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "serverName | serverID",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "delete",
+              "aliases": [
+                "remove",
+                "rm"
+              ],
+              "description": "Remove a Connect server",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "serverName | serverID",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "-"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "List Connect servers",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "token",
+          "aliases": [],
+          "description": "Manage Connect tokens",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Issue a token for a 1Password Connect server",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--expires-in"
+                  ],
+                  "description": "Set how long the Connect token is valid for in (s)econds, (m)inutes, or (h)ours",
+                  "takes_arg": true,
+                  "arg_name": "duration",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--server"
+                  ],
+                  "description": "Issue a token for this server",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "edit",
+              "aliases": [],
+              "description": "Rename a Connect token",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Change the token's name",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [
+                "remove",
+                "rm"
+              ],
+              "description": "Revoke a token for a Connect server",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "token",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "Get a list of tokens",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "vault",
+          "aliases": [],
+          "description": "Manage connect server vault access",
+          "subcommands": [
+            {
+              "name": "grant",
+              "aliases": [],
+              "description": "Grant a Connect server access to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--server"
+                  ],
+                  "description": "The server to be granted access",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke a Connect server's access to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--server"
+                  ],
+                  "description": "The server to revoke access from",
+                  "takes_arg": true,
+                  "arg_name": "server",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "document",
+      "aliases": [],
+      "description": "Perform CRUD operations on Document items in your vaults",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a document item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--file-name"
+              ],
+              "description": "Set the file's name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tags"
+              ],
+              "description": "Set the tags to the specified (comma-separated) values",
+              "takes_arg": true,
+              "arg_name": "tags",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Set the document item's title",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Download a document",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--include-archive"
+              ],
+              "description": "Include document items in the Archive. Can also be set using OP_INCLUDE_ARCHIVE environment variable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Save the document to the file path instead of stdout",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a document item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--file-name"
+              ],
+              "description": "Set the file's name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tags"
+              ],
+              "description": "Set the tags to the specified (comma-separated) values. An empty value will remove all tags",
+              "takes_arg": true,
+              "arg_name": "tags",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Set the document item's title",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "file",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove",
+            "rm"
+          ],
+          "description": "Delete or archive a document item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--archive"
+              ],
+              "description": "Move the document to the Archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "Get a list of documents",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--include-archive"
+              ],
+              "description": "Include document items in the Archive. Can also be set using OP_INCLUDE_ARCHIVE environment variable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "events-api",
+      "aliases": [],
+      "description": "Manage Events API integrations in your 1Password account",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Set up an integration with the Events API",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "group",
+      "aliases": [],
+      "description": "Perform CRUD operations on the groups of users in your 1Password account",
+      "subcommands": [
+        {
+          "name": "user",
+          "aliases": [],
+          "description": "Manage users in groups",
+          "subcommands": [
+            {
+              "name": "grant",
+              "aliases": [],
+              "description": "Grant a user access to a group",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "Specify the group to grant the user access to",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--role"
+                  ],
+                  "description": "Specify the user's role as a member or manager. Default: member",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke a user's access to a vault or group",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "Specify the group to revoke the user's access to",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "Retrieve users that belong to a group",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a group",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--description"
+              ],
+              "description": "Set the group's description",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get details about a group",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "groupName | groupID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a group's name or description",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--description"
+              ],
+              "description": "Change the group's description",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "groupName | groupID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove",
+            "rm"
+          ],
+          "description": "Remove a group",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "groupName | groupID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "List groups",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--user"
+              ],
+              "description": "List groups that a user belongs to",
+              "takes_arg": true,
+              "arg_name": "user",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "item",
+      "aliases": [],
+      "description": "Perform CRUD operations on the 1Password items in your vaults",
+      "subcommands": [
+        {
+          "name": "template",
+          "aliases": [],
+          "description": "Manage templates",
+          "subcommands": [
+            {
+              "name": "get",
+              "aliases": [],
+              "description": "Get an item template",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-f",
+                    "--force"
+                  ],
+                  "description": "Do not prompt for confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "category",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "-"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "Get a list of templates",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create an item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--category"
+              ],
+              "description": "Set the item's category",
+              "takes_arg": true,
+              "arg_name": "category",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Perform a dry run of the command and output a preview of the resulting item",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--generate-password"
+              ],
+              "description": "Give the item a randomly generated password",
+              "takes_arg": true,
+              "arg_name": "recipe",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tags"
+              ],
+              "description": "Set the tags to the specified (comma-separated) values",
+              "takes_arg": true,
+              "arg_name": "tags",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--template"
+              ],
+              "description": "Specify the filepath to read an item template from",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Set the item's title",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--url"
+              ],
+              "description": "Set the URL associated with the item",
+              "takes_arg": true,
+              "arg_name": "URL",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "assignment...",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get an item's details",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--fields"
+              ],
+              "description": "Only return data from these fields. Use 'label=' to get the field by name or 'type=' to filter fields by type",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-archive"
+              ],
+              "description": "Include items in the Archive. Can also be set using OP_INCLUDE_ARCHIVE environment variable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--otp"
+              ],
+              "description": "Output the primary one-time password for this item",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--share-link"
+              ],
+              "description": "Get a shareable link for the item",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID | shareLink",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit an item's details",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "itemName | itemID | shareLink",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "assignment ...",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove",
+            "rm"
+          ],
+          "description": "Delete or archive an item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--archive"
+              ],
+              "description": "Move the item to the Archive",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID | shareLink",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "List items",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--categories"
+              ],
+              "description": "Only list items in these categories (comma-separated)",
+              "takes_arg": true,
+              "arg_name": "categories",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-archive"
+              ],
+              "description": "Include items in the Archive. Can also be set using OP_INCLUDE_ARCHIVE environment variable",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--long"
+              ],
+              "description": "Output a more detailed item list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tags"
+              ],
+              "description": "Only list items with these tags (comma-separated)",
+              "takes_arg": true,
+              "arg_name": "tags",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "share",
+          "aliases": [],
+          "description": "Share an item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--emails"
+              ],
+              "description": "Email addresses to share with",
+              "takes_arg": true,
+              "arg_name": "strings",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--expiry"
+              ],
+              "description": "Link expiring after the specified duration in (s)econds, (m)inutes, or (h)ours (default 7h)",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--vault"
+              ],
+              "description": "Look for the item in this vault",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "itemName | itemID",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "user",
+      "aliases": [],
+      "description": "Manage users within this 1Password account",
+      "subcommands": [
+        {
+          "name": "provision",
+          "aliases": [],
+          "description": "Provision a user in the authenticated account",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--email"
+              ],
+              "description": "Provide the user's email address",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--language"
+              ],
+              "description": "Provide the user's account language. (default \"en\")",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "confirm",
+          "aliases": [],
+          "description": "Confirm a user",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Confirm all unconfirmed users",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "email | name | userID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get details about a user",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--fingerprint"
+              ],
+              "description": "Get the user's public key fingerprint",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "email | name | userID | --me",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-",
+                  "--me"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a user's name or Travel Mode status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Set the user's name",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "email | name | userID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "suspend",
+          "aliases": [],
+          "description": "Suspend a user",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--deauthorize-devices-after"
+              ],
+              "description": "Deauthorize the user's devices after a time (rounded down to seconds)",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "email | name | userID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "reactivate",
+          "aliases": [],
+          "description": "Reactivate a suspended user",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "email | name | userID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove",
+            "rm"
+          ],
+          "description": "Remove a user and all their data from the account",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "email | name | userID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "List users",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "List users who belong to a group",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vault",
+      "aliases": [],
+      "description": "Manage permissions and perform CRUD operations on your 1Password vaults",
+      "subcommands": [
+        {
+          "name": "group",
+          "aliases": [],
+          "description": "Manage group vault access",
+          "subcommands": [
+            {
+              "name": "grant",
+              "aliases": [],
+              "description": "Grant a group permissions to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "The group to receive access",
+                  "takes_arg": true,
+                  "arg_name": "group",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-input"
+                  ],
+                  "description": "Do not prompt for input on interactive terminal",
+                  "takes_arg": true,
+                  "arg_name": "input",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--permissions"
+                  ],
+                  "description": "The permissions to grant to the group",
+                  "takes_arg": true,
+                  "arg_name": "permissions",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke a portion or the entire access of a group to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--group"
+                  ],
+                  "description": "The group to revoke access from",
+                  "takes_arg": true,
+                  "arg_name": "group",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-input"
+                  ],
+                  "description": "Do not prompt for input on interactive terminal",
+                  "takes_arg": true,
+                  "arg_name": "input",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--permissions"
+                  ],
+                  "description": "The permissions to revoke from the group",
+                  "takes_arg": true,
+                  "arg_name": "permissions",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "List all the groups that have access to the given vault",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "vault",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "-"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "user",
+          "aliases": [],
+          "description": "Manage user vault access",
+          "subcommands": [
+            {
+              "name": "grant",
+              "aliases": [],
+              "description": "Grant a user access to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-input"
+                  ],
+                  "description": "Do not prompt for input on interactive terminal",
+                  "takes_arg": true,
+                  "arg_name": "input",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--permissions"
+                  ],
+                  "description": "The permissions to grant to the user",
+                  "takes_arg": true,
+                  "arg_name": "permissions",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--user"
+                  ],
+                  "description": "The user to receive access",
+                  "takes_arg": true,
+                  "arg_name": "user",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke a portion or the entire access of a user to a vault",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-input"
+                  ],
+                  "description": "Do not prompt for input on interactive terminal",
+                  "takes_arg": true,
+                  "arg_name": "input",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--permissions"
+                  ],
+                  "description": "The permissions to revoke from the user",
+                  "takes_arg": true,
+                  "arg_name": "permissions",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--user"
+                  ],
+                  "description": "The user to revoke access from",
+                  "takes_arg": true,
+                  "arg_name": "user",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [
+                "ls"
+              ],
+              "description": "List all users with access to the vault and their permissions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new vault",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--allow-admins-to-manage"
+              ],
+              "description": "Set whether admins can manage the vault. Default: false",
+              "takes_arg": true,
+              "arg_name": "true|false",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--description"
+              ],
+              "description": "Set the group's description",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get details about a vault",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "vaultName | vaultID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a vault's name, description, icon or Travel Mode status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--description"
+              ],
+              "description": "Change the vault's description",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--icon"
+              ],
+              "description": "Change the vault's icon",
+              "takes_arg": true,
+              "arg_name": "icon",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Change the vault's name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--travel-mode"
+              ],
+              "description": "Turn Travel Mode on or off for the vault. Only vaults with Travel Mode enabled will be accessible while a user has Travel Mode turned on. (default off)",
+              "takes_arg": true,
+              "arg_name": "on|off",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "vaultName | vaultID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove",
+            "rm"
+          ],
+          "description": "Remove a vault",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "vaultName | vaultID",
+              "description": null,
+              "template": {
+                "custom": [
+                  "-"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls"
+          ],
+          "description": "List all vaults in the account",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "List vaults a group has access to",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell completion information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "inject",
+      "aliases": [],
+      "description": "Inject secrets into a config file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "read",
+      "aliases": [],
+      "description": "Read a secret using the secrets reference syntax",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--file-mode"
+          ],
+          "description": "Set filemode for the output file if it does not yet exist. It is ignored without the --out-file flag. (default 0600)",
+          "takes_arg": true,
+          "arg_name": "filemode",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Do not prompt for confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--no-newline"
+          ],
+          "description": "Do not print a new line after the secret",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Pass secrets as environment variables to a process",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Enable Dotenv integration with specific Dotenv files to parse. For example: --env-file=.env",
+          "takes_arg": true,
+          "arg_name": "stringArray",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-masking"
+          ],
+          "description": "Disable masking of secrets on stdout and stderr",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "signin",
+      "aliases": [],
+      "description": "Sign in to a 1Password account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Ignore warnings and print raw output from this command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "signout",
+      "aliases": [],
+      "description": "Sign out of a 1Password account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Sign out of all signed-in accounts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--forget"
+          ],
+          "description": "Remove the details for a 1Password account from this device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Check for and download updates",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "Download the update to this ''path''",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Get information about a signed-in account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--account"
+      ],
+      "description": "Select the account to execute the command by account shorthand, sign-in address, account ID, or user ID. For a list of available accounts, run 'op account list'. Can be set as the OP_ACCOUNT environment variable",
+      "takes_arg": true,
+      "arg_name": "account",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Store and use cached information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Use this configuration directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Output debug logs. Can also be set using $OP_DEBUG environment variable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--encoding"
+      ],
+      "description": "Use this character encoding type. Default: UTF-8. Supported: SHIFT_JIS, gbk",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "UTF-8",
+          "SHIFT_JIS",
+          "gbk"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format"
+      ],
+      "description": "Use this output format. Can be 'human-readable' or 'json'. Can be set as the OP_FORMAT environment variable. (default \"human-readable\")",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "human-readable",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Get help for op",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--iso-timestamps"
+      ],
+      "description": "Format timestamps according to ISO 8601 / RFC 3339. Can be set as the OP_ISO_TIMESTAMPS environment variable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Print output without color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--session"
+      ],
+      "description": "Authenticate with this session token. 1Password CLI outputs session tokens for successful 'op signin' commands when biometric unlock is disabled",
+      "takes_arg": true,
+      "arg_name": "token",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Version for op",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

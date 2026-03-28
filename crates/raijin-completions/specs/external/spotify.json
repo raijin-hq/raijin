@@ -1,0 +1,270 @@
+{
+  "name": "spotify",
+  "aliases": [],
+  "description": "CLI to use Spotify from the terminal",
+  "subcommands": [
+    {
+      "name": "play",
+      "aliases": [],
+      "description": "Resume playback where Spotify last left off",
+      "subcommands": [
+        {
+          "name": "album",
+          "aliases": [],
+          "description": "Find an album by name and play it",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "album name",
+              "description": "The album name you want to play",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "artist",
+          "aliases": [],
+          "description": "Find an artist by name and play it",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "artist name",
+              "description": "The artist name you want to play",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Find a playlist by name and plays it",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "playlist name",
+              "description": "The playlist name you want to play",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "uri",
+          "aliases": [],
+          "description": "Play songs from specific uri",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "uri",
+              "description": "The uri of the song you want to play",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "song name",
+          "description": "The name of the song to start playing",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "aliases": [],
+      "description": "Skip to the next song in a playlist",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "prev",
+      "aliases": [],
+      "description": "Return to the previous song in a playlist",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "replay",
+      "aliases": [],
+      "description": "Replay the current track from the beginning",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pos",
+      "aliases": [],
+      "description": "Jump to a time (in secs) in the current song",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "time",
+          "description": "Exact time in secs to jump in",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "aliases": [],
+      "description": "Pause (or resume) Spotify playback",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop playback",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "quit",
+      "aliases": [],
+      "description": "Stop playback and quit Spotify",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vol",
+      "aliases": [],
+      "description": "Show the current Spotify volume",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "amount",
+          "description": "Set the volume to an amount between 0 and 100",
+          "template": {
+            "custom": [
+              "up",
+              "down"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show the current player status",
+      "subcommands": [
+        {
+          "name": "artist",
+          "aliases": [],
+          "description": "Show the currently playing artist",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "album",
+          "aliases": [],
+          "description": "Show the currently playing album",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "track",
+          "aliases": [],
+          "description": "Show the currently playing track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "Display the current song's Spotify URL and URI",
+      "subcommands": [
+        {
+          "name": "url",
+          "aliases": [],
+          "description": "Display the current song's Spotify URL and copies it to the clipboard",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "uri",
+          "aliases": [],
+          "description": "Display the current song's Spotify URI and copies it to the clipboard",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "toggle",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "shuffle",
+          "aliases": [],
+          "description": "Toggle shuffle playback mode",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "repeat",
+          "aliases": [],
+          "description": "Toggle repeat playback mode",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for spotify",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

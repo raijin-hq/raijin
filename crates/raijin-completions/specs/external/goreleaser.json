@@ -1,0 +1,763 @@
+{
+  "name": "goreleaser",
+  "aliases": [],
+  "description": "Deliver Go binaries as fast and easily as possible",
+  "subcommands": [
+    {
+      "name": "b",
+      "aliases": [
+        "build"
+      ],
+      "description": "Builds the current project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--clean"
+          ],
+          "description": "Remove the dist folder before building",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-f"
+          ],
+          "description": "Load configuration from file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deprecated"
+          ],
+          "description": "Force print the deprecation message - tests only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id"
+          ],
+          "description": "Builds only the specified build ids",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Copy the binary to the path after the build. Only taken into account when using --single-target and a single id (either with --id or if configuration only has one build)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallelism",
+            "-p"
+          ],
+          "description": "Amount tasks to run concurrently (default: number of CPUs)",
+          "takes_arg": true,
+          "arg_name": "parallelism",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rm-dist"
+          ],
+          "description": "Remove the dist folder before building",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--single-target"
+          ],
+          "description": "Builds only for current GOOS and GOARCH, regardless of what's set in the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip"
+          ],
+          "description": "Skip the given options (valid options are: before, post-hooks, pre-hooks, validate)",
+          "takes_arg": true,
+          "arg_name": "skip",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--skip-before"
+          ],
+          "description": "Skips global before hooks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-post-hooks"
+          ],
+          "description": "Skips all post-build hooks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-validate"
+          ],
+          "description": "Skips several sanity checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--snapshot"
+          ],
+          "description": "Generate an unversioned snapshot build, skipping all validations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Timeout to the entire build process",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "c",
+      "aliases": [
+        "check"
+      ],
+      "description": "Checks if configuration is valid",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-f"
+          ],
+          "description": "Configuration file(s) to check",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deprecated"
+          ],
+          "description": "Force print the deprecation message - tests only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Quiet mode: no output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "hc",
+      "aliases": [
+        "healthcheck"
+      ],
+      "description": "Checks if needed tools are installed",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-f"
+          ],
+          "description": "Configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Quiet mode: no output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "i",
+      "aliases": [
+        "init"
+      ],
+      "description": "Generates a .goreleaser.yaml file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config",
+            "-f"
+          ],
+          "description": "Load configuration from file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema",
+      "aliases": [
+        "jsonschema"
+      ],
+      "description": "Outputs goreleaser's JSON schema",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Where to save the JSONSchema file",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "r",
+      "aliases": [
+        "release"
+      ],
+      "description": "Releases the current project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--auto-snapshot"
+          ],
+          "description": "Automatically sets --snapshot if the repository is dirty",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean"
+          ],
+          "description": "Removes the dist folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-f"
+          ],
+          "description": "Load configuration from file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deprecated"
+          ],
+          "description": "Force print the deprecation message - tests only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-fast"
+          ],
+          "description": "Whether to abort the release publishing on the first error",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallelism",
+            "-p"
+          ],
+          "description": "Amount tasks to run concurrently (default: number of CPUs)",
+          "takes_arg": true,
+          "arg_name": "parallelism",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-footer"
+          ],
+          "description": "Load custom release notes footer from a markdown file",
+          "takes_arg": true,
+          "arg_name": "release-footer",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-footer-tmpl"
+          ],
+          "description": "Load custom release notes footer from a templated markdown file (overrides --release-footer)",
+          "takes_arg": true,
+          "arg_name": "release-footer-tmpl",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-header"
+          ],
+          "description": "Load custom release notes header from a markdown file",
+          "takes_arg": true,
+          "arg_name": "release-header",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-header-tmpl"
+          ],
+          "description": "Load custom release notes header from a templated markdown file (overrides --release-header)",
+          "takes_arg": true,
+          "arg_name": "release-header-tmpl",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-notes"
+          ],
+          "description": "Load custom release notes from a markdown file (will skip GoReleaser changelog generation)",
+          "takes_arg": true,
+          "arg_name": "release-notes",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--release-notes-tmpl"
+          ],
+          "description": "Load custom release notes from a templated markdown file (overrides --release-notes)",
+          "takes_arg": true,
+          "arg_name": "release-notes-tmpl",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rm-dist"
+          ],
+          "description": "Removes the dist folder",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip"
+          ],
+          "description": "Skip the given options (valid options are announce, aur, before, chocolatey, docker, homebrew, ko, nfpm, nix, publish, sbom, scoop, sign, snapcraft, validate, winget)",
+          "takes_arg": true,
+          "arg_name": "skip",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--skip-announce"
+          ],
+          "description": "Skips announcing releases (implies --skip=validate)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-before"
+          ],
+          "description": "Skips global before hooks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-docker"
+          ],
+          "description": "Skips Docker Images/Manifests builds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-ko"
+          ],
+          "description": "Skips Ko builds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-publish"
+          ],
+          "description": "Skips publishing artifacts (implies --skip=announce)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-sbom"
+          ],
+          "description": "Skips cataloging artifacts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-sign"
+          ],
+          "description": "Skips signing artifacts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-validate"
+          ],
+          "description": "Skips git checks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--snapshot"
+          ],
+          "description": "Generate an unversioned snapshot release, skipping all validations and without publishing any artifacts (implies --skip=announce,publish,validate)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Timeout to the entire release process",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "b",
+          "aliases": [
+            "build"
+          ],
+          "description": "Builds the current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "c",
+          "aliases": [
+            "check"
+          ],
+          "description": "Checks if configuration is valid",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "hc",
+          "aliases": [
+            "healthcheck"
+          ],
+          "description": "Checks if needed tools are installed",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "i",
+          "aliases": [
+            "init"
+          ],
+          "description": "Generates a .goreleaser.yaml file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "schema",
+          "aliases": [
+            "jsonschema"
+          ],
+          "description": "Outputs goreleaser's JSON schema",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "r",
+          "aliases": [
+            "release"
+          ],
+          "description": "Releases the current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Enable verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

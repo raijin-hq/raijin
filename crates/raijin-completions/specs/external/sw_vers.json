@@ -1,0 +1,39 @@
+{
+  "name": "sw_vers",
+  "aliases": [],
+  "description": "Print macOS version information",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-productName"
+      ],
+      "description": "Print product name",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-productVersion"
+      ],
+      "description": "Print product version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-buildVersion"
+      ],
+      "description": "Print build version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

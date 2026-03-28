@@ -1,0 +1,49 @@
+{
+  "name": "sl",
+  "aliases": [],
+  "description": "A highly advanced animation program for curing your bad habit of mistyping",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "An accident is occurring; people cry for help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Little version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "It flies like the galaxy express 999",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "C51 appears instead of D51",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

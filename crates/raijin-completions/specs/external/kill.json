@@ -1,0 +1,37 @@
+{
+  "name": "kill",
+  "aliases": [],
+  "description": "Terminate or signal a process",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "A symbolic signal name specifying the signal to be sent",
+      "takes_arg": true,
+      "arg_name": "signal_name",
+      "arg_template": "env_vars",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "If no operand is given, list the signal names; otherwise, write the signal name corresponding to exit_status",
+      "takes_arg": true,
+      "arg_name": "exit_status",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "pid",
+      "description": null,
+      "template": "process_ids",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

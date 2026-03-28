@@ -1,0 +1,150 @@
+{
+  "name": "ignite-cli",
+  "aliases": [],
+  "description": "Ignite is a CLI that helps you spin up a new React Native app using a battle-tested tech stack",
+  "subcommands": [
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new React Native app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--expo"
+          ],
+          "description": "Use Expo",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle"
+          ],
+          "description": "Set the bundle ID of the app",
+          "takes_arg": true,
+          "arg_name": "bundle",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "g",
+      "aliases": [
+        "generate"
+      ],
+      "description": "Generate components and other app features",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List installed generators",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--update"
+          ],
+          "description": "Update installed generators",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "generator",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update installed generators",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Update all installed generators",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "generator",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Check your environment & display versions of installed dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,2455 @@
+{
+  "name": "keytool",
+  "aliases": [],
+  "description": "Key and Certificate Management Tool",
+  "subcommands": [
+    {
+      "name": "-certreq",
+      "aliases": [],
+      "description": "Generates a certificate request",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sigalg"
+          ],
+          "description": "Signature algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Output file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dname"
+          ],
+          "description": "Distinguished name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ext"
+          ],
+          "description": "X.509 extension",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-changealias",
+      "aliases": [],
+      "description": "Changes an entry's alias",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destalias"
+          ],
+          "description": "Destination alias",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-delete",
+      "aliases": [],
+      "description": "Deletes an entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-exportcert",
+      "aliases": [],
+      "description": "Exports certificate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-rfc"
+          ],
+          "description": "Output in RFC style",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Output file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-genkeypair",
+      "aliases": [],
+      "description": "Generate a key pair",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keyalg"
+          ],
+          "description": "Key algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keysize"
+          ],
+          "description": "Key bit size",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-groupname"
+          ],
+          "description": "Group name. For example, an Elliptic Curve name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sigalg"
+          ],
+          "description": "Signature algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destalias"
+          ],
+          "description": "Destination alias",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dname"
+          ],
+          "description": "Distinguished name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-startdate"
+          ],
+          "description": "Certificate validity start date/time",
+          "takes_arg": true,
+          "arg_name": "date",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ext"
+          ],
+          "description": "X.509 extension name",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-validity"
+          ],
+          "description": "Validity number of days",
+          "takes_arg": true,
+          "arg_name": "days",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-genseckey",
+      "aliases": [],
+      "description": "Generates a secret key",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keyalg"
+          ],
+          "description": "Key algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keysize"
+          ],
+          "description": "Key bit size",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-gencert",
+      "aliases": [],
+      "description": "Generates certificate from a certificate request",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-rfc"
+          ],
+          "description": "Output in RFC style",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-infile"
+          ],
+          "description": "Input file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-outfile"
+          ],
+          "description": "Output file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sigalg"
+          ],
+          "description": "Signature algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-dname"
+          ],
+          "description": "Distinguished name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-startdate"
+          ],
+          "description": "Certificate validity start date/time",
+          "takes_arg": true,
+          "arg_name": "date",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ext"
+          ],
+          "description": "X.509 extension name",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-validity"
+          ],
+          "description": "Validity number of days",
+          "takes_arg": true,
+          "arg_name": "days",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-importcert",
+      "aliases": [],
+      "description": "Imports a certificate or a certificate chain",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-noprompt"
+          ],
+          "description": "Do not prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-trustcacerts"
+          ],
+          "description": "Trust certificates from cacerts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Output file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-importpass",
+      "aliases": [],
+      "description": "Imports a password",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keyalg"
+          ],
+          "description": "Key algorithm name",
+          "takes_arg": true,
+          "arg_name": "alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keysize"
+          ],
+          "description": "Key bit size",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-importkeystore",
+      "aliases": [],
+      "description": "Imports one or all entries from another keystore",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srckeystore"
+          ],
+          "description": "Source keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destkeystore"
+          ],
+          "description": "Destination keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srcstoretype"
+          ],
+          "description": "Source keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-deststoretype"
+          ],
+          "description": "Destination keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srcstorepass"
+          ],
+          "description": "Source keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-deststorepass"
+          ],
+          "description": "Destination keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srcprotected"
+          ],
+          "description": "Source keystore password protected",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destprotected"
+          ],
+          "description": "Destination keystore password protected",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srcprovidername"
+          ],
+          "description": "Source keystore provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destprovidername"
+          ],
+          "description": "Destination keystore provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srcalias"
+          ],
+          "description": "Source alias",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destalias"
+          ],
+          "description": "Destination alias",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-srckeypass"
+          ],
+          "description": "Source key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destkeypass"
+          ],
+          "description": "Destination key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-noprompt"
+          ],
+          "description": "Do not prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-keypasswd",
+      "aliases": [],
+      "description": "Changes the key password of an entry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keypass"
+          ],
+          "description": "Key password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-new"
+          ],
+          "description": "New password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-list",
+      "aliases": [],
+      "description": "Lists entries in a keystore",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-protected"
+          ],
+          "description": "Password through protected mechanism",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-rfc"
+          ],
+          "description": "Output in RFC style",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-printcert",
+      "aliases": [],
+      "description": "Prints the content of a certificate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-rfc"
+          ],
+          "description": "Output in RFC style",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Input file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sslserver"
+          ],
+          "description": "SSL server host and port",
+          "takes_arg": true,
+          "arg_name": "server:[port]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-jarfile"
+          ],
+          "description": "Signed jar file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-printcertreq",
+      "aliases": [],
+      "description": "Prints the content of a certificate request",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Input file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-printcrl",
+      "aliases": [],
+      "description": "Prints the content of a CRL file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-file"
+          ],
+          "description": "Input file name",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-storepasswd",
+      "aliases": [],
+      "description": "Changes the store password of a keystore",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "-?",
+            "--help",
+            "-help"
+          ],
+          "description": "Show help message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v"
+          ],
+          "description": "Verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-alias"
+          ],
+          "description": "Alias name of the entry to process",
+          "takes_arg": true,
+          "arg_name": "alias",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-keystore"
+          ],
+          "description": "Keystore name",
+          "takes_arg": true,
+          "arg_name": "keystore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storepass"
+          ],
+          "description": "Keystore password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-storetype"
+          ],
+          "description": "Keystore type",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providername"
+          ],
+          "description": "Provider name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-addprovider"
+          ],
+          "description": "Add security provider by name (e.g. SunPKCS11)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerclass"
+          ],
+          "description": "Add security provider by fully-qualified class name",
+          "takes_arg": true,
+          "arg_name": "class",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerarg"
+          ],
+          "description": "Configure argument for -addprovider or -providerclass",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-providerpath"
+          ],
+          "description": "Provider classpath",
+          "takes_arg": true,
+          "arg_name": "list",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-new"
+          ],
+          "description": "New password",
+          "takes_arg": true,
+          "arg_name": "arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-cacerts"
+          ],
+          "description": "Access the cacerts keystore",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "-?",
+        "--help",
+        "-help"
+      ],
+      "description": "Show help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-conf"
+      ],
+      "description": "Specify pre-configured options file",
+      "takes_arg": true,
+      "arg_name": "url",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

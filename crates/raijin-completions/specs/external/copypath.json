@@ -1,0 +1,16 @@
+{
+  "name": "copypath",
+  "aliases": [],
+  "description": "Oh-My-Zsh plugin that copies the path of given directory or file to the clipboard",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "path",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

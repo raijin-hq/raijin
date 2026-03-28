@@ -1,0 +1,426 @@
+{
+  "name": "ansible-playbook",
+  "aliases": [],
+  "description": "Runs Ansible playbooks, executing the defined tasks on the targeted hosts",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--ask-vault-pass"
+      ],
+      "description": "Ask for vault password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--flush-cache"
+      ],
+      "description": "Clears the fact cache for every host in inventory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-handlers"
+      ],
+      "description": "Run handlers even if a task fails",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-hosts"
+      ],
+      "description": "Outputs a list of matching hosts; does not execute",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-tags"
+      ],
+      "description": "List all available tags",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-tasks"
+      ],
+      "description": "List all tasks that would be executed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-tags"
+      ],
+      "description": "Only run plays and tasks whose tags do not match these values",
+      "takes_arg": true,
+      "arg_name": "tags",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--start-at-task"
+      ],
+      "description": "Start the playbook at the task matching this name one-step-at-a-time",
+      "takes_arg": true,
+      "arg_name": "task name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--step"
+      ],
+      "description": "Execute one-step-at-a-time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--syntax-check"
+      ],
+      "description": "Perform a syntax check on the playbook, but do not execute it",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vault-id"
+      ],
+      "description": "Specify the vault identity to use",
+      "takes_arg": true,
+      "arg_name": "vault ID",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--vault-password-file"
+      ],
+      "description": "Specify a vault password file",
+      "takes_arg": true,
+      "arg_name": "vault password file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show program's version number, config file location, configured module search path, module location and executable location",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--check",
+        "-C"
+      ],
+      "description": "Don't make any changes; instead, try to predict some of the changes that may occur",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--diff",
+        "-D"
+      ],
+      "description": "When changing (small) files and templates, show the differences in those files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--module-path",
+        "-M"
+      ],
+      "description": "Prepend colon-separated path(s) to module library",
+      "takes_arg": true,
+      "arg_name": "module path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extra-vars",
+        "-e"
+      ],
+      "description": "Set additional variables as key=value or YAML/JSON, if filename prepend with @",
+      "takes_arg": true,
+      "arg_name": "extra vars",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--forks",
+        "-f"
+      ],
+      "description": "Specify number of parallel processes to use",
+      "takes_arg": true,
+      "arg_name": "forks",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for ansible",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inventory",
+        "-i"
+      ],
+      "description": "Specify inventory host path or comma separated host list",
+      "takes_arg": true,
+      "arg_name": "inventory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--limit",
+        "-l"
+      ],
+      "description": "Limit selected hosts to an additional pattern",
+      "takes_arg": true,
+      "arg_name": "subset",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tags",
+        "-t"
+      ],
+      "description": "Only run plays and tasks tagged with these values",
+      "takes_arg": true,
+      "arg_name": "tags",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Enable verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-vvv"
+      ],
+      "description": "Enable very verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-vvvv"
+      ],
+      "description": "Enable connection debug mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--become-method"
+      ],
+      "description": "Privilege escalation method to use",
+      "takes_arg": true,
+      "arg_name": "become method",
+      "arg_template": {
+        "custom": [
+          "sudo",
+          "su",
+          "pbrun",
+          "pfexec",
+          "doas",
+          "dzdo",
+          "ksu",
+          "runas",
+          "machinectl"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--become-user"
+      ],
+      "description": "Privilege escalation user to use",
+      "takes_arg": true,
+      "arg_name": "become user",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ask-become-pass",
+        "-K"
+      ],
+      "description": "Prompt for privilege escalation password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--become",
+        "-b"
+      ],
+      "description": "Run operations with become",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--private-key",
+        "--key-file"
+      ],
+      "description": "Use this fole to authenticate the connection",
+      "takes_arg": true,
+      "arg_name": "private key",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--scp-extra-args"
+      ],
+      "description": "Extra arguments to pass to (only) scp",
+      "takes_arg": true,
+      "arg_name": "SCP extra args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sftp-extra-args"
+      ],
+      "description": "Extra arguments to pass to (only) sftp",
+      "takes_arg": true,
+      "arg_name": "SFTP extra args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-ssh-extra-args"
+      ],
+      "description": "Extra arguments to pass to (only) ssh",
+      "takes_arg": true,
+      "arg_name": "SSH extra args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssh-common-args"
+      ],
+      "description": "Extra arguments to pass to sftp/scp/ssh",
+      "takes_arg": true,
+      "arg_name": "SSH common args",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout",
+        "-T"
+      ],
+      "description": "Override the connection timeout in seconds",
+      "takes_arg": true,
+      "arg_name": "timeout",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--connection",
+        "-c"
+      ],
+      "description": "Connection type to use",
+      "takes_arg": true,
+      "arg_name": "connection type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ask-pass",
+        "-k"
+      ],
+      "description": "Ask for connection password",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user",
+        "-u"
+      ],
+      "description": "Connect as this user",
+      "takes_arg": true,
+      "arg_name": "user",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "playbook",
+      "description": "Playbook(s)",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

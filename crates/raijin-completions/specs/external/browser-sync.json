@@ -1,0 +1,564 @@
+{
+  "name": "browser-sync",
+  "aliases": [],
+  "description": "Keep multiple browsers & devices in sync when building websites",
+  "subcommands": [
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start Browsersync",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--server"
+          ],
+          "description": "Run a Local server (uses your cwd as the web root)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Working directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "If true, certain logs will output as json only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--serveStatic",
+            "--ss"
+          ],
+          "description": "Directories to serve static files from",
+          "takes_arg": true,
+          "arg_name": "directories",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Specify a port to use",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--proxy"
+          ],
+          "description": "Proxy an existing server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ws"
+          ],
+          "description": "Proxy mode only - enable websocket proxying",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--browser"
+          ],
+          "description": "Choose which browser should be auto-opened",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "Watch files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Ignore patterns for file watchers",
+          "takes_arg": true,
+          "arg_name": "patterns",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--files"
+          ],
+          "description": "File paths to watch",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--index"
+          ],
+          "description": "Specify which file should be used as the index page",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugins"
+          ],
+          "description": "Load Browsersync plugins",
+          "takes_arg": true,
+          "arg_name": "plugins",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--extensions"
+          ],
+          "description": "Specify file extension fallbacks",
+          "takes_arg": true,
+          "arg_name": "extensions",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--startPath"
+          ],
+          "description": "Specify the start path for the opened browser",
+          "takes_arg": true,
+          "arg_name": "start-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--single"
+          ],
+          "description": "If true, the connect-history-api-fallback middleware will be added",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "Enable SSL for local development",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "Show a directory listing for the server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--xip"
+          ],
+          "description": "Use xip.io domain routing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tunnel"
+          ],
+          "description": "Use a public URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open"
+          ],
+          "description": "Choose which URL is auto-opened (local, external or tunnel), or provide a url",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": {
+            "custom": [
+              "local",
+              "external",
+              "tunnel"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cors"
+          ],
+          "description": "Add Access Control headers to every request",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--config"
+          ],
+          "description": "Specify a path to a configuration file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Specify a hostname to use",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen"
+          ],
+          "description": "Specify a hostname bind to (this will prevent binding to all interfaces)",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--logLevel"
+          ],
+          "description": "Set the logger output level (silent, info or debug)",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reload-delay"
+          ],
+          "description": "Time in milliseconds to delay the reload event following file changes",
+          "takes_arg": true,
+          "arg_name": "milliseconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reload-debounce"
+          ],
+          "description": "Restrict the frequency in which browser:reload events can be emitted to connected clients",
+          "takes_arg": true,
+          "arg_name": "milliseconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ui-port"
+          ],
+          "description": "Specify a port for the UI to use",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watchEvents"
+          ],
+          "description": "Specify which file events to respond to",
+          "takes_arg": true,
+          "arg_name": "events",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-notify"
+          ],
+          "description": "Disable the notify element in browsers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-open"
+          ],
+          "description": "Don't open a new browser window",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-snippet"
+          ],
+          "description": "Disable the snippet injection",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-online"
+          ],
+          "description": "Force offline usage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ui"
+          ],
+          "description": "Don't start the user interface",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ghost-mode"
+          ],
+          "description": "Disable Ghost Mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-inject-changes"
+          ],
+          "description": "Reload on every file change",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-reload-on-restart"
+          ],
+          "description": "Don't auto-reload all browsers following a restart",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Working directory",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reload",
+      "aliases": [],
+      "description": "Send a reload event over HTTP protocol",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--files"
+          ],
+          "description": "File paths to reload",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Target a running instance by port number",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-u",
+            "--url"
+          ],
+          "description": "Provide the full URL to the running browsersync isntance",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Working directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "recipe",
+      "aliases": [],
+      "description": "Generate the files for a recipe",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List recipes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "Working directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Specify an output directory",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "recipe-name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "site or directory",
+      "description": null,
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

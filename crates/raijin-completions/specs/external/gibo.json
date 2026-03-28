@@ -1,0 +1,93 @@
+{
+  "name": "gibo",
+  "aliases": [],
+  "description": "Easy access to gitignore boilerplates",
+  "subcommands": [
+    {
+      "name": "dump",
+      "aliases": [],
+      "description": "Dump one or more boilerplates to STDOUT",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "boilerplate",
+          "description": "Name of the boilerplate to dump",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Search for boilerplates",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "search term",
+          "description": "Name of the language or framework to search for",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "root",
+      "aliases": [],
+      "description": "Show the directory where gibo stores its boilerplates",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Show the list of available boilerplates",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update the list of available boilerplates",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show the current version of gibo installed",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for gibo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

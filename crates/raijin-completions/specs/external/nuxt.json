@@ -1,0 +1,99 @@
+{
+  "name": "nuxt",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Launch the development server",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start the production server (after running nuxt build). Use it for Node.js hosting like Heroku, Digital Ocean, etc",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Build the application (if needed), generate every route as a HTML file and statically export to dist/ directory (used for static hosting)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build and optimize your application with webpack for production",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "webpack",
+      "aliases": [],
+      "description": "Inspect the webpack config",
+      "subcommands": [
+        {
+          "name": "subcommands coming soon",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Bundle name to inspect. (client, server, modern)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Inspect webpack config for dev mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--depth"
+          ],
+          "description": "Inspection depth. Defaults to 2 to prevent verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-colors"
+          ],
+          "description": "Disable ANSI colors (disabled by default when TTY is not available or when piping to a file)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

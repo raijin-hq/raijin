@@ -1,0 +1,282 @@
+{
+  "name": "aws-vault",
+  "aliases": [],
+  "description": "A vault for securely storing and accessing AWS credentials in development environments",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add credentials to the secure keystore",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "profile",
+          "description": "The profile you want to add",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove credentials from the secure keystore",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Force-remove the profile without a prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List profiles, along with their credentials and sessions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--profiles"
+          ],
+          "description": "Show only the profile names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sessions"
+          ],
+          "description": "Show only the session names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--credentials"
+          ],
+          "description": "Show only the profiles with stored credential",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "rotate",
+      "aliases": [],
+      "description": "Rotate credentials",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n",
+            "--no-session"
+          ],
+          "description": "Use master credentials, no session or role used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a command with AWS credentials",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--duration"
+          ],
+          "description": "Duration of the temporary or assume-role session. Defaults to 1h",
+          "takes_arg": true,
+          "arg_name": "DURATION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--no-session"
+          ],
+          "description": "Use master credentials, no session or role used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region"
+          ],
+          "description": "The AWS region",
+          "takes_arg": true,
+          "arg_name": "REGION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--mfa-token"
+          ],
+          "description": "The MFA token to use",
+          "takes_arg": true,
+          "arg_name": "MFA-TOKEN",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Export AWS credentials",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "aliases": [],
+      "description": "Clear temporary credentials from the secure keystore",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Generate a login link for the AWS Console",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "profile",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help about the command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show context-sensitive help (also try --help-long and --help-man)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show application version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Show debugging output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

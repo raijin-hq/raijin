@@ -1,0 +1,140 @@
+{
+  "name": "shadcn-ui",
+  "aliases": [],
+  "description": "Shadcn UI CLI",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add a component to your project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Skip confirmation prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--overwrite"
+          ],
+          "description": "Overwrite existing files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cwd"
+          ],
+          "description": "The working directory. defaults to the current directory",
+          "takes_arg": true,
+          "arg_name": "cwd",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "The path to add the component to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "components",
+          "description": "The components to add",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Check for updates against the registry",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Skip confirmation prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cwd"
+          ],
+          "description": "The working directory. defaults to the current directory",
+          "takes_arg": true,
+          "arg_name": "cwd",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "component",
+          "description": "The component name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize your project and install dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Skip confirmation prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--cwd"
+          ],
+          "description": "The working directory. defaults to the current directory",
+          "takes_arg": true,
+          "arg_name": "cwd",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

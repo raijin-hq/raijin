@@ -1,0 +1,103 @@
+{
+  "name": "nhost",
+  "aliases": [],
+  "description": "Nhost's command-line",
+  "subcommands": [
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy local migrations and metadata changes to Nhost production",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Start Nhost project for local development",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "down",
+      "aliases": [],
+      "description": "Stop and remove local Nhost backend started by `nhost dev`",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "env",
+      "aliases": [
+        "env:ls"
+      ],
+      "description": "List environment variables",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "env:pull",
+      "aliases": [],
+      "description": "Sync remote environment variables to your local environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for nhost",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize current working directory as a Nhost project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link Nhost Project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to your Nhost account",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--email",
+            "-e"
+          ],
+          "description": "Email address",
+          "takes_arg": true,
+          "arg_name": "email",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout from your Nhost account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

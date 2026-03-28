@@ -1,0 +1,88 @@
+{
+  "name": "luz",
+  "aliases": [],
+  "description": "A next-generation build system for Apple Darwin-based systems",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build the target in the current directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for the build command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean",
+            "-c"
+          ],
+          "description": "Clean the build directory before building",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "gen",
+      "aliases": [],
+      "description": "Generate a new project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for the gen command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type",
+            "-t"
+          ],
+          "description": "The type of project to generate",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "tool",
+              "tweak"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for Luz",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

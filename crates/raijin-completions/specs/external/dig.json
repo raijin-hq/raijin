@@ -1,0 +1,165 @@
+{
+  "name": "dig",
+  "aliases": [],
+  "description": "Domain Information Groper",
+  "subcommands": [
+    {
+      "name": "A",
+      "aliases": [],
+      "description": "Query Domain A Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "MX",
+      "aliases": [],
+      "description": "Query Domain MX Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "CNAME",
+      "aliases": [],
+      "description": "Query Domain CNAME Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "TXT",
+      "aliases": [],
+      "description": "Query Domain TXT Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "NS",
+      "aliases": [],
+      "description": "Query MX Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "SOA",
+      "aliases": [],
+      "description": "Query SOA Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "TTL",
+      "aliases": [],
+      "description": "Query TTL Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "+short",
+            ""
+          ],
+          "description": "Only print meaningful results",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ANY +noall +answer",
+      "aliases": [],
+      "description": "Query ALL DNS Records",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "+nocomments +noquestion +noauthority +noadditional +nostats",
+      "aliases": [],
+      "description": "Query only answer section",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

@@ -1,0 +1,508 @@
+{
+  "name": "hexo",
+  "aliases": [],
+  "description": "Command line interface for Hexo, a static site generator",
+  "subcommands": [
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Get or set configurations",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "name",
+          "description": "Setting name. Leave it blank if you want to show all configurations",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "value",
+          "description": "New value of a setting. Leave it blank if you just want to show a single configuration",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Displays a help for each command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "The command to display help for",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new Hexo folder",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-clone"
+          ],
+          "description": "Copy files instead of cloning from GitHub",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-install"
+          ],
+          "description": "Skip npm install",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "destination",
+          "description": "Folder path. Initialize in current folder if not specified",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new article",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--path"
+          ],
+          "description": "Post path. Customize the path of the post",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--replace"
+          ],
+          "description": "Replace the current post if it existed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--slug"
+          ],
+          "description": "Post slug. Customize the URL of the post",
+          "takes_arg": true,
+          "arg_name": "slug",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "layout",
+          "description": "The layout to use",
+          "template": {
+            "custom": [
+              "post",
+              "page",
+              "draft"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "title",
+          "description": "The title of the post",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Generate static files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--deploy"
+          ],
+          "description": "Deploy after generation finishes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Force regenerate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "Watch file changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--bail"
+          ],
+          "description": "Raise an error if any unhandled exception is thrown during generation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--concurrency"
+          ],
+          "description": "Maximum number of files to be generated in parallel. Default is infinity",
+          "takes_arg": true,
+          "arg_name": "concurrency",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Publish a draft",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "layout",
+          "description": "The layout to use",
+          "template": {
+            "custom": [
+              "post",
+              "page",
+              "draft"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "filename",
+          "description": "The name of the post",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "server",
+      "aliases": [],
+      "description": "Start a local server. By default, this is at http://localhost:4000/",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--ip"
+          ],
+          "description": "Override the default server IP. Bind to all IP address by default",
+          "takes_arg": true,
+          "arg_name": "ip",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--port"
+          ],
+          "description": "Override default port",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--static"
+          ],
+          "description": "Serve static files from the given directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--log"
+          ],
+          "description": "Enable logger. Override logger format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "combined",
+              "common",
+              "tiny",
+              "dev",
+              "short"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--open"
+          ],
+          "description": "Immediately open the server url in your default web browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy your website",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--setup"
+          ],
+          "description": "Setup without deployment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-g",
+            "--generate"
+          ],
+          "description": "Generate static files before deploying",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "render",
+      "aliases": [],
+      "description": "Render files with renderer plugins (e.g. Markdown) and save them at the specified path",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--engine"
+          ],
+          "description": "Specify render engine",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Output destination. Result will be printed in the terminal if the output destination is not set",
+          "takes_arg": true,
+          "arg_name": "output directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pretty"
+          ],
+          "description": "Prettify JSON output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": "The file to render",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Migrate content from other blog systems",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "The type of migration. check https://hexo.io/docs/migration for more details",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Clean the cache file (`db.json`) and generated files (`public`)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all routes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "type",
+          "description": "The type of routes to list",
+          "template": {
+            "custom": [
+              "post",
+              "route",
+              "page",
+              "tag",
+              "category"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Display version information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Uses a custom config file (instead of `_config.yml`). Also accepts a comma-separated list (no spaces) of JSON or YAML config files that will combine the files into a single `_multiconfig.yml`",
+      "takes_arg": true,
+      "arg_name": "config file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe"
+      ],
+      "description": "Disable loading plugins and scripts",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Log verbose messages to the terminal and to `debug.log`",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent"
+      ],
+      "description": "Silence output to the terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--draft"
+      ],
+      "description": "Display draft posts (stored in the `source/_drafts` folder)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd"
+      ],
+      "description": "Customize the path of current working directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

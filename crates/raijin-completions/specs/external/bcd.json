@@ -1,0 +1,83 @@
+{
+  "name": "bcd",
+  "aliases": [],
+  "description": "Bookmark directories and move to them",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s",
+        "--store"
+      ],
+      "description": "Store the current directory as a bookmark",
+      "takes_arg": true,
+      "arg_name": "store",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-r",
+        "--remove"
+      ],
+      "description": "Remove a specified bookmark",
+      "takes_arg": true,
+      "arg_name": "remove",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-i",
+        "--install"
+      ],
+      "description": "Setup the shell init script",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list"
+      ],
+      "description": "List the stored bookmarks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "bookmark",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

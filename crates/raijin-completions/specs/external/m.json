@@ -1,0 +1,3025 @@
+{
+  "name": "m",
+  "aliases": [],
+  "description": "Swiss Army Knife for macOS",
+  "subcommands": [
+    {
+      "name": "airdrop",
+      "aliases": [],
+      "description": "Manage AirDrop",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show AirDrop status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "on",
+          "aliases": [],
+          "description": "Enable AirDrop",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable AirDrop",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "off",
+          "aliases": [],
+          "description": "Disable AirDrop",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable AirDrop",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "appearance",
+      "aliases": [],
+      "description": "Manage appearance",
+      "subcommands": [
+        {
+          "name": "darkmode",
+          "aliases": [],
+          "description": "Manage dark mode",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "status",
+              "description": "Whether to use dark versions of interface elements",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "transparency",
+          "aliases": [],
+          "description": "Manage transparency",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "status",
+              "description": "Whether to allow the OS to make certain elements semi-transparent",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "antialiasthreshold",
+          "aliases": [],
+          "description": "Manage antialiasing threshold",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "threshold",
+              "description": "The threshold above which antialiasing is turned on",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sidebariconsize",
+          "aliases": [],
+          "description": "Manage sidebar icon size",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "size",
+              "description": "The size of the icons in various window sidebars",
+              "template": {
+                "custom": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "maincolor",
+          "aliases": [],
+          "description": "Manage main color",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "color",
+              "description": "The color used for the majority of the interface elements",
+              "template": {
+                "custom": [
+                  "blue",
+                  "graphite"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "highlightcolor",
+          "aliases": [],
+          "description": "Manage highlight color",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "color",
+              "description": "The color used for highlights",
+              "template": {
+                "custom": [
+                  "graphite",
+                  "cayenne",
+                  "asparagus",
+                  "clover",
+                  "teal",
+                  "midnight",
+                  "plum",
+                  "tin",
+                  "nickel",
+                  "mocha",
+                  "fern",
+                  "moss",
+                  "ocean",
+                  "eggplant",
+                  "maroon",
+                  "steel",
+                  "aluminum",
+                  "maraschino",
+                  "lemon",
+                  "spring",
+                  "turquoise",
+                  "blueberry",
+                  "magenta",
+                  "iron",
+                  "magnesium",
+                  "tangerine",
+                  "lime",
+                  "seafoam",
+                  "aqua",
+                  "grape",
+                  "strawberry",
+                  "tungsten",
+                  "silver",
+                  "salmon",
+                  "banana",
+                  "flora",
+                  "ice",
+                  "orchid",
+                  "bubblegum",
+                  "lead",
+                  "mercery",
+                  "cantaloupe",
+                  "honeydew",
+                  "spindrift",
+                  "sky",
+                  "lavender",
+                  "carnation",
+                  "licorice",
+                  "snow"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "battery",
+      "aliases": [],
+      "description": "Manage battery",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show battery status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "bluetooth",
+      "aliases": [],
+      "description": "Manage Bluetooth",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show bluetooth status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "on",
+          "aliases": [],
+          "description": "Enable bluetooth",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable bluetooth",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "off",
+          "aliases": [],
+          "description": "Disable bluetooth",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable bluetooth",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dir",
+      "aliases": [],
+      "description": "Manage directories",
+      "subcommands": [
+        {
+          "name": "tree",
+          "aliases": [],
+          "description": "Show tree view of folders in the current path",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path to show tree view of folders",
+              "template": "folders",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete folders",
+          "subcommands": [
+            {
+              "name": "empty",
+              "aliases": [],
+              "description": "Delete empty folders recursively in the current path",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Path to delete empty folders",
+                  "template": "folders",
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "dsfiles",
+              "aliases": [],
+              "description": "Delete .DS_Store files recursively in the current path",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Delete .DS_Store files recursively in a specific path",
+                  "template": "folders",
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dsfiles",
+          "aliases": [],
+          "description": "Manage .DS_Store files",
+          "subcommands": [
+            {
+              "name": "on",
+              "aliases": [],
+              "description": "Restore generation of .DS_Store",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "off",
+              "aliases": [],
+              "description": "Prohibit generation of .DS_Store",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "size",
+          "aliases": [],
+          "description": "Calculate current folder size",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path to calculate folder size",
+              "template": "folders",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "disk",
+      "aliases": [],
+      "description": "Manage disks",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List disk partitions",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path to the disk file",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Show disk information",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path to show disk information",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ejectall",
+          "aliases": [],
+          "description": "Eject all mountable volumes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "verify",
+          "aliases": [],
+          "description": "Verify disk",
+          "subcommands": [
+            {
+              "name": "volume",
+              "aliases": [],
+              "description": "Verify volume",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Path to verify volume",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "disk",
+              "aliases": [],
+              "description": "Verify disk",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Path to verify disk",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "repair",
+          "aliases": [],
+          "description": "Repair disk",
+          "subcommands": [
+            {
+              "name": "volume",
+              "aliases": [],
+              "description": "Repair volume",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Path to repair volume",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "disk",
+              "aliases": [],
+              "description": "Repair disk",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": "Path to repair disk",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "format",
+          "aliases": [],
+          "description": "Format disk",
+          "subcommands": [
+            {
+              "name": "MS-DOS",
+              "aliases": [],
+              "description": "Format the entire disk with a windows format (MS-DOS)",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the volume",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "path",
+                  "description": "Path to format the entire disk",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "volume",
+              "aliases": [],
+              "description": "Format the volume with a windows format (MS-DOS)",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the volume",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                },
+                {
+                  "name": "path",
+                  "description": "Path to format the volume",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "reformat",
+          "aliases": [],
+          "description": "Reformat a volume",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path to reformat a volume",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Rename a volume",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "currentName",
+              "description": "Current name of the volume",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "newName",
+              "description": "New name of the volume",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "display",
+      "aliases": [],
+      "description": "Manage displays",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show display status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show usage",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "up",
+          "aliases": [],
+          "description": "Turn up the brightness",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "down",
+          "aliases": [],
+          "description": "Turn down the brightness",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dns",
+      "aliases": [],
+      "description": "Manage dns",
+      "subcommands": [
+        {
+          "name": "flush",
+          "aliases": [],
+          "description": "Flush local DNS cache",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dock",
+      "aliases": [],
+      "description": "Manage dock",
+      "subcommands": [
+        {
+          "name": "showdelay",
+          "aliases": [],
+          "description": "Changes how long the Dock takes to show up when auto-hide is enabled",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "seconds",
+              "description": "Seconds to show delay",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "autohide",
+          "aliases": [],
+          "description": "Enable or disable Dock's auto hide feature",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to enable/disable Dock's auto hide feature",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "autohidedelay",
+          "aliases": [],
+          "description": "Changes how long it takes to detect you want to show up the dock",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "seconds",
+              "description": "Seconds to auto hide delay",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "magnification",
+          "aliases": [],
+          "description": "Turn magnification on or off",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to turn magnification on or off",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "position",
+          "aliases": [],
+          "description": "Change Dock's position",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "position",
+              "description": "Position to change Dock's position",
+              "template": {
+                "custom": [
+                  "BOTTOM",
+                  "LEFT",
+                  "RIGHT"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "addblankspace",
+          "aliases": [],
+          "description": "Add a blank space (separator) to the Dock",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "addrecentitems",
+          "aliases": [],
+          "description": "Add a stack containg your recent items to the Dock",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "prune",
+          "aliases": [],
+          "description": "Remove all items from dock",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "finder",
+      "aliases": [],
+      "description": "Manage finder",
+      "subcommands": [
+        {
+          "name": "showhiddenfiles",
+          "aliases": [],
+          "description": "Show hidden files Status",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to show hidden files",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "showextensions",
+          "aliases": [],
+          "description": "Show all file extensions Status",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to show all file extensions",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "showdesktop",
+          "aliases": [],
+          "description": "Show the desktop Status",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to show the desktop",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "showpath",
+          "aliases": [],
+          "description": "Show the current opened folder path on the top bar of the Finder window",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "YES/NO to show the current opened folder path on the top bar of the Finder window",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "firewall",
+      "aliases": [],
+      "description": "Manage firewall",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable firewall",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable firewall",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List applications handled by firewall",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add app to firewall",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path of the app to add to firewall",
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove app from firewall",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "path",
+              "description": "Path of the app to remove from firewall",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "flightmode",
+      "aliases": [],
+      "description": "Manage flight mode",
+      "subcommands": [
+        {
+          "name": "off",
+          "aliases": [],
+          "description": "Turn flight mode off",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "on",
+          "aliases": [],
+          "description": "Turn flight mode on",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gatekeeper",
+      "aliases": [],
+      "description": "Manage gatekeeper",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable gatekeeper",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "rule",
+              "description": "Rule to enable",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable gatekeeper",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "rule",
+              "description": "Rule to disable",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List rules",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a rule for the application",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "RULENAME",
+              "description": "Name of the rule",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "/path/to/program",
+              "description": "Path to the program",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "group",
+      "aliases": [],
+      "description": "Manage groups",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List groups",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Get group information",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "group",
+              "description": "Group to get information",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "adduser",
+          "aliases": [],
+          "description": "Add user to group",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "user",
+              "description": "User to add to group",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "group",
+              "description": "Group to add user to",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "removeuser",
+          "aliases": [],
+          "description": "Remove user from group",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "user",
+              "description": "User to remove from group",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "group",
+              "description": "Group to remove user from",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ismember",
+          "aliases": [],
+          "description": "Check if user is a member of group",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "user",
+              "description": "User to check membership",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "group",
+              "description": "Group to check membership",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "hostname",
+      "aliases": [],
+      "description": "Manage hostname",
+      "subcommands": [
+        {
+          "name": "newhostname",
+          "aliases": [],
+          "description": "Set new hostname",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Show system information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "itunes",
+      "aliases": [],
+      "description": "Manage iTunes",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "play",
+          "aliases": [],
+          "description": "Play track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pause",
+          "aliases": [],
+          "description": "Pause track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "next",
+          "aliases": [],
+          "description": "Play next track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "prev",
+          "aliases": [],
+          "description": "Play previous track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "mute",
+          "aliases": [],
+          "description": "Mute iTunes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unmute",
+          "aliases": [],
+          "description": "Unmute iTunes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "vol",
+          "aliases": [],
+          "description": "Volume",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "up/down/#",
+              "description": "Up/Down/Number",
+              "template": {
+                "custom": [
+                  "up",
+                  "down"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop track",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "quit",
+          "aliases": [],
+          "description": "Quit iTunes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "localhost",
+      "aliases": [],
+      "description": "Manage localhost",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List current records in localhost",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a new host to the localhost file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "IP",
+              "description": "IP of the host",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "HOSTNAME",
+              "description": "Hostname of the host",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a host from the localhost file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "HOSTNAME",
+              "description": "Hostname of the host",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lock",
+      "aliases": [],
+      "description": "Lock session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "network",
+      "aliases": [],
+      "description": "Manage network",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List network interfaces",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "location",
+          "aliases": [],
+          "description": "Manage location",
+          "subcommands": [
+            {
+              "name": "ls",
+              "aliases": [
+                "list"
+              ],
+              "description": "List locations",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a location",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the location",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a location",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the location",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "switch",
+              "aliases": [],
+              "description": "Switch location",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "name",
+                  "description": "Name of the location",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "nosleep",
+      "aliases": [],
+      "description": "Manage no sleep",
+      "subcommands": [
+        {
+          "name": "until",
+          "aliases": [],
+          "description": "No sleep until",
+          "subcommands": [
+            {
+              "name": "pid",
+              "aliases": [],
+              "description": "No sleep until process id ends",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "pid",
+                  "description": "Process id",
+                  "template": "process_ids",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": [
+            {
+              "name": "time or script",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "notification",
+      "aliases": [],
+      "description": "Manage notification",
+      "subcommands": [
+        {
+          "name": "showcenter",
+          "aliases": [],
+          "description": "Show notification center",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "Enable/Disable notification center",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ntp",
+      "aliases": [],
+      "description": "Manage ntp",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Status of the network time service",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable clock to use network time",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable clock to use network time",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set network time server",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "hostname",
+              "description": "Network time server",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "printer",
+      "aliases": [],
+      "description": "Manage printer",
+      "subcommands": [
+        {
+          "name": "settings",
+          "aliases": [],
+          "description": "Printer settings",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "name",
+          "aliases": [],
+          "description": "Display printer names on system",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "queue",
+          "aliases": [],
+          "description": "Display items in printer queue on system",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "drivers",
+          "aliases": [],
+          "description": "Display all printer drivers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "web",
+          "aliases": [],
+          "description": "Enable and show web interface",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart computer (needs confirmation)",
+      "subcommands": [
+        {
+          "name": "-f",
+          "aliases": [
+            "--force"
+          ],
+          "description": "Restart computer (without confirmation)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "safeboot",
+      "aliases": [],
+      "description": "Manage safe boot",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get the boot args",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable safe boot",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable safeboot",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "screensaver",
+      "aliases": [],
+      "description": "Manage screensaver",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get the current status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "askforpassword",
+          "aliases": [],
+          "description": "Get password requirement to unlock",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "YES/NO",
+              "description": "Enable/Disable password requirement to unlock",
+              "template": {
+                "custom": [
+                  "YES",
+                  "NO"
+                ]
+              },
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "service",
+      "aliases": [],
+      "description": "Manage service",
+      "subcommands": [
+        {
+          "name": "--status-all",
+          "aliases": [],
+          "description": "List all services",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "--ls",
+          "aliases": [
+            "--list"
+          ],
+          "description": "List all services",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "service",
+              "description": "Service name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start a service",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "service",
+              "description": "Service name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a service",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "service",
+              "description": "Service name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "load",
+          "aliases": [],
+          "description": "Load a service",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "service",
+              "description": "Service name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "unload",
+          "aliases": [],
+          "description": "Unload a service",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "service",
+              "description": "Service name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "shutdown",
+      "aliases": [],
+      "description": "Shutdown computer (needs confirmation)",
+      "subcommands": [
+        {
+          "name": "-f",
+          "aliases": [],
+          "description": "Shutdown computer (without confirmation)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sleep",
+      "aliases": [],
+      "description": "Put computer to sleep",
+      "subcommands": [
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "timezone",
+      "aliases": [],
+      "description": "Get current timezone",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List available timezones",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set timezone",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "timezone",
+              "description": "Timezone",
+              "template": {
+                "custom": [
+                  "Africa/Abidjan",
+                  "Africa/Accra",
+                  "Africa/Addis_Ababa",
+                  "Africa/Algiers",
+                  "Africa/Asmara",
+                  "Africa/Bamako",
+                  "Africa/Bangui",
+                  "Africa/Banjul",
+                  "Africa/Bissau",
+                  "Africa/Blantyre",
+                  "Africa/Brazzaville",
+                  "Africa/Bujumbura",
+                  "Africa/Cairo",
+                  "Africa/Casablanca",
+                  "Africa/Ceuta",
+                  "Africa/Conakry",
+                  "Africa/Dakar",
+                  "Africa/Dar_es_Salaam",
+                  "Africa/Djibouti",
+                  "Africa/Douala",
+                  "Africa/El_Aaiun",
+                  "Africa/Freetown",
+                  "Africa/Gaborone",
+                  "Africa/Harare",
+                  "Africa/Johannesburg",
+                  "Africa/Juba",
+                  "Africa/Kampala",
+                  "Africa/Khartoum",
+                  "Africa/Kigali",
+                  "Africa/Kinshasa",
+                  "Africa/Lagos",
+                  "Africa/Libreville",
+                  "Africa/Lome",
+                  "Africa/Luanda",
+                  "Africa/Lubumbashi",
+                  "Africa/Lusaka",
+                  "Africa/Malabo",
+                  "Africa/Maputo",
+                  "Africa/Maseru",
+                  "Africa/Mbabane",
+                  "Africa/Mogadishu",
+                  "Africa/Monrovia",
+                  "Africa/Nairobi",
+                  "Africa/Ndjamena",
+                  "Africa/Niamey",
+                  "Africa/Nouakchott",
+                  "Africa/Ouagadougou",
+                  "Africa/Porto-Novo",
+                  "Africa/Sao_Tome",
+                  "Africa/Tripoli",
+                  "Africa/Tunis",
+                  "Africa/Windhoek",
+                  "America/Adak",
+                  "America/Anchorage",
+                  "America/Anguilla",
+                  "America/Antigua",
+                  "America/Araguaina",
+                  "America/Argentina/Buenos_Aires",
+                  "America/Argentina/Catamarca",
+                  "America/Argentina/Cordoba",
+                  "America/Argentina/Jujuy",
+                  "America/Argentina/La_Rioja",
+                  "America/Argentina/Mendoza",
+                  "America/Argentina/Rio_Gallegos",
+                  "America/Argentina/Salta",
+                  "America/Argentina/San_Juan",
+                  "America/Argentina/San_Luis",
+                  "America/Argentina/Tucuman",
+                  "America/Argentina/Ushuaia",
+                  "America/Aruba",
+                  "America/Asuncion",
+                  "America/Atikokan",
+                  "America/Bahia",
+                  "America/Bahia_Banderas",
+                  "America/Barbados",
+                  "America/Belem",
+                  "America/Belize",
+                  "America/Blanc-Sablon",
+                  "America/Boa_Vista",
+                  "America/Bogota",
+                  "America/Boise",
+                  "America/Cambridge_Bay",
+                  "America/Campo_Grande",
+                  "America/Cancun",
+                  "America/Caracas",
+                  "America/Cayenne",
+                  "America/Cayman",
+                  "America/Chicago",
+                  "America/Chihuahua",
+                  "America/Costa_Rica",
+                  "America/Creston",
+                  "America/Cuiaba",
+                  "America/Curacao",
+                  "America/Danmarkshavn",
+                  "America/Dawson",
+                  "America/Dawson_Creek",
+                  "America/Denver",
+                  "America/Detroit",
+                  "America/Dominica",
+                  "America/Edmonton",
+                  "America/Eirunepe",
+                  "America/El_Salvador",
+                  "America/Fort_Nelson",
+                  "America/Fortaleza",
+                  "America/Glace_Bay",
+                  "America/Godthab",
+                  "America/Goose_Bay",
+                  "America/Grand_Turk",
+                  "America/Grenada",
+                  "America/Guadeloupe",
+                  "America/Guatemala",
+                  "America/Guayaquil",
+                  "America/Guyana",
+                  "America/Halifax",
+                  "America/Havana",
+                  "America/Hermosillo",
+                  "America/Indiana/Indianapolis",
+                  "America/Indiana/Knox",
+                  "America/Indiana/Marengo",
+                  "America/Indiana/Petersburg",
+                  "America/Indiana/Tell_City",
+                  "America/Indiana/Vevay",
+                  "America/Indiana/Vincennes",
+                  "America/Indiana/Winamac",
+                  "America/Inuvik",
+                  "America/Iqaluit",
+                  "America/Jamaica",
+                  "America/Juneau",
+                  "America/Kentucky/Louisville",
+                  "America/Kentucky/Monticello",
+                  "America/Kralendijk",
+                  "America/La_Paz",
+                  "America/Lima",
+                  "America/Los_Angeles",
+                  "America/Lower_Princes",
+                  "America/Maceio",
+                  "America/Managua",
+                  "America/Manaus",
+                  "America/Marigot",
+                  "America/Martinique",
+                  "America/Matamoros",
+                  "America/Mazatlan",
+                  "America/Menominee",
+                  "America/Merida",
+                  "America/Metlakatla",
+                  "America/Mexico_City",
+                  "America/Miquelon",
+                  "America/Moncton",
+                  "America/Monterrey",
+                  "America/Montevideo",
+                  "America/Montreal",
+                  "America/Montserrat",
+                  "America/Nassau",
+                  "America/New_York",
+                  "America/Nipigon",
+                  "America/Nome",
+                  "America/Noronha",
+                  "America/North_Dakota/Beulah",
+                  "America/North_Dakota/Center",
+                  "America/North_Dakota/New_Salem",
+                  "America/Nuuk",
+                  "America/Ojinaga",
+                  "America/Panama",
+                  "America/Pangnirtung",
+                  "America/Paramaribo",
+                  "America/Phoenix",
+                  "America/Port-au-Prince",
+                  "America/Port_of_Spain",
+                  "America/Porto_Velho",
+                  "America/Puerto_Rico",
+                  "America/Punta_Arenas",
+                  "America/Rainy_River",
+                  "America/Rankin_Inlet",
+                  "America/Recife",
+                  "America/Regina",
+                  "America/Resolute",
+                  "America/Rio_Branco",
+                  "America/Santa_Isabel",
+                  "America/Santarem",
+                  "America/Santiago",
+                  "America/Santo_Domingo",
+                  "America/Sao_Paulo",
+                  "America/Scoresbysund",
+                  "America/Shiprock",
+                  "America/Sitka",
+                  "America/St_Barthelemy",
+                  "America/St_Johns",
+                  "America/St_Kitts",
+                  "America/St_Lucia",
+                  "America/St_Thomas",
+                  "America/St_Vincent",
+                  "America/Swift_Current",
+                  "America/Tegucigalpa",
+                  "America/Thule",
+                  "America/Thunder_Bay",
+                  "America/Tijuana",
+                  "America/Toronto",
+                  "America/Tortola",
+                  "America/Vancouver",
+                  "America/Whitehorse",
+                  "America/Winnipeg",
+                  "America/Yakutat",
+                  "America/Yellowknife",
+                  "Antarctica/Casey",
+                  "Antarctica/Davis",
+                  "Antarctica/DumontDUrville",
+                  "Antarctica/Macquarie",
+                  "Antarctica/Mawson",
+                  "Antarctica/McMurdo",
+                  "Antarctica/Palmer",
+                  "Antarctica/Rothera",
+                  "Antarctica/South_Pole",
+                  "Antarctica/Syowa",
+                  "Antarctica/Troll",
+                  "Antarctica/Vostok",
+                  "Arctic/Longyearbyen",
+                  "Asia/Aden",
+                  "Asia/Almaty",
+                  "Asia/Amman",
+                  "Asia/Anadyr",
+                  "Asia/Aqtau",
+                  "Asia/Aqtobe",
+                  "Asia/Ashgabat",
+                  "Asia/Atyrau",
+                  "Asia/Baghdad",
+                  "Asia/Bahrain",
+                  "Asia/Baku",
+                  "Asia/Bangkok",
+                  "Asia/Barnaul",
+                  "Asia/Beirut",
+                  "Asia/Bishkek",
+                  "Asia/Brunei",
+                  "Asia/Calcutta",
+                  "Asia/Chita",
+                  "Asia/Choibalsan",
+                  "Asia/Chongqing",
+                  "Asia/Colombo",
+                  "Asia/Damascus",
+                  "Asia/Dhaka",
+                  "Asia/Dili",
+                  "Asia/Dubai",
+                  "Asia/Dushanbe",
+                  "Asia/Famagusta",
+                  "Asia/Gaza",
+                  "Asia/Harbin",
+                  "Asia/Hebron",
+                  "Asia/Ho_Chi_Minh",
+                  "Asia/Hong_Kong",
+                  "Asia/Hovd",
+                  "Asia/Irkutsk",
+                  "Asia/Jakarta",
+                  "Asia/Jayapura",
+                  "Asia/Jerusalem",
+                  "Asia/Kabul",
+                  "Asia/Kamchatka",
+                  "Asia/Karachi",
+                  "Asia/Kashgar",
+                  "Asia/Kathmandu",
+                  "Asia/Katmandu",
+                  "Asia/Khandyga",
+                  "Asia/Krasnoyarsk",
+                  "Asia/Kuala_Lumpur",
+                  "Asia/Kuching",
+                  "Asia/Kuwait",
+                  "Asia/Macau",
+                  "Asia/Magadan",
+                  "Asia/Makassar",
+                  "Asia/Manila",
+                  "Asia/Muscat",
+                  "Asia/Nicosia",
+                  "Asia/Novokuznetsk",
+                  "Asia/Novosibirsk",
+                  "Asia/Omsk",
+                  "Asia/Oral",
+                  "Asia/Phnom_Penh",
+                  "Asia/Pontianak",
+                  "Asia/Pyongyang",
+                  "Asia/Qatar",
+                  "Asia/Qostanay",
+                  "Asia/Qyzylorda",
+                  "Asia/Rangoon",
+                  "Asia/Riyadh",
+                  "Asia/Sakhalin",
+                  "Asia/Samarkand",
+                  "Asia/Seoul",
+                  "Asia/Shanghai",
+                  "Asia/Singapore",
+                  "Asia/Srednekolymsk",
+                  "Asia/Taipei",
+                  "Asia/Tashkent",
+                  "Asia/Tbilisi",
+                  "Asia/Tehran",
+                  "Asia/Thimphu",
+                  "Asia/Tokyo",
+                  "Asia/Tomsk",
+                  "Asia/Ulaanbaatar",
+                  "Asia/Urumqi",
+                  "Asia/Ust-Nera",
+                  "Asia/Vientiane",
+                  "Asia/Vladivostok",
+                  "Asia/Yakutsk",
+                  "Asia/Yangon",
+                  "Asia/Yekaterinburg",
+                  "Asia/Yerevan",
+                  "Atlantic/Azores",
+                  "Atlantic/Bermuda",
+                  "Atlantic/Canary",
+                  "Atlantic/Cape_Verde",
+                  "Atlantic/Faroe",
+                  "Atlantic/Madeira",
+                  "Atlantic/Reykjavik",
+                  "Atlantic/South_Georgia",
+                  "Atlantic/St_Helena",
+                  "Atlantic/Stanley",
+                  "Australia/Adelaide",
+                  "Australia/Brisbane",
+                  "Australia/Broken_Hill",
+                  "Australia/Currie",
+                  "Australia/Darwin",
+                  "Australia/Eucla",
+                  "Australia/Hobart",
+                  "Australia/Lindeman",
+                  "Australia/Lord_Howe",
+                  "Australia/Melbourne",
+                  "Australia/Perth",
+                  "Australia/Sydney",
+                  "Europe/Amsterdam",
+                  "Europe/Andorra",
+                  "Europe/Astrakhan",
+                  "Europe/Athens",
+                  "Europe/Belgrade",
+                  "Europe/Berlin",
+                  "Europe/Bratislava",
+                  "Europe/Brussels",
+                  "Europe/Bucharest",
+                  "Europe/Budapest",
+                  "Europe/Busingen",
+                  "Europe/Chisinau",
+                  "Europe/Copenhagen",
+                  "Europe/Dublin",
+                  "Europe/Gibraltar",
+                  "Europe/Guernsey",
+                  "Europe/Helsinki",
+                  "Europe/Isle_of_Man",
+                  "Europe/Istanbul",
+                  "Europe/Jersey",
+                  "Europe/Kaliningrad",
+                  "Europe/Kiev",
+                  "Europe/Kirov",
+                  "Europe/Kyiv",
+                  "Europe/Lisbon",
+                  "Europe/Ljubljana",
+                  "Europe/London",
+                  "Europe/Luxembourg",
+                  "Europe/Madrid",
+                  "Europe/Malta",
+                  "Europe/Mariehamn",
+                  "Europe/Minsk",
+                  "Europe/Monaco",
+                  "Europe/Moscow",
+                  "Europe/Oslo",
+                  "Europe/Paris",
+                  "Europe/Podgorica",
+                  "Europe/Prague",
+                  "Europe/Riga",
+                  "Europe/Rome",
+                  "Europe/Samara",
+                  "Europe/San_Marino",
+                  "Europe/Sarajevo",
+                  "Europe/Saratov",
+                  "Europe/Simferopol",
+                  "Europe/Skopje",
+                  "Europe/Sofia",
+                  "Europe/Stockholm",
+                  "Europe/Tallinn",
+                  "Europe/Tirane",
+                  "Europe/Ulyanovsk",
+                  "Europe/Uzhgorod",
+                  "Europe/Vaduz",
+                  "Europe/Vatican",
+                  "Europe/Vienna",
+                  "Europe/Vilnius",
+                  "Europe/Volgograd",
+                  "Europe/Warsaw",
+                  "Europe/Zagreb",
+                  "Europe/Zaporozhye",
+                  "Europe/Zurich",
+                  "GMT",
+                  "Indian/Antananarivo",
+                  "Indian/Chagos",
+                  "Indian/Christmas",
+                  "Indian/Cocos",
+                  "Indian/Comoro",
+                  "Indian/Kerguelen",
+                  "Indian/Mahe",
+                  "Indian/Maldives",
+                  "Indian/Mauritius",
+                  "Indian/Mayotte",
+                  "Indian/Reunion",
+                  "Pacific/Apia",
+                  "Pacific/Auckland",
+                  "Pacific/Bougainville",
+                  "Pacific/Chatham",
+                  "Pacific/Chuuk",
+                  "Pacific/Easter",
+                  "Pacific/Efate",
+                  "Pacific/Enderbury",
+                  "Pacific/Fakaofo",
+                  "Pacific/Fiji",
+                  "Pacific/Funafuti",
+                  "Pacific/Galapagos",
+                  "Pacific/Gambier",
+                  "Pacific/Guadalcanal",
+                  "Pacific/Guam",
+                  "Pacific/Honolulu",
+                  "Pacific/Johnston",
+                  "Pacific/Kanton",
+                  "Pacific/Kiritimati",
+                  "Pacific/Kosrae",
+                  "Pacific/Kwajalein",
+                  "Pacific/Majuro",
+                  "Pacific/Marquesas",
+                  "Pacific/Midway",
+                  "Pacific/Nauru",
+                  "Pacific/Niue",
+                  "Pacific/Norfolk",
+                  "Pacific/Noumea",
+                  "Pacific/Pago_Pago",
+                  "Pacific/Palau",
+                  "Pacific/Pitcairn",
+                  "Pacific/Pohnpei",
+                  "Pacific/Ponape",
+                  "Pacific/Port_Moresby",
+                  "Pacific/Rarotonga",
+                  "Pacific/Saipan",
+                  "Pacific/Tahiti",
+                  "Pacific/Tarawa",
+                  "Pacific/Tongatapu",
+                  "Pacific/Truk",
+                  "Pacific/Wake",
+                  "Pacific/Wallis"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "touchbar",
+      "aliases": [],
+      "description": "Manage touchbar",
+      "subcommands": [
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset touchbar",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "trash",
+      "aliases": [],
+      "description": "Manage trash",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get trash info",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Clean trash",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "user",
+      "aliases": [],
+      "description": "Manage user",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List all users",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Get user info",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": "Username",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a user",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "username",
+              "description": "Username",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "volume",
+      "aliases": [],
+      "description": "Manage volume level",
+      "subcommands": [
+        {
+          "name": "mute",
+          "aliases": [],
+          "description": "Set mute",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unmute",
+          "aliases": [],
+          "description": "Unset mute",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ismute",
+          "aliases": [],
+          "description": "Check the volume status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "up",
+          "aliases": [],
+          "description": "Increase the volume by 6.25",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "down",
+          "aliases": [],
+          "description": "Decrease the volume by 6.25",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "volume",
+          "description": "Volume level up/down/(+/-)number",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "vpn",
+      "aliases": [],
+      "description": "Manage VPN connections",
+      "subcommands": [
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List VPN connections",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start a VPN connection",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "VPN",
+              "description": "VPN connection name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "USER",
+              "description": "VPN connection user",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "PASS",
+              "description": "VPN connection password",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "SECRET",
+              "description": "VPN connection secret",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a VPN connection",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "VPN",
+              "description": "VPN connection name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get the status of a VPN connection",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "VPN",
+              "description": "VPN connection name",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wallpaper",
+      "aliases": [],
+      "description": "Change wallpaper",
+      "subcommands": [
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "image",
+          "description": "Path to the wallpaper",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "wifi",
+      "aliases": [],
+      "description": "Manage wifi",
+      "subcommands": [
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get wifi status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "scan",
+          "aliases": [],
+          "description": "Scan wifi",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "showpassword",
+          "aliases": [],
+          "description": "Show wifi network password",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "ESSID",
+              "description": "ESSID",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "List known wifi networks",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "forget",
+          "aliases": [],
+          "description": "Forget a wifi network",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "ESSID",
+              "description": "ESSID",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "history",
+          "aliases": [],
+          "description": "Wifi connection history",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "off",
+          "aliases": [],
+          "description": "Turn off your wifi",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "on",
+          "aliases": [],
+          "description": "Turn on your wifi",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "connect",
+          "aliases": [],
+          "description": "Join a wifi network",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "ESSID",
+              "description": "ESSID",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "PASSWORD",
+              "description": "Password",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Show help",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--update"
+      ],
+      "description": "Update m-cli to the latest version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uninstall"
+      ],
+      "description": "Uninstall m-cli",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,143 @@
+{
+  "name": "node",
+  "aliases": [],
+  "description": "Run the node interpreter",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-e",
+        "--eval=..."
+      ],
+      "description": "Evaluate script",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch"
+      ],
+      "description": "Watch input files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch-path"
+      ],
+      "description": "Specify a watch directory or file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--watch-preserve-output"
+      ],
+      "description": "Disable the clearing of the console when watch mode restarts the process",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env-file"
+      ],
+      "description": "Specify a file containing environment variables",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-p",
+        "--print"
+      ],
+      "description": "Evaluate script and print result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--check"
+      ],
+      "description": "Syntax check script without executing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print Node.js version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--interactive"
+      ],
+      "description": "Always enter the REPL even if stdin does not appear to be a terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print node command line options (currently set)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--inspect"
+      ],
+      "description": "Activate inspector on host:port (default: 127.0.0.1:9229)",
+      "takes_arg": true,
+      "arg_name": "[host:]port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preserve-symlinks"
+      ],
+      "description": "Follows symlinks to directories when examining source code and templates for translation strings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "node script",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

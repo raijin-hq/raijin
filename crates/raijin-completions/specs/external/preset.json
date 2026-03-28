@@ -1,0 +1,201 @@
+{
+  "name": "preset",
+  "aliases": [],
+  "description": "Elegant, ecosystem-agnostic scaffolding tool",
+  "subcommands": [
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Apply a preset",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--path",
+            "-p"
+          ],
+          "description": "Path to a sub-directory in which to look for a preset",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-t"
+          ],
+          "description": "Branch or tag to use if the preset is a repository",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ssh"
+          ],
+          "description": "Do not use SSH when cloning repositories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use the cached repository if it exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "resolvable",
+          "description": "Repository identifier or path to the preset",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "target-directory",
+          "description": "Directory in which to apply the preset",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new preset",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target-directory",
+          "description": "Directory in which to apply the preset",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--path",
+        "-p"
+      ],
+      "description": "Path to a sub-directory in which to look for a preset",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tag",
+        "-t"
+      ],
+      "description": "Branch or tag to use if the preset is a repository",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ssh"
+      ],
+      "description": "Do not use SSH when cloning repositories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-cache"
+      ],
+      "description": "Do not use the cached repository if it exists",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for preset",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Show the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-interaction"
+      ],
+      "description": "Disable interactions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Display debug information instead of standard output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent"
+      ],
+      "description": "Do not print anything",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "resolvable",
+      "description": "Repository identifier or path to the preset",
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "target-directory",
+      "description": "Directory in which to apply the preset",
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

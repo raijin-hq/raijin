@@ -1,0 +1,524 @@
+{
+  "name": "rome",
+  "aliases": [],
+  "description": "Rome CLI",
+  "subcommands": [
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Run the linter on a set of files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--apply"
+          ],
+          "description": "Apply safe fixes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apply-unsafe"
+          ],
+          "description": "Apply safe and unsafe fixes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-diagnostics"
+          ],
+          "description": "Cap the amount of diagnostics displayed",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-path"
+          ],
+          "description": "Set the filesystem path to the config dir of the rome.json file",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Print additional verbose advices on diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file, dir",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "ci",
+      "aliases": [],
+      "description": "Run the linter and formatter check on a set of files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--formatter-enabled"
+          ],
+          "description": "Allow to enable or disable the formatter check",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--linter-enabled"
+          ],
+          "description": "Allow to enable or disable the linter check",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organize-imports-enabled"
+          ],
+          "description": "Allow to enable or disable the organize imports",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-diagnostics"
+          ],
+          "description": "Cap the amount of diagnostics displayed",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-path"
+          ],
+          "description": "Set the filesystem path to the config dir of the rome.json file",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Print additional verbose advices on diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--indent-style"
+          ],
+          "description": "Change the indention character",
+          "takes_arg": true,
+          "arg_name": "style",
+          "arg_template": {
+            "custom": [
+              "tabs",
+              "space"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--indent-size"
+          ],
+          "description": "How many spaces should be used for indentation",
+          "takes_arg": true,
+          "arg_name": "SIZE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--line-width"
+          ],
+          "description": "How many characters the formatter is allowed to print in a single line",
+          "takes_arg": true,
+          "arg_name": "width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quote-style"
+          ],
+          "description": "Changes the quotation character for strings",
+          "takes_arg": true,
+          "arg_name": "style",
+          "arg_template": {
+            "custom": [
+              "single",
+              "double"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quote-properties"
+          ],
+          "description": "Changes when properties in object should be quoted",
+          "takes_arg": true,
+          "arg_name": "property",
+          "arg_template": {
+            "custom": [
+              "as-needed",
+              "preserve"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trailing-comma"
+          ],
+          "description": "Changes trailing commas in multi-line comma-separated syntactic structures",
+          "takes_arg": true,
+          "arg_name": "trailing",
+          "arg_template": {
+            "custom": [
+              "all",
+              "es5",
+              "none"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--semicolons"
+          ],
+          "description": "Changes when to print semicolons for statements",
+          "takes_arg": true,
+          "arg_name": "rule",
+          "arg_template": {
+            "custom": [
+              "always",
+              "as-needed"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file, dir",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "format",
+      "aliases": [],
+      "description": "Run the formatter on a set of files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--write"
+          ],
+          "description": "Edit the files in place (beware!) instead of printing the diff to the console",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-errors"
+          ],
+          "description": "Skip over files containing syntax errors instead of emitting an error diagnostic",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-diagnostics"
+          ],
+          "description": "Cap the amount of diagnostics displayed",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-path"
+          ],
+          "description": "Set the filesystem path to the config dir of the rome.json file",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose"
+          ],
+          "description": "Print additional verbose advices on diagnostics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--indent-style"
+          ],
+          "description": "Change the indention character",
+          "takes_arg": true,
+          "arg_name": "style",
+          "arg_template": {
+            "custom": [
+              "tabs",
+              "space"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--indent-size"
+          ],
+          "description": "How many spaces should be used for indentation",
+          "takes_arg": true,
+          "arg_name": "SIZE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--line-width"
+          ],
+          "description": "How many characters the formatter is allowed to print in a single line",
+          "takes_arg": true,
+          "arg_name": "width",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quote-style"
+          ],
+          "description": "Changes the quotation character for strings",
+          "takes_arg": true,
+          "arg_name": "style",
+          "arg_template": {
+            "custom": [
+              "single",
+              "double"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quote-properties"
+          ],
+          "description": "Changes when properties in object should be quoted",
+          "takes_arg": true,
+          "arg_name": "property",
+          "arg_template": {
+            "custom": [
+              "as-needed",
+              "preserve"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trailing-comma"
+          ],
+          "description": "Changes trailing commas in multi-line comma-separated syntactic structures",
+          "takes_arg": true,
+          "arg_name": "trailing",
+          "arg_template": {
+            "custom": [
+              "all",
+              "es5",
+              "none"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--semicolons"
+          ],
+          "description": "Changes when to print semicolons for statements",
+          "takes_arg": true,
+          "arg_name": "rule",
+          "arg_template": {
+            "custom": [
+              "always",
+              "as-needed"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin-file-path"
+          ],
+          "description": "A file name with its extension to pass when reading from standard in",
+          "takes_arg": true,
+          "arg_name": "string",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file, dir",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Bootstraps a new rome project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start the Rome daemon server process",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop the Rome daemon server process",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lsp-proxy",
+      "aliases": [],
+      "description": "Acts as a server for the Language Server Protocol over stdin/stdout",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "rage",
+      "aliases": [],
+      "description": "Prints information for debugging",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Shows the Rome version information and quit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--colors"
+      ],
+      "description": "Set the formatting mode for markup",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "off",
+          "force"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-server"
+      ],
+      "description": "Connect to a running instance of the Rome daemon server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the Rome version information and quit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--files-max-size"
+      ],
+      "description": "The maximum allowed size for source code files in bytes",
+      "takes_arg": true,
+      "arg_name": "BYTES",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

@@ -1,0 +1,82 @@
+{
+  "name": "head",
+  "aliases": [],
+  "description": "Output the first part of files",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--bytes"
+      ],
+      "description": "Print the first [numBytes] bytes of each file",
+      "takes_arg": true,
+      "arg_name": "numBytes",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--lines"
+      ],
+      "description": "Print the first [numLines] lines instead of the first 10",
+      "takes_arg": true,
+      "arg_name": "numLines",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet",
+        "--silent"
+      ],
+      "description": "Never print headers giving file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Always print headers giving file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Display this help and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Output version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,582 @@
+{
+  "name": "xcodes",
+  "aliases": [],
+  "description": "Manage the Xcode versions installed on your Mac",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "download",
+      "aliases": [],
+      "description": "Download a specific version of Xcode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--latest"
+          ],
+          "description": "Update and then install the latest non-prerelease version available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--latest-prerelease"
+          ],
+          "description": "Update and then install the latest prerelease version available, including GM seeds and GMs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--aria2"
+          ],
+          "description": "The path to an aria2 executable. Searches $PATH by default",
+          "takes_arg": true,
+          "arg_name": "aria2",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-aria2"
+          ],
+          "description": "Don't use aria2 to download Xcode, even if it's available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data-source"
+          ],
+          "description": "The data source for available Xcode versions. (default: xcodereleases)",
+          "takes_arg": true,
+          "arg_name": "dataSource",
+          "arg_template": {
+            "custom": [
+              "xcodereleases",
+              "apple"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "The version to install",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Download and install a specific version of Xcode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Local path to Xcode.xip",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--latest"
+          ],
+          "description": "Update and then install the latest non-prerelease version available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--latest-prerelease"
+          ],
+          "description": "Update and then install the latest prerelease version available, including GM seeds and GMs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--aria2"
+          ],
+          "description": "The path to an aria2 executable. Searches $PATH by default",
+          "takes_arg": true,
+          "arg_name": "aria2",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-aria2"
+          ],
+          "description": "Don't use aria2 to download Xcode, even if it's available",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--experimental-unxip"
+          ],
+          "description": "Use the experimental unxip functionality. May speed up unarchiving by up to 2-3x",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data-source"
+          ],
+          "description": "The data source for available Xcode versions. (default: xcodereleases)",
+          "takes_arg": true,
+          "arg_name": "dataSource",
+          "arg_template": {
+            "custom": [
+              "xcodereleases",
+              "apple"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": "The version to install",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "installed",
+      "aliases": [],
+      "description": "List the versions of Xcode that are installed",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all versions of Xcode available to install",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data-source"
+          ],
+          "description": "The data source for available Xcode versions. (default: xcodereleases)",
+          "takes_arg": true,
+          "arg_name": "dataSource",
+          "arg_template": {
+            "custom": [
+              "xcodereleases",
+              "apple"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "select",
+      "aliases": [],
+      "description": "Change the selected Xcode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--print-path"
+          ],
+          "description": "Print the path of the selected Xcode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version-or-path",
+          "description": "Version or path of Xcode to select",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a version of Xcode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update the list of available versions of Xcode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "The directory where your Xcodes are installed. Defaults to /Applications",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data-source"
+          ],
+          "description": "The data source for available Xcode versions. (default: xcodereleases)",
+          "takes_arg": true,
+          "arg_name": "dataSource",
+          "arg_template": {
+            "custom": [
+              "xcodereleases",
+              "apple"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version number of xcodes itself",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "signout",
+      "aliases": [],
+      "description": "Clears the stored username and password",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "Color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Do not color the output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

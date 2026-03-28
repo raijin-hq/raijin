@@ -1,0 +1,671 @@
+{
+  "name": "vsce",
+  "aliases": [],
+  "description": "The Visual Studio Code Extension Manager",
+  "subcommands": [
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "Lists all the files that will be published",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--yarn"
+          ],
+          "description": "Use yarn instead of npm (default inferred from presence of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-yarn"
+          ],
+          "description": "Use npm instead of yarn (default inferred from lack of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--packagedDependencies"
+          ],
+          "description": "Select packages that should be published only (includes dependencies)",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignoreFile"
+          ],
+          "description": "Indicate alternative .vscodeignore",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-dependencies"
+          ],
+          "description": "Disable dependency detection via npm or yarn",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "package",
+      "aliases": [],
+      "description": "Packages an extension",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--out"
+          ],
+          "description": "Output .vsix extension file to <path> location (defaults to <name>-<version>.vsix)",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--target"
+          ],
+          "description": "Target architecture",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": {
+            "custom": [
+              "win32-x64",
+              "win32-ia32",
+              "win32-arm64",
+              "linux-x64",
+              "linux-arm64",
+              "linux-armhf",
+              "alpine-x64",
+              "alpine-arm64",
+              "darwin-x64",
+              "darwin-arm64"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "Commit message used when calling `npm version`",
+          "takes_arg": true,
+          "arg_name": "commit message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-git-tag-version"
+          ],
+          "description": "Do not create a version commit and tag when calling `npm version`. Valid only when [version] is provided",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-update-package-json"
+          ],
+          "description": "Do not update `package.json`. Valid only when [version] is provided",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--githubBranch"
+          ],
+          "description": "The GitHub branch used to infer relative links in README.md. Can be overridden by --baseContentUrl and --baseImagesUrl",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gitlabBranch"
+          ],
+          "description": "The GitLab branch used to infer relative links in README.md. Can be overridden by --baseContentUrl and --baseImagesUrl",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-rewrite-relative-links"
+          ],
+          "description": "Skip rewriting relative links",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--baseContentUrl"
+          ],
+          "description": "Prepend all relative links in README.md with this url",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--baseImagesUrl"
+          ],
+          "description": "Prepend all relative image links in README.md with this url",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yarn"
+          ],
+          "description": "Use yarn instead of npm (default inferred from presence of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-yarn"
+          ],
+          "description": "Use npm instead of yarn (default inferred from lack of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignoreFile"
+          ],
+          "description": "Indicate alternative .vscodeignore",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-gitHubIssueLinking"
+          ],
+          "description": "Disable automatic expansion of GitHub-style issue syntax into links",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-gitLabIssueLinking"
+          ],
+          "description": "Disable automatic expansion of GitLab-style issue syntax into links",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-dependencies"
+          ],
+          "description": "Disable dependency detection via npm or yarn",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pre-release"
+          ],
+          "description": "Mark this package as a pre-release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Publishes an extension",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--pat"
+          ],
+          "description": "Personal Access Token (defaults to VSCE_PAT environment variable)",
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--target"
+          ],
+          "description": "Target architecture",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": {
+            "custom": [
+              "win32-x64",
+              "win32-ia32",
+              "win32-arm64",
+              "linux-x64",
+              "linux-arm64",
+              "linux-armhf",
+              "alpine-x64",
+              "alpine-arm64",
+              "darwin-x64",
+              "darwin-arm64"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "Commit message used when calling `npm version`",
+          "takes_arg": true,
+          "arg_name": "commit message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-git-tag-version"
+          ],
+          "description": "Do not create a version commit and tag when calling `npm version`. Valid only when [version] is provided",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-update-package-json"
+          ],
+          "description": "Do not update `package.json`. Valid only when [version] is provided",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--packagePath"
+          ],
+          "description": "Publish the provided VSIX packages",
+          "takes_arg": true,
+          "arg_name": "paths",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--githubBranch"
+          ],
+          "description": "The GitHub branch used to infer relative links in README.md. Can be overridden by --baseContentUrl and --baseImagesUrl",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gitlabBranch"
+          ],
+          "description": "The GitLab branch used to infer relative links in README.md. Can be overridden by --baseContentUrl and --baseImagesUrl",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--baseContentUrl"
+          ],
+          "description": "Prepend all relative links in README.md with this url",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--baseImagesUrl"
+          ],
+          "description": "Prepend all relative image links in README.md with this url",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yarn"
+          ],
+          "description": "Use yarn instead of npm (default inferred from presence of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-yarn"
+          ],
+          "description": "Use npm instead of yarn (default inferred from lack of yarn.lock or .yarnrc)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--noVerify"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignoreFile"
+          ],
+          "description": "Indicate alternative .vscodeignore",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-dependencies"
+          ],
+          "description": "Disable dependency detection via npm or yarn",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pre-release"
+          ],
+          "description": "Mark this package as a pre-release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpublish",
+      "aliases": [],
+      "description": "Unpublishes an extension. Example extension id: microsoft.csharp",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--pat"
+          ],
+          "description": "Personal Access Token",
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--force"
+          ],
+          "description": "Forces Unpublished Extension",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ls-publishers",
+      "aliases": [],
+      "description": "List all known publishers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete-publisher",
+      "aliases": [],
+      "description": "Deletes a publisher",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "publisher",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Add a publisher to the known publishers list",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "publisher",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Remove a publisher from the known publishers list",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "publisher",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "verify-pat",
+      "aliases": [],
+      "description": "Verify if the Personal Access Token has publish rights for the publisher",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-p",
+            "--pat"
+          ],
+          "description": "Personal Access Token (defaults to VSCE_PAT environment variable)",
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "publisher",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show extension metadata",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output data in json format (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "extensionid",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Search extension gallery",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output data in json format (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "ls",
+              "package",
+              "publish",
+              "unpublish",
+              "ls-publishers",
+              "delete-publishers",
+              "login",
+              "logout",
+              "verify-pat",
+              "show",
+              "search"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

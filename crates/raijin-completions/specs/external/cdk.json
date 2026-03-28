@@ -1,0 +1,159 @@
+{
+  "name": "cdk",
+  "aliases": [],
+  "description": "AWS CDK CLI",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new, empty CDK project from a template",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "metadata",
+      "aliases": [],
+      "description": "Returns all metadata associated with this stack",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Check your set-up for potential problems",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Compares the specified stack with the deployed stack",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Destroy the specified stack(s)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy the specified stack(s) into your AWS account",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "bootstrap",
+      "aliases": [],
+      "description": "Deploys the CDK toolkit stack into an AWS environment",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "synth",
+      "aliases": [
+        "synthesize"
+      ],
+      "description": "Synthesizes and prints the CloudFormation template for this stack",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [
+        "list"
+      ],
+      "description": "List all stacks in the app",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import existing resource(s) into the given STACK",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Shortcut for 'deploy --watch'",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ack",
+      "aliases": [
+        "acknowledge"
+      ],
+      "description": "Acknowledge a notice so that it does not show up anymore",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "notices",
+      "aliases": [],
+      "description": "Returns a list of relevant notices",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "context",
+      "aliases": [],
+      "description": "Manage cached context values",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doc",
+      "aliases": [
+        "docs"
+      ],
+      "description": "Opens the reference documentation in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "The current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

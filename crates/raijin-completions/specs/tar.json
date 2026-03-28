@@ -1,0 +1,4287 @@
+{
+  "name": "tar",
+  "aliases": [],
+  "description": "Manipulating archive files",
+  "subcommands": [
+    {
+      "name": "A",
+      "aliases": [
+        "-A",
+        "--catenate",
+        "--concatenate"
+      ],
+      "description": "Append archive to the end of another archive",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "ARCHIVE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "c",
+      "aliases": [
+        "-c",
+        "--create"
+      ],
+      "description": "Create a new archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--check-device"
+          ],
+          "description": "Check device numbers when creating incremental archives",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--level"
+          ],
+          "description": "Set dump level for created listed-incremental archive",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-check-device"
+          ],
+          "description": "Do not check device numbers when creating incremental archives",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-failed-read"
+          ],
+          "description": "Do not exit with nonzero on unreadable files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restrict"
+          ],
+          "description": "Disable the use of some potentially harmful options",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-files"
+          ],
+          "description": "Remove files from disk after adding them to the archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "W",
+            "-W",
+            "--verify"
+          ],
+          "description": "Verify the archive after writing it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--atime-preserve"
+          ],
+          "description": "Preserve access times on dumped files",
+          "takes_arg": true,
+          "arg_name": "METHOD",
+          "arg_template": {
+            "custom": [
+              "replace",
+              "system"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group"
+          ],
+          "description": "Force NAME as group for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group-map"
+          ],
+          "description": "Read group translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mode"
+          ],
+          "description": "Force symbolic mode CHANGES for added files",
+          "takes_arg": true,
+          "arg_name": "CHANGES",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mtime"
+          ],
+          "description": "Set mtime for added files",
+          "takes_arg": true,
+          "arg_name": "DATE-OR-FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner"
+          ],
+          "description": "Force NAME as owner for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner-map"
+          ],
+          "description": "Read owner translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sort"
+          ],
+          "description": "When creating an archive, sort directory entries according to ORDER",
+          "takes_arg": true,
+          "arg_name": "ORDER",
+          "arg_template": {
+            "custom": [
+              "none",
+              "name",
+              "inode"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-file"
+          ],
+          "description": "Add FILE to the archive",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude files matching PATTERN",
+          "takes_arg": true,
+          "arg_name": "PATTERN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-backups"
+          ],
+          "description": "Exclude backup and lock files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches"
+          ],
+          "description": "Exclude contents of directories containing file CACHEDIR.TAG, except for the tag file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-all"
+          ],
+          "description": "Exclude directories containing file CACHEDIR.TAG and the file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-under"
+          ],
+          "description": "Exclude everything under directories containing CACHEDIR.TAG",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore"
+          ],
+          "description": "Read exclusion patterns from FILE in directory before dumping",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore-recursive"
+          ],
+          "description": "Same  as --exclude-ignore, except that patterns from FILE affect both the directory and all its subdirectories",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag"
+          ],
+          "description": "Exclude contents of directories containing FILE, except for FILE itself",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-all"
+          ],
+          "description": "Exclude directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-under"
+          ],
+          "description": "Exclude everything under directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs"
+          ],
+          "description": "Exclude version control system directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs-ignores"
+          ],
+          "description": "Exclude files that match patterns read from VCS-specific ignore files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "h",
+            "-h",
+            "--dereference"
+          ],
+          "description": "Follow symlinks; archive and dump the files they point to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hard-dereference"
+          ],
+          "description": "Follow hard links; archive and dump the files they refer to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "N",
+            "-N",
+            "--newer",
+            "--after-date"
+          ],
+          "description": "Only store files newer than DATE",
+          "takes_arg": true,
+          "arg_name": "DATE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-file-system"
+          ],
+          "description": "Stay in local file system when creating archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "P",
+            "-P",
+            "--absolute-names"
+          ],
+          "description": "Don't strip leading slashes from file names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--anchored"
+          ],
+          "description": "Patterns match file name start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-case"
+          ],
+          "description": "Ignore case",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-anchored"
+          ],
+          "description": "Patterns match after any /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ignore-case"
+          ],
+          "description": "Case sensitive matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards"
+          ],
+          "description": "Verbatim string matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards-match-slash"
+          ],
+          "description": "Wildcards do not match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards"
+          ],
+          "description": "Use wildcards",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards-match-slash"
+          ],
+          "description": "Wildcards match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clamp-mtime"
+          ],
+          "description": "Only set time when the file is more recent than what was given with --mtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "l",
+            "-l",
+            "--check-links"
+          ],
+          "description": "Print a message if not all links are dumped",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "a",
+            "-a",
+            "--auto-compress"
+          ],
+          "description": "Use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "I",
+            "-I",
+            "--use-compress-program"
+          ],
+          "description": "Filter data through COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "j",
+            "-j",
+            "--bzip2"
+          ],
+          "description": "Filter the archive through bzip2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "J",
+            "-J",
+            "--xz"
+          ],
+          "description": "Filter the archive through xz",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzip"
+          ],
+          "description": "Filter the archive through lzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzma"
+          ],
+          "description": "Filter the archive through lzma",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzop"
+          ],
+          "description": "Filter the archive through lzop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auto-compress"
+          ],
+          "description": "Do not use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "z",
+            "-z",
+            "--gzip",
+            "--gunzip",
+            "--ungzip"
+          ],
+          "description": "Filter the archive through gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "Z",
+            "-Z",
+            "--compress",
+            "--uncompress"
+          ],
+          "description": "Filter the archive through compress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--zstd"
+          ],
+          "description": "Filter the archive through zstd",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--transform",
+            "--xform"
+          ],
+          "description": "Use sed replace EXPRESSION to transform file names",
+          "takes_arg": true,
+          "arg_name": "EXPRESSION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint"
+          ],
+          "description": "Display progress messages every Nth record",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint-action"
+          ],
+          "description": "Run ACTION on each checkpoint",
+          "takes_arg": true,
+          "arg_name": "ACTION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-time"
+          ],
+          "description": "Print file time to its full resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--utc"
+          ],
+          "description": "Print file modification times in UTC",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "b",
+            "-b",
+            "--blocking-factor"
+          ],
+          "description": "Set record size to BLOCKSx512 bytes",
+          "takes_arg": true,
+          "arg_name": "BLOCKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--record-size"
+          ],
+          "description": "Set record size",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "H",
+            "-H",
+            "--format"
+          ],
+          "description": "Create archive of the given format",
+          "takes_arg": true,
+          "arg_name": "FORMAT",
+          "arg_template": {
+            "custom": [
+              "gnu",
+              "oldgnu",
+              "pax",
+              "posix",
+              "ustar",
+              "v7"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--old-archive",
+            "--portability"
+          ],
+          "description": "Same as --format=v7",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pax-option"
+          ],
+          "description": "Control pax keywords when creating PAX archives",
+          "takes_arg": true,
+          "arg_name": "keyword[[:]=value][,keyword[[:]=value]]...",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--posix"
+          ],
+          "description": "Same as --format=posix",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "V",
+            "-V",
+            "--label"
+          ],
+          "description": "Create archive with volume name TEXT",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--warning"
+          ],
+          "description": "Enable or disable warning messages identified by KEYWORD",
+          "takes_arg": true,
+          "arg_name": "KEYWORD",
+          "arg_template": {
+            "custom": [
+              "all",
+              "none",
+              "filename-with-nuls",
+              "no-filename-with-nuls",
+              "alone-zero-block",
+              "no-alone-zero-block",
+              "cachedir",
+              "no-cachedir",
+              "file-shrank",
+              "no-file-shrank",
+              "xdev",
+              "no-xdev",
+              "file-ignored",
+              "no-file-ignored",
+              "file-unchanged",
+              "no-file-unchanged",
+              "ignore-archive",
+              "no-ignore-archive",
+              "file-removed",
+              "no-file-removed",
+              "file-changed",
+              "no-file-changed",
+              "failed-read",
+              "no-failed-read"
+            ]
+          },
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "o",
+            "-o"
+          ],
+          "description": "Same as --old-archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "d",
+      "aliases": [
+        "-d",
+        "--diff",
+        "--compare"
+      ],
+      "description": "Find differences between archive and file system",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--occurrence"
+          ],
+          "description": "Process only the Nth occurrence of each file in the archive",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "t",
+      "aliases": [
+        "-t",
+        "--list"
+      ],
+      "description": "List the contents of an archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "n",
+            "-n",
+            "--seek"
+          ],
+          "description": "Assume the archive is seekable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-seek"
+          ],
+          "description": "Assume the archive is not seekable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--occurrence"
+          ],
+          "description": "Process only the Nth occurrence of each file in the archive",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "B",
+            "-B",
+            "--read-full-records"
+          ],
+          "description": "When listing or extracting, accept incomplete input records after end-of-file marker",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "i",
+            "-i",
+            "--ignore-zeros"
+          ],
+          "description": "Ignore zeroed blocks in archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "V",
+            "-V",
+            "--label"
+          ],
+          "description": "Use TEXT as a globbing pattern for volume name",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "a",
+            "-a",
+            "--auto-compress"
+          ],
+          "description": "Use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "I",
+            "-I",
+            "--use-compress-program"
+          ],
+          "description": "Filter data through COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "j",
+            "-j",
+            "--bzip2"
+          ],
+          "description": "Filter the archive through bzip2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "J",
+            "-J",
+            "--xz"
+          ],
+          "description": "Filter the archive through xz",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzip"
+          ],
+          "description": "Filter the archive through lzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzma"
+          ],
+          "description": "Filter the archive through lzma",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzop"
+          ],
+          "description": "Filter the archive through lzop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auto-compress"
+          ],
+          "description": "Do not use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "z",
+            "-z",
+            "--gzip",
+            "--gunzip",
+            "--ungzip"
+          ],
+          "description": "Filter the archive through gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "Z",
+            "-Z",
+            "--compress",
+            "--uncompress"
+          ],
+          "description": "Filter the archive through compress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--zstd"
+          ],
+          "description": "Filter the archive through zstd",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--transform",
+            "--xform"
+          ],
+          "description": "Use sed replace EXPRESSION to transform file names",
+          "takes_arg": true,
+          "arg_name": "EXPRESSION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint"
+          ],
+          "description": "Display progress messages every Nth record",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint-action"
+          ],
+          "description": "Run ACTION on each checkpoint",
+          "takes_arg": true,
+          "arg_name": "ACTION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-time"
+          ],
+          "description": "Print file time to its full resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--utc"
+          ],
+          "description": "Print file modification times in UTC",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "K",
+            "-K",
+            "--starting-file"
+          ],
+          "description": "Begin at the given member in the archive",
+          "takes_arg": true,
+          "arg_name": "MEMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-omitted-dirs"
+          ],
+          "description": "List each directory that does not match search criteria",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "MEMBER",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "r",
+      "aliases": [
+        "-r",
+        "--append"
+      ],
+      "description": "Append files to the end of an archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-failed-read"
+          ],
+          "description": "Do not exit with nonzero on unreadable files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restrict"
+          ],
+          "description": "Disable the use of some potentially harmful options",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-files"
+          ],
+          "description": "Remove files from disk after adding them to the archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "W",
+            "-W",
+            "--verify"
+          ],
+          "description": "Verify the archive after writing it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--atime-preserve"
+          ],
+          "description": "Preserve access times on dumped files",
+          "takes_arg": true,
+          "arg_name": "METHOD",
+          "arg_template": {
+            "custom": [
+              "replace",
+              "system"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group"
+          ],
+          "description": "Force NAME as group for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group-map"
+          ],
+          "description": "Read group translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mode"
+          ],
+          "description": "Force symbolic mode CHANGES for added files",
+          "takes_arg": true,
+          "arg_name": "CHANGES",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mtime"
+          ],
+          "description": "Set mtime for added files",
+          "takes_arg": true,
+          "arg_name": "DATE-OR-FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner"
+          ],
+          "description": "Force NAME as owner for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner-map"
+          ],
+          "description": "Read owner translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sort"
+          ],
+          "description": "When creating an archive, sort directory entries according to ORDER",
+          "takes_arg": true,
+          "arg_name": "ORDER",
+          "arg_template": {
+            "custom": [
+              "none",
+              "name",
+              "inode"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-file"
+          ],
+          "description": "Add FILE to the archive",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude files matching PATTERN",
+          "takes_arg": true,
+          "arg_name": "PATTERN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-backups"
+          ],
+          "description": "Exclude backup and lock files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches"
+          ],
+          "description": "Exclude contents of directories containing file CACHEDIR.TAG, except for the tag file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-all"
+          ],
+          "description": "Exclude directories containing file CACHEDIR.TAG and the file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-under"
+          ],
+          "description": "Exclude everything under directories containing CACHEDIR.TAG",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore"
+          ],
+          "description": "Read exclusion patterns from FILE in directory before dumping",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore-recursive"
+          ],
+          "description": "Same  as --exclude-ignore, except that patterns from FILE affect both the directory and all its subdirectories",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag"
+          ],
+          "description": "Exclude contents of directories containing FILE, except for FILE itself",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-all"
+          ],
+          "description": "Exclude directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-under"
+          ],
+          "description": "Exclude everything under directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs"
+          ],
+          "description": "Exclude version control system directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs-ignores"
+          ],
+          "description": "Exclude files that match patterns read from VCS-specific ignore files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "h",
+            "-h",
+            "--dereference"
+          ],
+          "description": "Follow symlinks; archive and dump the files they point to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hard-dereference"
+          ],
+          "description": "Follow hard links; archive and dump the files they refer to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "N",
+            "-N",
+            "--newer",
+            "--after-date"
+          ],
+          "description": "Only store files newer than DATE",
+          "takes_arg": true,
+          "arg_name": "DATE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-file-system"
+          ],
+          "description": "Stay in local file system when creating archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "P",
+            "-P",
+            "--absolute-names"
+          ],
+          "description": "Don't strip leading slashes from file names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--anchored"
+          ],
+          "description": "Patterns match file name start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-case"
+          ],
+          "description": "Ignore case",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-anchored"
+          ],
+          "description": "Patterns match after any /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ignore-case"
+          ],
+          "description": "Case sensitive matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards"
+          ],
+          "description": "Verbatim string matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards-match-slash"
+          ],
+          "description": "Wildcards do not match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards"
+          ],
+          "description": "Use wildcards",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards-match-slash"
+          ],
+          "description": "Wildcards match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clamp-mtime"
+          ],
+          "description": "Only set time when the file is more recent than what was given with --mtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "l",
+            "-l",
+            "--check-links"
+          ],
+          "description": "Print a message if not all links are dumped",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "a",
+            "-a",
+            "--auto-compress"
+          ],
+          "description": "Use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "I",
+            "-I",
+            "--use-compress-program"
+          ],
+          "description": "Filter data through COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "j",
+            "-j",
+            "--bzip2"
+          ],
+          "description": "Filter the archive through bzip2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "J",
+            "-J",
+            "--xz"
+          ],
+          "description": "Filter the archive through xz",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzip"
+          ],
+          "description": "Filter the archive through lzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzma"
+          ],
+          "description": "Filter the archive through lzma",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzop"
+          ],
+          "description": "Filter the archive through lzop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auto-compress"
+          ],
+          "description": "Do not use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "z",
+            "-z",
+            "--gzip",
+            "--gunzip",
+            "--ungzip"
+          ],
+          "description": "Filter the archive through gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "Z",
+            "-Z",
+            "--compress",
+            "--uncompress"
+          ],
+          "description": "Filter the archive through compress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--zstd"
+          ],
+          "description": "Filter the archive through zstd",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--transform",
+            "--xform"
+          ],
+          "description": "Use sed replace EXPRESSION to transform file names",
+          "takes_arg": true,
+          "arg_name": "EXPRESSION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint"
+          ],
+          "description": "Display progress messages every Nth record",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint-action"
+          ],
+          "description": "Run ACTION on each checkpoint",
+          "takes_arg": true,
+          "arg_name": "ACTION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-time"
+          ],
+          "description": "Print file time to its full resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--utc"
+          ],
+          "description": "Print file modification times in UTC",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "u",
+      "aliases": [
+        "-u",
+        "--update"
+      ],
+      "description": "Append files which are newer than the corresponding copy in  the archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-failed-read"
+          ],
+          "description": "Do not exit with nonzero on unreadable files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--restrict"
+          ],
+          "description": "Disable the use of some potentially harmful options",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-files"
+          ],
+          "description": "Remove files from disk after adding them to the archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "W",
+            "-W",
+            "--verify"
+          ],
+          "description": "Verify the archive after writing it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--atime-preserve"
+          ],
+          "description": "Preserve access times on dumped files",
+          "takes_arg": true,
+          "arg_name": "METHOD",
+          "arg_template": {
+            "custom": [
+              "replace",
+              "system"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group"
+          ],
+          "description": "Force NAME as group for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--group-map"
+          ],
+          "description": "Read group translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mode"
+          ],
+          "description": "Force symbolic mode CHANGES for added files",
+          "takes_arg": true,
+          "arg_name": "CHANGES",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mtime"
+          ],
+          "description": "Set mtime for added files",
+          "takes_arg": true,
+          "arg_name": "DATE-OR-FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner"
+          ],
+          "description": "Force NAME as owner for added files",
+          "takes_arg": true,
+          "arg_name": "NAME[:GID]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner-map"
+          ],
+          "description": "Read owner translation map from FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sort"
+          ],
+          "description": "When creating an archive, sort directory entries according to ORDER",
+          "takes_arg": true,
+          "arg_name": "ORDER",
+          "arg_template": {
+            "custom": [
+              "none",
+              "name",
+              "inode"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--add-file"
+          ],
+          "description": "Add FILE to the archive",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude"
+          ],
+          "description": "Exclude files matching PATTERN",
+          "takes_arg": true,
+          "arg_name": "PATTERN",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-backups"
+          ],
+          "description": "Exclude backup and lock files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches"
+          ],
+          "description": "Exclude contents of directories containing file CACHEDIR.TAG, except for the tag file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-all"
+          ],
+          "description": "Exclude directories containing file CACHEDIR.TAG and the file itself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-caches-under"
+          ],
+          "description": "Exclude everything under directories containing CACHEDIR.TAG",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore"
+          ],
+          "description": "Read exclusion patterns from FILE in directory before dumping",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-ignore-recursive"
+          ],
+          "description": "Same  as --exclude-ignore, except that patterns from FILE affect both the directory and all its subdirectories",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag"
+          ],
+          "description": "Exclude contents of directories containing FILE, except for FILE itself",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-all"
+          ],
+          "description": "Exclude directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-tag-under"
+          ],
+          "description": "Exclude everything under directories containing FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs"
+          ],
+          "description": "Exclude version control system directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-vcs-ignores"
+          ],
+          "description": "Exclude files that match patterns read from VCS-specific ignore files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "h",
+            "-h",
+            "--dereference"
+          ],
+          "description": "Follow symlinks; archive and dump the files they point to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hard-dereference"
+          ],
+          "description": "Follow hard links; archive and dump the files they refer to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "N",
+            "-N",
+            "--newer",
+            "--after-date"
+          ],
+          "description": "Only store files newer than DATE",
+          "takes_arg": true,
+          "arg_name": "DATE",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-file-system"
+          ],
+          "description": "Stay in local file system when creating archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "P",
+            "-P",
+            "--absolute-names"
+          ],
+          "description": "Don't strip leading slashes from file names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--anchored"
+          ],
+          "description": "Patterns match file name start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-case"
+          ],
+          "description": "Ignore case",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-anchored"
+          ],
+          "description": "Patterns match after any /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ignore-case"
+          ],
+          "description": "Case sensitive matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards"
+          ],
+          "description": "Verbatim string matching",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-wildcards-match-slash"
+          ],
+          "description": "Wildcards do not match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards"
+          ],
+          "description": "Use wildcards",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wildcards-match-slash"
+          ],
+          "description": "Wildcards match /",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clamp-mtime"
+          ],
+          "description": "Only set time when the file is more recent than what was given with --mtime",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "l",
+            "-l",
+            "--check-links"
+          ],
+          "description": "Print a message if not all links are dumped",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "a",
+            "-a",
+            "--auto-compress"
+          ],
+          "description": "Use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "I",
+            "-I",
+            "--use-compress-program"
+          ],
+          "description": "Filter data through COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "j",
+            "-j",
+            "--bzip2"
+          ],
+          "description": "Filter the archive through bzip2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "J",
+            "-J",
+            "--xz"
+          ],
+          "description": "Filter the archive through xz",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzip"
+          ],
+          "description": "Filter the archive through lzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzma"
+          ],
+          "description": "Filter the archive through lzma",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzop"
+          ],
+          "description": "Filter the archive through lzop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auto-compress"
+          ],
+          "description": "Do not use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "z",
+            "-z",
+            "--gzip",
+            "--gunzip",
+            "--ungzip"
+          ],
+          "description": "Filter the archive through gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "Z",
+            "-Z",
+            "--compress",
+            "--uncompress"
+          ],
+          "description": "Filter the archive through compress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--zstd"
+          ],
+          "description": "Filter the archive through zstd",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--transform",
+            "--xform"
+          ],
+          "description": "Use sed replace EXPRESSION to transform file names",
+          "takes_arg": true,
+          "arg_name": "EXPRESSION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint"
+          ],
+          "description": "Display progress messages every Nth record",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint-action"
+          ],
+          "description": "Run ACTION on each checkpoint",
+          "takes_arg": true,
+          "arg_name": "ACTION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-time"
+          ],
+          "description": "Print file time to its full resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--utc"
+          ],
+          "description": "Print file modification times in UTC",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "x",
+      "aliases": [
+        "-x",
+        "--extract",
+        "--get"
+      ],
+      "description": "Extract files from an archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "n",
+            "-n",
+            "--seek"
+          ],
+          "description": "Assume the archive is seekable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-seek"
+          ],
+          "description": "Assume the archive is not seekable",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--occurrence"
+          ],
+          "description": "Process only the Nth occurrence of each file in the archive",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "B",
+            "-B",
+            "--read-full-records"
+          ],
+          "description": "When listing or extracting, accept incomplete input records after end-of-file marker",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "i",
+            "-i",
+            "--ignore-zeros"
+          ],
+          "description": "Ignore zeroed blocks in archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "V",
+            "-V",
+            "--label"
+          ],
+          "description": "Use TEXT as a globbing pattern for volume name",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "a",
+            "-a",
+            "--auto-compress"
+          ],
+          "description": "Use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "I",
+            "-I",
+            "--use-compress-program"
+          ],
+          "description": "Filter data through COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "j",
+            "-j",
+            "--bzip2"
+          ],
+          "description": "Filter the archive through bzip2",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "J",
+            "-J",
+            "--xz"
+          ],
+          "description": "Filter the archive through xz",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzip"
+          ],
+          "description": "Filter the archive through lzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzma"
+          ],
+          "description": "Filter the archive through lzma",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--lzop"
+          ],
+          "description": "Filter the archive through lzop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-auto-compress"
+          ],
+          "description": "Do not use archive suffix to determine the compression program",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "z",
+            "-z",
+            "--gzip",
+            "--gunzip",
+            "--ungzip"
+          ],
+          "description": "Filter the archive through gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "Z",
+            "-Z",
+            "--compress",
+            "--uncompress"
+          ],
+          "description": "Filter the archive through compress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--zstd"
+          ],
+          "description": "Filter the archive through zstd",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--transform",
+            "--xform"
+          ],
+          "description": "Use sed replace EXPRESSION to transform file names",
+          "takes_arg": true,
+          "arg_name": "EXPRESSION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint"
+          ],
+          "description": "Display progress messages every Nth record",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--checkpoint-action"
+          ],
+          "description": "Run ACTION on each checkpoint",
+          "takes_arg": true,
+          "arg_name": "ACTION",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--full-time"
+          ],
+          "description": "Print file time to its full resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--utc"
+          ],
+          "description": "Print file modification times in UTC",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "K",
+            "-K",
+            "--starting-file"
+          ],
+          "description": "Begin at the given member in the archive",
+          "takes_arg": true,
+          "arg_name": "MEMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-omitted-dirs"
+          ],
+          "description": "List each directory that does not match search criteria",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "k",
+            "-k",
+            "--keep-old-files"
+          ],
+          "description": "Don't replace existing files when extracting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-newer-files"
+          ],
+          "description": "Don't replace existing files that are newer than their archive copies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-directory-symlink"
+          ],
+          "description": "Don't replace existing symlinks to directories when extracting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-overwrite-dir"
+          ],
+          "description": "Preserve metadata of existing directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-top-level"
+          ],
+          "description": "Extract all files into DIR",
+          "takes_arg": true,
+          "arg_name": "DIR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--overwrite"
+          ],
+          "description": "Overwrite existing files when extracting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--overwrite-dir"
+          ],
+          "description": "Overwrite metadata of existing directories when extracting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive-unlink"
+          ],
+          "description": "Recursively remove all files in the directory prior to extracting it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-old-files"
+          ],
+          "description": "Don't replace existing files when extracting, silently skip over them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "U",
+            "-U",
+            "--unlink-first"
+          ],
+          "description": "Remove each file prior to extracting over it",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "O",
+            "-O",
+            "--to-stdout"
+          ],
+          "description": "Extract files to standard output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--to-command"
+          ],
+          "description": "Pipe extracted files to COMMAND",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--delay-directory-restore"
+          ],
+          "description": "Delay setting modification times and permissions of extracted directories until the end of extraction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "m",
+            "-m",
+            "--touch"
+          ],
+          "description": "Don't extract file modified time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-delay-directory-restore"
+          ],
+          "description": "Cancel the effect of the prior --delay-directory-restore option",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-same-owner"
+          ],
+          "description": "Extract files as yourself",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-same-permissions"
+          ],
+          "description": "Apply the user's umask when extracting permissions from the archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "p",
+            "-p",
+            "--preserve-permissions",
+            "--same-permissions"
+          ],
+          "description": "Extract information about file permissions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preserve"
+          ],
+          "description": "Same as both -p and -s",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--same-owner"
+          ],
+          "description": "Try extracting files with the same ownership as exists in the archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "s",
+            "-s",
+            "--preserve-order",
+            "--same-order"
+          ],
+          "description": "Sort names to extract to match archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strip-components"
+          ],
+          "description": "Strip NUMBER leading components from file names on extraction",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--warning"
+          ],
+          "description": "Enable or disable warning messages identified by KEYWORD",
+          "takes_arg": true,
+          "arg_name": "KEYWORD",
+          "arg_template": {
+            "custom": [
+              "all",
+              "none",
+              "filename-with-nuls",
+              "no-filename-with-nuls",
+              "alone-zero-block",
+              "no-alone-zero-block",
+              "existing-file",
+              "no-existing-file",
+              "timestamp",
+              "no-timestamp",
+              "contiguous-cast",
+              "no-contiguous-cast",
+              "symlink-cast",
+              "no-symlink-cast",
+              "unknown-cast",
+              "no-unknown-cast",
+              "ignore-newer",
+              "no-ignore-newer",
+              "unknown-keyword",
+              "no-unknown-keyword",
+              "decompress-program",
+              "no-decompress-program",
+              "record-size",
+              "no-record-size",
+              "rename-directory",
+              "no-rename-directory",
+              "new-directory",
+              "no-new-directory",
+              "xdev",
+              "no-xdev",
+              "bad-dumpdir"
+            ]
+          },
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "o",
+            "-o"
+          ],
+          "description": "Same as --no-same-owner",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "MEMBER",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "--delete",
+      "aliases": [],
+      "description": "Delete from the archive",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--occurrence"
+          ],
+          "description": "Process only the Nth occurrence of each file in the archive",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "MEMBER",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "--test-label",
+      "aliases": [],
+      "description": "Test the archive volume label and exit",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "f",
+            "-f",
+            "--file"
+          ],
+          "description": "Use archive file or device ARCHIVE",
+          "takes_arg": true,
+          "arg_name": "ARCHIVE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "Archive file is local even if it has a colon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "F",
+            "-F",
+            "--info-script",
+            "--new-volume-script"
+          ],
+          "description": "Run  COMMAND  at the end of each tape",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "L",
+            "-L",
+            "--tape-length"
+          ],
+          "description": "Change tape after writing Nx1024 bytes",
+          "takes_arg": true,
+          "arg_name": "N",
+          "arg_template": {
+            "custom": [
+              "Blocks",
+              "Bytes",
+              "Gigabytes",
+              "Kilobytes",
+              "Megabytes",
+              "Petabytes",
+              "Terabytes",
+              "Words"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "M",
+            "-M",
+            "--multi-volume"
+          ],
+          "description": "Create/list/extract multi-volume archive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmt-command"
+          ],
+          "description": "Use  COMMAND instead of rmt when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rsh-command"
+          ],
+          "description": "Use  COMMAND instead of rsh when accessing remote archives",
+          "takes_arg": true,
+          "arg_name": "COMMAND",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volno-file"
+          ],
+          "description": "Tar will keep track of which volume of a multi-volume archive it is working in FILE",
+          "takes_arg": true,
+          "arg_name": "FILE",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "LABEL",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "--show-defaults",
+      "aliases": [],
+      "description": "Show built-in defaults for various tar options and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "?",
+      "aliases": [
+        "-?",
+        "--help"
+      ],
+      "description": "Display a short option summary and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--usage",
+      "aliases": [],
+      "description": "Display a list of available options and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--version",
+      "aliases": [],
+      "description": "Print program version and copyright information and exit",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "g",
+        "-g",
+        "--listed-incremental"
+      ],
+      "description": "Handle new GNU-format incremental backups",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hole-detection"
+      ],
+      "description": "Use METHOD to detect holes in sparse files",
+      "takes_arg": true,
+      "arg_name": "METHOD",
+      "arg_template": {
+        "custom": [
+          "seek",
+          "raw"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "G",
+        "-G",
+        "--incremental"
+      ],
+      "description": "Handle old GNU-format incremental backups",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sparse-version"
+      ],
+      "description": "Set version of the sparse format to use",
+      "takes_arg": true,
+      "arg_name": "MAJOR[.MINOR]",
+      "arg_template": {
+        "custom": [
+          "0",
+          "0.1",
+          "1"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "S",
+        "-S",
+        "--sparse"
+      ],
+      "description": "Handle sparse files efficiently",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-command-error"
+      ],
+      "description": "Ignore subprocess exit codes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ignore-command-error"
+      ],
+      "description": "Treat non-zero exit codes of children as error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--numeric-owner"
+      ],
+      "description": "Always use numbers for user/group names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--acls"
+      ],
+      "description": "Enable POSIX ACLs support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-acls"
+      ],
+      "description": "Disable POSIX ACLs support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--selinux"
+      ],
+      "description": "Enable SELinux context support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-selinux"
+      ],
+      "description": "Disable SELinux context support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--xattrs"
+      ],
+      "description": "Enable extended attributes support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-xattrs"
+      ],
+      "description": "Disable extended attributes support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--xattrs-exclude"
+      ],
+      "description": "Specify the exclude pattern for xattr keys",
+      "takes_arg": true,
+      "arg_name": "PATTERN",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--xattrs-include"
+      ],
+      "description": "Specify the include pattern for xattr keys",
+      "takes_arg": true,
+      "arg_name": "PATTERN",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--backup"
+      ],
+      "description": "Backup before removal",
+      "takes_arg": true,
+      "arg_name": "CONTROL",
+      "arg_template": {
+        "custom": [
+          "none",
+          "off",
+          "t",
+          "numbered",
+          "nil",
+          "existing",
+          "never",
+          "simple"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "C",
+        "-C",
+        "--directory"
+      ],
+      "description": "Change to DIR before performing any operations",
+      "takes_arg": true,
+      "arg_name": "DIR",
+      "arg_template": "folders",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--newer-mtime"
+      ],
+      "description": "Work on files whose data changed after the DATE",
+      "takes_arg": true,
+      "arg_name": "DATE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-null"
+      ],
+      "description": "Disable the effect of the previous --null option",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-recursion"
+      ],
+      "description": "Avoid descending automatically in directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-unquote"
+      ],
+      "description": "Do not unquote input file or member names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-verbatim-files-from"
+      ],
+      "description": "Treat each line read from a file list as if it were supplied in the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-null"
+      ],
+      "description": "Instruct subsequent -T options to read null-terminated names verbatim",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--recursion"
+      ],
+      "description": "Recurse into directories",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--suffix"
+      ],
+      "description": "Backup before removal, override usual suffix",
+      "takes_arg": true,
+      "arg_name": "STRING",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "T",
+        "-T",
+        "--files-from"
+      ],
+      "description": "Get names to extract or create from FILE",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--unquote"
+      ],
+      "description": "Unquote file or member names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbatim-files-from"
+      ],
+      "description": "Treat each line obtained from a file list as a file name, even if it starts with a dash",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "X",
+        "-X",
+        "--exclude-from"
+      ],
+      "description": "Exclude files matching patterns listed in FILE",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--index-file"
+      ],
+      "description": "Send verbose output to FILE",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-quote-chars"
+      ],
+      "description": "Disable quoting for characters from STRING",
+      "takes_arg": true,
+      "arg_name": "STRING",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quote-chars"
+      ],
+      "description": "Additionally quote characters from STRING",
+      "takes_arg": true,
+      "arg_name": "STRING",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quoting-style"
+      ],
+      "description": "Set quoting style for file and member names",
+      "takes_arg": true,
+      "arg_name": "STYLE",
+      "arg_template": {
+        "custom": [
+          "literal",
+          "shell",
+          "shell-always",
+          "c",
+          "c-maybe",
+          "escape",
+          "locale",
+          "clocale"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "R",
+        "-R",
+        "--block-number"
+      ],
+      "description": "Show block number within archive with each message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-transformed-names",
+        "--show-stored-names"
+      ],
+      "description": "Show file or archive names after transformation by --strip and --transform options",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--totals"
+      ],
+      "description": "Print total bytes after processing the archive",
+      "takes_arg": true,
+      "arg_name": "SIGNAL",
+      "arg_template": {
+        "custom": [
+          "SIGHUP",
+          "HUP",
+          "SIGQUIT",
+          "QUIT",
+          "SIGINT",
+          "INT",
+          "SIGUSR1",
+          "USR1",
+          "SIGUSR2",
+          "USR2"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "v",
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbosely list files processed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "w",
+        "-w",
+        "--interactive",
+        "--confirmation"
+      ],
+      "description": "Ask for confirmation for every action",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

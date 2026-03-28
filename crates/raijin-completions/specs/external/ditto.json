@@ -1,0 +1,314 @@
+{
+  "name": "ditto",
+  "aliases": [],
+  "description": "Copy directory hierarchies, create and extract archives",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for ditto",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Print full usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X"
+      ],
+      "description": "When copying one or more source directories, do not descend into directories that have a different device ID",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Create an archive at the destination path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-z"
+      ],
+      "description": "Create compressed CPIO archives, using gzip(1) compression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j"
+      ],
+      "description": "Create compressed CPIO archives, using bzip2(1) compression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print a line of output to stderr for each source directory copied",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V"
+      ],
+      "description": "Print a line of output to stderr for every file, symbolic link, and device copied",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Extract the archives given as source arguments",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-k"
+      ],
+      "description": "Create or extract from a PKZip archive instead of the default CPIO",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--keepParent"
+      ],
+      "description": "When creating an archive, embed the parent directory name src in dst_archive",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--arch"
+      ],
+      "description": "Thin Universal binaries to the specified architecture.  If multiple --arch options are specified then the resulting destination file will contain each of the specified architectures (if they are present in the source file).  arch should be specified as 'i386', 'x86_64', etc",
+      "takes_arg": true,
+      "arg_name": "arch",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--bom"
+      ],
+      "description": "Copy only files, links, devices, and directories that are present in the specified BOM",
+      "takes_arg": true,
+      "arg_name": "bom",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-rsrc"
+      ],
+      "description": "Preserve resource forks and HFS meta-data.  ditto will store this data in Carbon-compatible ._ AppleDouble files on filesystems that do not natively support resource forks.  As of Mac OS X 10.4, --rsrc is default behavior",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--norsrc"
+      ],
+      "description": "Do not preserve resource forks and HFS meta-data.  If both --norsrc and --rsrc are passed, whichever is passed last will take precedence.  Both options override DITTONORSRC. Unless explicitly specified, --norsrc also implies --noextattr and --noacl to match the behavior of Mac OS X 10.4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extattr"
+      ],
+      "description": "Preserve extended attributes (requires --rsrc). As of Mac OS X 10.5, --extattr is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noextattr"
+      ],
+      "description": "Do not preserve extended attributes (requires --norsrc)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--qtn"
+      ],
+      "description": "Preserve quarantine information.  As of Mac OS X 10.5, --qtn is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noqtn"
+      ],
+      "description": "Do not preserve quarantine information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--acl"
+      ],
+      "description": "Preserve Access Control Lists (ACLs).  As of Mac OS X 10.5, --acl is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--noacl"
+      ],
+      "description": "Do not preserve ACLs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nocache"
+      ],
+      "description": "Do not perform copies using the Mac OS X Unified Buffer Cache. Files read and written will not be cached, although if the file is already present in the cache, the cached information will be used",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--hfsCompression"
+      ],
+      "description": "When copying files or extracting content from an archive, if the destination is an HFS+ volume that supports compression, all the content will be compressed if appropriate. This is only supported on Mac OS X 10.6 or later, and is only intended to be used in installation and backup scenarios that involve system files. Since files using HFS+ compression are not readable on versions of Mac OS X earlier than 10.6, this flag should not be used when dealing with non-system files or other user-generated content that will be used on a version of Mac OS X earlier than 10.6",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nohfsCompression"
+      ],
+      "description": "Do not compress files with HFS+ compression when copying or extracting content from an archive unless the content is already compressed with HFS+ compression.  This flag is only supported on Mac OS X 10.6 or later.  --nohfsCompression is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preserveHFSCompression"
+      ],
+      "description": "When copying files to an HFS+ volume that supports compression, ditto will preserve the compression of any source files that were using HFS+ compression.  This flag is only supported on Mac OS X 10.6 or later. --preserveHFSCompression is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nopreserveHFSCompression"
+      ],
+      "description": "Do not preserve HFS+ compression when copying files that are already compressed with HFS+ compression. This is only supported on Mac OS X 10.6 or later",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sequesterRsrc"
+      ],
+      "description": "When creating a PKZip archive, preserve resource forks and HFS meta-data in the subdirectory __MACOSX.  PKZip extraction will automatically find these resources",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--zlibCompressionLevel"
+      ],
+      "description": "Sets the compression level to use when creating a PKZip archive. The compression level can be set from 0 to 9, where 0 represents no compression, and 9 represents optimal (slowest) compression. By default, ditto will use the default compression level as defined by zlib",
+      "takes_arg": true,
+      "arg_name": "compression level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--password"
+      ],
+      "description": "When extracting a password-encrypted ZIP archive, you must specify --password to allow ditto to prompt for a password to use to extract the contents of the file. If this option is not provided, and a password-encrypted file is encountered, ditto will emit an error message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "source",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    },
+    {
+      "name": "dest",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

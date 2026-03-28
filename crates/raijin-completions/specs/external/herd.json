@@ -1,0 +1,4290 @@
+{
+  "name": "herd",
+  "aliases": [],
+  "description": "Herd is a blazing fast, native Laravel and PHP development environment for macOS. It provides everything that you need to get started with Laravel development",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Dump the shell completion script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Tail the completion debug log",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shell",
+          "description": "The shell type (e.g. \"bash\"), the value of the \"$SHELL\" env var will be used if this is not given",
+          "template": {
+            "custom": [
+              "bash",
+              "fish",
+              "powershell",
+              "zsh"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "composer",
+      "aliases": [],
+      "description": "Proxy Composer commands with isolated site's PHP executable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "coverage",
+      "aliases": [],
+      "description": "Proxy PHP commands with isolated sith Xdebug code coverage enabled",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Proxy PHP commands with isolated site's PHP executable and debug.ini loaded",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "directory-listing",
+      "aliases": [],
+      "description": "Determine directory-listing behavior. Default is off, which means a 404 will display",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "status",
+          "description": "On or off. (default=off) will show a 404 page; [on] will display a listing if project folder exists but requested URI not found",
+          "template": {
+            "custom": [
+              "on",
+              "off"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Open the site in your favorite IDE",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--path"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fetch-share-url",
+      "aliases": [],
+      "description": "Get the URL to the current share tunnel for Expose",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "forget",
+      "aliases": [],
+      "description": "Remove the current working (or specified) directory from Herd's list of paths",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for a command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "The output format (txt, xml, json, or md) [default: \"txt\"]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command_name",
+          "description": "The command name [default: \"help\"]",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Start the services defined in the Herd manifest file, and apply the configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--fresh"
+          ],
+          "description": "The output format (txt, xml, json, or md) [default: \"txt\"]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "isolate",
+      "aliases": [],
+      "description": "Change the version of PHP used by Herd to serve the current working directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to isolate (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "phpVersion",
+          "description": "The PHP version you want to use; e.g 8.1",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "isolate-node",
+      "aliases": [],
+      "description": "Change the version of Node used by the CLI for the current working directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to isolate (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nodeVersion",
+          "description": "The Node version you want to use; e.g 21",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "isolated",
+      "aliases": [],
+      "description": "List all sites using isolated versions of PHP",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "isolated-node",
+      "aliases": [],
+      "description": "List all sites using isolated versions of Nodes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link the current working directory to Herd",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--secure"
+          ],
+          "description": "Link the site with a trusted TLS certificate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--isolate"
+          ],
+          "description": "Isolate the site to the PHP version specified, for example 8.3",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "links",
+      "aliases": [],
+      "description": "Display all of the registered Herd links",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List commands",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--raw"
+          ],
+          "description": "To output raw command list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "The output format (txt, xml, json, or md) [default: \"txt\"]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--short"
+          ],
+          "description": "To skip describing commands' arguments",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "namespace",
+          "description": "The namespace name",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "log",
+      "aliases": [],
+      "description": "Tail log file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--lines",
+            "-n"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--follow",
+            "-f"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "key",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Show the log viewer UI for the given site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sites"
+          ],
+          "description": "Specify the site to tinker with (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "loopback",
+      "aliases": [],
+      "description": "Get or set the loopback address used for Herd sites",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "loopback",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open the site for the current (or specified) directory in your browser",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "park",
+      "aliases": [],
+      "description": "Register the current working (or specified) directory with Herd",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "parked",
+      "aliases": [],
+      "description": "Display all the current sites within parked paths",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "paths",
+      "aliases": [],
+      "description": "Get all of the paths registered with Herd",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "php",
+      "aliases": [],
+      "description": "Proxy PHP commands with isolated site's PHP executable",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to use to get the PHP version (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "proxies",
+      "aliases": [],
+      "description": "Display all of the proxy sites",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "proxy",
+      "aliases": [],
+      "description": "Create an Nginx proxy site for the specified host. Useful for Reverb, Docker, etc",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--secure"
+          ],
+          "description": "Create a proxy with a trusted TLS certificate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "host",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart the Herd services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secure",
+      "aliases": [],
+      "description": "Secure the given domain with a trusted TLS certificate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--expireIn"
+          ],
+          "description": "The amount of days the self signed certificate is valid for. Default is set to \"368\" [default: 368]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "secured",
+      "aliases": [],
+      "description": "Secure the given domain with a trusted TLS certificate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--expiring"
+          ],
+          "description": "Limits the results to only sites expiring within the next 60 days",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--days"
+          ],
+          "description": "To be used with --expiring. Limits the results to only sites expiring within the next X days. Default is set to 60. [default: 60]",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "Share the current site via an Expose tunnel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "site-information",
+      "aliases": [],
+      "description": "Display information about the specified site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start the Herd services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop the Herd services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "tinker",
+      "aliases": [],
+      "description": "Run tinker/Tinkerwell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to tinker with (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tld",
+      "aliases": [],
+      "description": "[domain] Get or set the TLD used for Herd sites",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tld",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unisolate",
+      "aliases": [],
+      "description": "Stop customizing the version of PHP used by Herd to serve the current working directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to un-isolate (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unisolate-node",
+      "aliases": [],
+      "description": "Stop customizing the version of Node used the CLI for the current working directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--site"
+          ],
+          "description": "Specify the site to un-isolate (e.g. if the site isn't linked as its directory name)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Remove the specified Herd link",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unproxy",
+      "aliases": [],
+      "description": "Delete an Nginx proxy config",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "unsecure",
+      "aliases": [],
+      "description": "Stop serving the given domain over HTTPS and remove the trusted TLS certificate",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--silent"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "domain",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Change the version of PHP used by Herd",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "phpVersion",
+          "description": "The PHP version you want to use; e.g. 8.3",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Display which Herd driver serves the current working directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "which-php",
+      "aliases": [],
+      "description": "Get the PHP executable path for a given site",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "site",
+          "description": "The site to get the PHP executable path for",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init:fresh",
+      "aliases": [],
+      "description": "Initialize a Herd manifest file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Display help for the given command. When no command is given display help for the list command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-V"
+          ],
+          "description": "Display this application version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Do not output any message",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-vv",
+            "-vvv",
+            "-v"
+          ],
+          "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ansi"
+          ],
+          "description": "Force ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ansi"
+          ],
+          "description": "Disable ANSI output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interaction",
+            "-n"
+          ],
+          "description": "Do not ask any interactive question",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help for the given command. When no command is given display help for the list command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Display this application version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--quiet",
+        "-q"
+      ],
+      "description": "Do not output any message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-vv",
+        "-vvv",
+        "-v"
+      ],
+      "description": "Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ansi"
+      ],
+      "description": "Force ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Disable ANSI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-interaction",
+        "-n"
+      ],
+      "description": "Do not ask any interactive question",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

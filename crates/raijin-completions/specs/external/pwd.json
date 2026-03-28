@@ -1,0 +1,29 @@
+{
+  "name": "pwd",
+  "aliases": [],
+  "description": "Return working directory name",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Display the logical current working directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Display the physical current working directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

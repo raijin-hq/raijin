@@ -1,0 +1,8 @@
+{
+  "name": "php",
+  "aliases": [],
+  "description": "Run the PHP interpreter",
+  "subcommands": [],
+  "options": [],
+  "args": []
+}

@@ -1,0 +1,510 @@
+{
+  "name": "railway",
+  "aliases": [],
+  "description": "CLI for managing Railway Apps",
+  "subcommands": [
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add a plugin to your project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell-completions",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "shell",
+          "description": "The shell to generate completions for",
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "powershell"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "connect",
+      "aliases": [],
+      "description": "Connect to a plugin",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": "The plugin to connect to",
+          "template": {
+            "custom": [
+              "postgresql",
+              "mysql",
+              "redis",
+              "mongodb"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete a project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project-id",
+          "description": "The project to delete",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "Open Railway Documentation in default browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "down",
+      "aliases": [],
+      "description": "Remove the most recent deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to delete from",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "environment",
+      "aliases": [],
+      "description": "Change your environment",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "environment",
+          "description": "The environment to change to",
+          "template": {
+            "custom": [
+              "production",
+              "preview"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Get help about any command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "The command to get help about",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new railway project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Connect to an existing railway project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "project-id",
+          "description": "The project to link to",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all railway projects",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to railway",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--browserless"
+          ],
+          "description": "Login without opening a browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout of railway",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Show logs for the most-recent deployment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n",
+            "--lines"
+          ],
+          "description": "Output a specific number of lines",
+          "takes_arg": true,
+          "arg_name": "Number of lines",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open the project",
+      "subcommands": [
+        {
+          "name": "live",
+          "aliases": [],
+          "description": "Open the live project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "metrics",
+          "aliases": [],
+          "description": "Open project metrics",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "settings",
+          "aliases": [],
+          "description": "Open project settings",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a local command using variables from the active environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run in",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--service"
+          ],
+          "description": "Define specific service",
+          "takes_arg": true,
+          "arg_name": "Service name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "shell",
+      "aliases": [],
+      "description": "Open a subshell with Railway variables available",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--service"
+          ],
+          "description": "Deploy app to specific service",
+          "takes_arg": true,
+          "arg_name": "Service name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "View the status of railway project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "unlink",
+      "aliases": [],
+      "description": "Disconnects the current directory from a Railway project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "up",
+      "aliases": [],
+      "description": "Deploy to railway",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d",
+            "--detach"
+          ],
+          "description": "Detach from build logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment to run in",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--service"
+          ],
+          "description": "Deploy app to specific service",
+          "takes_arg": true,
+          "arg_name": "Service name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to deploy to",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "variables",
+      "aliases": [],
+      "description": "Work with environment variables",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete variable",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "variable",
+              "description": "The name of the variable you want to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get variable value",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "variable",
+              "description": "The name of the variable you want to get",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set variable value",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "variable",
+              "description": "The name of the variable you want to set",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "value",
+              "description": "Value of the variable",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-e",
+            "--environment"
+          ],
+          "description": "Environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--service"
+          ],
+          "description": "Deploy app to specific service",
+          "takes_arg": true,
+          "arg_name": "Service name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Get the version of railway's CLI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "whoami",
+      "aliases": [],
+      "description": "Get the logged in user",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for railway",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Show railway version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Enable verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

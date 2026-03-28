@@ -1,0 +1,16 @@
+{
+  "name": "dirname",
+  "aliases": [],
+  "description": "Return directory portion of pathname",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "string",
+      "description": "String to operate on (typically filenames)",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

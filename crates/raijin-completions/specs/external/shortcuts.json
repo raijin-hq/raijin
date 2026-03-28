@@ -1,0 +1,201 @@
+{
+  "name": "shortcuts",
+  "aliases": [],
+  "description": "Command-line utility for running shortcuts",
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a shortcut",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--input-path"
+          ],
+          "description": "The input to provide to the shortcut",
+          "takes_arg": true,
+          "arg_name": "input-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output-path"
+          ],
+          "description": "Where to write the shortcut output, if applicable",
+          "takes_arg": true,
+          "arg_name": "output-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-type"
+          ],
+          "description": "What type to output data in, in Universal Type Identifier format",
+          "takes_arg": true,
+          "arg_name": "output-type",
+          "arg_template": {
+            "custom": [
+              "public.json",
+              "public.plain-text",
+              "public.html",
+              "public.xml",
+              "com.adobe.pdf",
+              "public.vcard"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "shortcut-name",
+          "description": "The name of the shortcut to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List your shortcuts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--folder-name",
+            "-f"
+          ],
+          "description": "The name of the folder to list",
+          "takes_arg": true,
+          "arg_name": "folder-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--folders"
+          ],
+          "description": "List folders instead of shortcuts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "view",
+      "aliases": [],
+      "description": "View a shortcut in Shortcuts",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "shortcut-name",
+          "description": "The name of the shortcut to view",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sign",
+      "aliases": [],
+      "description": "Sign a shortcut file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--input",
+            "-i"
+          ],
+          "description": "The shortcut file to sign",
+          "takes_arg": true,
+          "arg_name": "input",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output path for the signed shortcut file",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mode",
+            "-m"
+          ],
+          "description": "The signing mode. (default: people-who-know-me)",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "people-who-know-me",
+              "anyone"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Show help information",
+      "subcommands": [
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run a shortcut",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List your shortcuts",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View a shortcut in Shortcuts",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "sign",
+          "aliases": [],
+          "description": "Sign a shortcut file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

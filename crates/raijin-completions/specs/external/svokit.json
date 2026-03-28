@@ -1,0 +1,37 @@
+{
+  "name": "svokit",
+  "aliases": [],
+  "description": "Runs built svokit project",
+  "subcommands": [
+    {
+      "name": "setup",
+      "aliases": [],
+      "description": "Creates svokit config (experimental)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Runs build svokit project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for svokit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

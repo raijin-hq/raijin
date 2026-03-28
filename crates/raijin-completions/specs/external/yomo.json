@@ -1,0 +1,125 @@
+{
+  "name": "yomo",
+  "aliases": [],
+  "description": "CLI interface for YoMo",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initial an example StreamFunction",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--rx"
+          ],
+          "description": "Generate Rx code template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "function name",
+          "description": "StreamFunction name to initialize locally",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build a StreamFunction to WebAssembly",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Build to wasm or binary",
+          "takes_arg": true,
+          "arg_name": "wasm",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--modfile"
+          ],
+          "description": "Custom go.mod filepath",
+          "takes_arg": true,
+          "arg_name": "module",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": ".go file",
+          "description": "The .go file to build",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a wasm stream function",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-z",
+            "--zipper"
+          ],
+          "description": "Zipper endpoint this StreamFunction will connect to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Specify the name of this StreamFunction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": ".wasm file",
+          "description": "The .wasm file to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for yomo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

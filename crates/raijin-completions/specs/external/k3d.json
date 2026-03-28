@@ -1,0 +1,1383 @@
+{
+  "name": "k3d",
+  "aliases": [],
+  "description": "K3d is a lightweight wrapper to run k3s in Docker",
+  "subcommands": [
+    {
+      "name": "cluster",
+      "aliases": [],
+      "description": "Manage k3s clusters",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new k3s cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--agents"
+              ],
+              "description": "Number of agents to create",
+              "takes_arg": true,
+              "arg_name": "number of agents",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--agents-memory"
+              ],
+              "description": "Memory limit imposed on the agents nodes",
+              "takes_arg": true,
+              "arg_name": "memory limit",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--api-port"
+              ],
+              "description": "Specify the Kubernetes API server port exposed on the LoadBalancer",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--config"
+              ],
+              "description": "Path of a config file to use",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--env"
+              ],
+              "description": "Add environment variables to nodes",
+              "takes_arg": true,
+              "arg_name": "environment variables",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--gpus"
+              ],
+              "description": "GPU devices to add to the cluster node containers",
+              "takes_arg": true,
+              "arg_name": "devices",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for create",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host-alias"
+              ],
+              "description": "Add ip:host[,host,...] mappings",
+              "takes_arg": true,
+              "arg_name": "ip:host[,host,...]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--host-pid-mode"
+              ],
+              "description": "Enable host pid mode of server(s) and agent(s)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--image"
+              ],
+              "description": "Specify k3s image that you want to use for the nodes",
+              "takes_arg": true,
+              "arg_name": "image",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--k3s-arg"
+              ],
+              "description": "Additional args passed to k3s command",
+              "takes_arg": true,
+              "arg_name": "ARG@NODEFILTER[;@NODEFILTER]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--k3s-node-label"
+              ],
+              "description": "Add label to k3s node",
+              "takes_arg": true,
+              "arg_name": "KEY[=VALUE][@NODEFILTER[;NODEFILTER...]]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kubeconfig-switch-context"
+              ],
+              "description": "Directly switch the default kubeconfig's current-context to the new cluster's context (requires --kubeconfig-update-default) (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--kubeconfig-update-default"
+              ],
+              "description": "Directly update the default kubeconfig with the new cluster's context (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--lb-config-override"
+              ],
+              "description": "Use dotted YAML path syntax to override nginx loadbalancer settings",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--network"
+              ],
+              "description": "Specify the docker network to use",
+              "takes_arg": true,
+              "arg_name": "network",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-image-volume"
+              ],
+              "description": "Don't create a volume for the container's root filesystem",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-lb"
+              ],
+              "description": "Don't create a loadbalancer for the cluster",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-rollback"
+              ],
+              "description": "Don't rollback changes if cluster creation failed",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--port"
+              ],
+              "description": "Map ports from the node containers (via the serverlb) to the host",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--registry-config"
+              ],
+              "description": "Specify path to an extra registries.yaml file",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--registry-create"
+              ],
+              "description": "Create a k3d-managed registry and connect it to the cluster (Format: NAME[:HOST][:HOSTPORT] - Example: `k3d cluster create --registry-create mycluster-registry",
+              "takes_arg": true,
+              "arg_name": "NAME[:HOST][:HOSTPORT]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--registry-use"
+              ],
+              "description": "Connect to one or more k3d-managed registries running locally",
+              "takes_arg": true,
+              "arg_name": "NAME[:HOST][:HOSTPORT]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--runtime-label"
+              ],
+              "description": "Add label to container runtime (Format: KEY[=VALUE][@NODEFILTER[;NODEFILTER...]] - Example: `k3d cluster create --agents 2 --runtime-label \"my.label@agent:0,1\" --runtime-label \"other.label=somevalue@server:0\"`",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--servers"
+              ],
+              "description": "Specify how many servers you want to create",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--servers-memory"
+              ],
+              "description": "Memory limit imposed on the server nodes [From docker]",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--subnet"
+              ],
+              "description": "[Experimental: IPAM] Define a subnet for the newly created container network",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "Rollback changes if cluster couldn't be created in specified duration",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--token"
+              ],
+              "description": "Specify a cluster token. By default, we generate one",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--volume"
+              ],
+              "description": "Mount volumes into the nodes",
+              "takes_arg": true,
+              "arg_name": "[SOURCE:]DEST[@NODEFILTER[;NODEFILTER...]]",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait"
+              ],
+              "description": "Wait for the server(s) to be ready before returning",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster name",
+              "description": "Name of the cluster to create",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "del",
+            "rm"
+          ],
+          "description": "Delete a cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": "Delete all clusters",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--config"
+              ],
+              "description": "Path of a config file to use",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [
+            "update"
+          ],
+          "description": "Edit a cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--port-add"
+              ],
+              "description": "Map ports from the node containers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to edit",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls",
+            "get"
+          ],
+          "description": "List clusters",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Don't print headers",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Output format",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "yaml"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--token"
+              ],
+              "description": "Print k3s cluster token",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to list",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start a cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "a",
+                "--all"
+              ],
+              "description": "Start all clusters",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "Maximum waiting time for '--wait' before canceling/returning",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait"
+              ],
+              "description": "Wait for the server(s) (and loadbalancer) to be ready before returning",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to start",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": "Stop all clusters",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to stop",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell completion scripts",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "shell",
+          "description": "Shell to generate completion script for",
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "powershell"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Manage k3d config",
+      "subcommands": [
+        {
+          "name": "init",
+          "aliases": [
+            "create"
+          ],
+          "description": "Create a new config file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Force overwrite of target file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write a default k3d config (default \"k3d-default.yaml\")",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "migrate",
+          "aliases": [
+            "update"
+          ],
+          "description": "Migrate a config file to the latest version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "image",
+      "aliases": [],
+      "description": "Manage k3d images",
+      "subcommands": [
+        {
+          "name": "import",
+          "aliases": [
+            "load"
+          ],
+          "description": "Import image(s) from docker into k3d cluster(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--cluster"
+              ],
+              "description": "Cluster to import image(s) into",
+              "takes_arg": true,
+              "arg_name": "cluster",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-k",
+                "--keep-tarball"
+              ],
+              "description": "Do not delete the tarball containing the saved images from the shared volume",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--keep-tools"
+              ],
+              "description": "Do not delete the tools node after import",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--mode"
+              ],
+              "description": "Import mode",
+              "takes_arg": true,
+              "arg_name": "mode",
+              "arg_template": {
+                "custom": [
+                  "auto",
+                  "direct",
+                  "tools"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "image",
+              "description": "Image to import",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kubeconfig",
+      "aliases": [],
+      "description": "Manage k3d kubeconfig",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [
+            "print",
+            "show"
+          ],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to get kubeconfig for",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "merge",
+          "aliases": [
+            "write"
+          ],
+          "description": "Write/Merge kubeconfig(s) from cluster(s) into new or existing kubeconfig/file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--kubeconfig-merge-default"
+              ],
+              "description": "Merge into the default kubeconfig ($KUBECONFIG or /Users/balli/.kube/config)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--kubeconfig-switch-context"
+              ],
+              "description": "Switch to new context (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Define output [ - | FILE ] (default from $KUBECONFIG or /Users/balli/.kube/config",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--overwrite"
+              ],
+              "description": "[Careful!] Overwrite existing file, ignoring its contents",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--update"
+              ],
+              "description": "Update conflicting fields in existing kubeconfig (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "cluster",
+              "description": "Cluster to get kubeconfig for",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "node",
+      "aliases": [],
+      "description": "Manage k3d nodes",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new node",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--cluster"
+              ],
+              "description": "Cluster URL or k3d cluster name to connect to. (default \"k3s-default\")",
+              "takes_arg": true,
+              "arg_name": "cluster",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--image"
+              ],
+              "description": "Node image to use",
+              "takes_arg": true,
+              "arg_name": "image",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--k3s-arg"
+              ],
+              "description": "Additional k3s arguments",
+              "takes_arg": true,
+              "arg_name": "k3s-arg",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--k3s-node-label"
+              ],
+              "description": "Specify k3s node labels in format",
+              "takes_arg": true,
+              "arg_name": "k3s-node-label",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--memory"
+              ],
+              "description": "Memory limit for the node container",
+              "takes_arg": true,
+              "arg_name": "memory",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--network"
+              ],
+              "description": "Add node to (another) runtime network",
+              "takes_arg": true,
+              "arg_name": "network",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--replicas"
+              ],
+              "description": "Number of replicas to create",
+              "takes_arg": true,
+              "arg_name": "replicas",
+              "arg_template": {
+                "custom": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--role"
+              ],
+              "description": "Node role",
+              "takes_arg": true,
+              "arg_name": "role",
+              "arg_template": {
+                "custom": [
+                  "agent",
+                  "server"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--runtime-label"
+              ],
+              "description": "Specify runtime labels in format",
+              "takes_arg": true,
+              "arg_name": "runtime-label",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "Maximum waiting time for '--wait' before canceling/returning",
+              "takes_arg": true,
+              "arg_name": "timeout",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--token"
+              ],
+              "description": "Override cluster token",
+              "takes_arg": true,
+              "arg_name": "token",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--wait"
+              ],
+              "description": "Wait for the node(s) to be ready before returning",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Node Name",
+              "description": "Name of the node",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a node",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": "Delete all existing nodes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--registry"
+              ],
+              "description": "Also delete registries",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Node Name",
+              "description": "Name of the node",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [
+            "update"
+          ],
+          "description": "[EXPERIMENTAL] Edit node(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--port-add"
+              ],
+              "description": "Map ports from the node container to the host",
+              "takes_arg": true,
+              "arg_name": "port-add",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Node Name",
+              "description": "Name of the node",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls",
+            "get"
+          ],
+          "description": "List nodes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Don't print headers (default print headers)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Output format",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "yaml"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start a node",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "Node Name",
+              "description": "Name of the node",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a node",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "Node Name",
+              "description": "Name of the node",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "registry",
+      "aliases": [
+        "registries",
+        "reg"
+      ],
+      "description": "Manage registry/registries",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new registry",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--default-network"
+              ],
+              "description": "Specify the network connected to the registry (default \"bridge\")",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--image"
+              ],
+              "description": "Specify image used for the registry (default \"docker.io/library/registry:2\")",
+              "takes_arg": true,
+              "arg_name": "image",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-help"
+              ],
+              "description": "Disable the help text (How-To use the registry)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--port"
+              ],
+              "description": "Select which port the registry should be listening on your machine (localhost) (Format: [HOST:]HOSTPORT)",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--proxy-password"
+              ],
+              "description": "Specify the password of the proxied remote registry",
+              "takes_arg": true,
+              "arg_name": "proxy-password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--proxy-remote-url"
+              ],
+              "description": "Specify the url of the proxied remote registry",
+              "takes_arg": true,
+              "arg_name": "proxy-remote-url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--proxy-username"
+              ],
+              "description": "Specify the username of the proxied remote registry",
+              "takes_arg": true,
+              "arg_name": "proxy-username",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--volume"
+              ],
+              "description": "Mount volumes into the registry node (Format: [SOURCE:]DEST",
+              "takes_arg": true,
+              "arg_name": "volume",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Registry Name",
+              "description": "Name of the registry",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "del",
+            "rm"
+          ],
+          "description": "Delete registry/registries",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Registry Name",
+              "description": "Name of the registry",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "ls",
+            "get"
+          ],
+          "description": "List registries",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-headers"
+              ],
+              "description": "Don't print headers (default print headers)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Output format",
+              "takes_arg": true,
+              "arg_name": "output",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "yaml"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "Registry Name",
+              "description": "Name of the registry",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show k3d and default k3s version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for k3d",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trace"
+      ],
+      "description": "Trace output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timestamps"
+      ],
+      "description": "Print timestamp in log output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

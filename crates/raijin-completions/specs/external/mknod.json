@@ -1,0 +1,81 @@
+{
+  "name": "mknod",
+  "aliases": [],
+  "description": "Create device special file",
+  "subcommands": [
+    {
+      "name": "c",
+      "aliases": [],
+      "description": "Create (c)haracter device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "b",
+      "aliases": [],
+      "description": "Create (b)lock device",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Format",
+      "takes_arg": true,
+      "arg_name": "FORMAT",
+      "arg_template": {
+        "custom": [
+          "native",
+          "386bsd",
+          "4bsd",
+          "bsdos",
+          "freebsd",
+          "hpux",
+          "isc",
+          "linux",
+          "netbsd",
+          "npux",
+          "isc",
+          "linux",
+          "netbsd",
+          "osf1",
+          "sco",
+          "solaris",
+          "sunos",
+          "svr3",
+          "svr4",
+          "ultrix"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "FILE",
+      "description": "File to create",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "major",
+      "description": "The major device number is an integer number which tells the kernel which device driver entry point to use",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "minor | unit subunit",
+      "description": "The minor device number tells the kernel which one of several similar devices the node corresponds to; the unit and subunit numbers select a subset of a device; for example, the unit may specify a particular SCSI disk, and the subunit a partition on that disk",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

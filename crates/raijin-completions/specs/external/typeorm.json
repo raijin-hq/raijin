@@ -1,0 +1,972 @@
+{
+  "name": "typeorm",
+  "aliases": [],
+  "description": "TypeORM CLI",
+  "subcommands": [
+    {
+      "name": "schema:sync",
+      "aliases": [],
+      "description": "Synchronizes your entities with database schema",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which schema synchronization needs to to run",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:log",
+      "aliases": [],
+      "description": "Shows sql to be executed by schema:sync command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection of which schema sync log should be shown",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "schema:drop",
+      "aliases": [],
+      "description": "Drops all tables in the database on your default connection",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to drop all tables",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "query",
+      "aliases": [],
+      "description": "Executes given SQL query on a default connection",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "query",
+          "description": "The SQL Query to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "entity:create",
+      "aliases": [],
+      "description": "Generates a new entity",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of the entity class",
+          "takes_arg": true,
+          "arg_name": "entity",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Directory where entity should be created",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "subscriber:create",
+      "aliases": [],
+      "description": "Generates a new subscriber",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of the subscriber class",
+          "takes_arg": true,
+          "arg_name": "subscriber",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Directory where subscriber should be created",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:create",
+      "aliases": [],
+      "description": "Creates a new migration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of the migration class",
+          "takes_arg": true,
+          "arg_name": "migration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Directory where migration should be created",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--outputJs"
+          ],
+          "description": "Generate a migration file on Javascript instead of Typescript",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:generate",
+      "aliases": [],
+      "description": "Generates a new migration file with sql needs to be executed to update schema",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of the migration class",
+          "takes_arg": true,
+          "arg_name": "migration",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--dir"
+          ],
+          "description": "Directory where migration should be created",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--pretty"
+          ],
+          "description": "Pretty-print generated SQL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--outputJs"
+          ],
+          "description": "Generate a migration file on Javascript instead of Typescript",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dr",
+            "--dryrun"
+          ],
+          "description": "Prints out the contents of the migration instead of writing it to a file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ch",
+            "--check"
+          ],
+          "description": "Verifies that the current database is up to date and that no migrations are needed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:run",
+      "aliases": [],
+      "description": "Runs all pending migrations",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--transaction"
+          ],
+          "description": "Indicates if transaction should be used or not for migration run",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:show",
+      "aliases": [],
+      "description": "Show all migrations and whether they have been run or not",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migration:revert",
+      "aliases": [],
+      "description": "Reverts last executed migration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--transaction"
+          ],
+          "description": "Indicates if transaction should be used or not for migration revert",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Prints TypeORM version this project uses",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cache:clear",
+      "aliases": [],
+      "description": "Clears all data stored in query runner cache",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config"
+          ],
+          "description": "Name of the file with connection configuration",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Generates initial TypeORM project structure",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show help for command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--connection"
+          ],
+          "description": "Name of the connection on which to run a query",
+          "takes_arg": true,
+          "arg_name": "connection",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--name"
+          ],
+          "description": "Name of the project directory",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db",
+            "--database"
+          ],
+          "description": "Database type you'll use in your project",
+          "takes_arg": true,
+          "arg_name": "database",
+          "arg_template": {
+            "custom": [
+              "mysql",
+              "mariadb",
+              "postgres",
+              "cockroachdb",
+              "sqlite",
+              "mssql",
+              "oracle",
+              "cordova",
+              "nativescript",
+              "react-native",
+              "expo",
+              "mongodb"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--express"
+          ],
+          "description": "Indicates if express should be included in the project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docker"
+          ],
+          "description": "Set to true if docker-compose must be generated as well",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pm",
+            "--manager"
+          ],
+          "description": "Install packages",
+          "takes_arg": true,
+          "arg_name": "manager",
+          "arg_template": {
+            "custom": [
+              "npm",
+              "yarn"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

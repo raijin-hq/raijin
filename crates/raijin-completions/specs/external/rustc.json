@@ -1,0 +1,384 @@
+{
+  "name": "rustc",
+  "aliases": [],
+  "description": "CLI for rustc",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints out help info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cfg"
+      ],
+      "description": "Configures compilation settings",
+      "takes_arg": true,
+      "arg_name": "Spec",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Adds a directory to the library search path",
+      "takes_arg": true,
+      "arg_name": "kind",
+      "arg_template": {
+        "custom": [
+          "dependency",
+          "crate",
+          "native",
+          "framework",
+          "all"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--l"
+      ],
+      "description": "Links the generated crate to a native library",
+      "takes_arg": true,
+      "arg_name": "kind",
+      "arg_template": {
+        "custom": [
+          "dylib",
+          "static",
+          "framework"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crate-type"
+      ],
+      "description": "Specify types of crates for the compiler to emit",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "bin",
+          "lib",
+          "rlib",
+          "dylib",
+          "cdylib",
+          "staticlib",
+          "proc-macro"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crate-name"
+      ],
+      "description": "Specify the name of the crate being built",
+      "takes_arg": true,
+      "arg_name": "Name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--edition"
+      ],
+      "description": "Specify the edition to use",
+      "takes_arg": true,
+      "arg_name": "edition",
+      "arg_template": {
+        "custom": [
+          "2015",
+          "2018",
+          "2021"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--emit"
+      ],
+      "description": "Specify the types of output files to generate",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "asm",
+          "llvm-bc",
+          "llvm-ir",
+          "obj",
+          "metadata",
+          "link",
+          "dep-info",
+          "mir"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print"
+      ],
+      "description": "Prints compiler info",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "crate-name",
+          "file-names",
+          "sysroot",
+          "target-libdir",
+          "cfg",
+          "target-list",
+          "target-cpus",
+          "target-features",
+          "relocation-models",
+          "code-models",
+          "tls-models",
+          "target-spec-json",
+          "native-static-libs"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Synonym for -C debuginfo=2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Synonym for -C opt-level=2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Specify the filename to write output",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--out-dir"
+      ],
+      "description": "Specify directory to write output",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--explain"
+      ],
+      "description": "Provides a detailed explanation of an error message",
+      "takes_arg": true,
+      "arg_name": "Error Code",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--test"
+      ],
+      "description": "Builds a test harness",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--target"
+      ],
+      "description": "Selects a target triple to build",
+      "takes_arg": true,
+      "arg_name": "Target",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-W",
+        "--warn"
+      ],
+      "description": "Sets lint warnings",
+      "takes_arg": true,
+      "arg_name": "OPT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--allow"
+      ],
+      "description": "Set lint allowed",
+      "takes_arg": true,
+      "arg_name": "OPT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--deny"
+      ],
+      "description": "Set lint denied",
+      "takes_arg": true,
+      "arg_name": "OPT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F",
+        "--forbid"
+      ],
+      "description": "Set lint forbid",
+      "takes_arg": true,
+      "arg_name": "Opt",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cap-lints"
+      ],
+      "description": "Set the most restrictive lint level",
+      "takes_arg": true,
+      "arg_name": "Level",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-C",
+        "--codegen"
+      ],
+      "description": "Set a codegen option",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Z"
+      ],
+      "description": "Set unstable options",
+      "takes_arg": true,
+      "arg_name": "option",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Prints version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Use verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extern"
+      ],
+      "description": "Specify where an external library is located",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sysroot"
+      ],
+      "description": "Overrides the system root",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--error-format"
+      ],
+      "description": "Controls how errors are produced",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "human",
+          "json",
+          "short"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Configures coloring of output",
+      "takes_arg": true,
+      "arg_name": "color",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "always",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "filepath",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

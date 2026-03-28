@@ -1,0 +1,134 @@
+{
+  "name": "tr",
+  "aliases": [],
+  "description": "Translate characters",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-C"
+      ],
+      "description": "Complement the set of characters in string1, that is '-C ab' includes every character except for 'a' and 'b'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Same as '-C' but complement the set of values in string1",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Delete characters in string1 from the input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Squeeze multiple occurrences of the characters listed in the last operand (either string1 or string2) in the input into a single instance of the character. This occurs after all deletion and translation is completed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Guarantee that any output is unbuffered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "string1",
+      "description": "Candidate string",
+      "template": {
+        "custom": [
+          "a",
+          "\\a",
+          "\\b",
+          "\\f",
+          "\\n",
+          "\\r",
+          "\\t",
+          "\\v",
+          "c-c",
+          "[:alnum:]",
+          "[:alpha:]",
+          "[:blank:]",
+          "[:cntrl:]",
+          "[:digit:]",
+          "[:graph:]",
+          "[:ideogram:]",
+          "[:lower:]",
+          "[:phonogram:]",
+          "[:print:]",
+          "[:punct:]",
+          "[:rune:]",
+          "[:space:]",
+          "[:special:]",
+          "[:upper:]",
+          "[:xdigit:]",
+          "[=equiv=]",
+          "[#*n]"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "string2",
+      "description": "Replacment string",
+      "template": {
+        "custom": [
+          "a",
+          "\\a",
+          "\\b",
+          "\\f",
+          "\\n",
+          "\\r",
+          "\\t",
+          "\\v",
+          "c-c",
+          "[:alnum:]",
+          "[:alpha:]",
+          "[:blank:]",
+          "[:cntrl:]",
+          "[:digit:]",
+          "[:graph:]",
+          "[:ideogram:]",
+          "[:lower:]",
+          "[:phonogram:]",
+          "[:print:]",
+          "[:punct:]",
+          "[:rune:]",
+          "[:space:]",
+          "[:special:]",
+          "[:upper:]",
+          "[:xdigit:]",
+          "[=equiv=]",
+          "[#*n]"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "name": "ln",
+  "aliases": [],
+  "description": "Create (default hard) symbolic links to files",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Create a symbolic link",
+      "takes_arg": true,
+      "arg_name": "source_file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "If link name already exists replace it",
+      "takes_arg": true,
+      "arg_name": "source_file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Don't follow symbolic links",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "If link name already exists unlink the old one before creating the new one",
+      "takes_arg": true,
+      "arg_name": "source_file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Prompt if proposed link already exists",
+      "takes_arg": true,
+      "arg_name": "source_file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Same as -h don't follow symbolic links",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "source_file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "link_name or link_dirname",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

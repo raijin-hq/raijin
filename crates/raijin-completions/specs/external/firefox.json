@@ -1,0 +1,399 @@
+{
+  "name": "firefox",
+  "aliases": [],
+  "description": "Free open-source web browser developer by Mozilla",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--display"
+      ],
+      "description": "Specify an X display to use",
+      "takes_arg": true,
+      "arg_name": "display",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sync"
+      ],
+      "description": "Make X calls synchronous",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--g-fatal-warnings"
+      ],
+      "description": "Make all warnings fatal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--full-version"
+      ],
+      "description": "Print full version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Specify profile to use",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--profile"
+      ],
+      "description": "Specify profile to use by folder",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--migration"
+      ],
+      "description": "Start with migration wizard",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ProfileManager"
+      ],
+      "description": "Start with ProfileManager",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-remote"
+      ],
+      "description": "Do not accept or send remote commands; implies --new-instance",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--new-instance"
+      ],
+      "description": "Open new instance, not a new window in running instance",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe-mode"
+      ],
+      "description": "Disables extensions and themes for this session",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-downgrade"
+      ],
+      "description": "Allows downgrading a profile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--MOZ_LOG"
+      ],
+      "description": "Treated as MOZ_LOG=<modules> environment variable, overrides it",
+      "takes_arg": true,
+      "arg_name": "modules",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--MOZ_LOG_FILE"
+      ],
+      "description": "Treated as MOZ_LOG_FILE=<file> environment variable, overrides it. If MOZ_LOG_FILE is not specified as an argument or as an environment variable, logging will be written to stdout",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headless"
+      ],
+      "description": "Run without a GUI",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsdebugger"
+      ],
+      "description": "Open the Browser Toolbox. Defaults to the local build but can be overridden by a firefox path",
+      "takes_arg": true,
+      "arg_name": "folder",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait-for-jsdebugger"
+      ],
+      "description": "Spin event loop until JS debugger connects; enables debugging (some) application startup code paths",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--start-debugger-server"
+      ],
+      "description": "Start the devtools server on a TCP port or Unix domain socket path",
+      "takes_arg": true,
+      "arg_name": "port or path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--browser"
+      ],
+      "description": "Open a browser window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--new-window"
+      ],
+      "description": "Open a URL in a new window",
+      "takes_arg": true,
+      "arg_name": "URL",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--new-tab"
+      ],
+      "description": "Open a URL in a new tab",
+      "takes_arg": true,
+      "arg_name": "URL",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--private-window"
+      ],
+      "description": "Open a URL in a new private window",
+      "takes_arg": true,
+      "arg_name": "URL",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--preferences"
+      ],
+      "description": "Open the preferences dialog",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--screenshot"
+      ],
+      "description": "Take a screenshot",
+      "takes_arg": true,
+      "arg_name": "folder",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--window-size"
+      ],
+      "description": "Size of your screenshot",
+      "takes_arg": true,
+      "arg_name": "width",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--search"
+      ],
+      "description": "Search for a term in your default search engine",
+      "takes_arg": true,
+      "arg_name": "term",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setDefaultBrowser"
+      ],
+      "description": "Set Firefox as the default browser",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--first-startup"
+      ],
+      "description": "Run post-install actions before opening a new window",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kiosk"
+      ],
+      "description": "Start the browser in kiosk mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-pinch"
+      ],
+      "description": "Disable touch-screen and touch-pad pinch gestures",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsconsole"
+      ],
+      "description": "Open the Browser Console",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--devtools"
+      ],
+      "description": "Open DevTools on initial load",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--marionette"
+      ],
+      "description": "Enable remote debugging server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--remote-debugging-port"
+      ],
+      "description": "Start the Firefox Remote Agent, which is a low-level remote debugging interface used for WebDriver",
+      "takes_arg": true,
+      "arg_name": "port",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-remote-hosts"
+      ],
+      "description": "Values of the Host header to allow for incoming requests",
+      "takes_arg": true,
+      "arg_name": "hosts",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--allow-remote-origins"
+      ],
+      "description": "Values of the Origin header to allow for incoming requests",
+      "takes_arg": true,
+      "arg_name": "origins",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "URL",
+      "description": "URL to open",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

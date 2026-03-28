@@ -1,0 +1,254 @@
+{
+  "name": "v",
+  "aliases": [],
+  "description": "The V Programming Language",
+  "subcommands": [
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Compile and run the program",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The input file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "crun",
+      "aliases": [],
+      "description": "Compile if executable inexistent or not updated and run the program",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The input file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Watch the file for changes and recompile",
+      "subcommands": [
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run the program after recompiling",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "file",
+              "description": "The input file",
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The input file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Setup the file structure for a V project (in a sub folder)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Setup the file structure for an already existing V project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run all test files in the provided directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Format the V code provided",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The input file",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "vet",
+      "aliases": [],
+      "description": "Report suspicious code constructs",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doc",
+      "aliases": [],
+      "description": "Generate documentation for a V module",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vlib-docs",
+      "aliases": [],
+      "description": "Generate and open the documentation of all the vlib modules",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "repl",
+      "aliases": [],
+      "description": "Run the REPL",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "where",
+      "aliases": [],
+      "description": "Find and print the location of current project declarations",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "symlink",
+      "aliases": [],
+      "description": "Create a symbolic link for V",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "up",
+      "aliases": [],
+      "description": "Run the V self-updater",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "self",
+      "aliases": [],
+      "description": "Run the V self-compiler",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-prod"
+          ],
+          "description": "Compile V for production (optimize compilation)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for V",
+      "subcommands": [
+        {
+          "name": "other",
+          "aliases": [],
+          "description": "Display help for less frequently used commands",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "topics",
+          "aliases": [],
+          "description": "Display a list of all known help topics",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for V",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "version",
+        "--version",
+        "-v"
+      ],
+      "description": "Show V installed version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "The file to compile",
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

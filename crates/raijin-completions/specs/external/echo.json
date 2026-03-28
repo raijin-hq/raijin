@@ -1,0 +1,47 @@
+{
+  "name": "echo",
+  "aliases": [],
+  "description": "Write arguments to the standard output",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Do not print the trailing newline character",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Interpret escape sequences",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E"
+      ],
+      "description": "Disable escape sequences",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "string",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

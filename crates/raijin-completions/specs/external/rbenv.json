@@ -1,0 +1,194 @@
+{
+  "name": "rbenv",
+  "aliases": [],
+  "description": "Pick a Ruby version for your application and guarantee that your development environment matches production",
+  "subcommands": [
+    {
+      "name": "commands",
+      "aliases": [],
+      "description": "List all available rbenv commands",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sh"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sh"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "global",
+      "aliases": [],
+      "description": "Set or show the global Ruby version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--unset"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install a Ruby version using ruby-build",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show version of ruby-build",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "local",
+      "aliases": [],
+      "description": "Set or show the local application-specific Ruby version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--unset"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "rehash",
+      "aliases": [],
+      "description": "Rehash rbenv shims (run this after installing executables)",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "shell",
+      "aliases": [],
+      "description": "Set or show the shell-specific Ruby version",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a specific Ruby version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "If the version does not exist, do not display an error message",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "versions",
+      "aliases": [],
+      "description": "List installed Ruby versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "whence",
+      "aliases": [],
+      "description": "List all Ruby versions that contain the given executable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "which",
+      "aliases": [],
+      "description": "Display the full path to an executable",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

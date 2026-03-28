@@ -1,0 +1,491 @@
+{
+  "name": "sed",
+  "aliases": [],
+  "description": "Stream editor",
+  "subcommands": [
+    {
+      "name": "a",
+      "aliases": [],
+      "description": "Appends `text` after a line",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "b",
+      "aliases": [],
+      "description": "Branch unconditionally to `label`",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "c",
+      "aliases": [],
+      "description": "Replace (change) lines with `text`",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "d",
+      "aliases": [],
+      "description": "Delete the pattern space; immediately start next cycle",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "D",
+      "aliases": [],
+      "description": "If pattern space contains newlines, delete text in the pattern space up to the first newline, and restart cycle with the resultant pattern space, without reading a new line of input. If pattern space contains no newline, start a normal new cycle as if the d command was issued",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "e",
+      "aliases": [],
+      "description": "Executes the command that is found in pattern space and replaces the pattern space with the output; a trailing newline is suppressed",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "F",
+      "aliases": [],
+      "description": "Prints the file name of the current input file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "g",
+      "aliases": [],
+      "description": "Replaces the contents of the pattern space with the contents of the hold space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "G",
+      "aliases": [],
+      "description": "Appends a newline to the contents of the pattern space, and then appends the contents of the hold space to that of the pattern space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "h",
+      "aliases": [],
+      "description": "Replaces the contents of the hold space with the contents of the pattern space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "H",
+      "aliases": [],
+      "description": "Appends a newline to the contents of the hold space, and then appends the contents of the pattern space to that of the hold space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "i",
+      "aliases": [],
+      "description": "Insert text before a line",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "text",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "l",
+      "aliases": [],
+      "description": "Prints the pattern space in an unambiguous form",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "n",
+      "aliases": [],
+      "description": "Prints the pattern space, then, regardless, replaces the pattern space with the next line of input. If there is no more input then sed exits without processing any more commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "N",
+      "aliases": [],
+      "description": "Adds a newline to the pattern space, then appends the next line of input to the pattern space. If there is no more input then sed exits without processing any more commands",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "p",
+      "aliases": [],
+      "description": "Prints the pattern space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "P",
+      "aliases": [],
+      "description": "Prints the pattern space up to the first newline",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "q",
+      "aliases": [],
+      "description": "Exit sed without processing any more commands or input",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Exit Code",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "Q",
+      "aliases": [],
+      "description": "This command is the same as q, but will not print the contents of pattern space",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Exit Code",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "r",
+      "aliases": [],
+      "description": "Reads file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "R",
+      "aliases": [],
+      "description": "Queue a line of filename to be read and inserted into the output stream at the end of the current cycle, or when the next input line is read",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "s",
+      "aliases": [
+        "regexp",
+        "replacement"
+      ],
+      "description": "Match the regular-expression against the content of the pattern space. If found, replace matched string with replacement",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "t",
+      "aliases": [],
+      "description": "(test) Branch to label only if there has been a successful substitution since the last input line was read or conditional branch was taken. The label may be omitted, in which case the next cycle is started",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "T",
+      "aliases": [],
+      "description": "(test) Branch to label only if there have been no successful substitutions since the last input line was read or conditional branch was taken. The label may be omitted, in which case the next cycle is started",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "label",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "v",
+      "aliases": [],
+      "description": "Makes sed fail if GNU sed extensions are not supported, or if the requested version is not available",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "w",
+      "aliases": [],
+      "description": "Writes the pattern space to the file",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "W",
+      "aliases": [],
+      "description": "Writes to the given filename the portion of the pattern space up to the first newline",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "filename",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "x",
+      "aliases": [],
+      "description": "Exchanges the contents of the hold and pattern spaces",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "y",
+      "aliases": [
+        "src",
+        "dst"
+      ],
+      "description": "Transliterate any characters in the pattern space which match any of the source-chars with the corresponding character in dest-chars",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "z",
+      "aliases": [],
+      "description": "(zap) Empties the content of pattern space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "#",
+      "aliases": [],
+      "description": "Comment until the next newline",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-E"
+      ],
+      "description": "Interprets regular expressions as extended (modern) regular expressions rather than basic regular expressions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Causes sed to delay opening each file until a command containing the related ``w'' function is applied to a line of input",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Appends the editing commands specified by the command argument to the list of commands",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Appends the editing commands found in the file command_file to the list of commands. The editing commands should each be listed on a separate line",
+      "takes_arg": true,
+      "arg_name": "command_file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Edits files in-place, saving backups with the specified extension.  If a zero-length extension is given, no backup will be saved",
+      "takes_arg": true,
+      "arg_name": "extension",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Edits files in-place similarly to `-I`, but treats each file independently from other files.  In particular, line numbers in each file start at 1, the ``$'' address matches the last line of the current file, and address ranges are limited to the current file",
+      "takes_arg": true,
+      "arg_name": "extension",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Makes output line buffered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "By default, each line of input is echoed to the standard output after all of the commands have been applied to it.  The `-n` option suppresses this behavior",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Same as `-E` for compatibility with GNU sed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Makes output unbuffered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "command",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "file",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

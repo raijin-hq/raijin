@@ -1,0 +1,167 @@
+{
+  "name": "xargs",
+  "aliases": [],
+  "description": "Execute a command with whitespace-delimited strings (from stdin) as arguments",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-0"
+      ],
+      "description": "Use NUL (0x00) as a separator, instead of whitespace",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E"
+      ],
+      "description": "Use this string as a logical EOF marker",
+      "takes_arg": true,
+      "arg_name": "eof-str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Replace occurrences of this string with the input",
+      "takes_arg": true,
+      "arg_name": "replacement-str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J"
+      ],
+      "description": "Replace an argument exactly equal to this string with the input",
+      "takes_arg": true,
+      "arg_name": "replacement-str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Run the program each time this many lines of input are read",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "The maximum number of arguments that can be taken from stdin on each run",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Reopen stdin as /dev/tty (useful for running interactive applications)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P"
+      ],
+      "description": "Run up to this many commands in parallel (as many as possible if 0)",
+      "takes_arg": true,
+      "arg_name": "max-procs",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Prompt to run each command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Run the command once if there's no input (compatible with GNU xargs)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-R"
+      ],
+      "description": "Specify the maximum number of occurrences that -I will replace",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Specify the maximum size in bytes that -I can use for replacements (default: 255)",
+      "takes_arg": true,
+      "arg_name": "replacement-size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Maximum number of bytes that can be provided to the program (default: 4096)",
+      "takes_arg": true,
+      "arg_name": "max-args-size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Echo the command to stderr before it's executed",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x"
+      ],
+      "description": "Terminal if the arguments will not fit in the maximum line length",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "utility",
+      "description": "Run this program for each line of stdin (default: echo)",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

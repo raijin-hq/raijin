@@ -1,0 +1,747 @@
+{
+  "name": "dpkg",
+  "aliases": [],
+  "description": "Debian package management system",
+  "subcommands": [
+    {
+      "name": "query",
+      "aliases": [],
+      "description": "Query the dpkg database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l",
+            "--list"
+          ],
+          "description": "List packages matching a pattern",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--status"
+          ],
+          "description": "Display the status of available packages",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--listfiles"
+          ],
+          "description": "List files in a package",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--search"
+          ],
+          "description": "Search for a package owning a file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--print-avail"
+          ],
+          "description": "Display details about a package in the dpkg database",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-W",
+            "--show"
+          ],
+          "description": "Show a package in the dpkg database",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install or upgrade packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-R",
+            "--recursive"
+          ],
+          "description": "Recursively handle packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-B",
+            "--auto-deconfigure"
+          ],
+          "description": "Uninstall packages that depend on the target package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-same-version"
+          ],
+          "description": "Don't upgrade if the same version is already installed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-depends"
+          ],
+          "description": "Ignore dependency problems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-confnew"
+          ],
+          "description": "Always install the new version of configuration files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-confold"
+          ],
+          "description": "Always install the old version of configuration files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-confdef"
+          ],
+          "description": "Always install the default version of configuration files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-confmiss"
+          ],
+          "description": "Always install missing configuration files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-triggers"
+          ],
+          "description": "Skip processing triggers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-act"
+          ],
+          "description": "Simulate the action, but don't execute",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": "Remove packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-R",
+            "--recursive"
+          ],
+          "description": "Recursively remove packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-B",
+            "--auto-deconfigure"
+          ],
+          "description": "Uninstall packages that depend on the target package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-act"
+          ],
+          "description": "Simulate the action, but don't execute",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "purge",
+      "aliases": [],
+      "description": "Remove packages and their configuration files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-R",
+            "--recursive"
+          ],
+          "description": "Recursively remove packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-act"
+          ],
+          "description": "Simulate the action, but don't execute",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "configure",
+      "aliases": [],
+      "description": "Configure a package after installation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--pending"
+          ],
+          "description": "Configure all unconfigured packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-triggers"
+          ],
+          "description": "Skip processing triggers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-act"
+          ],
+          "description": "Simulate the action, but don't execute",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reconfigure",
+      "aliases": [],
+      "description": "Reconfigure a package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-triggers"
+          ],
+          "description": "Skip processing triggers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-act"
+          ],
+          "description": "Simulate the action, but don't execute",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List packages in the dpkg database",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-l",
+            "--list"
+          ],
+          "description": "List packages matching a pattern",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--status"
+          ],
+          "description": "Display the status of available packages",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-L",
+            "--listfiles"
+          ],
+          "description": "List files in a package",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--search"
+          ],
+          "description": "Search for a package owning a file",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--print-avail"
+          ],
+          "description": "Display details about a package in the dpkg database",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-W",
+            "--show"
+          ],
+          "description": "Show a package in the dpkg database",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--installed"
+          ],
+          "description": "List installed packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--avail"
+          ],
+          "description": "List available packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hold"
+          ],
+          "description": "List packages on hold",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deferred"
+          ],
+          "description": "List deferred packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "builddeb",
+      "aliases": [],
+      "description": "Build Debian package files from sources",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-us",
+            "--unsigned"
+          ],
+          "description": "Build unsigned .changes and .dsc files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-uc",
+            "--unsigned-changes"
+          ],
+          "description": "Build unsigned .changes file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-sa",
+            "--source"
+          ],
+          "description": "Build source package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-rfakeroot"
+          ],
+          "description": "Use fakeroot when building the package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--binary"
+          ],
+          "description": "Build binary package from source",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-sign"
+          ],
+          "description": "Force signing of changes file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--maintainer"
+          ],
+          "description": "Specify the package maintainer",
+          "takes_arg": true,
+          "arg_name": "email",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--changes"
+          ],
+          "description": "Specify the changes file to use",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Specify the version to use",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--increment"
+          ],
+          "description": "Increment the version number in the changelog",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "directory",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check the dependencies of packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a",
+            "--all"
+          ],
+          "description": "Check all installed packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--unmet"
+          ],
+          "description": "Check for unmet dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--check-installed"
+          ],
+          "description": "Check installed packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--check-unpacked"
+          ],
+          "description": "Check unpacked packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--nocheck"
+          ],
+          "description": "Skip checking for broken dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--reverse"
+          ],
+          "description": "Check reverse dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compare-versions",
+      "aliases": [],
+      "description": "Compare package versions",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version1",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "relation",
+          "description": null,
+          "template": {
+            "custom": [
+              "lt",
+              "le",
+              "eq",
+              "ne",
+              "gt",
+              "ge"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "version2",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for dpkg",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

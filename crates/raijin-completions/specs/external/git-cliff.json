@@ -1,0 +1,252 @@
+{
+  "name": "git-cliff",
+  "aliases": [],
+  "description": "A highly customizable changelog generator ⛰️",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Increases the logging verbosity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--init",
+        "-i"
+      ],
+      "description": "Writes the default configuration file to cliff.toml",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--latest",
+        "-l"
+      ],
+      "description": "Processes the commits starting from the latest tag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--current"
+      ],
+      "description": "Processes the commits that belong to the current tag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unreleased",
+        "-u"
+      ],
+      "description": "Processes the commits that do not belong to a tag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--date-order"
+      ],
+      "description": "Sorts the tags chronologically",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--context"
+      ],
+      "description": "Prints changelog context as JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-c"
+      ],
+      "description": "Sets the configuration file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workdir",
+        "-w"
+      ],
+      "description": "Sets the working directory",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--repository",
+        "-r"
+      ],
+      "description": "Sets the git repository",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--include-path"
+      ],
+      "description": "Sets the path to include related commits",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exclude-path"
+      ],
+      "description": "Sets the path to exclude related commits",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--with-commit"
+      ],
+      "description": "Sets custom commit messages to include in the changelog",
+      "takes_arg": true,
+      "arg_name": "msg",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prepend",
+        "-p"
+      ],
+      "description": "Prepends entries to the given changelog file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Writes output to the given file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tag",
+        "-t"
+      ],
+      "description": "Sets the tag for the latest version",
+      "takes_arg": true,
+      "arg_name": "tag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--body",
+        "-b"
+      ],
+      "description": "Sets the template for the changelog body",
+      "takes_arg": true,
+      "arg_name": "template",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strip",
+        "-s"
+      ],
+      "description": "Strips the given parts from the changelog",
+      "takes_arg": true,
+      "arg_name": "part",
+      "arg_template": {
+        "custom": [
+          "header",
+          "footer",
+          "all"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort"
+      ],
+      "description": "Sets sorting of the commits inside sections",
+      "takes_arg": true,
+      "arg_name": "sort",
+      "arg_template": {
+        "custom": [
+          "oldest",
+          "newest"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "range",
+      "description": "Sets the commit range to process",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

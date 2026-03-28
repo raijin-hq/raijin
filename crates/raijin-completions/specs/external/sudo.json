@@ -1,0 +1,50 @@
+{
+  "name": "sudo",
+  "aliases": [],
+  "description": "Execute a command as the superuser or another user",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-g",
+        "--group"
+      ],
+      "description": "Run command as the specified group name or ID",
+      "takes_arg": true,
+      "arg_name": "group",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--user"
+      ],
+      "description": "Run command as specified user name or ID",
+      "takes_arg": true,
+      "arg_name": "user",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "command",
+      "description": "Command to run with elevated permissions",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

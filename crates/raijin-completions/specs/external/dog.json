@@ -1,0 +1,1861 @@
+{
+  "name": "dog",
+  "aliases": [],
+  "description": "A command-line DNS client",
+  "subcommands": [
+    {
+      "name": "A",
+      "aliases": [],
+      "description": "Query Domain A Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "MX",
+      "aliases": [],
+      "description": "Query Domain MX Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "CNAME",
+      "aliases": [],
+      "description": "Query Domain CNAME Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "TXT",
+      "aliases": [],
+      "description": "Query Domain TXT Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "NS",
+      "aliases": [],
+      "description": "Query NS Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "SOA",
+      "aliases": [],
+      "description": "Query SOA Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "TTL",
+      "aliases": [],
+      "description": "Query TTL Record",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ANY +noall +answer",
+      "aliases": [],
+      "description": "Query ALL DNS Records",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "+nocomments +noquestion +noauthority +noadditional +nostats",
+      "aliases": [],
+      "description": "Query only answer section",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-q",
+            "--query"
+          ],
+          "description": "Host name or IP address to query",
+          "takes_arg": true,
+          "arg_name": "HOST",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--type"
+          ],
+          "description": "Type of the DNS record being queried (A, MX, NS...)",
+          "takes_arg": true,
+          "arg_name": "TYPE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--nameserver"
+          ],
+          "description": "Address of the nameserver to send packets to",
+          "takes_arg": true,
+          "arg_name": "ADDR",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-class"
+          ],
+          "description": "Network class of the DNS record being queried (IN, CH, HS)",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--edns"
+          ],
+          "description": "Whether to OPT in to EDNS (disable, hide, show)",
+          "takes_arg": true,
+          "arg_name": "NUMBER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--txid"
+          ],
+          "description": "Set the transaction ID to a specific value",
+          "takes_arg": true,
+          "arg_name": "CLASS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Z"
+          ],
+          "description": "Set uncommon protocol-level tweaks",
+          "takes_arg": true,
+          "arg_name": "TWEAKS",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-U",
+            "--udp"
+          ],
+          "description": "Use the DNS protocol over UDP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-T",
+            "--tcp"
+          ],
+          "description": "Use the DNS protocol over TCP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-S",
+            "--tls"
+          ],
+          "description": "Use the DNS-over-TLS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-H",
+            "--https"
+          ],
+          "description": "Use the DNS-over-HTTPS protocol",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-1",
+            "--short"
+          ],
+          "description": "Short mode: display nothing but the first result",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-J",
+            "--json"
+          ],
+          "description": "Display the output as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--color"
+          ],
+          "description": "When to colourise the output (always, automatic, never)",
+          "takes_arg": true,
+          "arg_name": "arguments",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--seconds"
+          ],
+          "description": "Do not format durations, display them as seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time"
+          ],
+          "description": "Print how long the response took to arrive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arguments",
+          "description": "Human-readable host names, nameservers, types, or classes",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-q",
+        "--query"
+      ],
+      "description": "Host name or IP address to query",
+      "takes_arg": true,
+      "arg_name": "HOST",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--type"
+      ],
+      "description": "Type of the DNS record being queried (A, MX, NS...)",
+      "takes_arg": true,
+      "arg_name": "TYPE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--nameserver"
+      ],
+      "description": "Address of the nameserver to send packets to",
+      "takes_arg": true,
+      "arg_name": "ADDR",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-class"
+      ],
+      "description": "Network class of the DNS record being queried (IN, CH, HS)",
+      "takes_arg": true,
+      "arg_name": "CLASS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--edns"
+      ],
+      "description": "Whether to OPT in to EDNS (disable, hide, show)",
+      "takes_arg": true,
+      "arg_name": "NUMBER",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--txid"
+      ],
+      "description": "Set the transaction ID to a specific value",
+      "takes_arg": true,
+      "arg_name": "CLASS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Z"
+      ],
+      "description": "Set uncommon protocol-level tweaks",
+      "takes_arg": true,
+      "arg_name": "TWEAKS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--udp"
+      ],
+      "description": "Use the DNS protocol over UDP",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--tcp"
+      ],
+      "description": "Use the DNS protocol over TCP",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--tls"
+      ],
+      "description": "Use the DNS-over-TLS protocol",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--https"
+      ],
+      "description": "Use the DNS-over-HTTPS protocol",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-1",
+        "--short"
+      ],
+      "description": "Short mode: display nothing but the first result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J",
+        "--json"
+      ],
+      "description": "Display the output as JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "When to colourise the output (always, automatic, never)",
+      "takes_arg": true,
+      "arg_name": "arguments",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--seconds"
+      ],
+      "description": "Do not format durations, display them as seconds",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--time"
+      ],
+      "description": "Print how long the response took to arrive",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arguments",
+      "description": "Human-readable host names, nameservers, types, or classes",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

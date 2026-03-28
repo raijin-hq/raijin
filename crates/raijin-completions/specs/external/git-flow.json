@@ -1,0 +1,225 @@
+{
+  "name": "git-flow",
+  "aliases": [],
+  "description": "A collection of Git extensions to provide high-level repository operations for Vincent Driessen's branching model",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a new git repo with support for the branching model",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-d"
+          ],
+          "description": "Use default branch naming conventions",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Force setting of gitflow branches, even if already configured",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "feature",
+      "aliases": [],
+      "description": "List all feature branches",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Create a new feature branch",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the new feature branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "finish",
+          "aliases": [],
+          "description": "Merge a feature branch into develop",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the feature branch to finish",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "publish",
+          "aliases": [],
+          "description": "Push a feature branch to the remote repository",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the feature branch to publish",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Pull a feature branch from the remote repository",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "origin",
+              "description": "The name of the remote feature branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "name",
+              "description": "The name of the local feature branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "release",
+      "aliases": [],
+      "description": "List all release branches",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Create a new release branch",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the new release branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "finish",
+          "aliases": [],
+          "description": "Merge a release branch into develop",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the release branch to finish",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "hotfix",
+      "aliases": [],
+      "description": "List all hotfix branches",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Create a new hotfix branch",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the new hotfix branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "finish",
+          "aliases": [],
+          "description": "Merge a hotfix branch into develop",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the hotfix branch to finish",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "support",
+      "aliases": [],
+      "description": "List all support branches",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Create a new support branch",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": "The name of the new support branch",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

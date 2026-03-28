@@ -1,0 +1,217 @@
+{
+  "name": "mas",
+  "aliases": [],
+  "description": "A simple command line interface for the Mac App Store",
+  "subcommands": [
+    {
+      "name": "account",
+      "aliases": [],
+      "description": "Prints the primary account Apple ID",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display general or command-specific help",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "home",
+      "aliases": [],
+      "description": "Opens MAS Preview app page in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Display app information from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to show info",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install an application",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to Install",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "Lists apps from the Mac App Store which are currently installed",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "lucky",
+      "aliases": [],
+      "description": "Install the first result from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to Install",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Opens app page in AppStore.app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to Open",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "outdated",
+      "aliases": [],
+      "description": "Lists pending updates from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "purchase",
+      "aliases": [],
+      "description": "Purchase and download free apps from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to purchase",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "reset",
+      "aliases": [],
+      "description": "Resets the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Search for apps from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to Search",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "signin",
+      "aliases": [],
+      "description": "Sign in to the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "signout",
+      "aliases": [],
+      "description": "Sign out of the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall app installed from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "Application",
+          "description": "The application you want to uninstall",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade outdated apps from the Mac App Store",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vendor",
+      "aliases": [],
+      "description": "Opens vendor's app page in a browser",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "App ID",
+          "description": "The application you want to open vendor's app",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print version number",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

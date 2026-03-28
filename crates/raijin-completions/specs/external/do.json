@@ -1,0 +1,16 @@
+{
+  "name": "do",
+  "aliases": [],
+  "description": "Do the command",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

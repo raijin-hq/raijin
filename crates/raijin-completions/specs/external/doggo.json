@@ -1,0 +1,310 @@
+{
+  "name": "doggo",
+  "aliases": [],
+  "description": "DNS Client for Humans",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Output version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Output help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--query"
+      ],
+      "description": "Hostname to query the DNS records for (e.g., example.com)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--type"
+      ],
+      "description": "Type of the DNS Record (A, MX, NS, etc.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--nameserver"
+      ],
+      "description": "Address of a specific nameserver to send queries to (e.g., 9.9.9.9, 8.8.8.8)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--class"
+      ],
+      "description": "Network class of the DNS record (IN, CH, HS, etc.)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-x",
+        "--reverse"
+      ],
+      "description": "Performs a reverse DNS lookup for an IPv4 or IPv6 address",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--any"
+      ],
+      "description": "Query all supported DNS record types (A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT, CAA)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--strategy"
+      ],
+      "description": "Specify strategy to query nameservers (all, random, first)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ndots"
+      ],
+      "description": "Specify ndots parameter",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--search"
+      ],
+      "description": "Use the search list defined in resolv.conf (default: true)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout"
+      ],
+      "description": "Specify timeout (in seconds) for the resolver to return a response",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-4",
+        "--ipv4"
+      ],
+      "description": "Use IPv4 only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-6",
+        "--ipv6"
+      ],
+      "description": "Use IPv4 only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tls-hostname"
+      ],
+      "description": "Provide a hostname for TLS certificate verification",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-hostname-verification"
+      ],
+      "description": "Skip TLS Hostname Verification for DoT lookups",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--aa"
+      ],
+      "description": "Set Authoritative Answer flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ad"
+      ],
+      "description": "Set Authenticated Data flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cd"
+      ],
+      "description": "Set Checking Disabled flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rd"
+      ],
+      "description": "Set Recursion Desired flag (default: true)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--z"
+      ],
+      "description": "Set Z flag (reserved for future use)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--do"
+      ],
+      "description": "Set DNSSEC OK flag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-J",
+        "--json"
+      ],
+      "description": "Format the output as JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--short"
+      ],
+      "description": "Short output format (shows only the response section)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Enable/disable colored output (default: true)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Enable debug logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--time"
+      ],
+      "description": "Show query response time",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "domain",
+      "description": "Hostname to query the DNS records for (e.g., example.com)",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "type",
+      "description": "Type of the DNS Record (A, MX, NS, etc.)",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "nameserver",
+      "description": "Address of a specific nameserver to send queries to (e.g., 9.9.9.9, 8.8.8.8)",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

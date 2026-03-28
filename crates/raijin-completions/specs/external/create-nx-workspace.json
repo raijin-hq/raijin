@@ -1,0 +1,155 @@
+{
+  "name": "create-nx-workspace",
+  "aliases": [],
+  "description": "Create a new Nx workspace",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--name"
+      ],
+      "description": "Workspace name (e.g., org name)",
+      "takes_arg": true,
+      "arg_name": "workspace",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--preset"
+      ],
+      "description": "What to create in a new workspace (options: \"empty\", \"npm\", \"web-components\", \"angular\", \"angular-nest\", \"react\", \"react-express\", \"react-native\", \"next\", \"gatsby\", \"nest\", \"express\")",
+      "takes_arg": true,
+      "arg_name": "preset",
+      "arg_template": {
+        "custom": [
+          "empty",
+          "npm",
+          "web-components",
+          "angular",
+          "angular-nest",
+          "react",
+          "react-express",
+          "react-native",
+          "next",
+          "gatsby",
+          "nest",
+          "express"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--appName"
+      ],
+      "description": "The name of the application created by some presets",
+      "takes_arg": true,
+      "arg_name": "appName",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cli"
+      ],
+      "description": "CLI to power the Nx workspace (options: \"nx\", \"angular\")",
+      "takes_arg": true,
+      "arg_name": "cli",
+      "arg_template": {
+        "custom": [
+          "nx",
+          "angular"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--style"
+      ],
+      "description": "Default style option to be used when a non-empty preset is selected options: (\"css\", \"scss\", \"less\") plus (\"styl\") for all non-Angular and (\"styled-components\", \"@emotion/styled\", \"styled-jsx\") for React, Next.js, Gatsby",
+      "takes_arg": true,
+      "arg_name": "style",
+      "arg_template": {
+        "custom": [
+          "css",
+          "scss",
+          "less",
+          "styl",
+          "styled-components",
+          "@emotion/styled",
+          "styled-jsx"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive"
+      ],
+      "description": "Enable interactive mode when using presets (boolean)",
+      "takes_arg": true,
+      "arg_name": "interactive",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--packageManager",
+        "--pm"
+      ],
+      "description": "Package manager to use (npm, yarn, pnpm)",
+      "takes_arg": true,
+      "arg_name": "packageManager",
+      "arg_template": {
+        "custom": [
+          "npm",
+          "yarn",
+          "pnpm"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--nx-cloud"
+      ],
+      "description": "Use Nx Cloud (boolean)",
+      "takes_arg": true,
+      "arg_name": "nx-cloud",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for create-nx-workspace",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "workspace",
+      "description": "The name of the workspace",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

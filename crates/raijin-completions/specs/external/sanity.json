@@ -1,0 +1,1569 @@
+{
+  "name": "sanity",
+  "aliases": [],
+  "description": "Sanity CLI tool for managing Sanity installations, managing plugins, schemas and datasets",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Displays help information about Sanity",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Builds the current Sanity configuration to a static bundle",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--source-maps"
+          ],
+          "description": "Enable source maps for built bundles (increases size of bundle)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-minify"
+          ],
+          "description": "Skip minifying built JavaScript (speeds up build, increases size of bundle)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Use unattended mode, accepting defaults and using only flags for choices",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "codemod",
+      "aliases": [],
+      "description": "Runs a code modification script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dry"
+          ],
+          "description": "Dry run (no changes are made to files)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--extensions"
+          ],
+          "description": "Transform files with these file extensions (comma separated list) (default: js,ts,tsx)",
+          "takes_arg": true,
+          "arg_name": "extensions",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-verify"
+          ],
+          "description": "Skip verification before running codemod",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "configcheck",
+      "aliases": [],
+      "description": "Checks if the required configuration files for plugins exists and are up to date",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cors",
+      "aliases": [],
+      "description": "Interact with CORS-entries for your project",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Allow a new origin to use your project API through CORS",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--credentials"
+              ],
+              "description": "Allow credentials (token/cookie) to be sent from this origin",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-credentials"
+              ],
+              "description": "Disallow credentials (token/cookie) to be sent from this origin",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "origin",
+              "description": "The origin to allow",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an existing CORS-origin from your project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "origin",
+              "description": "The origin to delete",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all origins allowed to access the API for this project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dataset",
+      "aliases": [],
+      "description": "Interact with datasets in your project",
+      "subcommands": [
+        {
+          "name": "alias",
+          "aliases": [],
+          "description": "You can manage your dataset alias using this command",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "alias-name",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                },
+                {
+                  "name": "target-dataset",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "alias-name",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "link",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skips security prompt and forces link command",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "alias-name",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                },
+                {
+                  "name": "target-dataset",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "unlink",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "alias-name",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "copy",
+          "aliases": [],
+          "description": "Manages dataset copying, including starting a new copy job, listing copy jobs and following the progress of a running copy job",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--detach"
+              ],
+              "description": "Start the copy without waiting for it to finish",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--attach"
+              ],
+              "description": "Attach to the running copy process to show progress",
+              "takes_arg": true,
+              "arg_name": "job-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-history"
+              ],
+              "description": "Don't preserve document history on copy",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--list"
+              ],
+              "description": "Lists all dataset copy jobs corresponding to a certain criteria",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offset"
+              ],
+              "description": "Start position in the list of jobs. Default 0. With --list",
+              "takes_arg": true,
+              "arg_name": "offset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--limit"
+              ],
+              "description": "Maximum number of jobs returned. Default 10. Maximum 1000. With --list",
+              "takes_arg": true,
+              "arg_name": "limit",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "source-dataset",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "target-dataset",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new dataset within your project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--visibility"
+              ],
+              "description": "Set visibility for this dataset (public/private)",
+              "takes_arg": true,
+              "arg_name": "visibility",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a dataset within your project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "datasetName",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "export",
+          "aliases": [],
+          "description": "Export dataset to local filesystem as a gzipped tarball",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--raw"
+              ],
+              "description": "Extract only documents, without rewriting asset references",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-assets"
+              ],
+              "description": "Export only non-asset documents and remove references to image assets",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-drafts"
+              ],
+              "description": "Export only published versions of documents",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-compress"
+              ],
+              "description": "Skips compressing tarball entries (still generates a gzip file)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--types"
+              ],
+              "description": "Defines which document types to export",
+              "takes_arg": true,
+              "arg_name": "types",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--overwrite"
+              ],
+              "description": "Overwrite any file with the same name",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--asset-concurrency"
+              ],
+              "description": "Concurrent number of asset downloads",
+              "takes_arg": true,
+              "arg_name": "num",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "destination",
+              "description": null,
+              "template": "folders",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Import documents to given dataset from ndjson file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--missing"
+              ],
+              "description": "On duplicate document IDs, skip importing document in question",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--replace"
+              ],
+              "description": "On duplicate document IDs, replace existing document with imported document",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--allow-failing-assets"
+              ],
+              "description": "Skip assets that cannot be fetched/uploaded",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--replace-assets"
+              ],
+              "description": "Skip reuse of existing assets",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "target_dataset",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List datasets of your project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "visibility",
+          "aliases": [],
+          "description": "Set visibility of a dataset",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "dataset",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "mode",
+              "description": null,
+              "template": {
+                "custom": [
+                  "get",
+                  "set"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "debug",
+      "aliases": [],
+      "description": "Gathers information on Sanity environment",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--secrets"
+          ],
+          "description": "Include API keys in output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploys a statically built Sanity studio",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--source-maps"
+          ],
+          "description": "Enable source maps for built bundles (increases size of bundle)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-minify"
+          ],
+          "description": "Skip minifying built JavaScript (speeds up build, increases size of bundle)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-build"
+          ],
+          "description": "Don't build the studio prior to deploy, instead deploying the version currently in `dist/`",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source_dir",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "Opens the Sanity documentation",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "documents",
+      "aliases": [],
+      "description": "Interact with documents in your project",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create one or more documents",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--replace"
+              ],
+              "description": "On duplicate document IDs, replace existing document with specified document(s)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--missing"
+              ],
+              "description": "On duplicate document IDs, don't modify the target document(s)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Write the documents whenever the target file or buffer changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json5"
+              ],
+              "description": "Use JSON5 file type to allow a \"simplified\" version of JSON",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "Specify a document ID to use. Will fetch remote document ID and populate editor",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "NAME to override dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "file",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a document by ID",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "NAME to override dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get and print a document by ID",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--pretty"
+              ],
+              "description": "Colorized JSON output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "NAME to override dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "document_id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "query",
+          "aliases": [],
+          "description": "Query for documents",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--pretty"
+              ],
+              "description": "Colorized JSON output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "NAME to override dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--api-version"
+              ],
+              "description": "API version to use (defaults to `v1`)",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "query",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Runs a script in Sanity context",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--with-user-token"
+          ],
+          "description": "Preload access token from CLI config into 'part:@sanity/base/client' part",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mock-browser-env"
+          ],
+          "description": "Mocks a browser-like environment using jsdom",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "graphql",
+      "aliases": [],
+      "description": "Interact with GraphQL APIs",
+      "subcommands": [
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy a GraphQL API from the current Sanity schema",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "Deploy API for the given dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tag"
+              ],
+              "description": "Deploy API to given tag (defaults to 'default')",
+              "takes_arg": true,
+              "arg_name": "tag",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--generation"
+              ],
+              "description": "API generation to deploy (defaults to 'gen3')",
+              "takes_arg": true,
+              "arg_name": "generation",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--non-null-document-fields"
+              ],
+              "description": "Set document interface fields (_id, _type etc) as non-null",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--playground"
+              ],
+              "description": "Deploy a GraphQL playground for easily testing queries (public)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-playground"
+              ],
+              "description": "Skip playground prompt (do not deploy a playground)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Deploy API without confirming breaking changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all the GraphQL endpoints deployed for this project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "undeploy",
+          "aliases": [],
+          "description": "Remove a deployed GraphQL API",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dataset"
+              ],
+              "description": "Delete GraphQL API for the given dataset",
+              "takes_arg": true,
+              "arg_name": "dataset",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--tag"
+              ],
+              "description": "Delete GraphQL API for the given tag (defaults to 'default')",
+              "takes_arg": true,
+              "arg_name": "tag",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "hook",
+      "aliases": [],
+      "description": "Interact with hooks in your project",
+      "subcommands": [
+        {
+          "name": "attempt",
+          "aliases": [],
+          "description": "Print details of a given webhook delivery attempt",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "attempt_id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new hook for the given dataset",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a hook within your project",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List hooks for a given project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "List latest log entries for a given hook",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a new Sanity project or plugin",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-y",
+            "--yes"
+          ],
+          "description": "Use unattended mode, accepting defaults and using only flags for choices",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project"
+          ],
+          "description": "Project ID to use for the studio",
+          "takes_arg": true,
+          "arg_name": "projectId",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--organization"
+          ],
+          "description": "Organization ID to use for the project",
+          "takes_arg": true,
+          "arg_name": "organizationId",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dataset"
+          ],
+          "description": "Dataset name for the studio",
+          "takes_arg": true,
+          "arg_name": "dataset",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dataset-default"
+          ],
+          "description": "Set up a project with a public dataset named \"production\"",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-path"
+          ],
+          "description": "Path to write studio project to",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template"
+          ],
+          "description": "Project template to use [default: \"clean\"]",
+          "takes_arg": true,
+          "arg_name": "template",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--provider"
+          ],
+          "description": "Login provider to use",
+          "takes_arg": true,
+          "arg_name": "provider",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--visibility"
+          ],
+          "description": "Visibility mode for dataset (public/private)",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "public",
+              "private"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--create-project"
+          ],
+          "description": "Create a new project with the given name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-plan"
+          ],
+          "description": "Optionally select a plan for a new project",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coupon"
+          ],
+          "description": "Optionally select a coupon for a new project (cannot be used with --project-plan)",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reconfigure"
+          ],
+          "description": "Reconfigure Sanity studio in current folder with new project/dataset",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Installs a Sanity plugin to the current Sanity configuration",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Authenticates against the Sanity.io API (no flag) or a third-party identity provider (with --sso flag)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sso"
+          ],
+          "description": "Authenticate against a third-party identity provider",
+          "takes_arg": true,
+          "arg_name": "slug",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logs out of the Sanity.io session",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "manage",
+      "aliases": [],
+      "description": "Opens the Sanity project management UI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Interact with projects connected to your logged in user",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists projects connected to your user",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--sort"
+              ],
+              "description": "Sort output by specified column",
+              "takes_arg": true,
+              "arg_name": "field",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--order"
+              ],
+              "description": "Sort output ascending/descending",
+              "takes_arg": true,
+              "arg_name": "order",
+              "arg_template": {
+                "custom": [
+                  "asc",
+                  "desc"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Starts a web server for the Content Studio",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "TCP port to start server on. [default: 3333]",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "The local network interface at which to listen. [default: \"127.0.0.1\"]",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "undeploy",
+      "aliases": [],
+      "description": "Removes the deployed studio from <hostname>.sanity.studio",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Removes a Sanity plugin from the current Sanity configuration",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "plugin",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrades all (or some) Sanity modules to their latest versions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--range"
+          ],
+          "description": "Version range to upgrade to, eg '^2.2.7' or '2.1.x'",
+          "takes_arg": true,
+          "arg_name": "range",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag"
+          ],
+          "description": "Tagged release to upgrade to, eg 'canary' or 'some-feature'",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--save-exact"
+          ],
+          "description": "Pin the resolved version numbers in package.json (no ^ prefix)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "users",
+      "aliases": [],
+      "description": "Manage users of your project",
+      "subcommands": [
+        {
+          "name": "invite",
+          "aliases": [],
+          "description": "Invite a new user to the project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--role"
+              ],
+              "description": "Role to invite the user as",
+              "takes_arg": true,
+              "arg_name": "role",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "email",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List users of the project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-invitations"
+              ],
+              "description": "Don't include pending invitations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-robots"
+              ],
+              "description": "Don't include robots (token users)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--sort"
+              ],
+              "description": "Sort users by specified column: id, name, role, date",
+              "takes_arg": true,
+              "arg_name": "field",
+              "arg_template": {
+                "custom": [
+                  "id",
+                  "name",
+                  "role",
+                  "date"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--order"
+              ],
+              "description": "Sort output ascending/descending",
+              "takes_arg": true,
+              "arg_name": "order",
+              "arg_template": {
+                "custom": [
+                  "asc",
+                  "desc"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "versions",
+      "aliases": [],
+      "description": "Shows the installed versions of Sanity CLI and core components",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for sanity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

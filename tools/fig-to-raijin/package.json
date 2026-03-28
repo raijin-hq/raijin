@@ -1,0 +1,12 @@
+{
+  "name": "fig-to-raijin",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Convert withfig/autocomplete specs to Raijin JSON format",
+  "scripts": {
+    "convert": "node convert.mjs"
+  },
+  "dependencies": {
+    "@withfig/autocomplete": "^2.692.0"
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "name": "ansible-doc",
+  "aliases": [],
+  "description": "Displays information on modules installed in Ansible libraries",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--metadata-dump"
+      ],
+      "description": "For internal testing only Dump json metadata for all plugins",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--playbook-dir"
+      ],
+      "description": "Sets the relative path for many features including roles/ group_vars/ etc",
+      "takes_arg": true,
+      "arg_name": "BASEDIR",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Shows version number, config file location, module search path, module location, executable location and exit",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list_files",
+        "-F"
+      ],
+      "description": "Show plugin names and their source files without summaries (implies --list)",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--module-path",
+        "-M"
+      ],
+      "description": "Prepend colon-separated path(s) to module library",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--entry-point",
+        "-E"
+      ],
+      "description": "Select the entry point for role(s)",
+      "takes_arg": true,
+      "arg_name": "ENTRY_POINT",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help and exit",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json",
+        "-j"
+      ],
+      "description": "Change output into json format",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list",
+        "-l"
+      ],
+      "description": "List available plugins; a supplied argument will be used for filtering (can be a namespace or full collection name)",
+      "takes_arg": true,
+      "arg_name": "NAMESPACE|COLLECTION",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--roles-path",
+        "-r"
+      ],
+      "description": "The path to the directory containing your roles",
+      "takes_arg": true,
+      "arg_name": "PATH",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--snippet",
+        "-s"
+      ],
+      "description": "Show playbook snippet for these plugin types: inventory, lookup, module",
+      "takes_arg": true,
+      "arg_name": "PLUGIN_TYPE",
+      "arg_template": {
+        "custom": [
+          "inventory",
+          "lookup",
+          "module"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type",
+        "-t"
+      ],
+      "description": "Choose which plugin type (defaults to \"module\")",
+      "takes_arg": true,
+      "arg_name": "PLUGIN_TYPE",
+      "arg_template": {
+        "custom": [
+          "become",
+          "cache",
+          "callback",
+          "cliconf",
+          "connection",
+          "httpapi",
+          "inventory",
+          "lookup",
+          "netconf",
+          "shell",
+          "vars",
+          "module",
+          "strategy",
+          "role",
+          "keyword"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Verbose mode (-vvv for more, -vvvv to enable connection debugging)",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    }
+  ],
+  "args": [
+    {
+      "name": "plugin",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

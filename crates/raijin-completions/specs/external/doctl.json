@@ -1,0 +1,977 @@
+{
+  "name": "doctl",
+  "aliases": [],
+  "description": "The official DigitalOcean command line interface (CLI)",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Configure your terminal's shell so that doctl commands autocomplete when you press the TAB key",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "shell",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help about commands",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "1-click",
+      "aliases": [],
+      "description": "The commands under `doctl 1-click` are for interacting with DigitalOcean 1-Click applications",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "account",
+      "aliases": [],
+      "description": "The subcommands of `doctl account` retrieve information about DigitalOcean accounts",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve account profile details",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ratelimit",
+          "aliases": [],
+          "description": "Retrieve your API usage and the remaining quota",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "apps",
+      "aliases": [],
+      "description": "Display commands for working with apps",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create-deployment",
+          "aliases": [],
+          "description": "Create a deployment",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Deletes an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get-deployment",
+          "aliases": [],
+          "description": "Get a deployment",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all apps",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list-alerts",
+          "aliases": [],
+          "description": "List alerts on an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list-deployments",
+          "aliases": [],
+          "description": "List all deployments",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list-regions",
+          "aliases": [],
+          "description": "List App Platform regions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Get logs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "propose",
+          "aliases": [],
+          "description": "Propose an app spec",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "spec",
+          "aliases": [],
+          "description": "Display commands for working with app specs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "tier",
+          "aliases": [],
+          "description": "Display commands for working with app tiers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update-alert-destinations",
+          "aliases": [],
+          "description": "Update alert destinations",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Display commands for authenticating doctl with an account",
+      "subcommands": [
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize doctl to use a specific account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available authentication contexts",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove authentication contexts",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "switch",
+          "aliases": [],
+          "description": "Switches between authentication contexts",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "balance",
+      "aliases": [],
+      "description": "Display commands for retrieving your account balance",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve your account balance",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "billing-history",
+      "aliases": [],
+      "description": "Display commands for retrieving your billing history",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Retrieve a paginated billing history for a user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "compute",
+      "aliases": [],
+      "description": "Display commands that manage infrastructure",
+      "subcommands": [
+        {
+          "name": "action",
+          "aliases": [],
+          "description": "Display commands for retrieving resource action history",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cdn",
+          "aliases": [],
+          "description": "Display commands that manage CDNs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "certificate",
+          "aliases": [],
+          "description": "Display commands that manage SSL certificates and private keys",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "domain",
+          "aliases": [],
+          "description": "Display commands that manage domains",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "droplet",
+          "aliases": [],
+          "description": "Manage virtual machines (Droplets)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "droplet-action",
+          "aliases": [],
+          "description": "Display Droplet action commands",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "firewall",
+          "aliases": [],
+          "description": "Display commands to manage cloud firewalls",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "floating-ip",
+          "aliases": [],
+          "description": "Display commands to manage floating IP addresses",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "floating-ip-action",
+          "aliases": [],
+          "description": "Display commands to associate floating IP addresses with Droplets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "image",
+          "aliases": [],
+          "description": "Display commands to manage images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "image-action",
+          "aliases": [],
+          "description": "Display commands to perform actions on images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "load-balancer",
+          "aliases": [],
+          "description": "Display commands to manage load balancers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "region",
+          "aliases": [],
+          "description": "Display commands to list datacenter regions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "size",
+          "aliases": [],
+          "description": "List available Droplet sizes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "snapshot",
+          "aliases": [],
+          "description": "Access and manage snapshots",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ssh",
+          "aliases": [],
+          "description": "Access a Droplet using SSH",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ssh-key",
+          "aliases": [],
+          "description": "Display commands to manage SSH keys on your account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "tag",
+          "aliases": [],
+          "description": "Display commands to manage tags",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "volume",
+          "aliases": [],
+          "description": "Display commands to manage block storage volumes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "volume-action",
+          "aliases": [],
+          "description": "Display commands to perform actions on a volume",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "databases",
+      "aliases": [],
+      "description": "Display commands that manage databases",
+      "subcommands": [
+        {
+          "name": "backups",
+          "aliases": [],
+          "description": "List database cluster backups",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "connection",
+          "aliases": [],
+          "description": "Retrieve connection details for a database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "db",
+          "aliases": [],
+          "description": "Display commands for managing individual databases within a cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "firewalls",
+          "aliases": [],
+          "description": "Display commands to manage firewall rules (called `trusted sources` in the control panel) for database clusters",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get details for a database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List your database clusters",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "maintenance-window",
+          "aliases": [],
+          "description": "Display commands for scheduling automatic maintenance on your database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "migrate",
+          "aliases": [],
+          "description": "Migrate a database cluster to a new region",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pool",
+          "aliases": [],
+          "description": "Display commands for managing connection pools",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "replica",
+          "aliases": [],
+          "description": "Display commands to manage read-only database replicas",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "resize",
+          "aliases": [],
+          "description": "Resize a database cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "sql-mode",
+          "aliases": [],
+          "description": "Display commands to configure a MySQL database cluster's SQL modes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "user",
+          "aliases": [],
+          "description": "Display commands for managing database users",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "invoice",
+      "aliases": [],
+      "description": "Display commands for retrieving invoices for your account",
+      "subcommands": [
+        {
+          "name": "csv",
+          "aliases": [],
+          "description": "Download a CSV file of an invoice",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve a list of all the items on an invoice",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all of the invoices for your account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pdf",
+          "aliases": [],
+          "description": "Download a PDF file of an invoice",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "summary",
+          "aliases": [],
+          "description": "Get a summary of an invoice",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kubernetes",
+      "aliases": [],
+      "description": "Displays commands to manage Kubernetes clusters and configurations",
+      "subcommands": [
+        {
+          "name": "1-click",
+          "aliases": [],
+          "description": "Display commands that pertain to kubernetes 1-click applications",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cluster",
+          "aliases": [],
+          "description": "Display commands for managing Kubernetes clusters",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "options",
+          "aliases": [],
+          "description": "List possible option values for use inside Kubernetes commands",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "monitoring",
+      "aliases": [],
+      "description": "[Beta] Display commands to manage monitoring",
+      "subcommands": [
+        {
+          "name": "alert",
+          "aliases": [],
+          "description": "Display commands for managing alert policies",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Manage projects and assign resources to them",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete the specified project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve details for a specific project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List existing projects",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "resources",
+          "aliases": [],
+          "description": "Manage resources assigned to a project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update an existing project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "registry",
+      "aliases": [],
+      "description": "Display commands for working with container registries",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a private container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "docker-config",
+          "aliases": [],
+          "description": "Generate a docker auth configuration for a registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "garbage-collection",
+          "aliases": [],
+          "description": "Display commands for garbage collection for a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve details about a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "kubernetes-manifest",
+          "aliases": [],
+          "description": "Generate a Kubernetes secret manifest for a registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Log in Docker to a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Log out Docker from a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "options",
+          "aliases": [],
+          "description": "List available container registry options",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "repository",
+          "aliases": [],
+          "description": "Display commands for working with repositories in a container registry",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vpcs",
+      "aliases": [],
+      "description": "Display commands that manage VPCs",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new VPC",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Permanently delete a VPC",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Retrieve a VPC",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List VPCs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update a VPC's configuration",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Help for doctl",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Enable verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--output"
+      ],
+      "description": "Desired output format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "text",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--trace"
+      ],
+      "description": "Show a log of network activity while performing a command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Specify a custom config file (default \"$HOME/config.yaml\")",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--api-url"
+      ],
+      "description": "Override default API endpoint",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--access-token"
+      ],
+      "description": "API V2 access token",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "version"
+      ],
+      "description": "Show the current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

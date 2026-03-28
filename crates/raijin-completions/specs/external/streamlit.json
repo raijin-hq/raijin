@@ -1,0 +1,137 @@
+{
+  "name": "streamlit",
+  "aliases": [],
+  "description": "Streamlit",
+  "subcommands": [
+    {
+      "name": "activate",
+      "aliases": [],
+      "description": "Activate Streamlit by entering your email",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Manage the Streamlit cache",
+      "subcommands": [
+        {
+          "name": "clear",
+          "aliases": [],
+          "description": "Clear st.cache, st.memo, and st.singleton caches",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Manage Streamlit's config settings",
+      "subcommands": [
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show all of Streamlit's config settings",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "Show help in browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "hello",
+      "aliases": [],
+      "description": "Runs the Hello World script",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print the help message",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a Python script, piping stderr to Streamlit",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The Python script to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print Streamlit's version number",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--log_level"
+      ],
+      "description": "Set the log level",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "error",
+          "warning",
+          "info",
+          "debug"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show a help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

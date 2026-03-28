@@ -1,0 +1,1411 @@
+{
+  "name": "terraform",
+  "aliases": [],
+  "description": "Terraform CLI",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Prepare your working directory for other commands",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-upgrade"
+          ],
+          "description": "Opt to upgrade modules and plugins as part of their respective installation steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock"
+          ],
+          "description": "Lock the state file when locking is supported. Defaults to true",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-force"
+          ],
+          "description": "Delete the workspace even if its state is not empty. Defaults to false",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock-timeout"
+          ],
+          "description": "Duration to retry a state lock. Default 0s",
+          "takes_arg": true,
+          "arg_name": "seconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-input"
+          ],
+          "description": "Ask for input for variables if not directly set",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-no-color"
+          ],
+          "description": "Disables output with coloring",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "validate",
+      "aliases": [],
+      "description": "Check whether the configuration is valid",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "plan",
+      "aliases": [],
+      "description": "Show changes required by the current configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-compact-warnings"
+          ],
+          "description": "If Terraform produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-destroy"
+          ],
+          "description": "If set, generates a plan to destroy all the known resources",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-detailed-exitcode"
+          ],
+          "description": "Return a detailed exit code when the command exits",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-out"
+          ],
+          "description": "The path to save the generated execution plan",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-parallelism"
+          ],
+          "description": "Limit the number of concurrent operation as Terraform walks the graph. Defaults to 10",
+          "takes_arg": true,
+          "arg_name": "number",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-refresh"
+          ],
+          "description": "Update the state prior to checking for differences",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-state"
+          ],
+          "description": "Path to the state file. Defaults to 'terraform.tfstate'. Ignored when remote state is used",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-target"
+          ],
+          "description": "A Resource Address to target. This flag can be used multiple times",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "-var"
+          ],
+          "description": "Set a variable in the Terraform configuration. This flag can be set multiple times",
+          "takes_arg": true,
+          "arg_name": "foo=bar",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "-var-file"
+          ],
+          "description": "Set variables in the Terraform configuration from a variable file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock"
+          ],
+          "description": "Lock the state file when locking is supported. Defaults to true",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-force"
+          ],
+          "description": "Delete the workspace even if its state is not empty. Defaults to false",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock-timeout"
+          ],
+          "description": "Duration to retry a state lock. Default 0s",
+          "takes_arg": true,
+          "arg_name": "seconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-input"
+          ],
+          "description": "Ask for input for variables if not directly set",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-no-color"
+          ],
+          "description": "Disables output with coloring",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Create or update infrastructure",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Destroy previously-created infrastructure",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "console",
+      "aliases": [],
+      "description": "Try Terraform expressions at an interactive command prompt",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Reformat your configuration in the standard style",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "force-unlock",
+      "aliases": [],
+      "description": "Release a stuck lock on the current workspace",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Install or upgrade remote Terraform modules",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-update"
+          ],
+          "description": "If specified, modules that are already downloaded will be checked for updates and the updates will be downloaded if present",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "graph",
+      "aliases": [],
+      "description": "Generate a Graphviz graph of the steps in an operation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Associate existing infrastructure with a Terraform resource",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Obtain and save credentials for a remote hos",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Remove locally-stored credentials for a remote host",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "output",
+      "aliases": [],
+      "description": "Show output values from your root module",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "providers",
+      "aliases": [],
+      "description": "Show the providers required for this configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refresh",
+      "aliases": [],
+      "description": "Update the state to match remote systems",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show the current state or a saved plan",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "state",
+      "aliases": [],
+      "description": "Advanced state management",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "taint",
+      "aliases": [],
+      "description": "Mark a resource instance as not fully functional",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-allow-missing"
+          ],
+          "description": "If specified, the command will succeed (exit code 0) even if the resource is missing. The command might still return an error for other situations, such as if there is a problem reading or writing the state",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock"
+          ],
+          "description": "Disables Terraform's default behavior of attempting to take a read/write lock on the state for the duration of the operation if set to false. Defaults to true",
+          "takes_arg": true,
+          "arg_name": "true or false",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-lock-timeout"
+          ],
+          "description": "Unless locking is disabled with -lock=false, instructs Terraform to retry acquiring a lock for a period of time before returning an error. The duration syntax is a number followed by a time unit letter, such as 3s for three seconds",
+          "takes_arg": true,
+          "arg_name": "seconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-ignore-remote-version"
+          ],
+          "description": "When using the enhanced remote backend with Terraform Cloud, continue even if remote and local Terraform versions differ. This may result in an unusable Terraform Cloud workspace, and should be used with extreme caution",
+          "takes_arg": true,
+          "arg_name": "seconds",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "address",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "untaint",
+      "aliases": [],
+      "description": "Remove the 'tainted' state from a resource instance",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "workspace",
+      "aliases": [],
+      "description": "Workspace management",
+      "subcommands": [
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a new workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-lock"
+              ],
+              "description": "Lock the state file when locking is supported. Defaults to true",
+              "takes_arg": true,
+              "arg_name": "true or false",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-lock-timeout"
+              ],
+              "description": "Duration to retry a stae lock. Default 0s",
+              "takes_arg": true,
+              "arg_name": "seconds",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-state"
+              ],
+              "description": "Path to an existing state file to initialize the state of this environment",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-help"
+              ],
+              "description": "Show this help output, or the help for a specified subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-chdir"
+              ],
+              "description": "Switch to a different working directory before executing the given subcommand",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-version"
+              ],
+              "description": "Show the current Terraform version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "workspace name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Display the current workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-help"
+              ],
+              "description": "Show this help output, or the help for a specified subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-chdir"
+              ],
+              "description": "Switch to a different working directory before executing the given subcommand",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-version"
+              ],
+              "description": "Show the current Terraform version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List the workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-help"
+              ],
+              "description": "Show this help output, or the help for a specified subcommand",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-chdir"
+              ],
+              "description": "Switch to a different working directory before executing the given subcommand",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-version"
+              ],
+              "description": "Show the current Terraform version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete the specified workspace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-lock"
+              ],
+              "description": "Lock the state file when locking is supported. Defaults to true",
+              "takes_arg": true,
+              "arg_name": "true or false",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-force"
+              ],
+              "description": "Delete the workspace even if its state is not empty. Defaults to false",
+              "takes_arg": true,
+              "arg_name": "true or false",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-lock-timeout"
+              ],
+              "description": "Duration to retry a state lock. Default 0s",
+              "takes_arg": true,
+              "arg_name": "seconds",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-input"
+              ],
+              "description": "Ask for input for variables if not directly set",
+              "takes_arg": true,
+              "arg_name": "true or false",
+              "arg_template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-no-color"
+              ],
+              "description": "Disables output with coloring",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "workspace name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "select",
+          "aliases": [],
+          "description": "Change the current working workspace",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "arg",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-help"
+          ],
+          "description": "Show this help output, or the help for a specified subcommand",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-chdir"
+          ],
+          "description": "Switch to a different working directory before executing the given subcommand",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-version"
+          ],
+          "description": "Show the current Terraform version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-install-autocomplete",
+      "aliases": [],
+      "description": "Install bash/zsh tab completion",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-uninstall-autocomplete",
+      "aliases": [],
+      "description": "Uninstall bash/zsh tab completion",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-help"
+      ],
+      "description": "Show this help output, or the help for a specified subcommand",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-chdir"
+      ],
+      "description": "Switch to a different working directory before executing the given subcommand",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-version"
+      ],
+      "description": "Show the current Terraform version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

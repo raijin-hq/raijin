@@ -1,0 +1,1949 @@
+{
+  "name": "cci",
+  "aliases": [],
+  "description": "CumulusCI command line interface",
+  "subcommands": [
+    {
+      "name": "flow",
+      "aliases": [],
+      "description": "Commands for finding and running flows for a project",
+      "subcommands": [
+        {
+          "name": "doc",
+          "aliases": [],
+          "description": "Exports RST format documentation for all flows",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project"
+              ],
+              "description": "Include project-specific flows only",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for flow doc",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Displays information for a flow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for flow info",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "FLOW_NAME",
+              "description": "Name of the flow",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available flows for the current context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--plain"
+              ],
+              "description": "Print the table using plain ascii",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Print a json string",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for flow list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Runs a flow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Specify the target org. By default, runs against the current default org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--delete-org"
+              ],
+              "description": "If set, deletes the scratch org after the flow completes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug"
+              ],
+              "description": "Drops into pdb, the Python debugger, on an exception",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o"
+              ],
+              "description": "Pass task specific options for the task as '-o taskname__option value'. You can specify more than one option by using -o more than once",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-prompt"
+              ],
+              "description": "Disables all prompts. Set for non-interactive mode use such as calling from scripts or CI systems",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for flow run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "FLOW_NAME",
+              "description": "Name of the flow to run",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "org",
+      "aliases": [],
+      "description": "Commands for connecting and interacting with Salesforce orgs",
+      "subcommands": [
+        {
+          "name": "browser",
+          "aliases": [],
+          "description": "Opens a browser window and logs into the org using the stored OAuth credentials",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. By default, runs against the current default org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--path"
+              ],
+              "description": "Navigate to the specified page after logging in",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--url-only"
+              ],
+              "description": "Display the target URL, but don't open a browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for org browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": "Name of the org",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "connect",
+          "aliases": [],
+          "description": "Connects a new org's credentials using OAuth Web Flow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. One of ORGNAME (see above) or --org is required",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--connected-app"
+              ],
+              "description": "Name of the connected_app service to use",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--sandbox"
+              ],
+              "description": "If set, connects to a Salesforce sandbox org",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--login-url"
+              ],
+              "description": "If set, login to this hostname",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--default"
+              ],
+              "description": "If set, sets the connected org as the new default org",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global-org"
+              ],
+              "description": "If set, the connected org is available to all CumulusCI projects",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "default",
+          "aliases": [],
+          "description": "Sets an org as the default org for tasks and flows",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. By default, runs against the current default org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--unset"
+              ],
+              "description": "Unset the org as the default org leaving no default org selected",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Import an org from Salesforce DX",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. One of ORGNAME (see above) or --org is required",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "USERNAME_OR_ALIAS",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Display information for a connected org",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. By default, runs against the current default org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Print as JSON. Includes access token",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all orgs in scope for the current project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--plain"
+              ],
+              "description": "Print the table using plain ascii",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output results in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "prune",
+          "aliases": [],
+          "description": "Removes all expired scratch orgs from the current project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--include-active"
+              ],
+              "description": "Remove all scratch orgs, regardless of expiry",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Removes an org from the keychain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. One of ORGNAME (see above) or --org is required",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--global-org"
+              ],
+              "description": "Set this option to force remove a global org. Default behavior is to error if you attempt to delete a global org",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "scratch",
+          "aliases": [],
+          "description": "Connects a Salesforce DX Scratch Org to the keychain",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. One of ORGNAME (see above) or --org is required",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--default"
+              ],
+              "description": "If set, sets the connected org as the new default org",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--devhub"
+              ],
+              "description": "If provided, overrides the devhub used to create the scratch org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--days"
+              ],
+              "description": "If provided, overrides the scratch config default days value for how many days the scratch org should persist",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-password"
+              ],
+              "description": "If set, don't set a password for the org",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "CONFIG_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "scratch_delete",
+          "aliases": [],
+          "description": "Deletes a Salesforce DX Scratch Org leaving the config in the keychain for regeneration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. One of ORGNAME (see above) or --org is required",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "shell",
+          "aliases": [],
+          "description": "Drop into a Python shell with a simple_salesforce connection in `sf`, as well as the `org_config` and `project_config`",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Alternate way to specify the target org. By default, runs against the current default org",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--script"
+              ],
+              "description": "Path to a script to run",
+              "takes_arg": true,
+              "arg_name": "PATH",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--python"
+              ],
+              "description": "Python code to run directly",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ORGNAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "plan",
+      "aliases": [],
+      "description": "Commands for getting information about MetaDeploy plans",
+      "subcommands": [
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Displays information for a MetaDeploy plan",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--messages"
+              ],
+              "description": "Show only plan messages",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for plan info",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "PLAN_NAME",
+              "description": "Name of the plan",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available plans for the current context",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Return the list of plans in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for plan list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "robot",
+      "aliases": [],
+      "description": "Commands for working with Robot Framework",
+      "subcommands": [
+        {
+          "name": "install_playwright",
+          "aliases": [],
+          "description": "Install libraries necessary to use playwright with robot framework",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-n",
+                "--dry_run"
+              ],
+              "description": "Dry run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for install_playwright",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "uninstall_playwright",
+          "aliases": [],
+          "description": "Uninstalls the robotframework-browser package and node modules",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for uninstall_playwright",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "service",
+      "aliases": [],
+      "description": "Commands for connecting services to the keychain",
+      "subcommands": [
+        {
+          "name": "connect",
+          "aliases": [],
+          "description": "Connect an external service to CumulusCI",
+          "subcommands": [
+            {
+              "name": "connected_app",
+              "aliases": [],
+              "description": "Connect a Connected App service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--login_url"
+                  ],
+                  "description": "Default Salesforce Login URL to be used with this Connected App",
+                  "takes_arg": true,
+                  "arg_name": "login_url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--callback_url"
+                  ],
+                  "description": "Callback URL configured on the Connected App",
+                  "takes_arg": true,
+                  "arg_name": "callback_url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--client_id"
+                  ],
+                  "description": "Client ID/Consumer Key from the Connected App",
+                  "takes_arg": true,
+                  "arg_name": "client_id",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--client_secret"
+                  ],
+                  "description": "Client Secret/Consumer Secret from the Connected App",
+                  "takes_arg": true,
+                  "arg_name": "client_secret",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Help for cci service connect connected_app",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "devhub",
+              "aliases": [],
+              "description": "Connect a DevHub service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--username"
+                  ],
+                  "description": "Username or alias of the SFDX org to use as a Dev Hub",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "github",
+              "aliases": [],
+              "description": "Connect a GitHub service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--username"
+                  ],
+                  "description": "The Github username to use for tasks",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--email"
+                  ],
+                  "description": "The email address to used by Github tasks when an operation requires an email address",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token"
+                  ],
+                  "description": "Personal Access Token for GitHub. Leave blank to log in via browser",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "github_enterprise",
+              "aliases": [],
+              "description": "Connect a GitHub Enterprise service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--username"
+                  ],
+                  "description": "The GitHub Enterprise username to use for tasks",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--email"
+                  ],
+                  "description": "The email address to used by GitHub tasks when an operation requires an email address",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--server_domain"
+                  ],
+                  "description": "GitHub Enterprise domain (Example: git.ent.domain.com)",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token"
+                  ],
+                  "description": "Personal Access Token",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "marketing_cloud",
+              "aliases": [],
+              "description": "Connect a Marketing Cloud service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--oauth2_client"
+                  ],
+                  "description": "The name of the oauth2_client service with which to establish a connection to Marketing Cloud",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "metaci",
+              "aliases": [],
+              "description": "Connect a MetaCI service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--app_name"
+                  ],
+                  "description": "The Heroku app name",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--url"
+                  ],
+                  "description": "The main url to the MetaCI site",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token"
+                  ],
+                  "description": "Your API token to the MetaCI site (get from SITE_URL/api/token)",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "metadeploy",
+              "aliases": [],
+              "description": "Connect a MetaDeploy service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--url"
+                  ],
+                  "description": "The main url for your MetaDeploy instance",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token"
+                  ],
+                  "description": "Your API token to the MetaDeploy site (get from SITE_URL/admin/authtoken/token)",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "oauth2_client",
+              "aliases": [],
+              "description": "Connect an OAuth2 Client service to CumulusCI",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--client_id"
+                  ],
+                  "description": "The client Id",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--client_secret"
+                  ],
+                  "description": "The client secret",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--auth_uri"
+                  ],
+                  "description": "The URI for where users are directed to login",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--token_uri"
+                  ],
+                  "description": "The URI for where we request an access token",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--callback_url"
+                  ],
+                  "description": "The URL that the auth server will callback to after authentication of the user",
+                  "takes_arg": true,
+                  "arg_name": "TEXT",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--default"
+                  ],
+                  "description": "Set this service as the global default",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help"
+                  ],
+                  "description": "Show this message and exit",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "SERVICE_NAME",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "default",
+          "aliases": [],
+          "description": "Set the default service for a given service type",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project"
+              ],
+              "description": "Sets the service as the default for the current project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service default",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SERVICE_TYPE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "SERVICE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Show the details of a connected service",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Print a json string",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service info",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SERVICE_TYPE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "SERVICE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List services available for configuration and use",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--plain"
+              ],
+              "description": "Print the table using plain ascii",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Print a json string",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service list",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a service",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service remove",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SERVICE_TYPE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "SERVICE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Rename a service",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service remove",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SERVICE_TYPE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "SERVICE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "NEW_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Allow users to update attribute values of a particular service",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-s",
+                "--attribute"
+              ],
+              "description": "Provide values to update the service with directly. Using `--attribute foo var` will set the 'foo' attribute to a value of 'bar' on the specified service",
+              "takes_arg": true,
+              "arg_name": "TEXT TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Help for cci service remove",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "SERVICE_TYPE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "SERVICE_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "shell",
+      "aliases": [],
+      "description": "Drop into a Python shell",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--script"
+          ],
+          "description": "Path to a script to run",
+          "takes_arg": true,
+          "arg_name": "PATH",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--python"
+          ],
+          "description": "Python code to run directly",
+          "takes_arg": true,
+          "arg_name": "TEXT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "task",
+      "aliases": [],
+      "description": "Commands for finding and running tasks for a project",
+      "subcommands": [
+        {
+          "name": "doc",
+          "aliases": [],
+          "description": "Exports RST format documentation for all tasks",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Displays information for a task",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "TASK_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available tasks for the current context",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Runs a task",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "TASK_NAME",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the current version of CumulusCI",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "error",
+      "aliases": [],
+      "description": "Get or share information about an error",
+      "subcommands": [
+        {
+          "name": "gist",
+          "aliases": [],
+          "description": "Creates a GitHub gist from the latest logfile",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Outputs the most recent traceback (if one exists in the most recent logfile)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help"
+          ],
+          "description": "Show this message and exit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "project",
+      "aliases": [],
+      "description": "Commands for interacting with project repository configurations",
+      "subcommands": [
+        {
+          "name": "dependencies",
+          "aliases": [],
+          "description": "Displays the current dependencies for the project. If the dependencies section has references to other github repositories, the repositories are inspected and a static list of dependencies is created",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--resolution-strategy"
+              ],
+              "description": "The resolution strategy to use. Defaults to production",
+              "takes_arg": true,
+              "arg_name": "TEXT",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Display information about the current project's configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize a new project for use with the cumulusci toolbelt",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help"
+              ],
+              "description": "Show this message and exit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Help for cci",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

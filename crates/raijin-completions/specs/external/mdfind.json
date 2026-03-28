@@ -1,0 +1,118 @@
+{
+  "name": "mdfind",
+  "aliases": [],
+  "description": "Finds files matching a given query",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for mdfind",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-0"
+      ],
+      "description": "Prints an ASCII NUL character after each result path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-live"
+      ],
+      "description": "Provide live-updates to the number of files matching the query",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-count"
+      ],
+      "description": "Output the total number of matches, instead of the path to the matching items",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-onlyin"
+      ],
+      "description": "Limit the scope of the search to <dir>",
+      "takes_arg": true,
+      "arg_name": "dir",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-name"
+      ],
+      "description": "Search for matching file names to <filename> only",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-reprint"
+      ],
+      "description": "Reprint results on live update",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Show contents of smart folder ~/Library/Saved Searches/<folder>.savedSearch",
+      "takes_arg": true,
+      "arg_name": "folder",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-literal"
+      ],
+      "description": "Force the provided query string to be taken as a literal query string, without interpretation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-interpret"
+      ],
+      "description": "Force the provided query string to be interpreted as if it had been typed into the Spotlight menu",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "query",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

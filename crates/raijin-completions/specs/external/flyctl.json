@@ -1,0 +1,6513 @@
+{
+  "name": "flyctl",
+  "aliases": [],
+  "description": "The flyctl is a command-line interface for fly.io",
+  "subcommands": [
+    {
+      "name": "agent",
+      "aliases": [],
+      "description": "Commands that manage the Fly agent, a background process that manages flyctl wireguard connections",
+      "subcommands": [
+        {
+          "name": "ping",
+          "aliases": [],
+          "description": "Ping the Fly agent",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart the Fly agent",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "daemon-start",
+          "aliases": [
+            "run"
+          ],
+          "description": "Run the Fly agent in the foreground",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start the Fly agent",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop the Fly agent",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "apps",
+      "aliases": [],
+      "description": "Manage apps",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--generate-name"
+              ],
+              "description": "Generate a name for the app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "The app name to use",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--network"
+              ],
+              "description": "Specify custom network id",
+              "takes_arg": true,
+              "arg_name": "network",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--org",
+                "-o"
+              ],
+              "description": "The organization to operate on",
+              "takes_arg": true,
+              "arg_name": "org",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Permanently destroys an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List applications",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "move",
+          "aliases": [],
+          "description": "Move an app to another organization",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--org",
+                "-o"
+              ],
+              "description": "The organization to operate on",
+              "takes_arg": true,
+              "arg_name": "org",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open browser to current deployed application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "releases",
+          "aliases": [],
+          "description": "List app releases",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--image"
+              ],
+              "description": "Display the Docker image reference of the release",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart an application",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Will issue a restart against each Machine even if there are errors. ( Machines only )",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-health-checks"
+              ],
+              "description": "Restarts app without waiting for health checks. ( Machines only )",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "app",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Manage authentication",
+      "subcommands": [
+        {
+          "name": "docker",
+          "aliases": [],
+          "description": "Authenticate docker",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Log in a user",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--email"
+              ],
+              "description": "Login email",
+              "takes_arg": true,
+              "arg_name": "email",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--interactive",
+                "-i"
+              ],
+              "description": "Log in with an email and password interactively",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--otp"
+              ],
+              "description": "One time password",
+              "takes_arg": true,
+              "arg_name": "otp",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "Login password",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Logs out the currently logged in user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "signup",
+          "aliases": [],
+          "description": "Create a new fly account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "token",
+          "aliases": [],
+          "description": "Show the current auth token",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "whoami",
+          "aliases": [],
+          "description": "Displays the users email address/service identity currently authenticated and in use",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "autoscale",
+      "aliases": [],
+      "description": "Autoscaling app resources",
+      "subcommands": [
+        {
+          "name": "balanced",
+          "aliases": [],
+          "description": "Configure a traffic balanced app with params (min=int max=int)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable autoscaling",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set current models autoscaling parameters",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show current autoscaling configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "standard",
+          "aliases": [],
+          "description": "Configure a standard balanced app with params (min=int max=int)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "builds",
+      "aliases": [],
+      "description": "Manage application builds",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List builds",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "certs",
+      "aliases": [],
+      "description": "Manage certificates",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [
+            "add"
+          ],
+          "description": "Add a certificate for an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Checks DNS configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List certificates for an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [
+            "remove"
+          ],
+          "description": "Removes a certificate from an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Shows certificate information",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "checks",
+      "aliases": [],
+      "description": "Manage health checks",
+      "subcommands": [
+        {
+          "name": "handlers",
+          "aliases": [],
+          "description": "Manage health check handlers",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a health check handler",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--organization",
+                    "-o"
+                  ],
+                  "description": "The organization to add the handler to",
+                  "takes_arg": true,
+                  "arg_name": "organization",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--type"
+                  ],
+                  "description": "The type of handler to create, can be slack or pagerduty",
+                  "takes_arg": true,
+                  "arg_name": "type",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a health check handler",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List health check handlers",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List app health checks",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--check-name"
+              ],
+              "description": "Filter checks by name",
+              "takes_arg": true,
+              "arg_name": "check-name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Manage an app's configuration",
+      "subcommands": [
+        {
+          "name": "display",
+          "aliases": [],
+          "description": "Display an app's configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "env",
+          "aliases": [],
+          "description": "Display an app's runtime environment variables",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "save",
+          "aliases": [],
+          "description": "Save an app's config file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "validate",
+          "aliases": [],
+          "description": "Validate an app's config file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--generate-name"
+          ],
+          "description": "Generate a name for the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "The app name to use",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Specify custom network id",
+          "takes_arg": true,
+          "arg_name": "network",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org",
+            "-o"
+          ],
+          "description": "The organization to operate on",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "curl",
+      "aliases": [],
+      "description": "Run a performance test against a URL",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dash",
+      "aliases": [
+        "dashboard"
+      ],
+      "description": "Open web browser on Fly Web UI for this app",
+      "subcommands": [
+        {
+          "name": "metrics",
+          "aliases": [],
+          "description": "Open web browser on Fly Web UI for this app's metrics",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deploy",
+      "aliases": [],
+      "description": "Deploy Fly applications",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-arg"
+          ],
+          "description": "Set of build time variables in the form of NAME=VALUE pairs. Can be specified multiple times",
+          "takes_arg": true,
+          "arg_name": "build-arg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-only"
+          ],
+          "description": "Build but do not deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-target"
+          ],
+          "description": "Set the target build stage to build if the Dockerfile has more than one stage",
+          "takes_arg": true,
+          "arg_name": "build-target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--detach"
+          ],
+          "description": "Return immediately instead of monitoring deployment progress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dockerfile"
+          ],
+          "description": "Path to a Dockerfile. Defaults to the Dockerfile in the working directory",
+          "takes_arg": true,
+          "arg_name": "dockerfile",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Set of environment variables in the form of NAME=VALUE pairs. Can be specified multiple times",
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image",
+            "-i"
+          ],
+          "description": "The image tag or ID to deploy",
+          "takes_arg": true,
+          "arg_name": "image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-label"
+          ],
+          "description": "Image label to use when tagging and pushing to the fly registry. Defaults to \"deployment-{timestamp}\"",
+          "takes_arg": true,
+          "arg_name": "image-label",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--local-only"
+          ],
+          "description": "Only perform builds locally using the local docker daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nix"
+          ],
+          "description": "Build with Nix",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use the build cache when building the image",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--now"
+          ],
+          "description": "Deploy now without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--push"
+          ],
+          "description": "Push image to registry after build is complete",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-r"
+          ],
+          "description": "The region to operate on",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-only"
+          ],
+          "description": "Perform builds on a remote builder instance instead of using the local docker daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strategy"
+          ],
+          "description": "The strategy for replacing running instances. Options are canary, rolling, bluegreen, or immediate. Default is canary, or rolling when max-per-region is set",
+          "takes_arg": true,
+          "arg_name": "strategy",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Permanently destroys an app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Accept all confirmations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dig",
+      "aliases": [],
+      "description": "Make DNS requests against Fly.io's internal DNS server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org",
+            "-o"
+          ],
+          "description": "The organization to operate on",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--short",
+            "-s"
+          ],
+          "description": "Just print the answers, not DNS record details",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dns-records",
+      "aliases": [],
+      "description": "Manage DNS records",
+      "subcommands": [
+        {
+          "name": "export",
+          "aliases": [],
+          "description": "Export DNS records",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--overwrite"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Import DNS records",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List DNS records",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "docs",
+      "aliases": [],
+      "description": "View Fly documentation",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "The DOCTOR command allows you to debug your Fly environment",
+      "subcommands": [
+        {
+          "name": "diag",
+          "aliases": [],
+          "description": "Send diagnostic information about your applications back to Fly.io",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Send diagnostics even if we can't find your local Fly.io app",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "domains",
+      "aliases": [],
+      "description": "Manage domains",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a domain",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List domains",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "register",
+          "aliases": [],
+          "description": "Register a domain",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show domain",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "history",
+      "aliases": [],
+      "description": "List an app's change history",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "img",
+      "aliases": [
+        "image"
+      ],
+      "description": "Manage app image",
+      "subcommands": [
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show image details",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Updates the app's image to the latest available version. (Fly Postgres only)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach"
+              ],
+              "description": "Return immediately instead of monitoring update progress",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Show detailed app information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host"
+          ],
+          "description": "Returns just the hostname",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name",
+            "-n"
+          ],
+          "description": "Returns just the appname",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ips",
+      "aliases": [],
+      "description": "Manage IP addresses for apps",
+      "subcommands": [
+        {
+          "name": "allocate-v4",
+          "aliases": [],
+          "description": "Allocate an IPv4 address",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The region where the address should be allocated",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "allocate-v6",
+          "aliases": [],
+          "description": "Allocate an IPv6 address",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The region where the address should be allocated",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List allocated IP addresses",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "private",
+          "aliases": [],
+          "description": "List instances private IP addresses",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "release",
+          "aliases": [],
+          "description": "Release an IP address",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "launch",
+      "aliases": [],
+      "description": "Launch a new app",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--copy-config"
+          ],
+          "description": "Use the configuration file if present without prompting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dockerfile"
+          ],
+          "description": "Path to a Dockerfile. Defaults to the Dockerfile in the working directory",
+          "takes_arg": true,
+          "arg_name": "dockerfile",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--generate-name"
+          ],
+          "description": "Always generate a name for the app",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image"
+          ],
+          "description": "The image to launch",
+          "takes_arg": true,
+          "arg_name": "image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "The name of the new app",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-deploy"
+          ],
+          "description": "Do not prompt for deployment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--now"
+          ],
+          "description": "Deploy now without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org"
+          ],
+          "description": "The organization that will own the app",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--path"
+          ],
+          "description": "Path to app code and where a fly.toml file will be saved",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region"
+          ],
+          "description": "The region to launch the new app in",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-only"
+          ],
+          "description": "Perform builds remotely without using the local docker daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "View app logs",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--instance",
+            "-i"
+          ],
+          "description": "Filter by instance ID",
+          "takes_arg": true,
+          "arg_name": "instance",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-r"
+          ],
+          "description": "The region to operate on",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "machines",
+      "aliases": [
+        "m",
+        "machine"
+      ],
+      "description": "Commands that manage machines",
+      "subcommands": [
+        {
+          "name": "clone",
+          "aliases": [],
+          "description": "Clones a Fly Machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach",
+                "-d"
+              ],
+              "description": "Detach from the machine's logs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name",
+                "-n"
+              ],
+              "description": "The name of the new machine",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--org",
+                "-o"
+              ],
+              "description": "The organization to operate on",
+              "takes_arg": true,
+              "arg_name": "org",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region",
+                "-r"
+              ],
+              "description": "The region to operate on",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "kill",
+          "aliases": [],
+          "description": "Kill (SIGKILL) a Fly machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List Fly machines",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--quiet",
+                "-q"
+              ],
+              "description": "Only list machine ids",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [
+            "remove"
+          ],
+          "description": "Remove a Fly machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force",
+                "-f"
+              ],
+              "description": "Force kill machine if it's running",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run a machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-arg"
+              ],
+              "description": "Set of build time variables in the form of NAME=VALUE pairs. Can be specified multiple times",
+              "takes_arg": true,
+              "arg_name": "build-arg",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-local-only"
+              ],
+              "description": "Only perform builds locally using the local docker daemon",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-only"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-remote-only"
+              ],
+              "description": "Perform builds remotely without using the local docker daemon",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--build-target"
+              ],
+              "description": "Set the target build stage to build if the Dockerfile has more than one stage",
+              "takes_arg": true,
+              "arg_name": "build-target",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cpu-kind"
+              ],
+              "description": "Kind of CPU to use (shared, dedicated)",
+              "takes_arg": true,
+              "arg_name": "cpu-kind",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cpus"
+              ],
+              "description": "Number of CPUs",
+              "takes_arg": true,
+              "arg_name": "cpus",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach",
+                "-d"
+              ],
+              "description": "Detach from the machine's logs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dockerfile"
+              ],
+              "description": "Path to a Dockerfile. Defaults to the Dockerfile in the working directory",
+              "takes_arg": true,
+              "arg_name": "dockerfile",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--entrypoint"
+              ],
+              "description": "ENTRYPOINT replacement",
+              "takes_arg": true,
+              "arg_name": "entrypoint",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--env",
+                "-e"
+              ],
+              "description": "Set of environment variables in the form of NAME=VALUE pairs. Can be specified multiple times",
+              "takes_arg": true,
+              "arg_name": "env",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "Machine ID, if previously known",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--image-label"
+              ],
+              "description": "Image label to use when tagging and pushing to the fly registry. Defaults to \"deployment-{timestamp}\"",
+              "takes_arg": true,
+              "arg_name": "image-label",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--memory"
+              ],
+              "description": "Memory (in megabytes) to attribute to the machine",
+              "takes_arg": true,
+              "arg_name": "memory",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name",
+                "-n"
+              ],
+              "description": "Machine name, will be generated if missing",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-build-cache"
+              ],
+              "description": "Do not use the cache when building the image",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "The organization that will own the app",
+              "takes_arg": true,
+              "arg_name": "org",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "Exposed port mappings (format: edgePort[:machinePort]/[protocol[:handler]])",
+              "takes_arg": true,
+              "arg_name": "port",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region",
+                "-r"
+              ],
+              "description": "The region to operate on",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--size",
+                "-s"
+              ],
+              "description": "Preset guest cpu and memory for a machine",
+              "takes_arg": true,
+              "arg_name": "size",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--volume",
+                "-v"
+              ],
+              "description": "Volumes to mount in the form of <volume_id_or_name>:/path/inside/machine[:<options>]",
+              "takes_arg": true,
+              "arg_name": "volume",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start a Fly machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show current status of a running machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a Fly machine",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--signal",
+                "-s"
+              ],
+              "description": "Signal to stop the machine with (default: SIGINT)",
+              "takes_arg": true,
+              "arg_name": "signal",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--time"
+              ],
+              "description": "Seconds to wait before killing the machine",
+              "takes_arg": true,
+              "arg_name": "time",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "monitor",
+      "aliases": [],
+      "description": "Monitor currently running application deployments",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "move",
+      "aliases": [],
+      "description": "Move an app to another organization",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--org",
+            "-o"
+          ],
+          "description": "The organization to operate on",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Accept all confirmations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open browser to current deployed application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "orgs",
+      "aliases": [],
+      "description": "Commands for managing Fly organizations",
+      "subcommands": [
+        {
+          "name": "builder",
+          "aliases": [],
+          "description": "Manage remote builder",
+          "subcommands": [
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show details about an organization's remote builder image",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Update an organization's remote builder image",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create an organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an organization",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "invite",
+          "aliases": [],
+          "description": "Invite user (by email) to organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists organizations for current user",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a user from an organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show information about an organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ping",
+      "aliases": [],
+      "description": "Test connectivity with ICMP ping messages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--count",
+            "-n"
+          ],
+          "description": "Number of probes to send (0=indefinite)",
+          "takes_arg": true,
+          "arg_name": "count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interval",
+            "-i"
+          ],
+          "description": "Interval between ping probes",
+          "takes_arg": true,
+          "arg_name": "interval",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org",
+            "-o"
+          ],
+          "description": "The organization to operate on",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--size",
+            "-s"
+          ],
+          "description": "Size of probe to send (not including headers)",
+          "takes_arg": true,
+          "arg_name": "size",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "platform",
+      "aliases": [],
+      "description": "Fly platform information",
+      "subcommands": [
+        {
+          "name": "regions",
+          "aliases": [],
+          "description": "List regions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show current platform status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "vm-sizes",
+          "aliases": [],
+          "description": "List VM Sizes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pg",
+      "aliases": [
+        "postgres"
+      ],
+      "description": "Manage postgres clusters",
+      "subcommands": [
+        {
+          "name": "attach",
+          "aliases": [],
+          "description": "Attach a postgres cluster to an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--database-name"
+              ],
+              "description": "Database to use, defaults to a new database with the same name as the app",
+              "takes_arg": true,
+              "arg_name": "database-name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--database-user"
+              ],
+              "description": "The database user to create, defaults to creating a user with the same name as the consuming app",
+              "takes_arg": true,
+              "arg_name": "database-user",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--postgres-app"
+              ],
+              "description": "The postgres cluster to attach to the app",
+              "takes_arg": true,
+              "arg_name": "postgres-app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--variable-name"
+              ],
+              "description": "The env variable name that will be added to the app. Defaults to DATABASE_URL",
+              "takes_arg": true,
+              "arg_name": "variable-name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "connect",
+          "aliases": [],
+          "description": "Connect to the Postgres console",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--database"
+              ],
+              "description": "The postgres database to connect to",
+              "takes_arg": true,
+              "arg_name": "database",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "The postgres user password",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--user"
+              ],
+              "description": "The postgres user to connect with",
+              "takes_arg": true,
+              "arg_name": "user",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a postgres cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--image-ref"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "image-ref",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--initial-cluster-size"
+              ],
+              "description": "The size of the initial postgres cluster",
+              "takes_arg": true,
+              "arg_name": "initial-cluster-size",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "The name of the new app",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--organization"
+              ],
+              "description": "The organization that will own the app",
+              "takes_arg": true,
+              "arg_name": "organization",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password"
+              ],
+              "description": "The superuser password. one will be generated for you if you leave this blank",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The region to launch the new app in",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--snapshot-id"
+              ],
+              "description": "Creates the volume with the contents of the snapshot",
+              "takes_arg": true,
+              "arg_name": "snapshot-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--vm-size"
+              ],
+              "description": "The size of the VM",
+              "takes_arg": true,
+              "arg_name": "vm-size",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--volume-size"
+              ],
+              "description": "The size in GB for volumes",
+              "takes_arg": true,
+              "arg_name": "volume-size",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "db",
+          "aliases": [],
+          "description": "Manage databases in a cluster",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List databases in a cluster",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--app",
+                    "-a"
+                  ],
+                  "description": "App name to operate on",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config",
+                    "-c"
+                  ],
+                  "description": "Path to an app config file or directory containing one",
+                  "takes_arg": true,
+                  "arg_name": "config",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "detach",
+          "aliases": [],
+          "description": "Detach a postgres cluster from an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--postgres-app"
+              ],
+              "description": "The postgres cluster to detach from the app",
+              "takes_arg": true,
+              "arg_name": "postgres-app",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List postgres clusters",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "users",
+          "aliases": [],
+          "description": "Manage users in a cluster",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List users in a cluster",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--app",
+                    "-a"
+                  ],
+                  "description": "App name to operate on",
+                  "takes_arg": true,
+                  "arg_name": "app",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config",
+                    "-c"
+                  ],
+                  "description": "Path to an app config file or directory containing one",
+                  "takes_arg": true,
+                  "arg_name": "config",
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "proxy",
+      "aliases": [],
+      "description": "Proxies connections to a fly VM",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org",
+            "-o"
+          ],
+          "description": "The organization to operate on",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select",
+            "-s"
+          ],
+          "description": "Prompt to select from available instances from the current application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "regions",
+      "aliases": [],
+      "description": "Manage regions",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Allow the app to run in the provided regions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "The process group to add the region to",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "backup",
+          "aliases": [],
+          "description": "Sets the backup region pool with provided regions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Shows the list of regions the app is allowed to run in",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Prevent the app from running in the provided regions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "The process group to remove the region from",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Sets the region pool with provided regions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "The process group to set regions for",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "releases",
+      "aliases": [],
+      "description": "List app releases",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image"
+          ],
+          "description": "Display the Docker image reference of the release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart an application",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "resume",
+      "aliases": [],
+      "description": "Resume an application",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "scale",
+      "aliases": [],
+      "description": "Scale app resources",
+      "subcommands": [
+        {
+          "name": "count",
+          "aliases": [],
+          "description": "Change an app's VM count to the given value",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--max-per-region"
+              ],
+              "description": "Max number of VMs per region",
+              "takes_arg": true,
+              "arg_name": "max-per-region",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "memory",
+          "aliases": [],
+          "description": "Set VM memory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "The process group to apply the memory size to",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show current resources",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "vm",
+          "aliases": [],
+          "description": "Change an app's VM to a named size (eg. shared-cpu-1x, dedicated-cpu-1x, dedicated-cpu-2x...)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--group"
+              ],
+              "description": "The process group to apply the VM size to",
+              "takes_arg": true,
+              "arg_name": "group",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--memory"
+              ],
+              "description": "Memory in MB for the VM",
+              "takes_arg": true,
+              "arg_name": "memory",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Manage app secrets",
+      "subcommands": [
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Read secrets in name=value from stdin",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach"
+              ],
+              "description": "Return immediately instead of monitoring deployment progress",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists the secrets available to the app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set one or more encrypted secrets for an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach"
+              ],
+              "description": "Return immediately instead of monitoring deployment progress",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Remove encrypted secrets from an app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--detach"
+              ],
+              "description": "Return immediately instead of monitoring deployment progress",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "App name to operate on",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to an app config file or directory containing one",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "Commands that manage SSH credentials",
+      "subcommands": [
+        {
+          "name": "console",
+          "aliases": [],
+          "description": "Connect to a running instance of the current app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--command",
+                "-C"
+              ],
+              "description": "Command to run on SSH session",
+              "takes_arg": true,
+              "arg_name": "command",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--probe",
+                "-p"
+              ],
+              "description": "Test WireGuard connection after establishing",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region",
+                "-r"
+              ],
+              "description": "Region to create WireGuard connection in",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--select",
+                "-s"
+              ],
+              "description": "Select available instances",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "establish",
+          "aliases": [],
+          "description": "Create a root SSH certificate for your organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "issue",
+          "aliases": [],
+          "description": "Issue a new SSH credential",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--agent"
+              ],
+              "description": "Add key to SSH agent",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dotssh",
+                "-d"
+              ],
+              "description": "Store keys in ~/.ssh, like normal keys",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--hours"
+              ],
+              "description": "Expiration, in hours (<72)",
+              "takes_arg": true,
+              "arg_name": "hours",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--overwrite",
+                "-o"
+              ],
+              "description": "Overwrite existing SSH keys in same location, if we generated them",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--username",
+                "-u"
+              ],
+              "description": "Unix username for SSH cert",
+              "takes_arg": true,
+              "arg_name": "username",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "log",
+          "aliases": [],
+          "description": "Log of all issued certs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show app status",
+      "subcommands": [
+        {
+          "name": "instance",
+          "aliases": [],
+          "description": "Show instance status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Show completed instances",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--app",
+            "-a"
+          ],
+          "description": "Application name",
+          "takes_arg": true,
+          "arg_name": "app",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-c"
+          ],
+          "description": "Path to application configuration file",
+          "takes_arg": true,
+          "arg_name": "config",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--deployment"
+          ],
+          "description": "Always show deployment status",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rate"
+          ],
+          "description": "Refresh Rate for --watch",
+          "takes_arg": true,
+          "arg_name": "rate",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Refresh details",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "suspend",
+      "aliases": [],
+      "description": "Suspend an application",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "turboku",
+      "aliases": [],
+      "description": "Launches heroku apps",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--heroku-token"
+          ],
+          "description": "Heroku API token",
+          "takes_arg": true,
+          "arg_name": "heroku-token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep"
+          ],
+          "description": "Keep the app directory after deployment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "The name of the new app",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--now"
+          ],
+          "description": "Deploy now without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--org"
+          ],
+          "description": "The organization that will own the app",
+          "takes_arg": true,
+          "arg_name": "org",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region"
+          ],
+          "description": "The region to launch the new app in",
+          "takes_arg": true,
+          "arg_name": "region",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show version information for the flyctl command",
+      "subcommands": [
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Checks for available updates and automatically updates",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--saveinstall",
+            "-s"
+          ],
+          "description": "Save parameter in config",
+          "takes_arg": true,
+          "arg_name": "saveinstall",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "vm",
+      "aliases": [],
+      "description": "Commands that manage VM instances",
+      "subcommands": [
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart a VM",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show a VM's status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop a VM",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "App name to operate on",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to an app config file or directory containing one",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "vol",
+      "aliases": [
+        "volumes"
+      ],
+      "description": "Volume management commands",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create new volume for app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-encryption"
+              ],
+              "description": "Do not encrypt the volume contents",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region",
+                "-r"
+              ],
+              "description": "The region to operate on",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--require-unique-zone"
+              ],
+              "description": "Require volume to be placed in separate hardware zone from existing volumes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--size",
+                "-s"
+              ],
+              "description": "Size of volume in gigabytes",
+              "takes_arg": true,
+              "arg_name": "size",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a volume from the app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Accept all confirmations",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List the volumes for app",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--app",
+                "-a"
+              ],
+              "description": "Application name",
+              "takes_arg": true,
+              "arg_name": "app",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config",
+                "-c"
+              ],
+              "description": "Path to application configuration file",
+              "takes_arg": true,
+              "arg_name": "config",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show details of an app's volume",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "snaps",
+          "aliases": [
+            "snapshots"
+          ],
+          "description": "Manage volume snapshots",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List snapshots",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "wg",
+      "aliases": [
+        "wireguard"
+      ],
+      "description": "Commands that manage WireGuard peer connections",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Add a WireGuard peer connection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all WireGuard peer connections",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove a WireGuard peer connection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset WireGuard peer connection for an organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Get status a WireGuard peer connection",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "token",
+          "aliases": [],
+          "description": "Commands that managed WireGuard delegated access tokens",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new WireGuard token",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a WireGuard token; token is name:<name> or token:<token>",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all WireGuard tokens",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "start",
+              "aliases": [],
+              "description": "Start a new WireGuard peer connection associated with a token (set FLY_WIREGUARD_TOKEN)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Rekey a WireGuard peer connection associated with a token (set FLY_WIREGUARD_TOKEN)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "websockets",
+          "aliases": [],
+          "description": "Enable or disable WireGuard tunneling over WebSockets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "Use",
+          "aliases": [],
+          "description": "Short",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "agent",
+          "aliases": [],
+          "description": "Commands that manage the Fly agent, a background process that manages flyctl wireguard connections",
+          "subcommands": [
+            {
+              "name": "ping",
+              "aliases": [],
+              "description": "Ping the Fly agent",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "restart",
+              "aliases": [],
+              "description": "Restart the Fly agent",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "daemon-start",
+              "aliases": [
+                "run"
+              ],
+              "description": "Run the Fly agent in the foreground",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "start",
+              "aliases": [],
+              "description": "Start the Fly agent",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "stop",
+              "aliases": [],
+              "description": "Stop the Fly agent",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "apps",
+          "aliases": [],
+          "description": "Manage apps",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "destroy",
+              "aliases": [],
+              "description": "Permanently destroys an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List applications",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "move",
+              "aliases": [],
+              "description": "Move an app to another organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "open",
+              "aliases": [],
+              "description": "Open browser to current deployed application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "releases",
+              "aliases": [],
+              "description": "List app releases",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "restart",
+              "aliases": [],
+              "description": "Restart an application",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "auth",
+          "aliases": [],
+          "description": "Manage authentication",
+          "subcommands": [
+            {
+              "name": "docker",
+              "aliases": [],
+              "description": "Authenticate docker",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "login",
+              "aliases": [],
+              "description": "Log in a user",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "logout",
+              "aliases": [],
+              "description": "Logs out the currently logged in user",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "signup",
+              "aliases": [],
+              "description": "Create a new fly account",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "token",
+              "aliases": [],
+              "description": "Show the current auth token",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "whoami",
+              "aliases": [],
+              "description": "Displays the users email address/service identity currently authenticated and in use",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "autoscale",
+          "aliases": [],
+          "description": "Autoscaling app resources",
+          "subcommands": [
+            {
+              "name": "balanced",
+              "aliases": [],
+              "description": "Configure a traffic balanced app with params (min=int max=int)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "disable",
+              "aliases": [],
+              "description": "Disable autoscaling",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set current models autoscaling parameters",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show current autoscaling configuration",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "standard",
+              "aliases": [],
+              "description": "Configure a standard balanced app with params (min=int max=int)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "builds",
+          "aliases": [],
+          "description": "Manage application builds",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List builds",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "certs",
+          "aliases": [],
+          "description": "Manage certificates",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [
+                "add"
+              ],
+              "description": "Add a certificate for an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "check",
+              "aliases": [],
+              "description": "Checks DNS configuration",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List certificates for an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [
+                "remove"
+              ],
+              "description": "Removes a certificate from an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Shows certificate information",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "checks",
+          "aliases": [],
+          "description": "Manage health checks",
+          "subcommands": [
+            {
+              "name": "handlers",
+              "aliases": [],
+              "description": "Manage health check handlers",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "aliases": [],
+                  "description": "Create a health check handler",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "delete",
+                  "aliases": [],
+                  "description": "Delete a health check handler",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List health check handlers",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List app health checks",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Manage an app's configuration",
+          "subcommands": [
+            {
+              "name": "display",
+              "aliases": [],
+              "description": "Display an app's configuration",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "env",
+              "aliases": [],
+              "description": "Display an app's runtime environment variables",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "save",
+              "aliases": [],
+              "description": "Save an app's config file",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "validate",
+              "aliases": [],
+              "description": "Validate an app's config file",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new application",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "curl",
+          "aliases": [],
+          "description": "Run a performance test against a URL",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dash",
+          "aliases": [
+            "dashboard"
+          ],
+          "description": "Open web browser on Fly Web UI for this app",
+          "subcommands": [
+            {
+              "name": "metrics",
+              "aliases": [],
+              "description": "Open web browser on Fly Web UI for this app's metrics",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy Fly applications",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Permanently destroys an app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dig",
+          "aliases": [],
+          "description": "Make DNS requests against Fly.io's internal DNS server",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dns-records",
+          "aliases": [],
+          "description": "Manage DNS records",
+          "subcommands": [
+            {
+              "name": "export",
+              "aliases": [],
+              "description": "Export DNS records",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "import",
+              "aliases": [],
+              "description": "Import DNS records",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List DNS records",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "docs",
+          "aliases": [],
+          "description": "View Fly documentation",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "doctor",
+          "aliases": [],
+          "description": "The DOCTOR command allows you to debug your Fly environment",
+          "subcommands": [
+            {
+              "name": "diag",
+              "aliases": [],
+              "description": "Send diagnostic information about your applications back to Fly.io",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "domains",
+          "aliases": [],
+          "description": "Manage domains",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [],
+              "description": "Add a domain",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List domains",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "register",
+              "aliases": [],
+              "description": "Register a domain",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show domain",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "history",
+          "aliases": [],
+          "description": "List an app's change history",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "img",
+          "aliases": [
+            "image"
+          ],
+          "description": "Manage app image",
+          "subcommands": [
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show image details",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Updates the app's image to the latest available version. (Fly Postgres only)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Show detailed app information",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ips",
+          "aliases": [],
+          "description": "Manage IP addresses for apps",
+          "subcommands": [
+            {
+              "name": "allocate-v4",
+              "aliases": [],
+              "description": "Allocate an IPv4 address",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "allocate-v6",
+              "aliases": [],
+              "description": "Allocate an IPv6 address",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List allocated IP addresses",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "private",
+              "aliases": [],
+              "description": "List instances private IP addresses",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "release",
+              "aliases": [],
+              "description": "Release an IP address",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "launch",
+          "aliases": [],
+          "description": "Launch a new app",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [
+            "list"
+          ],
+          "description": "Lists your Fly resources",
+          "subcommands": [
+            {
+              "name": "apps",
+              "aliases": [],
+              "description": "Lists all your apps",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "orgs",
+              "aliases": [],
+              "description": "List all your organizations",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "View app logs",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "machines",
+          "aliases": [
+            "m",
+            "machine"
+          ],
+          "description": "Commands that manage machines",
+          "subcommands": [
+            {
+              "name": "clone",
+              "aliases": [],
+              "description": "Clones a Fly Machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "kill",
+              "aliases": [],
+              "description": "Kill (SIGKILL) a Fly machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List Fly machines",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [
+                "remove"
+              ],
+              "description": "Remove a Fly machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "run",
+              "aliases": [],
+              "description": "Run a machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "start",
+              "aliases": [],
+              "description": "Start a Fly machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Show current status of a running machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "stop",
+              "aliases": [],
+              "description": "Stop a Fly machine",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "monitor",
+          "aliases": [],
+          "description": "Monitor currently running application deployments",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "move",
+          "aliases": [],
+          "description": "Move an app to another organization",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open browser to current deployed application",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "orgs",
+          "aliases": [],
+          "description": "Commands for managing Fly organizations",
+          "subcommands": [
+            {
+              "name": "builder",
+              "aliases": [],
+              "description": "Manage remote builder",
+              "subcommands": [
+                {
+                  "name": "show",
+                  "aliases": [],
+                  "description": "Show details about an organization's remote builder image",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "update",
+                  "aliases": [],
+                  "description": "Update an organization's remote builder image",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create an organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete an organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "invite",
+              "aliases": [],
+              "description": "Invite user (by email) to organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "Lists organizations for current user",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "remove",
+              "aliases": [],
+              "description": "Remove a user from an organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show information about an organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ping",
+          "aliases": [],
+          "description": "Test connectivity with ICMP ping messages",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "platform",
+          "aliases": [],
+          "description": "Fly platform information",
+          "subcommands": [
+            {
+              "name": "regions",
+              "aliases": [],
+              "description": "List regions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Show current platform status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "vm-sizes",
+              "aliases": [],
+              "description": "List VM Sizes",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pg",
+          "aliases": [
+            "postgres"
+          ],
+          "description": "Manage postgres clusters",
+          "subcommands": [
+            {
+              "name": "attach",
+              "aliases": [],
+              "description": "Attach a postgres cluster to an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "connect",
+              "aliases": [],
+              "description": "Connect to the Postgres console",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a postgres cluster",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "db",
+              "aliases": [],
+              "description": "Manage databases in a cluster",
+              "subcommands": [
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List databases in a cluster",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "detach",
+              "aliases": [],
+              "description": "Detach a postgres cluster from an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List postgres clusters",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "users",
+              "aliases": [],
+              "description": "Manage users in a cluster",
+              "subcommands": [
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List users in a cluster",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "proxy",
+          "aliases": [],
+          "description": "Proxies connections to a fly VM",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "regions",
+          "aliases": [],
+          "description": "Manage regions",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [],
+              "description": "Allow the app to run in the provided regions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "backup",
+              "aliases": [],
+              "description": "Sets the backup region pool with provided regions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "Shows the list of regions the app is allowed to run in",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "remove",
+              "aliases": [],
+              "description": "Prevent the app from running in the provided regions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Sets the region pool with provided regions",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "releases",
+          "aliases": [],
+          "description": "List app releases",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart an application",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "resume",
+          "aliases": [],
+          "description": "Resume an application",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "scale",
+          "aliases": [],
+          "description": "Scale app resources",
+          "subcommands": [
+            {
+              "name": "count",
+              "aliases": [],
+              "description": "Change an app's VM count to the given value",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "memory",
+              "aliases": [],
+              "description": "Set VM memory",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show current resources",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "vm",
+              "aliases": [],
+              "description": "Change an app's VM to a named size (eg. shared-cpu-1x, dedicated-cpu-1x, dedicated-cpu-2x...)",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "secrets",
+          "aliases": [],
+          "description": "Manage app secrets",
+          "subcommands": [
+            {
+              "name": "import",
+              "aliases": [],
+              "description": "Read secrets in name=value from stdin",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "Lists the secrets available to the app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set one or more encrypted secrets for an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "unset",
+              "aliases": [],
+              "description": "Remove encrypted secrets from an app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ssh",
+          "aliases": [],
+          "description": "Commands that manage SSH credentials",
+          "subcommands": [
+            {
+              "name": "console",
+              "aliases": [],
+              "description": "Connect to a running instance of the current app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "establish",
+              "aliases": [],
+              "description": "Create a root SSH certificate for your organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "issue",
+              "aliases": [],
+              "description": "Issue a new SSH credential",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "log",
+              "aliases": [],
+              "description": "Log of all issued certs",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show app status",
+          "subcommands": [
+            {
+              "name": "instance",
+              "aliases": [],
+              "description": "Show instance status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "suspend",
+          "aliases": [],
+          "description": "Suspend an application",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "turboku",
+          "aliases": [],
+          "description": "Launches heroku apps",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Show version information for the flyctl command",
+          "subcommands": [
+            {
+              "name": "update",
+              "aliases": [],
+              "description": "Checks for available updates and automatically updates",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "vm",
+          "aliases": [],
+          "description": "Commands that manage VM instances",
+          "subcommands": [
+            {
+              "name": "restart",
+              "aliases": [],
+              "description": "Restart a VM",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Show a VM's status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "stop",
+              "aliases": [],
+              "description": "Stop a VM",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "vol",
+          "aliases": [
+            "volumes"
+          ],
+          "description": "Volume management commands",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create new volume for app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a volume from the app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List the volumes for app",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "show",
+              "aliases": [],
+              "description": "Show details of an app's volume",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "snaps",
+              "aliases": [
+                "snapshots"
+              ],
+              "description": "Manage volume snapshots",
+              "subcommands": [
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List snapshots",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "wg",
+          "aliases": [
+            "wireguard"
+          ],
+          "description": "Commands that manage WireGuard peer connections",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Add a WireGuard peer connection",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all WireGuard peer connections",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "remove",
+              "aliases": [],
+              "description": "Remove a WireGuard peer connection",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "reset",
+              "aliases": [],
+              "description": "Reset WireGuard peer connection for an organization",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Get status a WireGuard peer connection",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "token",
+              "aliases": [],
+              "description": "Commands that managed WireGuard delegated access tokens",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "aliases": [],
+                  "description": "Create a new WireGuard token",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "delete",
+                  "aliases": [],
+                  "description": "Delete a WireGuard token; token is name:<name> or token:<token>",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List all WireGuard tokens",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "start",
+                  "aliases": [],
+                  "description": "Start a new WireGuard peer connection associated with a token (set FLY_WIREGUARD_TOKEN)",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "update",
+                  "aliases": [],
+                  "description": "Rekey a WireGuard peer connection associated with a token (set FLY_WIREGUARD_TOKEN)",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "websockets",
+              "aliases": [],
+              "description": "Enable or disable WireGuard tunneling over WebSockets",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--access-token",
+        "-t"
+      ],
+      "description": "Fly API Access Token",
+      "takes_arg": true,
+      "arg_name": "access-token",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--builtinsfile"
+      ],
+      "description": "Load builtins from named file",
+      "takes_arg": true,
+      "arg_name": "builtinsfile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--json",
+        "-j"
+      ],
+      "description": "Json output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

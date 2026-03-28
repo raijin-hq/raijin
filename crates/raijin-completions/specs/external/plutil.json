@@ -1,0 +1,113 @@
+{
+  "name": "plutil",
+  "aliases": [],
+  "description": "Check the syntax of property list files, or convert a plist file from one format to another. Specifying - as an input file reads from stdin",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-help"
+      ],
+      "description": "Show the usage information for the command and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Print the property list in a human-readable fashion",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-lint"
+      ],
+      "description": "Check the named property list files for syntax errors. This is the default command option if none is specified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-convert"
+      ],
+      "description": "Convert the named file to the indicated format and write back to the file system",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": {
+        "custom": [
+          "xml1",
+          "binary1",
+          "json"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--"
+      ],
+      "description": "Specifies that all further arguments are file names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Don't print anything on success",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "For JSON, add whitespace and indentation to make the output more human-readable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o"
+      ],
+      "description": "Specify an alternate path name for the result of the -convert operation; this option is only useful with a single file to be converted. Specifying - as the path outputs to stdout",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Specify an alternate extension for converted files, and the output file names are otherwise the same",
+      "takes_arg": true,
+      "arg_name": "extension",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "File to check the syntax of or convert",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

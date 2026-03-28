@@ -1,0 +1,432 @@
+{
+  "name": "direnv",
+  "aliases": [],
+  "description": "Unclutter your .profile",
+  "subcommands": [
+    {
+      "name": "allow",
+      "aliases": [],
+      "description": "Grants direnv to load the given .envrc",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH_TO_RC",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "deny",
+      "aliases": [],
+      "description": "Revokes the authorization of a given .envrc",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH_TO_RC",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Opens PATH_TO_RC or the current .envrc into an $EDITOR and allow the file to be loaded afterwards",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH_TO_RC",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Executes a command after loading the first .envrc found in DIR",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "DIR",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "COMMAND",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fetchurl",
+      "aliases": [],
+      "description": "Fetches a given URL into direnv's CAS",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "url",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "integrity-hash",
+          "description": "Check if the `integrity hash` is equal to the hash value of the file obtained from the `url`",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help for direnv",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHOW_PRIVATE",
+          "description": "Any string",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "hook",
+      "aliases": [],
+      "description": "Used to setup the shell hook",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prune",
+      "aliases": [],
+      "description": "Removes old allowed files",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "reload",
+      "aliases": [],
+      "description": "Triggers an env reload",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Prints some debug status information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stdlib",
+      "aliases": [],
+      "description": "Displays the stdlib available in the .envrc execution context",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Prints the version or checks that direnv is older than VERSION_AT_LEAST",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "VERSION_AT_LEAST",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "apply_dump",
+      "aliases": [],
+      "description": "Accepts a filename containing `direnv dump` output and generates a series of bash export statements to apply the given env",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show_dump",
+      "aliases": [],
+      "description": "Show the data inside of a dump for debugging purposes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "DUMP",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dotenv",
+      "aliases": [],
+      "description": "Transforms a .env file to evaluatable `export KEY=PAIR` statements",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "PATH_TO_DOTENV",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dump",
+      "aliases": [],
+      "description": "Used to export the inner bash state at the end of execution",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "FILE",
+          "description": "Overwrites by dump data",
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "export",
+      "aliases": [],
+      "description": "Loads an .envrc and prints the diff in terms of exports",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "aliases": [],
+      "description": "Adds a path to the list that direnv watches for changes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "watch-dir",
+      "aliases": [],
+      "description": "Recursively adds a directory to the list that direnv watches for changes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "DIR",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "watch-list",
+      "aliases": [],
+      "description": "Pipe pairs of `mtime path` to stdin to build a list of files to watch",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "tcsh",
+              "elvish"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "current",
+      "aliases": [],
+      "description": "Reports whether direnv's view of a file is current (or stale)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATH",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Prints the version or checks that direnv is older than VERSION_AT_LEAST",
+      "takes_arg": true,
+      "arg_name": "VERSION_AT_LEAST",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Help for direnv",
+      "takes_arg": true,
+      "arg_name": "SHOW_PRIVATE",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

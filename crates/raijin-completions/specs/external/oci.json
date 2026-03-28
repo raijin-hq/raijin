@@ -1,0 +1,824 @@
+{
+  "name": "oci",
+  "aliases": [],
+  "description": "Oracle Cloud Infrastructure CLI",
+  "subcommands": [
+    {
+      "name": "compute",
+      "aliases": [],
+      "description": "Manage Compute resources like instances and images",
+      "subcommands": [
+        {
+          "name": "instance",
+          "aliases": [],
+          "description": "Manage Compute instances",
+          "subcommands": [
+            {
+              "name": "launch",
+              "aliases": [],
+              "description": "Launch a new compute instance",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--availability-domain"
+                  ],
+                  "description": "The availability domain of the instance",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--shape"
+                  ],
+                  "description": "The shape of the instance",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "terminate",
+              "aliases": [],
+              "description": "Terminate a compute instance",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--instance-id"
+                  ],
+                  "description": "The OCID of the instance",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "start",
+              "aliases": [],
+              "description": "Start a stopped instance",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--instance-id"
+                  ],
+                  "description": "The OCID of the instance",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "stop",
+              "aliases": [],
+              "description": "Stop a running instance",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--instance-id"
+                  ],
+                  "description": "The OCID of the instance",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "image",
+          "aliases": [],
+          "description": "Manage Custom Images",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List available compute images",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "network",
+      "aliases": [],
+      "description": "Manage Virtual Cloud Network resources",
+      "subcommands": [
+        {
+          "name": "vcn",
+          "aliases": [],
+          "description": "Manage Virtual Cloud Networks",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new VCN",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--cidr-block"
+                  ],
+                  "description": "The CIDR block of the VCN",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "db",
+      "aliases": [],
+      "description": "Manage Database resources",
+      "subcommands": [
+        {
+          "name": "autonomous-database",
+          "aliases": [],
+          "description": "Manage Autonomous Databases",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create an Autonomous Database",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--db-name"
+                  ],
+                  "description": "The database name",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--cpu-core-count"
+                  ],
+                  "description": "Number of CPU cores",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "os",
+      "aliases": [],
+      "description": "Object Storage commands",
+      "subcommands": [
+        {
+          "name": "bucket",
+          "aliases": [],
+          "description": "Manage buckets",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new bucket",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "The name of the bucket",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "iam",
+      "aliases": [],
+      "description": "Manage Identity and Access Management resources",
+      "subcommands": [
+        {
+          "name": "user",
+          "aliases": [],
+          "description": "Manage users",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new user",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Name of the user",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--description"
+                  ],
+                  "description": "Description for the user",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "policy",
+          "aliases": [],
+          "description": "Manage IAM policies",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new policy",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "Name of the policy",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--statements"
+                  ],
+                  "description": "Policy statements",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "group",
+          "aliases": [],
+          "description": "Manage IAM groups",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new group",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "The name of the group",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--description"
+                  ],
+                  "description": "Description for the group",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "compartment",
+          "aliases": [],
+          "description": "Manage compartments",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new compartment",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--name"
+                  ],
+                  "description": "The name of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--description"
+                  ],
+                  "description": "Description for the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kms",
+      "aliases": [],
+      "description": "Manage Key Management resources",
+      "subcommands": [
+        {
+          "name": "key",
+          "aliases": [],
+          "description": "Manage encryption keys",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new key",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--compartment-id"
+                  ],
+                  "description": "The OCID of the compartment",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--display-name"
+                  ],
+                  "description": "Display name of the key",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--key-shape"
+                  ],
+                  "description": "Shape of the key",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "AES",
+                      "RSA",
+                      "ECDSA"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "monitoring",
+      "aliases": [],
+      "description": "Manage Monitoring and Alerts",
+      "subcommands": [
+        {
+          "name": "alarm",
+          "aliases": [],
+          "description": "Manage monitoring alarms",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a new alarm",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--display-name"
+                  ],
+                  "description": "Display name of the alarm",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--metric-compartment-id"
+                  ],
+                  "description": "Compartment OCID containing the metric",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "budget",
+      "aliases": [],
+      "description": "Manage Budgets and Cost Controls",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new budget",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--compartment-id"
+              ],
+              "description": "The OCID of the compartment",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--amount"
+              ],
+              "description": "The amount for the budget",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--reset-period"
+              ],
+              "description": "The reset period for the budget",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "MONTHLY",
+                  "YEARLY"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for oci",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--profile",
+        "-p"
+      ],
+      "description": "The profile to load from the config file",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-file"
+      ],
+      "description": "The path to the config file",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--region"
+      ],
+      "description": "The region to make calls against",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "us-ashburn-1",
+          "us-phoenix-1",
+          "us-chicago-1",
+          "ca-montreal-1",
+          "ca-toronto-1",
+          "sa-saopaulo-1",
+          "sa-vinhedo-1",
+          "sa-santiago-1",
+          "eu-frankfurt-1",
+          "eu-amsterdam-1",
+          "eu-zurich-1",
+          "eu-madrid-1",
+          "uk-london-1",
+          "uk-cardiff-1",
+          "ap-tokyo-1",
+          "ap-osaka-1",
+          "ap-seoul-1",
+          "ap-sydney-1",
+          "ap-melbourne-1",
+          "ap-hyderabad-1",
+          "ap-mumbai-1",
+          "me-dubai-1"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output"
+      ],
+      "description": "The output format",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "json",
+          "table",
+          "text"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Turn on debug logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auth"
+      ],
+      "description": "The type of auth to use",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "api_key",
+          "instance_principal",
+          "resource_principal",
+          "security_token",
+          "raw_token"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--key-file"
+      ],
+      "description": "The path to the private key file",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait-for-state"
+      ],
+      "description": "Wait until resource reaches a given state",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "ACCEPTED",
+          "AVAILABLE",
+          "RUNNING",
+          "PROVISIONING",
+          "STOPPED",
+          "TERMINATED",
+          "FAILED"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--wait-interval-seconds"
+      ],
+      "description": "Check interval seconds for --wait-for-state",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-wait-seconds"
+      ],
+      "description": "Maximum time to wait",
+      "takes_arg": true,
+      "arg_name": "seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--raw-output"
+      ],
+      "description": "Output raw response from OCI API",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output-format"
+      ],
+      "description": "The output format for commands",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "json",
+          "table",
+          "text"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--query"
+      ],
+      "description": "JMESPath query to filter the output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

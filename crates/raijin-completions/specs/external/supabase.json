@@ -1,0 +1,1390 @@
+{
+  "name": "supabase",
+  "aliases": [],
+  "description": "Supabase CLI",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "db",
+      "aliases": [],
+      "description": "Manage local Postgres databases",
+      "subcommands": [
+        {
+          "name": "branch",
+          "aliases": [],
+          "description": "Manage local database branches",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a branch",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a branch",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List branches",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "switch",
+              "aliases": [],
+              "description": "Switch the active branch",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "diff",
+          "aliases": [],
+          "description": "Diffs the local database for schema changes",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "Saves schema diff to a file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema",
+                "-s"
+              ],
+              "description": "List of schema to include",
+              "takes_arg": true,
+              "arg_name": "schema",
+              "arg_template": null,
+              "is_repeatable": true
+            },
+            {
+              "names": [
+                "--use-migra"
+              ],
+              "description": "Use migra to generate schema diff",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "dump",
+          "aliases": [],
+          "description": "Dumps data or schemas from the remote database",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--data-only"
+              ],
+              "description": "Dumps only data records",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--db-url"
+              ],
+              "description": "Dumps from the database specified by the connection string (must be percent-encoded)",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Prints the pg_dump script that would be executed",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--file",
+                "-f"
+              ],
+              "description": "File path to save the dumped contents",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Help for dump",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--keep-comments"
+              ],
+              "description": "Keeps commented lines from pg_dump output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--linked"
+              ],
+              "description": "Dumps from the linked project. (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--local"
+              ],
+              "description": "Dumps from the local database",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--role-only"
+              ],
+              "description": "Dumps only cluster roles",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema",
+                "-s"
+              ],
+              "description": "Comma separated list of schema to include. (default all)",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-copy"
+              ],
+              "description": "Uses copy statements in place of inserts",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "lint",
+          "aliases": [],
+          "description": "Checks local database for typing error",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--level"
+              ],
+              "description": "Error level to emit",
+              "takes_arg": true,
+              "arg_name": "level",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--schema",
+                "-s"
+              ],
+              "description": "List of schema to include",
+              "takes_arg": true,
+              "arg_name": "schema",
+              "arg_template": null,
+              "is_repeatable": true
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Pull schema from the remote database",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Push new migrations to the remote database",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--dry-run"
+              ],
+              "description": "Print the migrations that would be applied, but don't actually apply them",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remote",
+          "aliases": [],
+          "description": "Manage remote databases",
+          "subcommands": [
+            {
+              "name": "changes",
+              "aliases": [],
+              "description": "Show changes on the remote database",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "commit",
+              "aliases": [],
+              "description": "Commit remote changes as a new migration",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Resets the local database to current migrations",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "functions",
+      "aliases": [],
+      "description": "Manage Supabase Edge functions",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a Function from Supabase",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--project-ref"
+              ],
+              "description": "Project ref of the Supabase project",
+              "takes_arg": true,
+              "arg_name": "project-ref",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deploy",
+          "aliases": [],
+          "description": "Deploy a Function to Supabase",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-verify-jwt"
+              ],
+              "description": "Disable JWT verification for the Function",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--project-ref"
+              ],
+              "description": "Project ref of the Supabase project",
+              "takes_arg": true,
+              "arg_name": "project-ref",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create a new Function locally",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "serve",
+          "aliases": [],
+          "description": "Serve a Function locally",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--env-file"
+              ],
+              "description": "Path to an env file to be populated to the Function environment",
+              "takes_arg": true,
+              "arg_name": "env-file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-verify-jwt"
+              ],
+              "description": "Disable JWT verification for the Function",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gen",
+      "aliases": [],
+      "description": "Run code generation tools",
+      "subcommands": [
+        {
+          "name": "types",
+          "aliases": [],
+          "description": "Generate types from Postgres schema",
+          "subcommands": [
+            {
+              "name": "typescript",
+              "aliases": [],
+              "description": "Generate types for TypeScript",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--db-url"
+                  ],
+                  "description": "Generate types from a database url",
+                  "takes_arg": true,
+                  "arg_name": "db-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--local"
+                  ],
+                  "description": "Generate types from the local dev database",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize a local project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link to a Supabase project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--password",
+            "-p"
+          ],
+          "description": "Password to your remote Postgres database",
+          "takes_arg": true,
+          "arg_name": "password",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-ref"
+          ],
+          "description": "Project ref of the Supabase project",
+          "takes_arg": true,
+          "arg_name": "project-ref",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Authenticate using an access token",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "migration",
+      "aliases": [],
+      "description": "Manage database migration scripts",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List local and remote migrations",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--local"
+              ],
+              "description": "Lists migrations applied to the local database",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--linked"
+              ],
+              "description": "Lists migrations applied to the linked project (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--db-url"
+              ],
+              "description": "Database URL to connect to",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create an empty migration script",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "migration name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "repair",
+          "aliases": [],
+          "description": "Repair the migration history table",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--status"
+              ],
+              "description": "Version status to update",
+              "takes_arg": true,
+              "arg_name": "status",
+              "arg_template": {
+                "custom": [
+                  "applied",
+                  "reverted"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--local"
+              ],
+              "description": "Repairs the migration history of the local database",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--linked"
+              ],
+              "description": "Repairs the migration history of the linked project (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--db-url"
+              ],
+              "description": "Database URL to connect to",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "version",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "squash",
+          "aliases": [],
+          "description": "Squash migrations to a single file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": "Password to your remote Postgres database",
+              "takes_arg": true,
+              "arg_name": "password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--local"
+              ],
+              "description": "Squashes the migration history of the local database",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Squash up to the specified version",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--linked"
+              ],
+              "description": "Squashes the migration history of the linked project (default true)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--db-url"
+              ],
+              "description": "Database URL to connect to",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "up",
+          "aliases": [],
+          "description": "Apply pending migrations to local database",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "orgs",
+      "aliases": [],
+      "description": "Manage Supabase organizations",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all organizations",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "projects",
+      "aliases": [],
+      "description": "Manage Supabase projects",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a project on Supabase",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--db-password"
+              ],
+              "description": "Database password of the project",
+              "takes_arg": true,
+              "arg_name": "db-password",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--interactive",
+                "-i"
+              ],
+              "description": "Enables interactive mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--org-id"
+              ],
+              "description": "Organization ID to create the project in",
+              "takes_arg": true,
+              "arg_name": "org-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--plan"
+              ],
+              "description": "Select a plan that suits your needs",
+              "takes_arg": true,
+              "arg_name": "plan",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "Select a region close to you for the best performance",
+              "takes_arg": true,
+              "arg_name": "region",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all Supabase projects",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "secrets",
+      "aliases": [],
+      "description": "Manage Supabase secrets",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all secrets on Supabase",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a secret(s) on Supabase",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--env-file"
+              ],
+              "description": "Read secrets from a .env file",
+              "takes_arg": true,
+              "arg_name": "env-file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Unset a secret(s) on Supabase",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start containers for Supabase local development",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show status of local Supabase containers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop all local Supabase containers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "db",
+          "aliases": [],
+          "description": "Manage local Postgres databases",
+          "subcommands": [
+            {
+              "name": "branch",
+              "aliases": [],
+              "description": "Manage local database branches",
+              "subcommands": [
+                {
+                  "name": "create",
+                  "aliases": [],
+                  "description": "Create a branch",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "delete",
+                  "aliases": [],
+                  "description": "Delete a branch",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "list",
+                  "aliases": [],
+                  "description": "List branches",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "switch",
+                  "aliases": [],
+                  "description": "Switch the active branch",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "diff",
+              "aliases": [],
+              "description": "Diffs the local database for schema changes",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "lint",
+              "aliases": [],
+              "description": "Checks local database for typing error",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "push",
+              "aliases": [],
+              "description": "Push new migrations to the remote database",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "remote",
+              "aliases": [],
+              "description": "Manage remote databases",
+              "subcommands": [
+                {
+                  "name": "changes",
+                  "aliases": [],
+                  "description": "Show changes on the remote database",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "commit",
+                  "aliases": [],
+                  "description": "Commit remote changes as a new migration",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "reset",
+              "aliases": [],
+              "description": "Resets the local database to current migrations",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "functions",
+          "aliases": [],
+          "description": "Manage Supabase Edge functions",
+          "subcommands": [
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a Function from Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy a Function to Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "new",
+              "aliases": [],
+              "description": "Create a new Function locally",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "serve",
+              "aliases": [],
+              "description": "Serve a Function locally",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "gen",
+          "aliases": [],
+          "description": "Run code generation tools",
+          "subcommands": [
+            {
+              "name": "types",
+              "aliases": [],
+              "description": "Generate types from Postgres schema",
+              "subcommands": [
+                {
+                  "name": "typescript",
+                  "aliases": [],
+                  "description": "Generate types for TypeScript",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize a local project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "link",
+          "aliases": [],
+          "description": "Link to a Supabase project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Authenticate using an access token",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "migration",
+          "aliases": [],
+          "description": "Manage database migration scripts",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List local and remote migrations",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "new",
+              "aliases": [],
+              "description": "Create an empty migration script",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "orgs",
+          "aliases": [],
+          "description": "Manage Supabase organizations",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all organizations",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "projects",
+          "aliases": [],
+          "description": "Manage Supabase projects",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create a project on Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all Supabase projects",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "secrets",
+          "aliases": [],
+          "description": "Manage Supabase secrets",
+          "subcommands": [
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all secrets on Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set a secret(s) on Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "unset",
+              "aliases": [],
+              "description": "Unset a secret(s) on Supabase",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start containers for Supabase local development",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status of local Supabase containers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop all local Supabase containers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Output debug logs to stderr",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

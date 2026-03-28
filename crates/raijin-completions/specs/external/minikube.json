@@ -1,0 +1,1992 @@
+{
+  "name": "minikube",
+  "aliases": [],
+  "description": "Minikube provisions and manages local Kubernetes clusters optimized for development workflows",
+  "subcommands": [
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Starts a local Kubernetes cluster",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--addons"
+          ],
+          "description": "Enable addons. see `minikube addons list` for a list of valid addon names",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiserver-ips"
+          ],
+          "description": "A set of apiserver IP Addresses which are used in the generated certificate for kubernetes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiserver-name"
+          ],
+          "description": "The authoritative apiserver hostname for apiserver certificates and connectivity",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiserver-names"
+          ],
+          "description": "A set of apiserver names which are used in the generated certificate for kubernetes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apiserver-port"
+          ],
+          "description": "The apiserver listening port",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto-update-drivers"
+          ],
+          "description": "If set, automatically updates drivers to the latest version",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--base-image"
+          ],
+          "description": "The base image to use for docker/podman drivers. Intended for local development",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cache-images"
+          ],
+          "description": "If true, cache docker images for the current bootstrapper and load them into the machine",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cert-expiration"
+          ],
+          "description": "Duration until minikube certificate expiration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cni"
+          ],
+          "description": "CNI plug-in to use",
+          "takes_arg": true,
+          "arg_name": "cni-plugin",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "bridge",
+              "cilium",
+              "flannel",
+              "kindnet"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--container-runtime"
+          ],
+          "description": "The container runtime to be used",
+          "takes_arg": true,
+          "arg_name": "container-runtime",
+          "arg_template": {
+            "custom": [
+              "docker",
+              "cri-o",
+              "containerd"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cpus"
+          ],
+          "description": "Number of CPUs allocated to Kubernetes",
+          "takes_arg": true,
+          "arg_name": "cpu number",
+          "arg_template": {
+            "custom": [
+              "max"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cri-socket"
+          ],
+          "description": "The cri socket path to be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--delete-on-failure"
+          ],
+          "description": "If set, delete the current cluster if start fails and try again",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-driver-mounts"
+          ],
+          "description": "Disables the filesystem mounts provided by the hypervisors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disk-size"
+          ],
+          "description": "Disk size allocated to the minikube VM",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dns-domain"
+          ],
+          "description": "The cluster dns domain name used in the Kubernetes cluster",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dns-proxy"
+          ],
+          "description": "Enable proxy for NAT DNS requests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docker-env"
+          ],
+          "description": "Environment variables to pass to the Docker daemon. (format: key=value)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docker-opt"
+          ],
+          "description": "Specify arbitrary flags to pass to the Docker daemon. (format: key=value)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--download-only"
+          ],
+          "description": "If true, only download and cache files for later use - don't install or start anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--driver"
+          ],
+          "description": "Choose driver",
+          "takes_arg": true,
+          "arg_name": "driver",
+          "arg_template": {
+            "custom": [
+              "virtualbox",
+              "parallels",
+              "vmwarefusion",
+              "hyperkit",
+              "vmware",
+              "docker",
+              "podman"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Dry-run mode. Validates configuration, but does not mutate system state",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--embed-certs"
+          ],
+          "description": "If true, will embed the certs in kubeconfig",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--extra-config"
+          ],
+          "description": "A set of key=value pairs that describe configuration that may be passed to different components",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--extra-disks"
+          ],
+          "description": "Number of extra disks created and attached to the minikube VM",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--feature-gates"
+          ],
+          "description": "A set of key=value pairs that describe feature gates for alpha/experimental features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force minikube to perform possibly dangerous operations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-systemd"
+          ],
+          "description": "If set, force the container runtime to use systemd as cgroup manager",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-dns-resolver"
+          ],
+          "description": "Enable host resolver for NAT DNS requests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-only-cidr"
+          ],
+          "description": "The CIDR to be used for the minikube VM",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-only-nic-type"
+          ],
+          "description": "NIC Type used for host only network",
+          "takes_arg": true,
+          "arg_name": "nic type",
+          "arg_template": {
+            "custom": [
+              "Am79C970A",
+              "Am79C973",
+              "82540EM",
+              "82543GC",
+              "82545EM",
+              "virtio"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hyperkit-vpnkit-sock"
+          ],
+          "description": "Location of the VPNKit socket used for networking",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hyperkit-vsock-ports"
+          ],
+          "description": "List of guest VSock ports that should be exposed as sockets on the host",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hyperv-external-adapter"
+          ],
+          "description": "External Adapter on which external switch will be created if no external switch is found",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hyperv-use-external-switch"
+          ],
+          "description": "Whether to use external switch over Default Switch if virtual switch not explicitly specified",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hyperv-virtual-switch"
+          ],
+          "description": "The hyperv virtual switch name. Defaults to first found",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-mirror-country"
+          ],
+          "description": "Country code of the image mirror to be used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-repository"
+          ],
+          "description": "Alternative image repository to pull docker images from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--insecure-registry"
+          ],
+          "description": "Insecure Docker registries to pass to the Docker daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--install-addons"
+          ],
+          "description": "If set, install addons. Defaults to true",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive"
+          ],
+          "description": "Allow user prompts for more information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--iso-url"
+          ],
+          "description": "Locations to fetch the minikube ISO from",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-context"
+          ],
+          "description": "This will keep the existing kubectl context and will create a minikube context",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kubernetes-version"
+          ],
+          "description": "The Kubernetes version that the minikube VM will use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kvm-gpu"
+          ],
+          "description": "Enable experimental NVIDIA GPU support in minikube",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kvm-hidden"
+          ],
+          "description": "Hide the hypervisor signature from the guest in minikube",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kvm-network"
+          ],
+          "description": "The KVM default network name",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kvm-numa-count"
+          ],
+          "description": "Simulate numa node count in minikube, supported numa node count range is 1-8",
+          "takes_arg": true,
+          "arg_name": "numa count",
+          "arg_template": {
+            "custom": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kvm-qemu-uri"
+          ],
+          "description": "The KVM QEMU connection URI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listen-address"
+          ],
+          "description": "IP Address to use to expose ports",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--memory"
+          ],
+          "description": "Amount of RAM to allocate to Kubernetes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mount"
+          ],
+          "description": "This will start the mount daemon and automatically mount files into minikube",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mount-string"
+          ],
+          "description": "The argument to pass the minikube mount command on start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace"
+          ],
+          "description": "The named space to activate after start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nat-nic-type"
+          ],
+          "description": "NIC Type used for nat network",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--native-ssh"
+          ],
+          "description": "Use native Golang SSH client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network"
+          ],
+          "description": "Network to run minikube with",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--network-plugin"
+          ],
+          "description": "Kubelet network plug-in to use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nfs-share"
+          ],
+          "description": "Local folders to share with Guest via NFS mounts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nfs-shares-root"
+          ],
+          "description": "Where to root the NFS Shares",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-kubernetes"
+          ],
+          "description": "If set, minikube VM/container will start without starting or configuring Kubernetes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-vtx-check"
+          ],
+          "description": "Disable checking for the availability of hardware virtualization before the vm is started",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nodes",
+            "-n"
+          ],
+          "description": "The number of nodes to spin up",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ports"
+          ],
+          "description": "List of ports that should be exposed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preload"
+          ],
+          "description": "If set, download tarball of preloaded images if available to improve start time",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--registry-mirror"
+          ],
+          "description": "Registry mirrors to pass to the Docker daemon",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-cluster-ip-range"
+          ],
+          "description": "The CIDR to be used for service cluster IPs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-ip-address"
+          ],
+          "description": "IP address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-key"
+          ],
+          "description": "SSH key",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-port"
+          ],
+          "description": "SSH port",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-user"
+          ],
+          "description": "SSH user",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trace"
+          ],
+          "description": "Send trace events",
+          "takes_arg": true,
+          "arg_name": "trace",
+          "arg_template": {
+            "custom": [
+              "gcp"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uuid"
+          ],
+          "description": "Provide VM UUID to restore MAC address",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--vm"
+          ],
+          "description": "Filter to use only VM Drivers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait"
+          ],
+          "description": "Comma separated list of Kubernetes components to verify and wait for after starting a cluster",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait-timeout"
+          ],
+          "description": "Max time to wait per Kubernetes or host to be healthy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Gets the status of a local Kubernetes cluster",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Go template format string for the status output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--layout",
+            "-l"
+          ],
+          "description": "Output layout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node",
+            "-n"
+          ],
+          "description": "The node to check status for",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch",
+            "-w"
+          ],
+          "description": "Continuously listing/getting the status with optional interval duration",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stops a running local Kubernetes cluster",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Set flag to stop all profiles (clusters)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cancel-scheduled"
+          ],
+          "description": "Output layout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keep-context-active"
+          ],
+          "description": "The node to check status for",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schedule"
+          ],
+          "description": "Set flag to stop cluster after a set amount of time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Deletes a local Kubernetes cluster",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Set flag to delete all profiles",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--purge"
+          ],
+          "description": "Set this flag to delete the '.minikube' folder from your user directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpause",
+      "aliases": [],
+      "description": "Unpause Kubernetes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all-namespaces",
+            "-A"
+          ],
+          "description": "If set, unpause all namespaces",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespaces",
+            "-n"
+          ],
+          "description": "Namespaces to unpause",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "docker-env",
+      "aliases": [],
+      "description": "Configure environment to use minikube's Docker daemon",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-proxy",
+            "-A"
+          ],
+          "description": "If set, unpause all namespaces",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "Force environment to be configured for a specified shell",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh-host"
+          ],
+          "description": "Use SSH connection instead of HTTPS (port 2376)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unset",
+            "-u"
+          ],
+          "description": "Unset variables instead of setting them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "podman-env",
+      "aliases": [],
+      "description": "Configure environment to use minikube's Podman service",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "Force environment to be configured for a specified shell",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unset",
+            "-u"
+          ],
+          "description": "Unset variables instead of setting them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cache",
+      "aliases": [],
+      "description": "Add, delete, or push a local image into minikube",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add an image to local cache",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an image from the local cache",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all available images from the local cache",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "reload",
+          "aliases": [],
+          "description": "Reload cached images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "image",
+      "aliases": [],
+      "description": "Manage images",
+      "subcommands": [
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Build a container image in minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "load",
+          "aliases": [],
+          "description": "Load a image into minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ls",
+          "aliases": [],
+          "description": "List images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Pull images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Push images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [],
+          "description": "Remove one or more images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "save",
+          "aliases": [],
+          "description": "Save a image from minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "tag",
+          "aliases": [],
+          "description": "Tag images",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "addons",
+      "aliases": [],
+      "description": "Enable or disable a minikube addon",
+      "subcommands": [
+        {
+          "name": "configure",
+          "aliases": [],
+          "description": "Configures the addon w/ADDON_NAME within minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disables the addon w/ADDON_NAME within minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enables the addon w/ADDON_NAME within minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "images",
+          "aliases": [],
+          "description": "List image names the addon w/ADDON_NAME used",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all available minikube addons as well as their current statuses",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Opens the addon w/ADDON_NAME within minikube",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Modify persistent configuration values",
+      "subcommands": [
+        {
+          "name": "defaults",
+          "aliases": [],
+          "description": "Lists all valid default values for PROPERTY_NAME",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Gets the value of PROPERTY_NAME from the minikube config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Sets an individual value in a minikube config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unset",
+          "aliases": [],
+          "description": "Unsets an individual value in a minikube config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "Display values currently set in the minikube config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "profile",
+      "aliases": [],
+      "description": "Get or list the current profiles (clusters)",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all minikube profiles",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "update-context",
+      "aliases": [],
+      "description": "Update kubeconfig in case of an IP or port change",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "service",
+      "aliases": [],
+      "description": "Returns a URL to connect to a service",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists the URLs for the services in your local cluster",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": "The services namespace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "Open the service URL with https instead of http",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interval"
+          ],
+          "description": "The initial time interval for each check that wait performs in seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace"
+          ],
+          "description": "The service namespace",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--url"
+          ],
+          "description": "Display the Kubernetes service URL in the CLI instead of opening it in the default browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait"
+          ],
+          "description": "Amount of time to wait for a service in seconds",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tunnel",
+      "aliases": [],
+      "description": "Connect to LoadBalancer services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cleanup",
+            "-c"
+          ],
+          "description": "Call with cleanup=true to remove old tunnels",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mount",
+      "aliases": [],
+      "description": "Mounts the specified directory into minikube",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--9p-version"
+          ],
+          "description": "Specify the 9p version that the mount should use",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gid"
+          ],
+          "description": "Default group id used for the mount",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ip"
+          ],
+          "description": "Specify the ip that the mount should be setup on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--kill"
+          ],
+          "description": "Kill the mount process spawned by minikube start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mode"
+          ],
+          "description": "File permissions used for the mount",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--msize"
+          ],
+          "description": "The number of bytes to use for 9p packet payload",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--options"
+          ],
+          "description": "Additional mount options, such as cache=fscache",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Specify the port that the mount should be setup on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--type"
+          ],
+          "description": "Specify the mount filesystem type (supported types: 9p)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--uid"
+          ],
+          "description": "Default user id used for the mount",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "Log into the minikube environment (for debugging)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--native-ssh"
+          ],
+          "description": "Use native Golang SSH client",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node",
+            "-n"
+          ],
+          "description": "The node to ssh into",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "kubectl",
+      "aliases": [],
+      "description": "Run a kubectl binary matching the cluster version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ssh"
+          ],
+          "description": "Use SSH for running kubernetes client on the node",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "node",
+      "aliases": [],
+      "description": "Add, remove, or list additional nodes",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds a node to the given cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Deletes a node from a cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List nodes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Starts a node",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stops a node in a cluster",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "cp",
+      "aliases": [],
+      "description": "Copy the specified file into minikube",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "[source] [target]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ssh-key",
+      "aliases": [],
+      "description": "Retrieve the ssh identity key path of the specified node",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--node",
+            "-n"
+          ],
+          "description": "The node to get ssh-key path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ssh-host",
+      "aliases": [],
+      "description": "Retrieve the ssh host key of the specified node",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--append-known"
+          ],
+          "description": "Add host key to SSH known_hosts file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node",
+            "-n"
+          ],
+          "description": "The node to ssh into",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ip",
+      "aliases": [],
+      "description": "Retrieves the IP address of the specified node",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--node",
+            "-n"
+          ],
+          "description": "The node to get IP",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Returns logs to debug a local Kubernetes cluster",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--file"
+          ],
+          "description": "If present, writes to the provided file instead of stdout",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--follow",
+            "-f"
+          ],
+          "description": "Show only the most recent journal entries",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--length",
+            "-n"
+          ],
+          "description": "Number of lines back to go within the log",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--node"
+          ],
+          "description": "The node to get logs from. Defaults to the primary control plane",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--problems"
+          ],
+          "description": "Show only log entries which point to known problems",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update-check",
+      "aliases": [],
+      "description": "Print current and latest version number",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version of minikube",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--components"
+          ],
+          "description": "List versions of all components included with minikube",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Format to print stdout in",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "text"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--short"
+          ],
+          "description": "Print just the version number",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "options",
+      "aliases": [],
+      "description": "Add, remove, or list additional nodes",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate command completion for a shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Bash completion",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Fish completion",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Zsh completion",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

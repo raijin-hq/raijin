@@ -1,0 +1,116 @@
+{
+  "name": "tfenv",
+  "aliases": [],
+  "description": "Terraform version manager",
+  "subcommands": [
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Install a specific version of Terraform",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Possible Terraform Version",
+          "template": {
+            "custom": [
+              "latest",
+              "min-required"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "aliases": [],
+      "description": "Switch to a version to use",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Installed Terraform Version",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Uninstall a specific version of Terraform",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "version",
+          "description": "Installed Terraform Version",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all installed versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list-remote",
+      "aliases": [],
+      "description": "List all installable versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version-name",
+      "aliases": [],
+      "description": "Print current version",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Update environment to use tfenv correctly",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "View your current tfenv version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "View commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

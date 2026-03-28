@@ -1,0 +1,77 @@
+{
+  "name": "trash",
+  "aliases": [],
+  "description": "Trash, move files/folders to the trash",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print verbose output while moving items",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Use the Finder API to move items to the trash",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "List items in the trash",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Empty the trash",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Securely empty the trash. trash asks for confirmation executing this action. If this argument is used, no need to be specified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-y"
+      ],
+      "description": "Skips the confirmation prompt for -e and -s. CAUTION: permanently instantly",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "folders",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

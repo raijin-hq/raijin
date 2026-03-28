@@ -1,0 +1,97 @@
+{
+  "name": "whereis",
+  "aliases": [],
+  "description": "Locate the binary, source, and manual page files for a command",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Search only for binaries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Search only for manual sections",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Search only for sources",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u"
+      ],
+      "description": "Search for unusual entries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B"
+      ],
+      "description": "Search for binaries only in the specified directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-M"
+      ],
+      "description": "Search for manual pages only in the specified directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S"
+      ],
+      "description": "Search for sources only in the specified directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Terminate the -B, -M, and -S options",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Filename",
+      "description": "The file to search for",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

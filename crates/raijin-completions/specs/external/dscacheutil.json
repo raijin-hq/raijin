@@ -1,0 +1,117 @@
+{
+  "name": "dscacheutil",
+  "aliases": [],
+  "description": "Utility for managing the Directory Service cache",
+  "subcommands": [
+    {
+      "name": "-h",
+      "aliases": [],
+      "description": "List the options for calling dscacheutil",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-q",
+      "aliases": [],
+      "description": "Query the Directory Service cache",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-a"
+          ],
+          "description": "Attribute to query",
+          "takes_arg": true,
+          "arg_name": "attributeKey",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "category",
+          "description": "Category to query",
+          "template": {
+            "custom": [
+              "group",
+              "host",
+              "mount",
+              "protocol",
+              "rpc",
+              "service",
+              "user"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "-cachedump",
+      "aliases": [],
+      "description": "Get an overview of the cache by default",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-buckets"
+          ],
+          "description": "Get an overview of the cache by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-entries"
+          ],
+          "description": "Dump detailed information about cache entries",
+          "takes_arg": true,
+          "arg_name": "entry",
+          "arg_template": {
+            "custom": [
+              "group",
+              "host",
+              "mount",
+              "protocol",
+              "rpc",
+              "service",
+              "user"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "-configuration",
+      "aliases": [],
+      "description": "Get the current configuration information, such as the search policy and cache parameters",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-flushcache",
+      "aliases": [],
+      "description": "Flush the entire cache",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "-statistics",
+      "aliases": [],
+      "description": "Get statistics from the cache, including an overview an detailed call statistics",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

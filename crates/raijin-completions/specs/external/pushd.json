@@ -1,0 +1,16 @@
+{
+  "name": "pushd",
+  "aliases": [],
+  "description": "Change the current directory, and push the old current directory onto the directory stack",
+  "subcommands": [],
+  "options": [],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "name": "cut",
+  "aliases": [],
+  "description": "Cut out selected portions of each line of a file",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Byte positions as a comma or - separated list of numbers",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Column positions as a comma or - separated list of numbers",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Field positions as a comma or - separated list of numbers",
+      "takes_arg": true,
+      "arg_name": "list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n"
+      ],
+      "description": "Do not split multi-byte characters",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Use delim as the field delimiter character instead of the tab character",
+      "takes_arg": true,
+      "arg_name": "delim",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Suppress lines with no field delimiter characters.  unless specified, lines with no delimiters are passed through unmodified",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w"
+      ],
+      "description": "Use whitespace (spaces and tabs) as the delimiter.  Consecutive spaces and tabs count as one single field separator",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "command",
+  "aliases": [],
+  "description": "Run an external command",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Print the location of the command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

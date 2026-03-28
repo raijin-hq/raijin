@@ -1,0 +1,112 @@
+{
+  "name": "tailcall",
+  "aliases": [],
+  "description": "TailCall CLI for managing and optimizing GraphQL configurations",
+  "subcommands": [
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Validate a composition spec",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--n-plus-one-queries"
+          ],
+          "description": "Detect N+1 issues",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema"
+          ],
+          "description": "Display the schema of the composition spec",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Change the format of the input file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "gql",
+              "graphql",
+              "yml",
+              "yaml",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "FILE_PATHS",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Launch the GraphQL Server for the specific configuration",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PATHS",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Bootstrap a new TailCall project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "FILE_PATH",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "gen",
+      "aliases": [],
+      "description": "Generate GraphQL configurations from various sources",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "CONFIG_FILE",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

@@ -1,0 +1,74 @@
+{
+  "name": "zip",
+  "aliases": [],
+  "description": "Package and compress (archive) files into zip file",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Package and compress a directory and its contents, recursively",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": null,
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "split size",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-9"
+      ],
+      "description": "Archive a directory and its contents with the highest level [9] of compression",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "name",
+      "description": "Name of archive",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "dir",
+      "description": null,
+      "template": "folders",
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

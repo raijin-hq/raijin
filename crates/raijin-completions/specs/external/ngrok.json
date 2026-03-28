@@ -1,0 +1,811 @@
+{
+  "name": "ngrok",
+  "aliases": [],
+  "description": "Tunnel local ports to public URLs and inspect traffic",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Shows a list of commands or help for one command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": {
+            "custom": [
+              "authtoken",
+              "credits",
+              "http",
+              "start",
+              "tcp",
+              "tls",
+              "update",
+              "version",
+              "help"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "http",
+      "aliases": [],
+      "description": "Start an HTTP tunnel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-config"
+          ],
+          "description": "Path to config files; they are merged if multiple",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-region"
+          ],
+          "description": "Ngrok server region [us, eu, au, ap, sa, jp, in] (default: us)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "us",
+              "eu",
+              "au",
+              "ap",
+              "sa",
+              "jp",
+              "in"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authtoken",
+            "-authtoken"
+          ],
+          "description": "Ngrok.com authtoken identifying a user",
+          "takes_arg": true,
+          "arg_name": "authtoken",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hostname",
+            "-hostname"
+          ],
+          "description": "Host tunnel on custom hostname (requires DNS CNAME)",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--subdomain",
+            "-subdomain"
+          ],
+          "description": "Host tunnel on a custom subdomain",
+          "takes_arg": true,
+          "arg_name": "subdomain",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auth",
+            "-auth"
+          ],
+          "description": "Enforce basic auth on tunnel endpoint, 'user:password'",
+          "takes_arg": true,
+          "arg_name": "user:password",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bind-tls",
+            "-bind-tls"
+          ],
+          "description": "Listen for http, https or both: true/false/both",
+          "takes_arg": true,
+          "arg_name": "true/false/both",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false",
+              "both"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-header",
+            "-host-header"
+          ],
+          "description": "Set Host header; if 'rewrite' use local address hostname",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "rewrite"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--introspection",
+            "-introspection"
+          ],
+          "description": "Enable/disable http introspection",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "host",
+          "description": null,
+          "template": {
+            "custom": [
+              "8080"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "authtoken",
+      "aliases": [],
+      "description": "Save authtoken to configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-config"
+          ],
+          "description": "Path to config files; they are merged if multiple",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "authtoken",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "credits",
+      "aliases": [],
+      "description": "Prints author and licensing information",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start tunnels by name from the configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-config"
+          ],
+          "description": "Path to config files; they are merged if multiple",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-region"
+          ],
+          "description": "Ngrok server region [us, eu, au, ap, sa, jp, in] (default: us)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "us",
+              "eu",
+              "au",
+              "ap",
+              "sa",
+              "jp",
+              "in"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authtoken",
+            "-authtoken"
+          ],
+          "description": "Ngrok.com authtoken identifying a user",
+          "takes_arg": true,
+          "arg_name": "authtoken",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all",
+            "-all"
+          ],
+          "description": "Start all tunnels in the configuration file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--none",
+            "-none"
+          ],
+          "description": "Start running no tunnels",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tunnels",
+          "description": null,
+          "template": {
+            "custom": [
+              "dev",
+              "web",
+              "blog"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "tcp",
+      "aliases": [],
+      "description": "Start a TCP tunnel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-config"
+          ],
+          "description": "Path to config files; they are merged if multiple",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authtoken",
+            "-authtoken"
+          ],
+          "description": "Ngrok.com authtoken identifying a user",
+          "takes_arg": true,
+          "arg_name": "authtoken",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-region"
+          ],
+          "description": "Ngrok server region [us, eu, au, ap, sa, jp, in] (default: us)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "us",
+              "eu",
+              "au",
+              "ap",
+              "sa",
+              "jp",
+              "in"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remote-addr",
+            "-remote-addr"
+          ],
+          "description": "Bind remote address (requires you reserve an address)",
+          "takes_arg": true,
+          "arg_name": "remote address",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "port",
+          "description": null,
+          "template": {
+            "custom": [
+              "22"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "tls",
+      "aliases": [],
+      "description": "Start a TLS tunnel",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config",
+            "-config"
+          ],
+          "description": "Path to config files; they are merged if multiple",
+          "takes_arg": true,
+          "arg_name": "config file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authtoken",
+            "-authtoken"
+          ],
+          "description": "Ngrok.com authtoken identifying a user",
+          "takes_arg": true,
+          "arg_name": "authtoken",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region",
+            "-region"
+          ],
+          "description": "Ngrok server region [us, eu, au, ap, sa, jp, in] (default: us)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "us",
+              "eu",
+              "au",
+              "ap",
+              "sa",
+              "jp",
+              "in"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hostname",
+            "-hostname"
+          ],
+          "description": "Host tunnel on custom hostname (requires DNS CNAME)",
+          "takes_arg": true,
+          "arg_name": "hostname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--subdomain",
+            "-subdomain"
+          ],
+          "description": "Host tunnel on a custom subdomain",
+          "takes_arg": true,
+          "arg_name": "subdomain",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--client-cas",
+            "-client-cas"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "certificate",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--crt",
+            "-crt"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "certificate",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key",
+            "-key"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "certificate",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "port",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Update ngrok to the latest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--log",
+            "-log"
+          ],
+          "description": "Path to log file, 'stdout', 'stderr' or 'false'",
+          "takes_arg": true,
+          "arg_name": "value",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format",
+            "-log-format"
+          ],
+          "description": "Log record format: 'term', 'logfmt', 'json'",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "term",
+              "logfmt",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-log-level"
+          ],
+          "description": "Logging level",
+          "takes_arg": true,
+          "arg_name": "level",
+          "arg_template": {
+            "custom": [
+              "crit",
+              "warn",
+              "error",
+              "info",
+              "debug"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--channel",
+            "-channel"
+          ],
+          "description": "Update channel (stable, beta)",
+          "takes_arg": true,
+          "arg_name": "channel",
+          "arg_template": {
+            "custom": [
+              "stable",
+              "beta"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version string",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

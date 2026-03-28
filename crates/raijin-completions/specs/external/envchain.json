@@ -1,0 +1,93 @@
+{
+  "name": "envchain",
+  "aliases": [],
+  "description": "Set environment variables with macOS keychain or D-Bus secret service",
+  "subcommands": [
+    {
+      "name": "-s",
+      "aliases": [
+        "--set"
+      ],
+      "description": "Add keychain item of environment variable +ENV+ for namespace +NAMESPACE+",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-n",
+            "--noecho"
+          ],
+          "description": "Do not echo user input",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--require-passphrase"
+          ],
+          "description": "Always ask for keychain passphrase",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-P",
+            "--no-require-passphrase"
+          ],
+          "description": "Do not ask for keychain passphrase",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "NAMESPACE",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "ENV",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "-l",
+      "aliases": [
+        "--list"
+      ],
+      "description": "List namespaces that have been created",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": [
+    {
+      "name": "NAMESPACE",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    },
+    {
+      "name": "CMD",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

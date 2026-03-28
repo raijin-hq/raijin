@@ -1,0 +1,423 @@
+{
+  "name": "pkgutil",
+  "aliases": [],
+  "description": "Query and manipulate for macOS Installer packages and receipts",
+  "subcommands": [
+    {
+      "name": "--packages",
+      "aliases": [
+        "--pkgs"
+      ],
+      "description": "List all installed package IDs on the specified --volume",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--pkgs-plist",
+      "aliases": [],
+      "description": "List all installed package IDs, in Mac OS X plist(5) format, on the specified --volume",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--files",
+      "aliases": [],
+      "description": "List all of the files installed under the package-id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to list the files of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--export-plist",
+      "aliases": [],
+      "description": "Print all receipt information about the specified package-id in Mac OS X plist(5) format",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to export the plist of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--verify",
+      "aliases": [],
+      "description": "Run repair_packages(8) to verify the specified package-id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to verify",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--repair",
+      "aliases": [],
+      "description": "Run repair_packages(8) to repair the specified package-id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to repair",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--pkg-info",
+      "aliases": [],
+      "description": "Print extended information about the specified package-id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to print the info of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--pkg-info-plist",
+      "aliases": [],
+      "description": "Print extended information about the specified package-id in Mac OS X plist(5) format",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to print the info of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--forget",
+      "aliases": [],
+      "description": "Discard all receipt data about package-id, but don't touch installed files",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to forget",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--learn",
+      "aliases": [],
+      "description": "Update the ACLs of the given path in the receipt identified by --edit-pkg",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to update ACLs on",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--pkg-groups",
+      "aliases": [],
+      "description": "List all of the package groups this package-id is a member of",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package-id",
+          "description": "The package ID to list the groups of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--groups",
+      "aliases": [],
+      "description": "List all of the package groups ont he specified --volume",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--group-plist",
+      "aliases": [],
+      "description": "List all of the package groups ont he specified --volume in Mac OS X plist(5) format",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "--group-pkgs",
+      "aliases": [],
+      "description": "List all of the packages that are members of this group-id",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "group-id",
+          "description": "The group ID to list the packages of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--file-info",
+      "aliases": [],
+      "description": "Show the metadata known about path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to show the metadata of",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--file-info-plist",
+      "aliases": [],
+      "description": "Show the metadata known about path in Mac OS X plist(5) format",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to show the metadata of",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--expand",
+      "aliases": [],
+      "description": "Expand the flat package at pkg-path into a new directory specified by dir-path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pkg-path",
+          "description": "The path to the flat package to expand",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "dir-path",
+          "description": "The path to the directory to expand the package into",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--flatten",
+      "aliases": [],
+      "description": "Flatten the dir-path into a new flat package created at pkg-path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "dir-path",
+          "description": "The path to the directory to flatten",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "pkg-path",
+          "description": "The path to the flat package to create",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--bom",
+      "aliases": [],
+      "description": "Extract any BOM files from the flat pkg at path into /tmp and return the filename(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to the flat package to extract the BOM from",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--payload-files",
+      "aliases": [],
+      "description": "List the files archived within the uninstalled flat package(s) at path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "The path to the flat package to list the archived files of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "--check-signature",
+      "aliases": [],
+      "description": "Check the validity and trust of the signature on the package at pkg-path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "pkg-path",
+          "description": "The path to the flat package to check the signature of",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "A brief summary of commands and usage",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Skip confirmation before a potentially destructive or ambiguous action",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Output in a human-readable format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--volume"
+      ],
+      "description": "Perform all operations on specified volume",
+      "takes_arg": true,
+      "arg_name": "volume",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--edit-pkg"
+      ],
+      "description": "Specifies an existing receipt to be modified in-place by --learn",
+      "takes_arg": true,
+      "arg_name": "package-id",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-files"
+      ],
+      "description": "List only files (not directories) in --files listing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--only-dirs"
+      ],
+      "description": "List only directories (not files) in --files listing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--regexp"
+      ],
+      "description": "Use regex to match package-id arguments, if an exact match isn't found",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pkgs"
+      ],
+      "description": "List all installed package IDs, optionally matching kwarg REGEXP, on the specified --volume",
+      "takes_arg": true,
+      "arg_name": "REGEXP",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

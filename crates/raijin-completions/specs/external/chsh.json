@@ -1,0 +1,62 @@
+{
+  "name": "chsh",
+  "aliases": [],
+  "description": "Change your login shell",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-s",
+        "--shell"
+      ],
+      "description": "Specify login shell",
+      "takes_arg": true,
+      "arg_name": "shell",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--list-shells"
+      ],
+      "description": "Print list of shells and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "-h",
+        "--help"
+      ],
+      "description": "Print help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Print version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "username",
+      "description": "Target user",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

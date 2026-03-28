@@ -1,0 +1,57 @@
+{
+  "name": "login",
+  "aliases": [],
+  "description": "Begin session on the system",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-p"
+      ],
+      "description": "Preserve environment",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r"
+      ],
+      "description": "Perform autologin protocol for rlogin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Specify host",
+      "takes_arg": true,
+      "arg_name": "host",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Don't authenticate user, user is preauthenticated",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "username",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

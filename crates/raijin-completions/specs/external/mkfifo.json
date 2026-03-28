@@ -1,0 +1,33 @@
+{
+  "name": "mkfifo",
+  "aliases": [],
+  "description": "Make FIFOs (first-in, first-out)",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-m"
+      ],
+      "description": "Set the file permission bits of newly-created fifos to mode, without respect to the current umask; the mode is specified as in chmod(1)",
+      "takes_arg": true,
+      "arg_name": "MODE",
+      "arg_template": {
+        "custom": [
+          "0666",
+          "0644",
+          "0444"
+        ]
+      },
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "FIFO",
+      "description": "FIFO(s) to create",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

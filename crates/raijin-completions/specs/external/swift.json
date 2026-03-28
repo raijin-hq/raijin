@@ -1,0 +1,2992 @@
+{
+  "name": "swift",
+  "aliases": [],
+  "description": "Swift compiler",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build sources into binary products",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h",
+            "-help"
+          ],
+          "description": "Show help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-tests"
+          ],
+          "description": "Build both source and test targets",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-bin-path"
+          ],
+          "description": "Print the binary output path",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target"
+          ],
+          "description": "Build the specified target",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--product"
+          ],
+          "description": "Build the specified product",
+          "takes_arg": true,
+          "arg_name": "product",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Build and run an executable product",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h",
+            "-help"
+          ],
+          "description": "Show help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-build"
+          ],
+          "description": "Skip building the executable product",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-tests"
+          ],
+          "description": "Build both source and test targets",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repl"
+          ],
+          "description": "Launch Swift REPL for the package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "executable",
+          "description": "The executable to run",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "arguments",
+          "description": "The arguments to pass to the executable",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Build and run tests",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h",
+            "-help"
+          ],
+          "description": "Show help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-build"
+          ],
+          "description": "Skip building the test target",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Run the tests in parallel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--num-workers"
+          ],
+          "description": "Number of tests to execute in parallel",
+          "takes_arg": true,
+          "arg_name": "num-workers",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--list-tests"
+          ],
+          "description": "Lists test methods in specifier format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-codecov-path"
+          ],
+          "description": "Print the path of the exported code coverage JSON file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--specifier"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Run test cases matching regular expression",
+          "takes_arg": true,
+          "arg_name": "regex",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip"
+          ],
+          "description": "Skip test cases matching regular expression",
+          "takes_arg": true,
+          "arg_name": "regex",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--xunit-output"
+          ],
+          "description": "Path where the xUnit xml file should be generated",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--test-product"
+          ],
+          "description": "Test the specified product",
+          "takes_arg": true,
+          "arg_name": "product",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "package",
+      "aliases": [],
+      "description": "Perform operations on Swift packages",
+      "subcommands": [
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Delete build artifacts",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "purge-cache",
+          "aliases": [],
+          "description": "Purge the global repository cache",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset the complete cache/build directory",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Update package dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "-dry-run"
+              ],
+              "description": "Display the list of dependencies that can be updated",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "describe",
+          "aliases": [],
+          "description": "Describe the current package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "The output type",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": {
+                "custom": [
+                  "json",
+                  "text"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initialize a new package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "The package type",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": {
+                "custom": [
+                  "empty",
+                  "library",
+                  "executable",
+                  "system-module",
+                  "manifest"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Provide custom package name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "experimental-api-diff",
+          "aliases": [],
+          "description": "Diagnose API-breaking changes to Swift modules in a package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--invert-baseline"
+              ],
+              "description": "Invert the baseline which is helpful for determining API additions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "treeish",
+              "description": "The baseline treeish to compare to (e.g. a commit hash, branch name, tag, etc.)",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "dump-symbol-graph",
+          "aliases": [],
+          "description": "Dump Symbol Graph",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "dump-pif",
+          "aliases": [],
+          "description": "Dump PIF",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--preserve-structure"
+              ],
+              "description": "Preserve the internal structure of PIF",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "dump-package",
+          "aliases": [],
+          "description": "Print parsed Package.swift as JSON",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Put a package in editable mode",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--revision"
+              ],
+              "description": "The revision to edit",
+              "takes_arg": true,
+              "arg_name": "revision",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--branch"
+              ],
+              "description": "The branch to create",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Create or use the checkout at this path",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "unedit",
+          "aliases": [],
+          "description": "Remove a package from editable mode",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Unedit the package even if it has uncommitted and unpushed changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "package-name",
+              "description": "The name of the package to unedit",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Manipulate configuration of the package",
+          "subcommands": [
+            {
+              "name": "set-mirror",
+              "aliases": [],
+              "description": "Set a mirror for a dependency",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--help",
+                    "-h",
+                    "-help"
+                  ],
+                  "description": "Show help information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--version"
+                  ],
+                  "description": "Show the version",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--package-url"
+                  ],
+                  "description": "The package dependency url",
+                  "takes_arg": true,
+                  "arg_name": "package-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--original-url"
+                  ],
+                  "description": "The original url",
+                  "takes_arg": true,
+                  "arg_name": "original-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--mirror-url"
+                  ],
+                  "description": "The mirror url",
+                  "takes_arg": true,
+                  "arg_name": "original-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "unset-mirror",
+              "aliases": [],
+              "description": "Remove an existing mirror",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--help",
+                    "-h",
+                    "-help"
+                  ],
+                  "description": "Show help information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--version"
+                  ],
+                  "description": "Show the version",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--package-url"
+                  ],
+                  "description": "The package dependency url",
+                  "takes_arg": true,
+                  "arg_name": "package-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--original-url"
+                  ],
+                  "description": "The original url",
+                  "takes_arg": true,
+                  "arg_name": "original-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--mirror-url"
+                  ],
+                  "description": "The mirror url",
+                  "takes_arg": true,
+                  "arg_name": "original-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "get-mirror",
+              "aliases": [],
+              "description": "Print mirror configuration for the given package dependency",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--help",
+                    "-h",
+                    "-help"
+                  ],
+                  "description": "Show help information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--version"
+                  ],
+                  "description": "Show the version",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--package-url"
+                  ],
+                  "description": "The package dependency url",
+                  "takes_arg": true,
+                  "arg_name": "package-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--original-url"
+                  ],
+                  "description": "The original url",
+                  "takes_arg": true,
+                  "arg_name": "original-url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "resolve",
+          "aliases": [],
+          "description": "Resolve package dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--branch"
+              ],
+              "description": "The branch to resolve at",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--revision"
+              ],
+              "description": "The revision to resolve at",
+              "takes_arg": true,
+              "arg_name": "revision",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "package-name",
+              "description": "The name of the package to resolve",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "show-dependencies",
+          "aliases": [],
+          "description": "Print the resolved dependency graph",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "The format type",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": {
+                "custom": [
+                  "text",
+                  "dot",
+                  "json",
+                  "flatlist"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "tools-version",
+          "aliases": [],
+          "description": "Manipulate tools version of the current package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "The format type",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": {
+                "custom": [
+                  "text",
+                  "dot",
+                  "json",
+                  "flatlist"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--set-current"
+              ],
+              "description": "Set tools version of package to the current tools version in use",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--set"
+              ],
+              "description": "Set tools version of package to the given value",
+              "takes_arg": true,
+              "arg_name": "tools version",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "generate-xcodeproj",
+          "aliases": [],
+          "description": "Generates an Xcode project (this command will be deprecated soon)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--xcconfig-overrides"
+              ],
+              "description": "Path to xcconfig file",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--output"
+              ],
+              "description": "Path where the Xcode project should be generated",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--legacy-scheme-generator"
+              ],
+              "description": "Use the legacy scheme generator",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--watch"
+              ],
+              "description": "Watch for changes to the Package manifest to regenerate the Xcode project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--skip-extra-files"
+              ],
+              "description": "Do not add file references for extra files to the generated Xcode project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "compute-checksum",
+          "aliases": [],
+          "description": "Compute the checksum for a binary artifact",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "archive-source",
+          "aliases": [],
+          "description": "Create a source archive for the package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "The absolute or relative path for the generated source archive",
+              "takes_arg": true,
+              "arg_name": "path",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "completion-tool",
+          "aliases": [],
+          "description": "Completion tool (for shell completions)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h",
+                "-help"
+              ],
+              "description": "Show help information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--version"
+              ],
+              "description": "Show the version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "mode",
+              "description": "The completion tool mode",
+              "template": {
+                "custom": [
+                  "generate-bash-script",
+                  "generate-zsh-script",
+                  "generate-fish-script",
+                  "list-dependencies",
+                  "list-executables"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h",
+            "-help"
+          ],
+          "description": "Show help information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show the version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Xcc"
+          ],
+          "description": "Pass a flag through to all C compiler invocations",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Xswiftc"
+          ],
+          "description": "Pass a flag through to all Swift compiler invocations",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-Xlinker"
+          ],
+          "description": "Pass a flag through to all linker invocations",
+          "takes_arg": true,
+          "arg_name": "flag",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--configuration"
+          ],
+          "description": "Build with configuration (default: debug)",
+          "takes_arg": true,
+          "arg_name": "configuration",
+          "arg_template": {
+            "custom": [
+              "debug",
+              "release"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-path"
+          ],
+          "description": "Specify build/cache directory",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cache-path"
+          ],
+          "description": "Specify the shared cache directory",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-repository-cache"
+          ],
+          "description": "Enable the use of a shared cache when fetching repositories (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-repository-cache"
+          ],
+          "description": "Disable the use of a shared cache when fetching repositories (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-C",
+            "--chdir"
+          ],
+          "description": "The custom working directory that the tool should operate in",
+          "takes_arg": true,
+          "arg_name": "chdir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--package-path"
+          ],
+          "description": "Change working directory before any other operation",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--multiroot-data-file"
+          ],
+          "description": "The path to the file containing multiroot package data. This is currently Xcode's workspace file",
+          "takes_arg": true,
+          "arg_name": "multiroot-data-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-prefetching"
+          ],
+          "description": "Enable prefetching in resolver which will kick off parallel git cloning (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-prefetching"
+          ],
+          "description": "Disable  prefetching in resolver which will kick off parallel git cloning (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Increase verbosity of informational output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-sandbox"
+          ],
+          "description": "Disable using the sandbox when executing subprocesses",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--manifest-cache"
+          ],
+          "description": "Caching mode of Package.swift manifests",
+          "takes_arg": true,
+          "arg_name": "mode",
+          "arg_template": {
+            "custom": [
+              "shared",
+              "local",
+              "none"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--destination"
+          ],
+          "description": "Path to the compilation destination describing JSON file",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--triple"
+          ],
+          "description": "The compilation destination's target triple",
+          "takes_arg": true,
+          "arg_name": "triple",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sdk"
+          ],
+          "description": "Path to the compilation destination's SDK",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toolchain"
+          ],
+          "description": "Path to the compilation destination's toolchain",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--static-swift-stdlib"
+          ],
+          "description": "Link Swift stdlib statically (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-static-swift-stdlib"
+          ],
+          "description": "Don't link Swift stdlib statically (default: false)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-update"
+          ],
+          "description": "Skip updating dependencies from their remote during a resolution",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sanitize"
+          ],
+          "description": "Turn on runtime checks for erroneous behavior",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "address",
+              "thread",
+              "undefined",
+              "scudo"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-code-coverage"
+          ],
+          "description": "Enable code coverage (default: disabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-code-coverage"
+          ],
+          "description": "Disable code coverage (default: disabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-resolved-versions",
+            "--disable-automatic-resolution",
+            "--only-use-versions-from-resolved-file"
+          ],
+          "description": "Only use versions from the Package.resolved file and fail resolution if it is out-of-date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto-index-store"
+          ],
+          "description": "Enable or disable indexing-while-building feature (default: auto)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-index-store"
+          ],
+          "description": "Enable indexing-while-building feature (default: auto)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-index-store"
+          ],
+          "description": "Disable indexing-while-building feature (default: auto)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-parseable-module-interfaces"
+          ],
+          "description": "Whether to enable generation of `.swiftinterface`s alongside `.swiftmodule`s",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trace-resolver"
+          ],
+          "description": "Write dependency resolver trace to a file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-j",
+            "--jobs"
+          ],
+          "description": "The number of jobs to spawn in parallel during the build process",
+          "takes_arg": true,
+          "arg_name": "jobs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-build-manifest-caching"
+          ],
+          "description": "Whether to enable llbuild manifest caching (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-build-manifest-caching"
+          ],
+          "description": "Whether to disable llbuild manifest caching (default: enabled)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--emit-swift-module-separately"
+          ],
+          "description": "Emit the Swift module separately from the object files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-integrated-swift-driver"
+          ],
+          "description": "Whether to use the integrated Swift driver rather than shelling out to a separate process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--experimental-explicit-module-build"
+          ],
+          "description": "Whether to use the explicit module build flow (with the integrated driver)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--print-manifest-job-graph"
+          ],
+          "description": "Write the command graph for the build manifest as a graphviz file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build-system"
+          ],
+          "description": "The build system to use (default: native)",
+          "takes_arg": true,
+          "arg_name": "build system",
+          "arg_template": {
+            "custom": [
+              "native",
+              "xcode"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--netrc"
+          ],
+          "description": "Whether to load .netrc files for authenticating with remote servers when downloading binary artifacts or communicating with a registry",
+          "takes_arg": true,
+          "arg_name": "bool",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--netrc-file"
+          ],
+          "description": "The path to the .netrc file used when `netrc` is `true`",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h",
+        "-help"
+      ],
+      "description": "Show help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-access-notes-path"
+      ],
+      "description": "Specify YAML file to override attributes on Swift declarations in this module",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-assert-config"
+      ],
+      "description": "Specify the assert_configuration replacement",
+      "takes_arg": true,
+      "arg_name": "configuration",
+      "arg_template": {
+        "custom": [
+          "Debug",
+          "Release",
+          "Unchecked",
+          "DisableReplacement"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-async-main"
+      ],
+      "description": "Resolve main function as if it were called from an asynchronous context",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-clang-target"
+      ],
+      "description": "Separately set the target we should use for internal Clang instance",
+      "takes_arg": true,
+      "arg_name": "target",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-color-diagnostics"
+      ],
+      "description": "Print diagnostics in color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-continue-building-after-errors"
+      ],
+      "description": "Continue building, even after errors are encountered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-coverage-prefix-map"
+      ],
+      "description": "Remap source paths in coverage info",
+      "takes_arg": true,
+      "arg_name": "prefix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-debug-info-format"
+      ],
+      "description": "Specify the debug info format type",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "dwarf",
+          "codeview"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-debug-info-store-invocation"
+      ],
+      "description": "Emit the compiler invocation in the debug info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-debug-prefix-map"
+      ],
+      "description": "Remap source paths in debug info",
+      "takes_arg": true,
+      "arg_name": "prefix=replacement",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-diagnostic-style"
+      ],
+      "description": "The formatting style used when printing diagnostics",
+      "takes_arg": true,
+      "arg_name": "style",
+      "arg_template": {
+        "custom": [
+          "swift",
+          "llvm"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-actor-data-race-checks"
+      ],
+      "description": "Disable runtime checks for actor data races",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-autolinking-runtime-compatibility-concurrency"
+      ],
+      "description": "Do not use autolinking for the concurrency runtime compatibility library",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-autolinking-runtime-compatibility-dynamic-replacements"
+      ],
+      "description": "Do not use autolinking for the dynamic replacement runtime compatibility library",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-autolinking-runtime-compatibility"
+      ],
+      "description": "Do not use autolinking for runtime compatibility libraries",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-clang-target"
+      ],
+      "description": "Disable a separately specified target triple for Clang instance to use",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-incremental-imports"
+      ],
+      "description": "Disable cross-module incremental build metadata and driver scheduling for Swift modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disable-only-one-dependency-file"
+      ],
+      "description": "Disables incremental build optimization that only produces one dependencies file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-disallow-use-new-driver"
+      ],
+      "description": "Disable using new swift-driver",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Marks a conditional compilation flag as true",
+      "takes_arg": true,
+      "arg_name": "flag",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-embed-tbd-for-module"
+      ],
+      "description": "Embed symbols from the module in the emitted tbd file",
+      "takes_arg": true,
+      "arg_name": "module",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-actor-data-race-checks"
+      ],
+      "description": "Emit runtime checks for actor data races",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-bare-slash-regex"
+      ],
+      "description": "Enable the use of forward slash regular-expression literal syntax",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-experimental-additive-arithmetic-derivation"
+      ],
+      "description": "Enable experimental 'AdditiveArithmetic' derived conformances",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-experimental-concise-pound-file"
+      ],
+      "description": "Enable experimental concise '#file' identifier",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-experimental-cxx-interop"
+      ],
+      "description": "Allow importing C++ modules into Swift (experimental feature)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-experimental-forward-mode-differentiation"
+      ],
+      "description": "Enable experimental forward mode differentiation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-incremental-imports"
+      ],
+      "description": "Enable cross-module incremental build metadata and driver scheduling for Swift modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-library-evolution"
+      ],
+      "description": "Build the module to allow binary-compatible library evolution",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enable-only-one-dependency-file"
+      ],
+      "description": "Enables incremental build optimization that only produces one dependencies file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-enforce-exclusivity"
+      ],
+      "description": "Enforce law of exclusivity",
+      "takes_arg": true,
+      "arg_name": "enforcement",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-experimental-cxx-stdlib"
+      ],
+      "description": "C++ standard library to use; forwarded to Clang's -std lib flag",
+      "takes_arg": true,
+      "arg_name": "stdlib",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-file-compilation-dir"
+      ],
+      "description": "The compilation directory to embed in the debug info. Coverage mapping is not supported yet",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-file-prefix-map"
+      ],
+      "description": "Remap source paths in debug, coverage, and index info",
+      "takes_arg": true,
+      "arg_name": "prefix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-framework"
+      ],
+      "description": "Specifies a framework which should be linked against",
+      "takes_arg": true,
+      "arg_name": "framework",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Fsystem"
+      ],
+      "description": "Add directory to system framework search path",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-F"
+      ],
+      "description": "Add directory to framework search path",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-gdwarf-types"
+      ],
+      "description": "Emit full DWARF type info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-gline-tables-only"
+      ],
+      "description": "Emit minimal debug info for backtraces only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-gnone"
+      ],
+      "description": "Don't emit debug info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-g"
+      ],
+      "description": "Emit debug info. This is the preferred setting for debugging with LLDB",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-index-ignore-clang-modules"
+      ],
+      "description": "Avoid indexing clang modules (pcms)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-index-store-path"
+      ],
+      "description": "Store indexing data to path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-index-unit-output-path"
+      ],
+      "description": "Use the specified path as the output path in the produced index data",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I"
+      ],
+      "description": "Add directory to the import search path",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j"
+      ],
+      "description": "Number of commands to execute in parallel",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-libc"
+      ],
+      "description": "The libc runtime library to use",
+      "takes_arg": true,
+      "arg_name": "runtime",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-locale"
+      ],
+      "description": "Choose a language for diagnostic messages",
+      "takes_arg": true,
+      "arg_name": "code",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-localization-path"
+      ],
+      "description": "Path to localized diagnostic messages directory",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L"
+      ],
+      "description": "Add directory to library link search path",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l"
+      ],
+      "description": "Specifies a library which should be linked against",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-module-abi-name"
+      ],
+      "description": "ABI name to use for the contents of this module",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-module-alias"
+      ],
+      "description": "If a source file imports or references module <alias_name>, the <underlying_name> is used for the contents of the file",
+      "takes_arg": true,
+      "arg_name": "alias",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-module-cache-path"
+      ],
+      "description": "Specifies the Clang module cache path",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-module-link-name"
+      ],
+      "description": "Library to link against when using this module",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-module-name"
+      ],
+      "description": "Name of the module to build",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-no-color-diagnostics"
+      ],
+      "description": "Do not print diagnostics in color",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-no-warnings-as-errors"
+      ],
+      "description": "Don't treat warnings as error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-nostdimport"
+      ],
+      "description": "Don't search the standard library import path for modules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-num-threads"
+      ],
+      "description": "Enable multi-threading and specify number of threads",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Onone"
+      ],
+      "description": "Compile without any optimization",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Osize"
+      ],
+      "description": "Compile with optimizations and target small code size",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Ounchecked"
+      ],
+      "description": "Compile with optimizations and remove runtime safety checks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Compile with optimizations",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-prefix-serialized-debugging-options"
+      ],
+      "description": "Apply debug prefix mappings to serialized debug info in Swiftmodule files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-pretty-print"
+      ],
+      "description": "Pretty-print the output JSON",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-print-educational-notes"
+      ],
+      "description": "Include educational notes in printed diagnostic output, if available",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-print-target-info"
+      ],
+      "description": "Print target information for the given target <triple>, such as x86_64-apple-macos10.9",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Rcross-import"
+      ],
+      "description": "Emit a remark if a cross-import of a module is triggered",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-remove-runtime-asserts"
+      ],
+      "description": "Remove runtime safety checks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-requirement-machine-abstract-signatures"
+      ],
+      "description": "Control usage of experimental generic signature minimization",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "verify",
+          "check"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-requirement-machine-inferred-signatures"
+      ],
+      "description": "Control usage of experimental generic signature minimization",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "verify",
+          "check"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-requirement-machine-protocol-signatures"
+      ],
+      "description": "Control usage of experimental protocol requirement signature minimization",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "verify",
+          "check"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Rmodule-loading"
+      ],
+      "description": "Emit a remark and file path of each loaded module",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Rpass-missed"
+      ],
+      "description": "Report missed transformations by optimization passes whose name matches the given POSIX regular expression",
+      "takes_arg": true,
+      "arg_name": "regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Rpass"
+      ],
+      "description": "Report performed transformations by optimization passes whose name matches the given POSIX regular expression",
+      "takes_arg": true,
+      "arg_name": "regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-runtime-compatibility-version"
+      ],
+      "description": "Link compatibility library for Swift runtime version, or 'none'",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-save-optimization-record-passes"
+      ],
+      "description": "Only include passes which match a specified regular expression in the generated optimization record (by default, include all passes)",
+      "takes_arg": true,
+      "arg_name": "regex",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-save-optimization-record-path"
+      ],
+      "description": "Specify the file name of any generated optimization record",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-save-optimization-record"
+      ],
+      "description": "Generate an optimization record file in a specific format",
+      "takes_arg": true,
+      "arg_name": "format",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-save-optimization-record"
+      ],
+      "description": "Generate a YAML optimization record file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-sdk"
+      ],
+      "description": "Compile against a specific SDK",
+      "takes_arg": true,
+      "arg_name": "sdk",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-serialize-diagnostics-path"
+      ],
+      "description": "Emit a serialized diagnostics file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-static-executable"
+      ],
+      "description": "Statically link the executable",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-static-stdlib"
+      ],
+      "description": "Statically link the Swift standard library",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-strict-concurrency"
+      ],
+      "description": "Specify the how strict concurrency checking will be",
+      "takes_arg": true,
+      "arg_name": "concurrency",
+      "arg_template": {
+        "custom": [
+          "minimal",
+          "targeted",
+          "complete"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-suppress-warnings"
+      ],
+      "description": "Suppress all warnings",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-swift-isa-ptrauth-mode"
+      ],
+      "description": "Mode for staging isa/super signing",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "LegacyAndStrip",
+          "NewAndStrip",
+          "NewAndAuth"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-swift-ptrauth-mode"
+      ],
+      "description": "Mode for staging pointer authentication",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "LegacyAndStrip",
+          "NewAndStrip",
+          "NewAndAuth"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-swift-version"
+      ],
+      "description": "Interpret input according to a specific Swift language version number",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-target-cpu"
+      ],
+      "description": "Generate code for a particular CPU variant",
+      "takes_arg": true,
+      "arg_name": "cpu",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-target-min-inlining-version"
+      ],
+      "description": "Require inlinable code with no '@available' attribute to back-deploy to this version of the '-target' OS",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-target-variant"
+      ],
+      "description": "Generate 'zippered' code for macCatalyst that can run on the specified variant target triple in addition to the main -target triple",
+      "takes_arg": true,
+      "arg_name": "variant",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-target"
+      ],
+      "description": "Generate code for the given target <triple>, such as x86_64-apple-macos10.9",
+      "takes_arg": true,
+      "arg_name": "triple",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-use-ld"
+      ],
+      "description": "Specifies the linker to be used",
+      "takes_arg": true,
+      "arg_name": "linker",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-user-module-version"
+      ],
+      "description": "Module version specified from Swift module authors",
+      "takes_arg": true,
+      "arg_name": "module",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-vfsoverlay"
+      ],
+      "description": "Add directory to VFS overlay file",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Show commands to run and use verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-warn-concurrency"
+      ],
+      "description": "Warn about code that is unsafe according to the Swift Concurrency model and will become ill-formed in a future language version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-warn-implicit-overrides"
+      ],
+      "description": "Warn about implicit overrides of protocol members",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-warn-swift3-objc-inference-complete"
+      ],
+      "description": "Warn about deprecated @objc inference in Swift 3 for every declaration that will no longer be inferred as @objc in Swift 4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-warn-swift3-objc-inference-minimal"
+      ],
+      "description": "Warn about deprecated @objc inference in Swift 3 based on direct uses of the Objective-C entrypoint",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-warnings-as-errors"
+      ],
+      "description": "Treat warnings as errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-working-directory"
+      ],
+      "description": "Resolve file paths relative to the specified directory",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Xcc"
+      ],
+      "description": "Pass <arg> to the C/C++/Objective-C compiler",
+      "takes_arg": true,
+      "arg_name": "arg",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-Xlinker"
+      ],
+      "description": "Specifies an option which should be passed to the linker",
+      "takes_arg": true,
+      "arg_name": "arg",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

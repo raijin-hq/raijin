@@ -1,0 +1,466 @@
+{
+  "name": "swagger-typescript-api",
+  "aliases": [],
+  "description": "Generate api via swagger scheme",
+  "subcommands": [
+    {
+      "name": "generate-templates",
+      "aliases": [],
+      "description": "Generate \".ejs\" templates needed for generate api",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Output path of generated templates",
+          "takes_arg": true,
+          "arg_name": "Path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--modular",
+            "-m"
+          ],
+          "description": "Generate templates needed to separate files for http client, data contracts, and routes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--http-client"
+          ],
+          "description": "Http client type",
+          "takes_arg": true,
+          "arg_name": "Http client",
+          "arg_template": {
+            "custom": [
+              "fetch",
+              "axios"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean-output",
+            "-c"
+          ],
+          "description": "Clean output folder before generate template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rewrite",
+            "-r"
+          ],
+          "description": "Rewrite content in existing templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Output the current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--path",
+        "-p"
+      ],
+      "description": "Path/url to swagger scheme",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Output path of typescript api file (default: \"./\")",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--name",
+        "-n"
+      ],
+      "description": "Name of output typescript api file (default: \"Api.ts\")",
+      "takes_arg": true,
+      "arg_name": "Name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--templates",
+        "-t"
+      ],
+      "description": "Path to folder containing templates",
+      "takes_arg": true,
+      "arg_name": "Path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-as-success",
+        "-d"
+      ],
+      "description": "Use \"default\" response status code as success response too",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--responses",
+        "-r"
+      ],
+      "description": "Generate additional information about request responses",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--union-enums"
+      ],
+      "description": "Generate all \"enum\" types as union types (T1 | T2 | TN)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--add-readonly"
+      ],
+      "description": "Generate readonly properties",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--route-types"
+      ],
+      "description": "Generate type definitions for API routes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-client"
+      ],
+      "description": "Do not generate an API class",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enum-names-as-values"
+      ],
+      "description": "Use values in 'x-enumNames' as enum values (not only as keys)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract-request-params"
+      ],
+      "description": "Extract request params to data contract",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract-request-body"
+      ],
+      "description": "Extract request body type to data contract",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract-response-body"
+      ],
+      "description": "Extract response body type to data contract",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract-response-error"
+      ],
+      "description": "Extract response error type to data contract",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--modular"
+      ],
+      "description": "Generate separated files for http client, data contracts, and routes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--js"
+      ],
+      "description": "Generate js api module with declaration file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--module-name-index"
+      ],
+      "description": "Determines which path index should be used for routes separation",
+      "takes_arg": true,
+      "arg_name": "Index",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--module-name-first-tag"
+      ],
+      "description": "Splits routes based on the first tag",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disableStrictSSL"
+      ],
+      "description": "Disabled strict SSL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disableProxy"
+      ],
+      "description": "Disabled proxy",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--axios"
+      ],
+      "description": "Generate axios http client",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unwrap-response-data"
+      ],
+      "description": "Unwrap the data item from the response",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-throw-on-error"
+      ],
+      "description": "Do not throw an error when response.ok is not true (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--single-http-client"
+      ],
+      "description": "Ability to send HttpClient instance to Api constructor (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent"
+      ],
+      "description": "Output only errors to console",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-response"
+      ],
+      "description": "Default type for empty response schema",
+      "takes_arg": true,
+      "arg_name": "Type",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-prefix"
+      ],
+      "description": "Data contract name prefix",
+      "takes_arg": true,
+      "arg_name": "Prefix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--type-suffix"
+      ],
+      "description": "Data contract name suffix",
+      "takes_arg": true,
+      "arg_name": "Suffix",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clean-output"
+      ],
+      "description": "Clean output folder before generate api. WARNING: May cause data loss (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--api-class-name"
+      ],
+      "description": "Name of the api class",
+      "takes_arg": true,
+      "arg_name": "Name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--patch"
+      ],
+      "description": "Fix up small errors in the swagger source definition (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Additional information about processes inside this tool (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--another-array-type"
+      ],
+      "description": "Generate array types as Array<Type> (by default Type[]) (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sort-types"
+      ],
+      "description": "Sort fields and types (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract-enums"
+      ],
+      "description": "Extract all enums from inline interface\type content to typescript enum construction (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for swagger-typescript-api",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

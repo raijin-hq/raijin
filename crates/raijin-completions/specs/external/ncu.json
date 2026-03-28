@@ -1,0 +1,597 @@
+{
+  "name": "ncu",
+  "aliases": [],
+  "description": "Upgrade your npm package.json dependencies to the latest versions, ignoring specified versions",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Cache versions to a local cache file. Default --cacheFile is ~/.ncu-cache.json and default --cacheExpiration is 10 minutes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cacheClear"
+      ],
+      "description": "Clear the default cache, or the cache file specified by --cacheFile",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cacheExpiration"
+      ],
+      "description": "Cache expiration in minutes. Only works with --cache. (default: 10)",
+      "takes_arg": true,
+      "arg_name": "min",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cacheFile"
+      ],
+      "description": "Filepath for the cache file. Only works with --cache. (default: \"~/.ncu-cache.json\")",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Force color in terminal",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--concurrency"
+      ],
+      "description": "Max number of concurrent HTTP requests to registry. (default: 8)",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--configFileName"
+      ],
+      "description": "Config file name. (default: .ncurc.{json,yml,js,cjs})",
+      "takes_arg": true,
+      "arg_name": "s",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--configFilePath"
+      ],
+      "description": "Directory of .ncurc config file. (default: directory of packageFile)",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cwd"
+      ],
+      "description": "Working directory in which npm will be executed",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deep"
+      ],
+      "description": "Run recursively in current working directory. Alias of (--packageFile '**/package.json')",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dep"
+      ],
+      "description": "Check one or more sections of dependencies only: dev, optional, peer, prod, or packageManager (comma-delimited). (default: [\"prod\",\"dev\",\"optional\"])",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "dev",
+          "optional",
+          "peer",
+          "prod",
+          "packageManager"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--deprecated"
+      ],
+      "description": "Include deprecated packages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctor",
+        "-d"
+      ],
+      "description": "Iteratively installs upgrades and runs tests to identify breaking upgrades. Requires -u to execute. Run \"ncu --help --doctor\" for details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctorInstall"
+      ],
+      "description": "Specifies the install script to use in doctor mode. (default: npm install/yarn)",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--doctorTest"
+      ],
+      "description": "Specifies the test script to use in doctor mode. (default: npm test)",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enginesNode"
+      ],
+      "description": "Include only packages that satisfy engines.node as specified in the package file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--errorLevel",
+        "-e"
+      ],
+      "description": "Set the error level. 1: exits with error code 0 if no errors occur. 2: exits with error code 0 if no packages need updating (useful for continuous integration). (default: 1)",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filter",
+        "-f"
+      ],
+      "description": "Include only package names matching the given string, wildcard, glob, comma-or-space-delimited list, /regex/, or predicate function",
+      "takes_arg": true,
+      "arg_name": "p",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filterResults"
+      ],
+      "description": "Filters out upgrades based on a user provided function. Run \"ncu --help --filterResults\" for details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--filterVersion"
+      ],
+      "description": "Filter on package version using comma-or-space-delimited list, /regex/, or predicate function",
+      "takes_arg": true,
+      "arg_name": "p",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--format"
+      ],
+      "description": "Modify the output formatting or show additional information. Specify one or more comma-delimited values: group, ownerChanged, repo, time, lines. Run \"ncu --help --format\" for details. (default: [])",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "group",
+          "ownerChanged",
+          "repo",
+          "time",
+          "lines"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--global",
+        "-g"
+      ],
+      "description": "Check global packages instead of in the current project",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--groupFunction"
+      ],
+      "description": "Customize how packages are divided into groups when using --format group. Run \"ncu --help --groupFunction\" for details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive",
+        "-i"
+      ],
+      "description": "Enable interactive prompts for each dependency; implies -u unless one of the json options are set",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsonAll",
+        "-j"
+      ],
+      "description": "Output new package file instead of human-readable message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsonDeps"
+      ],
+      "description": "Like jsonAll but only lists dependencies, devDependencies, optionalDependencies, etc of the new package data",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jsonUpgraded"
+      ],
+      "description": "Output upgraded dependencies in json",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--loglevel",
+        "-l"
+      ],
+      "description": "Amount to log: silent, error, minimal, warn, info, verbose, silly. (default: \"warn\")",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": {
+        "custom": [
+          "silent",
+          "error",
+          "minimal",
+          "warn",
+          "info",
+          "verbose",
+          "silly"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mergeConfig"
+      ],
+      "description": "Merges nested configs with the root config file for --deep or --packageFile options. (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--minimal",
+        "-m"
+      ],
+      "description": "Do not upgrade newer versions that are already satisfied by the version range according to semver",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--packageData"
+      ],
+      "description": "Package file data (you can also use stdin)",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--packageFile"
+      ],
+      "description": "Package file(s) location. (default: ./package.json)",
+      "takes_arg": true,
+      "arg_name": "path|glob",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--packageManager",
+        "-p"
+      ],
+      "description": "Npm, yarn, pnpm, deno, staticRegistry (default: npm). Run \"ncu --help --packageManager\" for details",
+      "takes_arg": true,
+      "arg_name": "s",
+      "arg_template": {
+        "custom": [
+          "npm",
+          "yarn",
+          "pnpm",
+          "deno",
+          "staticRegistry"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--peer"
+      ],
+      "description": "Check peer dependencies of installed packages and filter updates to compatible versions. Run \"ncu --help --peer\" for details",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pre"
+      ],
+      "description": "Include prerelease versions, e.g. -alpha.0, -beta.5, -rc.2. Automatically set to 1 when --target is newest or greatest, or when the current version is a prerelease. (default: 0)",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prefix"
+      ],
+      "description": "Current working directory of npm",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--registry",
+        "-r"
+      ],
+      "description": "Third-party npm registry. Run \"ncu --help --registry\" for details",
+      "takes_arg": true,
+      "arg_name": "uri",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reject",
+        "-x"
+      ],
+      "description": "Exclude packages matching the given string, wildcard, glob, comma-or-space-delimited list, /regex/, or predicate function",
+      "takes_arg": true,
+      "arg_name": "p",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rejectVersion"
+      ],
+      "description": "Exclude package.json versions using comma-or-space-delimited list, /regex/, or predicate function",
+      "takes_arg": true,
+      "arg_name": "p",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--removeRange"
+      ],
+      "description": "Remove version ranges from the final package version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--retry"
+      ],
+      "description": "Number of times to retry failed requests for package info. (default: 3)",
+      "takes_arg": true,
+      "arg_name": "n",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--root"
+      ],
+      "description": "Runs updates on the root project in addition to specified workspaces. Only allowed with --workspace or --workspaces. (default: false)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--silent",
+        "-s"
+      ],
+      "description": "Don't output anything. Alias for --loglevel silent",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdin"
+      ],
+      "description": "Read package.json from stdin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--target",
+        "-t"
+      ],
+      "description": "Determines the version to upgrade to: latest, newest, greatest, minor, patch, @[tag], or [function]. (default: latest) Run \"ncu --help --target\" for details",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "latest",
+          "newest",
+          "greatest",
+          "minor",
+          "patch"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--timeout"
+      ],
+      "description": "Global timeout in milliseconds. (default: no global timeout and 30 seconds per npm-registry-fetch)",
+      "takes_arg": true,
+      "arg_name": "ms",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--upgrade",
+        "-u"
+      ],
+      "description": "Overwrite package file with upgraded versions instead of just outputting to console",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Log additional information for debugging. Alias for --loglevel verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Output the version number of npm-check-updates",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workspace",
+        "-w"
+      ],
+      "description": "Run on one or more specified workspaces. Add --root to also upgrade the root project. (default: [])",
+      "takes_arg": true,
+      "arg_name": "s",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workspaces",
+        "-ws"
+      ],
+      "description": "Run on all workspaces. Add --root to also upgrade the root project",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "filter",
+      "description": "A list or regex of package names to check (all others will be ignored)",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

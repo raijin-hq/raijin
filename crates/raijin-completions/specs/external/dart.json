@@ -1,0 +1,2350 @@
+{
+  "name": "dart",
+  "aliases": [],
+  "description": "A command-line utility for Dart development",
+  "subcommands": [
+    {
+      "name": "analyze",
+      "aliases": [],
+      "description": "Analyze Dart code in a directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fatal-infos"
+          ],
+          "description": "Treat info level issues as fatal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fatal-warnings"
+          ],
+          "description": "Treat warning level issues as fatal (defaults to on)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-fatal-warnings"
+          ],
+          "description": "Do not treat warning level issues as fatal (defaults to on)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "directory",
+          "description": "Dart project directory to analyze",
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "compile",
+      "aliases": [],
+      "description": "Compile Dart to various formats",
+      "subcommands": [
+        {
+          "name": "aot-snapshot",
+          "aliases": [],
+          "description": "Compile Dart to an AOT snapshot",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write the output to <file-name>",
+              "takes_arg": true,
+              "arg_name": "dart-entry-point",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbosity"
+              ],
+              "description": "Sets the verbosity level of the compilation",
+              "takes_arg": true,
+              "arg_name": "verbosity-level",
+              "arg_template": {
+                "custom": [
+                  "all",
+                  "error",
+                  "info",
+                  "warning"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--define"
+              ],
+              "description": "Define an environment declaration. To specify multiple declarations, use multiple options or use commas to separate key-value pairs. For example: dart compile aot-snapshot -D a=1,b=2 main.dart",
+              "takes_arg": true,
+              "arg_name": "key-value-pairs",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-asserts"
+              ],
+              "description": "Enable assert statements",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--packages"
+              ],
+              "description": "Get package locations from the specified file instead of .packages. <path> can be relative or absolute",
+              "takes_arg": true,
+              "arg_name": "args-path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-sound-null-safety",
+                "--sound-null-safety"
+              ],
+              "description": "Respect the nullability of types at runtime",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-S",
+                "--save-debugging-info"
+              ],
+              "description": "Remove debugging information from the output and save it separately to the specified file.. <path> can be relative or absolute",
+              "takes_arg": true,
+              "arg_name": "debug-info-path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "dart-entry-point",
+              "description": "The Dart file containing the main function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "exe",
+          "aliases": [],
+          "description": "Compile Dart to a self-contained executable",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write the output to <file-name>",
+              "takes_arg": true,
+              "arg_name": "dart-entry-point",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbosity"
+              ],
+              "description": "Sets the verbosity level of the compilation",
+              "takes_arg": true,
+              "arg_name": "verbosity-level",
+              "arg_template": {
+                "custom": [
+                  "all",
+                  "error",
+                  "info",
+                  "warning"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--define"
+              ],
+              "description": "Define an environment declaration. To specify multiple declarations, use multiple options or use commas to separate key-value pairs. For example: dart compile aot-snapshot -D a=1,b=2 main.dart",
+              "takes_arg": true,
+              "arg_name": "key-value-pairs",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-asserts"
+              ],
+              "description": "Enable assert statements",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--packages"
+              ],
+              "description": "Get package locations from the specified file instead of .packages. <path> can be relative or absolute",
+              "takes_arg": true,
+              "arg_name": "args-path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-sound-null-safety",
+                "--sound-null-safety"
+              ],
+              "description": "Respect the nullability of types at runtime",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-S",
+                "--save-debugging-info"
+              ],
+              "description": "Remove debugging information from the output and save it separately to the specified file.. <path> can be relative or absolute",
+              "takes_arg": true,
+              "arg_name": "debug-info-path",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "dart-entry-point",
+              "description": "The Dart file containing the main function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "jit-snapshot",
+          "aliases": [],
+          "description": "Compile Dart to a JIT snapshot",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write the output to <file-name>",
+              "takes_arg": true,
+              "arg_name": "dart-entry-point",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbosity"
+              ],
+              "description": "Sets the verbosity level of the compilation",
+              "takes_arg": true,
+              "arg_name": "verbosity-level",
+              "arg_template": {
+                "custom": [
+                  "all",
+                  "error",
+                  "info",
+                  "warning"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "dart-entry-point",
+              "description": "The Dart file containing the main function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "js",
+          "aliases": [],
+          "description": "Compile Dart to JavaScript",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write the output to <file-name>",
+              "takes_arg": true,
+              "arg_name": "dart-entry-point",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbosity"
+              ],
+              "description": "Sets the verbosity level of the compilation",
+              "takes_arg": true,
+              "arg_name": "verbosity-level",
+              "arg_template": {
+                "custom": [
+                  "all",
+                  "error",
+                  "info",
+                  "warning"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--minified"
+              ],
+              "description": "Generate minified output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-D",
+                "--define"
+              ],
+              "description": "Define an environment declaration. To specify multiple declarations, use multiple options or use commas to separate key-value pairs. For example: dart compile aot-snapshot -D a=1,b=2 main.dart",
+              "takes_arg": true,
+              "arg_name": "key-value-pairs",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "dart-entry-point",
+              "description": "The Dart file containing the main function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "kernel",
+          "aliases": [],
+          "description": "Compile Dart to a kernel snapshot",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--output"
+              ],
+              "description": "Write the output to <file-name>",
+              "takes_arg": true,
+              "arg_name": "dart-entry-point",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--verbosity"
+              ],
+              "description": "Sets the verbosity level of the compilation",
+              "takes_arg": true,
+              "arg_name": "verbosity-level",
+              "arg_template": {
+                "custom": [
+                  "all",
+                  "error",
+                  "info",
+                  "warning"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "dart-entry-point",
+              "description": "The Dart file containing the main function",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new Dart project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--template"
+          ],
+          "description": "The project template to use",
+          "takes_arg": true,
+          "arg_name": "template-type",
+          "arg_template": {
+            "custom": [
+              "console",
+              "package",
+              "server-shelf",
+              "web"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pub"
+          ],
+          "description": "Run 'pub get' after the project has been created. Default to on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pub"
+          ],
+          "description": "Do not run 'pub get' after the project has been created. Default to on",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force project generation, even if the target directory already exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fix",
+      "aliases": [],
+      "description": "Apply automated fixes to Dart source code",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--dry-run"
+          ],
+          "description": "Preview the proposed changes but make no changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apply"
+          ],
+          "description": "Apply the proposed changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "format",
+      "aliases": [],
+      "description": "Idiomatically format Dart source code",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Show all options and flags with --help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Set where to write formatted output",
+          "takes_arg": true,
+          "arg_name": "json",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--set-exit-if-changed"
+          ],
+          "description": "Return exist code 1 if there are any formatting changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix"
+          ],
+          "description": "Apply all style fixes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-doc-comments"
+          ],
+          "description": "Use triple slash for documentation comments",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-function-typedefs"
+          ],
+          "description": "Use new syntax for function type typedefs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-named-default-separator"
+          ],
+          "description": "Use '=' as the separator before named parameter default values",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-optional-const"
+          ],
+          "description": "Remove 'const' keyword inside constant context",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-optional-new"
+          ],
+          "description": "Remove 'new' keyword",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fix-single-cascade-statements"
+          ],
+          "description": "Remove unnecessary single cascades from expression statements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--line-length"
+          ],
+          "description": "Wrap lines longer than this. Defaults to 80",
+          "takes_arg": true,
+          "arg_name": "line-length",
+          "arg_template": {
+            "custom": [
+              "80",
+              "120"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--indent"
+          ],
+          "description": "Add this many spaces of leading indentation",
+          "takes_arg": true,
+          "arg_name": "number-of-spaces",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--follow-links"
+          ],
+          "description": "Follow links to files and directories. If unset, links will be ignored",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Show dart_style version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--selection"
+          ],
+          "description": "Track selection (given as 'start:length') through formatting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin-name"
+          ],
+          "description": "Use this path in error messages when input is read from stdin. (defaults to 'stdin')",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files-or-directory",
+          "description": "The files or directories to format",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": "Perform null safety migration on a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Show additional command output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apply-changes"
+          ],
+          "description": "Apply the proposed null safety changes to the files on disk",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-errors"
+          ],
+          "description": "Attempt to perform null safety analysis even if the project has analysis errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-import-check"
+          ],
+          "description": "Go ahead with migration even if some imported files have not yet been migrated",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-preview"
+          ],
+          "description": "Show and interactive preview of the proposed null safety changes in a browser window. (defaults to on)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-web-preview"
+          ],
+          "description": "Do not show and interactive preview of the proposed null safety changes in a browser window. (defaults to off)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preview-hostname"
+          ],
+          "description": "Run the preview server on the specified hostname. If not specified, 'localhost' is used. Use 'any' to specify IPv6.any or IPv4.any. (defaults to the 'localhost')",
+          "takes_arg": true,
+          "arg_name": "host",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preview-port"
+          ],
+          "description": "Run the preview server on the specified port. If not specified, dynamically allocate a port",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--summary"
+          ],
+          "description": "Output a machine-readable summary of migration changes",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-exceptions"
+          ],
+          "description": "Attempt to perform null safety analysis even if exceptions occur",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sdk-path"
+          ],
+          "description": "The path to the Dart SDK",
+          "takes_arg": true,
+          "arg_name": "sdk-path",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pub",
+      "aliases": [],
+      "description": "Work with packages",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a dependency to pubspec.yaml",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--dev"
+              ],
+              "description": "Adds package to the development dependencies instead",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--git-url"
+              ],
+              "description": "Git URL of the package",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--git-ref"
+              ],
+              "description": "Git branch or commit to be retrieved",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--git-path"
+              ],
+              "description": "Path of git package in repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--hosted-url"
+              ],
+              "description": "URL of package host server",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--path"
+              ],
+              "description": "Local path",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--sdk"
+              ],
+              "description": "SDK source for package",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "Use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-offline"
+              ],
+              "description": "Do not use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--precompile"
+              ],
+              "description": "Precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-precompile"
+              ],
+              "description": "Do not precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "package",
+              "description": "Dart pub package name",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "cache",
+          "aliases": [],
+          "description": "Work with the Pub system cache",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [],
+              "description": "Install a package",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--all"
+                  ],
+                  "description": "Install all matching versions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-v",
+                    "--version"
+                  ],
+                  "description": "Version constraint",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "package",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "repair",
+              "aliases": [],
+              "description": "Reinstall a cached package",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deps",
+          "aliases": [],
+          "description": "Print package dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--style"
+              ],
+              "description": "How output should be displayed",
+              "takes_arg": true,
+              "arg_name": "style",
+              "arg_template": {
+                "custom": [
+                  "compact",
+                  "tree",
+                  "list"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dev"
+              ],
+              "description": "Include dev dependencies. (defaults to on)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-dev"
+              ],
+              "description": "Do not include dev dependencies. (defaults to off)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--executables"
+              ],
+              "description": "List all available executables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "downgrade",
+          "aliases": [],
+          "description": "Downgrade packages in a Flutter project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "Use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-offline"
+              ],
+              "description": "Do not use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get packages in a Flutter project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "Use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-offline"
+              ],
+              "description": "Do not use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--precompile"
+              ],
+              "description": "Precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-precompile"
+              ],
+              "description": "Do not precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "global",
+          "aliases": [],
+          "description": "Work with Pub global packages",
+          "subcommands": [
+            {
+              "name": "activate",
+              "aliases": [],
+              "description": "Make a package's executables globally available",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-s",
+                    "--source"
+                  ],
+                  "description": "The source used to find the package",
+                  "takes_arg": true,
+                  "arg_name": "source",
+                  "arg_template": {
+                    "custom": [
+                      "git",
+                      "hosted",
+                      "path"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-executables"
+                  ],
+                  "description": "Do not put executables on PATH",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-x",
+                    "--executable"
+                  ],
+                  "description": "Executable(s) to place on PATH",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--overwrite"
+                  ],
+                  "description": "Overwrite executables from other packages with the same name",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-u",
+                    "--hosted-url"
+                  ],
+                  "description": "A custom pub server URL for the package. Only applies when using the 'hosted' source",
+                  "takes_arg": true,
+                  "arg_name": "url",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "deactivate",
+              "aliases": [],
+              "description": "Remove a previously activated package",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List globally activated packages",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "run",
+              "aliases": [],
+              "description": "Run an executable from a globally activated package",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-h",
+                    "--help"
+                  ],
+                  "description": "Print this usage information",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--enable-asserts"
+                  ],
+                  "description": "Enable assert statements",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-enable-asserts"
+                  ],
+                  "description": "Do not enable assert statements",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--enable-experiment"
+                  ],
+                  "description": "Runs the executable in a VM with the given experiments enabled. (Will disable snapshotting, resulting in slower startup)",
+                  "takes_arg": true,
+                  "arg_name": "experiment",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--sound-null-safety"
+                  ],
+                  "description": "Override the default null safety execution mode",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--no-sound-null-safety"
+                  ],
+                  "description": "Do not override the default null safety execution mode",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Log into pub.dev",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Log out of pub.dev",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "outdated",
+          "aliases": [],
+          "description": "Analyze dependencies to find which ones can be upgraded",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--color"
+              ],
+              "description": "Color the the output. Defaults to color when connected to a terminal, and no-color otherwise",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-color"
+              ],
+              "description": "Do not color the output. Defaults to color when connected to a terminal, and no-color otherwise",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--dependency-overrides"
+              ],
+              "description": "Show resolutions with 'dependency_overrides'. (defaults to on)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-dependency-overrides"
+              ],
+              "description": "Do not show resolutions with 'dependency_overrides'. (defaults to on)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output the results sing a JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--mode"
+              ],
+              "description": "Highlight versions with PROPERTY. Only packages missing the PROPERTY will be included unless --show-all",
+              "takes_arg": true,
+              "arg_name": "property",
+              "arg_template": {
+                "custom": [
+                  "outdated",
+                  "null-safety"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prereleases"
+              ],
+              "description": "Include prereleases in latest version. (defaults to on in --mode=null-safety)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-prereleases"
+              ],
+              "description": "Do not include prereleases in latest version. (defaults to off in --mode=null-safety)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--show-all"
+              ],
+              "description": "Include dependencies that are already fulfilling --mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-show-all"
+              ],
+              "description": "Do not include dependencies that are already fulfilling --mode",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--transitive",
+                "--no-transitive"
+              ],
+              "description": "Show transitive dependencies. (defaults to off in --mode=null-safety",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "publish",
+          "aliases": [],
+          "description": "Publish the current package to pub.dartlang.org",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Publish without confirmation if there are no errors",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Removes a dependency from the current package",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "Use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-offline"
+              ],
+              "description": "Do not use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--precompile"
+              ],
+              "description": "Precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-precompile"
+              ],
+              "description": "Do not precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade the current package's dependencies to latest versions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--offline"
+              ],
+              "description": "Use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-offline"
+              ],
+              "description": "Do not use cached packages instead of accessing the network",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-n",
+                "--dry-run"
+              ],
+              "description": "Report what dependencies would change but don't change any",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--precompile"
+              ],
+              "description": "Precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-precompile"
+              ],
+              "description": "Do not precompile executables in immediate dependencies",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--null-safety"
+              ],
+              "description": "Upgrade constraints in pubspec.yaml to null-safety versions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--major-versions"
+              ],
+              "description": "Upgrades packages to their latest resolvable versions, and updates pubspec.yaml",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "uploader",
+          "aliases": [],
+          "description": "Manage uploaders for a package on pub.dev",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--help"
+              ],
+              "description": "Print this usage information",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--package"
+              ],
+              "description": "The package whose uploaders will be modified. (defaults to the current package)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trace"
+          ],
+          "description": "Print debugging information when an error occurs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-trace"
+          ],
+          "description": "Do not print debugging information when an error occurs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Shortcut for '--verbose=all",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a Dart program",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--observe"
+          ],
+          "description": "The observe flag is a convenience flag used to run a program with a set of common options. Useful for debugging",
+          "takes_arg": true,
+          "arg_name": "port-or-address",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-vm-service"
+          ],
+          "description": "Enables the VM service and listens on the specified port for connections (default port number is 8181, default dind address is localhost)",
+          "takes_arg": true,
+          "arg_name": "port-or-address",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pause-isolates-on-exit",
+            "--no-pause-isolates-on-exit"
+          ],
+          "description": "Pause isolates on exit when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pause-isolates-on-unhandled-exceptions"
+          ],
+          "description": "Pause isolates when an unhandled exception is encountered when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pause-isolates-on-unhandled-exceptions"
+          ],
+          "description": "Do not pause isolates when an unhandled exception is encountered when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--warn-on-pause-with-no-debugger"
+          ],
+          "description": "Print a warning when an isolate pauses with no attahed debugger when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-warn-on-pause-with-no-debugger"
+          ],
+          "description": "Do not print a warning when an isolate pauses with no attahed debugger when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pause-isolates-on-start"
+          ],
+          "description": "Pause isolates on start when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-pause-isolates-on-start"
+          ],
+          "description": "Do not pause isolates on start when running with --enable-vm-service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-asserts"
+          ],
+          "description": "Enable assert statements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-enable-asserts"
+          ],
+          "description": "Do not enable assert statements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbosity"
+          ],
+          "description": "Sets the verbosity level of the compilation",
+          "takes_arg": true,
+          "arg_name": "verbosity-level",
+          "arg_template": {
+            "custom": [
+              "all",
+              "error",
+              "info",
+              "warning"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-D",
+            "--define"
+          ],
+          "description": "Define an environment declaration. To specify multiple declarations, use multiple options or use commas to separate key-value pairs. For example: dart compile aot-snapshot -D a=1,b=2 main.dart",
+          "takes_arg": true,
+          "arg_name": "key-value-pairs",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-service-auth-codes"
+          ],
+          "description": "Disables the requirement for an authentication code to communicate with the VM service. Authentication codes help protect against CSRF attacks, so it is not recommended to disable them unless behind a firewall on a secure device",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-service-port-fallback"
+          ],
+          "description": "When the VM service is told to bind to a particular port, fallback to 0 if it fails to bind instead of failing to start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--namespace"
+          ],
+          "description": "The path to a directory that dart:io calls will treat as the root of the filesystem",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--root-certs-file"
+          ],
+          "description": "The The path to a file containing the trusted root certificates to use for secure socket connections",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--root-certs-cache"
+          ],
+          "description": "The path to a cache directory containing the trusted root certificates to use for secure socket connections",
+          "takes_arg": true,
+          "arg_name": "path",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--trace-loading"
+          ],
+          "description": "Enables tracing of library and script loading",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-experiment"
+          ],
+          "description": "Enable one or more experimental features (see dart.dev/go/experiments",
+          "takes_arg": true,
+          "arg_name": "experiment",
+          "arg_template": {
+            "custom": [
+              "const-functions",
+              "extension-methods",
+              "extension-types",
+              "generic-metadata",
+              "non-nullable",
+              "nonfunction-type-aliases",
+              "triple-shift",
+              "value-class",
+              "variance"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run tests for a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Print this usage information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Print this usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Print verbose output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Current Dart version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-analytics"
+      ],
+      "description": "Enables analytics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-analytics"
+      ],
+      "description": "Disables analytics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

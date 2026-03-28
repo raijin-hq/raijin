@@ -1,0 +1,726 @@
+{
+  "name": "dtm",
+  "aliases": [],
+  "description": "DevStream is an open-source DevOps toolchain manager",
+  "subcommands": [
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Create or update DevOps tools according to DevStream configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config-file",
+            "-f"
+          ],
+          "description": "Config file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin-dir",
+            "-d"
+          ],
+          "description": "Plugins directory",
+          "takes_arg": true,
+          "arg_name": "plugin-dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Apply directly without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for dtm for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate autocompletion script for bash",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate autocompletion script for fish",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate autocompletion script for powershell",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate autocompletion script for zsh",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Delete DevOps tools according to DevStream configuration file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config-file",
+            "-f"
+          ],
+          "description": "Config file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force delete by config",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin-dir",
+            "-d"
+          ],
+          "description": "Plugins directory",
+          "takes_arg": true,
+          "arg_name": "plugin-dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Delete directly without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "destroy",
+      "aliases": [],
+      "description": "Destroy DevOps tools deployment according to DevStream configuration file & state file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config-file",
+            "-f"
+          ],
+          "description": "Config file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force destroy by config",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin-dir",
+            "-d"
+          ],
+          "description": "Plugins directory",
+          "takes_arg": true,
+          "arg_name": "plugin-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Destroy directly without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "develop",
+      "aliases": [],
+      "description": "Develop is used for develop a new plugin",
+      "subcommands": [
+        {
+          "name": "create-plugin",
+          "aliases": [],
+          "description": "Create a new plugin",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name",
+                "-n"
+              ],
+              "description": "Specify name of the plugin to be created",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "validate-plugin",
+          "aliases": [],
+          "description": "Validate a plugin",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all",
+                "-a"
+              ],
+              "description": "Validate all plugins",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--name",
+                "-n"
+              ],
+              "description": "Specify name of the plugin to be validated",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Download needed plugins according to the config file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Download all plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--arch"
+          ],
+          "description": "Download plugins for specific arch",
+          "takes_arg": true,
+          "arg_name": "arch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-file",
+            "-f"
+          ],
+          "description": "Config file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--download-only"
+          ],
+          "description": "Download plugins only",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--os"
+          ],
+          "description": "Download plugins for specific os",
+          "takes_arg": true,
+          "arg_name": "os",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin-dir",
+            "-d"
+          ],
+          "description": "Plugins directory",
+          "takes_arg": true,
+          "arg_name": "plugin-dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugins",
+            "-p"
+          ],
+          "description": "The plugins to be downloaded",
+          "takes_arg": true,
+          "arg_name": "plugins",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "This command only supports listing plugins now",
+      "subcommands": [
+        {
+          "name": "plugins",
+          "aliases": [],
+          "description": "List all plugins",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--filter",
+                "-r"
+              ],
+              "description": "Filter plugin by regex",
+              "takes_arg": true,
+              "arg_name": "filter",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show is used to print plugins' configuration templates or status",
+      "subcommands": [
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Show configuration information",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--plugin",
+                "-p"
+              ],
+              "description": "Specify name with the plugin",
+              "takes_arg": true,
+              "arg_name": "plugin",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--template",
+                "-t"
+              ],
+              "description": "Print a template config, e.g. quickstart/gitops/",
+              "takes_arg": true,
+              "arg_name": "template",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status information",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all",
+                "-a"
+              ],
+              "description": "Show all instances of all plugins status",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config-file",
+                "-f"
+              ],
+              "description": "Config file",
+              "takes_arg": true,
+              "arg_name": "config-file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--id",
+                "-i"
+              ],
+              "description": "Specify id with the plugin instance",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--plugin",
+                "-p"
+              ],
+              "description": "Specify name with the plugin",
+              "takes_arg": true,
+              "arg_name": "plugin",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--plugin-dir",
+                "-d"
+              ],
+              "description": "Plugins directory",
+              "takes_arg": true,
+              "arg_name": "plugin-dir",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade dtm to the latest release version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Upgrade directly without confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "verify",
+      "aliases": [],
+      "description": "Verify DevOps tools according to DevStream config file and state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--config-file",
+            "-f"
+          ],
+          "description": "Config file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--plugin-dir",
+            "-d"
+          ],
+          "description": "Plugins directory",
+          "takes_arg": true,
+          "arg_name": "plugin-dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version number of DevStream",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "apply",
+          "aliases": [],
+          "description": "Create or update DevOps tools according to DevStream configuration file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for dtm for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete DevOps tools according to DevStream configuration file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "destroy",
+          "aliases": [],
+          "description": "Destroy DevOps tools deployment according to DevStream configuration file & state file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "develop",
+          "aliases": [],
+          "description": "Develop is used for develop a new plugin",
+          "subcommands": [
+            {
+              "name": "create-plugin",
+              "aliases": [],
+              "description": "Create a new plugin",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "validate-plugin",
+              "aliases": [],
+              "description": "Validate a plugin",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Download needed plugins according to the config file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "This command only supports listing plugins now",
+          "subcommands": [
+            {
+              "name": "plugins",
+              "aliases": [],
+              "description": "List all plugins",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "show",
+          "aliases": [],
+          "description": "Show is used to print plugins' configuration templates or status",
+          "subcommands": [
+            {
+              "name": "config",
+              "aliases": [],
+              "description": "Show configuration information",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "status",
+              "aliases": [],
+              "description": "Show status information",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade dtm to the latest release version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "verify",
+          "aliases": [],
+          "description": "Verify DevOps tools according to DevStream config file and state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Print the version number of DevStream",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Debug level log",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

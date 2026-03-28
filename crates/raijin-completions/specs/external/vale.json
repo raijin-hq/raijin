@@ -1,0 +1,162 @@
+{
+  "name": "vale",
+  "aliases": [],
+  "description": "A syntax-aware linter for prose built with speed and extensibility in mind",
+  "subcommands": [
+    {
+      "name": "ls-config",
+      "aliases": [],
+      "description": "Print the current configuration to stdout",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ls-metrics",
+      "aliases": [],
+      "description": "Print the given file's internal metrics to stdout",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": "The path to a file you want to analyze",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for vale",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print the current version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-syntax"
+      ],
+      "description": "Lint all files line-by-line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-exit"
+      ],
+      "description": "Don't return a nonzero exit code on errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-wrap"
+      ],
+      "description": "Don't wrap CLI output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ext"
+      ],
+      "description": "An extension to associate with stdin",
+      "takes_arg": true,
+      "arg_name": "ext",
+      "arg_template": {
+        "custom": [
+          ".md",
+          ".rst",
+          ".adoc",
+          ".html"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--glob"
+      ],
+      "description": "A glob pattern",
+      "takes_arg": true,
+      "arg_name": "glob",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--minAlertLevel"
+      ],
+      "description": "The minimum level to display",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": {
+        "custom": [
+          "suggestion",
+          "warning",
+          "error"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output"
+      ],
+      "description": "The alert output style to use",
+      "takes_arg": true,
+      "arg_name": "style",
+      "arg_template": {
+        "custom": [
+          "line",
+          "JSON"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "A path to a .vale.ini file",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

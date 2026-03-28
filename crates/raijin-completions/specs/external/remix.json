@@ -1,0 +1,117 @@
+{
+  "name": "remix",
+  "aliases": [],
+  "description": "Remix CLI to start, build and export your application",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Create an optimized production build of your application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--sourcemap"
+          ],
+          "description": "Enables production sourcemap",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Remix application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "Start the application in development mode",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Remix application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "aliases": [],
+      "description": "Prepare node_modules/remix folder (after installation of packages)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Remix application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "aliases": [],
+      "description": "Generate the route config of the application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Print the route config as JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Represent the directory of the Remix application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Output usage information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

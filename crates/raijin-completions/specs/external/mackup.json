@@ -1,0 +1,112 @@
+{
+  "name": "mackup",
+  "aliases": [],
+  "description": "Mackup",
+  "subcommands": [
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List all the supported mackup applications",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "backup",
+      "aliases": [],
+      "description": "Sync your conf files to your synced storage",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "restore",
+      "aliases": [],
+      "description": "Link the conf files already in your synced storage on your system",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Show the current configuration",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "application",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "aliases": [],
+      "description": "Reset everything as it was before using Mackup",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force",
+        "-f"
+      ],
+      "description": "Force every question asked to be answered with 'Yes'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--root",
+        "-r"
+      ],
+      "description": "Allow mackup to be run as superuser",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dry-run",
+        "-n"
+      ],
+      "description": "Show steps without executing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

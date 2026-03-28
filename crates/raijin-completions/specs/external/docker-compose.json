@@ -1,0 +1,1795 @@
+{
+  "name": "docker-compose",
+  "aliases": [],
+  "description": "Define and run multi-container applications with Docker",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build or rebuild services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--build-arg"
+          ],
+          "description": "Set build-time variables for services",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--compress"
+          ],
+          "description": "Compress the build context using gzip. DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-rm"
+          ],
+          "description": "Always remove intermediate containers. DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--memory",
+            "-m"
+          ],
+          "description": "Set memory limit for the build container. Not supported on buildkit yet",
+          "takes_arg": true,
+          "arg_name": "memory",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-cache"
+          ],
+          "description": "Do not use cache when building the image",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-rm"
+          ],
+          "description": "Do not remove intermediate containers after a successful build. DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Build images in parallel. DEPRECATED",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--progress"
+          ],
+          "description": "Set type of progress output (auto, tty, plain, quiet)",
+          "takes_arg": true,
+          "arg_name": "progress",
+          "arg_template": {
+            "custom": [
+              "auto",
+              "tty",
+              "plain",
+              "quiet"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pull"
+          ],
+          "description": "Always attempt to pull a newer version of the image",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Don't print anything to STDOUT",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh"
+          ],
+          "description": "Set SSH authentications used when building service images. (use 'default' for using your default SSH Agent)",
+          "takes_arg": true,
+          "arg_name": "ssh",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "services",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [
+        "convert"
+      ],
+      "description": "Converts the compose file to platform's canonical format",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Format the output. Values: [yaml | json]",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "yaml",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hash"
+          ],
+          "description": "Print the service config hash, one per line",
+          "takes_arg": true,
+          "arg_name": "hash",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--images"
+          ],
+          "description": "Print the image names, one per line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-interpolate"
+          ],
+          "description": "Don't interpolate environment variables",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-normalize"
+          ],
+          "description": "Don't normalize compose model",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Save to file (default to stdout)",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profiles"
+          ],
+          "description": "Print the profile names, one per line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Only validate the configuration, don't print anything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--resolve-image-digests"
+          ],
+          "description": "Pin image tags to digests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--services"
+          ],
+          "description": "Print the service names, one per line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volumes"
+          ],
+          "description": "Print the volume names, one per line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "services",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "cp",
+      "aliases": [],
+      "description": "Copy files/folders between a service container and the local filesystem",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Copy to all the containers of the service",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--archive",
+            "-a"
+          ],
+          "description": "Archive mode (copy all uid/gid information)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--follow-link",
+            "-L"
+          ],
+          "description": "Always follow symbol link in SRC_PATH",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--index"
+          ],
+          "description": "Index of the container if there are multiple instances of a service",
+          "takes_arg": true,
+          "arg_name": "index",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source path",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "dest path",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Creates containers for a service",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "Build images before starting containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-recreate"
+          ],
+          "description": "Recreate containers even if their configuration and image haven't changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-build"
+          ],
+          "description": "Don't build an image, even if it's missing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-recreate"
+          ],
+          "description": "If containers already exist, don't recreate them. Incompatible with --force-recreate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "down",
+      "aliases": [],
+      "description": "Stop and remove containers, networks",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--remove-orphans"
+          ],
+          "description": "Remove containers for services not defined in the Compose file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rmi"
+          ],
+          "description": "Remove images used by services. \"local\" remove only images that don't have a custom tag (\"local\"|\"all\")",
+          "takes_arg": true,
+          "arg_name": "rmi",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout",
+            "-t"
+          ],
+          "description": "Specify a shutdown timeout in seconds",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volumes",
+            "-v"
+          ],
+          "description": "Remove named volumes declared in the `volumes` section of the Compose file and anonymous volumes attached to containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "events",
+      "aliases": [],
+      "description": "Receive real time events from containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Output events as a stream of json objects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a command in a running container",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--detach",
+            "-d"
+          ],
+          "description": "Detached mode: Run command in the background",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "key=value",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--index"
+          ],
+          "description": "Index of the container if there are multiple instances of a service [default: 1]",
+          "takes_arg": true,
+          "arg_name": "index",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive",
+            "-i"
+          ],
+          "description": "Keep STDIN open even if not attached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-TTY",
+            "-T"
+          ],
+          "description": "Disable pseudo-TTY allocation. By default `docker compose exec` allocates a TTY",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--privileged"
+          ],
+          "description": "Give extended privileges to the process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tty",
+            "-t"
+          ],
+          "description": "Allocate a pseudo-TTY",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user",
+            "-u"
+          ],
+          "description": "Run the command as this user",
+          "takes_arg": true,
+          "arg_name": "user",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--workdir",
+            "-w"
+          ],
+          "description": "Path to workdir directory for this command",
+          "takes_arg": true,
+          "arg_name": "workdir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "images",
+      "aliases": [],
+      "description": "List images used by the created containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Only display IDs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "kill",
+      "aliases": [],
+      "description": "Force stop service containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--signal",
+            "-s"
+          ],
+          "description": "SIGNAL to send to the container",
+          "takes_arg": true,
+          "arg_name": "signal",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "View output from containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--follow",
+            "-f"
+          ],
+          "description": "Follow log output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Produce monochrome output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-log-prefix"
+          ],
+          "description": "Don't print prefix in logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Show logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)",
+          "takes_arg": true,
+          "arg_name": "since",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tail"
+          ],
+          "description": "Number of lines to show from the end of the logs for each container",
+          "takes_arg": true,
+          "arg_name": "lines",
+          "arg_template": {
+            "custom": [
+              "all"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timestamps",
+            "-t"
+          ],
+          "description": "Show timestamps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--until"
+          ],
+          "description": "Show logs before a timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)",
+          "takes_arg": true,
+          "arg_name": "timestamp",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "List running compose projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Show all stopped Compose projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filter output based on conditions provided",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Format the output. Values: [pretty | json]",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "pretty",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Only display IDs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pause",
+      "aliases": [],
+      "description": "Pause services",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "port",
+      "aliases": [],
+      "description": "Print the public port for a port binding",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--index"
+          ],
+          "description": "Index of the container if service has multiple replicas",
+          "takes_arg": true,
+          "arg_name": "index",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--protocol"
+          ],
+          "description": "Tcp or udp",
+          "takes_arg": true,
+          "arg_name": "protocol",
+          "arg_template": {
+            "custom": [
+              "tcp",
+              "udp"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "private_port",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "ps",
+      "aliases": [],
+      "description": "List containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Show all stopped containers (including those created by the run command)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter"
+          ],
+          "description": "Filter services by a property (supported filters: status)",
+          "takes_arg": true,
+          "arg_name": "filter",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Format the output. Values: [pretty | json]",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "pretty",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Only display IDs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--services"
+          ],
+          "description": "Display services",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--status"
+          ],
+          "description": "Filter services by status. Values: [paused | restarting | removing | running | dead | created | exited]",
+          "takes_arg": true,
+          "arg_name": "status",
+          "arg_template": {
+            "custom": [
+              "paused",
+              "restarting",
+              "removing",
+              "running",
+              "dead",
+              "created",
+              "exited"
+            ]
+          },
+          "is_repeatable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull service images",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ignore-pull-failures"
+          ],
+          "description": "Pull what it can and ignores images with pull failures",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-deps"
+          ],
+          "description": "Also pull services declared as dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-parallel"
+          ],
+          "description": "DEPRECATED disable parallel pulling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "DEPRECATED pull multiple images in parallel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet",
+            "-q"
+          ],
+          "description": "Pull without printing progress information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push service images",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ignore-push-failures"
+          ],
+          "description": "Push what it can and ignores images with push failures",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--timeout",
+            "-t"
+          ],
+          "description": "Specify a shutdown timeout in seconds",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "rm",
+      "aliases": [],
+      "description": "Removes stopped service containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Deprecated - no effect",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Don't ask to confirm removal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stop",
+            "-s"
+          ],
+          "description": "Stop the containers, if required, before removing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volumes",
+            "-v"
+          ],
+          "description": "Remove any anonymous volumes attached to containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run a one-off command on a service",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--detach",
+            "-d"
+          ],
+          "description": "Run container in background and print container ID",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--entrypoint"
+          ],
+          "description": "Override the entrypoint of the image",
+          "takes_arg": true,
+          "arg_name": "entrypoint",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env",
+            "-e"
+          ],
+          "description": "Set environment variables",
+          "takes_arg": true,
+          "arg_name": "env",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--interactive",
+            "-i"
+          ],
+          "description": "Keep STDIN open even if not attached",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--label",
+            "-l"
+          ],
+          "description": "Add or override a label",
+          "takes_arg": true,
+          "arg_name": "label",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--name"
+          ],
+          "description": "Assign a name to the container",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-TTY",
+            "-T"
+          ],
+          "description": "Disable pseudo-TTY allocation (default: auto-detected)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-deps"
+          ],
+          "description": "Don't start linked services",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--publish",
+            "-p"
+          ],
+          "description": "Publish a container's port(s) to the host",
+          "takes_arg": true,
+          "arg_name": "publish",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--quiet-pull"
+          ],
+          "description": "Pull without printing progress information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rm"
+          ],
+          "description": "Automatically remove the container when it exits",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service-ports"
+          ],
+          "description": "Run command with the service's ports enabled and mapped to the host",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tty",
+            "-t"
+          ],
+          "description": "Allocate a pseudo-TTY",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-aliases"
+          ],
+          "description": "Use the service's network useAliases in the network(s) the container connects to",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user",
+            "-u"
+          ],
+          "description": "Run as specified username or uid",
+          "takes_arg": true,
+          "arg_name": "user",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--volume",
+            "-v"
+          ],
+          "description": "Bind mount a volume",
+          "takes_arg": true,
+          "arg_name": "volume",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--workdir",
+            "-w"
+          ],
+          "description": "Working directory inside the container",
+          "takes_arg": true,
+          "arg_name": "workdir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "aliases": [],
+      "description": "Start services",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "stop",
+      "aliases": [],
+      "description": "Stop services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--timeout",
+            "-t"
+          ],
+          "description": "Specify a shutdown timeout in seconds",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "top",
+      "aliases": [],
+      "description": "Display the running processes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "unpause",
+      "aliases": [],
+      "description": "Unpause services",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "up",
+      "aliases": [],
+      "description": "Create and start containers",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--abort-on-container-exit"
+          ],
+          "description": "Stops all containers if any container was stopped. Incompatible with -d",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--always-recreate-deps"
+          ],
+          "description": "Recreate dependent containers. Incompatible with --no-recreate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--attach"
+          ],
+          "description": "Attach to service output",
+          "takes_arg": true,
+          "arg_name": "attach",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--attach-dependencies"
+          ],
+          "description": "Attach to dependent containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--build"
+          ],
+          "description": "Build images before starting containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--detach",
+            "-d"
+          ],
+          "description": "Detached mode: Run containers in the background",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exit-code-from"
+          ],
+          "description": "Return the exit code of the selected service container. Implies --abort-on-container-exit",
+          "takes_arg": true,
+          "arg_name": "exit-code-from",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-recreate"
+          ],
+          "description": "Recreate containers even if their configuration and image haven't changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-build"
+          ],
+          "description": "Don't build an image, even if it's missing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-color"
+          ],
+          "description": "Produce monochrome output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-deps"
+          ],
+          "description": "Don't start linked services",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-log-prefix"
+          ],
+          "description": "Don't print prefix in logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-recreate"
+          ],
+          "description": "If containers already exist, don't recreate them. Incompatible with --force-recreate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-start"
+          ],
+          "description": "Don't start the services after creating them",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet-pull"
+          ],
+          "description": "Pull without printing progress information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-orphans"
+          ],
+          "description": "Remove containers for services not defined in the Compose file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--renew-anon-volumes",
+            "-V"
+          ],
+          "description": "Recreate anonymous volumes instead of retrieving data from the previous containers",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scale"
+          ],
+          "description": "Scale SERVICE to NUM instances. Overrides the `scale` setting in the Compose file if present",
+          "takes_arg": true,
+          "arg_name": "scale",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--timeout",
+            "-t"
+          ],
+          "description": "Use this timeout in seconds for container shutdown when attached or when containers are already running",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wait"
+          ],
+          "description": "Wait for services to be running|healthy. Implies detached mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Show the Docker Compose version information",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Format the output. Values: [pretty | json]. (Default: pretty)",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "pretty",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--short"
+          ],
+          "description": "Shows only Compose's version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--ansi"
+      ],
+      "description": "Control when to print ANSI control characters (\"never\"|\"always\"|\"auto\")",
+      "takes_arg": true,
+      "arg_name": "ansi",
+      "arg_template": {
+        "custom": [
+          "never",
+          "always",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compatibility"
+      ],
+      "description": "Run compose in backward compatibility mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--env-file"
+      ],
+      "description": "Specify an alternate environment file",
+      "takes_arg": true,
+      "arg_name": "env-file",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--file",
+        "-f"
+      ],
+      "description": "Compose configuration files",
+      "takes_arg": true,
+      "arg_name": "file",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Do not print ANSI control characters (DEPRECATED)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--profile"
+      ],
+      "description": "Specify a profile to enable",
+      "takes_arg": true,
+      "arg_name": "profile",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--project-directory"
+      ],
+      "description": "Specify an alternate working directory (default: the path of the, first specified, Compose file)",
+      "takes_arg": true,
+      "arg_name": "project-directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--project-name",
+        "-p"
+      ],
+      "description": "Project name",
+      "takes_arg": true,
+      "arg_name": "project-name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Show more output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--workdir"
+      ],
+      "description": "DEPRECATED! USE --project-directory INSTEAD. Specify an alternate working directory (default: the path of the, first specified, Compose file)",
+      "takes_arg": true,
+      "arg_name": "workdir",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

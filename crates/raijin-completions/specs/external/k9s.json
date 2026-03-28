@@ -1,0 +1,321 @@
+{
+  "name": "k9s",
+  "aliases": [],
+  "description": "K9s is a terminal based UI to interact with your Kubernetes clusters",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Print configuration info",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for info",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print version/build info",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--short"
+          ],
+          "description": "Prints K9s version info in short format",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-A",
+        "--all-namespaces"
+      ],
+      "description": "Launch K9s in all namespaces",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--as"
+      ],
+      "description": "Username to impersonate for the operation",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--as-group"
+      ],
+      "description": "Group to impersonate for the operation",
+      "takes_arg": true,
+      "arg_name": "stringArray",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--certificate-authority"
+      ],
+      "description": "Path to a cert file for the certificate authority",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--client-key"
+      ],
+      "description": "Path to a client key file for TLS",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c",
+        "--command"
+      ],
+      "description": "Overrides the default resource to load when the application launches",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--context"
+      ],
+      "description": "The name of the kubeconfig context to use",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crumbsless"
+      ],
+      "description": "Turn K9s crumbs off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--headless"
+      ],
+      "description": "Turn K9s header off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help for k9s",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--insecure-skip-tls-verify"
+      ],
+      "description": "If true, the server's caCertFile will not be checked for validity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kubeconfig"
+      ],
+      "description": "Path to the kubeconfig file to use for CLI requests",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logFile"
+      ],
+      "description": "Specify the log file",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-l",
+        "--logLevel"
+      ],
+      "description": "Specify a log level (info, warn, debug, trace, error) (default 'info')",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": {
+        "custom": [
+          "info",
+          "warn",
+          "debug",
+          "trace",
+          "error"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--logoless"
+      ],
+      "description": "Turn K9s logo off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--namespace"
+      ],
+      "description": "If present, the namespace scope for this CLI request",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--readonly"
+      ],
+      "description": "Sets readOnly mode by overriding readOnly configuration setting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--refresh"
+      ],
+      "description": "Specify the default refresh rate as an integer (sec) (default 2)",
+      "takes_arg": true,
+      "arg_name": "int",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--request-timeout"
+      ],
+      "description": "The length of time to wait before giving up on a single server request",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--screen-dump-dir"
+      ],
+      "description": "Sets a path to a dir for a screen dumps",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--token"
+      ],
+      "description": "Bearer token for authentication to the API server",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--user"
+      ],
+      "description": "The name of the kubeconfig user to use",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--write"
+      ],
+      "description": "Sets write mode by overriding the readOnly configuration setting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

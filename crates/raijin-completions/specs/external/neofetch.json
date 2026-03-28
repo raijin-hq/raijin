@@ -1,0 +1,1130 @@
+{
+  "name": "neofetch",
+  "aliases": [],
+  "description": "The most complete system information CLI tool",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for neofetch",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable"
+      ],
+      "description": "Disable information line",
+      "takes_arg": true,
+      "arg_name": "Information lines",
+      "arg_template": {
+        "custom": [
+          "os",
+          "host",
+          "kernel",
+          "uptime",
+          "packages",
+          "shell",
+          "term",
+          "cpu",
+          "gpu",
+          "memory",
+          "disk",
+          "battery",
+          "resolution",
+          "wm",
+          "de",
+          "theme",
+          "wm_theme",
+          "icons"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--title_fqdn"
+      ],
+      "description": "Hide/Show Fully Qualified Domain Name in title",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--package_managers"
+      ],
+      "description": "Hide/Show Package Manager names",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "tiny"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--os_arch"
+      ],
+      "description": "Hide/Show OS architecture",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--speed_type"
+      ],
+      "description": "Change the type of cpu speed to display",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "current",
+          "min",
+          "bios",
+          "scaling_current",
+          "scaling_min",
+          "scaling_max"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--speed_shorthand"
+      ],
+      "description": "Whether or not to show decimals in CPU speed",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu_brand"
+      ],
+      "description": "Enable/Disable CPU brand in output",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu_cores"
+      ],
+      "description": "Whether or not to display the number of CPU cores",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "logical",
+          "physical",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu_speed"
+      ],
+      "description": "Hide/Show cpu speed",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu_temp"
+      ],
+      "description": "Hide/Show cpu temperature",
+      "takes_arg": true,
+      "arg_name": "unit/off",
+      "arg_template": {
+        "custom": [
+          "C",
+          "F",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--distro_shorthand"
+      ],
+      "description": "Shorten the output of distro",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "tiny"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kernel_shorthand"
+      ],
+      "description": "Shorten the output of kernel",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--uptime_shorthand"
+      ],
+      "description": "Shorten the output of uptime",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off",
+          "tiny"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--refresh_rate"
+      ],
+      "description": "Whether to display the refresh rate of each monitor",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gpu_brand"
+      ],
+      "description": "Enable/Disable GPU brand in output",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gpu_type"
+      ],
+      "description": "Which GPU to display",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "all",
+          "dedicated",
+          "integrated"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--de_version"
+      ],
+      "description": "Show/Hide Desktop Environment version",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gtk_shorthand"
+      ],
+      "description": "Shorten output of gtk theme/icons",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gtk2"
+      ],
+      "description": "Enable/Disable gtk2 theme/font/icons output",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gtk3"
+      ],
+      "description": "Enable/Disable gtk3 theme/font/icons output",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell_path"
+      ],
+      "description": "Enable/Disable showing $SHELL path",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shell_version"
+      ],
+      "description": "Enable/Disable showing $SHELL version",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disk_show"
+      ],
+      "description": "Which disks to display",
+      "takes_arg": true,
+      "arg_name": "disk",
+      "arg_template": {
+        "custom": [
+          "/dev/sd",
+          "/dev/nvme",
+          "/dev/mmcblk",
+          "/dev/mapper",
+          "/mnt",
+          "/run/media"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disk_subtitle"
+      ],
+      "description": "What information to append to the Disk subtitle",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "name",
+          "mount",
+          "dir",
+          "none"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disk_percent"
+      ],
+      "description": "Hide/Show disk percent",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ip_host"
+      ],
+      "description": "URL to query for public IP",
+      "takes_arg": true,
+      "arg_name": "https://...",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ip_timeout"
+      ],
+      "description": "Public IP timeout",
+      "takes_arg": true,
+      "arg_name": "X seconds",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--memory_percent"
+      ],
+      "description": "Display memory percentage",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--memory_unit"
+      ],
+      "description": "Memory output unit",
+      "takes_arg": true,
+      "arg_name": "unit",
+      "arg_template": {
+        "custom": [
+          "kib",
+          "mib",
+          "gib"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--colors"
+      ],
+      "description": "Changes the text colors",
+      "takes_arg": true,
+      "arg_name": "Title",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--underline"
+      ],
+      "description": "Enable/Disable the underline",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--underline_char"
+      ],
+      "description": "Character to use when underlining title",
+      "takes_arg": true,
+      "arg_name": "char",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bold"
+      ],
+      "description": "Enable/Disable bold text",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--separator"
+      ],
+      "description": "Changes the default ':' separator to the specified string",
+      "takes_arg": true,
+      "arg_name": "string",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color_blocks"
+      ],
+      "description": "Enable/Disable the color blocks",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--col_offset"
+      ],
+      "description": "Left-padding of color blocks",
+      "takes_arg": true,
+      "arg_name": "number",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "[0-9]+"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--block_width"
+      ],
+      "description": "Width of color blocks in spaces",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--block_height"
+      ],
+      "description": "Height of color blocks in lines",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--block_range"
+      ],
+      "description": "Range of colors to print as blocks",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bar_char"
+      ],
+      "description": "Characters to use when drawing bars",
+      "takes_arg": true,
+      "arg_name": "Elapsed char",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bar_border"
+      ],
+      "description": "Whether or not to surround the bar with '[]'",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bar_length"
+      ],
+      "description": "Length in spaces to make the bars",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bar_colors"
+      ],
+      "description": "Colors to make the bar",
+      "takes_arg": true,
+      "arg_name": "Elapsed",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu_display"
+      ],
+      "description": "CPU bar mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "bar",
+          "infobar",
+          "barinfo",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--memory_display"
+      ],
+      "description": "Memory display mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "bar",
+          "infobar",
+          "barinfo",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--battery_display"
+      ],
+      "description": "Battery display mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "bar",
+          "infobar",
+          "barinfo",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disk_display"
+      ],
+      "description": "Disk display mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "bar",
+          "infobar",
+          "barinfo",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--backend"
+      ],
+      "description": "Which image backend to use",
+      "takes_arg": true,
+      "arg_name": "backend",
+      "arg_template": {
+        "custom": [
+          "ascii",
+          "caca",
+          "chafa",
+          "jp2a",
+          "iterm2",
+          "off",
+          "pixterm",
+          "pot",
+          "sixel",
+          "termpix",
+          "tycat",
+          "w3m",
+          "kitty"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--source"
+      ],
+      "description": "Which image or ascii file to use",
+      "takes_arg": true,
+      "arg_name": "source",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ascii"
+      ],
+      "description": "Same as --backend ascii",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--caca"
+      ],
+      "description": "Same as --backend caca",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--chafa"
+      ],
+      "description": "Same as --backend chafa",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--iterm2"
+      ],
+      "description": "Same as --backend iterm2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jp2a"
+      ],
+      "description": "Same as --backend jp2a",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--kitty"
+      ],
+      "description": "Same as --backend kitty",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pot"
+      ],
+      "description": "Same as --backend pot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pixterm"
+      ],
+      "description": "Same as --backend pixterm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sixel"
+      ],
+      "description": "Same as --backend sixel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--termpix"
+      ],
+      "description": "Same as --backend termpix",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tycat"
+      ],
+      "description": "Same as --backend tycat",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--w3m"
+      ],
+      "description": "Same as --backend w3m",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--off"
+      ],
+      "description": "Same as --backend off",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ascii_colors"
+      ],
+      "description": "Colors to print the ascii art",
+      "takes_arg": true,
+      "arg_name": "Color 1",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ascii_distro"
+      ],
+      "description": "Which Distro's ascii art to print",
+      "takes_arg": true,
+      "arg_name": "OS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ascii_bold"
+      ],
+      "description": "Whether or not to bold the ascii logo",
+      "takes_arg": true,
+      "arg_name": "on/off",
+      "arg_template": {
+        "custom": [
+          "on",
+          "off"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--logo"
+      ],
+      "description": "Hide the info text and only show the ascii logo",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--loop"
+      ],
+      "description": "Redraw the image constantly until Ctrl+C is used",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--size"
+      ],
+      "description": "How to size the image",
+      "takes_arg": true,
+      "arg_name": "size",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "[0-9]+px",
+          "[0-9]+%"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crop_mode"
+      ],
+      "description": "Which crop mode to use",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "normal",
+          "fit",
+          "fill"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--crop_offset"
+      ],
+      "description": "Change the crop offset for normal mode",
+      "takes_arg": true,
+      "arg_name": "offset",
+      "arg_template": {
+        "custom": [
+          "northwest",
+          "north",
+          "northeast"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--xoffset"
+      ],
+      "description": "How close the image will be to the left edge of the window. This only works with w3m",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--yoffset"
+      ],
+      "description": "How close the image will be to the top edge of the window. This only works with w3m",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gap"
+      ],
+      "description": "Gap between image and text",
+      "takes_arg": true,
+      "arg_name": "[0-9]+",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--clean"
+      ],
+      "description": "Delete cached files and thumbnails",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Specify a path to a custom config file",
+      "takes_arg": true,
+      "arg_name": "file/none",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no_config"
+      ],
+      "description": "Don't create the user config file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print_config"
+      ],
+      "description": "Print the default config file to stdout",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--stdout"
+      ],
+      "description": "Turn off all colors and disables any ASCII/image backend",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show neofetch version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Display error messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-vv"
+      ],
+      "description": "Display a verbose log for error reporting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gen-man"
+      ],
+      "description": "Generate a manpage for neofetch in your PWD",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "Information lines",
+      "description": null,
+      "template": {
+        "custom": [
+          "os",
+          "host",
+          "kernel",
+          "uptime",
+          "packages",
+          "shell",
+          "term",
+          "cpu",
+          "gpu",
+          "memory",
+          "disk",
+          "battery",
+          "resolution",
+          "wm",
+          "de",
+          "theme",
+          "wm_theme",
+          "icons"
+        ]
+      },
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

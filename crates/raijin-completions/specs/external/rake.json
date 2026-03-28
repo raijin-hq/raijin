@@ -1,0 +1,150 @@
+{
+  "name": "rake",
+  "aliases": [],
+  "description": "A ruby build program with capabilities similar to make",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-n",
+        "--dry-run"
+      ],
+      "description": "Do a dry run without executing actions",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "-H",
+        "--help"
+      ],
+      "description": "Display this help message",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "--libdir"
+      ],
+      "description": "Include LIBDIR in the search path for required modules",
+      "takes_arg": true,
+      "arg_name": "LIBDIR",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--prereqs"
+      ],
+      "description": "Display the tasks and dependencies, then exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quiet"
+      ],
+      "description": "Do not log messages to standard output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--rakefile"
+      ],
+      "description": "Use FILE as the rakefile",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--require"
+      ],
+      "description": "Require MODULE before executing rakefile",
+      "takes_arg": true,
+      "arg_name": "MODULE",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--silent"
+      ],
+      "description": "Like --quiet, but also suppresses the 'in directory' announcement",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--tasks"
+      ],
+      "description": "Display the tasks and dependencies, then exit",
+      "takes_arg": true,
+      "arg_name": "pattern",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--trace"
+      ],
+      "description": "Turn on invoke/execute tracing, enable full backtrace",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Log message to standard output (default)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display the program version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "targets",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

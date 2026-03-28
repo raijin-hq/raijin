@@ -1,0 +1,206 @@
+{
+  "name": "xcodeproj",
+  "aliases": [],
+  "description": "Xcodeproj lets you create and modify Xcode projects",
+  "subcommands": [
+    {
+      "name": "config-dump",
+      "aliases": [],
+      "description": "Dumps the build settings of all project targets for all configurations in directories named by the target in the given output directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        },
+        {
+          "name": "OUTPUT",
+          "description": null,
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "project-diff",
+      "aliases": [],
+      "description": "Shows the difference between two projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "A key to ignore in the comparison. Can be specified multiple times",
+          "takes_arg": true,
+          "arg_name": "KEY",
+          "arg_template": null,
+          "is_repeatable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "PROJECT1",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "PROJECT2",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "aliases": [],
+      "description": "Shows an overview of a project in a YAML representation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "YAML output format",
+          "takes_arg": true,
+          "arg_name": "FORMAT",
+          "arg_template": {
+            "custom": [
+              "hash",
+              "tree_hash",
+              "raw"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "sort",
+      "aliases": [],
+      "description": "Sorts the given project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--group-option"
+          ],
+          "description": "The position of the groups when sorting. If no option is specified sorting will interleave groups and files",
+          "takes_arg": true,
+          "arg_name": "POSITION",
+          "arg_template": {
+            "custom": [
+              "above",
+              "below"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "target-diff",
+      "aliases": [],
+      "description": "Shows the difference between two targets",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--project"
+          ],
+          "description": "The Xcode project document to use",
+          "takes_arg": true,
+          "arg_name": "PATH",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "TARGET1",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "TARGET2",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Show more debugging information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Show the version of the tool",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ansi"
+      ],
+      "description": "Show output without ANSI codes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help banner of specified command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

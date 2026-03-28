@@ -1,0 +1,4423 @@
+{
+  "name": "remotion",
+  "aliases": [],
+  "description": "Create videos programmatically in React",
+  "subcommands": [
+    {
+      "name": "versions",
+      "aliases": [],
+      "description": "Prints and validates versions of all Remotion packages",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gpu",
+      "aliases": [],
+      "description": "Prints information about how Chrome uses the GPU",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "compositions",
+      "aliases": [],
+      "description": "Prints the list of available compositions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--props"
+          ],
+          "description": "Pass input props as filename or as JSON",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Specify a location for a dotenv file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-headless"
+          ],
+          "description": "Run Chrome in normal mode rather than headless",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gl"
+          ],
+          "description": "Which OpenGL renderer to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "angle",
+              "egl",
+              "swiftshader",
+              "swangle",
+              "vulkan"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user-agent"
+          ],
+          "description": "User agent to use for Chrome during rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-certificate-errors"
+          ],
+          "description": "Ignore SSL errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-web-security"
+          ],
+          "description": "Disable CORS and other web security features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entry",
+          "description": "The entry point of your Remotion app",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "lambda",
+      "aliases": [],
+      "description": "Access functionality of @remotion/lambda",
+      "subcommands": [
+        {
+          "name": "policies",
+          "aliases": [],
+          "description": "Manage AWS policies",
+          "subcommands": [
+            {
+              "name": "role",
+              "aliases": [],
+              "description": "Print policy to be added to the AWS role",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "user",
+              "aliases": [],
+              "description": "Print policy to be added to the AWS user",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "validate",
+              "aliases": [],
+              "description": "Validate the user policy was configured correctly",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "quotas",
+          "aliases": [],
+          "description": "Show current AWS quota",
+          "subcommands": [
+            {
+              "name": "increase",
+              "aliases": [],
+              "description": "Send a request to AWS to increase concurrency quotas",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "regions",
+          "aliases": [],
+          "description": "Prints list of supported regions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--default-only"
+              ],
+              "description": "Only print the regions enabled by default in a new AWS account",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "render",
+          "aliases": [],
+          "description": "Render media on Lambda",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--max-retries"
+              ],
+              "description": "How many times a chunk can be retried before the render times out",
+              "takes_arg": true,
+              "arg_name": "numberOfRetries",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--privacy"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "privacy",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--frames-per-lambda"
+              ],
+              "description": "How many frames should be rendered per chunk",
+              "takes_arg": true,
+              "arg_name": "framesPerLambda",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--props"
+              ],
+              "description": "Pass input props as filename or as JSON",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-headless"
+              ],
+              "description": "Run Chrome in normal mode rather than headless",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--gl"
+              ],
+              "description": "Which OpenGL renderer to use",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "angle",
+                  "egl",
+                  "swiftshader",
+                  "swangle",
+                  "vulkan"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--user-agent"
+              ],
+              "description": "User agent to use for Chrome during rendering",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-certificate-errors"
+              ],
+              "description": "Ignore SSL errors",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-web-security"
+              ],
+              "description": "Disable CORS and other web security features",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--concurrency-per-lambda"
+              ],
+              "description": "Concurrency with which each Lambda function should render",
+              "takes_arg": true,
+              "arg_name": "concurrencyPerLambda",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--overwrite"
+              ],
+              "description": "Overwrite a video if it already exists in the S3 bucket",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--function-name"
+              ],
+              "description": "Name of the function that should be invoked",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--renderer-function-name"
+              ],
+              "description": "Use a different function to render the video. By default, use the same function as the one to start the render",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--timeout"
+              ],
+              "description": "The time in milisecond that a delayRender() may take before it times out",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--quality"
+              ],
+              "description": "Quality for rendered frames, JPEG only, 0-100",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "0",
+                  "10",
+                  "20",
+                  "30",
+                  "40",
+                  "50",
+                  "60",
+                  "70",
+                  "80",
+                  "90",
+                  "100"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--scale"
+              ],
+              "description": "Upscale or downscale or the dimensions of the video",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "0.25",
+                  "0.5",
+                  "1",
+                  "1.5",
+                  "2",
+                  "4"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--codec"
+              ],
+              "description": "Video or audio codec",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "h264",
+                  "h265",
+                  "gif",
+                  "vp8",
+                  "vp9",
+                  "mp3",
+                  "aac",
+                  "wav",
+                  "prores",
+                  "h264-mkv"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--audio-codec"
+              ],
+              "description": "Codec to be used for the audio",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "aac",
+                  "mp3",
+                  "opus",
+                  "pcm-16"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--every-nth-frame"
+              ],
+              "description": "Render only every nth frame (only for GIFs)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--number-of-gif-loops"
+              ],
+              "description": "How many times a GIF should loop. 0 = No loop",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--audio-bitrate"
+              ],
+              "description": "Customize the output audio bitrate",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--video-bitrate"
+              ],
+              "description": "Customize the output video bitrate. Mutually exclusive with --crf",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--crf"
+              ],
+              "description": "FFMPEG CRF value, controls quality, see docs for info",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--frames"
+              ],
+              "description": "Render a portion or a still of a video, 0-9, 50",
+              "takes_arg": true,
+              "arg_name": "frames",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--prores-profile"
+              ],
+              "description": "ProRes profile, need --codec=prores to be set",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "4444-xq",
+                  "4444",
+                  "hq",
+                  "standard",
+                  "light",
+                  "proxy"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--x264-preset"
+              ],
+              "description": "Presets balance encoding speed and compression quality, with slower presets achieving better compression. Needs --codec=h264 to be set",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "ultrafast",
+                  "superfast",
+                  "veryfast",
+                  "faster",
+                  "fast",
+                  "medium",
+                  "slow",
+                  "slower",
+                  "veryslow",
+                  "placebo"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--image-format"
+              ],
+              "description": "Format to render the frames in, \"jpeg\" or \"png\"",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "jpeg",
+                  "png"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--pixel-format"
+              ],
+              "description": "Custom pixel format, see docs for available values",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "yuv420p",
+                  "yuv422p",
+                  "yuv444p",
+                  "yuv420p10le",
+                  "yuv422p10le",
+                  "yuv444p10le",
+                  "yuva420p"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--muted"
+              ],
+              "description": "Outputs no audio",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--height"
+              ],
+              "description": "Override the composition height",
+              "takes_arg": true,
+              "arg_name": "height",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--width"
+              ],
+              "description": "Override the composition width",
+              "takes_arg": true,
+              "arg_name": "height",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "serve-url",
+              "description": "URL or name of the site",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "composition-id",
+              "description": "Name of the composition",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "out-name",
+              "description": "Where the output should be downloaded. No download it omitted",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "compositions",
+          "aliases": [],
+          "description": "Get the list of available compositions on Lambda",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--props"
+              ],
+              "description": "Pass input props as filename or as JSON",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--env-file"
+              ],
+              "description": "Specify a location for a dotenv file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-headless"
+              ],
+              "description": "Run Chrome in normal mode rather than headless",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--gl"
+              ],
+              "description": "Which OpenGL renderer to use",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "angle",
+                  "egl",
+                  "swiftshader",
+                  "swangle",
+                  "vulkan"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--user-agent"
+              ],
+              "description": "User agent to use for Chrome during rendering",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-certificate-errors"
+              ],
+              "description": "Ignore SSL errors",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-web-security"
+              ],
+              "description": "Disable CORS and other web security features",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "serve-url",
+              "description": "URL or name of the site",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "still",
+          "aliases": [],
+          "description": "Render a still on Lambda",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--max-retries"
+              ],
+              "description": "How many times a chunk can be retried before the render times out",
+              "takes_arg": true,
+              "arg_name": "numberOfRetries",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--privacy"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "privacy",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--frames-per-lambda"
+              ],
+              "description": "How many frames should be rendered per chunk",
+              "takes_arg": true,
+              "arg_name": "framesPerLambda",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--props"
+              ],
+              "description": "Pass input props as filename or as JSON",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-headless"
+              ],
+              "description": "Run Chrome in normal mode rather than headless",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--gl"
+              ],
+              "description": "Which OpenGL renderer to use",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "angle",
+                  "egl",
+                  "swiftshader",
+                  "swangle",
+                  "vulkan"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--user-agent"
+              ],
+              "description": "User agent to use for Chrome during rendering",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--ignore-certificate-errors"
+              ],
+              "description": "Ignore SSL errors",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-web-security"
+              ],
+              "description": "Disable CORS and other web security features",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--frame"
+              ],
+              "description": "Which frame to render (default 0)",
+              "takes_arg": true,
+              "arg_name": "frame",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--height"
+              ],
+              "description": "Override the composition height",
+              "takes_arg": true,
+              "arg_name": "height",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--width"
+              ],
+              "description": "Override the composition width",
+              "takes_arg": true,
+              "arg_name": "height",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "serve-url",
+              "description": "URL or name of the site",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "composition-id",
+              "description": "Name of the composition",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "out-name",
+              "description": "Where the output should be downloaded. No download it omitted",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "functions",
+          "aliases": [],
+          "description": "Manage functions on AWS Lambda",
+          "subcommands": [
+            {
+              "name": "ls",
+              "aliases": [],
+              "description": "List deployed functions",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "deploy",
+              "aliases": [],
+              "description": "Deploy a function if one with the same parameters doesn't exist",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--memory"
+                  ],
+                  "description": "Amount of memory in MB to allocate",
+                  "takes_arg": true,
+                  "arg_name": "sizeInMegabytes",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--disk"
+                  ],
+                  "description": "Amount of disk space in MB to allocate",
+                  "takes_arg": true,
+                  "arg_name": "diskInMegabytes",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--architecture"
+                  ],
+                  "description": "Type of CPU architecture to use for the Lambda function",
+                  "takes_arg": true,
+                  "arg_name": "architecture",
+                  "arg_template": {
+                    "custom": [
+                      "x86_64",
+                      "arm64"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--disable-cloudwatch"
+                  ],
+                  "description": "Disable CloudWatch logging",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--enable-lambda-insights"
+                  ],
+                  "description": "Enable Lambda Insights",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--custom-role-arn"
+                  ],
+                  "description": "Set a custom role ARN to be used instead of the default",
+                  "takes_arg": true,
+                  "arg_name": "Role ARN",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--retention-period"
+                  ],
+                  "description": "CloudWatch log retention period in days",
+                  "takes_arg": true,
+                  "arg_name": "retentionPeriodInDays",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rmall",
+              "aliases": [],
+              "description": "Remove all functions in a region",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [],
+              "description": "Remove a function",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "function-name",
+                  "description": "ID of your function",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "sites",
+          "aliases": [],
+          "description": null,
+          "subcommands": [
+            {
+              "name": "ls",
+              "aliases": [],
+              "description": "List sites",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rmall",
+              "aliases": [],
+              "description": "Remove all sites in a region",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "rm",
+              "aliases": [],
+              "description": "Remove a site",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "site-name",
+                  "description": "ID of your site",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Create or update a site",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--quiet"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-q"
+                  ],
+                  "description": "Print less output",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--log"
+                  ],
+                  "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "verbose",
+                      "info",
+                      "warn",
+                      "error"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--config"
+                  ],
+                  "description": "Custom location for a Remotion config file",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": "filepaths",
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--yes"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--force"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-y"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-f"
+                  ],
+                  "description": "Skip confirmation",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--region"
+                  ],
+                  "description": "The AWS region specifier",
+                  "takes_arg": true,
+                  "arg_name": null,
+                  "arg_template": {
+                    "custom": [
+                      "us-east-1",
+                      "us-east-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "eu-west-2",
+                      "us-west-2",
+                      "ap-south-1",
+                      "ap-southeast-1",
+                      "ap-southeast-2",
+                      "ap-northeast-1"
+                    ]
+                  },
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--site-name"
+                  ],
+                  "description": null,
+                  "takes_arg": true,
+                  "arg_name": "How the folder in S3 should be named.",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "entry",
+                  "description": null,
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--quiet"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q"
+              ],
+              "description": "Print less output",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "verbose",
+                  "info",
+                  "warn",
+                  "error"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Custom location for a Remotion config file",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f"
+              ],
+              "description": "Skip confirmation",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--region"
+              ],
+              "description": "The AWS region specifier",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": {
+                "custom": [
+                  "us-east-1",
+                  "us-east-2",
+                  "eu-central-1",
+                  "eu-west-1",
+                  "eu-west-2",
+                  "us-west-2",
+                  "ap-south-1",
+                  "ap-southeast-1",
+                  "ap-southeast-2",
+                  "ap-northeast-1"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "verbose",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Custom location for a Remotion config file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-y"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f"
+          ],
+          "description": "Skip confirmation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--region"
+          ],
+          "description": "The AWS region specifier",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "us-east-1",
+              "us-east-2",
+              "eu-central-1",
+              "eu-west-1",
+              "eu-west-2",
+              "us-west-2",
+              "ap-south-1",
+              "ap-southeast-1",
+              "ap-southeast-2",
+              "ap-northeast-1"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bundle",
+      "aliases": [],
+      "description": "Bundle a Remotion project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "verbose",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Custom location for a Remotion config file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--public-dir"
+          ],
+          "description": "Location of the public/ directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--out-dir"
+          ],
+          "description": "Define the location of the resulting bundle",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entry",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "render",
+      "aliases": [],
+      "description": "Render a video based on the entry point, the composition ID and save it to the output location",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--disable-headless"
+          ],
+          "description": "Run Chrome in normal mode rather than headless",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gl"
+          ],
+          "description": "Which OpenGL renderer to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "angle",
+              "egl",
+              "swiftshader",
+              "swangle",
+              "vulkan"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user-agent"
+          ],
+          "description": "User agent to use for Chrome during rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-certificate-errors"
+          ],
+          "description": "Ignore SSL errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-web-security"
+          ],
+          "description": "Disable CORS and other web security features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "The time in milisecond that a delayRender() may take before it times out",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quality"
+          ],
+          "description": "Quality for rendered frames, JPEG only, 0-100",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0",
+              "10",
+              "20",
+              "30",
+              "40",
+              "50",
+              "60",
+              "70",
+              "80",
+              "90",
+              "100"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scale"
+          ],
+          "description": "Upscale or downscale or the dimensions of the video",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0.25",
+              "0.5",
+              "1",
+              "1.5",
+              "2",
+              "4"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--codec"
+          ],
+          "description": "Video or audio codec",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "h264",
+              "h265",
+              "gif",
+              "vp8",
+              "vp9",
+              "mp3",
+              "aac",
+              "wav",
+              "prores",
+              "h264-mkv"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--audio-codec"
+          ],
+          "description": "Codec to be used for the audio",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "aac",
+              "mp3",
+              "opus",
+              "pcm-16"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--every-nth-frame"
+          ],
+          "description": "Render only every nth frame (only for GIFs)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--number-of-gif-loops"
+          ],
+          "description": "How many times a GIF should loop. 0 = No loop",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--audio-bitrate"
+          ],
+          "description": "Customize the output audio bitrate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--video-bitrate"
+          ],
+          "description": "Customize the output video bitrate. Mutually exclusive with --crf",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--crf"
+          ],
+          "description": "FFMPEG CRF value, controls quality, see docs for info",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--frames"
+          ],
+          "description": "Render a portion or a still of a video, 0-9, 50",
+          "takes_arg": true,
+          "arg_name": "frames",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prores-profile"
+          ],
+          "description": "ProRes profile, need --codec=prores to be set",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "4444-xq",
+              "4444",
+              "hq",
+              "standard",
+              "light",
+              "proxy"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--x264-preset"
+          ],
+          "description": "Presets balance encoding speed and compression quality, with slower presets achieving better compression. Needs --codec=h264 to be set",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "ultrafast",
+              "superfast",
+              "veryfast",
+              "faster",
+              "fast",
+              "medium",
+              "slow",
+              "slower",
+              "veryslow",
+              "placebo"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-format"
+          ],
+          "description": "Format to render the frames in, \"jpeg\" or \"png\"",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "jpeg",
+              "png"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pixel-format"
+          ],
+          "description": "Custom pixel format, see docs for available values",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "yuv420p",
+              "yuv422p",
+              "yuv444p",
+              "yuv420p10le",
+              "yuv422p10le",
+              "yuv444p10le",
+              "yuva420p"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--muted"
+          ],
+          "description": "Outputs no audio",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--height"
+          ],
+          "description": "Override the composition height",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--width"
+          ],
+          "description": "Override the composition width",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sequence"
+          ],
+          "description": "Output as an image sequence",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many frames to render in parallel",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enforce-audio-track"
+          ],
+          "description": "Include an audio track even if it's silent",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repro"
+          ],
+          "description": "Collect information that you can submit to Remotion if asked for a reproduction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Specify a location for a dotenv file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--overwrite"
+          ],
+          "description": "Overwrite if file exists, default true",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browser-executable"
+          ],
+          "description": "Custom path for browser executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-extensions"
+          ],
+          "description": "Enable Chrome browser extensions while rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffmpeg-executable"
+          ],
+          "description": "Custom path for FFMPEG executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffprobe-executable"
+          ],
+          "description": "Custom path for FFProbe executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle-cache"
+          ],
+          "description": "Cache webpack bundle, boolean, default true",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Custom port to use for the HTTP server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--public-dir"
+          ],
+          "description": "Location of the public/ directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--props"
+          ],
+          "description": "Pass input props as filename or as JSON",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "verbose",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Custom location for a Remotion config file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entry",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "comp-id",
+          "description": "The composition ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "still",
+      "aliases": [],
+      "description": "Render a still frame based on the entry point, the composition ID and save it to the output location",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--frame"
+          ],
+          "description": "Which frame to render (default 0)",
+          "takes_arg": true,
+          "arg_name": "frame",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--height"
+          ],
+          "description": "Override the composition height",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--width"
+          ],
+          "description": "Override the composition width",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Specify a location for a dotenv file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--overwrite"
+          ],
+          "description": "Overwrite if file exists, default true",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browser-executable"
+          ],
+          "description": "Custom path for browser executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-extensions"
+          ],
+          "description": "Enable Chrome browser extensions while rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffmpeg-executable"
+          ],
+          "description": "Custom path for FFMPEG executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffprobe-executable"
+          ],
+          "description": "Custom path for FFProbe executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle-cache"
+          ],
+          "description": "Cache webpack bundle, boolean, default true",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Custom port to use for the HTTP server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--public-dir"
+          ],
+          "description": "Location of the public/ directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--props"
+          ],
+          "description": "Pass input props as filename or as JSON",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-headless"
+          ],
+          "description": "Run Chrome in normal mode rather than headless",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gl"
+          ],
+          "description": "Which OpenGL renderer to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "angle",
+              "egl",
+              "swiftshader",
+              "swangle",
+              "vulkan"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user-agent"
+          ],
+          "description": "User agent to use for Chrome during rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-certificate-errors"
+          ],
+          "description": "Ignore SSL errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-web-security"
+          ],
+          "description": "Disable CORS and other web security features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "verbose",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Custom location for a Remotion config file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entry",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "comp-id",
+          "description": "The composition ID",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "output",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "preview",
+      "aliases": [
+        "studio"
+      ],
+      "description": "Start the Remotion Studio",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--props"
+          ],
+          "description": "Pass input props as filename or as JSON",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-keyboard-shortcuts"
+          ],
+          "description": "Disable all keyboard shortcuts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--webpack-poll"
+          ],
+          "description": "Enable webpack polling instead of file system watchers",
+          "takes_arg": true,
+          "arg_name": "polling-interval",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--number-of-shared-audio-tags"
+          ],
+          "description": "Set the number of shared audio tags to prevent autoplay issues",
+          "takes_arg": true,
+          "arg_name": "numberOfSharedAudioTags",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-open"
+          ],
+          "description": "Prevent the browser from opening automatically when the server starts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "entry",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade all Remotion-related dependencies to the newest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--package-manager"
+          ],
+          "description": "Force a specific package manager to be used",
+          "takes_arg": true,
+          "arg_name": "package-manager",
+          "arg_template": {
+            "custom": [
+              "npm",
+              "yarn",
+              "pnpm"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version"
+          ],
+          "description": "Upgrade to a specific version",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "benchmark",
+      "aliases": [],
+      "description": "Try different render configurations and compare them",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--disable-headless"
+          ],
+          "description": "Run Chrome in normal mode rather than headless",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gl"
+          ],
+          "description": "Which OpenGL renderer to use",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "angle",
+              "egl",
+              "swiftshader",
+              "swangle",
+              "vulkan"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--user-agent"
+          ],
+          "description": "User agent to use for Chrome during rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-certificate-errors"
+          ],
+          "description": "Ignore SSL errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-web-security"
+          ],
+          "description": "Disable CORS and other web security features",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "The time in milisecond that a delayRender() may take before it times out",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quality"
+          ],
+          "description": "Quality for rendered frames, JPEG only, 0-100",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0",
+              "10",
+              "20",
+              "30",
+              "40",
+              "50",
+              "60",
+              "70",
+              "80",
+              "90",
+              "100"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scale"
+          ],
+          "description": "Upscale or downscale or the dimensions of the video",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0.25",
+              "0.5",
+              "1",
+              "1.5",
+              "2",
+              "4"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--codec"
+          ],
+          "description": "Video or audio codec",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "h264",
+              "h265",
+              "gif",
+              "vp8",
+              "vp9",
+              "mp3",
+              "aac",
+              "wav",
+              "prores",
+              "h264-mkv"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--audio-codec"
+          ],
+          "description": "Codec to be used for the audio",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "aac",
+              "mp3",
+              "opus",
+              "pcm-16"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--every-nth-frame"
+          ],
+          "description": "Render only every nth frame (only for GIFs)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--number-of-gif-loops"
+          ],
+          "description": "How many times a GIF should loop. 0 = No loop",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--audio-bitrate"
+          ],
+          "description": "Customize the output audio bitrate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--video-bitrate"
+          ],
+          "description": "Customize the output video bitrate. Mutually exclusive with --crf",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--crf"
+          ],
+          "description": "FFMPEG CRF value, controls quality, see docs for info",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--frames"
+          ],
+          "description": "Render a portion or a still of a video, 0-9, 50",
+          "takes_arg": true,
+          "arg_name": "frames",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prores-profile"
+          ],
+          "description": "ProRes profile, need --codec=prores to be set",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "4444-xq",
+              "4444",
+              "hq",
+              "standard",
+              "light",
+              "proxy"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--x264-preset"
+          ],
+          "description": "Presets balance encoding speed and compression quality, with slower presets achieving better compression. Needs --codec=h264 to be set",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "ultrafast",
+              "superfast",
+              "veryfast",
+              "faster",
+              "fast",
+              "medium",
+              "slow",
+              "slower",
+              "veryslow",
+              "placebo"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-format"
+          ],
+          "description": "Format to render the frames in, \"jpeg\" or \"png\"",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "jpeg",
+              "png"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pixel-format"
+          ],
+          "description": "Custom pixel format, see docs for available values",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "yuv420p",
+              "yuv422p",
+              "yuv444p",
+              "yuv420p10le",
+              "yuv422p10le",
+              "yuv444p10le",
+              "yuva420p"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--muted"
+          ],
+          "description": "Outputs no audio",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--height"
+          ],
+          "description": "Override the composition height",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--width"
+          ],
+          "description": "Override the composition width",
+          "takes_arg": true,
+          "arg_name": "height",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sequence"
+          ],
+          "description": "Output as an image sequence",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enforce-audio-track"
+          ],
+          "description": "Include an audio track even if it's silent",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repro"
+          ],
+          "description": "Collect information that you can submit to Remotion if asked for a reproduction",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--env-file"
+          ],
+          "description": "Specify a location for a dotenv file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--browser-executable"
+          ],
+          "description": "Custom path for browser executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--enable-extensions"
+          ],
+          "description": "Enable Chrome browser extensions while rendering",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffmpeg-executable"
+          ],
+          "description": "Custom path for FFMPEG executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ffprobe-executable"
+          ],
+          "description": "Custom path for FFProbe executable",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle-cache"
+          ],
+          "description": "Cache webpack bundle, boolean, default true",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port"
+          ],
+          "description": "Custom port to use for the HTTP server",
+          "takes_arg": true,
+          "arg_name": "port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--public-dir"
+          ],
+          "description": "Location of the public/ directory",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--props"
+          ],
+          "description": "Pass input props as filename or as JSON",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--quiet"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q"
+          ],
+          "description": "Print less output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log"
+          ],
+          "description": "Log level, \"error\", \"warning\", \"verbose\", \"info\" (default)",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "verbose",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Custom location for a Remotion config file",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--concurrencies"
+          ],
+          "description": "Comma-separated list of concurrency values to include in benchmark",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "install",
+      "aliases": [],
+      "description": "Ensure Remotion dependencies",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "dependency",
+          "description": null,
+          "template": {
+            "custom": [
+              "ffmpeg",
+              "ffprobe"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Prints the list of commands and flags for quick lookup",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

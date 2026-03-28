@@ -1,0 +1,725 @@
+{
+  "name": "dcli",
+  "aliases": [],
+  "description": "Dashlane CLI",
+  "subcommands": [
+    {
+      "name": "sync",
+      "aliases": [
+        "s"
+      ],
+      "description": "Manually synchronize the local vault with Dashlane",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "read",
+      "aliases": [],
+      "description": "Retrieve a secret from the local vault via its path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "path",
+          "description": "Path to the secret (dl://<title>/<field> or dl://<id>/<field>)",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute a command with secrets injected into the environment variables (-- <command>)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "inject",
+      "aliases": [],
+      "description": "Inject secrets into a templated string or file (uses stdin and stdout by default)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-i",
+            "--in"
+          ],
+          "description": "Input file of a template to inject the credential into",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-o",
+            "--out"
+          ],
+          "description": "Output file to write the injected template to",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "password",
+      "aliases": [
+        "p"
+      ],
+      "description": "Retrieve a password from the local vault and copy it to the clipboard",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "How to print the passwords. The JSON option outputs all the matching credentials",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "clipboard",
+              "password",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filters",
+          "description": "Filter credentials based on any parameter using <param>=<value>; if <param> is not specified in the filter, will default to url and title",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "otp",
+      "aliases": [
+        "o"
+      ],
+      "description": "Retrieve an OTP code from local vault and copy it to the clipboard",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--print"
+          ],
+          "description": "Prints just the OTP code, instead of copying it to the clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filters",
+          "description": "Filter credentials based on any parameter using <param>=<value>; if <param> is not specified in the filter, will default to url and title",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "note",
+      "aliases": [
+        "n"
+      ],
+      "description": "Retrieve a secure note from the local vault and open it",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "How to print the notes. The JSON option outputs all the matching notes",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "text",
+              "json"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "filters",
+          "description": "Filter notes based on any parameter using <param>=<value>; if <param> is not specified in the filter, will default to title only",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "accounts",
+      "aliases": [
+        "a"
+      ],
+      "description": "Manage your accounts connected to the CLI",
+      "subcommands": [
+        {
+          "name": "whoami",
+          "aliases": [],
+          "description": "Prints the login email of the account currently in use",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "devices",
+      "aliases": [
+        "d"
+      ],
+      "description": "Operations on devices",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all registered devices that can access your account",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "De-registers a list of devices. De-registering the CLI will implies doing a \"dcli logout\"",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Remove all devices including this one (dangerous)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--others"
+              ],
+              "description": "Remove all other devices",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "device ids",
+              "description": "Ids of the devices to remove",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "register",
+          "aliases": [],
+          "description": "Registers a new device to be used in non-interactive mode",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output in JSON format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "device name",
+              "description": "Name of the device to register",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "team",
+      "aliases": [
+        "t"
+      ],
+      "description": "Team related commands",
+      "subcommands": [
+        {
+          "name": "credentials",
+          "aliases": [
+            "c"
+          ],
+          "description": "Team credentials operations",
+          "subcommands": [
+            {
+              "name": "generate",
+              "aliases": [],
+              "description": "Generate new team credentials",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--json"
+                  ],
+                  "description": "Output in JSON format",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List all team credentials",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--json"
+                  ],
+                  "description": "Output in JSON format",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "revoke",
+              "aliases": [],
+              "description": "Revoke credentials by access key",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "accessKey",
+                  "description": "Access key of the credentials to revoke",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "help",
+              "aliases": [],
+              "description": "Display help for command",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "command",
+                  "description": null,
+                  "template": null,
+                  "is_optional": true,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "members",
+          "aliases": [
+            "m"
+          ],
+          "description": "List team members",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--csv"
+              ],
+              "description": "Output in CSV format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--human-readable"
+              ],
+              "description": "Output dates in human readable format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "page",
+              "description": "Page number",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            },
+            {
+              "name": "limit",
+              "description": "Limit of members per page",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "logs",
+          "aliases": [
+            "l"
+          ],
+          "description": "List audit logs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--start"
+              ],
+              "description": "Start timestamp in ms",
+              "takes_arg": true,
+              "arg_name": "start",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--end"
+              ],
+              "description": "End timestamp in ms (use \"now\" to get the current timestamp)",
+              "takes_arg": true,
+              "arg_name": "end",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--type"
+              ],
+              "description": "Log type",
+              "takes_arg": true,
+              "arg_name": "type",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--category"
+              ],
+              "description": "Log category",
+              "takes_arg": true,
+              "arg_name": "category",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--csv"
+              ],
+              "description": "Output in CSV format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--human-readable"
+              ],
+              "description": "Output dates in human readable format",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "report",
+          "aliases": [
+            "r"
+          ],
+          "description": "Get team report",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "days",
+              "description": "Number of days in history",
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "configure",
+      "aliases": [
+        "c"
+      ],
+      "description": "Configure the CLI",
+      "subcommands": [
+        {
+          "name": "disable-auto-sync",
+          "aliases": [],
+          "description": "Disable automatic synchronization which is done once per hour (default: false)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "boolean",
+              "description": null,
+              "template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "save-master-password",
+          "aliases": [],
+          "description": "Should the encrypted master password be saved and the OS keychain be used (default: true)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "boolean",
+              "description": null,
+              "template": {
+                "custom": [
+                  "true",
+                  "false"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Display help for command",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "backup",
+      "aliases": [],
+      "description": "Backup your local vault (will use the current directory by default)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--directory"
+          ],
+          "description": "Output directory of the backup (\".\" by default)",
+          "takes_arg": true,
+          "arg_name": "directory",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filename"
+          ],
+          "description": "Filename of the backup (\"dashlane-backup-<unix_timestamp>.db by default\")",
+          "takes_arg": true,
+          "arg_name": "filename",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Logout and clean your local database and OS keychain",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Display help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Print debug messages",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

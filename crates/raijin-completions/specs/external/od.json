@@ -1,0 +1,260 @@
+{
+  "name": "od",
+  "aliases": [],
+  "description": "Octal, decimal, hex, ASCII dump",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-A"
+      ],
+      "description": "Specify the input address base.  The argument base may be\none of d, o, x or n, which specify decimal, octal,\nhexadecimal addresses or no address, respectively",
+      "takes_arg": true,
+      "arg_name": "base",
+      "arg_template": {
+        "custom": [
+          "d",
+          "o",
+          "x",
+          "n"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a"
+      ],
+      "description": "Output named characters.  Equivalent to -t a",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-B",
+        "-o"
+      ],
+      "description": "Output octal shorts.  Equivalent to -t o2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-b"
+      ],
+      "description": "Output octal bytes.  Equivalent to -t o1",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Output C-style escaped characters.  Equivalent to -t c",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D"
+      ],
+      "description": "Output unsigned decimal ints.  Equivalent to -t u4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Output unsigned decimal shorts.  Equivalent to -t u2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "-F"
+      ],
+      "description": "Output double-precision floating point numbers.  Equivalent to -t fD",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f"
+      ],
+      "description": "Output single-precision floating point numbers.  Equivalent to -t fF",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "-X"
+      ],
+      "description": "Output hexadecimal ints.  Equivalent to -t x4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "-x"
+      ],
+      "description": "Output hexadecimal shorts.  Equivalent to -t x2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-I",
+        "-L",
+        "-l"
+      ],
+      "description": "Output signed decimal longs.  Equivalent to -t dL",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i"
+      ],
+      "description": "Output signed decimal ints.  Equivalent to -t dI",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j"
+      ],
+      "description": "Skip skip bytes of the combined input before dumping.  The\nnumber may be followed by one of b, k, m or g which\nspecify the units of the number as blocks (512 bytes),\nkilobytes, megabytes and gigabytes, respectively",
+      "takes_arg": true,
+      "arg_name": "skip",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N"
+      ],
+      "description": "Dump at most length bytes of input",
+      "takes_arg": true,
+      "arg_name": "length",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-O"
+      ],
+      "description": "Output octal ints.  Equivalent to -t o4",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s"
+      ],
+      "description": "Output signed decimal shorts.  Equivalent to -t d2",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t"
+      ],
+      "description": "Specify the output format.  The type argument is a string\ncontaining one or more of the following kinds of type specificers: a,\nc, [d|o|u|x][C|S|I|L|n], or f[F|D|L|n]. See the man page for meanings",
+      "takes_arg": true,
+      "arg_name": "type",
+      "arg_template": {
+        "custom": [
+          "a",
+          "c",
+          "dC",
+          "dS",
+          "dI",
+          "dL",
+          "dn",
+          "oC",
+          "oS",
+          "oI",
+          "oL",
+          "on",
+          "uC",
+          "uS",
+          "uI",
+          "uL",
+          "un",
+          "xC",
+          "xS",
+          "xI",
+          "xL",
+          "xn",
+          "fF",
+          "fD",
+          "fL",
+          "fn"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v"
+      ],
+      "description": "Write all input data, instead of replacing lines of duplicate values with a '*'",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "[+]offset[.][Bb]",
+      "description": "Offset",
+      "template": {
+        "custom": [
+          "+0b"
+        ]
+      },
+      "is_optional": true,
+      "is_variadic": false
+    },
+    {
+      "name": "file",
+      "description": "File name",
+      "template": "filepaths",
+      "is_optional": true,
+      "is_variadic": true
+    }
+  ]
+}

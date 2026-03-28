@@ -1,0 +1,96 @@
+{
+  "name": "twiggy",
+  "aliases": [],
+  "description": "A code-size profiler for WebAssembly",
+  "subcommands": [
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Diff the old and new versions of a binary to see what sizes changed",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dominators",
+      "aliases": [],
+      "description": "Compute and display the dominator tree for a binary's call graph",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "garbage",
+      "aliases": [],
+      "description": "Find and display code and data that is not transitively referenced by any exports or public functions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "subcommand",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "monos",
+      "aliases": [],
+      "description": "List the generic function monomorphizations that are contributing to code bloat",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "paths",
+      "aliases": [],
+      "description": "Find and display the call paths to a function in the given binary's call graph",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "top",
+      "aliases": [],
+      "description": "List the top code size offenders in a binary",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Prints version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

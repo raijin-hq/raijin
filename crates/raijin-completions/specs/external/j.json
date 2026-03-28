@@ -1,0 +1,103 @@
+{
+  "name": "autojump",
+  "aliases": [],
+  "description": "A faster way to navigate your filesystem",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show the help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-a",
+        "--add"
+      ],
+      "description": "Add path",
+      "takes_arg": true,
+      "arg_name": "directory",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--increase"
+      ],
+      "description": "Increase current directory weight",
+      "takes_arg": true,
+      "arg_name": "weight",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--decrease"
+      ],
+      "description": "Decrease current directory weight",
+      "takes_arg": true,
+      "arg_name": "weight",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--complete"
+      ],
+      "description": "Used for tab completion",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--purge"
+      ],
+      "description": "Remove non-existent paths from database",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--stat"
+      ],
+      "description": "Show database entries and their key weights",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--version"
+      ],
+      "description": "Show version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "directory",
+      "description": "Directory to jump to",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

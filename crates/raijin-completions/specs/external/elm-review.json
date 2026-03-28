@@ -1,0 +1,403 @@
+{
+  "name": "elm-review",
+  "aliases": [],
+  "description": null,
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initialize Elm Review in this directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for elm-review init",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config"
+          ],
+          "description": "Create the configuration files in the specified directory instead of in the review/ directory",
+          "takes_arg": true,
+          "arg_name": "<path-to-review-directory>",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template"
+          ],
+          "description": "Copy the review configuration from a GitHub repository, at the root or in a folder",
+          "takes_arg": true,
+          "arg_name": "<author>/<repo>[/path-to-the-config-folder][#branch-or-commit]",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compiler"
+          ],
+          "description": "Specify the path to the elm compiler",
+          "takes_arg": true,
+          "arg_name": "<path-to-elm>",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "suppress",
+      "aliases": [],
+      "description": "Generate suppression files for rules that report many errors",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for elm-review suppress",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--check-after-tests"
+          ],
+          "description": "Checks whether there are uncommitted suppression files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsuppress"
+          ],
+          "description": "Include suppressed errors in the error report for all rules",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unsuppress-rules"
+          ],
+          "description": "Include suppressed errors in the error report for all rules",
+          "takes_arg": true,
+          "arg_name": "<rule1,rule2,...>",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new-package",
+      "aliases": [],
+      "description": "Creates an new project aimed to contain rules and to be published later",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for elm-review new-package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--compiler"
+          ],
+          "description": "Specify the path to the elm compiler",
+          "takes_arg": true,
+          "arg_name": "<path-to-elm>",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new-rule",
+      "aliases": [],
+      "description": "Adds a new rule to your review configuration or review package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Show help for elm-review new-package",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rule name",
+          "description": "Add a rule file in src/ and a corresponding test file in tests/. Should be formatted just like an Elm module name, such as NoDoingThis or No.Doing.This",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for elm-review",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--unsuppress"
+      ],
+      "description": "Include suppressed errors in the error report for all rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rules"
+      ],
+      "description": "Run with a subsection of the rules in the configuration. Specify them by their name, and separate them by commas",
+      "takes_arg": true,
+      "arg_name": "<rule1,rule2,...>",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch"
+      ],
+      "description": "Re-run elm-review automatically when your project or configuration changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--watch-code"
+      ],
+      "description": "Re-run elm-review automatically when your project changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--elmjson"
+      ],
+      "description": "Specify the path to the elm.json file of the project",
+      "takes_arg": true,
+      "arg_name": "<path-to-elm.json>",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config"
+      ],
+      "description": "Use the review configuration in the specified directory",
+      "takes_arg": true,
+      "arg_name": "<path-to-review-directory>",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--template"
+      ],
+      "description": "Use the review configuration from a GitHub repository",
+      "takes_arg": true,
+      "arg_name": "<author>/<repo>[/path-to-the-config-folder][#branch-or-commit]",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compiler"
+      ],
+      "description": "Specify the path to the elm compiler",
+      "takes_arg": true,
+      "arg_name": "<path-to-elm>",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-v"
+      ],
+      "description": "Print the version of the elm-review CLI",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Add helpful information to debug your configuration or rules",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--report"
+      ],
+      "description": "Error reports will be in JSON format",
+      "takes_arg": true,
+      "arg_name": "json or ndjson",
+      "arg_template": {
+        "custom": [
+          "json",
+          "ndjson"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-details"
+      ],
+      "description": "Hide the details from error reports for a more compact view",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-dirs"
+      ],
+      "description": "Ignore the reports of all rules for the specified directories",
+      "takes_arg": true,
+      "arg_name": "<dir1,dir2,...>",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ignore-files"
+      ],
+      "description": "Ignore the reports of all rules for the specified files",
+      "takes_arg": true,
+      "arg_name": "<file1,file2,...>",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix"
+      ],
+      "description": "Elm Review will present fixes for the errors that offer an automatic fix, which you can then accept or refuse one by one",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix-all"
+      ],
+      "description": "Elm Review will present a single fix containing the application of all available automatic fixes, which you can then accept or refuse",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--elm-format-path"
+      ],
+      "description": "Specify the path to elm-format",
+      "takes_arg": true,
+      "arg_name": "<path-to-elm-format>",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fix-limit"
+      ],
+      "description": "Limit the number of fixes applied in a single batch to N",
+      "takes_arg": true,
+      "arg_name": "N",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--extract"
+      ],
+      "description": "Enable extracting data from the project for the rules that have a data extractor. Requires running with --report=json. Learn more by reading the section about \"Extracting information\" at https://bit.ly/3UmNr0V",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--benchmark-info"
+      ],
+      "description": "Print out how much time it took for rules and phases of the process to run. This is meant for benchmarking purposes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-color"
+      ],
+      "description": "Disable colors in the output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "files or directories to review",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}

@@ -1,0 +1,555 @@
+{
+  "name": "mkdocs",
+  "aliases": [],
+  "description": "Project documentation with Markdown",
+  "subcommands": [
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build the MkDocs documentation",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "help for build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Silence warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config-file"
+          ],
+          "description": "Provide a specific MkDocs config",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--strict"
+          ],
+          "description": "Enable strict mode. This will cause MkDocs to abort the build on any warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--theme"
+          ],
+          "description": "The theme to use when building your documentation",
+          "takes_arg": true,
+          "arg_name": "theme",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-directory-urls"
+          ],
+          "description": "Use directory URLs when building pages (the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-directory-urls"
+          ],
+          "description": "Don't use directory URLs when building pages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--clean"
+          ],
+          "description": "Remove old files from the site directory before building (the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dirty"
+          ],
+          "description": "Only rebuild pages that have been modified since last build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-d",
+            "--site-dir"
+          ],
+          "description": "The directory to output the result of the documentation build",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "gh-deploy",
+      "aliases": [],
+      "description": "Deploy your documentation to GitHub Pages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "help for gh-deploy",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Silence warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config-file"
+          ],
+          "description": "Provide a specific MkDocs config",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--strict"
+          ],
+          "description": "Enable strict mode. This will cause MkDocs to abort the build on any warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--theme"
+          ],
+          "description": "The theme to use when building your documentation",
+          "takes_arg": true,
+          "arg_name": "theme",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-directory-urls"
+          ],
+          "description": "Use directory URLs when building pages (the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-directory-urls"
+          ],
+          "description": "Don't use directory URLs when building pages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--clean"
+          ],
+          "description": "Remove old files from the site directory before building (the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dirty"
+          ],
+          "description": "Only rebuild pages that have been modified since last build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "A commit message to use when committing to the GitHub Pages remote branch. Commit {sha} and MkDocs {version} are available as expansions",
+          "takes_arg": true,
+          "arg_name": "message",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-b",
+            "--remote-branch"
+          ],
+          "description": "The remote branch to commit to for GitHub Pages. This overrides the value specified in config",
+          "takes_arg": true,
+          "arg_name": "branch name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-r",
+            "--remote-name"
+          ],
+          "description": "The remote name to commit to for GitHub Pages. This overrides the value specified in config",
+          "takes_arg": true,
+          "arg_name": "remote name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force the push to the repository",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-history"
+          ],
+          "description": "Replace the whole Git history with one new commit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-version"
+          ],
+          "description": "Ignore check that build is not being deployed with an older version of MkDocs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "Use the shell when invoking Git",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create a new MkDocs project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "help for new",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Silence warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Run the builtin development server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "help for serve",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-q",
+            "--quiet"
+          ],
+          "description": "Silence warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable verbose output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-f",
+            "--config-file"
+          ],
+          "description": "Provide a specific MkDocs config",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--strict"
+          ],
+          "description": "Enable strict mode. This will cause MkDocs to abort the build on any warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-t",
+            "--theme"
+          ],
+          "description": "The theme to use when building your documentation",
+          "takes_arg": true,
+          "arg_name": "theme",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-directory-urls"
+          ],
+          "description": "Use directory URLs when building pages (the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-directory-urls"
+          ],
+          "description": "Don't use directory URLs when building pages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "--dev-addr"
+          ],
+          "description": "IP address and port to serve documentation locally (default: localhost:8000)",
+          "takes_arg": true,
+          "arg_name": "IP:PORT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--live-reload"
+          ],
+          "description": "Enable the live reloading in the development server (this is the default)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-reload"
+          ],
+          "description": "Disable the live reloading in the development server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dirtyreload"
+          ],
+          "description": "Enable the live reloading in the development server, but only re-build files that have changed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch-theme"
+          ],
+          "description": "Include the theme in list of files to watch for live reloading. Ignored when live reload is not used",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--watch"
+          ],
+          "description": "A directory or file to watch for live reloading. Can be supplied multiple times",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Show help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Show the version and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

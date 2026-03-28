@@ -1,0 +1,321 @@
+{
+  "name": "dotnet",
+  "aliases": [],
+  "description": "The dotnet cli",
+  "subcommands": [
+    {
+      "name": "new",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "build-server",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "format",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "migrate",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "msbuild",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "nuget",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pack",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "restore",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sln",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "store",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "tool",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Prints out the version of the .NET SDK used by dotnet commands. Includes the effects of any global.json",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--info"
+      ],
+      "description": "Prints out detailed information about a .NET installation and the machine environment, such as the current operating system, and commit SHA of the .NET version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-runtimes"
+      ],
+      "description": "Prints out a list of the installed .NET runtimes. An x86 version of the SDK lists only x86 runtimes, and an x64 version of the SDK lists only x64 runtimes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--list-sdks"
+      ],
+      "description": "Prints out a list of the installed .NET SDKs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-?",
+        "-h",
+        "--help"
+      ],
+      "description": "Prints out a list of available commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d",
+        "--diagnostics"
+      ],
+      "description": "Enables diagnostic output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbosity"
+      ],
+      "description": "Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. Not supported in every command. See specific command page to determine if this option is available",
+      "takes_arg": true,
+      "arg_name": "verbosity",
+      "arg_template": {
+        "custom": [
+          "quiet",
+          "minimal",
+          "normal",
+          "detailed",
+          "diagnostic"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--additionalprobingpath"
+      ],
+      "description": "Path containing probing policy and assemblies to probe",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--additional-deps"
+      ],
+      "description": "Path to an additional .deps.json file. A deps.json file contains a list of dependencies, compilation dependencies, and version information used to address assembly conflicts. For more information, see Runtime Configuration Files on GitHub",
+      "takes_arg": true,
+      "arg_name": "deps",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-depsfile"
+      ],
+      "description": "Path to the deps.json file. A deps.json file is a configuration file that contains information about dependencies necessary to run the application. This file is generated by the .NET SDK",
+      "takes_arg": true,
+      "arg_name": "deps",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--runtimeconfig"
+      ],
+      "description": "Path to a runtimeconfig.json file. A runtimeconfig.json file is a configuration file that contains run-time settings",
+      "takes_arg": true,
+      "arg_name": "path",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--roll-forward"
+      ],
+      "description": "Controls how roll forward is applied to the app. The SETTING can be one of the following values. If not specified, Minor is the default",
+      "takes_arg": true,
+      "arg_name": "setting",
+      "arg_template": {
+        "custom": [
+          "LatestPatch",
+          "Minor",
+          "Major",
+          "LatestMinor",
+          "LatestMajor",
+          "Disable"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fx-version"
+      ],
+      "description": "Version of the .NET runtime to use to run the application",
+      "takes_arg": true,
+      "arg_name": "version",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "command",
+      "description": null,
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

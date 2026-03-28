@@ -1,0 +1,205 @@
+{
+  "name": "ua",
+  "aliases": [],
+  "description": "Manage Ubuntu Pro services from Canonical",
+  "subcommands": [
+    {
+      "name": "attach",
+      "aliases": [],
+      "description": "Connect an Ubuntu Pro support contract to this machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--no-auto-enable"
+          ],
+          "description": "Disable  the  automatic enablement of recommended entitlements",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--attach-config"
+          ],
+          "description": "Provide a file with configuration options",
+          "takes_arg": true,
+          "arg_name": "file path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "token",
+          "description": "Auth token. Not required if specified in --attach-config file",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "collect-logs",
+      "aliases": [],
+      "description": "Create a tarball with all relevant logs and debug data",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-o",
+            "--output"
+          ],
+          "description": "Path for tarball. Uses ua_logs.tar.gz in current directory if not specified",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "detach",
+      "aliases": [],
+      "description": "Remove Ubuntu Pro from this machine",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "disable",
+      "aliases": [],
+      "description": "Disable this machine's access to an Ubuntu Pro service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": {
+            "custom": [
+              "cc-eal",
+              "cis",
+              "esm",
+              "fips",
+              "fips-updates",
+              "livepatch",
+              "ros",
+              "ros-updates"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "aliases": [],
+      "description": "Activate and configure this machine's access to an Ubuntu Pro service",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "service",
+          "description": null,
+          "template": {
+            "custom": [
+              "cc-eal",
+              "cis",
+              "esm",
+              "fips",
+              "fips-updates",
+              "livepatch",
+              "ros",
+              "ros-updates"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "fix",
+      "aliases": [],
+      "description": "Fix a CVE or USN on the  system  by  upgrading  the  appropriate package(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "security issue",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "refresh",
+      "aliases": [],
+      "description": "Refresh contract and service details from Canonical",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "security-status",
+      "aliases": [],
+      "description": "Show  security updates for packages in the system, including all available ESM related content",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Report current status of Ubuntu Pro services on system",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format"
+          ],
+          "description": "Output format",
+          "takes_arg": true,
+          "arg_name": null,
+          "arg_template": {
+            "custom": [
+              "tabular",
+              "json",
+              "yaml"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--simulate-with-token"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "token",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "Include beta and unavailable services",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [],
+  "args": []
+}

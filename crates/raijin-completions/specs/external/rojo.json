@@ -1,0 +1,291 @@
+{
+  "name": "rojo",
+  "aliases": [],
+  "description": "Enables professional-grade development tools for Roblox developers",
+  "subcommands": [
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Print this message or the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SUBCOMMAND",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Generates a model or place file from the Rojo project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Where to output the result. Should end in .rbxm, .rbxl, .rbxmx, or .rbxlx",
+          "takes_arg": true,
+          "arg_name": "OUTPUT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Whether to automatically rebuild when any input files change",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": "Path to the project to serve. Defaults to the current directory [default: ]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "doc",
+      "aliases": [],
+      "description": "Open Rojo's documentation in your browser",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "fmt-project",
+      "aliases": [],
+      "description": "Reformat a Rojo project using the standard JSON formatting rules",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": "Path to the project to format. Defaults to the current directory [default: ]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes a new Rojo project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--kind"
+          ],
+          "description": "The kind of project to create, 'place' or 'model'. Defaults to place",
+          "takes_arg": true,
+          "arg_name": "KIND",
+          "arg_template": {
+            "custom": [
+              "place",
+              "model"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PATH",
+          "description": "Path to the place to create the project. Defaults to the current directory [default: ]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "plugin",
+      "aliases": [],
+      "description": "Install Rojo's plugin",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "serve",
+      "aliases": [],
+      "description": "Expose a Rojo project to the Rojo Studio plugin",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "address"
+          ],
+          "description": "The IP address to listen on. Defaults to `127.0.0.1`",
+          "takes_arg": true,
+          "arg_name": "ADDRESS",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sourcemap",
+      "aliases": [],
+      "description": "Generates a sourcemap file from the Rojo project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--include-non-scripts"
+          ],
+          "description": "If non-script files should be included or not. Defaults to false",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Where to output the sourcemap. Omit this to use stdout instead of writing to a file. Should end in .json",
+          "takes_arg": true,
+          "arg_name": "OUTPUT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PROJECT",
+          "description": "Path to the project to use for the sourcemap. Defaults to the current directory [default: ]",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upload",
+      "aliases": [],
+      "description": "Builds the project and uploads it to Roblox",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--api-key"
+          ],
+          "description": "API key obtained from create.roblox.com/credentials. Rojo will use the Open Cloud API when this is provided. Only supports uploading to a place",
+          "takes_arg": true,
+          "arg_name": "API_KEY",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--asset_id"
+          ],
+          "description": "Asset ID to upload to",
+          "takes_arg": true,
+          "arg_name": "ASSET_ID",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cookie"
+          ],
+          "description": "Authenication cookie to use. If not specified, Rojo will attempt to find one from the system automatically",
+          "takes_arg": true,
+          "arg_name": "COOKIE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--universe_id"
+          ],
+          "description": "The Universe ID of the given place. Required when using the Open Cloud API",
+          "takes_arg": true,
+          "arg_name": "UNIVERSE_ID",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "arg",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Set color behavior. Valid values are auto, always, and never [default: auto]",
+      "takes_arg": true,
+      "arg_name": "COLOR",
+      "arg_template": {
+        "custom": [
+          "auto",
+          "always",
+          "never"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Sets verbosity level. Can be specified multiple times",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

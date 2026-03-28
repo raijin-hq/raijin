@@ -1,0 +1,1036 @@
+{
+  "name": "mysql",
+  "aliases": [],
+  "description": "Mysql is a terminal-based front-end to MySQL",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--auto-rehash"
+      ],
+      "description": "Enable automatic rehashing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--auto-vertical-output"
+      ],
+      "description": "Enable automatic vertical result set display",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--batch",
+        "-B"
+      ],
+      "description": "Do not use history file",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary-as-hex"
+      ],
+      "description": "Display binary values in hexadecimal notation",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--binary-mode"
+      ],
+      "description": "Disable \\r\\n - to - \\n translation and treatment of \\0 as end-of-query",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bind-address"
+      ],
+      "description": "Use specified network interface to connect to MySQL Server",
+      "takes_arg": true,
+      "arg_name": "ip_address",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--character-sets-dir"
+      ],
+      "description": "Directory where character sets are installed",
+      "takes_arg": true,
+      "arg_name": "dir_name",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--column-names"
+      ],
+      "description": "Write column names in results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--column-type-info"
+      ],
+      "description": "Display result set metadata",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--comments",
+        "-c"
+      ],
+      "description": "Whether to retain or strip comments in statements sent to the server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compress",
+        "-C"
+      ],
+      "description": "Compress all information sent between client and server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--compression-algorithms"
+      ],
+      "description": "Permitted compression algorithms for connections to server",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": {
+        "custom": [
+          "zlib",
+          "zstd",
+          "uncompressed"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--connect-expired-password"
+      ],
+      "description": "Indicate to server that client can handle expired-password sandbox mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--connect-timeout"
+      ],
+      "description": "Number of seconds before connection timeout",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-D",
+        "--database"
+      ],
+      "description": "The database to use",
+      "takes_arg": true,
+      "arg_name": "db_name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Write debugging log; supported only if MySQL was built with debugging support",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug-check"
+      ],
+      "description": "Print debugging information when program exits",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-T",
+        "--debug-info"
+      ],
+      "description": "Print debugging information, memory, and CPU statistics when program exits",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-auth"
+      ],
+      "description": "Authentication plugin to use",
+      "takes_arg": true,
+      "arg_name": "plugin",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--default-character-set"
+      ],
+      "description": "Specify default character set",
+      "takes_arg": true,
+      "arg_name": "charset_name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--defaults-extra-file"
+      ],
+      "description": "Read named option file in addition to usual option files",
+      "takes_arg": true,
+      "arg_name": "file_name",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--defaults-file"
+      ],
+      "description": "Read only named option file",
+      "takes_arg": true,
+      "arg_name": "file_name",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--defaults-group-suffix"
+      ],
+      "description": "Option group suffix value",
+      "takes_arg": true,
+      "arg_name": "str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--delimiter"
+      ],
+      "description": "Set the statement delimiter",
+      "takes_arg": true,
+      "arg_name": "str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--disable-named-commands"
+      ],
+      "description": "Disable named commands. Use the \\* form only, or use named commands only at the beginning of a line ending with a semicolon (;). mysql starts with this option enabled by default. However, even with this option, long-format commands still work from the first line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dns-srv-name"
+      ],
+      "description": "Use DNS SRV lookup for host information",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enable-cleartext-plugin"
+      ],
+      "description": "Enable cleartext authentication plugin",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-e",
+        "--execute"
+      ],
+      "description": "Execute the statement and quit",
+      "takes_arg": true,
+      "arg_name": "statement",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-f",
+        "--force"
+      ],
+      "description": "Continue even if an SQL error occurs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--get-server-public-key"
+      ],
+      "description": "Request RSA public key from server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-?"
+      ],
+      "description": "Display help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--histignore"
+      ],
+      "description": "Patterns specifying which statements to ignore for logging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--host"
+      ],
+      "description": "Host on which MySQL server is located",
+      "takes_arg": true,
+      "arg_name": "host_name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-H",
+        "--html"
+      ],
+      "description": "Produce HTML output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-i",
+        "--ignore-spaces"
+      ],
+      "description": "Ignore spaces after function names",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--init-command"
+      ],
+      "description": "SQL statement to execute after connecting",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--line-numbers"
+      ],
+      "description": "Write line numbers for errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--load-data-local-dir"
+      ],
+      "description": "Directory for files named in LOAD DATA LOCAL statements",
+      "takes_arg": true,
+      "arg_name": "dir_name",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--local-infile"
+      ],
+      "description": "Enable or disable for LOCAL capability for LOAD DATA",
+      "takes_arg": true,
+      "arg_name": "is-local-inflie",
+      "arg_template": {
+        "custom": [
+          "0",
+          "1"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--login-path"
+      ],
+      "description": "Read login path options from .mylogin.cnf",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-allowed-packet"
+      ],
+      "description": "Maximum packet length to send to or receive from server",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--max-join-size"
+      ],
+      "description": "The automatic limit for rows in a join when using --safe-updates",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-G",
+        "--named-commands"
+      ],
+      "description": "Enable named mysql commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--net-buffer-length"
+      ],
+      "description": "Buffer size for TCP/IP and socket communication",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--network-namespace"
+      ],
+      "description": "Specify network namespace",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-A",
+        "--no-auto-rehash"
+      ],
+      "description": "Disable automatic rehashing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-beep",
+        "-b"
+      ],
+      "description": "Do not beep when errors occur",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-defaults"
+      ],
+      "description": "Read no option files",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-o",
+        "--one-database"
+      ],
+      "description": "Ignore statements except those for the default database named on the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pager"
+      ],
+      "description": "Use the given command for paging query output",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-p",
+        "--password"
+      ],
+      "description": "Password to use when connecting to server",
+      "takes_arg": true,
+      "arg_name": "password",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pipe",
+        "-W"
+      ],
+      "description": "Connect to server using named pipe (Windows only)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--plugin-dir"
+      ],
+      "description": "Directory where plugins are installed",
+      "takes_arg": true,
+      "arg_name": "dir_name",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-P",
+        "--port"
+      ],
+      "description": "TCP/IP port number for connection",
+      "takes_arg": true,
+      "arg_name": "port_num",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--print-defaults"
+      ],
+      "description": "Print default options",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--prompt"
+      ],
+      "description": "Set the prompt to the specified format",
+      "takes_arg": true,
+      "arg_name": "format_str",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--protocol"
+      ],
+      "description": "Transport protocol to use",
+      "takes_arg": true,
+      "arg_name": "format_str",
+      "arg_template": {
+        "custom": [
+          "TCP",
+          "SOCKET",
+          "PIPE",
+          "MEMORY"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-q",
+        "--quick"
+      ],
+      "description": "Do not cache each query result",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-r",
+        "--raw"
+      ],
+      "description": "Write column values without escape conversion",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reconnect"
+      ],
+      "description": "If the connection to the server is lost, automatically try to reconnect",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-U",
+        "--safe-updates",
+        "--i-am-a-dummy"
+      ],
+      "description": "Allow only UPDATE and DELETE statements that specify key values",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--select-limit"
+      ],
+      "description": "The automatic limit for SELECT statements when using --safe-updates",
+      "takes_arg": true,
+      "arg_name": "value",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--server-public-key-path"
+      ],
+      "description": "Path name to file containing RSA public key",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--shared-memory-base-name"
+      ],
+      "description": "Shared-memory name for shared-memory connections (Windows only)",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--show-warnings"
+      ],
+      "description": "Show warnings after each statement if there are any",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--sigint-ignore"
+      ],
+      "description": "Ignore SIGINT signals (typically the result of typing Control+C)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-s",
+        "--silent"
+      ],
+      "description": "Silent mode.  Produce less output. This option can be given multiple times to produce less and less output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--skip-auto-rehash"
+      ],
+      "description": "Disable automatic rehashing",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-N",
+        "--skip-column-names"
+      ],
+      "description": "Do not write column names in results",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-L",
+        "--skip-line-numbers"
+      ],
+      "description": "Skip line numbers for errors",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-named-commands"
+      ],
+      "description": "Disable named mysql commands",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-pager"
+      ],
+      "description": "Disable paging",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--skip-reconnect"
+      ],
+      "description": "Disable reconnecting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-S",
+        "--socket"
+      ],
+      "description": "Unix socket file or Windows named pipe to use\"File that contains list of trusted SSL Certificate Authorities\"",
+      "takes_arg": true,
+      "arg_name": "name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-ca"
+      ],
+      "description": "File that contains list of trusted SSL Certificate Authorities",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-capath"
+      ],
+      "description": "Directory that contains trusted SSL Certificate Authority certificate files",
+      "takes_arg": true,
+      "arg_name": "dirname",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-cert"
+      ],
+      "description": "File that contains X.509 certificate",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-cipher"
+      ],
+      "description": "Permissible ciphers for connection encryption",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-crl"
+      ],
+      "description": "File that contains certificate revocation lists",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-crlpath"
+      ],
+      "description": "Directory that contains certificate revocation-list files",
+      "takes_arg": true,
+      "arg_name": "dirname",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-fips-mode"
+      ],
+      "description": "Whether to enable FIPS mode on client side",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "OFF",
+          "ON",
+          "STRICT"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-key"
+      ],
+      "description": "File that contains X.509 key",
+      "takes_arg": true,
+      "arg_name": "filename",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssl-mode"
+      ],
+      "description": "Desired security state of connection to server",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-j",
+        "--syslog"
+      ],
+      "description": "Log interactive statements to syslog",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-t",
+        "--table"
+      ],
+      "description": "Display output in tabular format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tee"
+      ],
+      "description": "Append a copy of output to named file",
+      "takes_arg": true,
+      "arg_name": "file_name",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tls-ciphersuites"
+      ],
+      "description": "Permissible TLSv1.3 ciphersuites for encrypted connections",
+      "takes_arg": true,
+      "arg_name": "ciphersuite_list",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--tls-version"
+      ],
+      "description": "Permissible TLS protocols for encrypted connections",
+      "takes_arg": true,
+      "arg_name": "protocol_list",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-n",
+        "--unbuffered"
+      ],
+      "description": "Flush the buffer after each query",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-u",
+        "--user"
+      ],
+      "description": "MySQL user name to use when connecting to server",
+      "takes_arg": true,
+      "arg_name": "user_name",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-v",
+        "--verbose"
+      ],
+      "description": "Verbose mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-V",
+        "--version"
+      ],
+      "description": "Display version information and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-E",
+        "--vertical"
+      ],
+      "description": "Print query output rows vertically (one line per column value)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-w",
+        "--wait"
+      ],
+      "description": "If the connection cannot be established, wait and retry instead of aborting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-X",
+        "--xml"
+      ],
+      "description": "Produce XML output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--zstd-compression-level"
+      ],
+      "description": "Compression level for connections to server that use zstd compression",
+      "takes_arg": true,
+      "arg_name": "level",
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "arg",
+      "description": null,
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

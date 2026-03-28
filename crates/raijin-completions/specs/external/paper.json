@@ -1,0 +1,2316 @@
+{
+  "name": "paper",
+  "aliases": [],
+  "description": "The Paper CLI",
+  "subcommands": [
+    {
+      "name": "bench",
+      "aliases": [],
+      "description": "Benchmark a Paper query",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--benchmem"
+          ],
+          "description": "Report memory allocations with benchmark results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Set bundle file(s) or directory path(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "bundle",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--count"
+          ],
+          "description": "Number of times to repeat each benchmark",
+          "takes_arg": true,
+          "arg_name": "count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data",
+            "-d"
+          ],
+          "description": "Set policy or data file(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "data",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail"
+          ],
+          "description": "Exits with non-zero exit code on undefined/empty result and errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--import"
+          ],
+          "description": "Set query import(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "import",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--input",
+            "-i"
+          ],
+          "description": "Set input file path",
+          "takes_arg": true,
+          "arg_name": "input",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--metrics"
+          ],
+          "description": "Report query performance metrics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--package"
+          ],
+          "description": "Set query package",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--partial",
+            "-p"
+          ],
+          "description": "Perform partial evaluation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema",
+            "-s"
+          ],
+          "description": "Set schema file path or directory path",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin"
+          ],
+          "description": "Read query from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin-input",
+            "-I"
+          ],
+          "description": "Read input document from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target",
+            "-t"
+          ],
+          "description": "Set the runtime to exercise",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unknowns",
+            "-u"
+          ],
+          "description": "Set paths to treat as unknown during partial evaluation",
+          "takes_arg": true,
+          "arg_name": "unknowns",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for bench",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "Build an Paper bundle",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Load paths as bundle files or root directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--capabilities"
+          ],
+          "description": "Set capabilities.json file path",
+          "takes_arg": true,
+          "arg_name": "capabilities",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--debug"
+          ],
+          "description": "Enable debug output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--entrypoint",
+            "-e"
+          ],
+          "description": "Set slash separated entrypoint path",
+          "takes_arg": true,
+          "arg_name": "entrypoint",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-files-verify"
+          ],
+          "description": "Set file names to exclude during bundle verification",
+          "takes_arg": true,
+          "arg_name": "exclude-files-verify",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--optimize",
+            "-O"
+          ],
+          "description": "Set optimization level",
+          "takes_arg": true,
+          "arg_name": "optimize",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output",
+            "-o"
+          ],
+          "description": "Set the output filename",
+          "takes_arg": true,
+          "arg_name": "output",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--revision",
+            "-r"
+          ],
+          "description": "Set output bundle revision",
+          "takes_arg": true,
+          "arg_name": "revision",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Scope to use for bundle signature verification",
+          "takes_arg": true,
+          "arg_name": "scope",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--signing-alg"
+          ],
+          "description": "Name of the signing algorithm",
+          "takes_arg": true,
+          "arg_name": "signing-alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--signing-key"
+          ],
+          "description": "Set the secret (HMAC) or path of the PEM file containing the private key (RSA and ECDSA)",
+          "takes_arg": true,
+          "arg_name": "signing-key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target",
+            "-t"
+          ],
+          "description": "Set the output bundle target type",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verification-key"
+          ],
+          "description": "Set the secret (HMAC) or path of the PEM file containing the public key (RSA and ECDSA)",
+          "takes_arg": true,
+          "arg_name": "verification-key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verification-key-id"
+          ],
+          "description": "Name assigned to the verification key used for bundle verification",
+          "takes_arg": true,
+          "arg_name": "verification-key-id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for build",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Check Paper source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Load paths as bundle files or root directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--capabilities"
+          ],
+          "description": "Set capabilities.json file path",
+          "takes_arg": true,
+          "arg_name": "capabilities",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-errors",
+            "-m"
+          ],
+          "description": "Set the number of errors to allow before compilation fails early",
+          "takes_arg": true,
+          "arg_name": "max-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema",
+            "-s"
+          ],
+          "description": "Set schema file path or directory path",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict",
+            "-S"
+          ],
+          "description": "Enable compiler strict mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for check",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for bash",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for fish",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for powershell",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for zsh",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for completion",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deps",
+      "aliases": [],
+      "description": "Analyze Paper query dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Set bundle file(s) or directory path(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "bundle",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data",
+            "-d"
+          ],
+          "description": "Set policy or data file(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "data",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for deps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "eval",
+      "aliases": [],
+      "description": "Evaluate a Paper query",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Set bundle file(s) or directory path(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "bundle",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--capabilities"
+          ],
+          "description": "Set capabilities.json file path",
+          "takes_arg": true,
+          "arg_name": "capabilities",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--count"
+          ],
+          "description": "Number of times to repeat each benchmark",
+          "takes_arg": true,
+          "arg_name": "count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coverage"
+          ],
+          "description": "Report coverage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data",
+            "-d"
+          ],
+          "description": "Set policy or data file(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "data",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-early-exit"
+          ],
+          "description": "Disable 'early exit' optimizations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-indexing"
+          ],
+          "description": "Disable indexing optimizations",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-inlining"
+          ],
+          "description": "Set paths of documents to exclude from inlining",
+          "takes_arg": true,
+          "arg_name": "disable-inlining",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--explain"
+          ],
+          "description": "Enable query explanations",
+          "takes_arg": true,
+          "arg_name": "explain",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail"
+          ],
+          "description": "Exits with non-zero exit code on undefined/empty result and errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-defined"
+          ],
+          "description": "Exits with non-zero exit code on defined/non-empty result and errors",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--import"
+          ],
+          "description": "Set query import(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "import",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--input",
+            "-i"
+          ],
+          "description": "Set input file path",
+          "takes_arg": true,
+          "arg_name": "input",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--instrument"
+          ],
+          "description": "Enable query instrumentation metrics (implies --metrics)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--metrics"
+          ],
+          "description": "Report query performance metrics",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--package"
+          ],
+          "description": "Set query package",
+          "takes_arg": true,
+          "arg_name": "package",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--partial",
+            "-p"
+          ],
+          "description": "Perform partial evaluation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pretty-limit"
+          ],
+          "description": "Set limit after which pretty output gets truncated",
+          "takes_arg": true,
+          "arg_name": "pretty-limit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Perform expression profiling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile-limit"
+          ],
+          "description": "Set number of profiling results to show",
+          "takes_arg": true,
+          "arg_name": "profile-limit",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile-sort"
+          ],
+          "description": "Set sort order of expression profiler results",
+          "takes_arg": true,
+          "arg_name": "profile-sort",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--schema",
+            "-s"
+          ],
+          "description": "Set schema file path or directory path",
+          "takes_arg": true,
+          "arg_name": "schema",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shallow-inlining"
+          ],
+          "description": "Disable inlining of rules that depend on unknowns",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin"
+          ],
+          "description": "Read query from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin-input",
+            "-I"
+          ],
+          "description": "Read input document from stdin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict-builtin-errors"
+          ],
+          "description": "Treat built-in function errors as fatal",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target",
+            "-t"
+          ],
+          "description": "Set the runtime to exercise",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Set eval timeout (default unlimited)",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unknowns",
+            "-u"
+          ],
+          "description": "Set paths to treat as unknown during partial evaluation",
+          "takes_arg": true,
+          "arg_name": "unknowns",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for eval",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute against input files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Set bundle file(s) or directory path(s). This flag can be repeated",
+          "takes_arg": true,
+          "arg_name": "bundle",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-file",
+            "-c"
+          ],
+          "description": "Set path of configuration file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--decision"
+          ],
+          "description": "Set decision to evaluate",
+          "takes_arg": true,
+          "arg_name": "decision",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format"
+          ],
+          "description": "Set log format",
+          "takes_arg": true,
+          "arg_name": "log-format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-l"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--set"
+          ],
+          "description": "Override config values on the command line (use commas to specify multiple values)",
+          "takes_arg": true,
+          "arg_name": "set",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--set-file"
+          ],
+          "description": "Override config values with files on the command line (use commas to specify multiple values)",
+          "takes_arg": true,
+          "arg_name": "set-file",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for exec",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Format Paper source files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--diff",
+            "-d"
+          ],
+          "description": "Only display a diff of the changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail"
+          ],
+          "description": "Non zero exit code on reformat",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list",
+            "-l"
+          ],
+          "description": "List all files who would change when formatted",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--write",
+            "-w"
+          ],
+          "description": "Overwrite the original source file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for fmt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "inspect",
+      "aliases": [],
+      "description": "Inspect Paper bundle(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for inspect",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "parse",
+      "aliases": [],
+      "description": "Parse Paper source file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for parse",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Start Paper in interactive or server mode",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--addr",
+            "-a"
+          ],
+          "description": "Set listening address of the server (e.g., [ip]:<port> for TCP, unix://<path> for UNIX domain socket)",
+          "takes_arg": true,
+          "arg_name": "addr",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authentication"
+          ],
+          "description": "Set authentication scheme",
+          "takes_arg": true,
+          "arg_name": "authentication",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--authorization"
+          ],
+          "description": "Set authorization scheme",
+          "takes_arg": true,
+          "arg_name": "authorization",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Load paths as bundle files or root directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-file",
+            "-c"
+          ],
+          "description": "Set path of configuration file",
+          "takes_arg": true,
+          "arg_name": "config-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--diagnostic-addr"
+          ],
+          "description": "Set read-only diagnostic listening address of the server for /health and /metric APIs (e.g., [ip]:<port> for TCP, unix://<path> for UNIX domain socket)",
+          "takes_arg": true,
+          "arg_name": "diagnostic-addr",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-files-verify"
+          ],
+          "description": "Set file names to exclude during bundle verification",
+          "takes_arg": true,
+          "arg_name": "exclude-files-verify",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set shell output format, i.e, pretty, json",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--h2c"
+          ],
+          "description": "Enable H2C for HTTP listeners",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--history",
+            "-H"
+          ],
+          "description": "Set path of history file",
+          "takes_arg": true,
+          "arg_name": "history",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-format"
+          ],
+          "description": "Set log format",
+          "takes_arg": true,
+          "arg_name": "log-format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--log-level",
+            "-l"
+          ],
+          "description": "Set log level",
+          "takes_arg": true,
+          "arg_name": "log-level",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-errors",
+            "-m"
+          ],
+          "description": "Set the number of errors to allow before compilation fails early",
+          "takes_arg": true,
+          "arg_name": "max-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--min-tls-version"
+          ],
+          "description": "Set minimum TLS version to be used by Paper's server",
+          "takes_arg": true,
+          "arg_name": "min-tls-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pprof"
+          ],
+          "description": "Enables pprof endpoints",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ready-timeout"
+          ],
+          "description": "Wait (in seconds) for configured plugins before starting server (value <= 0 disables ready check)",
+          "takes_arg": true,
+          "arg_name": "ready-timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Scope to use for bundle signature verification",
+          "takes_arg": true,
+          "arg_name": "scope",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--server",
+            "-s"
+          ],
+          "description": "Start the runtime in server mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--set"
+          ],
+          "description": "Override config values on the command line (use commas to specify multiple values)",
+          "takes_arg": true,
+          "arg_name": "set",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--set-file"
+          ],
+          "description": "Override config values with files on the command line (use commas to specify multiple values)",
+          "takes_arg": true,
+          "arg_name": "set-file",
+          "arg_template": null,
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--shutdown-grace-period"
+          ],
+          "description": "Set the time (in seconds) that the server will wait to gracefully shut down",
+          "takes_arg": true,
+          "arg_name": "shutdown-grace-period",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shutdown-wait-period"
+          ],
+          "description": "Set the time (in seconds) that the server will wait before initiating shutdown",
+          "takes_arg": true,
+          "arg_name": "shutdown-wait-period",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--signing-alg"
+          ],
+          "description": "Name of the signing algorithm",
+          "takes_arg": true,
+          "arg_name": "signing-alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-verify"
+          ],
+          "description": "Disables bundle signature verification",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tls-ca-cert-file"
+          ],
+          "description": "Set path of TLS CA cert file",
+          "takes_arg": true,
+          "arg_name": "tls-ca-cert-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tls-cert-file"
+          ],
+          "description": "Set path of TLS certificate file",
+          "takes_arg": true,
+          "arg_name": "tls-cert-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tls-cert-refresh-period"
+          ],
+          "description": "Set certificate refresh period",
+          "takes_arg": true,
+          "arg_name": "tls-cert-refresh-period",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tls-private-key-file"
+          ],
+          "description": "Set path of TLS private key file",
+          "takes_arg": true,
+          "arg_name": "tls-private-key-file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verification-key"
+          ],
+          "description": "Set the secret (HMAC) or path of the PEM file containing the public key (RSA and ECDSA)",
+          "takes_arg": true,
+          "arg_name": "verification-key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verification-key-id"
+          ],
+          "description": "Name assigned to the verification key used for bundle verification",
+          "takes_arg": true,
+          "arg_name": "verification-key-id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch",
+            "-w"
+          ],
+          "description": "Watch command line files for changes",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for run",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sign",
+      "aliases": [],
+      "description": "Generate an Paper bundle signature",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Load paths as bundle files or root directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--output-file-path",
+            "-o"
+          ],
+          "description": "Set the location for the .signatures.json file",
+          "takes_arg": true,
+          "arg_name": "output-file-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--signing-alg"
+          ],
+          "description": "Name of the signing algorithm",
+          "takes_arg": true,
+          "arg_name": "signing-alg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--signing-key"
+          ],
+          "description": "Set the secret (HMAC) or path of the PEM file containing the private key (RSA and ECDSA)",
+          "takes_arg": true,
+          "arg_name": "signing-key",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for sign",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Execute Paper test cases",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bench"
+          ],
+          "description": "Benchmark the unit tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--benchmem"
+          ],
+          "description": "Report memory allocations with benchmark results",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bundle",
+            "-b"
+          ],
+          "description": "Load paths as bundle files or root directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--count"
+          ],
+          "description": "Number of times to repeat each test",
+          "takes_arg": true,
+          "arg_name": "count",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--coverage",
+            "-c"
+          ],
+          "description": "Report coverage (overrides debug tracing)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exit-zero-on-skipped",
+            "-z"
+          ],
+          "description": "Skipped tests return status 0",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--explain"
+          ],
+          "description": "Enable query explanations",
+          "takes_arg": true,
+          "arg_name": "explain",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Set file and directory names to ignore during loading (e.g., '.*' excludes hidden files)",
+          "takes_arg": true,
+          "arg_name": "ignore",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-errors",
+            "-m"
+          ],
+          "description": "Set the number of errors to allow before compilation fails early",
+          "takes_arg": true,
+          "arg_name": "max-errors",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--run",
+            "-r"
+          ],
+          "description": "Run only test cases matching the regular expression",
+          "takes_arg": true,
+          "arg_name": "run",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-failure-line",
+            "-l"
+          ],
+          "description": "Show test failure line",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target",
+            "-t"
+          ],
+          "description": "Set the runtime to exercise",
+          "takes_arg": true,
+          "arg_name": "target",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--threshold"
+          ],
+          "description": "Set coverage threshold and exit with non-zero status if coverage is less than threshold %",
+          "takes_arg": true,
+          "arg_name": "threshold",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timeout"
+          ],
+          "description": "Set test timeout (default 5s, 30s when benchmarking)",
+          "takes_arg": true,
+          "arg_name": "timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Set verbose reporting mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for test",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print the version of Paper",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--check",
+            "-c"
+          ],
+          "description": "Check for latest Paper release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "bench",
+          "aliases": [],
+          "description": "Benchmark a Paper query",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for bench",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "build",
+          "aliases": [],
+          "description": "Build an Paper bundle",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for build",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "check",
+          "aliases": [],
+          "description": "Check Paper source files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for check",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for bash",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for fish",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for powershell",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--no-descriptions"
+                  ],
+                  "description": "Disable completion descriptions",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--help",
+                    "-h"
+                  ],
+                  "description": "Help for zsh",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for completion",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "deps",
+          "aliases": [],
+          "description": "Analyze Paper query dependencies",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for deps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "eval",
+          "aliases": [],
+          "description": "Evaluate a Paper query",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for eval",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "exec",
+          "aliases": [],
+          "description": "Execute against input files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for exec",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fmt",
+          "aliases": [],
+          "description": "Format Paper source files",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for fmt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "inspect",
+          "aliases": [],
+          "description": "Inspect Paper bundle(s)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for inspect",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "parse",
+          "aliases": [],
+          "description": "Parse Paper source file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for parse",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Start Paper in interactive or server mode",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for run",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "sign",
+          "aliases": [],
+          "description": "Generate an Paper bundle signature",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for sign",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "test",
+          "aliases": [],
+          "description": "Execute Paper test cases",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for test",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Print the version of Paper",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--help",
+                "-h"
+              ],
+              "description": "Help for version",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--help",
+            "-h"
+          ],
+          "description": "Help for help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Help for Paper",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

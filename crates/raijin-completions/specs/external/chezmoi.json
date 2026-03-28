@@ -1,0 +1,2495 @@
+{
+  "name": "chezmoi",
+  "aliases": [],
+  "description": "Manage your dotfiles across multiple diverse machines, securely",
+  "subcommands": [
+    {
+      "name": "manage",
+      "aliases": [
+        "add"
+      ],
+      "description": "Add an existing file, directory, or symlink to the source state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--autotemplate",
+            "-a"
+          ],
+          "description": "Generate the template when adding files as templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--create"
+          ],
+          "description": "Add files that should exist, irrespective of their contents",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--encrypt"
+          ],
+          "description": "Encrypt files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Add directories exactly",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--follow",
+            "-f"
+          ],
+          "description": "Add symlink targets instead of symlinks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt",
+            "-p"
+          ],
+          "description": "Prompt before adding each entry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template",
+            "-T"
+          ],
+          "description": "Add files as templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template-symlinks"
+          ],
+          "description": "Add symlinks with target in source or home dirs as templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "apply",
+      "aliases": [],
+      "description": "Update the destination directory to match the target state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "archive",
+      "aliases": [],
+      "description": "Generate a tar archive of the target state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set archive format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "tar",
+              "tar.bz2",
+              "tar.gz",
+              "tar.xz",
+              "tbz2",
+              "tgz",
+              "txz",
+              "zip"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gzip",
+            "-z"
+          ],
+          "description": "Compress output with gzip",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "cat",
+      "aliases": [],
+      "description": "Print the target contents of a file, script, or symlink",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "cd",
+      "aliases": [],
+      "description": "Launch a shell in the source directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "chattr",
+      "aliases": [],
+      "description": "Change the attributes of a target in the source state",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "attributes/modifiers",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell completion code",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "shell",
+          "description": null,
+          "template": {
+            "custom": [
+              "bash",
+              "fish",
+              "zsh",
+              "powershell"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "data",
+      "aliases": [],
+      "description": "Print the template data",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": {
+            "custom": [
+              "json",
+              "yaml"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "decrypt",
+      "aliases": [],
+      "description": "Decrypt file or standard input",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Print the diff between the target state and the destination state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--pager"
+          ],
+          "description": "Set pager",
+          "takes_arg": true,
+          "arg_name": "pager",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reverse"
+          ],
+          "description": "Reverse the direction of the diff",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-builtin-diff"
+          ],
+          "description": "Use the builtin diff",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "doctor",
+      "aliases": [],
+      "description": "Check your system for potential problems",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "dump",
+      "aliases": [],
+      "description": "Generate a dump of the target state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": "Set output format",
+          "takes_arg": true,
+          "arg_name": "format",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "edit",
+      "aliases": [],
+      "description": "Edit the source state of a target",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--apply",
+            "-a"
+          ],
+          "description": "Apply after editing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hardlink"
+          ],
+          "description": "Invoke editor with a hardlink to the source file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "edit-config",
+      "aliases": [],
+      "description": "Edit the configuration file",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "encrypt",
+      "aliases": [],
+      "description": "Encrypt file or standard input",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "execute-template",
+      "aliases": [],
+      "description": "Execute the given template(s)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--init",
+            "-i"
+          ],
+          "description": "Simulate chezmoi init",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--promptBool"
+          ],
+          "description": "Simulate promptBool",
+          "takes_arg": true,
+          "arg_name": "promptBool",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--promptInt"
+          ],
+          "description": "Simulate promptInt",
+          "takes_arg": true,
+          "arg_name": "promptInt",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--promptString",
+            "-p"
+          ],
+          "description": "Simulate promptString",
+          "takes_arg": true,
+          "arg_name": "promptString",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdinisatty"
+          ],
+          "description": "Simulate stdinIsATTY",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "template",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "unmanage",
+      "aliases": [
+        "forget"
+      ],
+      "description": "Remove a target from the source state",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Generate a file for use with chezmoi",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "file",
+          "description": null,
+          "template": {
+            "custom": [
+              "install.sh"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "git",
+      "aliases": [],
+      "description": "Run git in the source directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "ignored",
+      "aliases": [],
+      "description": "Print ignored targets",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import an archive into the source state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Set exact_ attribute on imported directories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-destination",
+            "-r"
+          ],
+          "description": "Remove destination before import",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strip-components"
+          ],
+          "description": "Strip leading path components",
+          "takes_arg": true,
+          "arg_name": "strip-components",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "archive",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Setup the source directory and update the destination directory to match the target state",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--apply",
+            "-a"
+          ],
+          "description": "Update destination directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--branch"
+          ],
+          "description": "Set initial branch to checkout",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--config-path",
+            "-C"
+          ],
+          "description": "Path to write generated config file",
+          "takes_arg": true,
+          "arg_name": "config-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--data"
+          ],
+          "description": "Include existing template data",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--depth",
+            "-d"
+          ],
+          "description": "Create a shallow clone",
+          "takes_arg": true,
+          "arg_name": "depth",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--guess-repo-url",
+            "-g"
+          ],
+          "description": "Guess the repo URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--one-shot"
+          ],
+          "description": "Run in one-shot mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prompt"
+          ],
+          "description": "Force prompt*Once template functions to prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--purge",
+            "-p"
+          ],
+          "description": "Purge config and source directories after running",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--purge-binary",
+            "-P"
+          ],
+          "description": "Purge chezmoi binary after running",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssh"
+          ],
+          "description": "Use ssh instead of https when guessing dotfile repo URL",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "source",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "aliases": [],
+      "description": "Print license",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [
+        "managed"
+      ],
+      "description": "List the managed entries in the destination directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "merge",
+      "aliases": [],
+      "description": "Perform a three-way merge between the destination state, the source state, and the target state",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "merge-all",
+      "aliases": [],
+      "description": "Perform a three-way merge for each modified file",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "purge",
+      "aliases": [],
+      "description": "Purge chezmoi's configuration and data",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--binary",
+            "-P"
+          ],
+          "description": "Purge chezmoi binary",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "re-add",
+      "aliases": [],
+      "description": "Re-add modified files",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "rm",
+      "aliases": [
+        "remove"
+      ],
+      "description": "Remove a target from the source state and the destination directory",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "secret",
+      "aliases": [],
+      "description": "Interact with a secret manager",
+      "subcommands": [
+        {
+          "name": "keyring",
+          "aliases": [],
+          "description": "Interact with keyring",
+          "subcommands": [
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a value from keyring",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--service"
+                  ],
+                  "description": "Service",
+                  "takes_arg": true,
+                  "arg_name": "service",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--user"
+                  ],
+                  "description": "User",
+                  "takes_arg": true,
+                  "arg_name": "user",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "get",
+              "aliases": [],
+              "description": "Get a value from keyring",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--service"
+                  ],
+                  "description": "Service",
+                  "takes_arg": true,
+                  "arg_name": "service",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--user"
+                  ],
+                  "description": "User",
+                  "takes_arg": true,
+                  "arg_name": "user",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set a value in keyring",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "--service"
+                  ],
+                  "description": "Service",
+                  "takes_arg": true,
+                  "arg_name": "service",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--user"
+                  ],
+                  "description": "User",
+                  "takes_arg": true,
+                  "arg_name": "user",
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "--value"
+                  ],
+                  "description": "Value",
+                  "takes_arg": true,
+                  "arg_name": "value",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "source-path",
+      "aliases": [],
+      "description": "Print the source path of a target",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "state",
+      "aliases": [],
+      "description": "Manipulate the persistent state",
+      "subcommands": [
+        {
+          "name": "data",
+          "aliases": [],
+          "description": "Print the raw data in the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": "Format",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a value from the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--bucket"
+              ],
+              "description": "Bucket",
+              "takes_arg": true,
+              "arg_name": "bucket",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--key"
+              ],
+              "description": "Key",
+              "takes_arg": true,
+              "arg_name": "key",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete-bucket",
+          "aliases": [],
+          "description": "Delete a bucket from the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--bucket"
+              ],
+              "description": "Bucket",
+              "takes_arg": true,
+              "arg_name": "bucket",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "dump",
+          "aliases": [],
+          "description": "Generate a dump of the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": "Format",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get a value from the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--bucket"
+              ],
+              "description": "Bucket",
+              "takes_arg": true,
+              "arg_name": "bucket",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--key"
+              ],
+              "description": "Key",
+              "takes_arg": true,
+              "arg_name": "key",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "get-bucket",
+          "aliases": [],
+          "description": "Get a bucket from the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--bucket"
+              ],
+              "description": "Bucket",
+              "takes_arg": true,
+              "arg_name": "bucket",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": "Format",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset the persistent state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set a value from the persistent state",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--bucket"
+              ],
+              "description": "Bucket",
+              "takes_arg": true,
+              "arg_name": "bucket",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--key"
+              ],
+              "description": "Key",
+              "takes_arg": true,
+              "arg_name": "key",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--value"
+              ],
+              "description": "Value",
+              "takes_arg": true,
+              "arg_name": "value",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": "Show the status of targets",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "target-path",
+      "aliases": [],
+      "description": "Print the target path of a source path",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "source",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "unmanaged",
+      "aliases": [],
+      "description": "List the unmanaged files in the destination directory",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "paths",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "aliases": [],
+      "description": "Pull and apply any changes",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--apply",
+            "-a"
+          ],
+          "description": "Apply after pulling",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrade chezmoi to the latest released version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--executable"
+          ],
+          "description": "Set executable to replace",
+          "takes_arg": true,
+          "arg_name": "executable",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--method"
+          ],
+          "description": "Set upgrade method",
+          "takes_arg": true,
+          "arg_name": "method",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--owner"
+          ],
+          "description": "Set owner",
+          "takes_arg": true,
+          "arg_name": "owner",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--repo"
+          ],
+          "description": "Set repo",
+          "takes_arg": true,
+          "arg_name": "repo",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "verify",
+      "aliases": [],
+      "description": "Exit with success if the destination state matches the target state, fail otherwise",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--exclude",
+            "-x"
+          ],
+          "description": "Exclude entry types",
+          "takes_arg": true,
+          "arg_name": "exclude",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include",
+            "-i"
+          ],
+          "description": "Include entry types",
+          "takes_arg": true,
+          "arg_name": "include",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--init"
+          ],
+          "description": "Recreate config file from template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--recursive",
+            "-r"
+          ],
+          "description": "Recurse into subdirectories",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "target",
+          "description": null,
+          "template": "filepaths",
+          "is_optional": true,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "manage",
+          "aliases": [
+            "add"
+          ],
+          "description": "Add an existing file, directory, or symlink to the source state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "apply",
+          "aliases": [],
+          "description": "Update the destination directory to match the target state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "archive",
+          "aliases": [],
+          "description": "Generate a tar archive of the target state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cat",
+          "aliases": [],
+          "description": "Print the target contents of a file, script, or symlink",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "cd",
+          "aliases": [],
+          "description": "Launch a shell in the source directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "chattr",
+          "aliases": [],
+          "description": "Change the attributes of a target in the source state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate shell completion code",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "data",
+          "aliases": [],
+          "description": "Print the template data",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "decrypt",
+          "aliases": [],
+          "description": "Decrypt file or standard input",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "diff",
+          "aliases": [],
+          "description": "Print the diff between the target state and the destination state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "doctor",
+          "aliases": [],
+          "description": "Check your system for potential problems",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dump",
+          "aliases": [],
+          "description": "Generate a dump of the target state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit the source state of a target",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "edit-config",
+          "aliases": [],
+          "description": "Edit the configuration file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "encrypt",
+          "aliases": [],
+          "description": "Encrypt file or standard input",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "execute-template",
+          "aliases": [],
+          "description": "Execute the given template(s)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unmanage",
+          "aliases": [
+            "forget"
+          ],
+          "description": "Remove a target from the source state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "generate",
+          "aliases": [],
+          "description": "Generate a file for use with chezmoi",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "git",
+          "aliases": [],
+          "description": "Run git in the source directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ignored",
+          "aliases": [],
+          "description": "Print ignored targets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "import",
+          "aliases": [],
+          "description": "Import an archive into the source state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Setup the source directory and update the destination directory to match the target state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "license",
+          "aliases": [],
+          "description": "Print license",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "managed"
+          ],
+          "description": "List the managed entries in the destination directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "merge",
+          "aliases": [],
+          "description": "Perform a three-way merge between the destination state, the source state, and the target state",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "merge-all",
+          "aliases": [],
+          "description": "Perform a three-way merge for each modified file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "purge",
+          "aliases": [],
+          "description": "Purge chezmoi's configuration and data",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "re-add",
+          "aliases": [],
+          "description": "Re-add modified files",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "rm",
+          "aliases": [
+            "remove"
+          ],
+          "description": "Remove a target from the source state and the destination directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "secret",
+          "aliases": [],
+          "description": "Interact with a secret manager",
+          "subcommands": [
+            {
+              "name": "keyring",
+              "aliases": [],
+              "description": "Interact with keyring",
+              "subcommands": [
+                {
+                  "name": "delete",
+                  "aliases": [],
+                  "description": "Delete a value from keyring",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "get",
+                  "aliases": [],
+                  "description": "Get a value from keyring",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                },
+                {
+                  "name": "set",
+                  "aliases": [],
+                  "description": "Set a value in keyring",
+                  "subcommands": [],
+                  "options": [],
+                  "args": []
+                }
+              ],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "source-path",
+          "aliases": [],
+          "description": "Print the source path of a target",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "state",
+          "aliases": [],
+          "description": "Manipulate the persistent state",
+          "subcommands": [
+            {
+              "name": "data",
+              "aliases": [],
+              "description": "Print the raw data in the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a value from the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "delete-bucket",
+              "aliases": [],
+              "description": "Delete a bucket from the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "dump",
+              "aliases": [],
+              "description": "Generate a dump of the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "get",
+              "aliases": [],
+              "description": "Get a value from the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "get-bucket",
+              "aliases": [],
+              "description": "Get a bucket from the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "reset",
+              "aliases": [],
+              "description": "Reset the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "set",
+              "aliases": [],
+              "description": "Set a value from the persistent state",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show the status of targets",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "target-path",
+          "aliases": [],
+          "description": "Print the target path of a source path",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "unmanaged",
+          "aliases": [],
+          "description": "List the unmanaged files in the destination directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Pull and apply any changes",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade chezmoi to the latest released version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "verify",
+          "aliases": [],
+          "description": "Exit with success if the destination state matches the target state, fail otherwise",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--cache"
+      ],
+      "description": "Set cache directory",
+      "takes_arg": true,
+      "arg_name": "cache",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--color"
+      ],
+      "description": "Colorize output",
+      "takes_arg": true,
+      "arg_name": "color",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config",
+        "-c"
+      ],
+      "description": "Set config file",
+      "takes_arg": true,
+      "arg_name": "config",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--config-format"
+      ],
+      "description": "Set config file format",
+      "takes_arg": true,
+      "arg_name": "config-format",
+      "arg_template": {
+        "custom": [
+          "json",
+          "toml",
+          "yaml"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--cpu-profile"
+      ],
+      "description": "Write a CPU profile to path",
+      "takes_arg": true,
+      "arg_name": "cpu-profile",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug"
+      ],
+      "description": "Include debug information in output",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--destination",
+        "-D"
+      ],
+      "description": "Set destination directory",
+      "takes_arg": true,
+      "arg_name": "destination",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dry-run",
+        "-n"
+      ],
+      "description": "Do not make any modifications to the destination directory",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force"
+      ],
+      "description": "Make all changes without prompting",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--gops"
+      ],
+      "description": "Enable gops agent",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--interactive"
+      ],
+      "description": "Prompt for all changes",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--keep-going",
+        "-k"
+      ],
+      "description": "Keep going as far as possible after an error",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--mode"
+      ],
+      "description": "Mode",
+      "takes_arg": true,
+      "arg_name": "mode",
+      "arg_template": {
+        "custom": [
+          "file",
+          "symlink"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-pager"
+      ],
+      "description": "Do not use the pager",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-tty"
+      ],
+      "description": "Do not attempt to get a TTY for reading passwords",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--output",
+        "-o"
+      ],
+      "description": "Write output to path instead of stdout",
+      "takes_arg": true,
+      "arg_name": "output",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--persistent-state"
+      ],
+      "description": "Set persistent state file",
+      "takes_arg": true,
+      "arg_name": "persistent-state",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--refresh-externals",
+        "-R"
+      ],
+      "description": "Refresh external cache",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe"
+      ],
+      "description": "Safely replace files and symlinks",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--source",
+        "-S"
+      ],
+      "description": "Set source directory",
+      "takes_arg": true,
+      "arg_name": "source",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--source-path"
+      ],
+      "description": "Specify targets by source path",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-builtin-age"
+      ],
+      "description": "Use builtin age",
+      "takes_arg": true,
+      "arg_name": "use-builtin-age",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--use-builtin-git"
+      ],
+      "description": "Use builtin git",
+      "takes_arg": true,
+      "arg_name": "use-builtin-git",
+      "arg_template": {
+        "custom": [
+          "true",
+          "false",
+          "auto"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Make output more verbose",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--working-tree",
+        "-W"
+      ],
+      "description": "Set working tree directory",
+      "takes_arg": true,
+      "arg_name": "working-tree",
+      "arg_template": "folders",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

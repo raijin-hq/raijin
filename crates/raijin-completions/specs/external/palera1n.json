@@ -1,0 +1,293 @@
+{
+  "name": "palera1n",
+  "aliases": [],
+  "description": "Jailbreaking tool for iOS/iPadOS 15.x-16.x arm64",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--force-revert"
+      ],
+      "description": "Remove jailbreak",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup-partial-fakefs",
+        "-B"
+      ],
+      "description": "Setup partial fakefs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--setup-fakefs",
+        "-c"
+      ],
+      "description": "Setup fakefs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--demote",
+        "-d"
+      ],
+      "description": "Demote",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--dfuhelper",
+        "-D"
+      ],
+      "description": "Exit after entering DFU",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--boot-args",
+        "-e"
+      ],
+      "description": "XNU boot arguments",
+      "takes_arg": true,
+      "arg_name": "BOOT_ARGUMENTS",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--enter-recovery",
+        "-E"
+      ],
+      "description": "Enter recovery mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--fakefs",
+        "-f"
+      ],
+      "description": "Boot fakefs",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for palera1n",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-checkra1n",
+        "-i"
+      ],
+      "description": "Override checkra1n",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-pongo",
+        "-k"
+      ],
+      "description": "Override Pongo image",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-kpf",
+        "-K"
+      ],
+      "description": "Override kernel patchfinder",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--rootless",
+        "-l"
+      ],
+      "description": "Boot rootless. This is the default",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--jbinit-log-to-file",
+        "-L"
+      ],
+      "description": "Make jbinit log to /cores/jbinit.log (can be read from sandbox while jailbroken)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--exit-recovery",
+        "-n"
+      ],
+      "description": "Exit recovery mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--device-info",
+        "-I"
+      ],
+      "description": "Print info about the connected device",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-overlay",
+        "-o"
+      ],
+      "description": "Override overlay",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pongo-shell",
+        "-p"
+      ],
+      "description": "Boots to PongoOS shell",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--pongo-full",
+        "-P"
+      ],
+      "description": "Boots to a PongoOS shell with default images already uploaded",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--override-ramdisk",
+        "-r"
+      ],
+      "description": "Override ramdisk",
+      "takes_arg": true,
+      "arg_name": "FILE",
+      "arg_template": "filepaths",
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--reboot-device",
+        "-R"
+      ],
+      "description": "Reboot connected device in normal mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--safe-mode",
+        "-s"
+      ],
+      "description": "Enter safe mode",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-colors",
+        "-S"
+      ],
+      "description": "Disable colors on the command line",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--debug-logging",
+        "-v"
+      ],
+      "description": "Enable debug logging. This option can be repeated for extra verbosity",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose-boot",
+        "-V"
+      ],
+      "description": "Verbose boot",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

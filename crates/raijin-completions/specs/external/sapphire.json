@@ -1,0 +1,113 @@
+{
+  "name": "sapphire",
+  "aliases": [],
+  "description": "CLI for the Sapphire Framework",
+  "subcommands": [
+    {
+      "name": "new",
+      "aliases": [
+        "n"
+      ],
+      "description": "Creates a new Sapphire project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-v",
+            "--verbose"
+          ],
+          "description": "Enable verbose logging",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": "Project name",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [
+        "g"
+      ],
+      "description": "Generates a component/piece",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "component",
+          "description": "Component/piece name",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "name",
+          "description": "File name",
+          "template": "filepaths",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [
+        "i"
+      ],
+      "description": "Creates a config file on an existing Sapphire project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Display help for command",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "command",
+          "description": "Command to display help for",
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for sapphire",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Output the version number",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

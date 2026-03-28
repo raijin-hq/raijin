@@ -1,0 +1,390 @@
+{
+  "name": "dprint",
+  "aliases": [],
+  "description": "A pluggable and configurable code formatting platform written in Rust",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Initializes a configuration file in the current directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "fmt",
+      "aliases": [],
+      "description": "Formats the source files and writes the result to the file system",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--diff"
+          ],
+          "description": "Outputs a check-like diff of every formatted file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stdin"
+          ],
+          "description": "Format stdin and output the result to stdout. Provide an absolute file path to apply the inclusion and exclusion rules or an extension or file name to always format the text",
+          "takes_arg": true,
+          "arg_name": "extension/file-name/file-path",
+          "arg_template": "filepaths",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--incremental"
+          ],
+          "description": "Only format files when they change. This may alternatively be specified in the configuration file",
+          "takes_arg": true,
+          "arg_name": "incremental",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--excludes"
+          ],
+          "description": "List of file patterns or directories in quotes to exclude when formatting. This overrides what is specified in the config file",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--allow-node-modules"
+          ],
+          "description": "Allows traversing node module directories (unstable - This flag will be renamed to be non-node specific in the future)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": "List of file patterns in quotes to format. This overrides what is specified in the config file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "check",
+      "aliases": [],
+      "description": "Checks for any files that haven't been formatted",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--incremental"
+          ],
+          "description": "Only format files when they change. This may alternatively be specified in the configuration file",
+          "takes_arg": true,
+          "arg_name": "incremental",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--excludes"
+          ],
+          "description": "List of file patterns or directories in quotes to exclude when formatting. This overrides what is specified in the config file",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--allow-node-modules"
+          ],
+          "description": "Allows traversing node module directories (unstable - This flag will be renamed to be non-node specific in the future)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": "List of file patterns in quotes to format. This overrides what is specified in the config file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Functionality related to the configuration file",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds a plugin to the configuration file",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "url-or-plugin-name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "init",
+          "aliases": [],
+          "description": "Initializes a configuration file in the current directory",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "update",
+          "aliases": [],
+          "description": "Updates the plugins in the configuration file",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-y",
+                "--yes"
+              ],
+              "description": "Upgrade process plugins without prompting to confirm checksums",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "help",
+          "aliases": [],
+          "description": "Prints the help of the given subcommand(s)",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "SUBCOMMAND",
+              "description": "The subcommand whose help message to display",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "output-file-paths",
+      "aliases": [],
+      "description": "Prints the resolved file paths for the plugins based on the args and configuration",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--excludes"
+          ],
+          "description": "List of file patterns or directories in quotes to exclude when formatting. This overrides what is specified in the config file",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--allow-node-modules"
+          ],
+          "description": "Allows traversing node module directories (unstable - This flag will be renamed to be non-node specific in the future)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": "List of file patterns in quotes to format. This overrides what is specified in the config file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "output-resolved-config",
+      "aliases": [],
+      "description": "Prints the resolved configuration for the plugins based on the args and configuration",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "output-format-times",
+      "aliases": [],
+      "description": "Prints the amount of time it takes to format each file. Use this for debugging",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--incremental"
+          ],
+          "description": "Only format files when they change. This may alternatively be specified in the configuration file",
+          "takes_arg": true,
+          "arg_name": "incremental",
+          "arg_template": {
+            "custom": [
+              "true",
+              "false"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--excludes"
+          ],
+          "description": "List of file patterns or directories in quotes to exclude when formatting. This overrides what is specified in the config file",
+          "takes_arg": true,
+          "arg_name": "pattern",
+          "arg_template": "filepaths",
+          "is_repeatable": true
+        },
+        {
+          "names": [
+            "--allow-node-modules"
+          ],
+          "description": "Allows traversing node module directories (unstable - This flag will be renamed to be non-node specific in the future)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "files",
+          "description": "List of file patterns in quotes to format. This overrides what is specified in the config file",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "clear-cache",
+      "aliases": [],
+      "description": "Deletes the plugin cache directory",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "Upgrades the dprint executable",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "license",
+      "aliases": [],
+      "description": "Outputs the software license",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Prints the help of the given subcommand(s)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "SUBCOMMAND",
+          "description": "The subcommand whose help message to display",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "-c",
+        "--config"
+      ],
+      "description": "Path or url to JSON configuration file. Defaults to dprint.json or .dprint.json in current or ancestor directory when not provided",
+      "takes_arg": true,
+      "arg_name": "config",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-h",
+        "--help"
+      ],
+      "description": "Prints help information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--plugins"
+      ],
+      "description": "List of urls or file paths of plugins to use. This overrides what is specified in the config file",
+      "takes_arg": true,
+      "arg_name": "urls/files",
+      "arg_template": "filepaths",
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "--verbose"
+      ],
+      "description": "Prints additional diagnostic information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

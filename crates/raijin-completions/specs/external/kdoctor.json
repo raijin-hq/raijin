@@ -1,0 +1,62 @@
+{
+  "name": "kdoctor",
+  "aliases": [],
+  "description": "Tool that helps to set up the environment for Kotlin Multiplatform Mobile app development",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Report a version of KDoctor",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--verbose",
+        "-v"
+      ],
+      "description": "Report an extended information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--all",
+        "-a"
+      ],
+      "description": "Run extra diagnostics",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--team-ids"
+      ],
+      "description": "Report all available Apple dev team ids",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Usage info",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

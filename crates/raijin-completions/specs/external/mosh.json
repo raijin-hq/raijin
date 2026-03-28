@@ -1,0 +1,191 @@
+{
+  "name": "mosh",
+  "aliases": [],
+  "description": null,
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Show help for mosh",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--client"
+      ],
+      "description": "Mosh client on local machine (default: \"mosh-client\")",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--server"
+      ],
+      "description": "Mosh server on remote machine (default: \"mosh-server\")",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--predict"
+      ],
+      "description": "Local echo options",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "adaptive",
+          "always",
+          "never",
+          "experimental"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-4"
+      ],
+      "description": "Use IPv4 only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-6"
+      ],
+      "description": "Use IPv6 only",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--family"
+      ],
+      "description": "Network Type",
+      "takes_arg": true,
+      "arg_name": null,
+      "arg_template": {
+        "custom": [
+          "inet",
+          "ine6",
+          "auto",
+          "all",
+          "prefer-inet4",
+          "prefer-inet6"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--port",
+        "-p"
+      ],
+      "description": "Server-side UDP port or range, (No effect on server-side SSH port)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--bind-server"
+      ],
+      "description": "{ssh|any|IP}, ask the server to reply from an IP address, (default: \"ssh\")",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--ssh"
+      ],
+      "description": "Ssh command to run when setting up session, (example: \"ssh -p 2222\")",
+      "takes_arg": true,
+      "arg_name": "command",
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-ssh-pty"
+      ],
+      "description": "Do not allocate a pseudo tty on ssh connection",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--no-init"
+      ],
+      "description": "Do not send terminal initialization string",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--local"
+      ],
+      "description": "Run mosh-server locally without using ssh",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--experimental-remote-ip"
+      ],
+      "description": "Select the method for discovering the remote IP address to use for mosh",
+      "takes_arg": true,
+      "arg_name": "method",
+      "arg_template": {
+        "custom": [
+          "local",
+          "remote",
+          "proxy"
+        ]
+      },
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version"
+      ],
+      "description": "Version and copyright information",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "user@hostname",
+      "description": "Address of remote machine to log into",
+      "template": null,
+      "is_optional": false,
+      "is_variadic": false
+    }
+  ]
+}

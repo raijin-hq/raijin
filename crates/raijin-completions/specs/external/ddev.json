@@ -1,0 +1,2418 @@
+{
+  "name": "ddev",
+  "aliases": [],
+  "description": "DDEV-Local local development environment",
+  "subcommands": [
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "A collection of authentication commands",
+      "subcommands": [
+        {
+          "name": "ssh",
+          "aliases": [],
+          "description": "Add ssh key authentication to the ddev-ssh-auth container",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--ssh-key-path",
+                "-d"
+              ],
+              "description": "Full path to ssh key directory",
+              "takes_arg": true,
+              "arg_name": "ssh-key-path",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Removes items ddev has created",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Clean all ddev projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dry-run"
+          ],
+          "description": "Run the clean command without deleting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "composer",
+      "aliases": [],
+      "description": "Executes a composer command within the web container",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Executes 'composer create-project' within the web container with the arguments and flags provided",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Yes - skip confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "create-project",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Create or modify a ddev project configuration in the current directory",
+      "subcommands": [
+        {
+          "name": "global",
+          "aliases": [],
+          "description": "Change global configuration",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--auto-restart-containers"
+              ],
+              "description": "If true, automatically restart containers after a reboot or docker restart",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-http2"
+              ],
+              "description": "Optionally disable http2 in ddev-router, 'ddev global --disable-http2' or `ddev global --disable-http2=false'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--fail-on-hook-fail"
+              ],
+              "description": "If true, 'ddev start' will fail when a hook fails",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--instrumentation-opt-in"
+              ],
+              "description": "Instrumentation-opt-in=true",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--internet-detection-timeout-ms"
+              ],
+              "description": "Increase timeout when checking internet timeout, in milliseconds",
+              "takes_arg": true,
+              "arg_name": "internet-detection-timeout-ms",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--letsencrypt-email"
+              ],
+              "description": "Email associated with Let's Encrypt, `ddev global --letsencrypt-email=me@example.com'",
+              "takes_arg": true,
+              "arg_name": "letsencrypt-email",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--mutagen-enabled"
+              ],
+              "description": "If true, web container will use mutagen caching/asynchronous updates",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--nfs-mount-enabled"
+              ],
+              "description": "Enable NFS mounting on all projects globally",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-bind-mounts"
+              ],
+              "description": "If true, don't use bind-mounts - useful for environments like remote docker where bind-mounts are impossible",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--omit-containers"
+              ],
+              "description": "For example, --omit-containers=dba,ddev-ssh-agent",
+              "takes_arg": true,
+              "arg_name": "omit-containers",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--required-docker-compose-version"
+              ],
+              "description": "Override default docker-compose version",
+              "takes_arg": true,
+              "arg_name": "required-docker-compose-version",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--router-bind-all-interfaces"
+              ],
+              "description": "Router-bind-all-interfaces=true",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--simple-formatting"
+              ],
+              "description": "If true, use simple formatting and no color for tables",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--table-style"
+              ],
+              "description": "Table style for list and describe, see ~/.ddev/global_config.yaml for values",
+              "takes_arg": true,
+              "arg_name": "table-style",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-docker-compose-from-path"
+              ],
+              "description": "If true, use docker-compose from path instead of private ~/.ddev/bin/docker-compose",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-hardened-images"
+              ],
+              "description": "If true, use more secure 'hardened' images for an actual internet deployment",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--use-letsencrypt"
+              ],
+              "description": "Enables experimental Let's Encrypt integration, 'ddev global --use-letsencrypt' or `ddev global --use-letsencrypt=false'",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--web-environment"
+              ],
+              "description": "Set the environment variables in the web container: --web-environment=\"TYPO3_CONTEXT=Development,SOMEENV=someval\"",
+              "takes_arg": true,
+              "arg_name": "web-environment",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--web-environment-add"
+              ],
+              "description": "Append environment variables to the web container: --web-environment=\"TYPO3_CONTEXT=Development,SOMEENV=someval\"",
+              "takes_arg": true,
+              "arg_name": "web-environment-add",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--additional-fqdns"
+          ],
+          "description": "A comma-delimited list of FQDNs for the project",
+          "takes_arg": true,
+          "arg_name": "additional-fqdns",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--additional-hostnames"
+          ],
+          "description": "A comma-delimited list of hostnames for the project",
+          "takes_arg": true,
+          "arg_name": "additional-hostnames",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--apptype"
+          ],
+          "description": "Provide the project type (one of backdrop, drupal10, drupal6, drupal7, drupal8, drupal9, laravel, magento, magento2, php, shopware6, typo3, wordpress). This is autodetected and this flag is necessary only to override the detection. This is the same as --project-type and is included only for backwards compatibility",
+          "takes_arg": true,
+          "arg_name": "apptype",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--auto"
+          ],
+          "description": "Automatically run config without prompting",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bind-all-interfaces"
+          ],
+          "description": "Bind host ports on all interfaces, not just on localhost network interface",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--composer-root"
+          ],
+          "description": "Overrides the default composer root directory for the web service",
+          "takes_arg": true,
+          "arg_name": "composer-root",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--composer-root-default"
+          ],
+          "description": "Unsets a web service composer root directory override",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--composer-version"
+          ],
+          "description": "Specify override for composer version in web container. This may be \"\", \"1\", \"2\", \"2.2\", \"stable\", \"preview\", \"snapshot\" or a specific version",
+          "takes_arg": true,
+          "arg_name": "composer-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--create-docroot"
+          ],
+          "description": "Prompts ddev to create the docroot if it doesn't exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--database"
+          ],
+          "description": "Specify the database type:version to use. Defaults to mariadb:10.4",
+          "takes_arg": true,
+          "arg_name": "database",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db-image"
+          ],
+          "description": "Sets the db container image",
+          "takes_arg": true,
+          "arg_name": "db-image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db-image-default"
+          ],
+          "description": "Sets the default db container image for this ddev version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db-working-dir"
+          ],
+          "description": "Overrides the default working directory for the db service",
+          "takes_arg": true,
+          "arg_name": "db-working-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--db-working-dir-default"
+          ],
+          "description": "Unsets a db service working directory override",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dba-image"
+          ],
+          "description": "Sets the dba container image",
+          "takes_arg": true,
+          "arg_name": "dba-image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dba-image-default"
+          ],
+          "description": "Sets the default dba container image for this ddev version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dba-working-dir"
+          ],
+          "description": "Overrides the default working directory for the dba service",
+          "takes_arg": true,
+          "arg_name": "dba-working-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dba-working-dir-default"
+          ],
+          "description": "Unsets a dba service working directory override",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dbimage-extra-packages"
+          ],
+          "description": "A comma-delimited list of Debian packages that should be added to db container when the project is started",
+          "takes_arg": true,
+          "arg_name": "dbimage-extra-packages",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--default-container-timeout"
+          ],
+          "description": "Default time in seconds that ddev waits for all containers to become ready on start",
+          "takes_arg": true,
+          "arg_name": "default-container-timeout",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-settings-management"
+          ],
+          "description": "Prevent ddev from creating or updating CMS settings files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--docroot"
+          ],
+          "description": "Provide the relative docroot of the project, like 'docroot' or 'htdocs' or 'web', defaults to empty, the current directory",
+          "takes_arg": true,
+          "arg_name": "docroot",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--fail-on-hook-fail"
+          ],
+          "description": "Decide whether 'ddev start' should be interrupted by a failing hook",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-db-port"
+          ],
+          "description": "The db container's localhost-bound port",
+          "takes_arg": true,
+          "arg_name": "host-db-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-dba-port"
+          ],
+          "description": "The dba (PHPMyAdmin) container's localhost-bound port, if exposed via bind-all-interfaces",
+          "takes_arg": true,
+          "arg_name": "host-dba-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-https-port"
+          ],
+          "description": "The web container's localhost-bound https port",
+          "takes_arg": true,
+          "arg_name": "host-https-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host-webserver-port"
+          ],
+          "description": "The web container's localhost-bound port",
+          "takes_arg": true,
+          "arg_name": "host-webserver-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--http-port"
+          ],
+          "description": "The router HTTP port for this project",
+          "takes_arg": true,
+          "arg_name": "http-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https-port"
+          ],
+          "description": "The router HTTPS port for this project",
+          "takes_arg": true,
+          "arg_name": "https-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--image-defaults"
+          ],
+          "description": "Sets the default web, db, and dba container images",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mailhog-https-port"
+          ],
+          "description": "Router port to be used for mailhog access (https)",
+          "takes_arg": true,
+          "arg_name": "mailhog-https-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mailhog-port"
+          ],
+          "description": "Router port to be used for mailhog access",
+          "takes_arg": true,
+          "arg_name": "mailhog-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--mutagen-enabled"
+          ],
+          "description": "Enable mutagen asynchronous update of project in web container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nfs-mount-enabled"
+          ],
+          "description": "Enable NFS mounting of project in container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ngrok-args"
+          ],
+          "description": "Provide extra args to ngrok in ddev share",
+          "takes_arg": true,
+          "arg_name": "ngrok-args",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-project-mount"
+          ],
+          "description": "Whether or not to skip mounting project code into the web container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nodejs-version"
+          ],
+          "description": "Specify the nodejs version to use if you don't want the default NodeJS 16",
+          "takes_arg": true,
+          "arg_name": "nodejs-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--omit-containers"
+          ],
+          "description": "A comma-delimited list of container types that should not be started when the project is started",
+          "takes_arg": true,
+          "arg_name": "omit-containers",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--php-version"
+          ],
+          "description": "The version of PHP that will be enabled in the web container",
+          "takes_arg": true,
+          "arg_name": "php-version",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--phpmyadmin-https-port"
+          ],
+          "description": "Router port to be used for PHPMyAdmin (dba) container access (https)",
+          "takes_arg": true,
+          "arg_name": "phpmyadmin-https-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--phpmyadmin-port"
+          ],
+          "description": "Router port to be used for PHPMyAdmin (dba) container access",
+          "takes_arg": true,
+          "arg_name": "phpmyadmin-port",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-name"
+          ],
+          "description": "Provide the project name of project to configure (normally the same as the last part of directory name)",
+          "takes_arg": true,
+          "arg_name": "project-name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-tld"
+          ],
+          "description": "Set the top-level domain to be used for projects, defaults to ddev.site",
+          "takes_arg": true,
+          "arg_name": "project-tld",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--project-type"
+          ],
+          "description": "Provide the project type (one of backdrop, drupal10, drupal6, drupal7, drupal8, drupal9, laravel, magento, magento2, php, shopware6, typo3, wordpress). This is autodetected and this flag is necessary only to override the detection",
+          "takes_arg": true,
+          "arg_name": "project-type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projectname"
+          ],
+          "description": "Provide the project name of project to configure (normally the same as the last part of directory name)",
+          "takes_arg": true,
+          "arg_name": "projectname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--projecttype"
+          ],
+          "description": "Provide the project type (one of backdrop, drupal10, drupal6, drupal7, drupal8, drupal9, laravel, magento, magento2, php, shopware6, typo3, wordpress). This is autodetected and this flag is necessary only to override the detection",
+          "takes_arg": true,
+          "arg_name": "projecttype",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--show-config-location"
+          ],
+          "description": "Output the location of the config.yaml file if it exists, or error that it doesn't exist",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sitename"
+          ],
+          "description": "Provide the project name of project to configure (normally the same as the last part of directory name) This is the same as project-name and is included only for backwards compatibility",
+          "takes_arg": true,
+          "arg_name": "sitename",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--timezone"
+          ],
+          "description": "Specify timezone for containers and php, like Europe/London or America/Denver or GMT or UTC",
+          "takes_arg": true,
+          "arg_name": "timezone",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--upload-dir"
+          ],
+          "description": "Sets the project's upload directory, the destination directory of the import-files command",
+          "takes_arg": true,
+          "arg_name": "upload-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-dns-when-possible"
+          ],
+          "description": "Use DNS for hostname resolution instead of /etc/hosts when possible",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-environment"
+          ],
+          "description": "Set the environment variables in the web container: --web-environment=\"TYPO3_CONTEXT=Development,SOMEENV=someval\"",
+          "takes_arg": true,
+          "arg_name": "web-environment",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-environment-add"
+          ],
+          "description": "Append environment variables to the web container: --web-environment=\"TYPO3_CONTEXT=Development,SOMEENV=someval\"",
+          "takes_arg": true,
+          "arg_name": "web-environment-add",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-image"
+          ],
+          "description": "Sets the web container image",
+          "takes_arg": true,
+          "arg_name": "web-image",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-image-default"
+          ],
+          "description": "Sets the default web container image for this ddev version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-working-dir"
+          ],
+          "description": "Overrides the default working directory for the web service",
+          "takes_arg": true,
+          "arg_name": "web-working-dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--web-working-dir-default"
+          ],
+          "description": "Unsets a web service working directory override",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--webimage-extra-packages"
+          ],
+          "description": "A comma-delimited list of Debian packages that should be added to web container when the project is started",
+          "takes_arg": true,
+          "arg_name": "webimage-extra-packages",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--webserver-type"
+          ],
+          "description": "Sets the project's desired webserver type: nginx-fpm or apache-fpm",
+          "takes_arg": true,
+          "arg_name": "webserver-type",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--working-dir-defaults"
+          ],
+          "description": "Unsets all service working directory overrides",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--xdebug-enabled"
+          ],
+          "description": "Whether or not XDebug is enabled in the web container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "d",
+      "aliases": [
+        "dbg",
+        "debug"
+      ],
+      "description": "A collection of debugging commands",
+      "subcommands": [
+        {
+          "name": "capabilities",
+          "aliases": [],
+          "description": "Show capabilities of this version of ddev",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "check-db-match",
+          "aliases": [],
+          "description": "Verify that the database in the ddev-db server matches the configured type/version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "compose-config",
+          "aliases": [],
+          "description": "Prints the docker-compose configuration of the current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "configyaml",
+          "aliases": [],
+          "description": "Prints the project config.*.yaml usage",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "dockercheck",
+          "aliases": [],
+          "description": "Diagnose DDEV docker/colima setup",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "download-images",
+          "aliases": [],
+          "description": "Download all images required by ddev",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fix-commands",
+          "aliases": [],
+          "description": "Fix up custom/shell commands without running ddev start",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get-volume-db-version",
+          "aliases": [],
+          "description": "Get the database type/version found in the ddev-dbserver's database volume, which may not be the same as the configured database type/version",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "migrate-database",
+          "aliases": [],
+          "description": "Migrate a mysql or mariadb database to a different dbtype:dbversion; works only with mysql and mariadb, not with postgres",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "mutagen",
+          "aliases": [],
+          "description": "Allows access to any mutagen command",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "nfsmount",
+          "aliases": [],
+          "description": "Checks to see if nfs mounting works for current project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "refresh",
+          "aliases": [],
+          "description": "Refreshes docker cache for project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "router-nginx-config",
+          "aliases": [],
+          "description": "Prints the nginx config of the router",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "test",
+          "aliases": [],
+          "description": "Run diagnostics on ddev using the embedded test_ddev.sh script",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "delete",
+      "aliases": [],
+      "description": "Remove all project information (including database) for an existing project",
+      "subcommands": [
+        {
+          "name": "images",
+          "aliases": [],
+          "description": "Deletes drud/ddev-* docker images not in use by current ddev version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all",
+                "-a"
+              ],
+              "description": "If set, deletes all Docker images created by ddev",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--yes",
+                "-y"
+              ],
+              "description": "Yes - skip confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Delete all projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clean-containers"
+          ],
+          "description": "Clean up all ddev docker containers which are not required by this version of ddev",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--omit-snapshot",
+            "-O"
+          ],
+          "description": "Omit/skip database snapshot",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Yes - skip confirmation prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "desc",
+      "aliases": [
+        "st",
+        "status",
+        "describe"
+      ],
+      "description": "Get a detailed description of a running ddev project",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": ".",
+      "aliases": [
+        "exec"
+      ],
+      "description": "Execute a shell command in the container for a service. Uses the web service by default",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Defines the execution directory within the container",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--raw"
+          ],
+          "description": "Use raw exec (do not interpret with bash inside container)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service",
+            "-s"
+          ],
+          "description": "Defines the service to connect to. [e.g. web, db]",
+          "takes_arg": true,
+          "arg_name": "service",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "export-db",
+      "aliases": [],
+      "description": "Dump a database to a file or to stdout",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--bzip2"
+          ],
+          "description": "Use bzip2 compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--file",
+            "-f"
+          ],
+          "description": "Provide the path to output the dump",
+          "takes_arg": true,
+          "arg_name": "file",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--gzip",
+            "-z"
+          ],
+          "description": "Use gzip compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target-db",
+            "-d"
+          ],
+          "description": "If provided, target-db is alternate database to export",
+          "takes_arg": true,
+          "arg_name": "target-db",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--xz"
+          ],
+          "description": "Use xz compression",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get",
+      "aliases": [],
+      "description": "Get/Download a 3rd party add-on (service, provider, etc.)",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all"
+          ],
+          "description": "List unofficial add-ons for 'ddev get' in addition to the official ones",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list"
+          ],
+          "description": "List available add-ons for 'ddev get'",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "hostname",
+      "aliases": [],
+      "description": "Manage your hostfile entries",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--fire-bazooka"
+          ],
+          "description": "Alias of --remove-inactive",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove",
+            "-r"
+          ],
+          "description": "Remove the provided host name - ip correlation",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-inactive",
+            "-R"
+          ],
+          "description": "Remove host names of inactive projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import-db",
+      "aliases": [],
+      "description": "Import a sql file into the project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--extract-path"
+          ],
+          "description": "If provided asset is an archive, provide the path to extract within the archive",
+          "takes_arg": true,
+          "arg_name": "extract-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-drop"
+          ],
+          "description": "Set if you do NOT want to drop the db before importing",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--progress",
+            "-p"
+          ],
+          "description": "Display a progress bar during import",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--src",
+            "-f"
+          ],
+          "description": "Provide the path to a sql dump in .sql or tar/tar.gz/tgz/zip format",
+          "takes_arg": true,
+          "arg_name": "src",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--target-db",
+            "-d"
+          ],
+          "description": "If provided, target-db is alternate database to import into",
+          "takes_arg": true,
+          "arg_name": "target-db",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import-files",
+      "aliases": [],
+      "description": "Pull the uploaded files directory of an existing project to the default public upload directory of your project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--extract-path"
+          ],
+          "description": "If provided asset is an archive, optionally provide the path to extract within the archive",
+          "takes_arg": true,
+          "arg_name": "extract-path",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--src"
+          ],
+          "description": "Provide the path to the source directory or tar/tar.gz/tgz/zip archive of files to import",
+          "takes_arg": true,
+          "arg_name": "src",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "l",
+      "aliases": [
+        "ls",
+        "list"
+      ],
+      "description": "List projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--active-only",
+            "-A"
+          ],
+          "description": "If set, only currently active projects will be displayed",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--continuous"
+          ],
+          "description": "If set, project information will be emitted until the command is stopped",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--continuous-sleep-interval",
+            "-I"
+          ],
+          "description": "Time in seconds between ddev list --continuous output lists",
+          "takes_arg": true,
+          "arg_name": "continuous-sleep-interval",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--wrap-table",
+            "-W"
+          ],
+          "description": "Display table with wrapped text if required",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logs",
+      "aliases": [],
+      "description": "Get the logs from your running services",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--follow",
+            "-f"
+          ],
+          "description": "Follow the logs in real time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service",
+            "-s"
+          ],
+          "description": "Defines the service to retrieve logs from. [e.g. web, db]",
+          "takes_arg": true,
+          "arg_name": "service",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tail"
+          ],
+          "description": "How many lines to show",
+          "takes_arg": true,
+          "arg_name": "tail",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--time",
+            "-t"
+          ],
+          "description": "Add timestamps to logs",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mutagen",
+      "aliases": [],
+      "description": "Commands for mutagen status and sync, etc",
+      "subcommands": [
+        {
+          "name": "monitor",
+          "aliases": [],
+          "description": "Monitor mutagen status",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "reset",
+          "aliases": [],
+          "description": "Reset mutagen for project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "st",
+          "aliases": [
+            "status"
+          ],
+          "description": "Shows mutagen sync status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose",
+                "-l"
+              ],
+              "description": "Extended/verbose output for mutagen status",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "sync",
+          "aliases": [],
+          "description": "Explicit sync for mutagen",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--verbose"
+              ],
+              "description": "Extended/verbose output for mutagen status",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "sc",
+      "aliases": [
+        "stop-containers",
+        "pause"
+      ],
+      "description": "Uses 'docker stop' to pause/stop the containers belonging to a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Pause all running projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "powerdown",
+      "aliases": [
+        "poweroff"
+      ],
+      "description": "Completely stop all projects and containers",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pull",
+      "aliases": [],
+      "description": "Pull files and database using a configured provider plugin",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push files and database using a configured provider plugin",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "restart",
+      "aliases": [],
+      "description": "Restart a project or several projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Restart all projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "service",
+      "aliases": [],
+      "description": "Add or remove, enable or disable extra services",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable a 3rd party service",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable a 3rd party service",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "share",
+      "aliases": [],
+      "description": "Share project on the internet via ngrok",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--subdomain"
+          ],
+          "description": "Ngrok --subdomain argument, as in \"ngrok --subdomain my-subdomain:, requires paid ngrok.com account\"",
+          "takes_arg": true,
+          "arg_name": "subdomain",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "snapshot",
+      "aliases": [],
+      "description": "Create a database snapshot for one or more projects",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Snapshot all projects. Will start the project if it is stopped or paused",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cleanup",
+            "-C"
+          ],
+          "description": "Cleanup snapshots",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--list",
+            "-l"
+          ],
+          "description": "List snapshots",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name",
+            "-n"
+          ],
+          "description": "Provide a name for the snapshot",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes",
+            "-y"
+          ],
+          "description": "Yes - skip confirmation prompt",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ssh",
+      "aliases": [],
+      "description": "Starts a shell session in the container for a service. Uses web service by default",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Defines the destination directory within the container",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--service",
+            "-s"
+          ],
+          "description": "Defines the service to connect to. [e.g. web, db]",
+          "takes_arg": true,
+          "arg_name": "service",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "add",
+      "aliases": [
+        "start"
+      ],
+      "description": "Start a ddev project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Start all projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select",
+            "-s"
+          ],
+          "description": "Interactively select a project to start",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-confirmation",
+            "-y"
+          ],
+          "description": "Skip any confirmation steps",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "remove",
+      "aliases": [
+        "rm",
+        "stop"
+      ],
+      "description": "Stop and remove the containers of a project. Does not lose or harm anything unless you add --remove-data",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--all",
+            "-a"
+          ],
+          "description": "Stop and remove all running or container-stopped projects and remove from global projects list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--omit-snapshot",
+            "-O"
+          ],
+          "description": "Omit/skip database snapshot",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--remove-data",
+            "-R"
+          ],
+          "description": "Remove stored project data (MySQL, logs, etc.)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--select",
+            "-s"
+          ],
+          "description": "Interactively select a project to stop",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--snapshot",
+            "-S"
+          ],
+          "description": "Create database snapshot",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stop-ssh-agent"
+          ],
+          "description": "Stop the ddev-ssh-agent container",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--unlist",
+            "-U"
+          ],
+          "description": "Remove the project from global project list, it won't show in ddev list until started again",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Print ddev version and component versions",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "auth",
+          "aliases": [],
+          "description": "A collection of authentication commands",
+          "subcommands": [
+            {
+              "name": "ssh",
+              "aliases": [],
+              "description": "Add ssh key authentication to the ddev-ssh-auth container",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "clean",
+          "aliases": [],
+          "description": "Removes items ddev has created",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "composer",
+          "aliases": [],
+          "description": "Executes a composer command within the web container",
+          "subcommands": [
+            {
+              "name": "create",
+              "aliases": [],
+              "description": "Executes 'composer create-project' within the web container with the arguments and flags provided",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "create-project",
+              "aliases": [],
+              "description": null,
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "config",
+          "aliases": [],
+          "description": "Create or modify a ddev project configuration in the current directory",
+          "subcommands": [
+            {
+              "name": "global",
+              "aliases": [],
+              "description": "Change global configuration",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "d",
+          "aliases": [
+            "dbg",
+            "debug"
+          ],
+          "description": "A collection of debugging commands",
+          "subcommands": [
+            {
+              "name": "capabilities",
+              "aliases": [],
+              "description": "Show capabilities of this version of ddev",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "check-db-match",
+              "aliases": [],
+              "description": "Verify that the database in the ddev-db server matches the configured type/version",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "compose-config",
+              "aliases": [],
+              "description": "Prints the docker-compose configuration of the current project",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "configyaml",
+              "aliases": [],
+              "description": "Prints the project config.*.yaml usage",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "dockercheck",
+              "aliases": [],
+              "description": "Diagnose DDEV docker/colima setup",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "download-images",
+              "aliases": [],
+              "description": "Download all images required by ddev",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fix-commands",
+              "aliases": [],
+              "description": "Fix up custom/shell commands without running ddev start",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "get-volume-db-version",
+              "aliases": [],
+              "description": "Get the database type/version found in the ddev-dbserver's database volume, which may not be the same as the configured database type/version",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "migrate-database",
+              "aliases": [],
+              "description": "Migrate a mysql or mariadb database to a different dbtype:dbversion; works only with mysql and mariadb, not with postgres",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "mutagen",
+              "aliases": [],
+              "description": "Allows access to any mutagen command",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "nfsmount",
+              "aliases": [],
+              "description": "Checks to see if nfs mounting works for current project",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "refresh",
+              "aliases": [],
+              "description": "Refreshes docker cache for project",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "router-nginx-config",
+              "aliases": [],
+              "description": "Prints the nginx config of the router",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "test",
+              "aliases": [],
+              "description": "Run diagnostics on ddev using the embedded test_ddev.sh script",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Remove all project information (including database) for an existing project",
+          "subcommands": [
+            {
+              "name": "images",
+              "aliases": [],
+              "description": "Deletes drud/ddev-* docker images not in use by current ddev version",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "desc",
+          "aliases": [
+            "st",
+            "status",
+            "describe"
+          ],
+          "description": "Get a detailed description of a running ddev project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": ".",
+          "aliases": [
+            "exec"
+          ],
+          "description": "Execute a shell command in the container for a service. Uses the web service by default",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "export-db",
+          "aliases": [],
+          "description": "Dump a database to a file or to stdout",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Get/Download a 3rd party add-on (service, provider, etc.)",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "hostname",
+          "aliases": [],
+          "description": "Manage your hostfile entries",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "import-db",
+          "aliases": [],
+          "description": "Import a sql file into the project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "import-files",
+          "aliases": [],
+          "description": "Pull the uploaded files directory of an existing project to the default public upload directory of your project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "l",
+          "aliases": [
+            "ls",
+            "list"
+          ],
+          "description": "List projects",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Get the logs from your running services",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "mutagen",
+          "aliases": [],
+          "description": "Commands for mutagen status and sync, etc",
+          "subcommands": [
+            {
+              "name": "monitor",
+              "aliases": [],
+              "description": "Monitor mutagen status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "reset",
+              "aliases": [],
+              "description": "Reset mutagen for project",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "st",
+              "aliases": [
+                "status"
+              ],
+              "description": "Shows mutagen sync status",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "sync",
+              "aliases": [],
+              "description": "Explicit sync for mutagen",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "sc",
+          "aliases": [
+            "stop-containers",
+            "pause"
+          ],
+          "description": "Uses 'docker stop' to pause/stop the containers belonging to a project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "powerdown",
+          "aliases": [
+            "poweroff"
+          ],
+          "description": "Completely stop all projects and containers",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "pull",
+          "aliases": [],
+          "description": "Pull files and database using a configured provider plugin",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Push files and database using a configured provider plugin",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "restart",
+          "aliases": [],
+          "description": "Restart a project or several projects",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "service",
+          "aliases": [],
+          "description": "Add or remove, enable or disable extra services",
+          "subcommands": [
+            {
+              "name": "disable",
+              "aliases": [],
+              "description": "Disable a 3rd party service",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "enable",
+              "aliases": [],
+              "description": "Enable a 3rd party service",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "share",
+          "aliases": [],
+          "description": "Share project on the internet via ngrok",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "snapshot",
+          "aliases": [],
+          "description": "Create a database snapshot for one or more projects",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "ssh",
+          "aliases": [],
+          "description": "Starts a shell session in the container for a service. Uses web service by default",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "add",
+          "aliases": [
+            "start"
+          ],
+          "description": "Start a ddev project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [
+            "rm",
+            "stop"
+          ],
+          "description": "Stop and remove the containers of a project. Does not lose or harm anything unless you add --remove-data",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Print ddev version and component versions",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--json-output",
+        "-j"
+      ],
+      "description": "If true, user-oriented output will be in JSON format",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

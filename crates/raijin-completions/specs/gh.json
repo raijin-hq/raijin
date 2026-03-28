@@ -1,0 +1,5772 @@
+{
+  "name": "gh",
+  "aliases": [],
+  "description": "GitHub's CLI tool",
+  "subcommands": [
+    {
+      "name": "alias",
+      "aliases": [],
+      "description": "Create command shortcuts",
+      "subcommands": [
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete an alias",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "alias",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List available aliases",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Set an alias for a gh command",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-s",
+                "--shell"
+              ],
+              "description": "Declare an alias to be passed through a shell interpreter",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "alias",
+              "description": "A word that will expand to the gh command",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "expansion",
+              "description": "The gh command to be invoked, more info with --help",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "api",
+      "aliases": [],
+      "description": "Make an authenticated GitHub API request",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "auth",
+      "aliases": [],
+      "description": "Login, logout, and refresh your authentication",
+      "subcommands": [
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Authenticate with a GitHub host",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--hostname"
+              ],
+              "description": "The hostname of the GitHub instance to authenticate with",
+              "takes_arg": true,
+              "arg_name": "hostname",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--scopes"
+              ],
+              "description": "Additional authentication scopes for gh to have",
+              "takes_arg": true,
+              "arg_name": "scopes",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open a browser to authenticate",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--with-token"
+              ],
+              "description": "Read token from standard input",
+              "takes_arg": true,
+              "arg_name": "token",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Log out of a GitHub host",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--hostname"
+              ],
+              "description": "The hostname of the GitHub instance to authenticate with",
+              "takes_arg": true,
+              "arg_name": "hostname",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "refresh",
+          "aliases": [],
+          "description": "Refresh stored authentication credentials",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--hostname"
+              ],
+              "description": "The hostname of the GitHub instance to authenticate with",
+              "takes_arg": true,
+              "arg_name": "hostname",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--scopes"
+              ],
+              "description": "Additional authentication scopes for gh to have",
+              "takes_arg": true,
+              "arg_name": "scopes",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "setup-git",
+          "aliases": [],
+          "description": "Configure git to use GitHub CLI as a credential helper",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--hostname"
+              ],
+              "description": "The hostname of the GitHub instance to authenticate with",
+              "takes_arg": true,
+              "arg_name": "hostname",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "View authentication status",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--hostname"
+              ],
+              "description": "The hostname of the GitHub instance to authenticate with",
+              "takes_arg": true,
+              "arg_name": "hostname",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--with-token"
+              ],
+              "description": "Read token from standard input",
+              "takes_arg": true,
+              "arg_name": "token",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gpg-key",
+      "aliases": [],
+      "description": "Manage GPG keys registered with your GitHub account",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add a GPG key to your GitHub account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists GPG keys in your GitHub account",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "browse",
+      "aliases": [],
+      "description": "Open the repository in the browser",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-b",
+            "--branch"
+          ],
+          "description": "Select another branch by passing in the branch name",
+          "takes_arg": true,
+          "arg_name": "branch",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-c",
+            "--commit"
+          ],
+          "description": "Open the last commit",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-n",
+            "--no-browser"
+          ],
+          "description": "Print destination URL instead of opening the browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--projects"
+          ],
+          "description": "Open repository projects",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-R",
+            "--repo"
+          ],
+          "description": "Select another repository using the [HOST/]OWNER/REPO format",
+          "takes_arg": true,
+          "arg_name": "[HOST/]OWNER/REPO",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-s",
+            "--settings"
+          ],
+          "description": "Open repository settings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-w",
+            "--wiki"
+          ],
+          "description": "Open repository wiki",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "[pr | issue | path[:line]",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate shell completion scripts",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "-s",
+            "--shell"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "shell",
+          "arg_template": {
+            "custom": [
+              "bash",
+              "zsh",
+              "fish",
+              "powershell"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "config",
+      "aliases": [],
+      "description": "Manage configuration for gh",
+      "subcommands": [
+        {
+          "name": "get",
+          "aliases": [],
+          "description": "Print the value of a given configuration key",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--host"
+              ],
+              "description": "Get per-host setting",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "key",
+              "description": null,
+              "template": {
+                "custom": [
+                  "git_protocol",
+                  "editor",
+                  "prompt",
+                  "pager",
+                  "http_unix_socket"
+                ]
+              },
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Update configuration with a value for the given key",
+          "subcommands": [
+            {
+              "name": "git_protocol",
+              "aliases": [],
+              "description": "The protocol to use for git clone and push operations",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "option",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "https",
+                      "ssh"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "editor",
+              "aliases": [],
+              "description": "The text editor program to use for authoring text",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "editor",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "vim",
+                      "nano"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "prompt",
+              "aliases": [],
+              "description": "Toggle interactive prompting in the terminal",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "value",
+                  "description": null,
+                  "template": {
+                    "custom": [
+                      "enable",
+                      "disable"
+                    ]
+                  },
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "pager",
+              "aliases": [],
+              "description": "The terminal pager program to send standard output to",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "value",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "http_unix_socket",
+              "aliases": [],
+              "description": "The path to a unix socket through which to make HTTP connection",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "path",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-h",
+                "--host"
+              ],
+              "description": "Get per-host setting",
+              "takes_arg": true,
+              "arg_name": "host",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "extensions",
+      "aliases": [],
+      "description": "Manage gh extensions",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new extension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "install",
+          "aliases": [],
+          "description": "Install a gh extension from a repository",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "repo",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List installed extension commands",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove an installed extension",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade installed extensions",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Upgrade all extensions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Force upgrade extensions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gist",
+      "aliases": [],
+      "description": "Manage gists",
+      "subcommands": [
+        {
+          "name": "clone",
+          "aliases": [],
+          "description": "Clone a gist locally",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "gist",
+              "description": "Gist ID or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "directory",
+              "description": null,
+              "template": "folders",
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new gist",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--desc"
+              ],
+              "description": "A description for this gist",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--filename"
+              ],
+              "description": "Provide a filename to be used when reading from STDIN",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--public"
+              ],
+              "description": "List the gist publicly (default: secret)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the web browser with created gist",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "filename",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a gist",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "gist",
+              "description": "Gist ID or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit one of your gists",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--add"
+              ],
+              "description": "Add a new file to the gist",
+              "takes_arg": true,
+              "arg_name": "filename",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--filename"
+              ],
+              "description": "Select a file to edit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "gist",
+              "description": "Gist ID or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List your gists",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of gists to fetch (default 10)",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public"
+              ],
+              "description": "Show only public gists",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--secret"
+              ],
+              "description": "Show only secret gists",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View a gist",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-f",
+                "--filename"
+              ],
+              "description": "Display a single file from the gist",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--files"
+              ],
+              "description": "List file names from the gist",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--raw"
+              ],
+              "description": "Print raw instead of rendered gist contents",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open gist in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "gist",
+              "description": "Gist ID or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "issue",
+      "aliases": [],
+      "description": "Manage issues",
+      "subcommands": [
+        {
+          "name": "close",
+          "aliases": [],
+          "description": "Close issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "issue",
+              "description": "Number or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "comment",
+          "aliases": [],
+          "description": "Create a new issue comment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Supply a body. Will prompt for one otherwise",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-F",
+                "--body-file"
+              ],
+              "description": "Read body text from file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--editor"
+              ],
+              "description": "Add body using editor",
+              "takes_arg": true,
+              "arg_name": "editor",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Add body in browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "issue",
+              "description": "Number or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-a",
+                "--assignee"
+              ],
+              "description": "Assign people by their login. Use \"@me\" to self-assign",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Supply a body. Will prompt for one otherwise",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-F",
+                "--body-file"
+              ],
+              "description": "Read body text from file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--label"
+              ],
+              "description": "Add labels by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--milestone"
+              ],
+              "description": "Add the issue to a milestone by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Add the issue to projects by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--recover"
+              ],
+              "description": "Recover input from a failed run of create",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--title"
+              ],
+              "description": "Supply a title. Will prompt for one otherwise",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the browser to create an issue",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit an issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-assignee"
+              ],
+              "description": "Add assigned users by their login. Use \"@me\" to assign yourself",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-label"
+              ],
+              "description": "Add labels by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Set the new body",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-F",
+                "--body-file"
+              ],
+              "description": "Read body text from file",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--milestone"
+              ],
+              "description": "Edit the milestone the issue belongs to by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-assignee"
+              ],
+              "description": "Remove assigned users by their login. Use \"@me\" to unassign yourself",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-label"
+              ],
+              "description": "Remove labels by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-project"
+              ],
+              "description": "Remove the issue from projects by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--title"
+              ],
+              "description": "Set the new title",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "issue",
+              "description": "Number or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List and filter issues in this repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-a",
+                "--assignee"
+              ],
+              "description": "Filter by assignee",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-A",
+                "--author"
+              ],
+              "description": "Filter by author",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--label"
+              ],
+              "description": "Filter by labels",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of issues to fetch (default 30)",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--mention"
+              ],
+              "description": "Filter by mention",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--milestone"
+              ],
+              "description": "Filter by milestone number or `title`",
+              "takes_arg": true,
+              "arg_name": "number",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-S",
+                "--search"
+              ],
+              "description": "Search issues with query",
+              "takes_arg": true,
+              "arg_name": "query",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--state"
+              ],
+              "description": "Filter by state (default \"open\")",
+              "takes_arg": true,
+              "arg_name": "state",
+              "arg_template": {
+                "custom": [
+                  "open",
+                  "closed",
+                  "all"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the browser to list the issue(s)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "reopen",
+          "aliases": [],
+          "description": "Reopen issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status of relevant issues",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "transfer",
+          "aliases": [],
+          "description": "Transfer issue to another repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "issue",
+              "description": "Number or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "destination-repo",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View an issue",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the [HOST/]OWNER/REPO format",
+              "takes_arg": true,
+              "arg_name": "repo",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--comments"
+              ],
+              "description": "View issue comments",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open an issue in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "issue",
+              "description": "Number or URL",
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "pr",
+      "aliases": [],
+      "description": "Manage pull requests",
+      "subcommands": [
+        {
+          "name": "checkout",
+          "aliases": [],
+          "description": "Check out a pull request in git",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--recurse-submodules"
+              ],
+              "description": "Update all active submodules (recursively)",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "checks",
+          "aliases": [],
+          "description": "Show CI status for a single pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the web browser to show details about checks",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "close",
+          "aliases": [],
+          "description": "Close a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--delete-branch"
+              ],
+              "description": "Delete the local and remote branch after close",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a pull request. Without an argument, the pull request that belongs to the current branch is selected",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--add-assignee"
+              ],
+              "description": "Add assigned users by their login. Use \"@me\" to assign yourself",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-label"
+              ],
+              "description": "Add labels by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-project"
+              ],
+              "description": "Add the pull request to projects by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-reviewer"
+              ],
+              "description": "Add reviewers by their login",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-B",
+                "--base"
+              ],
+              "description": "Change the base branch for this pull request",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Set the new body",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-F",
+                "--body-file"
+              ],
+              "description": "Read body text from file (use \"-\" to read from standard input)",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--milestone"
+              ],
+              "description": "Edit the milestone the pull request belongs to by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-assignee"
+              ],
+              "description": "Remove assigned users by their login. Use \"@me\" to unassign yourself",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-label"
+              ],
+              "description": "Remove labels by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-project"
+              ],
+              "description": "Remove the pull request from projects by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-reviewer"
+              ],
+              "description": "Remove reviewers by their login",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--title"
+              ],
+              "description": "Set the new title",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "comment",
+          "aliases": [],
+          "description": "Create a new pr comment",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Supply a body. Will prompt for one otherwise",
+              "takes_arg": true,
+              "arg_name": "message",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--editor"
+              ],
+              "description": "Add body using editor",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Add body in browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--assignee"
+              ],
+              "description": "Assign people by their login",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-B",
+                "--base"
+              ],
+              "description": "The branch into which you want your code merged",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Body for the pull request",
+              "takes_arg": true,
+              "arg_name": "body",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--draft"
+              ],
+              "description": "Mark pull request as a draft",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--fill"
+              ],
+              "description": "Do not prompt for title/body and just use commit info",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-H",
+                "--head"
+              ],
+              "description": "The branch that contains commits for your pull request (default: current branch)",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--label"
+              ],
+              "description": "The branch that contains commits for your pull request (default: current branch)",
+              "takes_arg": true,
+              "arg_name": "branch",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--milestone"
+              ],
+              "description": "Add the pull request to a milestone by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-maintainer-edit"
+              ],
+              "description": "Disable maintainer's ability to modify pull request",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--project"
+              ],
+              "description": "Add the pull request to projects by name",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-recover"
+              ],
+              "description": "Recover input from a failed run of create",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--reviewer"
+              ],
+              "description": "Request reviews from people or teams by their handle",
+              "takes_arg": true,
+              "arg_name": "handle",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--title"
+              ],
+              "description": "Title for the pull request",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the web browser to create a pull request",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "diff",
+          "aliases": [],
+          "description": "View changes in a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--color"
+              ],
+              "description": "Use color in diff output: {always|never|auto}",
+              "takes_arg": true,
+              "arg_name": "choice",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List and filter pull requests in this repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--assignee"
+              ],
+              "description": "Filter by assignee",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-B",
+                "--base"
+              ],
+              "description": "Filter by base branch",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--label"
+              ],
+              "description": "Filter by labels",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of items to fetch",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--state"
+              ],
+              "description": "Filter by state: {open|closed|merged|all}",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open the browser to list the pull requests",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "merge",
+          "aliases": [],
+          "description": "Merge a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-d",
+                "--delete-branch"
+              ],
+              "description": "Delete the local and remote branch after merge",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--merge"
+              ],
+              "description": "Merge the commits with the base branch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--rebase"
+              ],
+              "description": "Rebase the commits onto the base branch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--squash"
+              ],
+              "description": "Squash the commits into one commit and merge it into the base branch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "ready",
+          "aliases": [],
+          "description": "Mark a pull request as ready for review",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "reopen",
+          "aliases": [],
+          "description": "Reopen a pull request",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "review",
+          "aliases": [],
+          "description": "Add a review to a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-a",
+                "--approve"
+              ],
+              "description": "Approve pull request",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "Specify the body of a review",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--comment"
+              ],
+              "description": "Comment on a pull request",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--request-changes"
+              ],
+              "description": "Request changes on a pull request",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "aliases": [],
+          "description": "Show status of relevant pull requests",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View a pull request",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--comments"
+              ],
+              "description": "View pull request comments",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open a pull request in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "number | url | branch",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "release",
+      "aliases": [],
+      "description": "Manage GitHub releases",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "repo",
+      "aliases": [],
+      "description": "Work with GitHub repositories",
+      "subcommands": [
+        {
+          "name": "archive",
+          "aliases": [],
+          "description": "Archive a GitHub repository. With no argument, archives the current repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-y",
+                "--confirm"
+              ],
+              "description": "Skip the confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "clone",
+          "aliases": [],
+          "description": "Clone a GitHub repository locally.\nIf the \"OWNER/\" portion of the \"OWNER/REPO\" repository argument is omitted, it\ndefaults to the name of the authenticating user.\nPass additional 'git clone' flags by listing them after '--'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--"
+              ],
+              "description": "Flags to pass to git when cloning",
+              "takes_arg": true,
+              "arg_name": "flags",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--upstream-remote-name"
+              ],
+              "description": "Upstream remote name when cloning a fork (default \"upstream\")",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "directory",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a new GitHub repository.\nTo create a repository interactively, use 'gh repo create' with no arguments.\nTo create a remote repository non-interactively, supply the repository name and one of '--public', '--private', or '--internal'.\nPass '--clone' to clone the new repository locally.\nTo create a remote repository from an existing local repository, specify the source directory with '--source'. \nBy default, the remote repository name will be the name of the source directory. \nPass '--push' to push any local commits to the new repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-y",
+                "--confirm"
+              ],
+              "description": "Skip the confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--description"
+              ],
+              "description": "Description of the repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--homepage"
+              ],
+              "description": "Repository home page URL",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public"
+              ],
+              "description": "Make the repository public",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--private"
+              ],
+              "description": "Make the repository private",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--internal"
+              ],
+              "description": "Make the repository internal",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--template"
+              ],
+              "description": "Make the new repository based on a template repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-c",
+                "--clone"
+              ],
+              "description": "Clone the new repository to the current directory",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-issues"
+              ],
+              "description": "Disable issues in the new repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--disable-wiki"
+              ],
+              "description": "Disable wiki in the new repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-g",
+                "--gitignore"
+              ],
+              "description": "Specify a gitignore template for the repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--license"
+              ],
+              "description": "Specify an Open Source License for the repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--remote"
+              ],
+              "description": "Specify remote name for the new repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--source"
+              ],
+              "description": "Specify path to local repository to use as source",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--team"
+              ],
+              "description": "The name of the organization team to be granted access",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--include-all-branches"
+              ],
+              "description": "Include all branches from template repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--push"
+              ],
+              "description": "Push local commits to the new repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-readme"
+              ],
+              "description": "Add a README file to the new repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "deploy-key",
+          "aliases": [],
+          "description": "Manage deploy keys in a repository",
+          "subcommands": [
+            {
+              "name": "add",
+              "aliases": [],
+              "description": "Add a deploy key to a GitHub repository",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-w",
+                    "--allow-write"
+                  ],
+                  "description": "Allow write access for the key",
+                  "takes_arg": false,
+                  "arg_name": null,
+                  "arg_template": null,
+                  "is_repeatable": false
+                },
+                {
+                  "names": [
+                    "-t",
+                    "--title"
+                  ],
+                  "description": "Title of the new key",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "key-file",
+                  "description": "Path to the public key file",
+                  "template": "filepaths",
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "delete",
+              "aliases": [],
+              "description": "Delete a deploy key from a GitHub repository",
+              "subcommands": [],
+              "options": [],
+              "args": [
+                {
+                  "name": "key-id",
+                  "description": "ID of the key to delete",
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": false
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "aliases": [],
+              "description": "List deploy keys in a GitHub repository",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the `[HOST/]OWNER/REPO` format",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a GitHub repository.\nWith no argument, deletes the current repository. Otherwise, deletes the specified repository.\nDeletion requires authorization with the \"delete_repo\" scope. \nTo authorize, run \"gh auth refresh -s delete_repo\"",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-y",
+                "--confirm"
+              ],
+              "description": "Skip the confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit repository settings",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--clone"
+              ],
+              "description": "Clone the fork {true|false}",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--add-topic"
+              ],
+              "description": "Add repository topic",
+              "takes_arg": true,
+              "arg_name": "topic names",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--allow-forking"
+              ],
+              "description": "Allow forking of an organization repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--default-branch"
+              ],
+              "description": "Set the default branch name for the repository",
+              "takes_arg": true,
+              "arg_name": "branch name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--delete-branch-on-merge"
+              ],
+              "description": "Delete head branch when pull requests are merged",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--description"
+              ],
+              "description": "Description of the repository",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-auto-merge"
+              ],
+              "description": "Enable auto-merge functionality",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-issues"
+              ],
+              "description": "Enable issues in the repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-merge-commit"
+              ],
+              "description": "Enable merging pull requests via merge commit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-projects"
+              ],
+              "description": "Enable projects in the repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-rebase-merge"
+              ],
+              "description": "Enable merging pull requests via rebase",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-squash-merge"
+              ],
+              "description": "Enable merging pull requests via squashed commit",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--enable-wiki"
+              ],
+              "description": "Enable wiki in the repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-h",
+                "--homepage"
+              ],
+              "description": "Repository home page URL",
+              "takes_arg": true,
+              "arg_name": "URL",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remove-topic"
+              ],
+              "description": "Remove repository topic",
+              "takes_arg": true,
+              "arg_name": "topic names",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--template"
+              ],
+              "description": "Make the repository available as a template repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--visibility"
+              ],
+              "description": "Change the visibility of the repository to {public,private,internal}",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private",
+                  "internal"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "fork",
+          "aliases": [],
+          "description": "Create a fork of a repository.\nWith no argument, creates a fork of the current repository. Otherwise, forks\nthe specified repository.\nBy default, the new fork is set to be your 'origin' remote and any existing\norigin remote is renamed to 'upstream'. To alter this behavior, you can set\na name for the new fork's remote with --remote-name.\nAdditional 'git clone' flags can be passed in by listing them after '--'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--"
+              ],
+              "description": "Flags to pass to git when cloning",
+              "takes_arg": true,
+              "arg_name": "flags",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--clone"
+              ],
+              "description": "Clone the fork",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remote"
+              ],
+              "description": "Add remote for fork {true|false}",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--remote-name"
+              ],
+              "description": "Specify a name for a fork's new remote. (default \"origin\")",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--org"
+              ],
+              "description": "Create the fork in an organization",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--fork-name"
+              ],
+              "description": "Rename the forked repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List repositories owned by user or organization.\nFor more information about output formatting flags, see 'gh help formatting'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--visibility"
+              ],
+              "description": "Filter repositories by visibility",
+              "takes_arg": true,
+              "arg_name": "visibility",
+              "arg_template": {
+                "custom": [
+                  "public",
+                  "private",
+                  "internal"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--archived"
+              ],
+              "description": "Show only archived repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--fork"
+              ],
+              "description": "Show only forked repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--language"
+              ],
+              "description": "Filter by primary coding language",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of repositories to list (default 30)",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--no-archived"
+              ],
+              "description": "Omit archived repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source"
+              ],
+              "description": "Show only non-forks",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--topic"
+              ],
+              "description": "Filter by topic",
+              "takes_arg": true,
+              "arg_name": "topic",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--private"
+              ],
+              "description": "Show only private repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--public"
+              ],
+              "description": "Show only public repositories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "owner",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "rename",
+          "aliases": [],
+          "description": "Rename a GitHub repository.\nBy default, this renames the current repository; otherwise renames the specified repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-y",
+                "--confirm"
+              ],
+              "description": "Skip the confirmation prompt",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Select another repository using the `[HOST/]OWNER/REPO` format",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "new-name",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "set-default",
+          "aliases": [],
+          "description": "Sets the default remote repository to use when querying the GitHub API for the locally cloned repository",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-u",
+                "--unset"
+              ],
+              "description": "Unset the current default repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--view"
+              ],
+              "description": "View the current default repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "sync",
+          "aliases": [],
+          "description": "Sync destination repository from source repository. Syncing uses the main branch\nof the source repository to update the matching branch on the destination\nrepository so they are equal. A fast forward update will be used execept when the\n'--force' flag is specified, then the two branches will\nby synced using a hard reset.    \nWithout an argument, the local repository is selected as the destination repository.\nThe source repository is the parent of the destination repository by default.\nThis can be overridden with the '--source' flag",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-b",
+                "--branch"
+              ],
+              "description": "Branch to sync",
+              "takes_arg": true,
+              "arg_name": "branch name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--force"
+              ],
+              "description": "Hard reset the branch of the destination repository to match the source repository",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--source"
+              ],
+              "description": "Source repository",
+              "takes_arg": true,
+              "arg_name": "source repository",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "destination-repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "Display the description and the README of a GitHub repository.\nWith no argument, the repository for the current directory is displayed.\nWith '--web', open the repository in a web browser instead.\nWith '--branch', view a specific branch of the repository.\nFor more information about output formatting flags, see 'gh help formatting'",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-b",
+                "--branch"
+              ],
+              "description": "View a specific branch of the repository",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open a repository in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "repository",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "View details about workflow runs",
+      "subcommands": [
+        {
+          "name": "download",
+          "aliases": [],
+          "description": "Download artifacts generated by a workflow run",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "run-id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List recent workflow runs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of runs to fetch (default 20)",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--workflow"
+              ],
+              "description": "Filter runs by workflow",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rerun",
+          "aliases": [],
+          "description": "Rerun a failed run",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "run-id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View a summary of a workflow run",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--exit-status"
+              ],
+              "description": "Exit with non-zero status if run failed",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-j",
+                "--job"
+              ],
+              "description": "View a specific job ID from a run",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log"
+              ],
+              "description": "View full log for either a run or specific job",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--log-failed"
+              ],
+              "description": "View the log for any failed steps in a run or specific job",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--verbose"
+              ],
+              "description": "Show job steps",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open run in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "run-id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "watch",
+          "aliases": [],
+          "description": "Watch a run until it completes, showing its progress",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--exit-status"
+              ],
+              "description": "Exit with non-zero status if run fails",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-i",
+                "--interval"
+              ],
+              "description": "Refresh interval in seconds (default 3)",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--repo",
+            "-R"
+          ],
+          "description": "Select another repository",
+          "takes_arg": true,
+          "arg_name": "[HOST/]OWNER/REPO",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "secret",
+      "aliases": [],
+      "description": "Manage GitHub secrets",
+      "subcommands": [
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List secrets for a repository, environment, or organization",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--env"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Remove secrets",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--env"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "set",
+          "aliases": [],
+          "description": "Create or update secrets",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--env"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "List secrets for an environment",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-b",
+                "--body"
+              ],
+              "description": "A value for the secret. Reads from STDIN if not specified",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-v",
+                "--visibility"
+              ],
+              "description": "Set visibility for an organization secret: all, `private`, or `selected` (default 'private')",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": {
+                "custom": [
+                  "private",
+                  "selected",
+                  "all"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--repo",
+            "-R"
+          ],
+          "description": "Select another repository",
+          "takes_arg": true,
+          "arg_name": "[HOST/]OWNER/REPO",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ssh-key",
+      "aliases": [],
+      "description": "Manage SSH keys",
+      "subcommands": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Add an SSH key to your GitHub account",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--title"
+              ],
+              "description": "Title for the new key",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "<key-file>",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists SSH keys in your GitHub account",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "workflow",
+      "aliases": [],
+      "description": "View details about GitHub Actions workflows",
+      "subcommands": [
+        {
+          "name": "disable",
+          "aliases": [],
+          "description": "Disable a workflow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "[<workflow-id> | <workflow-name>]",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "enable",
+          "aliases": [],
+          "description": "Enable a workflow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "[<workflow-id> | <workflow-name>]",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List workflows",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-a",
+                "--all"
+              ],
+              "description": "Show all workflows, including disabled workflows",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Show all workflows, including disabled workflows",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "[<workflow-id> | <workflow-name>]",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "run",
+          "aliases": [],
+          "description": "Run a workflow by creating a workflow_dispatch event",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-F",
+                "--field"
+              ],
+              "description": "Add a string parameter in key=value format, respecting @ syntax",
+              "takes_arg": true,
+              "arg_name": "key=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Read workflow inputs as JSON via STDIN",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--raw-field"
+              ],
+              "description": "Add a string parameter in key=value format",
+              "takes_arg": true,
+              "arg_name": "key=value",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--ref"
+              ],
+              "description": "The branch or tag name which contains the version of the workflow file you'd like to run",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "[<workflow-id> | <workflow-name>]",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View the summary of a workflow",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--repo",
+                "-R"
+              ],
+              "description": "Select another repository",
+              "takes_arg": true,
+              "arg_name": "[HOST/]OWNER/REPO",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--ref"
+              ],
+              "description": "The branch or tag name which contains the version of the workflow file you'd like to view",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open workflow in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-y",
+                "--yaml"
+              ],
+              "description": "View the workflow yaml file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "workflow-id",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "workflow-name",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            },
+            {
+              "name": "filename",
+              "description": null,
+              "template": "filepaths",
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "names": [
+            "--repo",
+            "-R"
+          ],
+          "description": "Select another repository",
+          "takes_arg": true,
+          "arg_name": "[HOST/]OWNER/REPO",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "codespace",
+      "aliases": [
+        "cs"
+      ],
+      "description": "Connect to and manage codespaces",
+      "subcommands": [
+        {
+          "name": "code",
+          "aliases": [],
+          "description": "Open a codespace in Visual Studio Code",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--insiders"
+              ],
+              "description": "Use the insiders version of Visual Studio Code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Use the web version of Visual Studio Code",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "cp",
+          "aliases": [],
+          "description": "The cp command copies files between the local and remote file systems",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-e",
+                "--expand"
+              ],
+              "description": "Expand remote file names on remote shell",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-p",
+                "--profile"
+              ],
+              "description": "Name of the SSH profile to use",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--recursive"
+              ],
+              "description": "Recursively copy directories",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "sources",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            },
+            {
+              "name": "dest",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a codespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-b",
+                "--branch"
+              ],
+              "description": "Repository branch",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--default-permissions"
+              ],
+              "description": "Do not prompt to accept additional permissions requested by the codespace",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--devcontainer-path"
+              ],
+              "description": "Path to the devcontainer.json file to use when creating codespace",
+              "takes_arg": true,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--display-name"
+              ],
+              "description": "Display name for the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--idle-timeout"
+              ],
+              "description": "Allowed inactivity before codespace is stopped",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-l",
+                "--location"
+              ],
+              "description": "Determined automatically if not provided",
+              "takes_arg": true,
+              "arg_name": "location",
+              "arg_template": {
+                "custom": [
+                  "EastUs",
+                  "SouthEastAsia",
+                  "WestEurope",
+                  "WestUs2"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--machine"
+              ],
+              "description": "Hardware specifications for the VM",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Repository name with owner: user/repo",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--retention-period"
+              ],
+              "description": "Allowed time after shutting down before the codespace is automatically deleted (maximum 30 days)",
+              "takes_arg": true,
+              "arg_name": "duration",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-s",
+                "--status"
+              ],
+              "description": "Show status of post-create command and dotfiles",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete codespaces based on selection criteria. All codespaces for the authenticated user can be deleted, as well as codespaces for a specific repository. Alternatively, only codespaces older than N days can be deleted. Organization administrators may delete any codespace billed to the organization",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--all"
+              ],
+              "description": "Delete all codespaces",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--days"
+              ],
+              "description": "Delete codespaces older than N days",
+              "takes_arg": true,
+              "arg_name": "N days",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--force"
+              ],
+              "description": "Skip confirmation for codespaces that contain unsaved changes",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "The login handle of the organization (admin-only)",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-r",
+                "--repo"
+              ],
+              "description": "Delete codespaces for a repository",
+              "takes_arg": true,
+              "arg_name": "repository",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--user"
+              ],
+              "description": "The username to delete codespaces for",
+              "takes_arg": true,
+              "arg_name": "username",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a codespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--display-name"
+              ],
+              "description": "Set the display name",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-m",
+                "--machine"
+              ],
+              "description": "Set hardware specifications for the VM",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "jupyter",
+          "aliases": [],
+          "description": "Open a codespace in JupyterLab",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List codespaces of the authenticated user. Alternatively, organization administrators may list all codespaces billed to the organization",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of codespaces to list",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "The login handle of the organization to list codespaces for (admin-only)",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-R",
+                "--repo"
+              ],
+              "description": "Repository name with owner: user/repo",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template; see 'gh help formatting'",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--user"
+              ],
+              "description": "The username to list codespaces for",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logs",
+          "aliases": [],
+          "description": "Access codespace logs",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-f",
+                "--follow"
+              ],
+              "description": "Tail and follow the logs",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ports",
+          "aliases": [],
+          "description": "List ports in a codespace",
+          "subcommands": [
+            {
+              "name": "forward",
+              "aliases": [],
+              "description": "Forward ports",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-c",
+                    "--codespace"
+                  ],
+                  "description": "Name of the codespace",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "arg",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": true
+                }
+              ]
+            },
+            {
+              "name": "visibility",
+              "aliases": [],
+              "description": "Change the visibility of the forwarded port",
+              "subcommands": [],
+              "options": [
+                {
+                  "names": [
+                    "-c",
+                    "--codespace"
+                  ],
+                  "description": "Name of the codespace",
+                  "takes_arg": true,
+                  "arg_name": "string",
+                  "arg_template": null,
+                  "is_repeatable": false
+                }
+              ],
+              "args": [
+                {
+                  "name": "arg",
+                  "description": null,
+                  "template": null,
+                  "is_optional": false,
+                  "is_variadic": true
+                }
+              ]
+            }
+          ],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-q",
+                "--jq"
+              ],
+              "description": "Filter JSON output using a jq expression",
+              "takes_arg": true,
+              "arg_name": "expression",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--json"
+              ],
+              "description": "Output JSON with the specified fields",
+              "takes_arg": true,
+              "arg_name": "fields",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-t",
+                "--template"
+              ],
+              "description": "Format JSON output using a Go template; see 'gh help formatting'",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "rebuild",
+          "aliases": [],
+          "description": "Rebuild a codespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "ssh",
+          "aliases": [],
+          "description": "SSH into a codespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--config"
+              ],
+              "description": "Write OpenSSH configuration to stdout",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--debug"
+              ],
+              "description": "Log debug data to a file",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--debug-file"
+              ],
+              "description": "Path of the file log to",
+              "takes_arg": true,
+              "arg_name": "file",
+              "arg_template": "filepaths",
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--profile"
+              ],
+              "description": "Name of the SSH profile to use",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--server-port"
+              ],
+              "description": "SSH server port number (0 => pick unused)",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "command",
+              "description": null,
+              "template": null,
+              "is_optional": true,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "stop",
+          "aliases": [],
+          "description": "Stop running a codespace",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "-c",
+                "--codespace"
+              ],
+              "description": "Name of the codespace",
+              "takes_arg": true,
+              "arg_name": "string",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-o",
+                "--org"
+              ],
+              "description": "The login handle of the organization (admin-only)",
+              "takes_arg": true,
+              "arg_name": "login",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-u",
+                "--user"
+              ],
+              "description": "The username to delete codespaces for",
+              "takes_arg": true,
+              "arg_name": "username",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "project",
+      "aliases": [],
+      "description": "Manage projects",
+      "subcommands": [
+        {
+          "name": "create",
+          "aliases": [],
+          "description": "Create a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Title for the project",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use \"@me\" for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "body",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "New title of the project",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-d",
+                "--description"
+              ],
+              "description": "New description of the project",
+              "takes_arg": true,
+              "arg_name": "description",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use \"@me\" for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--readme"
+              ],
+              "description": "New readme for the project",
+              "takes_arg": true,
+              "arg_name": "readme",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--visibility"
+              ],
+              "description": "Change project visibility",
+              "takes_arg": true,
+              "arg_name": "visibility",
+              "arg_template": {
+                "custom": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List projects",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--closed"
+              ],
+              "description": "Include closed projects",
+              "takes_arg": true,
+              "arg_name": "closed",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of projects to fetch",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--web"
+              ],
+              "description": "Open projects list in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Delete a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "close",
+          "aliases": [],
+          "description": "Close a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--undo"
+              ],
+              "description": "Reopen a closed project",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "View a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-w",
+                "--web"
+              ],
+              "description": "Open project in the browser",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "copy",
+          "aliases": [],
+          "description": "Copy a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Title for the new project",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--target-owner"
+              ],
+              "description": "Login of the target owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "target-owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--source-owner"
+              ],
+              "description": "Login of the source owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "source-owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--drafts"
+              ],
+              "description": "Include draft issues when copying",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "field-create",
+          "aliases": [],
+          "description": "Create a project field",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--name"
+              ],
+              "description": "Name of the field",
+              "takes_arg": true,
+              "arg_name": "name",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--data-type"
+              ],
+              "description": "DataType of the new field",
+              "takes_arg": true,
+              "arg_name": "data-type",
+              "arg_template": {
+                "custom": [
+                  "TEXT",
+                  "SINGLE_SELECT",
+                  "DATE",
+                  "NUMBER"
+                ]
+              },
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--single-select-options"
+              ],
+              "description": "Options for SINGLE_SELECT data type",
+              "takes_arg": true,
+              "arg_name": "single-select-options",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "field-delete",
+          "aliases": [],
+          "description": "Delete a project field",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "ID of the field to delete",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "field-list",
+          "aliases": [],
+          "description": "List project fields",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of fields to fetch",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-create",
+          "aliases": [],
+          "description": "Create a draft issue item in a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Title for the draft issue",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--body"
+              ],
+              "description": "Body for the draft issue",
+              "takes_arg": true,
+              "arg_name": "body",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-edit",
+          "aliases": [],
+          "description": "Edit a project item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "ID of the item to edit",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--project-id"
+              ],
+              "description": "ID of the project to which the field belongs to",
+              "takes_arg": true,
+              "arg_name": "project-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--title"
+              ],
+              "description": "Title of the draft issue item",
+              "takes_arg": true,
+              "arg_name": "title",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--body"
+              ],
+              "description": "Body of the draft issue item",
+              "takes_arg": true,
+              "arg_name": "body",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--field-id"
+              ],
+              "description": "ID of the field to update",
+              "takes_arg": true,
+              "arg_name": "field-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--iteration-id"
+              ],
+              "description": "ID of the iteration value to set on the field",
+              "takes_arg": true,
+              "arg_name": "iteration-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--text"
+              ],
+              "description": "Text value for the field",
+              "takes_arg": true,
+              "arg_name": "text",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--number"
+              ],
+              "description": "Number value for the field",
+              "takes_arg": true,
+              "arg_name": "number",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--single-select-option-id"
+              ],
+              "description": "ID of the single select option value to set on the field",
+              "takes_arg": true,
+              "arg_name": "single-select-option-id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--date"
+              ],
+              "description": "Date value for the field (YYYY-MM-DD)",
+              "takes_arg": true,
+              "arg_name": "date",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-delete",
+          "aliases": [],
+          "description": "Delete a project item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "ID of the item to delete",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-list",
+          "aliases": [],
+          "description": "List project items",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "-L",
+                "--limit"
+              ],
+              "description": "Maximum number of items to fetch",
+              "takes_arg": true,
+              "arg_name": "int",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-add",
+          "aliases": [],
+          "description": "Add a pull request or an issue to a project",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--url"
+              ],
+              "description": "URL of the issue or pull request to add to the project",
+              "takes_arg": true,
+              "arg_name": "url",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "item-archive",
+          "aliases": [],
+          "description": "Archive a project item",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--id"
+              ],
+              "description": "ID of the item to archive",
+              "takes_arg": true,
+              "arg_name": "id",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format"
+              ],
+              "description": "Output format: {json}",
+              "takes_arg": true,
+              "arg_name": "format",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--owner"
+              ],
+              "description": "Login of the owner. Use @me for the current user",
+              "takes_arg": true,
+              "arg_name": "owner",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--undo"
+              ],
+              "description": "Unarchive a project item",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help for command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "alias",
+      "description": "Custom user defined gh alias",
+      "template": null,
+      "is_optional": true,
+      "is_variadic": false
+    }
+  ]
+}

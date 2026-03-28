@@ -1,0 +1,476 @@
+{
+  "name": "nuxi",
+  "aliases": [],
+  "description": "Nuxt 3 CLI",
+  "subcommands": [
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "The info command logs information about the current or specified Nuxt project",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "aliases": [
+        "create"
+      ],
+      "description": "The init command initializes a fresh Nuxt project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--verbose",
+            "-v"
+          ],
+          "description": "Log information about the installation process",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--template",
+            "-t"
+          ],
+          "description": "Specify a Git repository to use as a template",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force clone to any existing directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prefer-offline"
+          ],
+          "description": "Try local cache first to download templates",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--shell"
+          ],
+          "description": "Open shell in cloned directory (experimental)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "dir",
+          "description": "Name of the install directory",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "aliases": [
+        "new"
+      ],
+      "description": "Generate a entity into your Nuxt application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cwd"
+          ],
+          "description": "The current working directory of the target application",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force"
+          ],
+          "description": "Force override file if it already exists",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "TEMPLATE",
+          "description": "Specify a template of the file to be generated",
+          "template": {
+            "custom": [
+              "component",
+              "composable",
+              "layout",
+              "plugin",
+              "page",
+              "middleware",
+              "api"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "NAME",
+          "description": "Specify a name of the file that will be created",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "analyze",
+      "aliases": [],
+      "description": "The analyze command builds Nuxt and analyzes the production bundle (experimental)",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "aliases": [],
+      "description": "The build command creates a .output directory with all your application, server and dependencies ready for production",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dotenv"
+          ],
+          "description": "Point to another .env file to load, relative to the root directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--prerender"
+          ],
+          "description": "Pre-render every route of your application. (note: This is an experimental flag. The behavior might be changed)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "dev",
+      "aliases": [],
+      "description": "The dev command starts a development server with hot module replacement at http://localhost:3000",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dotenv"
+          ],
+          "description": "Point to another .env file to load, relative to the root directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--clipboard"
+          ],
+          "description": "Copy URL to clipboard",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open",
+            "-o"
+          ],
+          "description": "Open URL in browser",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-clear"
+          ],
+          "description": "Does not clear the console after startup",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--port",
+            "-p"
+          ],
+          "description": "Port to listen",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--host",
+            "-h"
+          ],
+          "description": "Hostname of the server",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--https"
+          ],
+          "description": "Listen with https protocol with a self-signed certificate by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssl-cert"
+          ],
+          "description": "Specify a certificate for https",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ssl-key"
+          ],
+          "description": "Specify the key for the https certificate",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "prepare",
+      "aliases": [],
+      "description": "The prepare command creates a .nuxt directory in your application and generates ts types",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "preview",
+      "aliases": [],
+      "description": "The preview command starts a server to preview your Nuxt application after running the build command",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dotenv"
+          ],
+          "description": "Point to another .env file to load, relative to the root directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "aliases": [],
+      "description": "Build Nuxt and prerender static routes",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "clean",
+      "aliases": [
+        "cleanup"
+      ],
+      "description": "The cleanup command removes common generated Nuxt files and caches including .nuxt/, .output/, node_modules/.vite and node_modules/.cache",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "aliases": [],
+      "description": "Run the test files for your Nuxt application",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Run tests in development mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--watch"
+          ],
+          "description": "Actively watch for changes and rerun tests",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "aliases": [],
+      "description": "The upgrade command upgrades Nuxt 3 to the latest version",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Removes node_modules and lock files before upgrade",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "typecheck",
+      "aliases": [],
+      "description": "The typecheck command runs vue-tsc to check types throughout your app",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "rootDir",
+          "description": "The directory of the target application",
+          "template": "folders",
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "usage",
+      "aliases": [],
+      "description": "The usage command shows the usage of the Nuxt CLI",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help"
+      ],
+      "description": "Show help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

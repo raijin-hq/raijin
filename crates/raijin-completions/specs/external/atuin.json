@@ -1,0 +1,968 @@
+{
+  "name": "atuin",
+  "aliases": [],
+  "description": "Magical shell history",
+  "subcommands": [
+    {
+      "name": "history",
+      "aliases": [],
+      "description": "Manipulate shell history",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Begins a new command in the history",
+          "subcommands": [],
+          "options": [],
+          "args": [
+            {
+              "name": "COMMAND",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": true
+            }
+          ]
+        },
+        {
+          "name": "end",
+          "aliases": [],
+          "description": "Finishes a new command in the history (adds time, exit code)",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--exit",
+                "-e"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "EXIT",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "ID",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "List all items in history",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--cwd",
+                "-c"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--session",
+                "-s"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--human"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cmd-only"
+              ],
+              "description": "Show only the text of the command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "FORMAT",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "last",
+          "aliases": [],
+          "description": "Get the last command ran",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--human"
+              ],
+              "description": null,
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--cmd-only"
+              ],
+              "description": "Show only the text of the command",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--format",
+                "-f"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "FORMAT",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import shell history from file",
+      "subcommands": [
+        {
+          "name": "auto",
+          "aliases": [],
+          "description": "Import history for the current shell",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Import history from the zsh history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "zsh-hist-db",
+          "aliases": [],
+          "description": "Import history from the zsh history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Import history from the bash history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "resh",
+          "aliases": [],
+          "description": "Import history from the resh history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Import history from the fish history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "nu",
+          "aliases": [],
+          "description": "Import history from the nu history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "nu-hist-db",
+          "aliases": [],
+          "description": "Import history from the nu history file",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "stats",
+      "aliases": [],
+      "description": "Calculate statistics for your history",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--count",
+            "-c"
+          ],
+          "description": "How many top commands to list",
+          "takes_arg": true,
+          "arg_name": "COUNT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "PERIOD",
+          "description": "Compute statistics for the specified period, leave blank for statistics since the beginning",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "aliases": [],
+      "description": "Interactive history search",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--cwd",
+            "-c"
+          ],
+          "description": "Filter search result by directory",
+          "takes_arg": true,
+          "arg_name": "CWD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-cwd"
+          ],
+          "description": "Exclude directory from results",
+          "takes_arg": true,
+          "arg_name": "EXCLUDE_CWD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exit",
+            "-e"
+          ],
+          "description": "Filter search result by exit code",
+          "takes_arg": true,
+          "arg_name": "EXIT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-exit"
+          ],
+          "description": "Exclude results with this exit code",
+          "takes_arg": true,
+          "arg_name": "EXCLUDE_EXIT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--before",
+            "-b"
+          ],
+          "description": "Only include results added before this date",
+          "takes_arg": true,
+          "arg_name": "BEFORE",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--after"
+          ],
+          "description": "Only include results after this date",
+          "takes_arg": true,
+          "arg_name": "AFTER",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--limit"
+          ],
+          "description": "How many entries to return at most",
+          "takes_arg": true,
+          "arg_name": "LIMIT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--offset"
+          ],
+          "description": "Offset from the start of the results",
+          "takes_arg": true,
+          "arg_name": "OFFSET",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--interactive",
+            "-i"
+          ],
+          "description": "Open interactive search UI",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--filter-mode"
+          ],
+          "description": "Allow overriding filter mode over config",
+          "takes_arg": true,
+          "arg_name": "FILTER_MODE",
+          "arg_template": {
+            "custom": [
+              "global",
+              "host",
+              "session",
+              "directory",
+              "workspace"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--search-mode"
+          ],
+          "description": "Allow overriding search mode over config",
+          "takes_arg": true,
+          "arg_name": "SEARCH_MODE",
+          "arg_template": {
+            "custom": [
+              "prefix",
+              "full-text",
+              "fuzzy",
+              "skim"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--human"
+          ],
+          "description": "Use human-readable formatting for time",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--cmd-only"
+          ],
+          "description": "Show only the text of the command",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--delete"
+          ],
+          "description": "Delete anything matching this query. Will not print out the match",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--delete-it-all"
+          ],
+          "description": "Delete EVERYTHING!",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reverse",
+            "-r"
+          ],
+          "description": "Reverse the order of results, oldest first",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--format",
+            "-f"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "FORMAT",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--inline-height"
+          ],
+          "description": "Set the maximum number of lines Atuin's interface should take up",
+          "takes_arg": true,
+          "arg_name": "INLINE_HEIGHT",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "QUERY",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": true
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "aliases": [],
+      "description": "Sync with the configured server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--force",
+            "-f"
+          ],
+          "description": "Force re-download everything",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to the configured server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--username",
+            "-u"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "USERNAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password",
+            "-p"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "PASSWORD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--key",
+            "-k"
+          ],
+          "description": "The encryption key for your account",
+          "takes_arg": true,
+          "arg_name": "KEY",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "logout",
+      "aliases": [],
+      "description": "Log out",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "register",
+      "aliases": [],
+      "description": "Register with the configured server",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--username",
+            "-u"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "USERNAME",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--password",
+            "-p"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "PASSWORD",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--email",
+            "-e"
+          ],
+          "description": null,
+          "takes_arg": true,
+          "arg_name": "EMAIL",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "key",
+      "aliases": [],
+      "description": "Print the encryption key for transfer to another machine",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--base64"
+          ],
+          "description": "Switch to base64 output of the key",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "status",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "account",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login to the configured server",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--username",
+                "-u"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "USERNAME",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "PASSWORD",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--key",
+                "-k"
+              ],
+              "description": "The encryption key for your account",
+              "takes_arg": true,
+              "arg_name": "KEY",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "register",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--username",
+                "-u"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "USERNAME",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--password",
+                "-p"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "PASSWORD",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--email",
+                "-e"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "EMAIL",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "logout",
+          "aliases": [],
+          "description": "Log out",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "kv",
+      "aliases": [],
+      "description": null,
+      "subcommands": [
+        {
+          "name": "set",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--key",
+                "-k"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "KEY",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "NAMESPACE",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "VALUE",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "aliases": [],
+          "description": null,
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--namespace",
+                "-n"
+              ],
+              "description": null,
+              "takes_arg": true,
+              "arg_name": "NAMESPACE",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": [
+            {
+              "name": "KEY",
+              "description": null,
+              "template": null,
+              "is_optional": false,
+              "is_variadic": false
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "server",
+      "aliases": [],
+      "description": "Start an atuin server",
+      "subcommands": [
+        {
+          "name": "start",
+          "aliases": [],
+          "description": "Start the server",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--host"
+              ],
+              "description": "The host address to bind",
+              "takes_arg": true,
+              "arg_name": "HOST",
+              "arg_template": null,
+              "is_repeatable": false
+            },
+            {
+              "names": [
+                "--port",
+                "-p"
+              ],
+              "description": "The port to bind",
+              "takes_arg": true,
+              "arg_name": "PORT",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Output shell setup",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--disable-ctrl-r"
+          ],
+          "description": "Disable the binding of CTRL-R to atuin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--disable-up-arrow"
+          ],
+          "description": "Disable the binding of the Up Arrow key to atuin",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "SHELL",
+          "description": null,
+          "template": {
+            "custom": [
+              "zsh",
+              "bash",
+              "fish",
+              "nu"
+            ]
+          },
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "uuid",
+      "aliases": [],
+      "description": "Generate a UUID",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "contributors",
+      "aliases": [],
+      "description": null,
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "gen-completions",
+      "aliases": [],
+      "description": "Generate shell completions",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--shell",
+            "-s"
+          ],
+          "description": "Set the shell for generating completions",
+          "takes_arg": true,
+          "arg_name": "SHELL",
+          "arg_template": {
+            "custom": [
+              "bash",
+              "elvish",
+              "fish",
+              "powershell",
+              "zsh"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--out-dir",
+            "-o"
+          ],
+          "description": "Set the output directory",
+          "takes_arg": true,
+          "arg_name": "OUT_DIR",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Print help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "--version",
+        "-V"
+      ],
+      "description": "Print version",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

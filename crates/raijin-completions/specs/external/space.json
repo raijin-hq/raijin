@@ -1,0 +1,539 @@
+{
+  "name": "space",
+  "aliases": [],
+  "description": "Deta Space CLI for mananging Deta Space projects",
+  "subcommands": [
+    {
+      "name": "completion",
+      "aliases": [],
+      "description": "Generate the autocompletion script for the specified shell",
+      "subcommands": [
+        {
+          "name": "bash",
+          "aliases": [],
+          "description": "Generate the autocompletion script for bash",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "fish",
+          "aliases": [],
+          "description": "Generate the autocompletion script for fish",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "powershell",
+          "aliases": [],
+          "description": "Generate the autocompletion script for powershell",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        },
+        {
+          "name": "zsh",
+          "aliases": [],
+          "description": "Generate the autocompletion script for zsh",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--no-descriptions"
+              ],
+              "description": "Disable completion descriptions",
+              "takes_arg": false,
+              "arg_name": null,
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Link code to project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to link",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id",
+            "-i"
+          ],
+          "description": "Project id of project to link",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "login",
+      "aliases": [],
+      "description": "Login to space",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "new",
+      "aliases": [],
+      "description": "Create new project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--blank",
+            "-b"
+          ],
+          "description": "Create blank project",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to release",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--name",
+            "-n"
+          ],
+          "description": "Project name",
+          "takes_arg": true,
+          "arg_name": "name",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open",
+      "aliases": [],
+      "description": "Open current project in browser",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to open",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id",
+            "-i"
+          ],
+          "description": "Project id of project to open",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "push",
+      "aliases": [],
+      "description": "Push code for project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to push",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id",
+            "-i"
+          ],
+          "description": "Project id of project to push",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--open",
+            "-o"
+          ],
+          "description": "Open builder instance/project in browser after push",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-logs"
+          ],
+          "description": "Skip following logs after push",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag",
+            "-t"
+          ],
+          "description": "Tag to identify this push",
+          "takes_arg": true,
+          "arg_name": "tag",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "release",
+      "aliases": [],
+      "description": "Create release for a project",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--confirm",
+            "-c"
+          ],
+          "description": "Release latest revision",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to release",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--id",
+            "-i"
+          ],
+          "description": "Project id of an existing project",
+          "takes_arg": true,
+          "arg_name": "id",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--listed",
+            "-l"
+          ],
+          "description": "Listed on discovery",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--notes",
+            "-n"
+          ],
+          "description": "Release notes",
+          "takes_arg": true,
+          "arg_name": "notes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--rid",
+            "-r"
+          ],
+          "description": "Revision id for release",
+          "takes_arg": true,
+          "arg_name": "rid",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--version",
+            "-v"
+          ],
+          "description": "Version for the release",
+          "takes_arg": true,
+          "arg_name": "version",
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "validate",
+      "aliases": [],
+      "description": "Validate spacefile in dir",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--dir",
+            "-d"
+          ],
+          "description": "Src of project to validate",
+          "takes_arg": true,
+          "arg_name": "dir",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Space CLI version",
+      "subcommands": [
+        {
+          "name": "upgrade",
+          "aliases": [],
+          "description": "Upgrade Space CLI version",
+          "subcommands": [],
+          "options": [
+            {
+              "names": [
+                "--version",
+                "-v"
+              ],
+              "description": "Version number",
+              "takes_arg": true,
+              "arg_name": "version",
+              "arg_template": null,
+              "is_repeatable": false
+            }
+          ],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "help",
+      "aliases": [],
+      "description": "Help about any command",
+      "subcommands": [
+        {
+          "name": "completion",
+          "aliases": [],
+          "description": "Generate the autocompletion script for the specified shell",
+          "subcommands": [
+            {
+              "name": "bash",
+              "aliases": [],
+              "description": "Generate the autocompletion script for bash",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "fish",
+              "aliases": [],
+              "description": "Generate the autocompletion script for fish",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "powershell",
+              "aliases": [],
+              "description": "Generate the autocompletion script for powershell",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            },
+            {
+              "name": "zsh",
+              "aliases": [],
+              "description": "Generate the autocompletion script for zsh",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "link",
+          "aliases": [],
+          "description": "Link code to project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "login",
+          "aliases": [],
+          "description": "Login to space",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "new",
+          "aliases": [],
+          "description": "Create new project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "open",
+          "aliases": [],
+          "description": "Open current project in browser",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "push",
+          "aliases": [],
+          "description": "Push code for project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "release",
+          "aliases": [],
+          "description": "Create release for a project",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "validate",
+          "aliases": [],
+          "description": "Validate spacefile in dir",
+          "subcommands": [],
+          "options": [],
+          "args": []
+        },
+        {
+          "name": "version",
+          "aliases": [],
+          "description": "Space CLI version",
+          "subcommands": [
+            {
+              "name": "upgrade",
+              "aliases": [],
+              "description": "Upgrade Space CLI version",
+              "subcommands": [],
+              "options": [],
+              "args": []
+            }
+          ],
+          "options": [],
+          "args": []
+        }
+      ],
+      "options": [],
+      "args": []
+    }
+  ],
+  "options": [
+    {
+      "names": [
+        "--help",
+        "-h"
+      ],
+      "description": "Display help",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": []
+}

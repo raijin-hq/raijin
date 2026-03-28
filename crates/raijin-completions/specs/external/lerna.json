@@ -1,0 +1,2551 @@
+{
+  "name": "lerna",
+  "aliases": [],
+  "description": "A tool for managing JavaScript projects with multiple packages",
+  "subcommands": [
+    {
+      "name": "init",
+      "aliases": [],
+      "description": "Create a new lerna repo or upgrade an existing repo to the current version of Lerna",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--npm-client"
+          ],
+          "description": "The exececutable to run the script with",
+          "takes_arg": true,
+          "arg_name": "client",
+          "arg_template": {
+            "custom": [
+              "npm",
+              "yarn",
+              "pnpm"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-i",
+            "--independent"
+          ],
+          "description": "Use independent versioning mode",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Set the exact version of lerna in the package.json file",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bootstrap",
+      "aliases": [],
+      "description": "Bootstrap the packages in the current Lerna repo. Installing all their dependencies and linking any cross-dependencies",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Include only packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Exclude packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Exclude private packages. They are included by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Only include packages that have been changed since the specified ref. If no ref is passed, it defaults to the most-recent tag",
+          "takes_arg": true,
+          "arg_name": "ref",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include all transitive dependencies when running a command regardless of --scope, --ignore, or --since",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when running a command with --since. This is only useful if you do a lot of publishing from feature branches, which is not generally recommended",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--npm-client"
+          ],
+          "description": "The exececutable to run the script with",
+          "takes_arg": true,
+          "arg_name": "client",
+          "arg_template": {
+            "custom": [
+              "npm",
+              "yarn",
+              "pnpm"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--hoist"
+          ],
+          "description": "Install external dependencies matching glob at the repo root so they're available to all packages",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--nohoist"
+          ],
+          "description": "Do not install external dependencies matching glob at the repo root. This can be used to opt out of hoisting for certain dependencies",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--strict"
+          ],
+          "description": "When used in conjunction with hoist will throw an error and stop bootstrapping after emitting the version warnings. Has no effect if you aren't hoisting, or if there are no version warnings",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-prepublish"
+          ],
+          "description": "Skip prepublish lifecycle scripts run by default in bootstrapped packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-scripts"
+          ],
+          "description": "Skip any lifecycle scripts normally run (prepare, etc) in bootstrapped packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--registry"
+          ],
+          "description": "Forwarded npm commands will use the specified registry for your package(s)",
+          "takes_arg": true,
+          "arg_name": "url",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--use-workspaces"
+          ],
+          "description": "Enables integration with Yarn Workspaces",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-ci"
+          ],
+          "description": "Disable usage of `npm ci` in CI environments",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "When passed, this flag causes the bootstrap command to always symlink local dependencies regardless of matching version range",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "import",
+      "aliases": [],
+      "description": "Import the package in the local path <pathToRepo> into packages/<directory-name> with commit history",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--flatten"
+          ],
+          "description": "Flatten the git history of the repository to import",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dest"
+          ],
+          "description": "Specify the destination directory by the directory listed in lerna.json",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preserve-commit"
+          ],
+          "description": "Preserve the original committer and commit date",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pathToRepo",
+          "description": null,
+          "template": "folders",
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "publish",
+      "aliases": [],
+      "description": "Create a new release of the packages that have been updated. Prompts for a new version and updates all the packages on git and npm",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--npm-tag"
+          ],
+          "description": "Publish to npm with the given npm dist-tag (Defaults to latest)",
+          "takes_arg": true,
+          "arg_name": "tagname",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--canary",
+            "-c"
+          ],
+          "description": "Create a canary release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--skip-git"
+          ],
+          "description": "Don't run any git commands",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-publish"
+          ],
+          "description": "Force publish for the specified packages (comma-separated)",
+          "takes_arg": true,
+          "arg_name": "packages",
+          "arg_template": {
+            "custom": [
+              "*"
+            ]
+          },
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ls",
+      "aliases": [],
+      "description": "List local packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Show information as a JSON array",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ndjson"
+          ],
+          "description": "Show information as newline-delimited JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "-all"
+          ],
+          "description": "Show all packages (including private)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--long"
+          ],
+          "description": "Show extended information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--parseable"
+          ],
+          "description": "Show parseable output instead of columnified view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toposort"
+          ],
+          "description": "Sort packages in topological order (dependencies before dependents) instead of lexical by directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show dependency graph as a JSON-formatted adjacency list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "ll",
+      "aliases": [],
+      "description": "List local packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Show information as a JSON array",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ndjson"
+          ],
+          "description": "Show information as newline-delimited JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "-all"
+          ],
+          "description": "Show all packages (including private)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--long"
+          ],
+          "description": "Show extended information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--parseable"
+          ],
+          "description": "Show parseable output instead of columnified view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toposort"
+          ],
+          "description": "Sort packages in topological order (dependencies before dependents) instead of lexical by directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show dependency graph as a JSON-formatted adjacency list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "la",
+      "aliases": [],
+      "description": "List local packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Show information as a JSON array",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ndjson"
+          ],
+          "description": "Show information as newline-delimited JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "-all"
+          ],
+          "description": "Show all packages (including private)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--long"
+          ],
+          "description": "Show extended information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--parseable"
+          ],
+          "description": "Show parseable output instead of columnified view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toposort"
+          ],
+          "description": "Sort packages in topological order (dependencies before dependents) instead of lexical by directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show dependency graph as a JSON-formatted adjacency list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "aliases": [],
+      "description": "List local packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--json"
+          ],
+          "description": "Show information as a JSON array",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ndjson"
+          ],
+          "description": "Show information as newline-delimited JSON",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-a",
+            "-all"
+          ],
+          "description": "Show all packages (including private)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-l",
+            "--long"
+          ],
+          "description": "Show extended information",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-p",
+            "--parseable"
+          ],
+          "description": "Show parseable output instead of columnified view",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--toposort"
+          ],
+          "description": "Sort packages in topological order (dependencies before dependents) instead of lexical by directory",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--graph"
+          ],
+          "description": "Show dependency graph as a JSON-formatted adjacency list",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "changed",
+      "aliases": [],
+      "description": "Check which packages have changed since the last release",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "aliases": [],
+      "description": "Run an npm script in each package that contains that script",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Include only packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Exclude packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Exclude private packages. They are included by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Only include packages that have been changed since the specified ref. If no ref is passed, it defaults to the most-recent tag",
+          "takes_arg": true,
+          "arg_name": "ref",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include all transitive dependencies when running a command regardless of --scope, --ignore, or --since",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when running a command with --since. This is only useful if you do a lot of publishing from feature branches, which is not generally recommended",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stream"
+          ],
+          "description": "Stream output from child processes immediately, prefixed with the originating package name. This allows output from different packages to be interleaved",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Similar to --stream, but completely disregards concurrency and topological sorting, running a given command or script immediately in all matching packages with prefixed streaming output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-bail"
+          ],
+          "description": "By default, lerna run will exit with an error if any script run returns a non-zero exit code. Pass --no-bail to disable this behavior, running the script in all packages that contain it regardless of exit code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prefix"
+          ],
+          "description": "Disable package name prefixing when output is streaming (--stream or --parallel). This option can be useful when piping results to other processes, such as editor plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Profiles the script executions and produces a performance profile which can be analyzed using DevTools",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile-location"
+          ],
+          "description": "You can provide a custom location for the performance profile output. The path provided will be resolved relative to the current working directory",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "script",
+          "description": "Name of the npm script to run",
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "aliases": [],
+      "description": "Symlink together all Lerna packages that are dependencies of each other in the current Lerna repo",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-local"
+          ],
+          "description": "When passed, this flag causes the link command to always symlink local dependencies regardless of matching version range",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "info",
+      "aliases": [],
+      "description": "Prints local environment information that proves to be useful especially while submitting bug reports",
+      "subcommands": [],
+      "options": [],
+      "args": []
+    },
+    {
+      "name": "version",
+      "aliases": [],
+      "description": "Bump version of packages changed since the last release",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--allow-branch"
+          ],
+          "description": "An allowlist of globs that match git branches where lerna version is enabled",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": "git_branches",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--amend"
+          ],
+          "description": "Perform all changes on the current commit, instead of adding a new one",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--changelog-preset"
+          ],
+          "description": "Change the changelog preset type",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--conventional-commits"
+          ],
+          "description": "Use the Conventional Commits Specification to determine the version bump and generate CHANGELOG.md files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--conventional-graduate"
+          ],
+          "description": "Graduate the specified packages (comma-separated) or all packages using *",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--conventional-prerelease"
+          ],
+          "description": "Release with prerelease versions the specified packages (comma-separated) or all packages using *",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--create-release"
+          ],
+          "description": "Create an official release based on the changes packages",
+          "takes_arg": true,
+          "arg_name": "type",
+          "arg_template": {
+            "custom": [
+              "github",
+              "gitlab"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Specify updated dependencies in updated packages exactly",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-publish"
+          ],
+          "description": "Force publish the specified packages (comma-separated) or all packages using *",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--git-remote"
+          ],
+          "description": "Push the git changes to the specified remote instead of origin",
+          "takes_arg": true,
+          "arg_name": "remote",
+          "arg_template": "git_remotes",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-changes"
+          ],
+          "description": "Ignore changes in files matched by glob(s) when detecting changed packages",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": "folders",
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore-scripts"
+          ],
+          "description": "Disable running lifecycle scripts during lerna version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when detecting changed packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-m",
+            "--message"
+          ],
+          "description": "Use the provided message when committing the version updates for publication",
+          "takes_arg": true,
+          "arg_name": "msg",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-changelog"
+          ],
+          "description": "When using conventional-commits, do not generate any CHANGELOG.md files",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-commit-hooks"
+          ],
+          "description": "Disable running git commit hooks",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-git-tag-version"
+          ],
+          "description": "Don't commit changes to package.json files and don't tag the release",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-granular-pathspec"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Don't include private packages",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--preid"
+          ],
+          "description": "Bump semver using the specified prerelease identifier",
+          "takes_arg": true,
+          "arg_name": "identifier",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sign-git-commit"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--sign-git-tag"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--force-git-tag"
+          ],
+          "description": null,
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag-version-prefix"
+          ],
+          "description": "Change the custom version prefix",
+          "takes_arg": true,
+          "arg_name": "prefix",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Skip all confirmation prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "version",
+          "description": null,
+          "template": {
+            "custom": [
+              "major",
+              "minor",
+              "patch",
+              "premajor",
+              "preminor",
+              "prepatch",
+              "prerelease"
+            ]
+          },
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "diff",
+      "aliases": [],
+      "description": "Diff all packages or a single package since the last release",
+      "subcommands": [],
+      "options": [],
+      "args": [
+        {
+          "name": "package",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "aliases": [],
+      "description": "Execute an arbitrary command in each package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Include only packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Exclude packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Exclude private packages. They are included by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Only include packages that have been changed since the specified ref. If no ref is passed, it defaults to the most-recent tag",
+          "takes_arg": true,
+          "arg_name": "ref",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include all transitive dependencies when running a command regardless of --scope, --ignore, or --since",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when running a command with --since. This is only useful if you do a lot of publishing from feature branches, which is not generally recommended",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--stream"
+          ],
+          "description": "Stream output from child processes immediately, prefixed with the originating package name. This allows output from different packages to be interleaved",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--parallel"
+          ],
+          "description": "Similar to --stream, but completely disregards concurrency and topological sorting, running a given command or script immediately in all matching packages with prefixed streaming output",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-bail"
+          ],
+          "description": "By default, lerna run will exit with an error if any script run returns a non-zero exit code. Pass --no-bail to disable this behavior, running the script in all packages that contain it regardless of exit code",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-prefix"
+          ],
+          "description": "Disable package name prefixing when output is streaming (--stream or --parallel). This option can be useful when piping results to other processes, such as editor plugins",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile"
+          ],
+          "description": "Profiles the script executions and produces a performance profile which can be analyzed using DevTools",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--profile-location"
+          ],
+          "description": "You can provide a custom location for the performance profile output. The path provided will be resolved relative to the current working directory",
+          "takes_arg": true,
+          "arg_name": "location",
+          "arg_template": "folders",
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "command",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "aliases": [],
+      "description": "Add a dependency to matched packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Include only packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Exclude packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Exclude private packages. They are included by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Only include packages that have been changed since the specified ref. If no ref is passed, it defaults to the most-recent tag",
+          "takes_arg": true,
+          "arg_name": "ref",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include all transitive dependencies when running a command regardless of --scope, --ignore, or --since",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when running a command with --since. This is only useful if you do a lot of publishing from feature branches, which is not generally recommended",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dev"
+          ],
+          "description": "Add the new package to devDependencies instead of dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exact"
+          ],
+          "description": "Add the new package with an exact version",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--peer"
+          ],
+          "description": "Add the new package to peerDependencies instead of dependencies",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--registry"
+          ],
+          "description": "Use a custom registry to install the targeted package",
+          "takes_arg": true,
+          "arg_name": "registry",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-bootstrap"
+          ],
+          "description": "Skip the chained lerna bootstrap",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "aliases": [],
+      "description": "Remove the node_modules directory from all packages",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--concurrency"
+          ],
+          "description": "How many threads to use when Lerna parallelizes the tasks (defaults to count of logical CPU cores)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--loglevel"
+          ],
+          "description": "What level of logs to report. On failure, all logs are written to lerna-debug.log in the current working directory",
+          "takes_arg": true,
+          "arg_name": "loglevel",
+          "arg_template": {
+            "custom": [
+              "silent",
+              "error",
+              "warn",
+              "success",
+              "info",
+              "verbose",
+              "silly"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--max-buffer"
+          ],
+          "description": "Set a max buffer length for each underlying process call",
+          "takes_arg": true,
+          "arg_name": "bytes",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-progress"
+          ],
+          "description": "Disable progress bars. This is always the case in a CI environment",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-sort"
+          ],
+          "description": "The --no-sort option disables sorting, instead executing tasks in an arbitrary order with maximum concurrency",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--reject-cycles"
+          ],
+          "description": "Fail immediately if a cycle is found (in bootstrap, exec, publish or run)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-h",
+            "--help"
+          ],
+          "description": "Show help",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "-v",
+            "--version"
+          ],
+          "description": "Show version number",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--scope"
+          ],
+          "description": "Include only packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--ignore"
+          ],
+          "description": "Exclude packages with names matching the given glob",
+          "takes_arg": true,
+          "arg_name": "glob",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--no-private"
+          ],
+          "description": "Exclude private packages. They are included by default",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--since"
+          ],
+          "description": "Only include packages that have been changed since the specified ref. If no ref is passed, it defaults to the most-recent tag",
+          "takes_arg": true,
+          "arg_name": "ref",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--exclude-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependents"
+          ],
+          "description": "Exclude all transitive dependents when running a command with --since, overriding the default 'changed' algorithm",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-dependencies"
+          ],
+          "description": "Include all transitive dependencies when running a command regardless of --scope, --ignore, or --since",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--include-merged-tags"
+          ],
+          "description": "Include tags from merged branches when running a command with --since. This is only useful if you do a lot of publishing from feature branches, which is not generally recommended",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Skip all confirmation prompts",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "aliases": [],
+      "description": "Create a new lerna-managed package",
+      "subcommands": [],
+      "options": [
+        {
+          "names": [
+            "--access"
+          ],
+          "description": "Set the scope of the package",
+          "takes_arg": true,
+          "arg_name": "scope",
+          "arg_template": {
+            "custom": [
+              "public",
+              "restricted"
+            ]
+          },
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--bin"
+          ],
+          "description": "Package has an executable",
+          "takes_arg": true,
+          "arg_name": "executableName",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--description"
+          ],
+          "description": "Package description",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--dependencies"
+          ],
+          "description": "A list of package dependencies",
+          "takes_arg": true,
+          "arg_name": "dependencies",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--es-module"
+          ],
+          "description": "Initialize a transpiled ES Module",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--homepage"
+          ],
+          "description": "The package homepage, defaulting to a subpath of the root pkg.homepage",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--keywords"
+          ],
+          "description": "A list of package keywords",
+          "takes_arg": true,
+          "arg_name": "keywords",
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--license"
+          ],
+          "description": "The desired package license (SPDX identifier)",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--private"
+          ],
+          "description": "Make the new package private, never published",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--registry"
+          ],
+          "description": "Configure the package's publishConfig.registry",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--tag"
+          ],
+          "description": "Configure the package's publishConfig.tag",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        },
+        {
+          "names": [
+            "--yes"
+          ],
+          "description": "Skip all prompts, accepting default values",
+          "takes_arg": false,
+          "arg_name": null,
+          "arg_template": null,
+          "is_repeatable": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "description": null,
+          "template": null,
+          "is_optional": false,
+          "is_variadic": false
+        },
+        {
+          "name": "loc",
+          "description": null,
+          "template": null,
+          "is_optional": true,
+          "is_variadic": false
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "args": []
+}

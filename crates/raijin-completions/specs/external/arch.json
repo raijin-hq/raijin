@@ -1,0 +1,145 @@
+{
+  "name": "arch",
+  "aliases": [],
+  "description": "Print architecture type or run select architecture",
+  "subcommands": [],
+  "options": [
+    {
+      "names": [
+        "-32"
+      ],
+      "description": "Add the native 32-bit architecture to the list of architectures",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-64"
+      ],
+      "description": "Add the native 64-bit architecture to the list of architectures",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-arch"
+      ],
+      "description": null,
+      "takes_arg": true,
+      "arg_name": "arch_name",
+      "arg_template": {
+        "custom": [
+          "i386",
+          "x86_64",
+          "x86_64h",
+          "arm64",
+          "arm64e"
+        ]
+      },
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-i386"
+      ],
+      "description": "32-bit intel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-x86_64"
+      ],
+      "description": "64-bit intel",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-x86_64h"
+      ],
+      "description": "64-bit intel (haswell)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-arm64"
+      ],
+      "description": "64-bit arm",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-arm64e"
+      ],
+      "description": "64-bit arm (Apple Silicon)",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-c"
+      ],
+      "description": "Clear the environment that will be passed to the command",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    },
+    {
+      "names": [
+        "-d"
+      ],
+      "description": "Delete the named environment variable from the command's environment",
+      "takes_arg": true,
+      "arg_name": "envname",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-e"
+      ],
+      "description": "Assign the given value to the variable in the command's environment",
+      "takes_arg": true,
+      "arg_name": "envname=value",
+      "arg_template": null,
+      "is_repeatable": true
+    },
+    {
+      "names": [
+        "-h"
+      ],
+      "description": "Print a help message and exit",
+      "takes_arg": false,
+      "arg_name": null,
+      "arg_template": null,
+      "is_repeatable": false
+    }
+  ],
+  "args": [
+    {
+      "name": "program",
+      "description": null,
+      "template": "filepaths",
+      "is_optional": false,
+      "is_variadic": true
+    }
+  ]
+}
