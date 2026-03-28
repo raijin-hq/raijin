@@ -17,6 +17,26 @@ use lsp_types::{
 };
 
 use crate::command_history::CommandHistory;
+use crate::completions::nu_lsp_client::NuLspClient;
+use crate::shell_install;
+
+/// Convert a byte offset into (line, character) for LSP position.
+fn offset_to_position(text: &str, offset: usize) -> (u32, u32) {
+    let mut line = 0u32;
+    let mut col = 0u32;
+    for (i, ch) in text.char_indices() {
+        if i >= offset {
+            break;
+        }
+        if ch == '\n' {
+            line += 1;
+            col = 0;
+        } else {
+            col += 1;
+        }
+    }
+    (line, col)
+}
 
 /// Escape special shell characters in a path (spaces, parens, brackets, etc.)
 fn shell_escape_path(path: &str) -> String {
@@ -42,20 +62,34 @@ pub struct ShellCompletionProvider {
     cwd: Arc<RwLock<PathBuf>>,
     /// Cached executables from $PATH.
     pub path_executables: Arc<RwLock<Vec<String>>>,
-    /// CLI specs for known commands.
+    /// CLI specs for known commands (Tier 1: embedded at compile time).
     cli_specs: HashMap<String, raijin_completions::CliSpec>,
     /// Shared command history for frecency ghost-text.
     history: Arc<RwLock<CommandHistory>>,
+    /// Nushell LSP client for native Nu completions (lazy-started, only when shell == "nu").
+    nu_lsp: Option<NuLspClient>,
+    /// Cache for external specs loaded from disk (Tier 2). None = tried and not found.
+    external_spec_cache: RwLock<HashMap<String, Option<raijin_completions::CliSpec>>>,
 }
 
 impl ShellCompletionProvider {
     pub fn new(shell: &str, cwd: PathBuf, history: Arc<RwLock<CommandHistory>>) -> Self {
+        // Start Nu LSP client if running Nushell
+        let nu_lsp = if shell == "nu" {
+            shell_install::resolve_shell_path("nu")
+                .and_then(|path| NuLspClient::new(std::path::Path::new(&path)))
+        } else {
+            None
+        };
+
         let provider = Self {
             shell: shell.to_string(),
             cwd: Arc::new(RwLock::new(cwd)),
             path_executables: Arc::new(RwLock::new(Vec::new())),
             cli_specs: raijin_completions::load_all_specs(),
             history,
+            nu_lsp,
+            external_spec_cache: RwLock::new(HashMap::new()),
         };
         provider.scan_path_executables();
         provider
@@ -286,8 +320,68 @@ impl ShellCompletionProvider {
             .collect()
     }
 
+    /// Look up a CLI spec by command name, checking embedded (Tier 1) then external (Tier 2).
+    fn get_spec(&self, command: &str) -> Option<raijin_completions::CliSpec> {
+        // Tier 1: embedded specs (instant)
+        if let Some(spec) = self.cli_specs.get(command) {
+            return Some(spec.clone());
+        }
+
+        // Tier 2: cached external specs
+        {
+            let cache = self.external_spec_cache.read().unwrap();
+            if let Some(cached) = cache.get(command) {
+                return cached.clone();
+            }
+        }
+
+        // Tier 2: load from disk, cache result (also cache None to avoid repeated disk reads)
+        let spec = self.load_external_spec(command);
+        self.external_spec_cache
+            .write()
+            .unwrap()
+            .insert(command.to_string(), spec.clone());
+        spec
+    }
+
+    /// Try to load an external spec from ~/.config/raijin/specs/ or app bundle.
+    fn load_external_spec(&self, command: &str) -> Option<raijin_completions::CliSpec> {
+        let spec_dirs = [
+            dirs::config_dir().map(|c| c.join("raijin/specs")),
+            // macOS .app bundle: Contents/Resources/specs/
+            std::env::current_exe()
+                .ok()
+                .and_then(|p| p.parent()?.parent().map(|b| b.join("Resources/specs"))),
+        ];
+        for dir in spec_dirs.iter().flatten() {
+            let path = dir.join(format!("{}.json", command));
+            if let Ok(content) = std::fs::read_to_string(&path) {
+                if let Ok(spec) = serde_json::from_str::<raijin_completions::CliSpec>(&content) {
+                    return Some(spec);
+                }
+            }
+        }
+        None
+    }
+
     /// Build completion items for the current input context.
     fn build_completions(&self, text: &str, offset: usize) -> Vec<CompletionItem> {
+        // Nushell: try nu --lsp first for builtins/custom commands
+        if self.shell == "nu" {
+            if let Some(ref nu_lsp) = self.nu_lsp {
+                // Calculate line/character from offset
+                let (line, character) = offset_to_position(text, offset);
+                // Try synchronous receive with a short timeout
+                let rx = nu_lsp.complete(text, line, character);
+                if let Ok(items) = rx.recv_timeout(std::time::Duration::from_millis(200)) {
+                    if !items.is_empty() {
+                        return items;
+                    }
+                }
+                // Fallthrough to spec-based completion for external commands
+            }
+        }
+
         let ctx = raijin_completions::parse_input(text, offset);
 
         // Environment variable completion
@@ -300,27 +394,24 @@ impl ShellCompletionProvider {
                 self.complete_command(&ctx.current_token)
             }
             raijin_completions::TokenPosition::Subcommand => {
-                // Try CLI spec first
-                if let Some(spec) = self.cli_specs.get(&ctx.command) {
-                    let items = self.complete_from_spec(&ctx, spec);
+                if let Some(spec) = self.get_spec(&ctx.command) {
+                    let items = self.complete_from_spec(&ctx, &spec);
                     if !items.is_empty() {
                         return items;
                     }
                 }
-                // Fallback to file path
                 self.complete_file_path(&ctx.current_token)
             }
             raijin_completions::TokenPosition::OptionName => {
-                if let Some(spec) = self.cli_specs.get(&ctx.command) {
-                    self.complete_from_spec(&ctx, spec)
+                if let Some(spec) = self.get_spec(&ctx.command) {
+                    self.complete_from_spec(&ctx, &spec)
                 } else {
                     vec![]
                 }
             }
             raijin_completions::TokenPosition::OptionValue(opt) => {
-                // Check if the option expects git branches, files, etc.
-                if let Some(spec) = self.cli_specs.get(&ctx.command) {
-                    let resolved = self.resolve_arg_template(&ctx, spec, opt);
+                if let Some(spec) = self.get_spec(&ctx.command) {
+                    let resolved = self.resolve_arg_template(&ctx, &spec, opt);
                     if !resolved.is_empty() {
                         return resolved;
                     }
@@ -328,14 +419,12 @@ impl ShellCompletionProvider {
                 self.complete_file_path(&ctx.current_token)
             }
             raijin_completions::TokenPosition::Argument(_) => {
-                // Check if the spec has arg template hints
-                if let Some(spec) = self.cli_specs.get(&ctx.command) {
-                    let spec_items = self.complete_from_spec(&ctx, spec);
+                if let Some(spec) = self.get_spec(&ctx.command) {
+                    let spec_items = self.complete_from_spec(&ctx, &spec);
                     if !spec_items.is_empty() {
                         return spec_items;
                     }
                 }
-                // Check for git branch completions for common git subcommands
                 if ctx.command == "git" {
                     let git_branch_cmds = ["checkout", "switch", "merge", "rebase", "branch", "diff"];
                     if ctx.subcommands.first().map_or(false, |s| git_branch_cmds.contains(&s.as_str())) {
