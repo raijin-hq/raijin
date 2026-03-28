@@ -68,35 +68,19 @@ raijin/
 | Phase 2B: Block Rendering | ✅ Done | Warp-style Headers, Prompt Suppression, Error Styling |
 | Phase 2C: Block Interaction | ⬜ Planned | Copy, Collapse, Navigation, Sticky Headers → Plan 04 |
 | Phase 3: Design System | ⬜ Planned | Theme Tokens, Animations → Plan 05 |
-| Phase 4: Input Editor | 🔄 In Progress | Completions, Command Validation, Syntax Highlighting → Plan 06 |
+| Phase 4: Input Editor | ✅ Done | Completions, History, Shell Selector, Nushell, 715 CLI Specs → Plan 06 |
 | Phase 5: Explorer + Editor | ⬜ Planned | File Tree, Code Editor → Plan 07 |
 | Phase 6: AI + Agents | ⬜ Planned | Agent Detection, AI Features → Plan 08 |
 | Phase 7–9: Future | ⬜ Planned | Drive, Workflows, Distribution → Plan 09 |
 | Multi-Tab Sessions | ⬜ Planned | Tab-Management, Session-Persistence → Plan 11 |
-
-### Phase 4 — Erledigte Teilschritte:
-- ✅ CompletionProvider-Trait + ShellCompletionProvider
-- ✅ File/Directory completions (case-insensitive, shell-escaped)
-- ✅ Command completions ($PATH + builtins)
-- ✅ Git branch completions
-- ✅ Environment variable completions
-- ✅ CLI spec completions (git, cargo)
-- ✅ Warp-style Completion Menu (icons, doc panel, frozen position, bottom-anchor)
-- ✅ Inline completion (ghost text) from command history (frecency)
-- ✅ Tab key: menu confirm + inline accept
-- ✅ Live preview: arrow navigation writes selected item to input
-- ✅ Real-time filtering as you type
-- ✅ Command validation highlighting (valid = brand color)
-- ✅ Completion-inserted text highlighting (dimmed brand color)
-- ✅ Overlay highlight system on InputState
 
 ---
 
 ## Nächste Schritte
 
 1. **Plan 04: Block Interaction** — Copy, Collapse, Navigation, Search
-2. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
-3. **Plan 06: Input Editor** (remaining) — Multi-line, History Panel, Nushell, Correction Banner
+2. **Plan 15: Inazuma-Component Zed Parity** — Fehlende Zed UI-Komponenten portieren
+3. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
 
 ---
 
@@ -108,7 +92,7 @@ raijin/
 | `01-WARP-FEATURE-ANALYSE.md` | Warp Feature-Analyse (Referenz) | Referenz |
 | `04-PHASE-2-BLOCK-UX.md` | Block-System Architektur | 🔄 Teilweise done |
 | `05-PHASE-3-DESIGN-SYSTEM.md` | Theming, Farben, Typographie | ⬜ Planned |
-| `06-PHASE-4-INPUT-EDITOR.md` | IDE-Style Input & Completions | 🔄 In Progress |
+| `15-INAZUMA-COMPONENT-ZED-PARITY.md` | Fehlende Zed UI-Komponenten portieren | ⬜ Planned |
 | `07-PHASE-5-EXPLORER-EDITOR.md` | File Explorer, Code Editor | ⬜ Planned |
 | `08-PHASE-6-AI-AGENTS.md` | AI Integration & Agent Toolbar | ⬜ Planned |
 | `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Distribution | ⬜ Planned |
@@ -124,10 +108,11 @@ raijin/
 | **done/** | | |
 | `done/02-PHASE-0-FOUNDATION.md` | Repository Setup | ✅ Done |
 | `done/03-PHASE-1-MINIMAL-TERMINAL.md` | Erstes Terminal im Window | ✅ Done |
+| `done/06-PHASE-4-INPUT-EDITOR.md` | IDE-Style Input, Completions, Shell Selector | ✅ Done |
 | `done/13-PRECMD-JSON-METADATA-ARCHITECTURE.md` | OSC 7777 Metadata System | ✅ Done |
 
 ---
 
 *Erstellt: 24. März 2026*
-*Aktualisiert: 28. März 2026*
+*Aktualisiert: 29. März 2026*
 *Projekt: Raijin (雷神) — nyxb/raijin*
