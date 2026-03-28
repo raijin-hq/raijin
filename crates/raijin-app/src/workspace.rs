@@ -4,10 +4,13 @@ use inazuma::{
     ListAlignment, ListState, ParentElement, Render, Styled, Window, prelude::*,
 };
 use inazuma_component::{
-    IconName, TitleBar,
+    Anchor, IconName, TitleBar,
     chip::{Chip, GitBranchChip, GitStatsChip},
     h_flex,
     input::{AutoPairConfig, Input, InputEvent, InputState},
+    modal_layer::ModalLayer,
+    popover::Popover,
+    v_flex,
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
@@ -20,6 +23,7 @@ use crate::completions::command_correction;
 use crate::completions::shell_completion::ShellCompletionProvider;
 use crate::input::history_panel::HistoryPanel;
 use crate::settings_view;
+use crate::shell_install;
 // Block rendering now uses terminal::block_list::render_block_list
 
 /// Which view is currently active.
@@ -27,6 +31,57 @@ use crate::settings_view;
 enum ViewMode {
     Terminal,
     Settings,
+}
+
+/// A detected shell on the system.
+#[derive(Clone)]
+pub struct ShellOption {
+    pub name: String,
+    pub path: Option<String>,
+    pub installed: bool,
+}
+
+/// Global state for pending shell switch requests from UI click handlers.
+pub struct PendingShellSwitch(pub Option<ShellOption>);
+
+impl inazuma::Global for PendingShellSwitch {}
+
+/// Global state for pending shell install — set when install command is sent to PTY.
+/// Cleared on CommandEnd (success or failure) or manual shell switch.
+pub struct PendingShellInstallName(pub Option<String>);
+
+impl inazuma::Global for PendingShellInstallName {}
+
+/// Detect all supported shells and their install status.
+fn detect_available_shells() -> Vec<ShellOption> {
+    let candidates: &[(&str, &[&str])] = &[
+        ("zsh", &["/bin/zsh", "/usr/bin/zsh"]),
+        ("bash", &["/bin/bash", "/usr/bin/bash"]),
+        ("fish", &["/usr/local/bin/fish", "/opt/homebrew/bin/fish"]),
+        ("nu", &["/usr/local/bin/nu", "/opt/homebrew/bin/nu"]),
+    ];
+
+    let mut shells = Vec::new();
+    for (name, paths) in candidates {
+        // Check standard paths first
+        let mut found_path = None;
+        for path in *paths {
+            if std::path::Path::new(path).exists() {
+                found_path = Some(path.to_string());
+                break;
+            }
+        }
+        // Also check via command -v for non-standard paths (e.g. ~/.cargo/bin/nu)
+        if found_path.is_none() {
+            found_path = shell_install::resolve_shell_path(name);
+        }
+        shells.push(ShellOption {
+            name: name.to_string(),
+            installed: found_path.is_some(),
+            path: found_path,
+        });
+    }
+    shells
 }
 
 /// Top-level workspace view that composes the Warp-style layout:
@@ -41,7 +96,12 @@ pub struct Workspace {
     history_panel: HistoryPanel,
     correction_suggestion: Option<command_correction::CorrectionResult>,
     shell_completion: Rc<ShellCompletionProvider>,
+    modal_layer: Entity<ModalLayer>,
     shell_name: String,
+    /// Available shells detected on the system.
+    available_shells: Vec<ShellOption>,
+    /// If set, the shell was not found at startup and the install modal should be shown.
+    pending_shell_install: Option<&'static shell_install::ShellInstallInfo>,
     selected_block: Option<usize>,
     interactive_mode: bool,
     show_terminal: bool,
@@ -74,6 +134,13 @@ impl Workspace {
             "nu" => "nu",
             "fish" => "bash", // Fallback: fish → bash highlighting (close enough)
             _ => "bash",      // zsh, bash, sh → bash highlighting
+        };
+
+        // Check if the shell binary is actually available
+        let pending_shell_install = if !shell_install::check_shell_available(shell_name) {
+            shell_install::shell_install_info(shell_name)
+        } else {
+            None
         };
 
         let input_state = cx.new(|cx| {
@@ -126,7 +193,10 @@ impl Workspace {
             history_panel: HistoryPanel::new(),
             correction_suggestion: None,
             shell_completion,
+            modal_layer: cx.new(|_cx| ModalLayer::new()),
             shell_name: shell_name.to_string(),
+            available_shells: detect_available_shells(),
+            pending_shell_install,
             selected_block: None,
             interactive_mode: false,
             show_terminal: false,
@@ -211,6 +281,23 @@ impl Workspace {
             }
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
                 log::info!("Command finished with exit code: {}", exit_code);
+
+                // Auto-switch to newly installed shell if install succeeded
+                if let Some(shell_name) = cx.global_mut::<PendingShellInstallName>().0.take() {
+                    log::info!("Install completed for {} (exit={})", shell_name, exit_code);
+                    if exit_code == 0 && shell_install::check_shell_available(&shell_name) {
+                        log::info!("Shell {} is now available — queuing auto-switch", shell_name);
+                        let path = shell_install::resolve_shell_path(&shell_name);
+                        cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
+                            name: shell_name,
+                            path,
+                            installed: true,
+                        });
+                        cx.notify();
+                    } else {
+                        log::warn!("Shell {} not found after install (exit={})", shell_name, exit_code);
+                    }
+                }
 
                 // Check for typo correction on "command not found"
                 if exit_code == 127 {
@@ -536,6 +623,237 @@ impl Workspace {
         )
     }
 
+    fn render_shell_selector_chip(&self) -> impl IntoElement {
+        let current = self.shell_name.clone();
+
+        // Re-detect shells each time popover opens (catches newly installed shells)
+        let shells = detect_available_shells();
+
+        Popover::new("shell-selector")
+            .anchor(Anchor::BottomLeft)
+            // Override popover chrome to match completion menu design
+            .bg(hsla(0.0, 0.0, 0.16, 1.0))
+            .border_color(hsla(0.0, 0.0, 0.22, 1.0))
+            .rounded_lg()
+            .shadow_lg()
+            .trigger(Chip::new(&current, rgb(0xa78bfa).into()).interactive())
+            .content(move |_state, _window, cx| {
+                let popover_entity = cx.entity();
+                let mut list = v_flex().min_w(px(180.0));
+
+                for shell in &shells {
+                    let is_current = shell.name == current;
+                    let name = shell.name.clone();
+                    let installed = shell.installed;
+                    let detail = shell
+                        .path
+                        .clone()
+                        .unwrap_or_else(|| "Not installed".to_string());
+
+                    let shell_name_for_click = shell.name.clone();
+                    let shell_path_for_click = shell.path.clone();
+                    let popover = popover_entity.clone();
+                    let row = div()
+                        .id(inazuma::ElementId::Name(format!("shell-{}", shell.name).into()))
+                        .px(px(8.0))
+                        .py(px(5.0))
+                        .text_sm()
+                        .rounded(px(4.0))
+                        .when(!is_current, |s| {
+                            s.cursor_pointer()
+                                .hover(|s| s.bg(hsla(0.0, 0.0, 1.0, 0.06)))
+                        })
+                        .on_mouse_down(
+                            inazuma::MouseButton::Left,
+                            move |_, window, cx| {
+                                if is_current {
+                                    return;
+                                }
+                                // Dismiss popover first
+                                popover.update(cx, |state, cx| {
+                                    state.dismiss(window, cx);
+                                });
+                                // Queue shell change for next frame
+                                cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
+                                    name: shell_name_for_click.clone(),
+                                    path: shell_path_for_click.clone(),
+                                    installed,
+                                });
+                                window.refresh();
+                            },
+                        )
+                        .child(
+                            h_flex()
+                                .items_center()
+                                .justify_between()
+                                .gap(px(12.0))
+                                .child(
+                                    h_flex()
+                                        .items_center()
+                                        .gap(px(8.0))
+                                        .child(
+                                            div()
+                                                .w(px(14.0))
+                                                .text_center()
+                                                .when(is_current, |s| {
+                                                    s.text_color(rgb(0x14F195)).child("✓")
+                                                }),
+                                        )
+                                        .child(
+                                            div()
+                                                .when(is_current, |s| {
+                                                    s.text_color(rgb(0x14F195))
+                                                })
+                                                .when(!is_current && installed, |s| {
+                                                    s.text_color(rgb(0xf1f1f1))
+                                                })
+                                                .when(!installed, |s| {
+                                                    s.text_color(hsla(0.0, 0.0, 1.0, 0.4))
+                                                })
+                                                .child(name),
+                                        ),
+                                )
+                                .child(
+                                    div()
+                                        .text_xs()
+                                        .when(installed, |s| {
+                                            s.text_color(hsla(0.0, 0.0, 1.0, 0.3))
+                                                .child(detail)
+                                        })
+                                        .when(!installed, |s| {
+                                            s.text_color(rgb(0xa78bfa)).child("Install")
+                                        }),
+                                ),
+                        );
+
+                    list = list.child(row);
+                }
+                list
+            })
+    }
+
+    /// Central entry point for shell changes — handles both installed (switch) and
+    /// not-installed (install dialog) shells. Callable from any trigger (chip click,
+    /// keyboard shortcut, settings, etc.).
+    fn request_shell_change(
+        &mut self,
+        shell: ShellOption,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if shell.installed {
+            self.switch_shell(&shell, window, cx);
+        } else if let Some(info) = shell_install::shell_install_info(&shell.name) {
+            let terminal_handle = self.terminal.handle();
+            self.modal_layer.update(cx, |layer, cx| {
+                layer.toggle_modal(window, cx, |window, cx| {
+                    shell_install::ShellInstallModal::new(
+                        info,
+                        terminal_handle,
+                        window,
+                        cx,
+                    )
+                });
+            });
+        }
+    }
+
+    /// Switch to a different shell: terminate old PTY, spawn new one, update completions + history.
+    fn switch_shell(&mut self, shell: &ShellOption, window: &mut Window, cx: &mut Context<Self>) {
+        // Clear any pending install (we're switching now, don't auto-switch again)
+        cx.global_mut::<PendingShellInstallName>().0 = None;
+
+        let shell_path = match &shell.path {
+            Some(p) => p.clone(),
+            None => return, // Not installed — should show install modal instead
+        };
+        let shell_name = &shell.name;
+        let config = cx.global::<raijin_settings::RaijinConfig>().clone();
+        let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
+        let input_mode = match config.general.input_mode {
+            raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
+            raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
+        };
+        let scrollback = config.terminal.scrollback_history as usize;
+
+        // Spawn new terminal with the selected shell (old one drops and PTY closes)
+        let new_terminal = Terminal::with_shell(
+            self.last_terminal_rows.max(24),
+            self.last_terminal_cols.max(80),
+            &cwd,
+            input_mode,
+            scrollback,
+            Some(&shell_path),
+        );
+        let new_terminal = match new_terminal {
+            Ok(t) => t,
+            Err(e) => {
+                log::error!("Failed to spawn shell {}: {}", shell_path, e);
+                use inazuma_component::WindowExt as _;
+                window.push_notification(
+                    inazuma_component::notification::Notification::error(
+                        format!("Failed to start {}: {}", shell_name, e),
+                    ),
+                    &mut *cx,
+                );
+                return;
+            }
+        };
+
+        // Wire up terminal events
+        let events_rx = new_terminal.event_receiver().clone();
+        cx.spawn_in(window, async move |this, cx| {
+            while let Ok(event) = events_rx.recv_async().await {
+                this.update_in(cx, |view, _window, cx| {
+                    view.handle_terminal_event(event, cx);
+                })
+                .ok();
+            }
+        })
+        .detach();
+
+        self.terminal = new_terminal;
+        self.shell_name = shell_name.to_string();
+        self.terminal_title = format!("~ {}", shell_name);
+        self.show_terminal = false;
+
+        // Close history panel (history is about to be reloaded for new shell)
+        if self.history_panel.is_visible() {
+            self.history_panel.close();
+        }
+
+        // Update available shells list (in case a shell was just installed)
+        self.available_shells = detect_available_shells();
+
+        // Update syntax highlighting language
+        let shell_lang = match shell_name.as_str() {
+            "nu" => "nu",
+            "fish" => "bash",
+            _ => "bash",
+        };
+        self.input_state.update(cx, |state, cx| {
+            state.set_shell_language(shell_lang, window, cx);
+        });
+
+        // Reload command history for the new shell
+        self.command_history = Arc::new(RwLock::new(CommandHistory::detect_and_load(shell_name)));
+
+        // Update completion provider
+        self.shell_completion = Rc::new(ShellCompletionProvider::new(
+            shell_name,
+            cwd,
+            self.command_history.clone(),
+        ));
+        self.input_state.update(cx, |state, _cx| {
+            state.lsp.completion_provider = Some(self.shell_completion.clone());
+        });
+
+        // Clear block snapshot cache (old terminal's blocks are invalid)
+        self.block_snapshot_cache = crate::terminal::grid_snapshot::BlockSnapshotCache::new();
+
+        cx.notify();
+    }
+
     fn render_input_area(&self) -> impl IntoElement {
         let time_str = time::OffsetDateTime::now_local()
             .unwrap_or_else(|_| time::OffsetDateTime::now_utc())
@@ -557,7 +875,7 @@ impl Workspace {
                 Chip::new(&time_str, rgb(0xff5f5f).into())
                     .icon(IconName::Clock),
             )
-            .child(Chip::new(&self.shell_name, rgb(0xa78bfa).into()));
+            .child(self.render_shell_selector_chip());
 
         if let Some(branch) = &self.shell_context.git_branch {
             chips = chips.child(GitBranchChip::new(branch));
@@ -640,6 +958,31 @@ impl Workspace {
 
 impl Render for Workspace {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        // Show shell install modal on first render if shell is missing
+        if let Some(shell_info) = self.pending_shell_install.take() {
+            let terminal_handle = self.terminal.handle();
+            self.modal_layer.update(cx, |layer, cx| {
+                layer.toggle_modal(window, cx, |window, cx| {
+                    shell_install::ShellInstallModal::new(
+                        shell_info,
+                        terminal_handle,
+                        window,
+                        cx,
+                    )
+                });
+            });
+        }
+
+        // Process pending shell switch from the shell selector popover.
+        // Uses defer_in to run AFTER this render completes — ensures the popover
+        // has closed before any dialog opens (avoids z-order conflicts).
+        let pending = cx.global_mut::<PendingShellSwitch>().0.take();
+        if let Some(shell) = pending {
+            cx.defer_in(window, move |workspace, window, cx| {
+                workspace.request_shell_change(shell, window, cx);
+            });
+        }
+
         let mut container = div()
             .flex()
             .flex_col()
@@ -741,6 +1084,9 @@ impl Render for Workspace {
                 );
             }
         }
+
+        // Modal layer renders on top of everything
+        container = container.child(self.modal_layer.clone());
 
         container
     }

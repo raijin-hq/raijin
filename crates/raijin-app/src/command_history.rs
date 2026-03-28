@@ -183,9 +183,9 @@ impl CommandHistory {
                         .and_then(|s| s.trim().parse::<u64>().ok())
                         .unwrap_or(0);
 
-                    if command_part.ends_with('\\') {
+                    if let Some(stripped) = command_part.strip_suffix('\\') {
                         // Multi-line command starts — strip trailing backslash
-                        pending_cmd = Some(command_part[..command_part.len() - 1].to_string());
+                        pending_cmd = Some(stripped.to_string());
                     } else if !command_part.is_empty() {
                         self.insert_entry(HistoryEntry {
                             command: command_part.to_string(),
@@ -199,8 +199,8 @@ impl CommandHistory {
             } else if let Some(ref mut cmd) = pending_cmd {
                 // Continuation line of a multi-line command
                 cmd.push('\n');
-                if line.ends_with('\\') {
-                    cmd.push_str(&line[..line.len() - 1]);
+                if let Some(stripped) = line.strip_suffix('\\') {
+                    cmd.push_str(stripped);
                 } else {
                     cmd.push_str(line);
                     // Multi-line command complete

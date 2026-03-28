@@ -468,6 +468,51 @@ impl Render for Root {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         window.set_rem_size(cx.theme().font_size);
 
+        // Clone all state upfront to avoid borrow conflicts when building the render tree.
+        let view = self.view.clone();
+        let active_sheet = self.active_sheet.clone();
+        let active_dialogs = self.active_dialogs.clone();
+        let notification = self.notification.clone();
+        let notification_placement = cx.theme().notification.placement;
+
+        // Build sheet element
+        let sheet_el = active_sheet.map(|sheet| {
+            let mut s = Sheet::new(window, cx);
+            s = (sheet.builder)(s, window, cx);
+            s.focus_handle = sheet.focus_handle.clone();
+            s.placement = sheet.placement;
+            div().relative().child(s)
+        });
+
+        // Build dialog elements
+        let dialog_el = if active_dialogs.is_empty() {
+            None
+        } else {
+            let mut show_overlay_ix = None;
+            let mut dialogs: Vec<Dialog> = active_dialogs
+                .iter()
+                .enumerate()
+                .map(|(i, active_dialog)| {
+                    let mut dialog = Dialog::new(cx);
+                    dialog = (active_dialog.builder)(dialog, window, cx);
+                    dialog.focus_handle = active_dialog.focus_handle.clone();
+                    dialog.layer_ix = i;
+                    if dialog.has_overlay() {
+                        show_overlay_ix = Some(i);
+                    }
+                    dialog
+                })
+                .collect();
+
+            if let Some(overlay_ix) = show_overlay_ix {
+                for (i, dialog) in dialogs.iter_mut().enumerate() {
+                    dialog.props.overlay_visible = i == overlay_ix;
+                }
+            }
+
+            Some(div().absolute().size_full().top_0().left_0().children(dialogs))
+        };
+
         window_border().shadow_size(self.window_shadow_size).child(
             div()
                 .id("root")
@@ -480,7 +525,32 @@ impl Render for Root {
                 .bg(cx.theme().background)
                 .text_color(cx.theme().foreground)
                 .refine_style(&self.style)
-                .child(self.view.clone()),
+                .child(view)
+                .children(sheet_el)
+                .children(dialog_el)
+                .child(
+                    div()
+                        .absolute()
+                        .when(matches!(notification_placement, Anchor::TopRight), |this| {
+                            this.top_0().right_0()
+                        })
+                        .when(matches!(notification_placement, Anchor::TopLeft), |this| {
+                            this.top_0().left_0()
+                        })
+                        .when(matches!(notification_placement, Anchor::TopCenter), |this| {
+                            this.top_0().mx_auto()
+                        })
+                        .when(matches!(notification_placement, Anchor::BottomRight), |this| {
+                            this.bottom_0().right_0()
+                        })
+                        .when(matches!(notification_placement, Anchor::BottomLeft), |this| {
+                            this.bottom_0().left_0()
+                        })
+                        .when(matches!(notification_placement, Anchor::BottomCenter), |this| {
+                            this.bottom_0().mx_auto()
+                        })
+                        .child(notification),
+                ),
         )
     }
 }

@@ -23,6 +23,7 @@ pub fn spawn_pty(
     cols: u16,
     mode: InputMode,
     cwd: &Path,
+    shell_override: Option<&str>,
 ) -> Result<(
     Box<dyn MasterPty + Send>,
     Box<dyn Read + Send>,
@@ -39,7 +40,9 @@ pub fn spawn_pty(
 
     let pair = pty_system.openpty(size)?;
 
-    let shell = std::env::var("SHELL").unwrap_or_else(|_| "/bin/zsh".to_string());
+    let shell = shell_override
+        .map(String::from)
+        .unwrap_or_else(|| std::env::var("SHELL").unwrap_or_else(|_| "/bin/zsh".to_string()));
     let shell_name = shell.rsplit('/').next().unwrap_or("zsh");
 
     let mut cmd = CommandBuilder::new(&shell);

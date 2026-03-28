@@ -2,6 +2,7 @@ mod command_history;
 mod completions;
 mod input;
 mod settings_view;
+mod shell_install;
 mod terminal;
 mod workspace;
 
@@ -28,6 +29,8 @@ fn main() {
         // Load Raijin config and set as global
         let config = raijin_settings::RaijinConfig::load().unwrap_or_default();
         cx.set_global(config);
+        cx.set_global(workspace::PendingShellSwitch(None));
+        cx.set_global(workspace::PendingShellInstallName(None));
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
         cx.open_window(

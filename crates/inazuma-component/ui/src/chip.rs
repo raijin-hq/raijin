@@ -1,9 +1,9 @@
 use inazuma::{
-    App, Hsla, IntoElement, ParentElement, RenderOnce, SharedString, Styled, StyleRefinement,
-    Window, div, hsla, prelude::FluentBuilder as _, px, rgb,
+    App, CursorStyle, Hsla, InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
+    SharedString, Styled, StyleRefinement, Window, div, hsla, prelude::FluentBuilder as _, px, rgb,
 };
 
-use crate::{Icon, IconName, Sizable, h_flex};
+use crate::{Icon, IconName, Selectable, Sizable, h_flex};
 
 // ---------------------------------------------------------------------------
 // Chip base styling constants
@@ -32,6 +32,8 @@ pub struct Chip {
     label: SharedString,
     color: Hsla,
     icon: Option<(IconName, Option<Hsla>)>,
+    selected: bool,
+    interactive: bool,
     style: StyleRefinement,
 }
 
@@ -42,6 +44,8 @@ impl Chip {
             label: label.into(),
             color,
             icon: None,
+            selected: false,
+            interactive: false,
             style: StyleRefinement::default(),
         }
     }
@@ -56,6 +60,23 @@ impl Chip {
     pub fn icon_colored(mut self, icon: IconName, icon_color: Hsla) -> Self {
         self.icon = Some((icon, Some(icon_color)));
         self
+    }
+
+    /// Mark this chip as interactive (shows pointer cursor on hover).
+    pub fn interactive(mut self) -> Self {
+        self.interactive = true;
+        self
+    }
+}
+
+impl Selectable for Chip {
+    fn selected(mut self, selected: bool) -> Self {
+        self.selected = selected;
+        self
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
     }
 }
 
@@ -73,6 +94,8 @@ impl RenderOnce for Chip {
             .as_ref()
             .and_then(|(_, c)| *c)
             .unwrap_or(self.color);
+        let interactive = self.interactive;
+        let selected = self.selected;
 
         h_flex()
             .gap(px(4.0))
@@ -85,6 +108,13 @@ impl RenderOnce for Chip {
             .bg(bg)
             .text_xs()
             .text_color(self.color)
+            .when(interactive, |this| {
+                this.cursor(CursorStyle::PointingHand)
+                    .hover(|this| this.bg(hsla(0.0, 0.0, 1.0, 0.08)))
+            })
+            .when(selected, |this| {
+                this.bg(hsla(0.0, 0.0, 1.0, 0.10))
+            })
             .when_some(self.icon, |this, (icon, _)| {
                 this.child(Icon::new(icon).small().text_color(icon_color))
             })

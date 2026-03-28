@@ -119,10 +119,22 @@ impl Terminal {
         input_mode: pty::InputMode,
         scrollback_history: usize,
     ) -> Result<Self> {
+        Self::with_shell(rows, cols, cwd, input_mode, scrollback_history, None)
+    }
+
+    /// Create a new terminal with an explicit shell path.
+    pub fn with_shell(
+        rows: u16,
+        cols: u16,
+        cwd: &Path,
+        input_mode: pty::InputMode,
+        scrollback_history: usize,
+        shell: Option<&str>,
+    ) -> Result<Self> {
         let (event_tx, event_rx) = flume::unbounded();
 
         let (master, reader, pty_writer) =
-            pty::spawn_pty(rows, cols, input_mode, cwd)?;
+            pty::spawn_pty(rows, cols, input_mode, cwd, shell)?;
 
         let shared_writer: Arc<std::sync::Mutex<Box<dyn Write + Send>>> =
             Arc::new(std::sync::Mutex::new(pty_writer));
