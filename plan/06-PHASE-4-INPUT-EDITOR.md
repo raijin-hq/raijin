@@ -1,5 +1,37 @@
 # Phase 4: IDE-Style Input Editor + Completions — Full Implementation Plan
 
+## Status-Übersicht (Stand: 28. März 2026)
+
+| Feature | Status | Dateien |
+|---------|--------|---------|
+| ShellEditor Mode (AutoGrow + Syntax-Highlight) | ✅ Done | `input/mode.rs`, `input/state.rs` |
+| Auto-Closing Brackets (AutoPairConfig) | ✅ Done | `input/auto_pairs.rs` |
+| raijin-completions Crate (Specs + Parser + Matcher) | ✅ Done | `crates/raijin-completions/` |
+| CLI Specs: git, cargo | ✅ Done | `raijin-completions/specs/` |
+| CLI Specs: 400+ Tools | ❌ Offen | Nur 2 von 400+ Specs |
+| ShellCompletionProvider (Command, File, Git, Env, Spec) | ✅ Done | `raijin-app/src/completions/shell_completion.rs` |
+| Completion Menu (Warp-style, Icons, Doc Panel, Filtering) | ✅ Done | `input/popovers/completion_menu.rs` |
+| Completion Menu: Frozen Position (word-start anchor) | ✅ Done | `completion_menu.rs` (`frozen_origin`) |
+| Completion Menu: Live Preview (Pfeil → Input update) | ✅ Done | `completion_menu.rs` (`apply_selected_to_editor`) |
+| Completion Menu: Tab Confirm | ✅ Done | `input/indent.rs` |
+| Completion Menu: No initial selection | ✅ Done | `completion_menu.rs` |
+| Inline Completion (Ghost Text, Frecency History) | ✅ Done | `input/lsp/completions.rs` |
+| Inline Completion: Tab Accept | ✅ Done | `input/lsp/completions.rs` |
+| Case-insensitive File Matching | ✅ Done | `shell_completion.rs` |
+| Shell-Escape Sonderzeichen bei Insert | ✅ Done | `shell_completion.rs` (`shell_escape_path`) |
+| Command History (Zsh, Bash, Fish, Nu-Plaintext Parser) | ✅ Done | `raijin-app/src/command_history.rs` |
+| Nu SQLite History Parser | ✅ Done | `command_history.rs` (hinter Feature-Flag) |
+| History Panel (Open/Close/Select/Filter/Render) | ✅ Done | `raijin-app/src/input/history_panel.rs` |
+| Command Correction (Typo-Map + Damerau-Levenshtein) | ✅ Done | `raijin-app/src/completions/command_correction.rs` |
+| Overlay Highlight System | ✅ Done | `input/state.rs` (`overlay_highlights`) |
+| Command Validation Highlighting (valid = brand color) | ✅ Done | `workspace.rs` (`update_input_highlights`) |
+| Completion-Inserted Text Coloring | ✅ Done | `completion_inserted_range` tracking |
+| Real-time Filtering (Menu bleibt offen beim Tippen) | ✅ Done | `input/lsp/completions.rs` |
+| Nu `--ide-complete` Integration | ❌ Offen | Nicht implementiert |
+| Shift+Enter Multi-line (ohne `\`) | ❌ Offen | Kein Handler |
+
+---
+
 ## Context
 
 Raijin's Input-Editor nutzt aktuell `PlainText` single-line ohne Syntax-Highlighting, ohne Command-History, ohne Completions. Das Inazuma-Component `InputState` bietet ein extrem reiches Fundament (Rope, Undo/Redo, CompletionProvider-Trait, InlineCompletion/Ghost-Text, DisplayMap/Soft-Wrap, Mouse-Selection, 40+ Keybinding-Actions, Tree-sitter Highlighting inkl. Bash).
