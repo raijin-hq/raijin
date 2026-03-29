@@ -3,7 +3,7 @@
 pub const FONT_FAMILY: &str = "DankMono Nerd Font Mono";
 
 /// Default font size in points.
-pub const FONT_SIZE: f64 = 14.0;
+pub const FONT_SIZE: f64 = 15.0;
 
 /// Default line height multiplier (applied to cell height).
 pub const LINE_HEIGHT: f64 = 1.2;
