@@ -20,10 +20,10 @@ fn main() {
     Application::new()
         .with_assets(inazuma_component_assets::Assets)
         .run(|cx: &mut App| {
-        // Register bundled terminal font (FiraCode Nerd Font Mono)
+        // Register bundled terminal font (DankMono Nerd Font Mono)
         let bundled_fonts: Vec<Cow<'static, [u8]>> = vec![
-            Cow::Borrowed(include_bytes!("../assets/fonts/firacode-nerd-font-mono/FiraCodeNerdFontMono-Regular.ttf")),
-            Cow::Borrowed(include_bytes!("../assets/fonts/firacode-nerd-font-mono/FiraCodeNerdFontMono-Bold.ttf")),
+            Cow::Borrowed(include_bytes!("../assets/fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Regular.otf")),
+            Cow::Borrowed(include_bytes!("../assets/fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Bold.otf")),
         ];
         cx.text_system().add_fonts(bundled_fonts).expect("failed to register bundled fonts");
 

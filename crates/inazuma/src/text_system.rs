@@ -74,7 +74,7 @@ impl TextSystem {
             font_runs_pool: Mutex::default(),
             fallback_font_stack: smallvec![
                 // Monospace fallbacks (terminal-first)
-                font("FiraCode Nerd Font Mono"), // Bundled with Raijin
+                font("DankMono Nerd Font Mono"), // Bundled with Raijin
                 font("Menlo"),                   // macOS (guaranteed since 10.6)
                 font("SF Mono"),                 // macOS (newer)
                 font("Cascadia Mono"),           // Windows 11
