@@ -39,6 +39,7 @@ pub fn render_block_list(
     symbol_maps: &[raijin_settings::ResolvedSymbolMap],
     font: &Font,
     font_size: f32,
+    line_height_multiplier: f32,
     selected_block: Option<usize>,
 ) -> impl IntoElement {
     let snapshots = extract_all_block_snapshots(handle, cache, symbol_maps);
@@ -48,7 +49,7 @@ pub fn render_block_list(
     let block_list = list(list_state.clone(), move |ix, _window, _cx| {
         if let Some(snapshot) = snapshots.get(ix).cloned() {
             let is_selected = selected_block == Some(ix);
-            render_block(snapshot, &font, font_size, is_selected).into_any_element()
+            render_block(snapshot, &font, font_size, line_height_multiplier, is_selected).into_any_element()
         } else {
             div().into_any_element()
         }

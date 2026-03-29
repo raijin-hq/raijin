@@ -1022,6 +1022,7 @@ impl Render for Workspace {
                 let config = cx.global::<raijin_settings::RaijinConfig>();
                 let font_family = config.appearance.font_family.clone();
                 let font_size = config.appearance.font_size as f32;
+                let line_height_multiplier = config.appearance.line_height as f32;
 
                 // Resize PTY based on viewport dimensions (once per frame)
                 {
@@ -1039,7 +1040,8 @@ impl Render for Workspace {
                         .width;
                     let ascent = window.text_system().ascent(font_id, font_px);
                     let descent = window.text_system().descent(font_id, font_px);
-                    let cell_height = ascent + descent.abs() + px(crate::terminal::constants::CELL_PADDING);
+                    let base_height = ascent + descent.abs();
+                    let cell_height = base_height * line_height_multiplier;
 
                     let viewport = window.viewport_size();
                     let cols = ((viewport.width - px(crate::terminal::constants::BLOCK_HEADER_PAD_X)) / cell_width)
@@ -1067,6 +1069,7 @@ impl Render for Workspace {
                             &self.resolved_symbol_maps,
                             &font,
                             font_size,
+                            line_height_multiplier,
                             self.selected_block,
                         ),
                     );

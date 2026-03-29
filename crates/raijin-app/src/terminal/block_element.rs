@@ -21,6 +21,7 @@ pub fn render_block(
     snapshot: BlockSnapshot,
     font: &Font,
     font_size: f32,
+    line_height_multiplier: f32,
     selected: bool,
 ) -> impl IntoElement {
     let header = &snapshot.header;
@@ -91,7 +92,7 @@ pub fn render_block(
 
     // --- Grid element (renders from snapshot, no locking) ---
     // No cursor in output blocks — cursor belongs in the input field (Warp pattern)
-    let grid_element = TerminalGridElement::new(snapshot.grid, font.clone(), font_size);
+    let grid_element = TerminalGridElement::new(snapshot.grid, font.clone(), font_size, line_height_multiplier);
 
     // --- Build div ---
     let bg = if selected {

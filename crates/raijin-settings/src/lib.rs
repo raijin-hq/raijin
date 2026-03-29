@@ -41,6 +41,8 @@ pub struct AppearanceConfig {
     pub font_family: String,
     #[serde(default = "defaults_font_size")]
     pub font_size: f64,
+    #[serde(default = "defaults_line_height")]
+    pub line_height: f64,
     /// Symbol maps: map Unicode ranges to specific font families.
     /// Useful for Nerd Font icons, Powerline glyphs, etc.
     ///
@@ -155,6 +157,7 @@ impl Default for AppearanceConfig {
             theme: defaults::THEME.to_string(),
             font_family: defaults::FONT_FAMILY.to_string(),
             font_size: defaults::FONT_SIZE,
+            line_height: defaults::LINE_HEIGHT,
             symbol_map: Vec::new(),
         }
     }
@@ -177,6 +180,9 @@ fn defaults_font_family() -> String {
 }
 fn defaults_font_size() -> f64 {
     defaults::FONT_SIZE
+}
+fn defaults_line_height() -> f64 {
+    defaults::LINE_HEIGHT
 }
 fn defaults_scrollback() -> u32 {
     defaults::SCROLLBACK_HISTORY

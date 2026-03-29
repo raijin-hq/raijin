@@ -39,14 +39,16 @@ pub struct TerminalGridElement {
     snapshot: BlockGridSnapshot,
     font: Font,
     font_size: f32,
+    line_height_multiplier: f32,
 }
 
 impl TerminalGridElement {
-    pub fn new(snapshot: BlockGridSnapshot, font: Font, font_size: f32) -> Self {
+    pub fn new(snapshot: BlockGridSnapshot, font: Font, font_size: f32, line_height_multiplier: f32) -> Self {
         Self {
             snapshot,
             font,
             font_size,
+            line_height_multiplier,
         }
     }
 
@@ -61,7 +63,8 @@ impl TerminalGridElement {
             .width;
         let ascent = window.text_system().ascent(font_id, font_size);
         let descent = window.text_system().descent(font_id, font_size);
-        let cell_height = ascent + descent.abs() + px(CELL_PADDING);
+        let base_height = ascent + descent.abs();
+        let cell_height = base_height * self.line_height_multiplier;
         (cell_width, cell_height)
     }
 }
