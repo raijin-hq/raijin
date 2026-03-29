@@ -3,6 +3,16 @@
 /// OSC 133 markers are sent by the shell hooks (raijin.zsh/bash/fish) to
 /// indicate command block boundaries. OSC 7777 carries JSON metadata from
 /// the shell's precmd hook (CWD, git branch, username, etc.).
+/// A shell marker with its byte position in the scanned chunk.
+#[derive(Debug, Clone)]
+pub struct PositionedMarker {
+    pub marker: ShellMarker,
+    /// Byte offset where the OSC sequence STARTS (the ESC or 0x9D byte).
+    pub start: usize,
+    /// Byte offset AFTER the OSC terminator (BEL or ST).
+    pub end: usize,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ShellMarker {
     /// OSC 133;A — Prompt region starts. A new potential block begins.
@@ -68,19 +78,20 @@ impl OscScanner {
 
     /// Scan a chunk of bytes for OSC 133 and OSC 7777 markers.
     ///
-    /// Returns all markers found in this chunk. May return empty vec
-    /// if no markers are present or if a marker spans across chunks.
-    pub fn scan(&mut self, bytes: &[u8]) -> Vec<ShellMarker> {
+    /// Returns all markers found in this chunk with their byte positions.
+    /// Positions are relative to the start of `bytes`.
+    pub fn scan(&mut self, bytes: &[u8]) -> Vec<PositionedMarker> {
         let mut markers = Vec::new();
+        let mut osc_start = 0usize;
 
-        for &byte in bytes {
+        for (i, &byte) in bytes.iter().enumerate() {
             match self.state {
                 ScanState::Normal => {
                     if byte == 0x1B {
+                        osc_start = i;
                         self.state = ScanState::SawEsc;
-                    }
-                    // 0x9D is the 8-bit OSC introducer (C1 control)
-                    else if byte == 0x9D {
+                    } else if byte == 0x9D {
+                        osc_start = i;
                         self.param_buf.clear();
                         self.state = ScanState::InOsc;
                     }
@@ -88,24 +99,20 @@ impl OscScanner {
 
                 ScanState::SawEsc => {
                     if byte == b']' {
-                        // ESC ] = OSC start
                         self.param_buf.clear();
                         self.state = ScanState::InOsc;
                     } else {
-                        // Not an OSC, back to normal
                         self.state = ScanState::Normal;
                     }
                 }
 
                 ScanState::InOsc => {
                     if byte == 0x07 {
-                        // BEL terminates the OSC sequence
                         if let Some(marker) = self.try_parse_osc() {
-                            markers.push(marker);
+                            markers.push(PositionedMarker { marker, start: osc_start, end: i + 1 });
                         }
                         self.state = ScanState::Normal;
                     } else if byte == 0x1B {
-                        // Possible ST (ESC \) terminator
                         self.state = ScanState::InOscSawEsc;
                     } else {
                         self.param_buf.push(byte);
@@ -114,13 +121,11 @@ impl OscScanner {
 
                 ScanState::InOscSawEsc => {
                     if byte == b'\\' {
-                        // ESC \ = ST (String Terminator)
                         if let Some(marker) = self.try_parse_osc() {
-                            markers.push(marker);
+                            markers.push(PositionedMarker { marker, start: osc_start, end: i + 1 });
                         }
                         self.state = ScanState::Normal;
                     } else {
-                        // False alarm, ESC was part of something else
                         self.param_buf.push(0x1B);
                         self.param_buf.push(byte);
                         self.state = ScanState::InOsc;

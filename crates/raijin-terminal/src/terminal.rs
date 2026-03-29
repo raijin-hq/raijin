@@ -192,13 +192,24 @@ impl Terminal {
                             let chunk = &buf[..n];
 
                             // Scan for OSC 133 shell integration markers
+                            // Scan for OSC markers and process them INLINE with
+                            // the byte stream. Each segment between markers is fed
+                            // to the VTE parser before the next marker is handled.
+                            // This ensures command output lands in the correct block.
                             let markers = osc_scanner.scan(chunk);
 
-                            // Route block grid BEFORE feeding bytes to parser
                             {
                                 let mut term = term.lock();
-                                for marker in &markers {
-                                    match marker {
+                                let mut offset = 0;
+
+                                for pm in &markers {
+                                    // Feed bytes BEFORE this marker to the parser
+                                    if pm.start > offset {
+                                        parser.advance(&mut *term, &chunk[offset..pm.start]);
+                                    }
+
+                                    // Process the marker (route grid)
+                                    match &pm.marker {
                                         crate::osc_parser::ShellMarker::PromptStart => {
                                             term.route_to_prompt();
                                         }
@@ -210,18 +221,19 @@ impl Terminal {
                                         }
                                         _ => {}
                                     }
+
+                                    offset = pm.end;
+                                }
+
+                                // Feed remaining bytes after the last marker
+                                if offset < chunk.len() {
+                                    parser.advance(&mut *term, &chunk[offset..]);
                                 }
                             }
 
                             // Send markers as events for UI processing
-                            for marker in markers {
-                                let _ = event_tx.send(TerminalEvent::ShellMarker(marker));
-                            }
-
-                            // Feed bytes to raijin-term
-                            {
-                                let mut term = term.lock();
-                                parser.advance(&mut *term, chunk);
+                            for pm in markers {
+                                let _ = event_tx.send(TerminalEvent::ShellMarker(pm.marker));
                             }
 
                             // Notify UI that new content is available

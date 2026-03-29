@@ -11,10 +11,14 @@ _RAIJIN_HOOKED=1
 # State machine: 0=idle, 1=command executing (OSC 133;C sent, D not yet)
 _raijin_state=0
 
-# Open fd to TTY directly so marks work even when stdout is redirected
-if ! exec {_raijin_fd}>/dev/tty 2>/dev/null; then
-    _raijin_fd=1
-fi
+# Write OSC markers to stdout (fd 1) so they travel through the PTY in the
+# same byte stream as command output. This guarantees correct ordering:
+# CommandStart → output → CommandEnd.
+# preexec/precmd always have the original stdout (not redirected by user
+# commands), so fd 1 is safe here. Using /dev/tty opens a separate fd to
+# the same PTY device, which can cause race conditions where markers
+# arrive before command output.
+_raijin_fd=1
 
 _raijin_precmd() {
     local ret=$?
