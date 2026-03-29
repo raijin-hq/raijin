@@ -25,7 +25,7 @@ pub fn render_block(
 ) -> impl IntoElement {
     let header = &snapshot.header;
 
-    // --- Header metadata ---
+    // --- Header metadata (Warp-style: "nyxb Mac.fritz.box ~ git:(main) 23:32 (0.028s)") ---
     let mut meta_parts: Vec<String> = Vec::new();
     if let Some(ref user) = header.username {
         meta_parts.push(user.clone());
@@ -34,10 +34,21 @@ pub fn render_block(
         meta_parts.push(host.clone());
     }
     if let Some(ref cwd) = header.cwd {
-        meta_parts.push(cwd.clone());
+        // Abbreviate home directory to ~
+        let display_cwd = if let Some(home) = dirs::home_dir() {
+            let home_str = home.to_string_lossy();
+            if cwd.starts_with(home_str.as_ref()) {
+                format!("~{}", &cwd[home_str.len()..])
+            } else {
+                cwd.clone()
+            }
+        } else {
+            cwd.clone()
+        };
+        meta_parts.push(display_cwd);
     }
     if let Some(ref branch) = header.git_branch {
-        meta_parts.push(format!(" {}", branch));
+        meta_parts.push(format!("git:({})", branch));
     }
 
     let elapsed = header.started_at.elapsed();
@@ -51,7 +62,11 @@ pub fn render_block(
 
     let dur_text = if header.is_running {
         "running...".to_string()
+    } else if let Some(ms) = header.duration_ms {
+        // Shell-measured duration (preexec → precmd), includes shell overhead
+        format!("({:.3}s)", ms as f64 / 1000.0)
     } else {
+        // Fallback to terminal-side measurement (OSC 133;C → D)
         let duration = header.finished_at
             .map(|f| f.duration_since(header.started_at))
             .unwrap_or_default();

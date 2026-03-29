@@ -260,7 +260,16 @@ impl Workspace {
                     self.shell_context.update_from_metadata(&payload);
                     // Update completion provider CWD for file path completions
                     self.shell_completion.update_cwd(std::path::PathBuf::from(&payload.cwd));
-                    // Duration is tracked by BlockGrid.started_at/finished_at
+                    // Apply shell-measured duration to the last finalized block
+                    if let Some(duration_ms) = payload.last_duration_ms {
+                        let handle = self.terminal.handle();
+                        let mut term = handle.lock();
+                        if let Some(block) = term.block_router_mut().blocks_mut().last_mut() {
+                            if block.is_finished() {
+                                block.metadata.duration_ms = Some(duration_ms);
+                            }
+                        }
+                    }
                     cx.notify();
                 }
                 Err(e) => {
@@ -276,17 +285,32 @@ impl Workspace {
             }
             raijin_terminal::ShellMarker::InputStart => {}
             raijin_terminal::ShellMarker::CommandStart => {
+                // Pass current shell context metadata to the new block
+                {
+                    let handle = self.terminal.handle();
+                    let mut term = handle.lock();
+                    term.block_router_mut().set_block_metadata(
+                        raijin_term::block_grid::BlockMetadata {
+                            cwd: Some(self.shell_context.cwd.clone()),
+                            username: Some(self.shell_context.username.clone()),
+                            hostname: Some(self.shell_context.hostname.clone()),
+                            git_branch: self.shell_context.git_branch.clone(),
+                            shell: Some(self.shell_name.clone()),
+                            duration_ms: None,
+                        },
+                    );
+                }
                 self.show_terminal = true;
                 cx.notify();
             }
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
-                log::info!("Command finished with exit code: {}", exit_code);
+                log::debug!("Command finished with exit code: {}", exit_code);
 
                 // Auto-switch to newly installed shell if install succeeded
                 if let Some(shell_name) = cx.global_mut::<PendingShellInstallName>().0.take() {
-                    log::info!("Install completed for {} (exit={})", shell_name, exit_code);
+                    log::debug!("Install completed for {} (exit={})", shell_name, exit_code);
                     if exit_code == 0 && shell_install::check_shell_available(&shell_name) {
-                        log::info!("Shell {} is now available — queuing auto-switch", shell_name);
+                        log::debug!("Shell {} is now available — queuing auto-switch", shell_name);
                         let path = shell_install::resolve_shell_path(&shell_name);
                         cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
                             name: shell_name,
@@ -295,7 +319,7 @@ impl Workspace {
                         });
                         cx.notify();
                     } else {
-                        log::warn!("Shell {} not found after install (exit={})", shell_name, exit_code);
+                        log::debug!("Shell {} not found after install (exit={})", shell_name, exit_code);
                     }
                 }
 

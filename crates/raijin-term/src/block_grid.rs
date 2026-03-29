@@ -345,8 +345,6 @@ impl BlockGridRouter {
             block.exit_code = Some(exit_code);
             block.finished_at = Some(Instant::now());
             block.content_rows = block.compute_content_rows();
-            log::info!("finalize_block: content_rows={}, screen_lines={}, cursor_line={}",
-                block.content_rows, block.grid.screen_lines(), block.grid.cursor.point.line.0);
         }
         // Route subsequent bytes to prompt grid until next PromptStart
         self.active_block_id = None;
@@ -376,6 +374,10 @@ impl BlockGridRouter {
     /// All blocks in chronological order.
     pub fn blocks(&self) -> &[BlockGrid] {
         &self.blocks
+    }
+
+    pub fn blocks_mut(&mut self) -> &mut Vec<BlockGrid> {
+        &mut self.blocks
     }
 
     /// Number of blocks.

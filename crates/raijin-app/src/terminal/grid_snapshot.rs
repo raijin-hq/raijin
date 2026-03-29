@@ -53,6 +53,9 @@ pub struct BlockHeaderSnapshot {
     pub is_running: bool,
     pub started_at: std::time::Instant,
     pub finished_at: Option<std::time::Instant>,
+    /// Shell-measured command duration in milliseconds (from shell hooks).
+    /// More accurate than Instant-based measurement because it includes shell overhead.
+    pub duration_ms: Option<u64>,
     pub username: Option<String>,
     pub hostname: Option<String>,
     pub cwd: Option<String>,
@@ -136,10 +139,18 @@ pub fn extract_all_block_snapshots(
     let mut snapshots = Vec::with_capacity(blocks.len());
 
     for block in blocks {
-        // Finished blocks: serve from cache if available
+        // Finished blocks: serve from cache if available, but update header
+        // (metadata like duration_ms may arrive after the block is cached)
         if block.is_finished() {
             if let Some(cached) = cache.get(block.id) {
-                snapshots.push(cached.clone());
+                let mut snapshot = cached.clone();
+                // Refresh header fields that can change after finalization
+                snapshot.header.duration_ms = block.metadata.duration_ms;
+                snapshot.header.username = block.metadata.username.clone();
+                snapshot.header.hostname = block.metadata.hostname.clone();
+                snapshot.header.cwd = block.metadata.cwd.clone();
+                snapshot.header.git_branch = block.metadata.git_branch.clone();
+                snapshots.push(snapshot);
                 continue;
             }
         }
@@ -249,6 +260,7 @@ fn extract_single_block(
             is_running: !block.is_finished(),
             started_at: block.started_at,
             finished_at: block.finished_at,
+            duration_ms: block.metadata.duration_ms,
             username: block.metadata.username.clone(),
             hostname: block.metadata.hostname.clone(),
             cwd: block.metadata.cwd.clone(),

@@ -476,6 +476,10 @@ impl<T> Term<T> {
         &self.block_router
     }
 
+    pub fn block_router_mut(&mut self) -> &mut crate::block_grid::BlockGridRouter {
+        &mut self.block_router
+    }
+
     /// Set the command text that will be assigned to the next block.
     /// Called from the UI when the user presses Enter.
     pub fn set_pending_block_command(&mut self, command: String) {
