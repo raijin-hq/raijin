@@ -119,30 +119,9 @@ impl BlockGrid {
             }
         }
 
-        // Only count history if there's actual content somewhere
-        // (prevents empty blocks from inflating with blank history lines)
-        if screen_content > 0 || history > 0 {
-            // Scan history to find the first non-empty line from the top
-            let mut history_content = 0usize;
-            for h in 0..history {
-                let line_idx = Line(-((h as i32) + 1));
-                let line = &self.grid[line_idx];
-                let mut has_content = false;
-                for col in 0..self.grid.columns() {
-                    let cell = &line[crate::index::Column(col)];
-                    if cell.c != ' ' && cell.c != '\0' {
-                        has_content = true;
-                        break;
-                    }
-                }
-                if has_content {
-                    history_content = h + 1;
-                }
-            }
-            history_content + screen_content
-        } else {
-            0
-        }
+        // All history lines are content (they were pushed off screen by output).
+        // Only the screen portion gets trimmed for trailing empty lines.
+        history + screen_content
     }
 
     /// Whether this block has finished executing.
