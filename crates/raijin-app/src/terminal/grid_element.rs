@@ -41,6 +41,7 @@ struct BuiltinGlyph {
 /// Pre-painted state for the grid element.
 pub struct GridPrepaint {
     backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
+    selections: Vec<(Bounds<Pixels>, Hsla)>,
     glyphs: Vec<CellGlyph>,
     builtins: Vec<BuiltinGlyph>,
     font_size: Pixels,
@@ -56,15 +57,23 @@ pub struct GridPrepaint {
 /// which was extracted with a single lock in block_list.rs.
 pub struct TerminalGridElement {
     snapshot: BlockGridSnapshot,
+    selection: Option<raijin_term::selection::SelectionRange>,
     font: Font,
     font_size: f32,
     line_height_multiplier: f32,
 }
 
 impl TerminalGridElement {
-    pub fn new(snapshot: BlockGridSnapshot, font: Font, font_size: f32, line_height_multiplier: f32) -> Self {
+    pub fn new(
+        snapshot: BlockGridSnapshot,
+        selection: Option<raijin_term::selection::SelectionRange>,
+        font: Font,
+        font_size: f32,
+        line_height_multiplier: f32,
+    ) -> Self {
         Self {
             snapshot,
+            selection,
             font,
             font_size,
             line_height_multiplier,
@@ -140,7 +149,7 @@ impl Element for TerminalGridElement {
 
 
         let empty = GridPrepaint {
-            backgrounds: vec![], glyphs: vec![], builtins: vec![],
+            backgrounds: vec![], selections: vec![], glyphs: vec![], builtins: vec![],
             font_size, cell_width, cell_height,
         };
 
@@ -160,13 +169,19 @@ impl Element for TerminalGridElement {
         let ascent = window.text_system().ascent(base_font_id, font_size);
 
         let mut backgrounds = Vec::new();
+        let mut selections = Vec::new();
         let mut glyphs = Vec::new();
         let mut builtins = Vec::new();
+
+        let selection_color = inazuma::hsla(153.0 / 360.0, 0.93, 0.51, 0.25); // Accent green, semi-transparent
+        let selection = &self.selection;
 
         let viewport_top = viewport.origin.y;
         let viewport_bottom = viewport.origin.y + viewport.size.height;
 
-        for snap_line in self.snapshot.lines.iter() {
+        let history_size = self.snapshot.lines.len().saturating_sub(self.snapshot.content_rows);
+        for (line_idx, snap_line) in self.snapshot.lines.iter().enumerate() {
+            let grid_line = raijin_term::index::Line((line_idx as i32) - (history_size as i32));
             let line_bottom = current_y + cell_height;
 
             if line_bottom < viewport_top {
@@ -194,6 +209,18 @@ impl Element for TerminalGridElement {
                         Bounds::new(point(x, current_y), size(width, cell_height)),
                         cell.bg,
                     ));
+                }
+
+                // Selection highlight
+                if let Some(sel) = selection {
+                    let cell_point = raijin_term::index::Point::new(grid_line, raijin_term::index::Column(col_x));
+                    if sel.contains(cell_point) {
+                        let width = if cell.wide { cell_width * 2.0 } else { cell_width };
+                        selections.push((
+                            Bounds::new(point(x, current_y), size(width, cell_height)),
+                            selection_color,
+                        ));
+                    }
                 }
 
                 // Skip spaces and null chars — nothing to render
@@ -305,7 +332,7 @@ impl Element for TerminalGridElement {
         }
 
         GridPrepaint {
-            backgrounds, glyphs, builtins,
+            backgrounds, selections, glyphs, builtins,
             font_size, cell_width, cell_height,
         }
     }
@@ -322,6 +349,11 @@ impl Element for TerminalGridElement {
     ) {
         // Backgrounds
         for (rect, color) in &prepaint.backgrounds {
+            window.paint_quad(fill(*rect, *color));
+        }
+
+        // Selection highlights (on top of backgrounds, under text)
+        for (rect, color) in &prepaint.selections {
             window.paint_quad(fill(*rect, *color));
         }
 

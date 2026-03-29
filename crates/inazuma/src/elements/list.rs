@@ -64,6 +64,11 @@ struct StateInner {
     last_padding: Option<Edges<Pixels>>,
     items: SumTree<ListItem>,
     logical_scroll_top: Option<ListOffset>,
+    /// The actual resolved scroll top after layout (accounts for bottom-alignment).
+    /// Set after each layout_items() call. Used by bounds_for_item() for accurate
+    /// item position calculation, especially with ListAlignment::Bottom where
+    /// logical_scroll_top() returns a sentinel value.
+    last_resolved_scroll_top: Option<ListOffset>,
     alignment: ListAlignment,
     overdraw: Pixels,
     reset: bool,
@@ -229,6 +234,7 @@ impl ListState {
             last_padding: None,
             items: SumTree::default(),
             logical_scroll_top: None,
+            last_resolved_scroll_top: None,
             alignment,
             overdraw,
             scroll_handler: None,
@@ -444,7 +450,10 @@ impl ListState {
         let state = &*self.0.borrow();
 
         let bounds = state.last_layout_bounds.unwrap_or_default();
-        let scroll_top = state.logical_scroll_top();
+        // Use the resolved scroll top from the last layout pass.
+        // This correctly handles ListAlignment::Bottom where logical_scroll_top()
+        // returns a sentinel value (item_ix = count).
+        let scroll_top = state.last_resolved_scroll_top.unwrap_or_else(|| state.logical_scroll_top());
         if ix < scroll_top.item_ix {
             return None;
         }
@@ -871,6 +880,7 @@ impl StateInner {
                 window,
                 cx,
             );
+            self.last_resolved_scroll_top = Some(layout_response.scroll_top);
 
             // Avoid honoring autoscroll requests from elements other than our children.
             window.take_autoscroll();
@@ -1034,6 +1044,7 @@ impl Element for List {
                         window,
                         cx,
                     );
+                    state.last_resolved_scroll_top = Some(layout_response.scroll_top);
                     let max_element_width = layout_response.max_item_width;
 
                     let summary = state.items.summary();

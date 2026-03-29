@@ -10,6 +10,7 @@ use std::time::Instant;
 
 use crate::grid::{Dimensions, Grid};
 use crate::index::Line;
+use crate::selection::Selection;
 use crate::term::cell::Cell;
 
 /// Unique identifier for a block grid.
@@ -72,6 +73,8 @@ pub struct BlockGrid {
     pub content_rows: usize,
     /// Whether synchronized rendering is active for this block.
     pub sync_rendering: bool,
+    /// Active text selection within this block's grid.
+    pub selection: Option<Selection>,
 }
 
 impl BlockGrid {
@@ -89,23 +92,57 @@ impl BlockGrid {
             finished_at: None,
             content_rows: 0,
             sync_rendering: false,
+            selection: None,
         }
     }
 
-    /// Compute the number of rows with actual content by finding the last non-empty row.
+    /// Compute the number of rows with actual content by scanning screen
+    /// and history. Returns the total rows that should be displayed.
     fn compute_content_rows(&self) -> usize {
         use crate::index::Line;
-        let total = self.grid.screen_lines() as i32;
-        for row in (0..total).rev() {
+        let history = self.grid.history_size();
+        let screen = self.grid.screen_lines() as i32;
+
+        // Find the last non-empty screen row (scan bottom to top)
+        let mut screen_content = 0usize;
+        for row in (0..screen).rev() {
             let line = &self.grid[Line(row)];
             for col in 0..self.grid.columns() {
                 let cell = &line[crate::index::Column(col)];
                 if cell.c != ' ' && cell.c != '\0' {
-                    return (row + 1) as usize;
+                    screen_content = (row + 1) as usize;
+                    break;
                 }
             }
+            if screen_content > 0 {
+                break;
+            }
         }
-        0
+
+        // Only count history if there's actual content somewhere
+        // (prevents empty blocks from inflating with blank history lines)
+        if screen_content > 0 || history > 0 {
+            // Scan history to find the first non-empty line from the top
+            let mut history_content = 0usize;
+            for h in 0..history {
+                let line_idx = Line(-((h as i32) + 1));
+                let line = &self.grid[line_idx];
+                let mut has_content = false;
+                for col in 0..self.grid.columns() {
+                    let cell = &line[crate::index::Column(col)];
+                    if cell.c != ' ' && cell.c != '\0' {
+                        has_content = true;
+                        break;
+                    }
+                }
+                if has_content {
+                    history_content = h + 1;
+                }
+            }
+            history_content + screen_content
+        } else {
+            0
+        }
     }
 
     /// Whether this block has finished executing.
@@ -116,6 +153,73 @@ impl BlockGrid {
     /// Whether this block had a non-zero exit code.
     pub fn is_error(&self) -> bool {
         matches!(self.exit_code, Some(c) if c != 0)
+    }
+
+    // ── Selection ─────────────────────────────────────────────────────
+
+    /// Start a new selection at the given grid point.
+    pub fn start_selection(&mut self, ty: crate::selection::SelectionType, point: crate::index::Point, side: crate::index::Side) {
+        self.selection = Some(Selection::new(ty, point, side));
+    }
+
+    /// Update the endpoint of the current selection.
+    pub fn update_selection(&mut self, point: crate::index::Point, side: crate::index::Side) {
+        if let Some(ref mut sel) = self.selection {
+            sel.update(point, side);
+        }
+    }
+
+    /// Clear the current selection.
+    pub fn clear_selection(&mut self) {
+        self.selection = None;
+    }
+
+    /// Get the finalized selection range (if any).
+    pub fn selection_range(&self) -> Option<crate::selection::SelectionRange> {
+        self.selection.as_ref().and_then(|s| s.to_range_block(&self.grid))
+    }
+
+    /// Convert the current selection to a string of the selected text.
+    pub fn selection_to_string(&self) -> Option<String> {
+        let range = self.selection_range()?;
+        let crate::selection::SelectionRange { start, end, is_block } = range;
+
+        let mut res = String::new();
+        let cols = self.grid.columns();
+
+        for row in start.line.0..=end.line.0 {
+            let line = Line(row);
+            let start_col = if line == start.line { start.column.0 } else { 0 };
+            let end_col = if line == end.line { end.column.0 } else { cols - 1 };
+
+            for col_idx in start_col..=end_col {
+                let col = crate::index::Column(col_idx);
+                let cell = &self.grid[line][col];
+                if cell.flags.contains(crate::term::cell::Flags::WIDE_CHAR_SPACER)
+                    || cell.flags.contains(crate::term::cell::Flags::LEADING_WIDE_CHAR_SPACER)
+                {
+                    continue;
+                }
+                if cell.c != '\0' {
+                    res.push(cell.c);
+                    for c in cell.zerowidth().into_iter().flatten() {
+                        res.push(*c);
+                    }
+                }
+            }
+
+            // Add newline between rows (except last)
+            if row < end.line.0 && !is_block {
+                // Check if line wraps
+                let grid_line = &self.grid[line];
+                let last = crate::index::Column(cols - 1);
+                if !grid_line[last].flags.contains(crate::term::cell::Flags::WRAPLINE) {
+                    res.push('\n');
+                }
+            }
+        }
+
+        if res.is_empty() { None } else { Some(res) }
     }
 
     // --- Grid Operations (Display Abstraction) ---

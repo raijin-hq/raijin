@@ -267,6 +267,44 @@ impl Selection {
         self.region.end.side = end_side;
     }
 
+    /// Convert selection to grid coordinates for a standalone block grid.
+    ///
+    /// Unlike `to_range` which requires a full `Term` for semantic/line search,
+    /// this operates directly on a `Grid` and only supports Simple and Block
+    /// selection types (which is all that's needed for block output selection).
+    pub fn to_range_block(&self, grid: &crate::grid::Grid<crate::term::cell::Cell>) -> Option<SelectionRange> {
+        let columns = grid.columns();
+
+        let mut start = self.region.start;
+        let mut end = self.region.end;
+
+        if start.point > end.point {
+            mem::swap(&mut start, &mut end);
+        }
+
+        // Clamp to grid bounds.
+        let max_line = Line(grid.screen_lines() as i32 - 1);
+        let max_col = Column(columns.saturating_sub(1));
+        start.point.line = std::cmp::max(start.point.line, Line(0));
+        start.point.column = min(start.point.column, max_col);
+        end.point.line = min(end.point.line, max_line);
+        end.point.column = min(end.point.column, max_col);
+
+        let range = match self.ty {
+            SelectionType::Simple => self.range_simple(start, end, columns),
+            SelectionType::Block => self.range_block(start, end),
+            _ => self.range_simple(start, end, columns),
+        };
+
+        // Side adjustments in range_simple/range_block can push start past end.
+        // Normalize so start <= end for correct contains() behavior.
+        range.map(|r| if r.start > r.end {
+            SelectionRange { start: r.end, end: r.start, is_block: r.is_block }
+        } else {
+            r
+        })
+    }
+
     /// Convert selection to grid coordinates.
     pub fn to_range<T>(&self, term: &Term<T>) -> Option<SelectionRange> {
         let grid = term.grid();

@@ -70,6 +70,8 @@ pub struct BlockSnapshot {
     pub id: BlockId,
     pub header: BlockHeaderSnapshot,
     pub grid: BlockGridSnapshot,
+    /// Active text selection within this block (if any).
+    pub selection: Option<raijin_term::selection::SelectionRange>,
 }
 
 /// Cache for finished block snapshots.
@@ -152,6 +154,7 @@ pub fn extract_all_block_snapshots(
                 snapshot.header.hostname = block.metadata.hostname.clone();
                 snapshot.header.cwd = block.metadata.cwd.clone();
                 snapshot.header.git_branch = block.metadata.git_branch.clone();
+                snapshot.selection = block.selection_range();
                 snapshots.push(snapshot);
                 continue;
             }
@@ -273,5 +276,6 @@ fn extract_single_block(
             grid_cols,
             lines,
         },
+        selection: block.selection_range(),
     }
 }

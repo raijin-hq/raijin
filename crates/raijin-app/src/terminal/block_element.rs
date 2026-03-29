@@ -92,7 +92,7 @@ pub fn render_block(
 
     // --- Grid element (renders from snapshot, no locking) ---
     // No cursor in output blocks — cursor belongs in the input field (Warp pattern)
-    let grid_element = TerminalGridElement::new(snapshot.grid, font.clone(), font_size, line_height_multiplier);
+    let grid_element = TerminalGridElement::new(snapshot.grid, snapshot.selection, font.clone(), font_size, line_height_multiplier);
 
     // --- Build div ---
     let bg = if selected {

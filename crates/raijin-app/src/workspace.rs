@@ -1,7 +1,7 @@
 use raijin_term::term::TermMode;
 use inazuma::{
     div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
-    ListAlignment, ListState, ParentElement, Render, Styled, Window, prelude::*,
+    ParentElement, Render, Styled, Window, prelude::*,
 };
 use inazuma_component::{
     Anchor, IconName, TitleBar,
@@ -102,15 +102,12 @@ pub struct Workspace {
     available_shells: Vec<ShellOption>,
     /// If set, the shell was not found at startup and the install modal should be shown.
     pending_shell_install: Option<&'static shell_install::ShellInstallInfo>,
-    selected_block: Option<usize>,
+    block_list: Entity<crate::terminal::block_list::BlockListView>,
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
-    block_list_state: ListState,
     last_terminal_rows: u16,
     last_terminal_cols: u16,
-    block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache,
-    resolved_symbol_maps: Vec<raijin_settings::ResolvedSymbolMap>,
 }
 
 impl Workspace {
@@ -124,6 +121,11 @@ impl Workspace {
         let scrollback = config.terminal.scrollback_history as usize;
         let terminal = Terminal::new(24, 80, &cwd, input_mode, scrollback)
             .expect("failed to create terminal");
+
+        let block_list_view = {
+            let handle = terminal.handle();
+            cx.new(|_cx| crate::terminal::block_list::BlockListView::new(handle))
+        };
 
         let focus_handle = cx.focus_handle();
 
@@ -197,20 +199,12 @@ impl Workspace {
             shell_name: shell_name.to_string(),
             available_shells: detect_available_shells(),
             pending_shell_install,
-            selected_block: None,
+            block_list: block_list_view,
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
-            block_list_state: ListState::new(0, ListAlignment::Bottom, px(200.0)),
             last_terminal_rows: 0,
             last_terminal_cols: 0,
-            block_snapshot_cache: crate::terminal::grid_snapshot::BlockSnapshotCache::new(),
-            resolved_symbol_maps: config
-                .appearance
-                .symbol_map
-                .iter()
-                .filter_map(|entry| entry.resolve())
-                .collect(),
         }
     }
 
@@ -218,20 +212,6 @@ impl Workspace {
         match event {
             TerminalEvent::Wakeup => {
                 self.update_interactive_mode();
-                // Sync block count with ListState for bottom-anchored scrolling
-                let block_count = {
-                    let handle = self.terminal.handle();
-                    let term = handle.lock();
-                    term.block_router().blocks().len()
-                };
-                let current_count = self.block_list_state.item_count();
-                if block_count != current_count {
-                    if block_count > current_count {
-                        self.block_list_state.splice(current_count..current_count, block_count - current_count);
-                    } else {
-                        self.block_list_state.reset(block_count);
-                    }
-                }
                 cx.notify();
             }
             TerminalEvent::Title(title) => {
@@ -532,23 +512,29 @@ impl Workspace {
             let mut term = handle.lock();
             term.block_router_mut().blocks_mut().clear();
             drop(term);
-            self.block_snapshot_cache = crate::terminal::grid_snapshot::BlockSnapshotCache::new();
-            self.selected_block = None;
+            self.block_list.update(cx, |view, _cx| view.clear());
             cx.notify();
             return;
         }
 
-        // Cmd+C with selected block → copy block content
+        // Cmd+C → copy text selection or selected block command
         if event.keystroke.key.as_str() == "c" && event.keystroke.modifiers.platform {
-            if let Some(idx) = self.selected_block {
-                let text = {
+            let text = self.block_list.read(cx).copy_selection_text();
+            if let Some(text) = text {
+                cx.write_to_clipboard(inazuma::ClipboardItem::new_string(text));
+                cx.notify();
+                return;
+            }
+            // Fallback: copy selected block's command
+            if let Some(idx) = self.block_list.read(cx).selected_block() {
+                let cmd = {
                     let handle = self.terminal.handle();
                     let term = handle.lock();
                     term.block_router().blocks().get(idx).map(|b| b.command.clone())
                 };
-                if let Some(text) = text {
+                if let Some(text) = cmd {
                     cx.write_to_clipboard(inazuma::ClipboardItem::new_string(text));
-                    self.selected_block = None;
+                    self.block_list.update(cx, |view, _cx| view.set_selected_block(None));
                     cx.notify();
                     return;
                 }
@@ -566,8 +552,8 @@ impl Workspace {
                 return;
             }
             // Deselect block
-            if self.selected_block.is_some() {
-                self.selected_block = None;
+            if self.block_list.read(cx).selected_block().is_some() {
+                self.block_list.update(cx, |view, _cx| view.set_selected_block(None));
                 cx.notify();
                 return;
             }
@@ -899,8 +885,8 @@ impl Workspace {
             state.lsp.completion_provider = Some(self.shell_completion.clone());
         });
 
-        // Clear block snapshot cache (old terminal's blocks are invalid)
-        self.block_snapshot_cache = crate::terminal::grid_snapshot::BlockSnapshotCache::new();
+        // Clear block list state (old terminal's blocks are invalid)
+        self.block_list.update(cx, |view, _cx| view.clear());
 
         cx.notify();
     }
@@ -1082,24 +1068,7 @@ impl Render for Workspace {
                 }
 
                 if self.show_terminal || self.interactive_mode {
-                    let font = inazuma::Font {
-                        family: font_family.clone().into(),
-                        weight: inazuma::FontWeight::NORMAL,
-                        ..inazuma::Font::default()
-                    };
-
-                    container = container.child(
-                        crate::terminal::block_list::render_block_list(
-                            &handle,
-                            &self.block_list_state,
-                            &mut self.block_snapshot_cache,
-                            &self.resolved_symbol_maps,
-                            &font,
-                            font_size,
-                            line_height_multiplier,
-                            self.selected_block,
-                        ),
-                    );
+                    container = container.child(self.block_list.clone());
                 } else {
                     container = container.child(
                         div().flex_1().min_h_0(),
