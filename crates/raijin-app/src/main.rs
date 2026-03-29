@@ -6,6 +6,7 @@ mod shell_install;
 mod terminal;
 mod workspace;
 
+use std::borrow::Cow;
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, px, size};
 use inazuma_component::Root;
 use inazuma_component::TitleBar;
@@ -19,6 +20,13 @@ fn main() {
     Application::new()
         .with_assets(inazuma_component_assets::Assets)
         .run(|cx: &mut App| {
+        // Register bundled terminal font (FiraCode Nerd Font Mono)
+        let bundled_fonts: Vec<Cow<'static, [u8]>> = vec![
+            Cow::Borrowed(include_bytes!("../assets/fonts/firacode-nerd-font-mono/FiraCodeNerdFontMono-Regular.ttf")),
+            Cow::Borrowed(include_bytes!("../assets/fonts/firacode-nerd-font-mono/FiraCodeNerdFontMono-Bold.ttf")),
+        ];
+        cx.text_system().add_fonts(bundled_fonts).expect("failed to register bundled fonts");
+
         inazuma_component::init(cx);
         inazuma_component::theme::Theme::change(
             inazuma_component::theme::ThemeMode::Dark,

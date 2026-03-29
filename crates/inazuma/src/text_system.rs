@@ -73,17 +73,20 @@ impl TextSystem {
             wrapper_pool: Mutex::default(),
             font_runs_pool: Mutex::default(),
             fallback_font_stack: smallvec![
-                // TODO: Remove this when Linux have implemented setting fallbacks.
-                font(".ZedMono"),
-                font(".ZedSans"),
+                // Monospace fallbacks (terminal-first)
+                font("FiraCode Nerd Font Mono"), // Bundled with Raijin
+                font("Menlo"),                   // macOS (guaranteed since 10.6)
+                font("SF Mono"),                 // macOS (newer)
+                font("Cascadia Mono"),           // Windows 11
+                font("Consolas"),                // Windows
+                font("DejaVu Sans Mono"),        // Linux
+                font("Liberation Mono"),         // Linux
+                font("Ubuntu Mono"),             // Linux (Ubuntu)
+                // Proportional fallbacks (UI text, last resort)
                 font("Helvetica"),
-                font("Segoe UI"),     // Windows
-                font("Ubuntu"),       // Gnome (Ubuntu)
-                font("Adwaita Sans"), // Gnome 47
-                font("Cantarell"),    // Gnome
-                font("Noto Sans"),    // KDE
-                font("DejaVu Sans"),
-                font("Arial"), // macOS, Windows
+                font("Segoe UI"),
+                font("Noto Sans"),
+                font("Arial"),
             ],
         }
     }

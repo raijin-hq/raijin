@@ -2,6 +2,7 @@
 
 pub mod block_element;
 pub mod block_list;
+pub mod builtin_font;
 pub mod colors;
 pub mod constants;
 pub mod grid_element;

@@ -1034,8 +1034,8 @@ impl Render for Workspace {
                     let font_px = px(font_size);
                     let cell_width = window
                         .text_system()
-                        .advance(font_id, font_px, 'M')
-                        .unwrap_or_default()
+                        .advance(font_id, font_px, 'm')
+                        .expect("glyph not found for 'm'")
                         .width;
                     let ascent = window.text_system().ascent(font_id, font_px);
                     let descent = window.text_system().descent(font_id, font_px);

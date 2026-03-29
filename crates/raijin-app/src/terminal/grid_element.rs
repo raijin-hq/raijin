@@ -9,13 +9,25 @@ use inazuma::{
     SharedString, ShapedLine, Style, TextAlign, Window, fill,
 };
 
+use super::builtin_font::{self, BuiltinChar};
 use super::constants::*;
 use super::grid_snapshot::BlockGridSnapshot;
+
+/// A built-in glyph to render procedurally instead of from the font.
+struct BuiltinGlyph {
+    bc: BuiltinChar,
+    x: Pixels,
+    y: Pixels,
+    color: Hsla,
+}
 
 /// Pre-painted state for the grid element.
 pub struct GridPrepaint {
     pub lines: Vec<(Point<Pixels>, ShapedLine)>,
     pub backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
+    builtins: Vec<BuiltinGlyph>,
+    cell_width: Pixels,
+    cell_height: Pixels,
     pub line_height: Pixels,
 }
 
@@ -44,8 +56,8 @@ impl TerminalGridElement {
         let font_id = window.text_system().resolve_font(&self.font);
         let cell_width = window
             .text_system()
-            .advance(font_id, font_size, 'M')
-            .unwrap_or_default()
+            .advance(font_id, font_size, 'm')
+            .expect("glyph not found for 'm'")
             .width;
         let ascent = window.text_system().ascent(font_id, font_size);
         let descent = window.text_system().descent(font_id, font_size);
@@ -109,7 +121,7 @@ impl Element for TerminalGridElement {
         let viewport = window.content_mask().bounds;
         let block_bottom = bounds.origin.y + cell_height * self.snapshot.content_rows as f32;
         if block_bottom < viewport.origin.y || bounds.origin.y > viewport.origin.y + viewport.size.height {
-            return GridPrepaint { lines: vec![], backgrounds: vec![], line_height };
+            return GridPrepaint { lines: vec![], backgrounds: vec![], builtins: vec![], cell_width, cell_height, line_height };
         }
 
         let bg_color = terminal_bg();
@@ -118,6 +130,7 @@ impl Element for TerminalGridElement {
 
         let mut lines = Vec::new();
         let mut backgrounds = Vec::new();
+        let mut builtins = Vec::new();
 
         // Per-line viewport culling: skip lines above/below visible area
         let viewport_top = viewport.origin.y;
@@ -156,9 +169,16 @@ impl Element for TerminalGridElement {
                     ));
                 }
 
-                // Text
+                // Check for built-in renderable characters (box drawing, blocks, etc.)
+                let builtin = builtin_font::builtin_char(cell.c);
+                if let Some(bc) = builtin {
+                    let gx = text_x + cell_width * col_x as f32;
+                    builtins.push(BuiltinGlyph { bc, x: gx, y: current_y, color: cell.fg });
+                }
+
+                // Text — replace built-in chars with space to keep glyph indices aligned
                 let byte_start = line_text.len();
-                line_text.push(cell.c);
+                line_text.push(if builtin.is_some() { ' ' } else { cell.c });
                 for zw in &cell.zerowidth {
                     line_text.push(*zw);
                 }
@@ -229,7 +249,7 @@ impl Element for TerminalGridElement {
                     text_len,
                     font_size,
                     &runs,
-                    None,
+                    Some(cell_width),
                     || SharedString::from(line_text),
                 );
                 lines.push((point(text_x, current_y), shaped));
@@ -238,7 +258,7 @@ impl Element for TerminalGridElement {
             current_y += cell_height;
         }
 
-        GridPrepaint { lines, backgrounds, line_height }
+        GridPrepaint { lines, backgrounds, builtins, cell_width, cell_height, line_height }
     }
 
     fn paint(
@@ -263,6 +283,19 @@ impl Element for TerminalGridElement {
                 None,
                 window,
                 cx,
+            );
+        }
+
+        // Render built-in characters (box drawing, blocks) on top of backgrounds
+        for glyph in &prepaint.builtins {
+            builtin_font::draw_builtin(
+                glyph.bc,
+                glyph.x,
+                glyph.y,
+                prepaint.cell_width,
+                prepaint.cell_height,
+                glyph.color,
+                window,
             );
         }
     }
