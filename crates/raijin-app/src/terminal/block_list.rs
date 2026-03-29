@@ -319,6 +319,9 @@ impl Render for BlockListView {
                 },
             ))
             .child(block_list.size_full())
-            .child(Scrollbar::vertical(&self.list_state).scrollbar_show(ScrollbarShow::Always))
+            .child(
+                Scrollbar::vertical(&self.list_state)
+                    .scrollbar_show(ScrollbarShow::Always)
+            )
     }
 }

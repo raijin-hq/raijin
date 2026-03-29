@@ -202,21 +202,25 @@ fn extract_single_block(
     let mut command_lines: Vec<SnapshotLine> = Vec::new();
     if !block.command.is_empty() {
         for cmd_line in block.command.lines() {
-            let cells: Vec<SnapshotCell> = cmd_line.chars().map(|c| {
-                SnapshotCell {
-                    c,
-                    zerowidth: vec![],
-                    fg: command_fg,
-                    bg,
-                    bold: false,
-                    italic: false,
-                    underline: false,
-                    strikeout: false,
-                    wide: false,
-                    font_family_override: None,
-                }
-            }).collect();
-            command_lines.push(SnapshotLine { cells });
+            // Wrap long lines at grid_cols boundary
+            let chars: Vec<char> = cmd_line.chars().collect();
+            for chunk in chars.chunks(grid_cols.max(1)) {
+                let cells: Vec<SnapshotCell> = chunk.iter().map(|&c| {
+                    SnapshotCell {
+                        c,
+                        zerowidth: vec![],
+                        fg: command_fg,
+                        bg,
+                        bold: false,
+                        italic: false,
+                        underline: false,
+                        strikeout: false,
+                        wide: false,
+                        font_family_override: None,
+                    }
+                }).collect();
+                command_lines.push(SnapshotLine { cells });
+            }
         }
     }
     let command_row_count = command_lines.len();

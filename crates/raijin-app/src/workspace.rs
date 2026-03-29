@@ -1043,7 +1043,8 @@ impl Render for Workspace {
                     let cell_height = base_height * line_height_multiplier;
 
                     let viewport = window.viewport_size();
-                    let cols = ((viewport.width - px(crate::terminal::constants::BLOCK_HEADER_PAD_X)) / cell_width)
+                    let horizontal_padding = px(crate::terminal::constants::BLOCK_HEADER_PAD_X) * 2.0;
+                    let cols = ((viewport.width - horizontal_padding) / cell_width)
                         .max(2.0) as u16;
                     let rows = (viewport.height / cell_height).max(1.0) as u16;
                     if rows != self.last_terminal_rows || cols != self.last_terminal_cols {

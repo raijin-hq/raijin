@@ -100,7 +100,11 @@ impl ScrollbarHandle for UniformListScrollHandle {
 
 impl ScrollbarHandle for ListState {
     fn offset(&self) -> Point<Pixels> {
-        self.scroll_px_offset_for_scrollbar()
+        // Bottom-aligned lists return negative offsets from scroll_px_offset_for_scrollbar.
+        // The Scrollbar component expects positive offsets (distance from start).
+        // Use absolute values so the scrollbar renders correctly for both alignments.
+        let raw = self.scroll_px_offset_for_scrollbar();
+        inazuma::point(raw.x.abs(), raw.y.abs())
     }
 
     fn set_offset(&self, offset: Point<Pixels>) {
