@@ -710,6 +710,8 @@ pub trait PlatformTextSystem: Send + Sync {
     fn advance(&self, font_id: FontId, glyph_id: GlyphId) -> Result<Size<f32>>;
     /// Get the glyph ID for a character.
     fn glyph_for_char(&self, font_id: FontId, ch: char) -> Option<GlyphId>;
+    /// Returns true if the font is an emoji/bitmap font (e.g., Apple Color Emoji).
+    fn is_emoji(&self, font_id: FontId) -> bool;
     /// Get raster bounds for a glyph.
     fn glyph_raster_bounds(&self, params: &RenderGlyphParams) -> Result<Bounds<DevicePixels>>;
     /// Rasterize a glyph.
@@ -785,6 +787,10 @@ impl PlatformTextSystem for NoopTextSystem {
 
     fn glyph_for_char(&self, _font_id: FontId, ch: char) -> Option<GlyphId> {
         Some(GlyphId(ch.len_utf16() as u32))
+    }
+
+    fn is_emoji(&self, _font_id: FontId) -> bool {
+        false
     }
 
     fn glyph_raster_bounds(&self, _params: &RenderGlyphParams) -> Result<Bounds<DevicePixels>> {

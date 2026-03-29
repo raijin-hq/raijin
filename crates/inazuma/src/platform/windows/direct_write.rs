@@ -259,6 +259,15 @@ impl PlatformTextSystem for DirectWriteTextSystem {
         self.state.read().glyph_for_char(font_id, ch)
     }
 
+    fn is_emoji(&self, font_id: FontId) -> bool {
+        let state = self.state.read();
+        if let Some(font_info) = state.fonts.get(font_id.0) {
+            unsafe { font_info.font_face.IsColorFont().as_bool() }
+        } else {
+            false
+        }
+    }
+
     fn glyph_raster_bounds(
         &self,
         params: &RenderGlyphParams,

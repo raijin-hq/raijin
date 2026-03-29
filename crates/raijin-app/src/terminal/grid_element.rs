@@ -1,19 +1,36 @@
-//! Custom Inazuma Element that renders a terminal grid (per-cell ANSI colors).
+//! Per-cell terminal grid renderer.
 //!
-//! Renders from a pre-extracted BlockGridSnapshot — no mutex locking here.
-//! The snapshot is created in block_list.rs with a single lock for all blocks.
+//! Renders terminal output cell-by-cell at exact grid positions, like
+//! Rio, Alacritty, Kitty, and Ghostty. Each character is positioned at
+//! `col * cell_width`, ensuring pixel-perfect monospace alignment regardless
+//! of font metrics, emoji width, or special characters.
+//!
+//! Box-drawing characters (U+2500-U+259F) are rendered as GPU primitives
+//! via `builtin_font.rs`. All other characters use `paint_glyph` / `paint_emoji`
+//! from Inazuma's text system with CoreText font fallback.
 
 use inazuma::{
     point, px, relative, size, App, Bounds, Element, ElementId, Font, FontWeight,
-    GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId, Pixels, Point,
-    SharedString, ShapedLine, Style, TextAlign, Window, fill,
+    FontId, GlyphId, GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId,
+    Pixels, Point, SharedString, Style, Window, fill,
 };
 
 use super::builtin_font::{self, BuiltinChar};
 use super::constants::*;
 use super::grid_snapshot::BlockGridSnapshot;
 
-/// A built-in glyph to render procedurally instead of from the font.
+// ── Prepaint data ─────────────────────────────────────────────────────────────
+
+/// A single cell glyph to paint at an exact grid position.
+struct CellGlyph {
+    origin: Point<Pixels>,
+    font_id: FontId,
+    glyph_id: GlyphId,
+    color: Hsla,
+    is_emoji: bool,
+}
+
+/// A built-in glyph to render as GPU primitives.
 struct BuiltinGlyph {
     bc: BuiltinChar,
     x: Pixels,
@@ -23,13 +40,16 @@ struct BuiltinGlyph {
 
 /// Pre-painted state for the grid element.
 pub struct GridPrepaint {
-    pub lines: Vec<(Point<Pixels>, ShapedLine)>,
-    pub backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
+    backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
+    glyphs: Vec<CellGlyph>,
     builtins: Vec<BuiltinGlyph>,
+    font_size: Pixels,
     cell_width: Pixels,
     cell_height: Pixels,
     pub line_height: Pixels,
 }
+
+// ── Element ───────────────────────────────────────────────────────────────────
 
 /// Custom element that renders a block's terminal grid from a snapshot.
 ///
@@ -120,34 +140,40 @@ impl Element for TerminalGridElement {
         let font_size = px(self.font_size);
         let line_height = cell_height;
 
-        // Viewport-Culling: skip entire block if completely outside visible area
+        let empty = GridPrepaint {
+            backgrounds: vec![], glyphs: vec![], builtins: vec![],
+            font_size, cell_width, cell_height, line_height,
+        };
+
+        // Viewport culling: skip entire block if outside visible area
         let viewport = window.content_mask().bounds;
         let block_bottom = bounds.origin.y + cell_height * self.snapshot.content_rows as f32;
         if block_bottom < viewport.origin.y || bounds.origin.y > viewport.origin.y + viewport.size.height {
-            return GridPrepaint { lines: vec![], backgrounds: vec![], builtins: vec![], cell_width, cell_height, line_height };
+            return empty;
         }
 
         let bg_color = terminal_bg();
         let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
         let mut current_y = bounds.origin.y;
 
-        let mut lines = Vec::new();
+        // Resolve the base font once for the block
+        let base_font_id = window.text_system().resolve_font(&self.font);
+        let ascent = window.text_system().ascent(base_font_id, font_size);
+
         let mut backgrounds = Vec::new();
+        let mut glyphs = Vec::new();
         let mut builtins = Vec::new();
 
-        // Per-line viewport culling: skip lines above/below visible area
         let viewport_top = viewport.origin.y;
         let viewport_bottom = viewport.origin.y + viewport.size.height;
 
         for snap_line in self.snapshot.lines.iter() {
             let line_bottom = current_y + cell_height;
 
-            // Skip lines completely above viewport
             if line_bottom < viewport_top {
                 current_y += cell_height;
                 continue;
             }
-            // Stop rendering once we're below viewport
             if current_y > viewport_bottom {
                 break;
             }
@@ -157,14 +183,13 @@ impl Element for TerminalGridElement {
                 continue;
             }
 
-            let mut line_text = String::with_capacity(self.snapshot.grid_cols);
-            let mut runs = Vec::new();
             let mut col_x = 0usize;
 
             for cell in &snap_line.cells {
+                let x = text_x + cell_width * col_x as f32;
+
                 // Background
                 if cell.bg != bg_color {
-                    let x = text_x + cell_width * col_x as f32;
                     let width = if cell.wide { cell_width * 2.0 } else { cell_width };
                     backgrounds.push((
                         Bounds::new(point(x, current_y), size(width, cell_height)),
@@ -172,96 +197,118 @@ impl Element for TerminalGridElement {
                     ));
                 }
 
-                // Check for built-in renderable characters (box drawing, blocks, etc.)
-                let builtin = builtin_font::builtin_char(cell.c);
-                if let Some(bc) = builtin {
-                    let gx = text_x + cell_width * col_x as f32;
-                    builtins.push(BuiltinGlyph { bc, x: gx, y: current_y, color: cell.fg });
-                }
+                // Skip spaces and null chars — nothing to render
+                let skip = cell.c == ' ' || cell.c == '\0';
 
-                // Text — replace built-in chars with space to keep glyph indices aligned
-                let byte_start = line_text.len();
-                line_text.push(if builtin.is_some() { ' ' } else { cell.c });
-                for zw in &cell.zerowidth {
-                    line_text.push(*zw);
-                }
-                let byte_len = line_text.len() - byte_start;
-
-                let family = match &cell.font_family_override {
-                    Some(override_family) => override_family.clone().into(),
-                    None => self.font.family.clone(),
-                };
-                let font = Font {
-                    family,
-                    weight: if cell.bold { FontWeight::BOLD } else { FontWeight::NORMAL },
-                    style: if cell.italic {
-                        inazuma::FontStyle::Italic
+                if !skip {
+                    // Built-in box-drawing / block elements
+                    if let Some(bc) = builtin_font::builtin_char(cell.c) {
+                        builtins.push(BuiltinGlyph { bc, x, y: current_y, color: cell.fg });
                     } else {
-                        inazuma::FontStyle::Normal
-                    },
-                    ..Font::default()
-                };
+                        // Regular character — resolve font and glyph, position at grid cell
+                        let font_id = if cell.font_family_override.is_some() || cell.bold || cell.italic {
+                            let family = match &cell.font_family_override {
+                                Some(f) => f.clone().into(),
+                                None => self.font.family.clone(),
+                            };
+                            let font = Font {
+                                family,
+                                weight: if cell.bold { FontWeight::BOLD } else { FontWeight::NORMAL },
+                                style: if cell.italic { inazuma::FontStyle::Italic } else { inazuma::FontStyle::Normal },
+                                ..Font::default()
+                            };
+                            window.text_system().resolve_font(&font)
+                        } else {
+                            base_font_id
+                        };
 
-                let can_merge = runs.last().map_or(false, |last: &inazuma::TextRun| {
-                    last.color == cell.fg
-                        && last.font.weight == font.weight
-                        && last.font.style == font.style
-                });
+                        // Build the full character string including zero-width
+                        // combiners (e.g., U+FE0F variation selector for emoji).
+                        let has_zerowidth = !cell.zerowidth.is_empty();
+                        let char_str = if has_zerowidth {
+                            let mut s = String::with_capacity(cell.c.len_utf8() + cell.zerowidth.len() * 4);
+                            s.push(cell.c);
+                            for &zw in &cell.zerowidth {
+                                s.push(zw);
+                            }
+                            s
+                        } else {
+                            String::new() // unused, avoid allocation
+                        };
 
-                if can_merge {
-                    runs.last_mut().unwrap().len += byte_len;
-                } else {
-                    runs.push(inazuma::TextRun {
-                        len: byte_len,
-                        font,
-                        color: cell.fg,
-                        background_color: None,
-                        underline: if cell.underline {
-                            Some(inazuma::UnderlineStyle {
-                                thickness: px(1.0),
-                                color: Some(cell.fg),
-                                wavy: false,
-                            })
+                        // Try direct glyph lookup (fast path for primary font).
+                        // Skip if there are zero-width combiners — those need shaping
+                        // for correct emoji/variation selector handling.
+                        let direct_glyph = if !has_zerowidth {
+                            window.text_system().glyph_for_char(font_id, cell.c)
                         } else {
                             None
-                        },
-                        strikethrough: if cell.strikeout {
-                            Some(inazuma::StrikethroughStyle {
-                                thickness: px(1.0),
-                                color: Some(cell.fg),
-                            })
+                        };
+
+                        if let Some(glyph_id) = direct_glyph {
+                            let is_emoji = window.text_system().is_emoji(font_id);
+                            let baseline_y = current_y + ascent;
+                            glyphs.push(CellGlyph {
+                                origin: point(x, baseline_y),
+                                font_id,
+                                glyph_id,
+                                color: cell.fg,
+                                is_emoji,
+                            });
                         } else {
-                            None
-                        },
-                    });
+                            // Font doesn't have this glyph, or char has zero-width
+                            // combiners — shape via CoreText for font fallback and
+                            // proper variation selector / emoji handling.
+                            let text = if has_zerowidth {
+                                SharedString::from(char_str)
+                            } else {
+                                SharedString::from(String::from(cell.c))
+                            };
+                            let text_len = text.len();
+                            let family = match &cell.font_family_override {
+                                Some(f) => f.clone().into(),
+                                None => self.font.family.clone(),
+                            };
+                            let runs = &[inazuma::TextRun {
+                                len: text_len,
+                                font: Font {
+                                    family,
+                                    weight: if cell.bold { FontWeight::BOLD } else { FontWeight::NORMAL },
+                                    style: if cell.italic { inazuma::FontStyle::Italic } else { inazuma::FontStyle::Normal },
+                                    ..Font::default()
+                                },
+                                color: cell.fg,
+                                background_color: None,
+                                underline: None,
+                                strikethrough: None,
+                            }];
+                            let shaped = window.text_system().shape_line(text, font_size, runs, None);
+                            if let Some(run) = shaped.runs.first() {
+                                if let Some(glyph) = run.glyphs.first() {
+                                    let baseline_y = current_y + ascent;
+                                    glyphs.push(CellGlyph {
+                                        origin: point(x, baseline_y),
+                                        font_id: run.font_id,
+                                        glyph_id: glyph.id,
+                                        color: cell.fg,
+                                        is_emoji: window.text_system().is_emoji(run.font_id),
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
 
                 col_x += if cell.wide { 2 } else { 1 };
             }
 
-            if !line_text.is_empty() {
-                let text_hash = {
-                    use std::hash::{Hash, Hasher};
-                    let mut hasher = std::hash::DefaultHasher::new();
-                    line_text.hash(&mut hasher);
-                    hasher.finish()
-                };
-                let text_len = line_text.len();
-                let shaped = window.text_system().shape_line_by_hash(
-                    text_hash,
-                    text_len,
-                    font_size,
-                    &runs,
-                    Some(cell_width),
-                    || SharedString::from(line_text),
-                );
-                lines.push((point(text_x, current_y), shaped));
-            }
-
             current_y += cell_height;
         }
 
-        GridPrepaint { lines, backgrounds, builtins, cell_width, cell_height, line_height }
+        GridPrepaint {
+            backgrounds, glyphs, builtins,
+            font_size, cell_width, cell_height, line_height,
+        }
     }
 
     fn paint(
@@ -272,24 +319,34 @@ impl Element for TerminalGridElement {
         _layout: &mut Self::RequestLayoutState,
         prepaint: &mut Self::PrepaintState,
         window: &mut Window,
-        cx: &mut App,
+        _cx: &mut App,
     ) {
+        // Backgrounds
         for (rect, color) in &prepaint.backgrounds {
             window.paint_quad(fill(*rect, *color));
         }
 
-        for (origin, shaped_line) in &prepaint.lines {
-            let _ = shaped_line.paint(
-                *origin,
-                prepaint.line_height,
-                TextAlign::Left,
-                None,
-                window,
-                cx,
-            );
+        // Text glyphs — per-cell at exact grid positions
+        for glyph in &prepaint.glyphs {
+            if glyph.is_emoji {
+                let _ = window.paint_emoji(
+                    glyph.origin,
+                    glyph.font_id,
+                    glyph.glyph_id,
+                    prepaint.font_size,
+                );
+            } else {
+                let _ = window.paint_glyph(
+                    glyph.origin,
+                    glyph.font_id,
+                    glyph.glyph_id,
+                    prepaint.font_size,
+                    glyph.color,
+                );
+            }
         }
 
-        // Render built-in characters (box drawing, blocks) on top of backgrounds
+        // Built-in characters (box drawing, blocks, shades)
         for glyph in &prepaint.builtins {
             builtin_font::draw_builtin(
                 glyph.bc,

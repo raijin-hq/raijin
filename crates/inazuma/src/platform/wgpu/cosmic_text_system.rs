@@ -163,6 +163,10 @@ impl PlatformTextSystem for CosmicTextSystem {
         self.0.read().glyph_for_char(font_id, ch)
     }
 
+    fn is_emoji(&self, font_id: FontId) -> bool {
+        self.0.read().loaded_fonts.get(font_id.0).is_some_and(|f| f.is_known_emoji_font)
+    }
+
     fn glyph_raster_bounds(&self, params: &RenderGlyphParams) -> Result<Bounds<DevicePixels>> {
         self.0.write().raster_bounds(params)
     }
@@ -640,6 +644,9 @@ fn face_info_into_properties(
 }
 
 fn check_is_known_emoji_font(postscript_name: &str) -> bool {
-    // TODO: Include other common emoji fonts
-    postscript_name == "NotoColorEmoji"
+    matches!(
+        postscript_name,
+        "NotoColorEmoji" | "AppleColorEmoji" | ".AppleColorEmojiUI"
+            | "TwemojiMozilla" | "SegoeUIEmoji" | "EmojiOneMozilla"
+    )
 }

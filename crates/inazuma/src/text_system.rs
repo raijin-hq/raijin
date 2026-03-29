@@ -198,6 +198,16 @@ impl TextSystem {
         }))
     }
 
+    /// Get the glyph ID for the given character in the given font.
+    pub fn glyph_for_char(&self, font_id: FontId, ch: char) -> Option<GlyphId> {
+        self.platform_text_system.glyph_for_char(font_id, ch)
+    }
+
+    /// Returns true if the font is an emoji/bitmap font (e.g., Apple Color Emoji).
+    pub fn is_emoji(&self, font_id: FontId) -> bool {
+        self.platform_text_system.is_emoji(font_id)
+    }
+
     /// Get the advance width for the given character, in the given font and size.
     pub fn advance(&self, font_id: FontId, font_size: Pixels, ch: char) -> Result<Size<Pixels>> {
         let glyph_id = self

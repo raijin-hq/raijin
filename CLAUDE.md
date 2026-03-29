@@ -66,6 +66,15 @@ raijin-app (binary — entry point, workspace layout, terminal rendering)
 
 Raijin Dark: `#121212` background, `#14F195` accent (Solana green), `#f1f1f1` foreground. Colors are currently hardcoded in `terminal_element.rs` — the `raijin-ui` crate will house typed tokens once implemented.
 
+## Terminal vs Editor Rendering
+
+Strikte Trennung zwischen Terminal-Code und Editor/UI-Code:
+
+- **Terminal Output** (grid rendering, PTY, cells): Immer wie echte Terminals bauen — **Rio, Alacritty, Kitty, Ghostty** als Referenz. Per-cell Rendering, Grid-Positionierung auf `col * cell_width`, kein per-line Text-Shaping, kein `force_width`. Box-Drawing via `builtin_font.rs` (GPU-Primitive), Emoji via `paint_emoji` mit CoreText Font-Fallback. Bei Unsicherheit: Rio-Code in `.reference/rio` prüfen.
+- **Editor/UI Features** (Code-Editor, Text-Input, Completions, Panels, Settings): Inazuma's Text-System (`ShapedLine`, `shape_line`, `TextRun`). Das ist wofür das Framework gebaut wurde.
+
+Inazuma/GPUI ist ein **Editor-Framework**. Terminal-Rendering hat fundamental andere Anforderungen (festes Grid, per-cell Positionierung, Unicode-Width, Emoji, Box-Drawing). Zed-Patterns nicht auf Terminal-Rendering anwenden.
+
 ## Conventions
 
 - **Rust edition 2024** (nightly) with `resolver = "3"`

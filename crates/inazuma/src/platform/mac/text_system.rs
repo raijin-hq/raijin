@@ -191,6 +191,10 @@ impl PlatformTextSystem for MacTextSystem {
         self.0.read().glyph_for_char(font_id, ch)
     }
 
+    fn is_emoji(&self, font_id: FontId) -> bool {
+        self.0.read().is_emoji(font_id)
+    }
+
     fn glyph_raster_bounds(&self, params: &RenderGlyphParams) -> Result<Bounds<DevicePixels>> {
         self.0.read().raster_bounds(params)
     }
