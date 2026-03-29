@@ -525,20 +525,6 @@ impl Workspace {
                 cx.notify();
                 return;
             }
-            // Fallback: copy selected block's command
-            if let Some(idx) = self.block_list.read(cx).selected_block() {
-                let cmd = {
-                    let handle = self.terminal.handle();
-                    let term = handle.lock();
-                    term.block_router().blocks().get(idx).map(|b| b.command.clone())
-                };
-                if let Some(text) = cmd {
-                    cx.write_to_clipboard(inazuma::ClipboardItem::new_string(text));
-                    self.block_list.update(cx, |view, _cx| view.set_selected_block(None));
-                    cx.notify();
-                    return;
-                }
-            }
         }
 
         if event.keystroke.key.as_str() == "escape" {
