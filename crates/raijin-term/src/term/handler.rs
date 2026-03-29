@@ -12,6 +12,7 @@ use base64::engine::general_purpose::STANDARD as Base64;
 use log::{debug, trace};
 use unicode_width::UnicodeWidthChar;
 
+use super::emoji::emoji_presentation;
 use crate::event::{Event, EventListener};
 use crate::grid::Dimensions;
 use crate::index::{self, Boundary, Column, Line};
@@ -32,6 +33,11 @@ impl<T: EventListener> Handler for Term<T> {
             Some(width) => width,
             None => return,
         };
+
+        // UAX#11 classifies many emoji as "Neutral" (width 1), but terminals
+        // must render them as 2 cells. Override for chars with the Unicode
+        // Emoji_Presentation property (displayed as emoji by default).
+        let width = if width == 1 && emoji_presentation(c) { 2 } else { width };
 
         // Handle zero-width characters.
         if width == 0 {

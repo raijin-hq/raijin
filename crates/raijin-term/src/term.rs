@@ -23,6 +23,7 @@ use crate::vte::ansi::{
 pub mod cell;
 pub mod color;
 pub mod damage;
+mod emoji;
 mod handler;
 pub mod mode;
 pub mod renderable;
