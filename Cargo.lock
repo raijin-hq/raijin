@@ -828,6 +828,7 @@ dependencies = [
  "env_logger",
  "log",
  "notify-debouncer-mini",
+ "serde_json",
 ]
 
 [[package]]
@@ -4938,6 +4939,7 @@ dependencies = [
 name = "raijin-completions"
 version = "0.1.0"
 dependencies = [
+ "log",
  "serde",
  "serde_json",
 ]

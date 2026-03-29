@@ -481,7 +481,7 @@ impl Render for Root {
             s = (sheet.builder)(s, window, cx);
             s.focus_handle = sheet.focus_handle.clone();
             s.placement = sheet.placement;
-            div().relative().child(s)
+            div().absolute().size_full().top_0().left_0().child(s)
         });
 
         // Build dialog elements
