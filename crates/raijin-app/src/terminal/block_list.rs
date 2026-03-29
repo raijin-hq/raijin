@@ -276,8 +276,8 @@ impl Render for BlockListView {
                 },
             ))
             .on_mouse_up(MouseButton::Left, cx.listener(
-                move |view, event: &MouseUpEvent, _window, cx| {
-                    let was_selecting = view.selecting_block.take();
+                move |view, event: &MouseUpEvent, window, cx| {
+                    view.selecting_block.take();
 
                     // Detect click (no drag) vs drag selection
                     if let Some(down_pos) = view.mouse_down_pos.take() {
@@ -286,13 +286,30 @@ impl Render for BlockListView {
                         let is_click = dx < 3.0 && dy < 3.0;
 
                         if is_click {
-                            // Click without drag — toggle block selection
+                            // Click without drag — clear text selection
                             view.clear_all_selections();
-                            // Find which block was clicked from the layout
-                            // (simplified: use last block for now, will be refined)
-                            if let Some(_) = was_selecting {
-                                // Toggle: deselect if same, select if different
-                                // For now just deselect any selection
+
+                            // Find which finished block was clicked → select it
+                            let (font, fs, lh, _) = Self::read_config(cx);
+                            let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
+                            if let Some((block_idx, _, _, _)) = view.hit_test(event.position, cw, ch) {
+                                // Only select finished blocks
+                                let is_finished = {
+                                    let handle = view.terminal.clone();
+                                    let term = handle.lock();
+                                    term.block_router().blocks()
+                                        .get(block_idx)
+                                        .is_some_and(|b| b.is_finished())
+                                };
+                                if is_finished {
+                                    // Toggle: deselect if already selected
+                                    if view.selected_block == Some(block_idx) {
+                                        view.selected_block = None;
+                                    } else {
+                                        view.selected_block = Some(block_idx);
+                                    }
+                                }
+                            } else {
                                 view.selected_block = None;
                             }
                         }

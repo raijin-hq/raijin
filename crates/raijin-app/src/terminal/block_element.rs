@@ -76,18 +76,6 @@ pub fn render_block(
     meta_parts.push(dur_text);
     let meta_text = meta_parts.join("  ");
 
-    // --- Command text (flatten multi-line for header) ---
-    let cmd_text = if header.command.is_empty() {
-        "(empty)".to_string()
-    } else {
-        let flat: String = header.command.lines().collect::<Vec<_>>().join(" ");
-        if flat.len() > 120 {
-            format!("{}...", &flat[..117])
-        } else {
-            flat
-        }
-    };
-
     let is_error = header.is_error;
 
     // --- Grid element (renders from snapshot, no locking) ---
@@ -125,12 +113,9 @@ pub fn render_block(
                         .text_color(header_metadata_fg())
                         .child(meta_text),
                 )
-                .child(
-                    div()
-                        .text_sm()
-                        .text_color(header_command_fg())
-                        .child(cmd_text),
-                ),
+                // Command text is rendered as the first line(s) of the grid element,
+                // not as a separate div. This makes it selectable, uses the same
+                // terminal font, and preserves multi-line formatting.
         )
         // Grid output
         .child(grid_element)

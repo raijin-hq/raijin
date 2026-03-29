@@ -50,7 +50,6 @@ pub struct BlockGridSnapshot {
 /// Block metadata snapshot for the header.
 #[derive(Clone)]
 pub struct BlockHeaderSnapshot {
-    pub command: String,
     pub is_error: bool,
     pub is_running: bool,
     pub started_at: std::time::Instant,
@@ -195,7 +194,35 @@ fn extract_single_block(
     };
     let content_rows = history_size + visible_rows;
 
-    let mut lines = Vec::with_capacity(content_rows);
+    // Prepend command text as the first line(s) of the snapshot.
+    // This makes the command selectable, uses the same font as output,
+    // and preserves multi-line formatting.
+    let command_fg = super::constants::header_command_fg();
+    let bg = super::constants::terminal_bg();
+    let mut command_lines: Vec<SnapshotLine> = Vec::new();
+    if !block.command.is_empty() {
+        for cmd_line in block.command.lines() {
+            let cells: Vec<SnapshotCell> = cmd_line.chars().map(|c| {
+                SnapshotCell {
+                    c,
+                    zerowidth: vec![],
+                    fg: command_fg,
+                    bg,
+                    bold: false,
+                    italic: false,
+                    underline: false,
+                    strikeout: false,
+                    wide: false,
+                    font_family_override: None,
+                }
+            }).collect();
+            command_lines.push(SnapshotLine { cells });
+        }
+    }
+    let command_row_count = command_lines.len();
+
+    let mut lines = Vec::with_capacity(command_row_count + content_rows);
+    lines.extend(command_lines);
 
     for row_offset in 0..content_rows {
         let line_idx = row_offset as i32 - history_size as i32;
@@ -260,7 +287,6 @@ fn extract_single_block(
     BlockSnapshot {
         id: block.id,
         header: BlockHeaderSnapshot {
-            command: block.command.clone(),
             is_error: block.is_error(),
             is_running: !block.is_finished(),
             started_at: block.started_at,
@@ -272,7 +298,7 @@ fn extract_single_block(
             git_branch: block.metadata.git_branch.clone(),
         },
         grid: BlockGridSnapshot {
-            content_rows,
+            content_rows: command_row_count + content_rows,
             grid_cols,
             lines,
         },
