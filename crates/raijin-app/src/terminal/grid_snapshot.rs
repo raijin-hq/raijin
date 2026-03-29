@@ -16,6 +16,7 @@ use super::colors::resolve_colors;
 
 /// Pre-extracted cell data — resolved colors, no layout positions.
 #[derive(Clone)]
+#[allow(dead_code)] // underline/strikeout needed once decoration rendering is added
 pub struct SnapshotCell {
     pub c: char,
     pub zerowidth: Vec<char>,
@@ -39,6 +40,7 @@ pub struct SnapshotLine {
 /// All data needed to render one block's grid content.
 /// Extracted while holding the term lock, then used without locking.
 #[derive(Clone)]
+#[allow(dead_code)] // grid_cols needed for text selection
 pub struct BlockGridSnapshot {
     pub content_rows: usize,
     pub grid_cols: usize,

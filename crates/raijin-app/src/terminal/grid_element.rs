@@ -46,7 +46,6 @@ pub struct GridPrepaint {
     font_size: Pixels,
     cell_width: Pixels,
     cell_height: Pixels,
-    pub line_height: Pixels,
 }
 
 // ── Element ───────────────────────────────────────────────────────────────────
@@ -138,11 +137,11 @@ impl Element for TerminalGridElement {
     ) -> Self::PrepaintState {
         let (cell_width, cell_height) = self.cell_dimensions(window);
         let font_size = px(self.font_size);
-        let line_height = cell_height;
+
 
         let empty = GridPrepaint {
             backgrounds: vec![], glyphs: vec![], builtins: vec![],
-            font_size, cell_width, cell_height, line_height,
+            font_size, cell_width, cell_height,
         };
 
         // Viewport culling: skip entire block if outside visible area
@@ -307,7 +306,7 @@ impl Element for TerminalGridElement {
 
         GridPrepaint {
             backgrounds, glyphs, builtins,
-            font_size, cell_width, cell_height, line_height,
+            font_size, cell_width, cell_height,
         }
     }
 

@@ -28,34 +28,16 @@ impl<T: EventListener> Handler for Term<T> {
     /// A character to be displayed.
     #[inline(never)]
     fn input(&mut self, c: char) {
-        // Debug: log every char above ASCII to trace emoji handling
-        if c as u32 > 0x7F {
-            eprintln!("[INPUT] U+{:04X} char={:?} unicode_width={:?}", c as u32, c, c.width());
-        }
-
         // Number of cells the char will occupy.
         let width = match c.width() {
             Some(width) => width,
-            None => {
-                if c as u32 > 0x7F {
-                    eprintln!("[INPUT] U+{:04X} -> width=None, returning", c as u32);
-                }
-                return;
-            }
+            None => return,
         };
 
         // UAX#11 classifies many emoji as "Neutral" (width 1), but terminals
         // must render them as 2 cells. Override for chars with the Unicode
         // Emoji_Presentation property (displayed as emoji by default).
-        let width = if width == 1 && emoji_presentation(c) {
-            eprintln!("[INPUT] U+{:04X} -> emoji_presentation override to 2", c as u32);
-            2
-        } else {
-            width
-        };
-        if c as u32 > 0x7F {
-            eprintln!("[INPUT] U+{:04X} -> final width={}", c as u32, width);
-        }
+        let width = if width == 1 && emoji_presentation(c) { 2 } else { width };
 
         // Handle zero-width characters.
         if width == 0 {
