@@ -555,23 +555,11 @@ impl Workspace {
             }
         }
 
-        // Determine if a command is currently running (PTY needs keys for Ctrl+C etc.)
-        let command_running = {
-            let handle = self.terminal.handle();
-            let term = handle.lock();
-            term.block_router().has_active_block()
-        };
-
-        // Keys must reach the PTY when:
-        // 1. ALT_SCREEN is active (interactive TUI apps: vim, less, htop)
-        // 2. A command is running (user needs Ctrl+C to interrupt)
-        if !self.interactive_mode && !command_running {
+        if !self.interactive_mode {
             return;
         }
 
         let keystroke = &event.keystroke;
-
-        // Platform shortcuts (Cmd on macOS) are handled at the app level, not PTY
         if keystroke.modifiers.platform {
             return;
         }
