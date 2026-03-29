@@ -395,6 +395,10 @@ impl Workspace {
                     self.input_state.update(cx, |state, cx| {
                         state.set_value("", window, cx);
                     });
+                    // Move focus to workspace container so key events
+                    // (Ctrl+C etc.) reach on_key_down_interactive while
+                    // the command runs and the input bar is hidden.
+                    self.focus_handle.focus(window, cx);
                     cx.notify();
                 }
             }
@@ -520,6 +524,20 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        // --- Platform shortcuts (Cmd on macOS) ---
+
+        // Cmd+K: Clear all blocks (terminal clear)
+        if event.keystroke.key.as_str() == "k" && event.keystroke.modifiers.platform {
+            let handle = self.terminal.handle();
+            let mut term = handle.lock();
+            term.block_router_mut().blocks_mut().clear();
+            drop(term);
+            self.block_snapshot_cache = crate::terminal::grid_snapshot::BlockSnapshotCache::new();
+            self.selected_block = None;
+            cx.notify();
+            return;
+        }
+
         // Cmd+C with selected block → copy block content
         if event.keystroke.key.as_str() == "c" && event.keystroke.modifiers.platform {
             if let Some(idx) = self.selected_block {
@@ -555,7 +573,16 @@ impl Workspace {
             }
         }
 
-        if !self.interactive_mode {
+        let command_running = {
+            let handle = self.terminal.handle();
+            let term = handle.lock();
+            term.block_router().has_active_block()
+        };
+
+        // Forward keys to PTY when:
+        // 1. ALT_SCREEN is active (interactive TUI: vim, less, htop)
+        // 2. A command is running (Ctrl+C to interrupt, etc.)
+        if !self.interactive_mode && !command_running {
             return;
         }
 
