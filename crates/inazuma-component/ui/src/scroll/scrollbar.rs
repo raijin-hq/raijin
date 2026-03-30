@@ -13,7 +13,7 @@ use inazuma::{
     GlobalElementId, Hitbox, HitboxBehavior, Hsla, InspectorElementId, IntoElement, IsZero,
     LayoutId, ListState, MouseDownEvent, MouseMoveEvent, MouseUpEvent, PaintQuad, Pixels, Point,
     Position, ScrollHandle, ScrollWheelEvent, Size, Style, UniformListScrollHandle, Window, fill,
-    point, px, relative, size,
+    point, px, size,
 };
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -515,10 +515,12 @@ impl Element for Scrollbar {
     ) -> (LayoutId, Self::RequestLayoutState) {
         let mut style = Style::default();
         style.position = Position::Absolute;
-        style.flex_grow = 1.0;
-        style.flex_shrink = 1.0;
-        style.size.width = relative(1.).into();
-        style.size.height = relative(1.).into();
+        // Anchor to all edges of the parent so the scrollbar overlays the
+        // entire container regardless of sibling layout.
+        style.inset.top = px(0.).into();
+        style.inset.right = px(0.).into();
+        style.inset.bottom = px(0.).into();
+        style.inset.left = px(0.).into();
 
         (window.request_layout(style, None, cx), ())
     }

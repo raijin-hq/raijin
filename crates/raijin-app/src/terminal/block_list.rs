@@ -50,7 +50,7 @@ impl BlockListView {
     pub fn new(terminal: TerminalHandle) -> Self {
         Self {
             terminal,
-            list_state: ListState::new(0, ListAlignment::Bottom, px(200.0)),
+            list_state: ListState::new(0, ListAlignment::Bottom, px(200.0)).measure_all(),
             snapshot_cache: BlockSnapshotCache::new(),
             selecting_block: None,
             mouse_down_pos: None,

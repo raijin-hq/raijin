@@ -348,6 +348,12 @@ impl ListState {
         drop(old_items);
         state.items = new_items;
 
+        // New items are Unmeasured — trigger re-measurement so layout_all_items()
+        // picks them up on the next frame (required for correct scrollbar sizing).
+        if spliced_count > 0 {
+            state.measuring_behavior.reset();
+        }
+
         if let Some(ListOffset {
             item_ix,
             offset_in_item,
@@ -514,16 +520,22 @@ impl ListState {
     /// Returns the current scroll offset adjusted for the scrollbar
     pub fn scroll_px_offset_for_scrollbar(&self) -> Point<Pixels> {
         let state = &self.0.borrow();
-        let logical_scroll_top = state.logical_scroll_top();
+        // Use the resolved scroll top from the last layout pass when available.
+        // For bottom-aligned lists, logical_scroll_top() returns a sentinel
+        // (item_ix = count) that maps to total_content_height — which is wrong
+        // for the scrollbar. The resolved value is the actual position after
+        // bottom-alignment adjustments.
+        let scroll_top = state.last_resolved_scroll_top
+            .unwrap_or_else(|| state.logical_scroll_top());
 
         let mut cursor = state.items.cursor::<ListItemSummary>(());
         let summary: ListItemSummary =
-            cursor.summary(&Count(logical_scroll_top.item_ix), Bias::Right);
+            cursor.summary(&Count(scroll_top.item_ix), Bias::Right);
         let content_height = state.items.summary().height;
         let drag_offset =
             // if dragging the scrollbar, we want to offset the point if the height changed
             content_height - state.scrollbar_drag_start_height.unwrap_or(content_height);
-        let offset = summary.height + logical_scroll_top.offset_in_item - drag_offset;
+        let offset = summary.height + scroll_top.offset_in_item - drag_offset;
 
         Point::new(px(0.), -offset)
     }
