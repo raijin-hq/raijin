@@ -173,7 +173,7 @@ impl Element for TerminalGridElement {
         let mut glyphs = Vec::new();
         let mut builtins = Vec::new();
 
-        let selection_color = inazuma::hsla(153.0 / 360.0, 0.93, 0.51, 0.25); // Accent green, semi-transparent
+        let selection_color = inazuma::hsla(220.0 / 360.0, 0.4, 0.55, 0.45); // Blue-gray like Warp
         let selection = &self.selection;
 
         let viewport_top = viewport.origin.y;
