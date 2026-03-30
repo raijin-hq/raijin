@@ -358,55 +358,280 @@ Nützlich für: User-Overrides in der Config, Accent-Color Anpassung, partielle 
 
 ## Schritt 5: Theme-Dateien (TOML)
 
+### Warum TOML statt JSON
+
+Raijin ist ein Hybrid aus Terminal (Warp) und Editor (Zed). Beide Welten brauchen ein mächtiges Theme-System mit ~120+ semantischen Tokens und Syntax-Highlighting. Die Formatwahl wurde bewusst getroffen:
+
+**Zed's Theme-Struktur ist flach, nicht tief verschachtelt.** Das `style`-Objekt in Zed-Themes ist ein flaches Key-Value-Mapping mit Dot-Notation (`"editor.background"`, `"terminal.ansi.red"`, `"border.focused"`). Es gibt keine tiefen Objekt-Hierarchien — nur ~120 flache Farbwerte + eine `syntax`-Map. TOML kann das identisch abbilden.
+
+| Aspekt | JSON (Zed/VS Code) | TOML (Raijin) |
+|---|---|---|
+| **Kommentare** | Nicht möglich (JSONC als Hack) | Nativ — Theme-Autoren können Farbgruppen dokumentieren |
+| **Boilerplate** | `{}`, `""` um jeden Key, Trailing-Comma-Probleme | Minimal — saubere Key=Value Syntax |
+| **Dot-Notation** | `"editor.background": "#282c33"` | `"editor.background" = "#282c33"` — identisch |
+| **Syntax-Map** | Tief verschachtelte Objekte | `[style.syntax.keyword]` — übersichtlicher |
+| **Ökosystem** | VS Code Theme-Community | Rust-Ökosystem (Alacritty, Rio, Helix, Cargo) |
+| **Schema-Validierung** | JSON Schema (ausgereift) | `taplo` TOML LSP unterstützt JSON Schema seit 2025 |
+| **Sharing** | `.json` Dateien | `.toml` Dateien — genauso teilbar |
+| **Config-Konsistenz** | Raijin-Config ist TOML → Theme wäre anderes Format | Ein Format für alles: Config + Themes |
+
+**Referenzen im Terminal/Editor-Ökosystem:**
+- Alacritty (seit 0.13.0), Rio, Helix Editor — alle TOML für Themes
+- Ghostty — TOML-ähnliches Flat-Format
+- Warp — YAML (kein Vorbild)
+- Zed, VS Code — JSON (historisch bedingt, Atom/Electron-Erbe)
+
+**Zed-Kompatibilität:** Die semantischen Token-Namen sind 1:1 kompatibel mit Zed's Schema. Ein Konverter kann Zed-JSON-Themes automatisch nach Raijin-TOML importieren, da die Struktur identisch ist — nur das Serialisierungsformat unterscheidet sich.
+
 ### Format
 
+Raijin-Themes nutzen **Zed-kompatible semantische Token-Namen** in TOML. Die `style`-Sektion verwendet dieselbe Dot-Notation wie Zed, alle ~120+ Tokens werden unterstützt.
+
 ```toml
+# Raijin Theme — Zed-kompatibles Token-Schema in TOML
+#
+# Alle Farbformate erlaubt: #hex, rgb(), oklch(), hsl()
+# Fehlende Tokens werden vom Theme-Resolver mit Defaults gefüllt.
+
 [theme]
 name = "Raijin Dark"
 author = "nyxb"
-appearance = "dark"
+appearance = "dark"  # "dark" | "light"
 
-[colors]
-# Alle Formate erlaubt — Hex, RGB, OKLCH, HSL
+[style]
+# === Backgrounds ===
 background = "#121212"
-surface = "#1a1a1a"
-elevated_surface = "#222222"
-text = "#f1f1f1"
-text_muted = "#888888"
-accent = "#14F195"
+"surface.background" = "#1a1a1a"
+"elevated_surface.background" = "#222222"
+"element.background" = "#1e1e1e"
+"element.hover" = "#2a2a2a"
+"element.active" = "#333333"
+"element.selected" = "#333333"
+"element.disabled" = "#1e1e1e"
+"drop_target.background" = "#14F19540"
+"ghost_element.background" = "#00000000"
+"ghost_element.hover" = "#2a2a2a"
+"ghost_element.active" = "#333333"
+"ghost_element.selected" = "#333333"
+
+# === Borders ===
 border = "#2a2a2a"
+"border.variant" = "#222222"
+"border.focused" = "#14F195"
+"border.selected" = "#14F19566"
+"border.transparent" = "#00000000"
+"border.disabled" = "#1e1e1e"
+
+# === Text ===
+text = "#f1f1f1"
+"text.muted" = "#888888"
+"text.placeholder" = "#555555"
+"text.disabled" = "#555555"
+"text.accent" = "#14F195"
+
+# === Icons ===
+icon = "#f1f1f1"
+"icon.muted" = "#888888"
+"icon.disabled" = "#555555"
+"icon.accent" = "#14F195"
+
+# === Workspace Chrome ===
+"status_bar.background" = "#121212"
+"title_bar.background" = "#121212"
+"title_bar.inactive_background" = "#0e0e0e"
+"toolbar.background" = "#1a1a1a"
+"tab_bar.background" = "#0e0e0e"
+"tab.active_background" = "#1a1a1a"
+"tab.inactive_background" = "#0e0e0e"
+"panel.background" = "#0e0e0e"
+
+# === Editor ===
+"editor.foreground" = "#f1f1f1"
+"editor.background" = "#121212"
+"editor.gutter.background" = "#121212"
+"editor.active_line.background" = "#1a1a1abf"
+"editor.line_number" = "#4e5a5f"
+"editor.active_line_number" = "#f1f1f1"
+"editor.invisible" = "#333333"
+"editor.wrap_guide" = "#2a2a2a0d"
+
+# === Search ===
+"search.match_background" = "#14F19540"
+
+# === Scrollbar ===
+"scrollbar.thumb.background" = "#ffffff1a"
+"scrollbar.thumb.hover_background" = "#ffffff33"
+"scrollbar.track.background" = "#00000000"
+
+# === Terminal (ANSI-16 + dim) ===
+"terminal.background" = "#121212"
+"terminal.foreground" = "#f1f1f1"
+"terminal.bright_foreground" = "#ffffff"
+"terminal.dim_foreground" = "#888888"
+"terminal.ansi.black" = "#282828"
+"terminal.ansi.red" = "#f7768e"
+"terminal.ansi.green" = "#14F195"
+"terminal.ansi.yellow" = "#e0af68"
+"terminal.ansi.blue" = "#7aa2f7"
+"terminal.ansi.magenta" = "#bb9af7"
+"terminal.ansi.cyan" = "#7dcfff"
+"terminal.ansi.white" = "#c0caf5"
+"terminal.ansi.bright_black" = "#555555"
+"terminal.ansi.bright_red" = "#ff9e9e"
+"terminal.ansi.bright_green" = "#3dffc0"
+"terminal.ansi.bright_yellow" = "#ffcf88"
+"terminal.ansi.bright_blue" = "#9db8ff"
+"terminal.ansi.bright_magenta" = "#d4b4ff"
+"terminal.ansi.bright_cyan" = "#a8e4ff"
+"terminal.ansi.bright_white" = "#ffffff"
+"terminal.ansi.dim_black" = "#1a1a1a"
+"terminal.ansi.dim_red" = "#a55060"
+"terminal.ansi.dim_green" = "#0ea56a"
+"terminal.ansi.dim_yellow" = "#a58050"
+"terminal.ansi.dim_blue" = "#5575a5"
+"terminal.ansi.dim_magenta" = "#8570a5"
+"terminal.ansi.dim_cyan" = "#5590a5"
+"terminal.ansi.dim_white" = "#888888"
+
+# === Git / Version Control ===
+"version_control.added" = "#14F195"
+"version_control.modified" = "#e0af68"
+"version_control.deleted" = "#f7768e"
+
+# === Status (error, warning, success, info, etc.) ===
+error = "#f7768e"
+"error.background" = "#f7768e1a"
+"error.border" = "#f7768e33"
+warning = "#e0af68"
+"warning.background" = "#e0af681a"
+"warning.border" = "#e0af6833"
+success = "#14F195"
+"success.background" = "#14F1951a"
+"success.border" = "#14F19533"
+info = "#7dcfff"
+"info.background" = "#7dcfff1a"
+"info.border" = "#7dcfff33"
+
+# === Link ===
+"link_text.hover" = "#14F195"
+
+# === Raijin-spezifisch (Block-System) ===
+"block.header_background" = "#1a1a1a"
+"block.header_hover" = "#222222"
+"block.success_badge" = "#14F195"
+"block.error_badge" = "#f7768e"
+"block.running_badge" = "#e0af68"
+
+# === Players (Cursor-Farben, zukünftig: Multiplayer) ===
+[[style.players]]
+cursor = "#14F195"
+background = "#14F195"
+selection = "#14F1953d"
+
+[[style.players]]
+cursor = "#7aa2f7"
+background = "#7aa2f7"
+selection = "#7aa2f73d"
+
+[[style.players]]
+cursor = "#bb9af7"
+background = "#bb9af7"
+selection = "#bb9af73d"
+
+[[style.players]]
+cursor = "#f7768e"
+background = "#f7768e"
+selection = "#f7768e3d"
+
+# === Syntax Highlighting ===
+# Jeder Scope kann als einfacher Farbstring oder als Objekt mit
+# color, font_style ("normal"/"italic"/"oblique"), font_weight angegeben werden.
+
+[style.syntax.attribute]
+color = "#7aa2f7"
+
+[style.syntax.boolean]
+color = "#ff9e64"
+
+[style.syntax.comment]
+color = "#565f89"
+font_style = "italic"
+
+[style.syntax."comment.doc"]
+color = "#6a7394"
+font_style = "italic"
+
+[style.syntax.constant]
+color = "#ff9e64"
+
+[style.syntax.constructor]
+color = "#7aa2f7"
+
+[style.syntax.function]
+color = "#7aa2f7"
+
+[style.syntax.keyword]
+color = "#bb9af7"
+
+[style.syntax.number]
+color = "#ff9e64"
+
+[style.syntax.operator]
+color = "#89ddff"
+
+[style.syntax.property]
+color = "#73daca"
+
+[style.syntax.string]
+color = "#14F195"
+
+[style.syntax."string.escape"]
+color = "#89ddff"
+
+[style.syntax."string.regex"]
+color = "#b4f9f8"
+
+[style.syntax.tag]
+color = "#f7768e"
+
+[style.syntax.type]
+color = "#2ac3de"
+
+[style.syntax.variable]
+color = "#c0caf5"
+
+[style.syntax."variable.special"]
+color = "#ff9e64"
+
+[style.syntax.punctuation]
+color = "#c0caf5"
+
+[style.syntax."punctuation.bracket"]
+color = "#9aa5ce"
+
+[style.syntax.title]
+color = "#f7768e"
+font_weight = 700
 
 # Power-User können direkt OKLCH nutzen:
-# accent = "oklch(0.88 0.22 160)"
-
-[colors.terminal]
-background = "#121212"
-foreground = "#f1f1f1"
-ansi_black = "#282828"
-ansi_red = "#f7768e"
-ansi_green = "#14F195"
-ansi_yellow = "#e0af68"
-ansi_blue = "#7aa2f7"
-ansi_magenta = "#bb9af7"
-ansi_cyan = "#7dcfff"
-ansi_white = "#c0caf5"
-
-[status]
-error = "#f7768e"
-warning = "#e0af68"
-success = "#14F195"
-info = "#7dcfff"
-
-[syntax]
-keyword = { color = "#bb9af7", font_weight = "bold" }
-string = "#14F195"
-comment = "#565f89"
-function = "#7aa2f7"
-variable = "#c0caf5"
-type = "#2ac3de"
-number = "#ff9e64"
-operator = "#89ddff"
+# [style.syntax.keyword]
+# color = "oklch(0.75 0.15 300)"
+# font_style = "italic"
 ```
+
+### Zed-Theme Import
+
+Da Raijin dieselben semantischen Token-Namen wie Zed verwendet, können Zed-JSON-Themes automatisch importiert werden:
+
+```
+zed-theme.json                    raijin-theme.toml
+─────────────────                 ─────────────────
+"editor.background": "#282c33"  → "editor.background" = "#282c33"
+"syntax": { "keyword": {        → [style.syntax.keyword]
+    "color": "#b477cf" }}           color = "#b477cf"
+```
+
+Der `ThemeRegistry` enthält einen `import_zed_theme(json: &str) -> Theme` Konverter.
 
 ### Lade-Pipeline
 
@@ -459,6 +684,8 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 - [ ] Tab-Farben pro Tab konfigurierbar (6 Farben wie Warp)
 - [ ] Transparenter Background mit Opacity-Slider
 - [ ] Hot-Reload: Theme-Dateien überwachen, bei Änderung neu laden
+- [ ] Zed-Theme-Importer: `import_zed_theme(json) -> Theme` Konverter im `ThemeRegistry`
+- [ ] Token-Kompatibilität: Alle ~120 Zed `ThemeStyleContent` Tokens unterstützen (identische Namen)
 
 ---
 
@@ -492,7 +719,7 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 |---|---|---|
 | **Interner Farbraum** | `Hsla` | `Oklch` |
 | **User-Input Format** | nur `#hex` | `#hex`, `rgb()`, `oklch()`, `hsl()` |
-| **Theme-Format** | JSON | TOML |
+| **Theme-Format** | JSON (historisch, Atom/Electron-Erbe) | TOML (Rust-Ökosystem-Standard, Kommentare, Config-Konsistenz) |
 | **Color Blending** | Hsla (perceptual Artefakte) | Oklch (perceptually uniform) |
 | **Color Scales** | 12-Step HSLA (manuell kalibriert) | 12-Step OKLCH (automatisch uniform) |
 | **Palette-Generierung** | Manuelle Korrekturen pro Hue nötig | L linear skalieren bei konstantem C/H |
