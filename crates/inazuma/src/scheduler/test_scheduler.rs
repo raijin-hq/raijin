@@ -31,6 +31,8 @@ use std::{
 
 const PENDING_TRACES_VAR_NAME: &str = "PENDING_TRACES";
 
+/// Deterministic scheduler for testing — drives async tasks with explicit stepping,
+/// controllable clock, and reproducible RNG ordering.
 pub struct TestScheduler {
     clock: Arc<TestClock>,
     rng: Arc<Mutex<StdRng>>,
@@ -80,6 +82,7 @@ impl TestScheduler {
         result
     }
 
+    /// Create a new test scheduler with the given config.
     pub fn new(config: TestSchedulerConfig) -> Self {
         Self {
             rng: Arc::new(Mutex::new(StdRng::seed_from_u64(config.seed))),
@@ -105,6 +108,7 @@ impl TestScheduler {
         }
     }
 
+    /// Signal that the test is complete; panics if non-determinism was detected.
     pub fn end_test(&self) {
         let mut state = self.state.lock();
         if let Some((message, backtrace)) = &state.non_determinism_error {
@@ -113,32 +117,39 @@ impl TestScheduler {
         state.finished = true;
     }
 
+    /// Get the test clock.
     pub fn clock(&self) -> Arc<TestClock> {
         self.clock.clone()
     }
 
+    /// Get a clone of the shared RNG.
     pub fn rng(&self) -> SharedRng {
         SharedRng(self.rng.clone())
     }
 
+    /// Set the tick range before a blocked session times out.
     pub fn set_timeout_ticks(&self, timeout_ticks: RangeInclusive<usize>) {
         self.state.lock().timeout_ticks = timeout_ticks;
     }
 
+    /// Allow the scheduler to park when no work is available.
     pub fn allow_parking(&self) {
         let mut state = self.state.lock();
         state.allow_parking = true;
         state.parking_allowed_once = true;
     }
 
+    /// Forbid parking — the scheduler must always have work to do.
     pub fn forbid_parking(&self) {
         self.state.lock().allow_parking = false;
     }
 
+    /// Whether parking is currently allowed.
     pub fn parking_allowed(&self) -> bool {
         self.state.lock().allow_parking
     }
 
+    /// Whether the current thread is the main (foreground) thread.
     pub fn is_main_thread(&self) -> bool {
         self.state.lock().is_main_thread
     }
@@ -162,6 +173,7 @@ impl TestScheduler {
         BackgroundExecutor::new(self.clone())
     }
 
+    /// Yield a random number of ticks (used for fuzzing task ordering).
     pub fn yield_random(&self) -> Yield {
         let rng = &mut *self.rng.lock();
         if rng.random_bool(0.1) {
@@ -171,12 +183,14 @@ impl TestScheduler {
         }
     }
 
+    /// Run all pending tasks until the queue is empty.
     pub fn run(&self) {
         while self.step() {
             // Continue until no work remains
         }
     }
 
+    /// Run tasks and advance the clock to fire timers until no work remains.
     pub fn run_with_clock_advancement(&self) {
         while self.step() || self.advance_clock_to_next_timer() {
             // Continue until no work remains
@@ -353,6 +367,7 @@ impl TestScheduler {
         }
     }
 
+    /// Advance the clock to the next pending timer. Returns `true` if a timer existed.
     pub fn advance_clock_to_next_timer(&self) -> bool {
         if let Some(timer) = self.state.lock().timers.first() {
             self.clock.advance(timer.expiration - self.clock.now());
@@ -362,6 +377,7 @@ impl TestScheduler {
         }
     }
 
+    /// Advance the clock by the given duration, firing any timers that expire.
     pub fn advance_clock(&self, duration: Duration) {
         let debug = std::env::var("DEBUG_SCHEDULER").is_ok();
         let start = self.clock.now();
@@ -653,16 +669,23 @@ impl Scheduler for TestScheduler {
     }
 }
 
+/// Configuration for a [`TestScheduler`].
 #[derive(Clone, Debug)]
 pub struct TestSchedulerConfig {
+    /// RNG seed for reproducible task ordering.
     pub seed: u64,
+    /// Whether to randomize task execution order.
     pub randomize_order: bool,
+    /// Whether parking is allowed when no work is available.
     pub allow_parking: bool,
+    /// Whether to capture backtraces for pending wakers.
     pub capture_pending_traces: bool,
+    /// Tick range before a blocked session times out.
     pub timeout_ticks: RangeInclusive<usize>,
 }
 
 impl TestSchedulerConfig {
+    /// Create a config with the given seed and default settings.
     pub fn with_seed(seed: u64) -> Self {
         Self {
             seed,
@@ -810,6 +833,7 @@ impl TracingWaker {
     }
 }
 
+/// A yield token that represents a random number of scheduler ticks to wait.
 pub struct Yield(usize);
 
 /// A wrapper around `Arc<Mutex<StdRng>>` that provides convenient methods

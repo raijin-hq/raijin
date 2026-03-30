@@ -179,9 +179,12 @@ impl Element for TerminalGridElement {
         let viewport_top = viewport.origin.y;
         let viewport_bottom = viewport.origin.y + viewport.size.height;
 
-        let history_size = self.snapshot.lines.len().saturating_sub(self.snapshot.content_rows);
+        let grid_history_size = self.snapshot.grid_history_size;
+        let command_offset = self.snapshot.command_row_count;
         for (line_idx, snap_line) in self.snapshot.lines.iter().enumerate() {
-            let grid_line = raijin_term::index::Line((line_idx as i32) - (history_size as i32));
+            // Selection lives on BlockGrid which doesn't have command text lines.
+            // Subtract command_row_count so snapshot line indices map to grid selection indices.
+            let grid_line = raijin_term::index::Line((line_idx as i32) - (grid_history_size as i32) - (command_offset as i32));
             let line_bottom = current_y + cell_height;
 
             if line_bottom < viewport_top {

@@ -43,6 +43,10 @@ pub struct SnapshotLine {
 #[allow(dead_code)] // grid_cols needed for text selection
 pub struct BlockGridSnapshot {
     pub content_rows: usize,
+    /// Number of prepended command text lines (offset for selection mapping).
+    pub command_row_count: usize,
+    /// History size from the underlying grid (for mapping snapshot indices to grid Line coordinates).
+    pub grid_history_size: usize,
     pub grid_cols: usize,
     pub lines: Vec<SnapshotLine>,
 }
@@ -304,6 +308,8 @@ fn extract_single_block(
         },
         grid: BlockGridSnapshot {
             content_rows: command_row_count + content_rows,
+            command_row_count,
+            grid_history_size: history_size,
             grid_cols,
             lines,
         },

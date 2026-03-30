@@ -734,20 +734,22 @@ mod tests {
 
     #[test]
     fn nested_regex() {
+        // "Rai -> Raijinize -> jinize" = 26 chars, cols 0-25.
         #[rustfmt::skip]
         let term = mock_term("\
-            Rai -> Raijin -> jin\r\n\
-            critty\
+            Rai -> Raijinize -> jinize\r\n\
+            jinize\
         ");
 
         // Greedy stopped at linebreak.
-        let mut regex = RegexSearch::new("Rai.*jin").unwrap();
+        let mut regex = RegexSearch::new("Rai.*jinize").unwrap();
         let start = Point::new(Line(0), Column(0));
         let end = Point::new(Line(0), Column(25));
         assert_eq!(term.regex_search_right(&mut regex, start, end), Some(start..=end));
 
         // Greedy stopped at dead state.
-        let mut regex = RegexSearch::new("Ala[^y]*critty").unwrap();
+        // [^e]* overshoots past first "jinize" (in "Raijinize"), backtracks to match cols 0-15.
+        let mut regex = RegexSearch::new("Rai[^e]*jinize").unwrap();
         let start = Point::new(Line(0), Column(0));
         let end = Point::new(Line(0), Column(15));
         assert_eq!(term.regex_search_right(&mut regex, start, end), Some(start..=end));
@@ -818,10 +820,10 @@ mod tests {
 
     #[test]
     fn skip_dead_cell() {
-        let term = mock_term("raijin");
+        let term = mock_term("raijint");
 
         // Make sure dead state cell is skipped when reversing.
-        let mut regex = RegexSearch::new("alacrit").unwrap();
+        let mut regex = RegexSearch::new("raijint").unwrap();
         let start = Point::new(Line(0), Column(0));
         let end = Point::new(Line(0), Column(6));
         assert_eq!(term.regex_search_right(&mut regex, start, end), Some(start..=end));

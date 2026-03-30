@@ -4,7 +4,7 @@
 /// indicate command block boundaries. OSC 7777 carries JSON metadata from
 /// the shell's precmd hook (CWD, git branch, username, etc.).
 /// A shell marker with its byte position in the scanned chunk.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct PositionedMarker {
     pub marker: ShellMarker,
     /// Byte offset where the OSC sequence STARTS (the ESC or 0x9D byte).
@@ -240,18 +240,23 @@ fn hex_nibble(byte: u8) -> Option<u8> {
 mod tests {
     use super::*;
 
+    /// Extract just the ShellMarker values from positioned markers for assertion convenience.
+    fn marker_types(markers: &[PositionedMarker]) -> Vec<ShellMarker> {
+        markers.iter().map(|m| m.marker.clone()).collect()
+    }
+
     #[test]
     fn test_scan_prompt_start() {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(b"\x1b]133;A\x07");
-        assert_eq!(markers, vec![ShellMarker::PromptStart]);
+        assert_eq!(marker_types(&markers), vec![ShellMarker::PromptStart]);
     }
 
     #[test]
     fn test_scan_command_end_with_exit_code() {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(b"\x1b]133;D;127\x07");
-        assert_eq!(markers, vec![ShellMarker::CommandEnd { exit_code: 127 }]);
+        assert_eq!(marker_types(&markers), vec![ShellMarker::CommandEnd { exit_code: 127 }]);
     }
 
     #[test]
@@ -260,7 +265,7 @@ mod tests {
         let input = b"hello\x1b]133;A\x07world\x1b]133;C\x07done";
         let markers = scanner.scan(input);
         assert_eq!(
-            markers,
+            marker_types(&markers),
             vec![ShellMarker::PromptStart, ShellMarker::CommandStart]
         );
     }
@@ -272,14 +277,14 @@ mod tests {
         let m1 = scanner.scan(b"text\x1b]133;");
         assert!(m1.is_empty());
         let m2 = scanner.scan(b"D;42\x07more");
-        assert_eq!(m2, vec![ShellMarker::CommandEnd { exit_code: 42 }]);
+        assert_eq!(marker_types(&m2), vec![ShellMarker::CommandEnd { exit_code: 42 }]);
     }
 
     #[test]
     fn test_scan_st_terminator() {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(b"\x1b]133;B\x1b\\");
-        assert_eq!(markers, vec![ShellMarker::InputStart]);
+        assert_eq!(marker_types(&markers), vec![ShellMarker::InputStart]);
     }
 
     #[test]
@@ -311,7 +316,7 @@ mod tests {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(&seq);
         assert_eq!(
-            markers,
+            marker_types(&markers),
             vec![ShellMarker::Metadata(
                 r#"{"cwd":"/tmp","username":"nyxb"}"#.to_string()
             )]
@@ -329,7 +334,7 @@ mod tests {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(&seq);
         assert_eq!(
-            markers,
+            marker_types(&markers),
             vec![ShellMarker::Metadata(r#"{"cwd":"/"}"#.to_string())]
         );
     }
@@ -349,7 +354,7 @@ mod tests {
         assert!(m1.is_empty());
         let m2 = scanner.scan(&full[mid..]);
         assert_eq!(
-            m2,
+            marker_types(&m2),
             vec![ShellMarker::Metadata(r#"{"cwd":"/home"}"#.to_string())]
         );
     }
@@ -366,7 +371,7 @@ mod tests {
         let mut scanner = OscScanner::new();
         let markers = scanner.scan(&seq);
         assert_eq!(
-            markers,
+            marker_types(&markers),
             vec![
                 ShellMarker::Metadata(r#"{"cwd":"/"}"#.to_string()),
                 ShellMarker::PromptStart,

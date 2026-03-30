@@ -110,6 +110,7 @@ pub trait Scheduler: Send + Sync {
     /// Returns the clock used by this scheduler.
     fn clock(&self) -> Arc<dyn Clock>;
 
+    /// Downcast to a [`TestScheduler`] if this is one.
     #[cfg(any(test, feature = "test-support"))]
     fn as_test(&self) -> Option<&TestScheduler> {
         None

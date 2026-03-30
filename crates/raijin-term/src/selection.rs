@@ -282,10 +282,11 @@ impl Selection {
             mem::swap(&mut start, &mut end);
         }
 
-        // Clamp to grid bounds.
+        // Clamp to grid bounds (including history with negative line indices).
+        let min_line = Line(-(grid.history_size() as i32));
         let max_line = Line(grid.screen_lines() as i32 - 1);
         let max_col = Column(columns.saturating_sub(1));
-        start.point.line = std::cmp::max(start.point.line, Line(0));
+        start.point.line = std::cmp::max(start.point.line, min_line);
         start.point.column = min(start.point.column, max_col);
         end.point.line = min(end.point.line, max_line);
         end.point.column = min(end.point.column, max_col);

@@ -42,6 +42,8 @@ struct BlockLayoutEntry {
     block_id: BlockId,
     block_index: usize,
     content_rows: usize,
+    command_row_count: usize,
+    grid_history_size: usize,
 }
 
 impl BlockListView {
@@ -153,7 +155,11 @@ impl BlockListView {
                         return Some((entry.block_index, entry.block_id, Point::new(Line(0), Column(0)), Side::Left));
                     }
 
-                    let row = (f32::from(y_in_block - header_height) / f32::from(cell_height)) as i32;
+                    let visual_row = (f32::from(y_in_block - header_height) / f32::from(cell_height)) as i32;
+                    // Convert visual row to grid Line coordinate:
+                    // visual_row 0 = command text, after that = grid history + screen.
+                    // Grid Line(-history) = first history line, Line(0) = first screen line.
+                    let row = visual_row - entry.command_row_count as i32 - entry.grid_history_size as i32;
                     let col_f = (f32::from(pos.x) - BLOCK_HEADER_PAD_X) / f32::from(cell_width);
                     let col = col_f.max(0.0) as usize;
                     let side = if col_f.fract() < 0.5 { Side::Left } else { Side::Right };
@@ -205,6 +211,8 @@ impl Render for BlockListView {
                 block_id: s.id,
                 block_index: i,
                 content_rows: s.grid.content_rows,
+                command_row_count: s.grid.command_row_count,
+                grid_history_size: s.grid.grid_history_size,
             })
             .collect();
 
