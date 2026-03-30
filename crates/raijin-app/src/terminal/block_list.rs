@@ -10,15 +10,15 @@ use inazuma::{
     MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, ParentElement, Pixels,
     Point as GpuiPoint, Render, Styled, Window,
 };
-use inazuma_component::scroll::{Scrollbar, ScrollbarShow};
+use inazuma_component::scroll::{Scrollbar, ScrollbarShow, StickyHeader};
 use raijin_term::block_grid::BlockId;
 use raijin_term::index::{Column, Line, Point, Side};
 use raijin_term::selection::SelectionType;
 use raijin_terminal::TerminalHandle;
 
-use super::block_element::render_block;
+use super::block_element::{render_block, render_block_header};
 use super::constants::*;
-use super::grid_snapshot::{BlockSnapshotCache, extract_all_block_snapshots};
+use super::grid_snapshot::{BlockSnapshotCache, BlockSnapshot, extract_all_block_snapshots};
 
 /// Stateful block list view that owns rendering + mouse interaction.
 pub struct BlockListView {
@@ -219,6 +219,10 @@ impl Render for BlockListView {
         let font = font.clone();
         let selected_block = self.selected_block;
 
+        // Clone headers for the sticky header overlay (snapshots are moved into the list closure)
+        let sticky_headers: Vec<BlockSnapshot> = snapshots.clone();
+        let item_count = snapshots.len();
+
         let block_list = list(self.list_state.clone(), move |ix, _window, _cx| {
             if let Some(snapshot) = snapshots.get(ix).cloned() {
                 let is_selected = selected_block == Some(ix);
@@ -228,6 +232,22 @@ impl Render for BlockListView {
                 div().into_any_element()
             }
         });
+
+        // Header height: 4px top padding + text_xs (~14px) + 4px bottom padding + 1px border
+        let header_height = px(23.0);
+
+        let sticky_header = StickyHeader::new(
+            &self.list_state,
+            item_count,
+            header_height,
+            move |ix, _window, _cx| {
+                if let Some(snapshot) = sticky_headers.get(ix) {
+                    render_block_header(&snapshot.header).into_any_element()
+                } else {
+                    div().into_any_element()
+                }
+            },
+        );
 
         div()
             .id("block-list-container")
@@ -327,6 +347,7 @@ impl Render for BlockListView {
                 },
             ))
             .child(block_list.size_full())
+            .child(sticky_header)
             .child(
                 Scrollbar::vertical(&self.list_state)
                     .scrollbar_show(ScrollbarShow::Always)
