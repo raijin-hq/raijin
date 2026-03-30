@@ -35,6 +35,9 @@ pub struct BlockListView {
     // Cached block layout for pixel→grid conversion
     // Updated each frame during render
     block_layout: Vec<BlockLayoutEntry>,
+
+    // Sticky header collapse state
+    sticky_collapsed: bool,
 }
 
 /// Cached layout info for one block — used for pixel→grid hit testing.
@@ -57,6 +60,7 @@ impl BlockListView {
             mouse_down_pos: None,
             selected_block: None,
             block_layout: Vec::new(),
+            sticky_collapsed: false,
         }
     }
 
@@ -221,11 +225,14 @@ impl Render for BlockListView {
         // Read current config every frame (respects live config changes)
         let (font, font_size, line_height_multiplier, symbol_maps) = Self::read_config(cx);
 
+        let theme = cx.global::<raijin_settings::ResolvedTheme>().clone();
+
         // Extract snapshots with single lock
         let snapshots = extract_all_block_snapshots(
             &self.terminal,
             &mut self.snapshot_cache,
             &symbol_maps,
+            &theme,
         );
         self.sync_block_count(snapshots.len());
 
@@ -250,10 +257,11 @@ impl Render for BlockListView {
         // Uses previous-frame layout data (imperceptible 1-frame lag at 60fps).
         let sticky_header_data = self.find_sticky_block(&snapshots);
 
+        let list_theme = theme.clone();
         let block_list = list(self.list_state.clone(), move |ix, _window, _cx| {
             if let Some(snapshot) = snapshots.get(ix).cloned() {
                 let is_selected = selected_block == Some(ix);
-                render_block(snapshot, &font, font_size, line_height_multiplier, is_selected)
+                render_block(snapshot, &font, font_size, line_height_multiplier, is_selected, &list_theme)
                     .into_any_element()
             } else {
                 div().into_any_element()
@@ -270,8 +278,20 @@ impl Render for BlockListView {
             // Sticky header in normal flow — clips the list content beneath it.
             // Semi-transparent bg lets window background (image or color) show through.
             .when_some(sticky_header_data, |container, (header, command)| {
+                let collapsed = self.sticky_collapsed;
+                let sticky_theme = theme.clone();
                 container.child(
-                    render_sticky_header(&header, &command, &sticky_font, font_size)
+                    render_sticky_header(
+                        &header,
+                        &command,
+                        &sticky_font,
+                        font_size,
+                        collapsed,
+                        &sticky_theme,
+                        cx.listener(|view, _event, _window, _cx| {
+                            view.sticky_collapsed = !view.sticky_collapsed;
+                        }),
+                    )
                 )
             })
             // List area fills remaining space, naturally clipped below sticky header

@@ -6,9 +6,11 @@
 //!   └── TerminalGridElement (Grid output — renders from pre-extracted snapshot)
 
 use inazuma::{
-    div, hsla, px, Font, InteractiveElement, IntoElement, ParentElement, SharedString, Styled,
+    div, hsla, px, Font, InteractiveElement, IntoElement, ParentElement, SharedString,
+    StatefulInteractiveElement, Styled, Window,
     prelude::FluentBuilder,
 };
+use raijin_settings::ResolvedTheme;
 
 use super::constants::*;
 use super::grid_element::TerminalGridElement;
@@ -67,50 +69,90 @@ pub fn build_metadata_text(header: &super::grid_snapshot::BlockHeaderSnapshot) -
 
 /// Render the sticky block header — pinned at viewport top when scrolling.
 ///
-/// Absolutely positioned overlay with terminal background. On hover the
-/// background switches to accent color (Warp-style). Shows metadata line
-/// and command text in the terminal font.
+/// Shows metadata line + command text in the terminal font.
+/// On hover: accent background. Chevron button toggles collapse.
 pub fn render_sticky_header(
     header: &super::grid_snapshot::BlockHeaderSnapshot,
     command: &str,
     font: &Font,
     font_size: f32,
-) -> impl IntoElement {
+    collapsed: bool,
+    theme: &ResolvedTheme,
+    on_toggle: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
+) -> inazuma::AnyElement {
     let meta_text = build_metadata_text(header);
     let is_error = header.is_error;
     let command_text: SharedString = command.to_string().into();
     let font_family: SharedString = font.family.clone();
+    let chevron = if collapsed { "▼" } else { "▲" };
 
-    div()
+    let hover_bg = sticky_header_hover_bg(theme);
+    let container = div()
         .id("sticky-header")
         .w_full()
         .flex_shrink_0()
-        .bg(block_body_bg())
-        .hover(|s| s.bg(sticky_header_hover_bg()))
-        .px(px(BLOCK_HEADER_PAD_X))
-        .pt(px(4.0))
-        .pb(px(4.0))
+        .bg(block_body_bg(theme))
+        .hover(move |s| s.bg(hover_bg))
         .border_b_1()
         .border_color(hsla(0.0, 0.0, 1.0, 0.12))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))
-                .border_l_color(error_color())
-        })
-        // Metadata line
+                .border_l_color(error_color(theme))
+        });
+
+    // Chevron pill — small rounded button, centered, last element inside the header
+    let chevron_pill = div()
+        .flex()
+        .justify_center()
+        .pt(px(4.0))
         .child(
             div()
+                .id("sticky-chevron")
+                .px(px(10.0))
+                .py(px(2.0))
+                .rounded(px(6.0))
+                .bg(hsla(0.0, 0.0, 0.2, 0.8))
                 .text_xs()
-                .text_color(header_metadata_fg())
-                .child(meta_text),
-        )
-        // Command text (terminal font, full multi-line display like Warp)
-        .child(
-            div()
-                .text_size(px(font_size))
-                .font_family(font_family)
-                .text_color(header_command_fg())
-                .child(command_text),
-        )
+                .text_color(hsla(0.0, 0.0, 1.0, 0.5))
+                .hover(|s| s
+                    .bg(hsla(0.0, 0.0, 0.3, 0.9))
+                    .text_color(hsla(0.0, 0.0, 1.0, 0.8))
+                )
+                .on_click(on_toggle)
+                .child(chevron),
+        );
+
+    if collapsed {
+        // Collapsed: thin bar with just the chevron pill, centered
+        container
+            .flex()
+            .flex_col()
+            .items_center()
+            .py(px(4.0))
+            .child(chevron_pill)
+            .into_any_element()
+    } else {
+        // Expanded: metadata + command text + chevron pill at bottom
+        container
+            .px(px(BLOCK_HEADER_PAD_X))
+            .pt(px(4.0))
+            .pb(px(4.0))
+            .child(
+                div()
+                    .text_xs()
+                    .text_color(header_metadata_fg(theme))
+                    .child(meta_text),
+            )
+            .child(
+                div()
+                    .text_size(px(font_size))
+                    .font_family(font_family)
+                    .text_color(header_command_fg(theme))
+                    .child(command_text),
+            )
+            .child(chevron_pill)
+            .into_any_element()
+    }
 }
 
 /// Render a single block from a pre-extracted snapshot.
@@ -122,21 +164,22 @@ pub fn render_block(
     font_size: f32,
     line_height_multiplier: f32,
     selected: bool,
+    theme: &ResolvedTheme,
 ) -> impl IntoElement {
     let header = &snapshot.header;
     let meta_text = build_metadata_text(header);
 
     let is_error = header.is_error;
 
-    // --- Grid element (renders from snapshot, no locking) ---
-    // No cursor in output blocks — cursor belongs in the input field (Warp pattern)
-    let grid_element = TerminalGridElement::new(snapshot.grid, snapshot.selection, font.clone(), font_size, line_height_multiplier);
+    let grid_element = TerminalGridElement::new(
+        snapshot.grid, snapshot.selection, font.clone(),
+        font_size, line_height_multiplier, terminal_bg(theme),
+    );
 
-    // --- Build div ---
     let bg = if selected {
-        block_selected_bg()
+        block_selected_bg(theme)
     } else {
-        block_body_bg()
+        block_body_bg(theme)
     };
 
     let error_bg = hsla(0.0, 0.5, 0.18, 0.15);
@@ -149,9 +192,8 @@ pub fn render_block(
         .pb(px(BLOCK_BODY_PAD_BOTTOM))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))
-                .border_l_color(error_color())
+                .border_l_color(error_color(theme))
         })
-        // Header
         .child(
             div()
                 .px(px(BLOCK_HEADER_PAD_X))
@@ -160,13 +202,9 @@ pub fn render_block(
                 .child(
                     div()
                         .text_xs()
-                        .text_color(header_metadata_fg())
+                        .text_color(header_metadata_fg(theme))
                         .child(meta_text),
                 )
-                // Command text is rendered as the first line(s) of the grid element,
-                // not as a separate div. This makes it selectable, uses the same
-                // terminal font, and preserves multi-line formatting.
         )
-        // Grid output
         .child(grid_element)
 }

@@ -18,10 +18,10 @@ pub const THEME: &str = "raijin-dark";
 // Theme color defaults (Raijin Dark)
 // ---------------------------------------------------------------------------
 
-pub fn theme_accent() -> String { "#14F195".to_string() }
+pub fn theme_accent() -> String { "#00BFFF".to_string() }
 pub fn theme_background() -> String { "#121212".to_string() }
 pub fn theme_foreground() -> String { "#f1f1f1".to_string() }
 pub fn theme_error() -> String { "#ff5f5f".to_string() }
-pub fn theme_metadata_fg() -> String { "hsla(0, 0%, 100%, 0.35)".to_string() }
-pub fn theme_selected_bg() -> String { "hsla(153, 93%, 51%, 0.08)".to_string() }
-pub fn theme_sticky_hover_bg() -> String { "hsla(153, 40%, 15%, 0.90)".to_string() }
+/// Opacity for block/sticky header backgrounds (0–100). Controls how much
+/// the background image shows through terminal content.
+pub fn theme_block_opacity() -> u32 { 85 }

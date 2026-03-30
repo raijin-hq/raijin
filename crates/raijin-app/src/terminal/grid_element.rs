@@ -61,6 +61,8 @@ pub struct TerminalGridElement {
     font: Font,
     font_size: f32,
     line_height_multiplier: f32,
+    /// Terminal background color — cells with this bg skip painting.
+    terminal_bg: Hsla,
 }
 
 impl TerminalGridElement {
@@ -70,6 +72,7 @@ impl TerminalGridElement {
         font: Font,
         font_size: f32,
         line_height_multiplier: f32,
+        terminal_bg: Hsla,
     ) -> Self {
         Self {
             snapshot,
@@ -77,6 +80,7 @@ impl TerminalGridElement {
             font,
             font_size,
             line_height_multiplier,
+            terminal_bg,
         }
     }
 
@@ -160,7 +164,7 @@ impl Element for TerminalGridElement {
             return empty;
         }
 
-        let bg_color = terminal_bg();
+        let bg_color = self.terminal_bg;
         let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
         let mut current_y = bounds.origin.y;
 

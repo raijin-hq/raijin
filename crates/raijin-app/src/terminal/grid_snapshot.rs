@@ -125,6 +125,7 @@ pub fn extract_all_block_snapshots(
     handle: &TerminalHandle,
     cache: &mut BlockSnapshotCache,
     symbol_maps: &[raijin_settings::ResolvedSymbolMap],
+    theme: &raijin_settings::ResolvedTheme,
 ) -> Vec<BlockSnapshot> {
     let term = handle.lock();
     let colors = term.colors();
@@ -166,7 +167,7 @@ pub fn extract_all_block_snapshots(
         }
 
         // Extract fresh snapshot
-        let snapshot = extract_single_block(block, colors, symbol_maps);
+        let snapshot = extract_single_block(block, colors, symbol_maps, theme);
 
         // Cache finished blocks
         if block.is_finished() {
@@ -185,6 +186,7 @@ fn extract_single_block(
     block: &raijin_term::block_grid::BlockGrid,
     colors: &raijin_term::term::color::Colors,
     symbol_maps: &[raijin_settings::ResolvedSymbolMap],
+    theme: &raijin_settings::ResolvedTheme,
 ) -> BlockSnapshot {
     let grid = &block.grid;
     let history_size = grid.history_size();
@@ -204,8 +206,8 @@ fn extract_single_block(
     // Prepend command text as the first line(s) of the snapshot.
     // This makes the command selectable, uses the same font as output,
     // and preserves multi-line formatting.
-    let command_fg = super::constants::header_command_fg();
-    let bg = super::constants::terminal_bg();
+    let command_fg = theme.command_fg;
+    let bg = theme.background;
     let mut command_lines: Vec<SnapshotLine> = Vec::new();
     if !block.command.is_empty() {
         for cmd_line in block.command.lines() {
@@ -261,7 +263,7 @@ fn extract_single_block(
                 skip_next = true;
             }
 
-            let (mut fg, mut bg) = resolve_colors(cell, colors);
+            let (mut fg, mut bg) = resolve_colors(cell, colors, theme);
             if flags.contains(Flags::INVERSE) {
                 std::mem::swap(&mut fg, &mut bg);
             }

@@ -1,18 +1,23 @@
-//! ANSI color resolution and Raijin Dark palette.
+//! ANSI color resolution.
+//!
+//! Named colors (Background, Foreground, Cursor) are read from the
+//! resolved theme. The 16 ANSI palette colors are still hardcoded
+//! to the Raijin Dark palette for now — they will move to the theme
+//! once terminal_colors parsing is wired up.
 
 use inazuma::{Hsla, hsla};
+use raijin_settings::ResolvedTheme;
 use raijin_term::term::cell::Flags as CellFlags;
 use raijin_term::vte::ansi::{Color as AnsiColor, NamedColor};
-
-use super::constants::terminal_fg;
 
 /// Resolve foreground and background colors for a terminal cell.
 pub fn resolve_colors(
     cell: &raijin_term::term::cell::Cell,
     colors: &raijin_term::term::color::Colors,
+    theme: &ResolvedTheme,
 ) -> (Hsla, Hsla) {
-    let fg = ansi_color_to_hsla(&cell.fg, colors, cell.flags.contains(CellFlags::DIM));
-    let bg = ansi_color_to_hsla(&cell.bg, colors, false);
+    let fg = ansi_color_to_hsla(&cell.fg, colors, cell.flags.contains(CellFlags::DIM), theme);
+    let bg = ansi_color_to_hsla(&cell.bg, colors, false, theme);
     (fg, bg)
 }
 
@@ -20,9 +25,10 @@ fn ansi_color_to_hsla(
     color: &AnsiColor,
     colors: &raijin_term::term::color::Colors,
     dim: bool,
+    theme: &ResolvedTheme,
 ) -> Hsla {
     match color {
-        AnsiColor::Named(name) => named_color_to_hsla(*name, dim),
+        AnsiColor::Named(name) => named_color_to_hsla(*name, dim, theme),
         AnsiColor::Spec(rgb) => {
             let mut c = rgb_to_hsla(rgb.r, rgb.g, rgb.b);
             if dim {
@@ -59,9 +65,10 @@ fn ansi_color_to_hsla(
                         _ => NamedColor::White,
                     },
                     dim,
+                    theme,
                 )
             } else {
-                let mut c = indexed_256_to_hsla(*idx);
+                let mut c = indexed_256_to_hsla(*idx, theme);
                 if dim {
                     c.l *= 0.66;
                 }
@@ -71,39 +78,44 @@ fn ansi_color_to_hsla(
     }
 }
 
-fn named_color_to_hsla(name: NamedColor, dim: bool) -> Hsla {
-    let (r, g, b) = match name {
-        NamedColor::Black => (0x12, 0x12, 0x12),
-        NamedColor::Red => (0xff, 0x5f, 0x5f),
-        NamedColor::Green => (0x00, 0xBF, 0xFF),
-        NamedColor::Yellow => (0xff, 0xd7, 0x00),
-        NamedColor::Blue => (0x5f, 0x87, 0xff),
-        NamedColor::Magenta => (0xd7, 0x5f, 0xff),
-        NamedColor::Cyan => (0x00, 0xd7, 0xaf),
-        NamedColor::White => (0xf1, 0xf1, 0xf1),
-        NamedColor::BrightBlack => (0x66, 0x66, 0x66),
-        NamedColor::BrightRed => (0xff, 0x5f, 0x5f),
-        NamedColor::BrightGreen => (0x00, 0xff, 0x87),
-        NamedColor::BrightYellow => (0xff, 0xff, 0x00),
-        NamedColor::BrightBlue => (0x5c, 0x78, 0xff),
-        NamedColor::BrightMagenta => (0xca, 0x1f, 0x7b),
-        NamedColor::BrightCyan => (0x00, 0xd7, 0xff),
-        NamedColor::BrightWhite => (0xff, 0xff, 0xff),
-        NamedColor::Foreground => (0xf1, 0xf1, 0xf1),
-        NamedColor::Background => (0x12, 0x12, 0x12),
-        NamedColor::Cursor => (0x00, 0xBF, 0xFF),
-        _ => (0xf1, 0xf1, 0xf1),
+fn named_color_to_hsla(name: NamedColor, dim: bool, theme: &ResolvedTheme) -> Hsla {
+    let c = match name {
+        // Theme-driven: these three come from the resolved theme
+        NamedColor::Background => return theme.background,
+        NamedColor::Foreground => return theme.foreground,
+        NamedColor::Cursor => return theme.accent,
+
+        // ANSI 16 palette (hardcoded for now, will come from theme.terminal_colors)
+        NamedColor::Black => rgb_to_hsla(0x12, 0x12, 0x12),
+        NamedColor::Red => rgb_to_hsla(0xff, 0x5f, 0x5f),
+        NamedColor::Green => rgb_to_hsla(0x14, 0xF1, 0x95),
+        NamedColor::Yellow => rgb_to_hsla(0xff, 0xd7, 0x00),
+        NamedColor::Blue => rgb_to_hsla(0x5f, 0x87, 0xff),
+        NamedColor::Magenta => rgb_to_hsla(0xd7, 0x5f, 0xff),
+        NamedColor::Cyan => rgb_to_hsla(0x00, 0xd7, 0xaf),
+        NamedColor::White => rgb_to_hsla(0xf1, 0xf1, 0xf1),
+        NamedColor::BrightBlack => rgb_to_hsla(0x66, 0x66, 0x66),
+        NamedColor::BrightRed => rgb_to_hsla(0xff, 0x5f, 0x5f),
+        NamedColor::BrightGreen => rgb_to_hsla(0x00, 0xff, 0x87),
+        NamedColor::BrightYellow => rgb_to_hsla(0xff, 0xff, 0x00),
+        NamedColor::BrightBlue => rgb_to_hsla(0x5c, 0x78, 0xff),
+        NamedColor::BrightMagenta => rgb_to_hsla(0xca, 0x1f, 0x7b),
+        NamedColor::BrightCyan => rgb_to_hsla(0x00, 0xd7, 0xff),
+        NamedColor::BrightWhite => rgb_to_hsla(0xff, 0xff, 0xff),
+        _ => theme.foreground,
     };
-    let mut c = rgb_to_hsla(r, g, b);
     if dim {
+        let mut c = c;
         c.l *= 0.66;
+        c
+    } else {
+        c
     }
-    c
 }
 
-fn indexed_256_to_hsla(idx: u8) -> Hsla {
+fn indexed_256_to_hsla(idx: u8, theme: &ResolvedTheme) -> Hsla {
     if idx < 16 {
-        return terminal_fg();
+        return theme.foreground;
     }
 
     if idx < 232 {

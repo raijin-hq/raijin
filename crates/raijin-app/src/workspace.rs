@@ -935,6 +935,7 @@ impl Workspace {
     fn render_correction_banner(
         &self,
         correction: &command_correction::CorrectionResult,
+        theme: &raijin_settings::ResolvedTheme,
     ) -> impl IntoElement {
         let original = correction.original.clone();
         let suggestion = correction.suggestion.clone();
@@ -967,7 +968,7 @@ impl Workspace {
                     .py(px(2.0))
                     .bg(hsla(0.0, 0.0, 1.0, 0.08))
                     .rounded(px(4.0))
-                    .text_color(rgb(0x00BFFF))
+                    .text_color(crate::terminal::constants::accent_color(theme))
                     .child(format!("{} ({}%)", suggestion, confidence_pct)),
             )
             .child(
@@ -1006,16 +1007,16 @@ impl Render for Workspace {
             });
         }
 
-        let config = cx.global::<raijin_settings::RaijinConfig>();
-        let theme = raijin_settings::RaijinTheme::load(&config.appearance.theme);
-        let bg_image = theme.as_ref().and_then(|t| t.resolve_background_image());
+        let resolved = cx.global::<raijin_settings::ResolvedTheme>().clone();
+        let bg_color = resolved.background;
+        let bg_image = resolved.background_image.clone();
 
         let mut container = div()
             .flex()
             .flex_col()
             .size_full()
             .relative()
-            .bg(rgb(0x121212))
+            .bg(bg_color)
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive));
 
@@ -1090,7 +1091,7 @@ impl Render for Workspace {
 
                     // Correction banner (e.g. "Did you mean `git status`?")
                     if let Some(ref correction) = self.correction_suggestion {
-                        container = container.child(self.render_correction_banner(correction));
+                        container = container.child(self.render_correction_banner(correction, &resolved));
                     }
 
                     // Input area only visible when no command is running
