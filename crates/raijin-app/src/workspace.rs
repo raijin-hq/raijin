@@ -1006,14 +1006,33 @@ impl Render for Workspace {
             });
         }
 
+        let config = cx.global::<raijin_settings::RaijinConfig>();
+        let theme = raijin_settings::RaijinTheme::load(&config.appearance.theme);
+        let bg_image = theme.as_ref().and_then(|t| t.resolve_background_image());
+
         let mut container = div()
             .flex()
             .flex_col()
             .size_full()
+            .relative()
             .bg(rgb(0x121212))
             .track_focus(&self.focus_handle)
-            .on_key_down(cx.listener(Self::on_key_down_interactive))
-            .child(self.render_title_bar(cx));
+            .on_key_down(cx.listener(Self::on_key_down_interactive));
+
+        // Background image layer from theme — behind all content
+        if let Some((image_path, opacity)) = bg_image {
+            container = container.child(
+                inazuma::img(image_path)
+                    .absolute()
+                    .top_0()
+                    .left_0()
+                    .size_full()
+                    .object_fit(inazuma::ObjectFit::Cover)
+                    .opacity(opacity)
+            );
+        }
+
+        container = container.child(self.render_title_bar(cx));
 
         match self.view_mode {
             ViewMode::Terminal => {

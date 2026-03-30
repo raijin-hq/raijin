@@ -71,6 +71,8 @@ pub struct BlockHeaderSnapshot {
 #[derive(Clone)]
 pub struct BlockSnapshot {
     pub id: BlockId,
+    /// Raw command text (for sticky header display).
+    pub command: String,
     pub header: BlockHeaderSnapshot,
     pub grid: BlockGridSnapshot,
     /// Active text selection within this block (if any).
@@ -295,6 +297,7 @@ fn extract_single_block(
 
     BlockSnapshot {
         id: block.id,
+        command: block.command.clone(),
         header: BlockHeaderSnapshot {
             is_error: block.is_error(),
             is_running: !block.is_finished(),

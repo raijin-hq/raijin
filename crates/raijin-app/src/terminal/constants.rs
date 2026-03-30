@@ -27,7 +27,8 @@ pub fn error_color() -> Hsla {
 }
 
 pub fn block_body_bg() -> Hsla {
-    hsla(0.0, 0.0, 0.0, 0.0)
+    // Semi-transparent so background image shows through block content
+    hsla(0.0, 0.0, 0.071, 0.85)
 }
 
 pub fn block_selected_bg() -> Hsla {
@@ -40,4 +41,9 @@ pub fn header_command_fg() -> Hsla {
 
 pub fn header_metadata_fg() -> Hsla {
     hsla(0.0, 0.0, 1.0, 0.35)
+}
+
+pub fn sticky_header_hover_bg() -> Hsla {
+    // Semi-transparent accent green tint for sticky header hover
+    hsla(153.0 / 360.0, 0.40, 0.15, 0.90)
 }

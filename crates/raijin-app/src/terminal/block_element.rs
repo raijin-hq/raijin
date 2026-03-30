@@ -6,7 +6,7 @@
 //!   └── TerminalGridElement (Grid output — renders from pre-extracted snapshot)
 
 use inazuma::{
-    div, hsla, px, Font, IntoElement, ParentElement, Styled,
+    div, hsla, px, Font, InteractiveElement, IntoElement, ParentElement, SharedString, Styled,
     prelude::FluentBuilder,
 };
 
@@ -65,28 +65,51 @@ pub fn build_metadata_text(header: &super::grid_snapshot::BlockHeaderSnapshot) -
     parts.join("  ")
 }
 
-/// Render the block header bar as an element (used both inline and as sticky overlay).
-pub fn render_block_header(header: &super::grid_snapshot::BlockHeaderSnapshot) -> impl IntoElement {
+/// Render the sticky block header — pinned at viewport top when scrolling.
+///
+/// Absolutely positioned overlay with terminal background. On hover the
+/// background switches to accent color (Warp-style). Shows metadata line
+/// and command text in the terminal font.
+pub fn render_sticky_header(
+    header: &super::grid_snapshot::BlockHeaderSnapshot,
+    command: &str,
+    font: &Font,
+    font_size: f32,
+) -> impl IntoElement {
     let meta_text = build_metadata_text(header);
     let is_error = header.is_error;
+    let command_text: SharedString = command.to_string().into();
+    let font_family: SharedString = font.family.clone();
 
     div()
+        .id("sticky-header")
         .w_full()
-        .bg(terminal_bg())
+        .flex_shrink_0()
+        .bg(block_body_bg())
+        .hover(|s| s.bg(sticky_header_hover_bg()))
         .px(px(BLOCK_HEADER_PAD_X))
         .pt(px(4.0))
         .pb(px(4.0))
-        .border_t_1()
-        .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+        .border_b_1()
+        .border_color(hsla(0.0, 0.0, 1.0, 0.12))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))
                 .border_l_color(error_color())
         })
+        // Metadata line
         .child(
             div()
                 .text_xs()
                 .text_color(header_metadata_fg())
                 .child(meta_text),
+        )
+        // Command text (terminal font, full multi-line display like Warp)
+        .child(
+            div()
+                .text_size(px(font_size))
+                .font_family(font_family)
+                .text_color(header_command_fg())
+                .child(command_text),
         )
 }
 

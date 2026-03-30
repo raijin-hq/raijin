@@ -89,6 +89,121 @@ impl SymbolMapEntry {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Theme
+// ---------------------------------------------------------------------------
+
+/// A Raijin theme file loaded from `~/.raijin/themes/{name}.toml`.
+///
+/// Defines colors, background image, and terminal ANSI colors.
+/// Same concept as Warp's `.yml` theme files in `~/.warp/themes/`.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RaijinTheme {
+    /// Accent color for UI elements (hex).
+    #[serde(default = "defaults::theme_accent")]
+    pub accent: String,
+    /// Terminal background color (hex).
+    #[serde(default = "defaults::theme_background")]
+    pub background: String,
+    /// Terminal foreground color (hex).
+    #[serde(default = "defaults::theme_foreground")]
+    pub foreground: String,
+    /// Error indicator color (hex).
+    #[serde(default = "defaults::theme_error")]
+    pub error: String,
+    /// Block header metadata text color (hex + alpha).
+    #[serde(default = "defaults::theme_metadata_fg")]
+    pub metadata_foreground: String,
+    /// Selected block highlight color (hex + alpha).
+    #[serde(default = "defaults::theme_selected_bg")]
+    pub selected_background: String,
+    /// Sticky header hover background (hex + alpha).
+    #[serde(default = "defaults::theme_sticky_hover_bg")]
+    pub sticky_hover_background: String,
+    /// Optional background image.
+    #[serde(default)]
+    pub background_image: Option<ThemeBackgroundImage>,
+    /// Terminal ANSI colors.
+    #[serde(default)]
+    pub terminal_colors: Option<ThemeTerminalColors>,
+}
+
+/// ANSI terminal color palette.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ThemeTerminalColors {
+    #[serde(default)]
+    pub normal: ThemeAnsiColors,
+    #[serde(default)]
+    pub bright: ThemeAnsiColors,
+}
+
+/// 8 ANSI colors.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ThemeAnsiColors {
+    #[serde(default)]
+    pub black: Option<String>,
+    #[serde(default)]
+    pub red: Option<String>,
+    #[serde(default)]
+    pub green: Option<String>,
+    #[serde(default)]
+    pub yellow: Option<String>,
+    #[serde(default)]
+    pub blue: Option<String>,
+    #[serde(default)]
+    pub magenta: Option<String>,
+    #[serde(default)]
+    pub cyan: Option<String>,
+    #[serde(default)]
+    pub white: Option<String>,
+}
+
+/// Background image configuration within a theme.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ThemeBackgroundImage {
+    /// Path to the image, relative to `~/.raijin/themes/`.
+    pub path: String,
+    /// Opacity 0–100 (like Warp).
+    #[serde(default = "default_bg_image_opacity")]
+    pub opacity: u32,
+}
+
+fn default_bg_image_opacity() -> u32 {
+    15
+}
+
+impl RaijinTheme {
+    /// Load a theme by name from `~/.raijin/themes/{name}.toml`.
+    pub fn load(name: &str) -> Option<Self> {
+        let path = RaijinConfig::themes_dir().join(format!("{name}.toml"));
+        if !path.exists() {
+            return None;
+        }
+        let content = fs::read_to_string(&path).ok()?;
+        toml::from_str(&content).ok()
+    }
+
+    /// Resolve the background image to an absolute path.
+    pub fn resolve_background_image(&self) -> Option<(PathBuf, f32)> {
+        let bg = self.background_image.as_ref()?;
+        let path = PathBuf::from(&bg.path);
+
+        let resolved = if path.is_absolute() {
+            path
+        } else {
+            RaijinConfig::themes_dir().join(&path)
+        };
+
+        if resolved.exists() {
+            let opacity = (bg.opacity as f32 / 100.0).clamp(0.0, 1.0);
+            Some((resolved, opacity))
+        } else {
+            log::warn!("Background image not found: {}", resolved.display());
+            None
+        }
+    }
+}
+
 impl ResolvedSymbolMap {
     /// Check if a character falls in this range and return the font family.
     pub fn match_char(&self, c: char) -> Option<&str> {
@@ -193,19 +308,21 @@ fn defaults_scrollback() -> u32 {
 // ---------------------------------------------------------------------------
 
 impl RaijinConfig {
-    /// Returns the config directory: `~/.config/raijin/`
-    pub fn config_dir() -> PathBuf {
-        dirs::config_dir()
-            .unwrap_or_else(|| {
-                let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
-                PathBuf::from(home).join(".config")
-            })
-            .join("raijin")
+    /// Returns the Raijin home directory: `~/.raijin/`
+    pub fn home_dir() -> PathBuf {
+        dirs::home_dir()
+            .unwrap_or_else(|| PathBuf::from("/tmp"))
+            .join(".raijin")
     }
 
-    /// Returns the config file path: `~/.config/raijin/config.toml`
+    /// Returns the themes directory: `~/.raijin/themes/`
+    pub fn themes_dir() -> PathBuf {
+        Self::home_dir().join("themes")
+    }
+
+    /// Returns the config file path: `~/.raijin/config.toml`
     pub fn config_path() -> PathBuf {
-        Self::config_dir().join("config.toml")
+        Self::home_dir().join("config.toml")
     }
 
     /// Load config from disk. Creates default if file doesn't exist.
@@ -231,7 +348,7 @@ impl RaijinConfig {
 
     /// Save config to disk.
     pub fn save(&self) -> Result<()> {
-        let dir = Self::config_dir();
+        let dir = Self::home_dir();
         fs::create_dir_all(&dir)
             .with_context(|| format!("failed to create config dir {}", dir.display()))?;
 

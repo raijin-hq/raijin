@@ -9,16 +9,17 @@ use inazuma::{
     App, Context, Font, InteractiveElement, IntoElement, ListAlignment, ListState,
     MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, ParentElement, Pixels,
     Point as GpuiPoint, Render, Styled, Window,
+    prelude::FluentBuilder,
 };
-use inazuma_component::scroll::{Scrollbar, ScrollbarShow, StickyHeader};
+use inazuma_component::scroll::{Scrollbar, ScrollbarShow};
 use raijin_term::block_grid::BlockId;
 use raijin_term::index::{Column, Line, Point, Side};
 use raijin_term::selection::SelectionType;
 use raijin_terminal::TerminalHandle;
 
-use super::block_element::{render_block, render_block_header};
+use super::block_element::{render_block, render_sticky_header};
 use super::constants::*;
-use super::grid_snapshot::{BlockSnapshotCache, BlockSnapshot, extract_all_block_snapshots};
+use super::grid_snapshot::{BlockSnapshotCache, BlockSnapshot, BlockHeaderSnapshot, extract_all_block_snapshots};
 
 /// Stateful block list view that owns rendering + mouse interaction.
 pub struct BlockListView {
@@ -177,6 +178,31 @@ impl BlockListView {
         None
     }
 
+    /// Find the block whose header should be pinned (partially scrolled off viewport top).
+    ///
+    /// Returns `(header, command)` for the sticky block, or None if no block is scrolled off.
+    /// Uses previous-frame layout data via bounds_for_item().
+    fn find_sticky_block(&self, snapshots: &[BlockSnapshot]) -> Option<(BlockHeaderSnapshot, String)> {
+        let viewport = self.list_state.viewport_bounds();
+        if viewport.size.height <= px(0.) {
+            return None;
+        }
+        let viewport_top = viewport.origin.y;
+
+        for (ix, snapshot) in snapshots.iter().enumerate() {
+            if let Some(bounds) = self.list_state.bounds_for_item(ix) {
+                let item_top = bounds.origin.y;
+                let item_bottom = item_top + bounds.size.height;
+
+                // Block's top is above viewport AND content still visible below header
+                if item_top < viewport_top && item_bottom > viewport_top + px(30.0) {
+                    return Some((snapshot.header.clone(), snapshot.command.clone()));
+                }
+            }
+        }
+        None
+    }
+
     /// Sync the ListState item count.
     fn sync_block_count(&self, block_count: usize) {
         let current_count = self.list_state.item_count();
@@ -217,11 +243,12 @@ impl Render for BlockListView {
             .collect();
 
         let font = font.clone();
+        let sticky_font = font.clone();
         let selected_block = self.selected_block;
 
-        // Clone headers for the sticky header overlay (snapshots are moved into the list closure)
-        let sticky_headers: Vec<BlockSnapshot> = snapshots.clone();
-        let item_count = snapshots.len();
+        // --- Sticky header: detect which block is partially scrolled off ---
+        // Uses previous-frame layout data (imperceptible 1-frame lag at 60fps).
+        let sticky_header_data = self.find_sticky_block(&snapshots);
 
         let block_list = list(self.list_state.clone(), move |ix, _window, _cx| {
             if let Some(snapshot) = snapshots.get(ix).cloned() {
@@ -233,124 +260,124 @@ impl Render for BlockListView {
             }
         });
 
-        // Header height: 4px top padding + text_xs (~14px) + 4px bottom padding + 1px border
-        let header_height = px(23.0);
-
-        let sticky_header = StickyHeader::new(
-            &self.list_state,
-            item_count,
-            header_height,
-            move |ix, _window, _cx| {
-                if let Some(snapshot) = sticky_headers.get(ix) {
-                    render_block_header(&snapshot.header).into_any_element()
-                } else {
-                    div().into_any_element()
-                }
-            },
-        );
-
         div()
             .id("block-list-container")
+            .flex()
+            .flex_col()
             .flex_1()
             .min_h_0()
-            .relative()
             .overflow_hidden()
-            .on_mouse_down(MouseButton::Left, cx.listener(
-                move |view, event: &MouseDownEvent, window, cx| {
-                    let (font, fs, lh, _) = Self::read_config(cx);
-                    let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
-                    view.mouse_down_pos = Some(event.position);
-
-                    // Clear previous selections
-                    view.clear_all_selections();
-                    view.selected_block = None;
-
-                    if let Some((block_idx, block_id, grid_point, side)) =
-                        view.hit_test(event.position, cw, ch)
-                    {
-                        let handle = view.terminal.clone();
-                        let mut term = handle.lock();
-                        if let Some(block) = term.block_router_mut().blocks_mut().get_mut(block_idx) {
-                            block.start_selection(SelectionType::Simple, grid_point, side);
-                        }
-                        drop(term);
-                        view.selecting_block = Some(block_id);
-                    }
-
-                    cx.notify();
-                },
-            ))
-            .on_mouse_move(cx.listener(
-                move |view, event: &MouseMoveEvent, window, cx| {
-                    if view.selecting_block.is_none() || event.pressed_button.is_none() {
-                        return;
-                    }
-
-                    let (font, fs, lh, _) = Self::read_config(cx);
-                    let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
-                    if let Some((block_idx, _block_id, grid_point, side)) =
-                        view.hit_test(event.position, cw, ch)
-                    {
-                        let handle = view.terminal.clone();
-                        let mut term = handle.lock();
-                        if let Some(block) = term.block_router_mut().blocks_mut().get_mut(block_idx) {
-                            block.update_selection(grid_point, side);
-                        }
-                        drop(term);
-                        // Invalidate snapshot cache to pick up selection changes
-                        view.snapshot_cache = BlockSnapshotCache::new();
-                        cx.notify();
-                    }
-                },
-            ))
-            .on_mouse_up(MouseButton::Left, cx.listener(
-                move |view, event: &MouseUpEvent, window, cx| {
-                    view.selecting_block.take();
-
-                    // Detect click (no drag) vs drag selection
-                    if let Some(down_pos) = view.mouse_down_pos.take() {
-                        let dx = f32::from(event.position.x - down_pos.x).abs();
-                        let dy = f32::from(event.position.y - down_pos.y).abs();
-                        let is_click = dx < 3.0 && dy < 3.0;
-
-                        if is_click {
-                            // Click without drag — clear text selection
-                            view.clear_all_selections();
-
-                            // Find which finished block was clicked → select it
+            // Sticky header in normal flow — clips the list content beneath it.
+            // Semi-transparent bg lets window background (image or color) show through.
+            .when_some(sticky_header_data, |container, (header, command)| {
+                container.child(
+                    render_sticky_header(&header, &command, &sticky_font, font_size)
+                )
+            })
+            // List area fills remaining space, naturally clipped below sticky header
+            .child(
+                div()
+                    .id("block-list-scroll-area")
+                    .flex_1()
+                    .min_h_0()
+                    .relative()
+                    .overflow_hidden()
+                    .on_mouse_down(MouseButton::Left, cx.listener(
+                        move |view, event: &MouseDownEvent, window, cx| {
                             let (font, fs, lh, _) = Self::read_config(cx);
                             let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
-                            if let Some((block_idx, _, _, _)) = view.hit_test(event.position, cw, ch) {
-                                // Only select finished blocks
-                                let is_finished = {
-                                    let handle = view.terminal.clone();
-                                    let term = handle.lock();
-                                    term.block_router().blocks()
-                                        .get(block_idx)
-                                        .is_some_and(|b| b.is_finished())
-                                };
-                                if is_finished {
-                                    // Toggle: deselect if already selected
-                                    if view.selected_block == Some(block_idx) {
-                                        view.selected_block = None;
+                            view.mouse_down_pos = Some(event.position);
+
+                            // Clear previous selections
+                            view.clear_all_selections();
+                            view.selected_block = None;
+
+                            if let Some((block_idx, block_id, grid_point, side)) =
+                                view.hit_test(event.position, cw, ch)
+                            {
+                                let handle = view.terminal.clone();
+                                let mut term = handle.lock();
+                                if let Some(block) = term.block_router_mut().blocks_mut().get_mut(block_idx) {
+                                    block.start_selection(SelectionType::Simple, grid_point, side);
+                                }
+                                drop(term);
+                                view.selecting_block = Some(block_id);
+                            }
+
+                            cx.notify();
+                        },
+                    ))
+                    .on_mouse_move(cx.listener(
+                        move |view, event: &MouseMoveEvent, window, cx| {
+                            if view.selecting_block.is_none() || event.pressed_button.is_none() {
+                                return;
+                            }
+
+                            let (font, fs, lh, _) = Self::read_config(cx);
+                            let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
+                            if let Some((block_idx, _block_id, grid_point, side)) =
+                                view.hit_test(event.position, cw, ch)
+                            {
+                                let handle = view.terminal.clone();
+                                let mut term = handle.lock();
+                                if let Some(block) = term.block_router_mut().blocks_mut().get_mut(block_idx) {
+                                    block.update_selection(grid_point, side);
+                                }
+                                drop(term);
+                                // Invalidate snapshot cache to pick up selection changes
+                                view.snapshot_cache = BlockSnapshotCache::new();
+                                cx.notify();
+                            }
+                        },
+                    ))
+                    .on_mouse_up(MouseButton::Left, cx.listener(
+                        move |view, event: &MouseUpEvent, window, cx| {
+                            view.selecting_block.take();
+
+                            // Detect click (no drag) vs drag selection
+                            if let Some(down_pos) = view.mouse_down_pos.take() {
+                                let dx = f32::from(event.position.x - down_pos.x).abs();
+                                let dy = f32::from(event.position.y - down_pos.y).abs();
+                                let is_click = dx < 3.0 && dy < 3.0;
+
+                                if is_click {
+                                    // Click without drag — clear text selection
+                                    view.clear_all_selections();
+
+                                    // Find which finished block was clicked → select it
+                                    let (font, fs, lh, _) = Self::read_config(cx);
+                                    let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
+                                    if let Some((block_idx, _, _, _)) = view.hit_test(event.position, cw, ch) {
+                                        // Only select finished blocks
+                                        let is_finished = {
+                                            let handle = view.terminal.clone();
+                                            let term = handle.lock();
+                                            term.block_router().blocks()
+                                                .get(block_idx)
+                                                .is_some_and(|b| b.is_finished())
+                                        };
+                                        if is_finished {
+                                            // Toggle: deselect if already selected
+                                            if view.selected_block == Some(block_idx) {
+                                                view.selected_block = None;
+                                            } else {
+                                                view.selected_block = Some(block_idx);
+                                            }
+                                        }
                                     } else {
-                                        view.selected_block = Some(block_idx);
+                                        view.selected_block = None;
                                     }
                                 }
-                            } else {
-                                view.selected_block = None;
                             }
-                        }
-                    }
 
-                    cx.notify();
-                },
-            ))
-            .child(block_list.size_full())
-            .child(sticky_header)
-            .child(
-                Scrollbar::vertical(&self.list_state)
-                    .scrollbar_show(ScrollbarShow::Always)
+                            cx.notify();
+                        },
+                    ))
+                    .child(block_list.size_full())
+                    .child(
+                        Scrollbar::vertical(&self.list_state)
+                            .scrollbar_show(ScrollbarShow::Always)
+                    )
             )
     }
 }
