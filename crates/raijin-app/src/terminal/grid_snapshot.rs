@@ -187,12 +187,13 @@ fn extract_single_block(
     let cursor_line = grid.cursor.point.line.0.max(0) as usize;
     // Use the block's computed content_rows if finalized (trims trailing empty lines),
     // otherwise fall back to cursor position for running blocks.
-    let visible_rows = if block.is_finished() {
+    // For finished blocks, content_rows already includes history + screen content.
+    // For running blocks, use cursor position + history.
+    let content_rows = if block.is_finished() {
         block.content_rows
     } else {
-        cursor_line + 1
+        history_size + cursor_line + 1
     };
-    let content_rows = history_size + visible_rows;
 
     // Prepend command text as the first line(s) of the snapshot.
     // This makes the command selectable, uses the same font as output,
