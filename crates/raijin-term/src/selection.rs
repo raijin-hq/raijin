@@ -5,7 +5,7 @@
 //! when text is added/removed/scrolled on the screen. The selection should
 //! also be cleared if the user clicks off of the selection.
 
-use std::cmp::min;
+use std::cmp::{min, max};
 use std::mem;
 use std::ops::{Bound, Range, RangeBounds};
 
@@ -294,7 +294,12 @@ impl Selection {
         let range = match self.ty {
             SelectionType::Simple => self.range_simple(start, end, columns),
             SelectionType::Block => self.range_block(start, end),
-            _ => self.range_simple(start, end, columns),
+            SelectionType::Semantic => {
+                Some(Self::range_semantic_block(grid, start.point, end.point))
+            },
+            SelectionType::Lines => {
+                Some(Self::range_lines_block(start.point, end.point, columns))
+            },
         };
 
         // Side adjustments in range_simple/range_block can push start past end.
@@ -304,6 +309,51 @@ impl Selection {
         } else {
             r
         })
+    }
+
+    /// Semantic (word) selection on a standalone block grid.
+    /// Expands start left and end right to word boundaries.
+    fn range_semantic_block(
+        grid: &crate::grid::Grid<crate::term::cell::Cell>,
+        start: Point,
+        end: Point,
+    ) -> SelectionRange {
+        let semantic_chars = ",│`|:\"' ()[]{}<>\t";
+        let columns = grid.columns();
+
+        // Expand start leftward to word boundary
+        let mut s = start;
+        while s.column.0 > 0 {
+            let prev_col = Column(s.column.0 - 1);
+            let cell = &grid[s.line][prev_col];
+            if cell.c == ' ' || cell.c == '\0' || semantic_chars.contains(cell.c) {
+                break;
+            }
+            s.column = prev_col;
+        }
+
+        // Expand end rightward to word boundary
+        let mut e = end;
+        loop {
+            let next_col = Column(e.column.0 + 1);
+            if next_col.0 >= columns {
+                break;
+            }
+            let cell = &grid[e.line][next_col];
+            if cell.c == ' ' || cell.c == '\0' || semantic_chars.contains(cell.c) {
+                break;
+            }
+            e.column = next_col;
+        }
+
+        SelectionRange { start: s, end: e, is_block: false }
+    }
+
+    /// Line selection on a standalone block grid.
+    fn range_lines_block(start: Point, end: Point, columns: usize) -> SelectionRange {
+        let s = Point::new(min(start.line, end.line), Column(0));
+        let e = Point::new(max(start.line, end.line), Column(columns.saturating_sub(1)));
+        SelectionRange { start: s, end: e, is_block: false }
     }
 
     /// Convert selection to grid coordinates.

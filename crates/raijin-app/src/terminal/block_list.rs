@@ -32,6 +32,11 @@ pub struct BlockListView {
     mouse_down_pos: Option<GpuiPoint<Pixels>>,
     selected_block: Option<usize>,
 
+    /// Pending single-click block toggle — cancelled if a double-click follows.
+    /// Stores (block_index, timer_task). The task fires after 300ms to confirm
+    /// it was a real single-click, not the first half of a double-click.
+    pending_block_toggle: Option<(usize, inazuma::Task<()>)>,
+
     // Cached block layout for pixel→grid conversion
     // Updated each frame during render
     block_layout: Vec<BlockLayoutEntry>,
@@ -61,6 +66,7 @@ impl BlockListView {
             snapshot_cache: BlockSnapshotCache::new(),
             selecting_block: None,
             mouse_down_pos: None,
+            pending_block_toggle: None,
             selected_block: None,
             block_layout: Vec::new(),
             fold_show_all: false,
@@ -356,17 +362,38 @@ impl Render for BlockListView {
                             let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
                             view.mouse_down_pos = Some(event.position);
 
-                            // Clear previous selections
+                            // Clear previous text selections (not block selection —
+                            // that's toggled in mouse_up to allow deselect on re-click)
                             view.clear_all_selections();
-                            view.selected_block = None;
+
+                            // Double/triple click: cancel pending block-toggle from single-click
+                            if event.click_count >= 2 {
+                                view.pending_block_toggle = None;
+                                view.selected_block = None;
+                            }
 
                             if let Some((block_idx, block_id, grid_point, side)) =
                                 view.hit_test(event.position, cw, ch)
                             {
+                                // Selection type based on click count:
+                                // 1 = simple drag selection
+                                // 2 = word (semantic) selection
+                                // 3 = line selection
+                                let sel_type = match event.click_count {
+                                    2 => SelectionType::Semantic,
+                                    3 => SelectionType::Lines,
+                                    _ => SelectionType::Simple,
+                                };
+
                                 let handle = view.terminal.clone();
                                 let mut term = handle.lock();
                                 if let Some(block) = term.block_router_mut().blocks_mut().get_mut(block_idx) {
-                                    block.start_selection(SelectionType::Simple, grid_point, side);
+                                    block.start_selection(sel_type, grid_point, side);
+                                    // For semantic/lines, also set the end point immediately
+                                    // so the selection is visible without requiring a drag.
+                                    if matches!(sel_type, SelectionType::Semantic | SelectionType::Lines) {
+                                        block.update_selection(grid_point, side);
+                                    }
                                 }
                                 drop(term);
                                 view.selecting_block = Some(block_id);
@@ -408,15 +435,14 @@ impl Render for BlockListView {
                                 let dy = f32::from(event.position.y - down_pos.y).abs();
                                 let is_click = dx < 3.0 && dy < 3.0;
 
-                                if is_click {
-                                    // Click without drag — clear text selection
+                                if is_click && event.click_count <= 1 {
+                                    // Defer block-toggle by 300ms — if a double-click
+                                    // follows, the timer is cancelled in mouse_down.
                                     view.clear_all_selections();
 
-                                    // Find which finished block was clicked → select it
                                     let (font, fs, lh, _) = Self::read_config(cx);
                                     let (cw, ch) = Self::cell_dimensions(&font, fs, lh, window);
                                     if let Some((block_idx, _, _, _)) = view.hit_test(event.position, cw, ch) {
-                                        // Only select finished blocks
                                         let is_finished = {
                                             let handle = view.terminal.clone();
                                             let term = handle.lock();
@@ -425,15 +451,30 @@ impl Render for BlockListView {
                                                 .is_some_and(|b| b.is_finished())
                                         };
                                         if is_finished {
-                                            // Toggle: deselect if already selected
-                                            if view.selected_block == Some(block_idx) {
-                                                view.selected_block = None;
-                                            } else {
-                                                view.selected_block = Some(block_idx);
-                                            }
+                                            let task = cx.spawn(async move |this, cx| {
+                                                cx.background_executor().timer(std::time::Duration::from_millis(300)).await;
+                                                if let Some(this) = this.upgrade() {
+                                                    this.update(cx, |view, cx| {
+                                                        // Only toggle if this pending task wasn't cancelled
+                                                        if view.pending_block_toggle.as_ref()
+                                                            .is_some_and(|(idx, _)| *idx == block_idx)
+                                                        {
+                                                            if view.selected_block == Some(block_idx) {
+                                                                view.selected_block = None;
+                                                            } else {
+                                                                view.selected_block = Some(block_idx);
+                                                            }
+                                                            view.pending_block_toggle = None;
+                                                            cx.notify();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            view.pending_block_toggle = Some((block_idx, task));
                                         }
                                     } else {
                                         view.selected_block = None;
+                                        view.pending_block_toggle = None;
                                     }
                                 }
                             }
