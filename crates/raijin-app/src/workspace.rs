@@ -103,6 +103,9 @@ pub struct Workspace {
     /// If set, the shell was not found at startup and the install modal should be shown.
     pending_shell_install: Option<&'static shell_install::ShellInstallInfo>,
     block_list: Entity<crate::terminal::block_list::BlockListView>,
+    /// Synchronously pre-loaded background image for instant display.
+    /// Tracks the source path — re-loaded when theme changes the image.
+    cached_bg_image: Option<(std::path::PathBuf, Arc<inazuma::RenderImage>)>,
     interactive_mode: bool,
     show_terminal: bool,
     view_mode: ViewMode,
@@ -200,12 +203,29 @@ impl Workspace {
             available_shells: detect_available_shells(),
             pending_shell_install,
             block_list: block_list_view,
+            cached_bg_image: None,
             interactive_mode: false,
             show_terminal: false,
             view_mode: ViewMode::Terminal,
             last_terminal_rows: 0,
             last_terminal_cols: 0,
         }
+    }
+
+    /// Get the pre-loaded background image, loading/reloading synchronously if
+    /// the path changed (theme switch) or on first access. Avoids the 2-frame
+    /// async delay from Inazuma's use_asset pipeline for local files.
+    fn bg_render_image(&mut self, path: &std::path::Path) -> Option<Arc<inazuma::RenderImage>> {
+        // Return cached if path matches
+        if let Some((cached_path, cached_img)) = &self.cached_bg_image {
+            if cached_path == path {
+                return Some(Arc::clone(cached_img));
+            }
+        }
+        // Synchronously load and decode — instant first-frame display
+        let render = inazuma::preload_image(path)?;
+        self.cached_bg_image = Some((path.to_path_buf(), Arc::clone(&render)));
+        Some(render)
     }
 
     fn handle_terminal_event(&mut self, event: TerminalEvent, window: &mut Window, cx: &mut Context<Self>) {
@@ -1028,15 +1048,17 @@ impl Render for Workspace {
 
         // Background image layer from theme — behind all content
         if let Some((image_path, opacity)) = bg_image {
-            container = container.child(
-                inazuma::img(image_path)
-                    .absolute()
-                    .top_0()
-                    .left_0()
-                    .size_full()
-                    .object_fit(inazuma::ObjectFit::Cover)
-                    .opacity(opacity)
-            );
+            if let Some(render_image) = self.bg_render_image(&image_path) {
+                container = container.child(
+                    inazuma::img(inazuma::ImageSource::Render(render_image))
+                        .absolute()
+                        .top_0()
+                        .left_0()
+                        .size_full()
+                        .object_fit(inazuma::ObjectFit::Cover)
+                        .opacity(opacity)
+                );
+            }
         }
 
         container = container.child(self.render_title_bar(cx));

@@ -193,6 +193,19 @@ pub struct Img {
     source: ImageSource,
     style: ImageStyle,
     image_cache: Option<AnyImageCache>,
+    /// Per-image loading delay override. `None` uses the global `LOADING_DELAY`.
+    loading_delay: Option<Duration>,
+}
+
+/// Synchronously load and decode an image from a filesystem path.
+/// Returns `Arc<RenderImage>` for use with `ImageSource::Render` — the image
+/// appears instantly in the first frame without any async delay.
+pub fn preload_image(path: &std::path::Path) -> Option<Arc<RenderImage>> {
+    let bytes = std::fs::read(path).ok()?;
+    let img = image::load_from_memory(&bytes).ok()?;
+    let rgba = img.to_rgba8();
+    let frame = image::Frame::new(rgba);
+    Some(Arc::new(RenderImage::new(smallvec::smallvec![frame])))
 }
 
 /// Create a new image element.
@@ -203,10 +216,18 @@ pub fn img(source: impl Into<ImageSource>) -> Img {
         source: source.into(),
         style: ImageStyle::default(),
         image_cache: None,
+        loading_delay: None,
     }
 }
 
 impl Img {
+    /// Set the loading delay for this image. Use `Duration::ZERO` for instant
+    /// display (e.g. local filesystem images). Defaults to `LOADING_DELAY` (200ms).
+    pub fn loading_delay(mut self, delay: Duration) -> Self {
+        self.loading_delay = Some(delay);
+        self
+    }
+
     /// A list of all format extensions currently supported by this img element
     pub fn extensions() -> &'static [&'static str] {
         // This is the list in [image::ImageFormat::from_extension] + `svg`
@@ -381,8 +402,9 @@ impl Element for Img {
                         }
                         None => {
                             if let Some(state) = &mut state {
+                                let delay = self.loading_delay.unwrap_or(LOADING_DELAY);
                                 if let Some((started_loading, _)) = state.started_loading {
-                                    if started_loading.elapsed() > LOADING_DELAY
+                                    if started_loading.elapsed() > delay
                                         && let Some(loading) = self.style.loading.as_ref()
                                     {
                                         let mut element = loading();
@@ -392,7 +414,7 @@ impl Element for Img {
                                 } else {
                                     let current_view = window.current_view();
                                     let task = window.spawn(cx, async move |cx| {
-                                        cx.background_executor().timer(LOADING_DELAY).await;
+                                        cx.background_executor().timer(delay).await;
                                         cx.update(move |_, cx| {
                                             cx.notify(current_view);
                                         })
