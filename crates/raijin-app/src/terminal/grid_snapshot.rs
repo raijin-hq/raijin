@@ -6,6 +6,8 @@
 //! For finished blocks, snapshots are cached on the Workspace since their
 //! grid content never changes. Only new/active blocks are freshly extracted.
 
+use std::sync::Arc;
+
 use inazuma::Hsla;
 use raijin_term::block_grid::BlockId;
 use raijin_term::grid::Dimensions;
@@ -68,13 +70,16 @@ pub struct BlockHeaderSnapshot {
 }
 
 /// Complete snapshot of one block (header + grid).
+///
+/// The grid is wrapped in `Arc` — finished blocks share grid data across frames
+/// without deep-copying millions of cells. Only header/selection are cheaply cloned.
 #[derive(Clone)]
 pub struct BlockSnapshot {
     pub id: BlockId,
     /// Raw command text (for sticky header display).
     pub command: String,
     pub header: BlockHeaderSnapshot,
-    pub grid: BlockGridSnapshot,
+    pub grid: Arc<BlockGridSnapshot>,
     /// Active text selection within this block (if any).
     pub selection: Option<raijin_term::selection::SelectionRange>,
 }
@@ -84,9 +89,21 @@ pub struct BlockSnapshot {
 /// Lives on the Workspace, persists across frames. Finished blocks never
 /// change, so their snapshots are extracted once and reused forever.
 /// Invalidated on terminal column resize (reflow changes line content).
+/// Cache for finished block snapshots.
+///
+/// Stores `Arc<BlockGridSnapshot>` so that cloning a cached block for rendering
+/// is O(1) (Arc increment) instead of O(n) (deep-copying millions of cells).
+/// Header metadata is stored separately since it can change after finalization.
 pub struct BlockSnapshotCache {
-    entries: Vec<(BlockId, BlockSnapshot)>,
+    entries: Vec<CachedBlock>,
     cached_cols: usize,
+}
+
+struct CachedBlock {
+    id: BlockId,
+    command: String,
+    header: BlockHeaderSnapshot,
+    grid: Arc<BlockGridSnapshot>,
 }
 
 impl BlockSnapshotCache {
@@ -97,22 +114,28 @@ impl BlockSnapshotCache {
         }
     }
 
-    fn get(&self, id: BlockId) -> Option<&BlockSnapshot> {
-        self.entries.iter().find(|(bid, _)| *bid == id).map(|(_, s)| s)
+    fn get(&self, id: BlockId) -> Option<&CachedBlock> {
+        self.entries.iter().find(|e| e.id == id)
     }
 
-    fn insert(&mut self, snapshot: BlockSnapshot) {
+    fn insert(&mut self, snapshot: &BlockSnapshot) {
         let id = snapshot.id;
-        if let Some(pos) = self.entries.iter().position(|(bid, _)| *bid == id) {
-            self.entries[pos].1 = snapshot;
+        let entry = CachedBlock {
+            id,
+            command: snapshot.command.clone(),
+            header: snapshot.header.clone(),
+            grid: Arc::clone(&snapshot.grid),
+        };
+        if let Some(pos) = self.entries.iter().position(|e| e.id == id) {
+            self.entries[pos] = entry;
         } else {
-            self.entries.push((id, snapshot));
+            self.entries.push(entry);
         }
     }
 
     /// Remove cached entries for blocks that no longer exist.
     fn retain_existing(&mut self, existing_ids: &[BlockId]) {
-        self.entries.retain(|(id, _)| existing_ids.contains(id));
+        self.entries.retain(|e| existing_ids.contains(&e.id));
     }
 }
 
@@ -149,29 +172,37 @@ pub fn extract_all_block_snapshots(
     let mut snapshots = Vec::with_capacity(blocks.len());
 
     for block in blocks {
-        // Finished blocks: serve from cache if available, but update header
-        // (metadata like duration_ms may arrive after the block is cached)
+        // Finished blocks: reuse cached Arc<BlockGridSnapshot> (O(1) clone).
+        // Only header metadata and selection are freshly constructed (cheap).
         if block.is_finished() {
             if let Some(cached) = cache.get(block.id) {
-                let mut snapshot = cached.clone();
-                // Refresh header fields that can change after finalization
-                snapshot.header.duration_ms = block.metadata.duration_ms;
-                snapshot.header.username = block.metadata.username.clone();
-                snapshot.header.hostname = block.metadata.hostname.clone();
-                snapshot.header.cwd = block.metadata.cwd.clone();
-                snapshot.header.git_branch = block.metadata.git_branch.clone();
-                snapshot.selection = block.selection_range();
-                snapshots.push(snapshot);
+                snapshots.push(BlockSnapshot {
+                    id: block.id,
+                    command: cached.command.clone(),
+                    header: BlockHeaderSnapshot {
+                        is_error: cached.header.is_error,
+                        is_running: false,
+                        started_at: cached.header.started_at,
+                        finished_at: cached.header.finished_at,
+                        duration_ms: block.metadata.duration_ms,
+                        username: block.metadata.username.clone(),
+                        hostname: block.metadata.hostname.clone(),
+                        cwd: block.metadata.cwd.clone(),
+                        git_branch: block.metadata.git_branch.clone(),
+                    },
+                    grid: Arc::clone(&cached.grid),
+                    selection: block.selection_range(),
+                });
                 continue;
             }
         }
 
-        // Extract fresh snapshot
+        // Extract fresh snapshot (active or first-time finished block)
         let snapshot = extract_single_block(block, colors, symbol_maps, theme);
 
         // Cache finished blocks
         if block.is_finished() {
-            cache.insert(snapshot.clone());
+            cache.insert(&snapshot);
         }
 
         snapshots.push(snapshot);
@@ -311,13 +342,13 @@ fn extract_single_block(
             cwd: block.metadata.cwd.clone(),
             git_branch: block.metadata.git_branch.clone(),
         },
-        grid: BlockGridSnapshot {
+        grid: Arc::new(BlockGridSnapshot {
             content_rows: command_row_count + content_rows,
             command_row_count,
             grid_history_size: history_size,
             grid_cols,
             lines,
-        },
+        }),
         selection: block.selection_range(),
     }
 }

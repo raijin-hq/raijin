@@ -15,6 +15,8 @@ use inazuma::{
     Pixels, Point, SharedString, Style, Window, fill,
 };
 
+use std::sync::Arc;
+
 use super::builtin_font::{self, BuiltinChar};
 use super::constants::*;
 use super::grid_snapshot::BlockGridSnapshot;
@@ -56,7 +58,7 @@ pub struct GridPrepaint {
 /// No mutex locking happens here — all data comes from the snapshot
 /// which was extracted with a single lock in block_list.rs.
 pub struct TerminalGridElement {
-    snapshot: BlockGridSnapshot,
+    snapshot: Arc<BlockGridSnapshot>,
     selection: Option<raijin_term::selection::SelectionRange>,
     font: Font,
     font_size: f32,
@@ -67,7 +69,7 @@ pub struct TerminalGridElement {
 
 impl TerminalGridElement {
     pub fn new(
-        snapshot: BlockGridSnapshot,
+        snapshot: Arc<BlockGridSnapshot>,
         selection: Option<raijin_term::selection::SelectionRange>,
         font: Font,
         font_size: f32,
