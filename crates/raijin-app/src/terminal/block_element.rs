@@ -12,7 +12,7 @@ use inazuma::{
 use raijin_settings::ResolvedTheme;
 
 use super::constants::*;
-use super::grid_element::TerminalGridElement;
+use super::grid_element::{GridOriginStore, TerminalGridElement};
 use super::grid_snapshot::BlockSnapshot;
 
 /// Build the metadata text line for a block header.
@@ -189,13 +189,14 @@ pub fn render_block(
     line_height_multiplier: f32,
     selected: bool,
     theme: &ResolvedTheme,
+    grid_origin_store: Option<GridOriginStore>,
 ) -> impl IntoElement {
     let header = &snapshot.header;
     let meta_text = build_metadata_text(header);
 
     let is_error = header.is_error;
 
-    let grid_element = TerminalGridElement::new(
+    let mut grid_element = TerminalGridElement::new(
         snapshot.grid,
         snapshot.selection,
         font.clone(),
@@ -203,6 +204,9 @@ pub fn render_block(
         line_height_multiplier,
         terminal_bg(theme),
     );
+    if let Some(store) = grid_origin_store {
+        grid_element = grid_element.with_origin_store(store);
+    }
 
     let bg = if selected {
         block_selected_bg(theme)

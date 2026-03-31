@@ -57,6 +57,11 @@ pub struct GridPrepaint {
 ///
 /// No mutex locking happens here — all data comes from the snapshot
 /// which was extracted with a single lock in block_list.rs.
+/// Shared storage for the grid element's actual rendered origin Y coordinate.
+/// Written during prepaint, read by hit_test in block_list.rs for exact
+/// pixel→row mapping without sub-pixel rounding drift.
+pub type GridOriginStore = std::rc::Rc<std::cell::Cell<Option<Pixels>>>;
+
 pub struct TerminalGridElement {
     snapshot: Arc<BlockGridSnapshot>,
     selection: Option<raijin_term::selection::SelectionRange>,
@@ -65,6 +70,8 @@ pub struct TerminalGridElement {
     line_height_multiplier: f32,
     /// Terminal background color — cells with this bg skip painting.
     terminal_bg: Hsla,
+    /// If set, the actual bounds.origin.y is written here during prepaint.
+    origin_store: Option<GridOriginStore>,
 }
 
 impl TerminalGridElement {
@@ -83,7 +90,14 @@ impl TerminalGridElement {
             font_size,
             line_height_multiplier,
             terminal_bg,
+            origin_store: None,
         }
+    }
+
+    /// Attach a store to capture the grid's actual origin Y during prepaint.
+    pub fn with_origin_store(mut self, store: GridOriginStore) -> Self {
+        self.origin_store = Some(store);
+        self
     }
 
     /// Compute cell dimensions from font metrics.
@@ -170,6 +184,11 @@ impl Element for TerminalGridElement {
         let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
         let mut current_y = bounds.origin.y;
 
+        // Store actual grid origin for exact hit_test mapping
+        if let Some(store) = &self.origin_store {
+            store.set(Some(bounds.origin.y));
+        }
+
         // Resolve the base font once for the block
         let base_font_id = window.text_system().resolve_font(&self.font);
         let ascent = window.text_system().ascent(base_font_id, font_size);
@@ -187,14 +206,18 @@ impl Element for TerminalGridElement {
 
         let grid_history_size = self.snapshot.grid_history_size;
         let command_offset = self.snapshot.command_row_count;
+        let grid_origin_y = bounds.origin.y;
         for (line_idx, snap_line) in self.snapshot.lines.iter().enumerate() {
+            // Position via multiplication — no float accumulation drift over thousands of rows.
+            // This matches the hit_test division: visual_row = y_in_grid / cell_height.
+            current_y = grid_origin_y + cell_height * line_idx as f32;
+
             // Selection lives on BlockGrid which doesn't have command text lines.
             // Subtract command_row_count so snapshot line indices map to grid selection indices.
             let grid_line = raijin_term::index::Line((line_idx as i32) - (grid_history_size as i32) - (command_offset as i32));
             let line_bottom = current_y + cell_height;
 
             if line_bottom < viewport_top {
-                current_y += cell_height;
                 continue;
             }
             if current_y > viewport_bottom {
@@ -202,7 +225,6 @@ impl Element for TerminalGridElement {
             }
 
             if snap_line.cells.is_empty() {
-                current_y += cell_height;
                 continue;
             }
 
@@ -336,8 +358,6 @@ impl Element for TerminalGridElement {
 
                 col_x += if cell.wide { 2 } else { 1 };
             }
-
-            current_y += cell_height;
         }
 
         GridPrepaint {

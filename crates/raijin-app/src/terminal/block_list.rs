@@ -48,6 +48,9 @@ struct BlockLayoutEntry {
     content_rows: usize,
     command_row_count: usize,
     grid_history_size: usize,
+    /// Shared store: TerminalGridElement writes actual grid origin Y during prepaint,
+    /// hit_test reads it for exact pixel→row mapping without sub-pixel drift.
+    grid_origin_store: super::grid_element::GridOriginStore,
 }
 
 impl BlockListView {
@@ -149,18 +152,26 @@ impl BlockListView {
         for entry in &self.block_layout {
             if let Some(bounds) = self.list_state.bounds_for_item(entry.block_index) {
                 if bounds.contains(&pos) {
-                    // Compute actual header height from block bounds:
-                    // block_height = header + grid, grid = content_rows * cell_height
+                    // Use the ACTUAL grid origin from the last prepaint (exact, no drift).
+                    // Falls back to bottom-up calculation if not yet painted.
                     let grid_height = cell_height * entry.content_rows as f32;
-                    let header_height = bounds.size.height - grid_height;
-                    let y_in_block = pos.y - bounds.origin.y;
+                    let grid_start_y = entry.grid_origin_store.get().unwrap_or_else(|| {
+                        bounds.origin.y + bounds.size.height
+                            - px(BLOCK_BODY_PAD_BOTTOM) - grid_height
+                    });
+                    let y_in_grid = pos.y - grid_start_y;
 
-                    // Header click — block selection, not text selection
-                    if y_in_block < header_height {
+                    log::debug!(
+                        "hit_test: pos.y={:.1} grid_origin={:.1} y_in_grid={:.1} cell_h={:.1} visual_row={}",
+                        f32::from(pos.y), f32::from(grid_start_y), f32::from(y_in_grid),
+                        f32::from(cell_height), (f32::from(y_in_grid) / f32::from(cell_height)) as i32,
+                    );
+                    // Click above grid = header area → block selection
+                    if y_in_grid < px(0.0) {
                         return Some((entry.block_index, entry.block_id, Point::new(Line(0), Column(0)), Side::Left));
                     }
 
-                    let visual_row = (f32::from(y_in_block - header_height) / f32::from(cell_height)) as i32;
+                    let visual_row = (f32::from(y_in_grid) / f32::from(cell_height)) as i32;
                     // Convert visual row to grid Line coordinate:
                     // visual_row 0 = command text, after that = grid history + screen.
                     // Grid Line(-history) = first history line, Line(0) = first screen line.
@@ -222,7 +233,8 @@ impl Render for BlockListView {
         );
         self.sync_block_count(snapshots.len());
 
-        // Cache block layout for hit testing
+        // Cache block layout for hit testing — each entry gets a shared GridOriginStore.
+        // TerminalGridElement writes the actual origin Y during prepaint, hit_test reads it.
         self.block_layout = snapshots
             .iter()
             .enumerate()
@@ -232,7 +244,13 @@ impl Render for BlockListView {
                 content_rows: s.grid.content_rows,
                 command_row_count: s.grid.command_row_count,
                 grid_history_size: s.grid.grid_history_size,
+                grid_origin_store: std::rc::Rc::new(std::cell::Cell::new(None)),
             })
+            .collect();
+        // Clone the Rc stores for the render_item closure
+        let origin_stores: Vec<super::grid_element::GridOriginStore> = self.block_layout
+            .iter()
+            .map(|e| e.grid_origin_store.clone())
             .collect();
 
         let font = font.clone();
@@ -264,7 +282,8 @@ impl Render for BlockListView {
         let block_list = list(self.list_state.clone(), move |ix, _window, _cx| {
             if let Some(snapshot) = snapshots.get(ix).cloned() {
                 let is_selected = selected_block == Some(ix);
-                render_block(snapshot, &font, font_size, line_height_multiplier, is_selected, &list_theme)
+                let store = origin_stores.get(ix).cloned();
+                render_block(snapshot, &font, font_size, line_height_multiplier, is_selected, &list_theme, store)
                     .into_any_element()
             } else {
                 div().into_any_element()
@@ -373,8 +392,8 @@ impl Render for BlockListView {
                                     block.update_selection(grid_point, side);
                                 }
                                 drop(term);
-                                // Invalidate snapshot cache to pick up selection changes
-                                view.snapshot_cache = BlockSnapshotCache::new();
+                                // Selection is read fresh each frame from BlockGrid.selection_range()
+                                // in extract_all_block_snapshots — no cache invalidation needed.
                                 cx.notify();
                             }
                         },
