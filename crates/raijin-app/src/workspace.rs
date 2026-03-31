@@ -157,8 +157,8 @@ impl Workspace {
         let events_rx = terminal.event_receiver().clone();
         cx.spawn_in(window, async move |this, cx| {
             while let Ok(event) = events_rx.recv_async().await {
-                this.update_in(cx, |view, _window, cx| {
-                    view.handle_terminal_event(event, cx);
+                this.update_in(cx, |view, window, cx| {
+                    view.handle_terminal_event(event, window, cx);
                 })
                 .ok();
             }
@@ -208,7 +208,7 @@ impl Workspace {
         }
     }
 
-    fn handle_terminal_event(&mut self, event: TerminalEvent, cx: &mut Context<Self>) {
+    fn handle_terminal_event(&mut self, event: TerminalEvent, window: &mut Window, cx: &mut Context<Self>) {
         match event {
             TerminalEvent::Wakeup => {
                 self.update_interactive_mode();
@@ -223,7 +223,7 @@ impl Workspace {
                 cx.notify();
             }
             TerminalEvent::ShellMarker(marker) => {
-                self.handle_shell_marker(marker, cx);
+                self.handle_shell_marker(marker, window, cx);
             }
         }
     }
@@ -231,6 +231,7 @@ impl Workspace {
     fn handle_shell_marker(
         &mut self,
         marker: raijin_terminal::ShellMarker,
+        window: &mut Window,
         cx: &mut Context<Self>,
     ) {
         // Handle metadata — update context chips before block processing
@@ -285,6 +286,11 @@ impl Workspace {
             }
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
                 log::debug!("Command finished with exit code: {}", exit_code);
+
+                // Auto-focus input so the user can type immediately
+                self.input_state.update(cx, |state, cx| {
+                    state.focus(window, cx);
+                });
 
                 // Auto-switch to newly installed shell if install succeeded
                 if let Some(shell_name) = cx.global_mut::<PendingShellInstallName>().0.take() {
@@ -827,8 +833,8 @@ impl Workspace {
         let events_rx = new_terminal.event_receiver().clone();
         cx.spawn_in(window, async move |this, cx| {
             while let Ok(event) = events_rx.recv_async().await {
-                this.update_in(cx, |view, _window, cx| {
-                    view.handle_terminal_event(event, cx);
+                this.update_in(cx, |view, window, cx| {
+                    view.handle_terminal_event(event, window, cx);
                 })
                 .ok();
             }

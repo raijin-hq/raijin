@@ -66,109 +66,118 @@ pub fn build_metadata_text(header: &super::grid_snapshot::BlockHeaderSnapshot) -
     parts.join("  ")
 }
 
-/// Render the sticky block header — pinned at viewport top when scrolling.
-///
-/// The header contains a chevron toggle button that straddles its bottom border
-/// (like Warp): rounded top corners inside the header, flat bottom edge extending
-/// below. The chevron is absolutely positioned so it peeks out from under the
-/// header's bottom border.
-pub fn render_sticky_header(
-    header: &super::grid_snapshot::BlockHeaderSnapshot,
-    command: &str,
-    font: &Font,
-    font_size: f32,
-    collapsed: bool,
-    theme: &ResolvedTheme,
-    on_toggle: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
-) -> inazuma::AnyElement {
-    let is_error = header.is_error;
-    let chevron = if collapsed { "▼" } else { "▲" };
-
-    // Chevron half-pill: rounded top, flat bottom — straddles the header border.
-    // Collapsed header has ~0 height, so the pill needs to hang further below.
-    let chevron_bottom = if collapsed { px(-18.0) } else { px(-3.0) };
-    let chevron_pill = div()
-        .absolute()
-        .bottom(chevron_bottom)
-        .left_0()
-        .w_full()
-        .flex()
-        .justify_center()
-        .child(
-            div()
-                .id("sticky-chevron")
-                .px(px(14.0))
-                .pt(px(3.0))
-                .pb(px(1.0))
-                .when(collapsed, |d| d.rounded_b(px(6.0)))
-                .when(!collapsed, |d| d.rounded_t(px(6.0)))
-                .bg(hsla(0.0, 0.0, 0.15, 0.9))
-                .text_size(px(11.0))
-                .text_color(hsla(0.0, 0.0, 1.0, 0.5))
-                .cursor_pointer()
-                .hover(|s| {
-                    s.bg(hsla(0.0, 0.0, 0.25, 0.95))
-                        .text_color(hsla(0.0, 0.0, 1.0, 0.8))
-                })
-                .on_click(on_toggle)
-                .child(chevron),
-        );
-
-    if collapsed {
-        // Collapsed: thin border line + chevron peeking below
-        div()
-            .id("sticky-header")
-            .w_full()
-            .flex_shrink_0()
-            .relative()
-            .border_b_1()
-            .border_color(hsla(0.0, 0.0, 1.0, 0.12))
-            .when(is_error, |d| {
-                d.border_l(px(BLOCK_LEFT_BORDER))
-                    .border_l_color(error_color(theme))
-            })
-            .child(chevron_pill)
-            .into_any_element()
+/// Format duration for fold-line display.
+fn format_fold_duration(header: &super::grid_snapshot::BlockHeaderSnapshot) -> String {
+    if header.is_running {
+        "running...".to_string()
+    } else if let Some(ms) = header.duration_ms {
+        format!("{:.3}s", ms as f64 / 1000.0)
     } else {
-        // Expanded: metadata + command text + chevron at bottom border
-        let meta_text = build_metadata_text(header);
-        let command_text: SharedString = command.to_string().into();
-        let font_family: SharedString = font.family.clone();
-        let hover_bg = sticky_header_hover_bg(theme);
-
-        div()
-            .id("sticky-header")
-            .w_full()
-            .flex_shrink_0()
-            .relative()
-            .bg(block_body_bg(theme))
-            .hover(move |s| s.bg(hover_bg))
-            .border_b_1()
-            .border_color(hsla(0.0, 0.0, 1.0, 0.12))
-            .when(is_error, |d| {
-                d.border_l(px(BLOCK_LEFT_BORDER))
-                    .border_l_color(error_color(theme))
-            })
-            .px(px(BLOCK_HEADER_PAD_X))
-            .pt(px(4.0))
-            .pb(px(4.0))
-            .child(
-                div()
-                    .text_xs()
-                    .text_color(header_metadata_fg(theme))
-                    .child(meta_text),
-            )
-            .child(
-                div()
-                    .text_size(px(font_size))
-                    .font_family(font_family)
-                    .text_color(header_command_fg(theme))
-                    .child(command_text),
-            )
-            .child(chevron_pill)
-            .into_any_element()
+        let duration = header
+            .finished_at
+            .map(|f| f.duration_since(header.started_at))
+            .unwrap_or_default();
+        format!("{:.3}s", duration.as_secs_f64())
     }
 }
+
+/// Render a single fold-line for a block that scrolled above the viewport.
+///
+/// Layout: `[badge] command-text ...                  (duration)`
+pub fn render_fold_line(
+    header: &super::grid_snapshot::BlockHeaderSnapshot,
+    command: &str,
+    index: usize,
+    theme: &ResolvedTheme,
+    on_click: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
+) -> impl IntoElement {
+    let (badge, badge_color) = if header.is_running {
+        ("●", fold_badge_running(theme))
+    } else if header.is_error {
+        ("✗", fold_badge_error(theme))
+    } else {
+        ("✓", fold_badge_success(theme))
+    };
+
+    let bg = if header.is_error {
+        fold_line_error_bg(theme)
+    } else {
+        fold_line_bg(theme)
+    };
+    let hover_bg = fold_line_hover_bg(theme);
+    let duration_text: SharedString = format_fold_duration(header).into();
+    let command_text: SharedString = command.to_string().into();
+    let id = SharedString::from(format!("fold-line-{}", index));
+
+    div()
+        .id(id)
+        .h(px(FOLD_LINE_HEIGHT))
+        .w_full()
+        .flex()
+        .flex_row()
+        .items_center()
+        .px(px(BLOCK_HEADER_PAD_X))
+        .gap(px(8.0))
+        .bg(bg)
+        .cursor_pointer()
+        .hover(move |s| s.bg(hover_bg))
+        .on_click(on_click)
+        .child(
+            div()
+                .text_size(px(11.0))
+                .text_color(badge_color)
+                .flex_shrink_0()
+                .child(badge),
+        )
+        .child(
+            div()
+                .flex_1()
+                .min_w_0()
+                .overflow_x_hidden()
+                .text_size(px(12.0))
+                .text_color(header_command_fg(theme))
+                .child(command_text),
+        )
+        .child(
+            div()
+                .flex_shrink_0()
+                .text_size(px(11.0))
+                .text_color(header_metadata_fg(theme))
+                .child(duration_text),
+        )
+}
+
+/// Render the fold counter line — clickable to expand/collapse all fold-lines.
+///
+/// - `hidden_count > 0`: shows "⌃ N more commands above" (click → show all)
+/// - `hidden_count == 0`: shows "▾ show less" (click → collapse back to 3)
+pub fn render_fold_counter(
+    hidden_count: usize,
+    theme: &ResolvedTheme,
+    on_click: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
+) -> impl IntoElement {
+    let text: SharedString = if hidden_count > 0 {
+        format!("⌃ {} more commands above", hidden_count).into()
+    } else {
+        "▾ show less".into()
+    };
+    let hover_bg = fold_line_hover_bg(theme);
+
+    div()
+        .id("fold-counter")
+        .h(px(FOLD_COUNTER_HEIGHT))
+        .w_full()
+        .flex()
+        .items_center()
+        .px(px(BLOCK_HEADER_PAD_X))
+        .text_size(px(11.0))
+        .text_color(header_metadata_fg(theme))
+        .cursor_pointer()
+        .hover(move |s| s.bg(hover_bg))
+        .on_click(on_click)
+        .child(text)
+}
+
 
 /// Render a single block from a pre-extracted snapshot.
 ///

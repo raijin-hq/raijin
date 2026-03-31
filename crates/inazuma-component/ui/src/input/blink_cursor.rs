@@ -34,8 +34,10 @@ impl BlinkCursor {
         }
     }
 
-    /// Start the blinking
+    /// Start the blinking — resets any paused state so the blink cycle
+    /// always begins, even after programmatic focus().
     pub fn start(&mut self, cx: &mut Context<Self>) {
+        self.paused = false;
         self.blink(self.epoch, cx);
     }
 
