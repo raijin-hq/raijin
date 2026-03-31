@@ -99,12 +99,9 @@ pub fn render_fold_line(
         ("✓", fold_badge_success(theme))
     };
 
-    let bg = if header.is_error {
-        fold_line_error_bg(theme)
-    } else {
-        fold_line_bg(theme)
-    };
     let hover_bg = fold_line_hover_bg(theme);
+    let error_bg = fold_line_error_bg(theme);
+    let is_error = header.is_error;
     let duration_text: SharedString = format_fold_duration(header).into();
     let command_text: SharedString = command.to_string().into();
     let id = SharedString::from(format!("fold-line-{}", index));
@@ -118,7 +115,7 @@ pub fn render_fold_line(
         .items_center()
         .px(px(BLOCK_HEADER_PAD_X))
         .gap(px(8.0))
-        .bg(bg)
+        .when(is_error, |d| d.bg(error_bg))
         .cursor_pointer()
         .hover(move |s| s.bg(hover_bg))
         .on_click(on_click)
@@ -208,17 +205,14 @@ pub fn render_block(
         grid_element = grid_element.with_origin_store(store);
     }
 
-    let bg = if selected {
-        block_selected_bg(theme)
-    } else {
-        block_body_bg(theme)
-    };
-
+    // No permanent background — transparent like Warp, so the background
+    // image shows through uniformly. Only selected/error states get a tint.
     let error_bg = hsla(0.0, 0.5, 0.18, 0.15);
 
     div()
         .w_full()
-        .bg(if is_error { error_bg } else { bg })
+        .when(selected, |d| d.bg(block_selected_bg(theme)))
+        .when(is_error && !selected, |d| d.bg(error_bg))
         .border_t_1()
         .border_color(hsla(0.0, 0.0, 1.0, 0.08))
         .pb(px(BLOCK_BODY_PAD_BOTTOM))

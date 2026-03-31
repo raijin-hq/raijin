@@ -30,11 +30,9 @@ pub fn block_body_bg(t: &ResolvedTheme) -> Hsla { t.block_bg }
 pub fn block_selected_bg(t: &ResolvedTheme) -> Hsla { t.selected_bg }
 pub fn header_command_fg(t: &ResolvedTheme) -> Hsla { t.command_fg }
 pub fn header_metadata_fg(t: &ResolvedTheme) -> Hsla { t.metadata_fg }
-// Fold system colors
+// Fold system colors — use the same block_bg alpha for consistent transparency
 pub fn fold_line_bg(t: &ResolvedTheme) -> Hsla {
-    let mut bg = t.block_bg;
-    bg.a = (bg.a + 0.05).min(1.0);
-    bg
+    t.block_bg
 }
 pub fn fold_line_error_bg(t: &ResolvedTheme) -> Hsla {
     let mut c = t.error;
