@@ -1,6 +1,7 @@
 mod scrollable;
 mod scrollable_mask;
 mod scrollbar;
+mod scrollbar_element;
 mod sticky_header;
 
 pub use scrollable::*;

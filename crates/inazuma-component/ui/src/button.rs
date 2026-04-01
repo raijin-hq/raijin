@@ -1,6 +1,7 @@
 mod button;
 mod button_group;
 mod button_icon;
+mod button_style;
 mod dropdown_button;
 mod toggle;
 

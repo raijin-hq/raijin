@@ -5,6 +5,8 @@ mod data_table;
 mod delegate;
 mod loading;
 mod state;
+mod state_actions;
+mod state_render;
 mod table;
 
 pub use column::*;

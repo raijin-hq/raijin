@@ -4,6 +4,8 @@ pub use diagnostics::*;
 
 // Native implementation with full tree-sitter support
 #[cfg(not(target_family = "wasm"))]
+mod highlight_styles;
+#[cfg(not(target_family = "wasm"))]
 mod highlighter;
 #[cfg(not(target_family = "wasm"))]
 mod languages;

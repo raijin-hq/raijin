@@ -2,6 +2,8 @@ mod document;
 mod format;
 mod inline;
 mod node;
+mod node_markdown;
+mod node_render;
 mod state;
 mod style;
 mod text_view;
