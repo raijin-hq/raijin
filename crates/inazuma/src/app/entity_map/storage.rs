@@ -1,0 +1,541 @@
+use super::*;
+
+slotmap::new_key_type! {
+    /// A unique identifier for a entity across the application.
+    pub struct EntityId;
+}
+
+impl From<u64> for EntityId {
+    fn from(value: u64) -> Self {
+        Self(KeyData::from_ffi(value))
+    }
+}
+
+impl EntityId {
+    /// Converts this entity id to a [NonZeroU64]
+    pub fn as_non_zero_u64(self) -> NonZeroU64 {
+        NonZeroU64::new(self.0.as_ffi()).unwrap()
+    }
+
+    /// Converts this entity id to a [u64]
+    pub fn as_u64(self) -> u64 {
+        self.0.as_ffi()
+    }
+}
+
+impl Display for EntityId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.as_u64())
+    }
+}
+
+pub(crate) struct EntityMap {
+    entities: SecondaryMap<EntityId, Box<dyn Any>>,
+    pub accessed_entities: RefCell<FxHashSet<EntityId>>,
+    ref_counts: Arc<RwLock<EntityRefCounts>>,
+}
+
+#[doc(hidden)]
+pub(crate) struct EntityRefCounts {
+    pub(super) counts: SlotMap<EntityId, AtomicUsize>,
+    pub(super) dropped_entity_ids: Vec<EntityId>,
+    #[cfg(any(test, feature = "leak-detection"))]
+    pub(super) leak_detector: LeakDetector,
+}
+
+impl EntityMap {
+    pub fn new() -> Self {
+        Self {
+            entities: SecondaryMap::new(),
+            accessed_entities: RefCell::new(FxHashSet::default()),
+            ref_counts: Arc::new(RwLock::new(EntityRefCounts {
+                counts: SlotMap::with_key(),
+                dropped_entity_ids: Vec::new(),
+                #[cfg(any(test, feature = "leak-detection"))]
+                leak_detector: LeakDetector {
+                    next_handle_id: 0,
+                    entity_handles: HashMap::default(),
+                },
+            })),
+        }
+    }
+
+    #[doc(hidden)]
+    pub fn ref_counts_drop_handle(&self) -> Arc<RwLock<EntityRefCounts>> {
+        self.ref_counts.clone()
+    }
+
+    /// Captures a snapshot of all entities that currently have alive handles.
+    ///
+    /// The returned [`LeakDetectorSnapshot`] can later be passed to
+    /// [`assert_no_new_leaks`](Self::assert_no_new_leaks) to verify that no
+    /// entities created after the snapshot are still alive.
+    #[cfg(any(test, feature = "leak-detection"))]
+    pub fn leak_detector_snapshot(&self) -> LeakDetectorSnapshot {
+        self.ref_counts.read().leak_detector.snapshot()
+    }
+
+    /// Asserts that no entities created after `snapshot` still have alive handles.
+    ///
+    /// See [`LeakDetector::assert_no_new_leaks`] for details.
+    #[cfg(any(test, feature = "leak-detection"))]
+    pub fn assert_no_new_leaks(&self, snapshot: &LeakDetectorSnapshot) {
+        self.ref_counts
+            .read()
+            .leak_detector
+            .assert_no_new_leaks(snapshot)
+    }
+
+    /// Reserve a slot for an entity, which you can subsequently use with `insert`.
+    pub fn reserve<T: 'static>(&self) -> Slot<T> {
+        let id = self.ref_counts.write().counts.insert(1.into());
+        Slot(Entity::new(id, Arc::downgrade(&self.ref_counts)))
+    }
+
+    /// Insert an entity into a slot obtained by calling `reserve`.
+    pub fn insert<T>(&mut self, slot: Slot<T>, entity: T) -> Entity<T>
+    where
+        T: 'static,
+    {
+        let mut accessed_entities = self.accessed_entities.get_mut();
+        accessed_entities.insert(slot.entity_id);
+
+        let handle = slot.0;
+        self.entities.insert(handle.entity_id, Box::new(entity));
+        handle
+    }
+
+    /// Move an entity to the stack.
+    #[track_caller]
+    pub fn lease<T>(&mut self, pointer: &Entity<T>) -> Lease<T> {
+        self.assert_valid_context(pointer);
+        let mut accessed_entities = self.accessed_entities.get_mut();
+        accessed_entities.insert(pointer.entity_id);
+
+        let entity = Some(
+            self.entities
+                .remove(pointer.entity_id)
+                .unwrap_or_else(|| double_lease_panic::<T>("update")),
+        );
+        Lease {
+            entity,
+            id: pointer.entity_id,
+            entity_type: PhantomData,
+        }
+    }
+
+    /// Returns an entity after moving it to the stack.
+    pub fn end_lease<T>(&mut self, mut lease: Lease<T>) {
+        self.entities.insert(lease.id, lease.entity.take().unwrap());
+    }
+
+    pub fn read<T: 'static>(&self, entity: &Entity<T>) -> &T {
+        self.assert_valid_context(entity);
+        let mut accessed_entities = self.accessed_entities.borrow_mut();
+        accessed_entities.insert(entity.entity_id);
+
+        self.entities
+            .get(entity.entity_id)
+            .and_then(|entity| entity.downcast_ref())
+            .unwrap_or_else(|| double_lease_panic::<T>("read"))
+    }
+
+    fn assert_valid_context(&self, entity: &AnyEntity) {
+        debug_assert!(
+            Weak::ptr_eq(&entity.entity_map, &Arc::downgrade(&self.ref_counts)),
+            "used a entity with the wrong context"
+        );
+    }
+
+    pub fn extend_accessed(&mut self, entities: &FxHashSet<EntityId>) {
+        self.accessed_entities
+            .get_mut()
+            .extend(entities.iter().copied());
+    }
+
+    pub fn clear_accessed(&mut self) {
+        self.accessed_entities.get_mut().clear();
+    }
+
+    pub fn take_dropped(&mut self) -> Vec<(EntityId, Box<dyn Any>)> {
+        let mut ref_counts = &mut *self.ref_counts.write();
+        let dropped_entity_ids = ref_counts.dropped_entity_ids.drain(..);
+        let mut accessed_entities = self.accessed_entities.get_mut();
+
+        dropped_entity_ids
+            .filter_map(|entity_id| {
+                let count = ref_counts.counts.remove(entity_id).unwrap();
+                debug_assert_eq!(
+                    count.load(SeqCst),
+                    0,
+                    "dropped an entity that was referenced"
+                );
+                accessed_entities.remove(&entity_id);
+                // If the EntityId was allocated with `Context::reserve`,
+                // the entity may not have been inserted.
+                Some((entity_id, self.entities.remove(entity_id)?))
+            })
+            .collect()
+    }
+}
+
+#[track_caller]
+fn double_lease_panic<T>(operation: &str) -> ! {
+    panic!(
+        "cannot {operation} {} while it is already being updated",
+        std::any::type_name::<T>()
+    )
+}
+
+pub(crate) struct Lease<T> {
+    entity: Option<Box<dyn Any>>,
+    pub id: EntityId,
+    entity_type: PhantomData<T>,
+}
+
+impl<T: 'static> core::ops::Deref for Lease<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        self.entity.as_ref().unwrap().downcast_ref().unwrap()
+    }
+}
+
+impl<T: 'static> core::ops::DerefMut for Lease<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.entity.as_mut().unwrap().downcast_mut().unwrap()
+    }
+}
+
+impl<T> Drop for Lease<T> {
+    fn drop(&mut self) {
+        if self.entity.is_some() && !panicking() {
+            panic!("Leases must be ended with EntityMap::end_lease")
+        }
+    }
+}
+
+#[derive(Deref, DerefMut)]
+pub(crate) struct Slot<T>(Entity<T>);
+
+/// A dynamically typed reference to a entity, which can be downcast into a `Entity<T>`.
+pub struct AnyEntity {
+    pub(crate) entity_id: EntityId,
+    pub(crate) entity_type: TypeId,
+    pub(super) entity_map: Weak<RwLock<EntityRefCounts>>,
+    #[cfg(any(test, feature = "leak-detection"))]
+    pub(super) handle_id: HandleId,
+}
+
+impl AnyEntity {
+    pub(super) fn new(
+        id: EntityId,
+        entity_type: TypeId,
+        entity_map: Weak<RwLock<EntityRefCounts>>,
+        #[cfg(any(test, feature = "leak-detection"))] type_name: &'static str,
+    ) -> Self {
+        Self {
+            entity_id: id,
+            entity_type,
+            #[cfg(any(test, feature = "leak-detection"))]
+            handle_id: entity_map
+                .clone()
+                .upgrade()
+                .unwrap()
+                .write()
+                .leak_detector
+                .handle_created(id, Some(type_name)),
+            entity_map,
+        }
+    }
+
+    /// Returns the id associated with this entity.
+    #[inline]
+    pub fn entity_id(&self) -> EntityId {
+        self.entity_id
+    }
+
+    /// Returns the [TypeId] associated with this entity.
+    #[inline]
+    pub fn entity_type(&self) -> TypeId {
+        self.entity_type
+    }
+
+    /// Converts this entity handle into a weak variant, which does not prevent it from being released.
+    pub fn downgrade(&self) -> AnyWeakEntity {
+        AnyWeakEntity {
+            entity_id: self.entity_id,
+            entity_type: self.entity_type,
+            entity_ref_counts: self.entity_map.clone(),
+        }
+    }
+
+    /// Converts this entity handle into a strongly-typed entity handle of the given type.
+    /// If this entity handle is not of the specified type, returns itself as an error variant.
+    pub fn downcast<T: 'static>(self) -> Result<Entity<T>, AnyEntity> {
+        if TypeId::of::<T>() == self.entity_type {
+            Ok(Entity {
+                any_entity: self,
+                entity_type: PhantomData,
+            })
+        } else {
+            Err(self)
+        }
+    }
+}
+
+impl Clone for AnyEntity {
+    fn clone(&self) -> Self {
+        if let Some(entity_map) = self.entity_map.upgrade() {
+            let entity_map = entity_map.read();
+            let count = entity_map
+                .counts
+                .get(self.entity_id)
+                .expect("detected over-release of a entity");
+            let prev_count = count.fetch_add(1, SeqCst);
+            assert_ne!(prev_count, 0, "Detected over-release of a entity.");
+        }
+
+        Self {
+            entity_id: self.entity_id,
+            entity_type: self.entity_type,
+            entity_map: self.entity_map.clone(),
+            #[cfg(any(test, feature = "leak-detection"))]
+            handle_id: self
+                .entity_map
+                .upgrade()
+                .unwrap()
+                .write()
+                .leak_detector
+                .handle_created(self.entity_id, None),
+        }
+    }
+}
+
+impl Drop for AnyEntity {
+    fn drop(&mut self) {
+        if let Some(entity_map) = self.entity_map.upgrade() {
+            let entity_map = entity_map.upgradable_read();
+            let count = entity_map
+                .counts
+                .get(self.entity_id)
+                .expect("detected over-release of a handle.");
+            let prev_count = count.fetch_sub(1, SeqCst);
+            assert_ne!(prev_count, 0, "Detected over-release of a entity.");
+            if prev_count == 1 {
+                // We were the last reference to this entity, so we can remove it.
+                let mut entity_map = RwLockUpgradableReadGuard::upgrade(entity_map);
+                entity_map.dropped_entity_ids.push(self.entity_id);
+            }
+        }
+
+        #[cfg(any(test, feature = "leak-detection"))]
+        if let Some(entity_map) = self.entity_map.upgrade() {
+            entity_map
+                .write()
+                .leak_detector
+                .handle_released(self.entity_id, self.handle_id)
+        }
+    }
+}
+
+impl<T> From<Entity<T>> for AnyEntity {
+    #[inline]
+    fn from(entity: Entity<T>) -> Self {
+        entity.any_entity
+    }
+}
+
+impl Hash for AnyEntity {
+    #[inline]
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.entity_id.hash(state);
+    }
+}
+
+impl PartialEq for AnyEntity {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.entity_id == other.entity_id
+    }
+}
+
+impl Eq for AnyEntity {}
+
+impl Ord for AnyEntity {
+    #[inline]
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.entity_id.cmp(&other.entity_id)
+    }
+}
+
+impl PartialOrd for AnyEntity {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl std::fmt::Debug for AnyEntity {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("AnyEntity")
+            .field("entity_id", &self.entity_id.as_u64())
+            .finish()
+    }
+}
+
+/// A strong, well-typed reference to a struct which is managed
+/// by GPUI
+#[derive(Deref, DerefMut)]
+pub struct Entity<T> {
+    #[deref]
+    #[deref_mut]
+    pub(crate) any_entity: AnyEntity,
+    pub(crate) entity_type: PhantomData<fn(T) -> T>,
+}
+
+impl<T> Sealed for Entity<T> {}
+
+impl<T: 'static> Entity<T> {
+    #[inline]
+    pub(super) fn new(id: EntityId, entity_map: Weak<RwLock<EntityRefCounts>>) -> Self
+    where
+        T: 'static,
+    {
+        Self {
+            any_entity: AnyEntity::new(
+                id,
+                TypeId::of::<T>(),
+                entity_map,
+                #[cfg(any(test, feature = "leak-detection"))]
+                std::any::type_name::<T>(),
+            ),
+            entity_type: PhantomData,
+        }
+    }
+
+    /// Get the entity ID associated with this entity
+    #[inline]
+    pub fn entity_id(&self) -> EntityId {
+        self.any_entity.entity_id
+    }
+
+    /// Downgrade this entity pointer to a non-retaining weak pointer
+    #[inline]
+    pub fn downgrade(&self) -> WeakEntity<T> {
+        WeakEntity {
+            any_entity: self.any_entity.downgrade(),
+            entity_type: self.entity_type,
+        }
+    }
+
+    /// Convert this into a dynamically typed entity.
+    #[inline]
+    pub fn into_any(self) -> AnyEntity {
+        self.any_entity
+    }
+
+    /// Grab a reference to this entity from the context.
+    #[inline]
+    pub fn read<'a>(&self, cx: &'a App) -> &'a T {
+        cx.entities.read(self)
+    }
+
+    /// Read the entity referenced by this handle with the given function.
+    #[inline]
+    pub fn read_with<R, C: AppContext>(&self, cx: &C, f: impl FnOnce(&T, &App) -> R) -> R {
+        cx.read_entity(self, f)
+    }
+
+    /// Updates the entity referenced by this handle with the given function.
+    #[inline]
+    pub fn update<R, C: AppContext>(
+        &self,
+        cx: &mut C,
+        update: impl FnOnce(&mut T, &mut Context<T>) -> R,
+    ) -> R {
+        cx.update_entity(self, update)
+    }
+
+    /// Updates the entity referenced by this handle with the given function.
+    #[inline]
+    pub fn as_mut<'a, C: AppContext>(&self, cx: &'a mut C) -> GpuiBorrow<'a, T> {
+        cx.as_mut(self)
+    }
+
+    /// Updates the entity referenced by this handle with the given function.
+    pub fn write<C: AppContext>(&self, cx: &mut C, value: T) {
+        self.update(cx, |entity, cx| {
+            *entity = value;
+            cx.notify();
+        })
+    }
+
+    /// Updates the entity referenced by this handle with the given function if
+    /// the referenced entity still exists, within a visual context that has a window.
+    /// Returns an error if the window has been closed.
+    #[inline]
+    pub fn update_in<R, C: VisualContext>(
+        &self,
+        cx: &mut C,
+        update: impl FnOnce(&mut T, &mut Window, &mut Context<T>) -> R,
+    ) -> C::Result<R> {
+        cx.update_window_entity(self, update)
+    }
+}
+
+impl<T> Clone for Entity<T> {
+    #[inline]
+    fn clone(&self) -> Self {
+        Self {
+            any_entity: self.any_entity.clone(),
+            entity_type: self.entity_type,
+        }
+    }
+}
+
+impl<T> std::fmt::Debug for Entity<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Entity")
+            .field("entity_id", &self.any_entity.entity_id)
+            .field("entity_type", &type_name::<T>())
+            .finish()
+    }
+}
+
+impl<T> Hash for Entity<T> {
+    #[inline]
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.any_entity.hash(state);
+    }
+}
+
+impl<T> PartialEq for Entity<T> {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.any_entity == other.any_entity
+    }
+}
+
+impl<T> Eq for Entity<T> {}
+
+impl<T> PartialEq<WeakEntity<T>> for Entity<T> {
+    #[inline]
+    fn eq(&self, other: &WeakEntity<T>) -> bool {
+        self.any_entity.entity_id() == other.entity_id()
+    }
+}
+
+impl<T: 'static> Ord for Entity<T> {
+    #[inline]
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.entity_id().cmp(&other.entity_id())
+    }
+}
+
+impl<T: 'static> PartialOrd for Entity<T> {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}

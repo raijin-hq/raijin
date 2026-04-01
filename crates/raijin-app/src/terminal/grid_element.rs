@@ -182,8 +182,6 @@ impl Element for TerminalGridElement {
 
         let bg_color = self.terminal_bg;
         let text_x = bounds.origin.x + px(BLOCK_HEADER_PAD_X);
-        let mut current_y = bounds.origin.y;
-
         // Store actual grid origin for exact hit_test mapping
         if let Some(store) = &self.origin_store {
             store.set(Some(bounds.origin.y));
@@ -210,7 +208,7 @@ impl Element for TerminalGridElement {
         for (line_idx, snap_line) in self.snapshot.lines.iter().enumerate() {
             // Position via multiplication — no float accumulation drift over thousands of rows.
             // This matches the hit_test division: visual_row = y_in_grid / cell_height.
-            current_y = grid_origin_y + cell_height * line_idx as f32;
+            let current_y = grid_origin_y + cell_height * line_idx as f32;
 
             // Selection lives on BlockGrid which doesn't have command text lines.
             // Subtract command_row_count so snapshot line indices map to grid selection indices.

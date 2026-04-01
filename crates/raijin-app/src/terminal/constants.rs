@@ -26,14 +26,10 @@ pub const FOLD_COUNTER_HEIGHT: f32 = 20.0;
 pub fn terminal_bg(t: &ResolvedTheme) -> Hsla { t.background }
 pub fn accent_color(t: &ResolvedTheme) -> Hsla { t.accent }
 pub fn error_color(t: &ResolvedTheme) -> Hsla { t.error }
-pub fn block_body_bg(t: &ResolvedTheme) -> Hsla { t.block_bg }
 pub fn block_selected_bg(t: &ResolvedTheme) -> Hsla { t.selected_bg }
 pub fn header_command_fg(t: &ResolvedTheme) -> Hsla { t.command_fg }
 pub fn header_metadata_fg(t: &ResolvedTheme) -> Hsla { t.metadata_fg }
 // Fold system colors — use the same block_bg alpha for consistent transparency
-pub fn fold_line_bg(t: &ResolvedTheme) -> Hsla {
-    t.block_bg
-}
 pub fn fold_line_error_bg(t: &ResolvedTheme) -> Hsla {
     let mut c = t.error;
     c.a = 0.10;

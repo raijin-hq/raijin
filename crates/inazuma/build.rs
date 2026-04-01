@@ -87,11 +87,29 @@ mod macos {
         // Source files that define types used in shaders
         let src_paths = [
             crate_dir.join("src/scene.rs"),
+            crate_dir.join("src/scene/primitives.rs"),
+            crate_dir.join("src/scene/batching.rs"),
             crate_dir.join("src/geometry.rs"),
+            crate_dir.join("src/geometry/point.rs"),
+            crate_dir.join("src/geometry/size.rs"),
+            crate_dir.join("src/geometry/bounds.rs"),
+            crate_dir.join("src/geometry/bounds_convert.rs"),
+            crate_dir.join("src/geometry/edges.rs"),
+            crate_dir.join("src/geometry/corners.rs"),
+            crate_dir.join("src/geometry/units.rs"),
+            crate_dir.join("src/geometry/lengths.rs"),
             crate_dir.join("src/color.rs"),
+            crate_dir.join("src/color/types.rs"),
+            crate_dir.join("src/color/background.rs"),
             crate_dir.join("src/window.rs"),
+            crate_dir.join("src/window/window_init.rs"),
             crate_dir.join("src/platform.rs"),
+            crate_dir.join("src/platform/atlas.rs"),
+            crate_dir.join("src/platform/types.rs"),
             crate_dir.join("src/platform/mac/metal_renderer.rs"),
+            crate_dir.join("src/platform/mac/metal_renderer/types.rs"),
+            crate_dir.join("src/platform/mac/metal_renderer/setup.rs"),
+            crate_dir.join("src/platform/mac/metal_renderer/render_pass.rs"),
         ];
 
         for src_path in &src_paths {
