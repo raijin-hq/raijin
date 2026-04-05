@@ -1,4 +1,5 @@
 use super::*;
+use objc2::DefinedClass;
 
 impl Platform for MacPlatform {
     fn background_executor(&self) -> BackgroundExecutor {
@@ -18,27 +19,47 @@ impl Platform for MacPlatform {
         if state.headless {
             drop(state);
             on_finish_launching();
-            unsafe { CFRunLoopRun() };
+            CFRunLoop::run();
         } else {
             state.finish_launching = Some(on_finish_launching);
             drop(state);
         }
 
         unsafe {
-            let app: id = msg_send![APP_CLASS, sharedApplication];
-            let app_delegate: id = msg_send![APP_DELEGATE_CLASS, new];
-            app.setDelegate_(app_delegate);
+            let mtm = MainThreadMarker::new_unchecked();
 
+            // Register and get the shared GPUIApplication instance
+            let app: Retained<GPUIApplication> = {
+                // Force the class to be registered before calling sharedApplication
+                let _cls = GPUIApplication::class();
+                let raw_app = NSApplication::sharedApplication(mtm);
+                // The shared application was created as GPUIApplication since we registered it
+                Retained::cast_unchecked(raw_app)
+            };
+
+            // Create the delegate
+            let delegate = {
+                let alloc = mtm.alloc::<GPUIApplicationDelegate>();
+                let delegate: Retained<GPUIApplicationDelegate> =
+                    msg_send![super(alloc.set_ivars(DelegateIvars::default())), init];
+                delegate
+            };
+
+            // Set platform pointer on both app and delegate
             let self_ptr = self as *const Self as *const c_void;
-            (*app).set_ivar(MAC_PLATFORM_IVAR, self_ptr);
-            (*app_delegate).set_ivar(MAC_PLATFORM_IVAR, self_ptr);
+            app.ivars().platform.set(self_ptr);
+            delegate.ivars().platform.set(self_ptr);
 
-            let pool = NSAutoreleasePool::new(nil);
+            // Set delegate on app
+            let delegate_protocol: &ProtocolObject<dyn NSApplicationDelegate> =
+                ProtocolObject::from_ref(&*delegate);
+            app.setDelegate(Some(delegate_protocol));
+
             app.run();
-            pool.drain();
 
-            (*app).set_ivar(MAC_PLATFORM_IVAR, null_mut::<c_void>());
-            (*NSWindow::delegate(app)).set_ivar(MAC_PLATFORM_IVAR, null_mut::<c_void>());
+            // Clear platform pointers after run returns
+            app.ivars().platform.set(ptr::null());
+            delegate.ivars().platform.set(ptr::null());
         }
     }
 
@@ -56,8 +77,9 @@ impl Platform for MacPlatform {
 
         extern "C" fn quit(_: *mut c_void) {
             unsafe {
-                let app = NSApplication::sharedApplication(nil);
-                let _: () = msg_send![app, terminate: nil];
+                let mtm = MainThreadMarker::new_unchecked();
+                let app = NSApplication::sharedApplication(mtm);
+                app.terminate(None);
             }
         }
     }
@@ -101,31 +123,35 @@ impl Platform for MacPlatform {
         }
     }
 
-    fn activate(&self, ignoring_other_apps: bool) {
+    fn activate(&self, _ignoring_other_apps: bool) {
         unsafe {
-            let app = NSApplication::sharedApplication(nil);
-            app.activateIgnoringOtherApps_(ignoring_other_apps.to_objc());
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
+            app.activate();
         }
     }
 
     fn hide(&self) {
         unsafe {
-            let app = NSApplication::sharedApplication(nil);
-            let _: () = msg_send![app, hide: nil];
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
+            app.hide(None);
         }
     }
 
     fn hide_other_apps(&self) {
         unsafe {
-            let app = NSApplication::sharedApplication(nil);
-            let _: () = msg_send![app, hideOtherApplications: nil];
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
+            app.hideOtherApplications(None);
         }
     }
 
     fn unhide_other_apps(&self) {
         unsafe {
-            let app = NSApplication::sharedApplication(nil);
-            let _: () = msg_send![app, unhideAllApplications: nil];
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
+            app.unhideAllApplications(None);
         }
     }
 
@@ -141,8 +167,8 @@ impl Platform for MacPlatform {
 
     #[cfg(feature = "screen-capture")]
     fn is_screen_capture_supported(&self) -> bool {
-        let min_version = cocoa::foundation::NSOperatingSystemVersion::new(12, 3, 0);
-        crate::is_macos_version_at_least(min_version)
+        let version = NSProcessInfo::processInfo().operatingSystemVersion();
+        version.majorVersion >= 12 && version.minorVersion >= 3
     }
 
     #[cfg(feature = "screen-capture")]
@@ -153,13 +179,13 @@ impl Platform for MacPlatform {
     }
 
     fn active_window(&self) -> Option<AnyWindowHandle> {
-        MacWindow::active_window()
+        super::super::MacWindow::active_window()
     }
 
     // Returns the windows ordered front-to-back, meaning that the active
     // window is the first one in the returned vec.
     fn window_stack(&self) -> Option<Vec<AnyWindowHandle>> {
-        Some(MacWindow::ordered_windows())
+        Some(super::super::MacWindow::ordered_windows())
     }
 
     fn open_window(
@@ -168,7 +194,7 @@ impl Platform for MacPlatform {
         options: WindowParams,
     ) -> Result<Box<dyn PlatformWindow>> {
         let renderer_context = self.0.lock().renderer_context.clone();
-        Ok(Box::new(MacWindow::open(
+        Ok(Box::new(super::super::MacWindow::open(
             handle,
             options,
             self.foreground_executor(),
@@ -179,23 +205,21 @@ impl Platform for MacPlatform {
 
     fn window_appearance(&self) -> WindowAppearance {
         unsafe {
-            let app = NSApplication::sharedApplication(nil);
-            let appearance: id = msg_send![app, effectiveAppearance];
-            super::super::window_appearance::window_appearance_from_native(appearance)
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
+            let appearance = app.effectiveAppearance();
+            super::super::window_appearance::window_appearance_from_native(&appearance)
         }
     }
 
     fn open_url(&self, url: &str) {
-        unsafe {
-            let ns_url = NSURL::alloc(nil).initWithString_(ns_string(url));
-            if ns_url.is_null() {
-                log::error!("Failed to create NSURL from string: {}", url);
-                return;
-            }
-            let url = ns_url.autorelease();
-            let workspace: id = msg_send![class!(NSWorkspace), sharedWorkspace];
-            msg_send![workspace, openURL: url]
-        }
+        let ns_url_string = NSString::from_str(url);
+        let Some(ns_url) = NSURL::URLWithString(&ns_url_string) else {
+            log::error!("Failed to create NSURL from string: {}", url);
+            return;
+        };
+        let workspace = NSWorkspace::sharedWorkspace();
+        workspace.openURL(&ns_url);
     }
 
     fn register_url_scheme(&self, scheme: &str) -> Task<anyhow::Result<()>> {
@@ -208,40 +232,43 @@ impl Platform for MacPlatform {
             )));
         }
 
-        let bundle_id = unsafe {
-            let bundle: id = msg_send![class!(NSBundle), mainBundle];
-            let bundle_id: id = msg_send![bundle, bundleIdentifier];
-            if bundle_id == nil {
-                return Task::ready(Err(anyhow!("Can only register URL scheme in bundled apps")));
-            }
-            bundle_id
+        let bundle = NSBundle::mainBundle();
+        let Some(bundle_id) = bundle.bundleIdentifier() else {
+            return Task::ready(Err(anyhow!("Can only register URL scheme in bundled apps")));
         };
 
-        unsafe {
-            let workspace: id = msg_send![class!(NSWorkspace), sharedWorkspace];
-            let scheme: id = ns_string(scheme);
-            let app: id = msg_send![workspace, URLForApplicationWithBundleIdentifier: bundle_id];
-            if app == nil {
-                return Task::ready(Err(anyhow!(
-                    "Cannot register URL scheme until app is installed"
-                )));
-            }
-            let done_tx = Cell::new(Some(done_tx));
-            let block = ConcreteBlock::new(move |error: id| {
-                let result = if error == nil {
-                    Ok(())
-                } else {
-                    let msg: id = msg_send![error, localizedDescription];
-                    Err(anyhow!("Failed to register: {msg:?}"))
-                };
+        let workspace = NSWorkspace::sharedWorkspace();
+        let scheme_str = NSString::from_str(scheme);
 
-                if let Some(done_tx) = done_tx.take() {
-                    let _ = done_tx.send(result);
-                }
-            });
-            let block = block.copy();
-            let _: () = msg_send![workspace, setDefaultApplicationAtURL: app toOpenURLsWithScheme: scheme completionHandler: block];
-        }
+        // Get the app URL for the bundle identifier
+        let app_urls =
+            workspace.URLsForApplicationsWithBundleIdentifier(&bundle_id);
+        let Some(app_url) = app_urls.firstObject() else {
+            return Task::ready(Err(anyhow!(
+                "Cannot register URL scheme until app is installed"
+            )));
+        };
+
+        let done_tx = Cell::new(Some(done_tx));
+        let block = RcBlock::new(move |error: *mut NSError| {
+            let result = if error.is_null() {
+                Ok(())
+            } else {
+                let error_ref = unsafe { &*error };
+                let msg = error_ref.localizedDescription().to_string();
+                Err(anyhow!("Failed to register: {msg}"))
+            };
+
+            if let Some(done_tx) = done_tx.take() {
+                let _ = done_tx.send(result);
+            }
+        });
+
+        workspace.setDefaultApplicationAtURL_toOpenURLsWithScheme_completionHandler(
+            &app_url,
+            &scheme_str,
+            Some(&block),
+        );
 
         self.background_executor()
             .spawn(async { done_rx.await.map_err(|e| anyhow!(e))? })
@@ -259,24 +286,30 @@ impl Platform for MacPlatform {
         self.foreground_executor()
             .spawn(async move {
                 unsafe {
-                    let panel = NSOpenPanel::openPanel(nil);
-                    panel.setCanChooseDirectories_(options.directories.to_objc());
-                    panel.setCanChooseFiles_(options.files.to_objc());
-                    panel.setAllowsMultipleSelection_(options.multiple.to_objc());
+                    let mtm = MainThreadMarker::new_unchecked();
+                    let panel = NSOpenPanel::openPanel(mtm);
+                    panel.setCanChooseDirectories(options.directories);
+                    panel.setCanChooseFiles(options.files);
+                    panel.setAllowsMultipleSelection(options.multiple);
+                    panel.setCanCreateDirectories(true);
+                    panel.setResolvesAliases(false);
 
-                    panel.setCanCreateDirectories(true.to_objc());
-                    panel.setResolvesAliases_(false.to_objc());
+                    if let Some(prompt) = options.prompt {
+                        panel.setPrompt(Some(&NSString::from_str(&prompt)));
+                    }
+
                     let done_tx = Cell::new(Some(done_tx));
-                    let block = ConcreteBlock::new(move |response: NSModalResponse| {
-                        let result = if response == NSModalResponse::NSModalResponseOk {
+                    let panel_clone = panel.clone();
+                    let block = RcBlock::new(move |response: NSModalResponse| {
+                        let result = if response == NSModalResponseOK {
                             let mut result = Vec::new();
-                            let urls = panel.URLs();
+                            let urls = panel_clone.URLs();
                             for i in 0..urls.count() {
                                 let url = urls.objectAtIndex(i);
-                                if url.isFileURL() == YES
-                                    && let Ok(path) = ns_url_to_path(url)
-                                {
-                                    result.push(path)
+                                if url.isFileURL() {
+                                    if let Ok(path) = ns_url_to_path(&url) {
+                                        result.push(path);
+                                    }
                                 }
                             }
                             Some(result)
@@ -288,13 +321,8 @@ impl Platform for MacPlatform {
                             let _ = done_tx.send(Ok(result));
                         }
                     });
-                    let block = block.copy();
 
-                    if let Some(prompt) = options.prompt {
-                        let _: () = msg_send![panel, setPrompt: ns_string(&prompt)];
-                    }
-
-                    let _: () = msg_send![panel, beginWithCompletionHandler: block];
+                    panel.beginWithCompletionHandler(&block);
                 }
             })
             .detach();
@@ -312,51 +340,51 @@ impl Platform for MacPlatform {
         self.foreground_executor()
             .spawn(async move {
                 unsafe {
-                    let panel = NSSavePanel::savePanel(nil);
-                    let path = ns_string(directory.to_string_lossy().as_ref());
-                    let url = NSURL::fileURLWithPath_isDirectory_(nil, path, true.to_objc());
-                    panel.setDirectoryURL(url);
+                    let mtm = MainThreadMarker::new_unchecked();
+                    let panel = NSSavePanel::savePanel(mtm);
+                    let path = NSString::from_str(directory.to_string_lossy().as_ref());
+                    let url = NSURL::fileURLWithPath_isDirectory(&path, true);
+                    panel.setDirectoryURL(Some(&url));
 
                     if let Some(suggested_name) = suggested_name {
-                        let name_string = ns_string(&suggested_name);
-                        let _: () = msg_send![panel, setNameFieldStringValue: name_string];
+                        let name_string = NSString::from_str(&suggested_name);
+                        panel.setNameFieldStringValue(&name_string);
                     }
 
                     let done_tx = Cell::new(Some(done_tx));
-                    let block = ConcreteBlock::new(move |response: NSModalResponse| {
+                    let panel_clone = panel.clone();
+                    let block = RcBlock::new(move |response: NSModalResponse| {
                         let mut result = None;
-                        if response == NSModalResponse::NSModalResponseOk {
-                            let url = panel.URL();
-                            if url.isFileURL() == YES {
-                                result = ns_url_to_path(panel.URL()).ok().map(|mut result| {
-                                    let Some(filename) = result.file_name() else {
-                                        return result;
-                                    };
-                                    let chunks = filename
-                                        .as_bytes()
-                                        .split(|&b| b == b'.')
-                                        .collect::<Vec<_>>();
+                        if response == NSModalResponseOK {
+                            if let Some(url) = panel_clone.URL() {
+                                if url.isFileURL() {
+                                    result = ns_url_to_path(&url).ok().map(|mut result| {
+                                        let Some(filename) = result.file_name() else {
+                                            return result;
+                                        };
+                                        let chunks = filename
+                                            .as_bytes()
+                                            .split(|&b| b == b'.')
+                                            .collect::<Vec<_>>();
 
-                                    // https://github.com/zed-industries/zed/issues/16969
-                                    // Workaround a bug in macOS Sequoia that adds an extra file-extension
-                                    // sometimes. e.g. `a.sql` becomes `a.sql.s` or `a.txtx` becomes `a.txtx.txt`
-                                    //
-                                    // This is conditional on OS version because I'd like to get rid of it, so that
-                                    // you can manually create a file called `a.sql.s`. That said it seems better
-                                    // to break that use-case than breaking `a.sql`.
-                                    if chunks.len() == 3
-                                        && chunks[1].starts_with(chunks[2])
-                                        && Self::os_version() >= Version::new(15, 0, 0)
-                                    {
-                                        let new_filename = OsStr::from_bytes(
-                                            &filename.as_bytes()
-                                                [..chunks[0].len() + 1 + chunks[1].len()],
-                                        )
-                                        .to_owned();
-                                        result.set_file_name(&new_filename);
-                                    }
-                                    result
-                                })
+                                        // https://github.com/zed-industries/zed/issues/16969
+                                        // Workaround a bug in macOS Sequoia that adds an extra file-extension
+                                        // sometimes.
+                                        if chunks.len() == 3
+                                            && chunks[1].starts_with(chunks[2])
+                                            && MacPlatform::os_version()
+                                                >= Version::new(15, 0, 0)
+                                        {
+                                            let new_filename = OsStr::from_bytes(
+                                                &filename.as_bytes()
+                                                    [..chunks[0].len() + 1 + chunks[1].len()],
+                                            )
+                                            .to_owned();
+                                            result.set_file_name(&new_filename);
+                                        }
+                                        result
+                                    });
+                                }
                             }
                         }
 
@@ -364,8 +392,7 @@ impl Platform for MacPlatform {
                             let _ = done_tx.send(Ok(result));
                         }
                     });
-                    let block = block.copy();
-                    let _: () = msg_send![panel, beginWithCompletionHandler: block];
+                    panel.beginWithCompletionHandler(&block);
                 }
             })
             .detach();
@@ -378,23 +405,20 @@ impl Platform for MacPlatform {
     }
 
     fn reveal_path(&self, path: &Path) {
-        unsafe {
-            let path = path.to_path_buf();
-            self.0
-                .lock()
-                .background_executor
-                .spawn(async move {
-                    let full_path = ns_string(path.to_str().unwrap_or(""));
-                    let root_full_path = ns_string("");
-                    let workspace: id = msg_send![class!(NSWorkspace), sharedWorkspace];
-                    let _: BOOL = msg_send![
-                        workspace,
-                        selectFile: full_path
-                        inFileViewerRootedAtPath: root_full_path
-                    ];
-                })
-                .detach();
-        }
+        let path = path.to_path_buf();
+        self.0
+            .lock()
+            .background_executor
+            .spawn(async move {
+                let full_path = NSString::from_str(path.to_str().unwrap_or(""));
+                let root_full_path = NSString::from_str("");
+                let workspace = NSWorkspace::sharedWorkspace();
+                workspace.selectFile_inFileViewerRootedAtPath(
+                    Some(&full_path),
+                    &root_full_path,
+                );
+            })
+            .detach();
     }
 
     fn open_with_system(&self, path: &Path) {
@@ -444,16 +468,14 @@ impl Platform for MacPlatform {
     }
 
     fn thermal_state(&self) -> ThermalState {
-        unsafe {
-            let process_info: id = msg_send![class!(NSProcessInfo), processInfo];
-            let state: NSInteger = msg_send![process_info, thermalState];
-            match state {
-                0 => ThermalState::Nominal,
-                1 => ThermalState::Fair,
-                2 => ThermalState::Serious,
-                3 => ThermalState::Critical,
-                _ => ThermalState::Nominal,
-            }
+        let process_info = NSProcessInfo::processInfo();
+        let state = process_info.thermalState();
+        match state {
+            NSProcessInfoThermalState::Nominal => ThermalState::Nominal,
+            NSProcessInfoThermalState::Fair => ThermalState::Fair,
+            NSProcessInfoThermalState::Serious => ThermalState::Serious,
+            NSProcessInfoThermalState::Critical => ThermalState::Critical,
+            _ => ThermalState::Nominal,
         }
     }
 
@@ -466,21 +488,30 @@ impl Platform for MacPlatform {
     }
 
     fn app_path(&self) -> Result<PathBuf> {
-        unsafe {
-            let bundle: id = NSBundle::mainBundle();
-            anyhow::ensure!(!bundle.is_null(), "app is not running inside a bundle");
-            Ok(path_from_objc(msg_send![bundle, bundlePath]))
-        }
+        let bundle = NSBundle::mainBundle();
+        let bundle_path = bundle.bundlePath();
+        let path_str = bundle_path.to_string();
+        anyhow::ensure!(!path_str.is_empty(), "app is not running inside a bundle");
+        Ok(PathBuf::from(path_str))
     }
 
     fn set_menus(&self, menus: Vec<Menu>, keymap: &Keymap) {
         unsafe {
-            let app: id = msg_send![APP_CLASS, sharedApplication];
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
             let mut state = self.0.lock();
             let actions = &mut state.menu_actions;
-            let menu = self.create_menu_bar(&menus, NSWindow::delegate(app), actions, keymap);
+
+            // Get the delegate as our concrete type, then convert to NSMenuDelegate
+            let delegate_obj = app.delegate().expect("app delegate should be set");
+            let delegate_ref: &GPUIApplicationDelegate =
+                &*Retained::as_ptr(&Retained::cast_unchecked(delegate_obj.clone()));
+            let delegate: &ProtocolObject<dyn NSMenuDelegate> =
+                ProtocolObject::from_ref(delegate_ref);
+
+            let menu = self.create_menu_bar(&menus, delegate, actions, keymap);
             drop(state);
-            app.setMainMenu_(menu);
+            app.setMainMenu(Some(&menu));
         }
         self.0.lock().menus = Some(menus.into_iter().map(|menu| menu.owned()).collect());
     }
@@ -491,98 +522,102 @@ impl Platform for MacPlatform {
 
     fn set_dock_menu(&self, menu: Vec<MenuItem>, keymap: &Keymap) {
         unsafe {
-            let app: id = msg_send![APP_CLASS, sharedApplication];
+            let mtm = MainThreadMarker::new_unchecked();
+            let app = NSApplication::sharedApplication(mtm);
             let mut state = self.0.lock();
             let actions = &mut state.menu_actions;
-            let new = self.create_dock_menu(menu, NSWindow::delegate(app), actions, keymap);
-            if let Some(old) = state.dock_menu.replace(new) {
-                CFRelease(old as _)
-            }
+
+            let delegate_obj = app.delegate().expect("app delegate should be set");
+            let delegate_ref: &GPUIApplicationDelegate =
+                &*Retained::as_ptr(&Retained::cast_unchecked(delegate_obj.clone()));
+            let delegate: &ProtocolObject<dyn NSMenuDelegate> =
+                ProtocolObject::from_ref(delegate_ref);
+
+            let new = self.create_dock_menu(menu, delegate, actions, keymap);
+            state.dock_menu = Some(new);
         }
     }
 
     fn add_recent_document(&self, path: &Path) {
         if let Some(path_str) = path.to_str() {
             unsafe {
-                let document_controller: id =
-                    msg_send![class!(NSDocumentController), sharedDocumentController];
-                let url: id = NSURL::fileURLWithPath_(nil, ns_string(path_str));
-                let _: () = msg_send![document_controller, noteNewRecentDocumentURL:url];
+                let mtm = MainThreadMarker::new_unchecked();
+                let document_controller = NSDocumentController::sharedDocumentController(mtm);
+                let url = NSURL::fileURLWithPath(&NSString::from_str(path_str));
+                document_controller.noteNewRecentDocumentURL(&url);
             }
         }
     }
 
     fn path_for_auxiliary_executable(&self, name: &str) -> Result<PathBuf> {
-        unsafe {
-            let bundle: id = NSBundle::mainBundle();
-            anyhow::ensure!(!bundle.is_null(), "app is not running inside a bundle");
-            let name = ns_string(name);
-            let url: id = msg_send![bundle, URLForAuxiliaryExecutable: name];
-            anyhow::ensure!(!url.is_null(), "resource not found");
-            ns_url_to_path(url)
-        }
+        let bundle = NSBundle::mainBundle();
+        let name = NSString::from_str(name);
+        let url = bundle
+            .URLForAuxiliaryExecutable(&name)
+            .context("resource not found")?;
+        ns_url_to_path(&url)
     }
 
     /// Match cursor style to one of the styles available
     /// in macOS's [NSCursor](https://developer.apple.com/documentation/appkit/nscursor).
     fn set_cursor_style(&self, style: CursorStyle) {
-        unsafe {
-            if style == CursorStyle::None {
-                let _: () = msg_send![class!(NSCursor), setHiddenUntilMouseMoves:YES];
-                return;
+        if style == CursorStyle::None {
+            NSCursor::setHiddenUntilMouseMoves(true);
+            return;
+        }
+
+        // The NSCursor resize methods (resizeLeftRightCursor, resizeUpDownCursor, etc.)
+        // are deprecated in macOS 15 in favor of columnResizeCursor/rowResizeCursor and
+        // columnResizeCursorInDirections/rowResizeCursorInDirections. However, the new
+        // APIs require macOS 15+ and our deployment target is 10.15.7, so we must keep
+        // using the deprecated methods until the deployment target is raised.
+        #[allow(deprecated)]
+        let new_cursor: Retained<NSCursor> = match style {
+            CursorStyle::Arrow => NSCursor::arrowCursor(),
+            CursorStyle::IBeam => NSCursor::IBeamCursor(),
+            CursorStyle::Crosshair => NSCursor::crosshairCursor(),
+            CursorStyle::ClosedHand => NSCursor::closedHandCursor(),
+            CursorStyle::OpenHand => NSCursor::openHandCursor(),
+            CursorStyle::PointingHand => NSCursor::pointingHandCursor(),
+            CursorStyle::ResizeLeftRight => NSCursor::resizeLeftRightCursor(),
+            CursorStyle::ResizeUpDown => NSCursor::resizeUpDownCursor(),
+            CursorStyle::ResizeLeft => NSCursor::resizeLeftCursor(),
+            CursorStyle::ResizeRight => NSCursor::resizeRightCursor(),
+            CursorStyle::ResizeColumn => NSCursor::resizeLeftRightCursor(),
+            CursorStyle::ResizeRow => NSCursor::resizeUpDownCursor(),
+            CursorStyle::ResizeUp => NSCursor::resizeUpCursor(),
+            CursorStyle::ResizeDown => NSCursor::resizeDownCursor(),
+
+            // Undocumented, private class methods:
+            // https://stackoverflow.com/questions/27242353/cocoa-predefined-resize-mouse-cursor
+            CursorStyle::ResizeUpLeftDownRight => unsafe {
+                msg_send![objc2::class!(NSCursor), _windowResizeNorthWestSouthEastCursor]
+            },
+            CursorStyle::ResizeUpRightDownLeft => unsafe {
+                msg_send![objc2::class!(NSCursor), _windowResizeNorthEastSouthWestCursor]
+            },
+
+            CursorStyle::IBeamCursorForVerticalLayout => {
+                NSCursor::IBeamCursorForVerticalLayout()
             }
+            CursorStyle::OperationNotAllowed => NSCursor::operationNotAllowedCursor(),
+            CursorStyle::DragLink => NSCursor::dragLinkCursor(),
+            CursorStyle::DragCopy => NSCursor::dragCopyCursor(),
+            CursorStyle::ContextualMenu => NSCursor::contextualMenuCursor(),
+            CursorStyle::None => unreachable!(),
+        };
 
-            let new_cursor: id = match style {
-                CursorStyle::Arrow => msg_send![class!(NSCursor), arrowCursor],
-                CursorStyle::IBeam => msg_send![class!(NSCursor), IBeamCursor],
-                CursorStyle::Crosshair => msg_send![class!(NSCursor), crosshairCursor],
-                CursorStyle::ClosedHand => msg_send![class!(NSCursor), closedHandCursor],
-                CursorStyle::OpenHand => msg_send![class!(NSCursor), openHandCursor],
-                CursorStyle::PointingHand => msg_send![class!(NSCursor), pointingHandCursor],
-                CursorStyle::ResizeLeftRight => msg_send![class!(NSCursor), resizeLeftRightCursor],
-                CursorStyle::ResizeUpDown => msg_send![class!(NSCursor), resizeUpDownCursor],
-                CursorStyle::ResizeLeft => msg_send![class!(NSCursor), resizeLeftCursor],
-                CursorStyle::ResizeRight => msg_send![class!(NSCursor), resizeRightCursor],
-                CursorStyle::ResizeColumn => msg_send![class!(NSCursor), resizeLeftRightCursor],
-                CursorStyle::ResizeRow => msg_send![class!(NSCursor), resizeUpDownCursor],
-                CursorStyle::ResizeUp => msg_send![class!(NSCursor), resizeUpCursor],
-                CursorStyle::ResizeDown => msg_send![class!(NSCursor), resizeDownCursor],
-
-                // Undocumented, private class methods:
-                // https://stackoverflow.com/questions/27242353/cocoa-predefined-resize-mouse-cursor
-                CursorStyle::ResizeUpLeftDownRight => {
-                    msg_send![class!(NSCursor), _windowResizeNorthWestSouthEastCursor]
-                }
-                CursorStyle::ResizeUpRightDownLeft => {
-                    msg_send![class!(NSCursor), _windowResizeNorthEastSouthWestCursor]
-                }
-
-                CursorStyle::IBeamCursorForVerticalLayout => {
-                    msg_send![class!(NSCursor), IBeamCursorForVerticalLayout]
-                }
-                CursorStyle::OperationNotAllowed => {
-                    msg_send![class!(NSCursor), operationNotAllowedCursor]
-                }
-                CursorStyle::DragLink => msg_send![class!(NSCursor), dragLinkCursor],
-                CursorStyle::DragCopy => msg_send![class!(NSCursor), dragCopyCursor],
-                CursorStyle::ContextualMenu => msg_send![class!(NSCursor), contextualMenuCursor],
-                CursorStyle::None => unreachable!(),
-            };
-
-            let old_cursor: id = msg_send![class!(NSCursor), currentCursor];
-            if new_cursor != old_cursor {
-                let _: () = msg_send![new_cursor, set];
-            }
+        let old_cursor = NSCursor::currentCursor();
+        if *new_cursor != *old_cursor {
+            new_cursor.set();
         }
     }
 
     fn should_auto_hide_scrollbars(&self) -> bool {
-        #[allow(non_upper_case_globals)]
-        const NSScrollerStyleOverlay: NSInteger = 1;
-
         unsafe {
-            let style: NSInteger = msg_send![class!(NSScroller), preferredScrollerStyle];
-            style == NSScrollerStyleOverlay
+            let mtm = MainThreadMarker::new_unchecked();
+            let style = NSScroller::preferredScrollerStyle(mtm);
+            style == NSScrollerStyle::Overlay
         }
     }
 
@@ -614,32 +649,44 @@ impl Platform for MacPlatform {
             unsafe {
                 use security::*;
 
-                let url = CFString::from(url.as_str());
-                let username = CFString::from(username.as_str());
-                let password = CFData::from_buffer(&password);
+                let url = CFString::from_str(url.as_str());
+                let username = CFString::from_str(username.as_str());
+                let password = CFData::new(None, password.as_ptr(), password.len() as _)
+                    .context("failed to create CFData for password")?;
 
                 // First, check if there are already credentials for the given server. If so, then
                 // update the username and password.
                 let mut verb = "updating";
-                let mut query_attrs = CFMutableDictionary::with_capacity(2);
-                query_attrs.set(kSecClass as *const _, kSecClassInternetPassword as *const _);
-                query_attrs.set(kSecAttrServer as *const _, url.as_CFTypeRef());
+                let query_attrs = CFMutableDictionary::new(
+                    None, 2,
+                    &kCFTypeDictionaryKeyCallBacks,
+                    &kCFTypeDictionaryValueCallBacks,
+                ).context("failed to create query dictionary")?;
+                CFMutableDictionary::set_value(Some(&query_attrs), kSecClass as *const _, kSecClassInternetPassword as *const _);
+                CFMutableDictionary::set_value(Some(&query_attrs), kSecAttrServer as *const _, &*url as *const CFString as *const _);
 
-                let mut attrs = CFMutableDictionary::with_capacity(4);
-                attrs.set(kSecClass as *const _, kSecClassInternetPassword as *const _);
-                attrs.set(kSecAttrServer as *const _, url.as_CFTypeRef());
-                attrs.set(kSecAttrAccount as *const _, username.as_CFTypeRef());
-                attrs.set(kSecValueData as *const _, password.as_CFTypeRef());
+                let attrs = CFMutableDictionary::new(
+                    None, 4,
+                    &kCFTypeDictionaryKeyCallBacks,
+                    &kCFTypeDictionaryValueCallBacks,
+                ).context("failed to create attributes dictionary")?;
+                CFMutableDictionary::set_value(Some(&attrs), kSecClass as *const _, kSecClassInternetPassword as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecAttrServer as *const _, &*url as *const CFString as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecAttrAccount as *const _, &*username as *const CFString as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecValueData as *const _, &*password as *const CFData as *const _);
 
                 let mut status = SecItemUpdate(
-                    query_attrs.as_concrete_TypeRef(),
-                    attrs.as_concrete_TypeRef(),
+                    &*query_attrs as *const CFMutableDictionary as *const CFDictionary,
+                    &*attrs as *const CFMutableDictionary as *const CFDictionary,
                 );
 
                 // If there were no existing credentials for the given server, then create them.
                 if status == errSecItemNotFound {
                     verb = "creating";
-                    status = SecItemAdd(attrs.as_concrete_TypeRef(), ptr::null_mut());
+                    status = SecItemAdd(
+                        &*attrs as *const CFMutableDictionary as *const CFDictionary,
+                        ptr::null_mut(),
+                    );
                 }
                 anyhow::ensure!(status == errSecSuccess, "{verb} password failed: {status}");
             }
@@ -650,44 +697,54 @@ impl Platform for MacPlatform {
     fn read_credentials(&self, url: &str) -> Task<Result<Option<(String, Vec<u8>)>>> {
         let url = url.to_string();
         self.background_executor().spawn(async move {
-            let url = CFString::from(url.as_str());
-            let cf_true = CFBoolean::true_value().as_CFTypeRef();
+            let url = CFString::from_str(url.as_str());
+            let cf_true = unsafe { kCFBooleanTrue }
+                .expect("kCFBooleanTrue should be available");
 
             unsafe {
                 use security::*;
 
                 // Find any credentials for the given server URL.
-                let mut attrs = CFMutableDictionary::with_capacity(5);
-                attrs.set(kSecClass as *const _, kSecClassInternetPassword as *const _);
-                attrs.set(kSecAttrServer as *const _, url.as_CFTypeRef());
-                attrs.set(kSecReturnAttributes as *const _, cf_true);
-                attrs.set(kSecReturnData as *const _, cf_true);
+                let attrs = CFMutableDictionary::new(
+                    None, 5,
+                    &kCFTypeDictionaryKeyCallBacks,
+                    &kCFTypeDictionaryValueCallBacks,
+                ).context("failed to create query dictionary")?;
+                CFMutableDictionary::set_value(Some(&attrs), kSecClass as *const _, kSecClassInternetPassword as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecAttrServer as *const _, &*url as *const CFString as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecReturnAttributes as *const _, cf_true as *const CFBoolean as *const _);
+                CFMutableDictionary::set_value(Some(&attrs), kSecReturnData as *const _, cf_true as *const CFBoolean as *const _);
 
-                let mut result = CFTypeRef::from(ptr::null());
-                let status = SecItemCopyMatching(attrs.as_concrete_TypeRef(), &mut result);
+                let mut result: *const c_void = ptr::null();
+                let status = SecItemCopyMatching(
+                    &*attrs as *const CFMutableDictionary as *const CFDictionary,
+                    &mut result,
+                );
                 match status {
                     security::errSecSuccess => {}
                     security::errSecItemNotFound | security::errSecUserCanceled => return Ok(None),
                     _ => anyhow::bail!("reading password failed: {status}"),
                 }
 
-                let result = CFType::wrap_under_create_rule(result)
-                    .downcast::<CFDictionary>()
-                    .context("keychain item was not a dictionary")?;
-                let username = result
-                    .find(kSecAttrAccount as *const _)
-                    .context("account was missing from keychain item")?;
-                let username = CFType::wrap_under_get_rule(*username)
-                    .downcast::<CFString>()
-                    .context("account was not a string")?;
-                let password = result
-                    .find(kSecValueData as *const _)
-                    .context("password was missing from keychain item")?;
-                let password = CFType::wrap_under_get_rule(*password)
-                    .downcast::<CFData>()
-                    .context("password was not a string")?;
+                anyhow::ensure!(!result.is_null(), "keychain returned null result");
 
-                Ok(Some((username.to_string(), password.bytes().to_vec())))
+                // The result is a CFDictionary (owned, follows the Create Rule).
+                let result_dict = &*(result as *const CFDictionary);
+
+                let username_ptr = result_dict.value(kSecAttrAccount as *const _);
+                anyhow::ensure!(!username_ptr.is_null(), "account was missing from keychain item");
+                let username_cf = &*(username_ptr as *const CFString);
+                let username = username_cf.to_string();
+
+                let password_ptr = result_dict.value(kSecValueData as *const _);
+                anyhow::ensure!(!password_ptr.is_null(), "password was missing from keychain item");
+                let password_cf = &*(password_ptr as *const CFData);
+                let password_bytes = password_cf.as_bytes_unchecked().to_vec();
+
+                // Release the result dictionary (we own it from SecItemCopyMatching)
+                CFRelease(result);
+
+                Ok(Some((username, password_bytes)))
             }
         })
     }
@@ -699,15 +756,25 @@ impl Platform for MacPlatform {
             unsafe {
                 use security::*;
 
-                let url = CFString::from(url.as_str());
-                let mut query_attrs = CFMutableDictionary::with_capacity(2);
-                query_attrs.set(kSecClass as *const _, kSecClassInternetPassword as *const _);
-                query_attrs.set(kSecAttrServer as *const _, url.as_CFTypeRef());
+                let url = CFString::from_str(url.as_str());
+                let query_attrs = CFMutableDictionary::new(
+                    None, 2,
+                    &kCFTypeDictionaryKeyCallBacks,
+                    &kCFTypeDictionaryValueCallBacks,
+                ).context("failed to create query dictionary")?;
+                CFMutableDictionary::set_value(Some(&query_attrs), kSecClass as *const _, kSecClassInternetPassword as *const _);
+                CFMutableDictionary::set_value(Some(&query_attrs), kSecAttrServer as *const _, &*url as *const CFString as *const _);
 
-                let status = SecItemDelete(query_attrs.as_concrete_TypeRef());
+                let status = SecItemDelete(
+                    &*query_attrs as *const CFMutableDictionary as *const CFDictionary,
+                );
                 anyhow::ensure!(status == errSecSuccess, "delete password failed: {status}");
             }
             Ok(())
         })
     }
+}
+
+unsafe extern "C" {
+    fn CFRelease(cf: *const c_void);
 }

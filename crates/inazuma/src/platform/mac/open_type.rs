@@ -1,152 +1,143 @@
-#![allow(unused, non_upper_case_globals)]
-
-use cocoa::appkit::CGFloat;
-use core_foundation::{
-    array::{
-        CFArray, CFArrayAppendArray, CFArrayAppendValue, CFArrayCreateMutable, CFArrayGetCount,
-        CFArrayGetValueAtIndex, CFArrayRef, CFMutableArrayRef, kCFTypeArrayCallBacks,
-    },
-    base::{CFRelease, TCFType, kCFAllocatorDefault},
-    dictionary::{
-        CFDictionaryCreate, kCFTypeDictionaryKeyCallBacks, kCFTypeDictionaryValueCallBacks,
-    },
-    number::CFNumber,
-    string::{CFString, CFStringRef},
-};
-use core_foundation_sys::locale::CFLocaleCopyPreferredLanguages;
-use core_graphics::{display::CFDictionary, geometry::CGAffineTransform};
-use core_text::{
-    font::{CTFont, CTFontRef, cascade_list_for_languages},
-    font_descriptor::{
-        CTFontDescriptor, CTFontDescriptorCopyAttributes, CTFontDescriptorCreateCopyWithFeature,
-        CTFontDescriptorCreateWithAttributes, CTFontDescriptorCreateWithNameAndSize,
-        CTFontDescriptorRef, kCTFontCascadeListAttribute, kCTFontFeatureSettingsAttribute,
-    },
-};
-use font_kit::font::Font as FontKitFont;
 use inazuma::{FontFallbacks, FontFeatures};
+use objc2_core_foundation::{
+    CFDictionary, CFIndex, CFMutableArray, CFNumber, CFNumberType, CFRetained, CFString,
+    kCFTypeArrayCallBacks, kCFTypeDictionaryKeyCallBacks, kCFTypeDictionaryValueCallBacks,
+};
+use objc2_core_text::{
+    CTFont, CTFontDescriptor, kCTFontCascadeListAttribute, kCTFontFeatureSettingsAttribute,
+    kCTFontOpenTypeFeatureTag, kCTFontOpenTypeFeatureValue, kCTFontURLAttribute,
+};
+use std::ffi::c_void;
 use std::ptr;
 
+/// Apply OpenType features and font fallbacks to a CTFont, returning the new CTFont.
+///
+/// This creates a new font descriptor with the specified features and fallback cascade,
+/// then copies the font with the new descriptor applied.
 pub fn apply_features_and_fallbacks(
-    font: &mut FontKitFont,
+    font: &CTFont,
     features: &FontFeatures,
     fallbacks: Option<&FontFallbacks>,
-) -> anyhow::Result<()> {
+) -> anyhow::Result<CFRetained<CTFont>> {
     unsafe {
-        let mut keys = vec![kCTFontFeatureSettingsAttribute];
-        let mut values = vec![generate_feature_array(features)];
+        let feature_array = generate_feature_array(features);
+
+        let mut keys: Vec<*const c_void> =
+            vec![kCTFontFeatureSettingsAttribute as *const _ as *const c_void];
+        let mut values: Vec<*const c_void> =
+            vec![&*feature_array as *const _ as *const c_void];
+
+        let fallback_array;
         if let Some(fallbacks) = fallbacks
             && !fallbacks.fallback_list().is_empty()
         {
-            keys.push(kCTFontCascadeListAttribute);
-            values.push(generate_fallback_array(
-                fallbacks,
-                font.native_font().as_concrete_TypeRef(),
-            ));
+            fallback_array = generate_fallback_array(fallbacks, font);
+            keys.push(kCTFontCascadeListAttribute as *const _ as *const c_void);
+            values.push(&*fallback_array as *const _ as *const c_void);
         }
-        let attrs = CFDictionaryCreate(
-            kCFAllocatorDefault,
-            keys.as_ptr() as _,
-            values.as_ptr() as _,
-            keys.len() as isize,
+
+        let attrs = CFDictionary::new(
+            None,
+            keys.as_mut_ptr(),
+            values.as_mut_ptr(),
+            keys.len() as CFIndex,
             &kCFTypeDictionaryKeyCallBacks,
             &kCFTypeDictionaryValueCallBacks,
-        );
+        )
+        .expect("failed to create dictionary");
 
-        for value in &values {
-            CFRelease(*value as _);
-        }
+        let new_descriptor = CTFontDescriptor::with_attributes(&attrs);
 
-        let new_descriptor = CTFontDescriptorCreateWithAttributes(attrs);
-        CFRelease(attrs as _);
-        let new_descriptor = CTFontDescriptor::wrap_under_create_rule(new_descriptor);
-        let new_font = CTFontCreateCopyWithAttributes(
-            font.native_font().as_concrete_TypeRef(),
+        let new_font = font.copy_with_attributes(
             0.0,
-            std::ptr::null(),
-            new_descriptor.as_concrete_TypeRef(),
+            ptr::null(),
+            Some(&new_descriptor),
         );
-        let new_font = CTFont::wrap_under_create_rule(new_font);
-        *font = font_kit::font::Font::from_native_font(&new_font);
 
-        Ok(())
+        Ok(new_font)
     }
 }
 
-fn generate_feature_array(features: &FontFeatures) -> CFMutableArrayRef {
+fn generate_feature_array(features: &FontFeatures) -> CFRetained<CFMutableArray> {
     unsafe {
-        let feature_array = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+        let feature_array =
+            CFMutableArray::new(None, 0, &kCFTypeArrayCallBacks).expect("failed to create array");
         for (tag, value) in features.tag_value_list() {
-            let keys = [kCTFontOpenTypeFeatureTag, kCTFontOpenTypeFeatureValue];
-            let values = [
-                CFString::new(tag).as_CFTypeRef(),
-                CFNumber::from(*value as i32).as_CFTypeRef(),
+            let tag_str = CFString::from_str(tag);
+            let val = *value as i32;
+            let value_num =
+                CFNumber::new(None, CFNumberType::SInt32Type, &val as *const _ as *const c_void)
+                    .expect("failed to create CFNumber");
+
+            let mut keys: [*const c_void; 2] = [
+                kCTFontOpenTypeFeatureTag as *const _ as *const c_void,
+                kCTFontOpenTypeFeatureValue as *const _ as *const c_void,
             ];
-            let dict = CFDictionaryCreate(
-                kCFAllocatorDefault,
-                &keys as *const _ as _,
-                &values as *const _ as _,
+            let mut values: [*const c_void; 2] = [
+                &*tag_str as *const _ as *const c_void,
+                &*value_num as *const _ as *const c_void,
+            ];
+            let dict = CFDictionary::new(
+                None,
+                keys.as_mut_ptr(),
+                values.as_mut_ptr(),
                 2,
                 &kCFTypeDictionaryKeyCallBacks,
                 &kCFTypeDictionaryValueCallBacks,
+            )
+            .expect("failed to create feature dict");
+            CFMutableArray::append_value(
+                Some(&feature_array),
+                &*dict as *const _ as *const c_void,
             );
-            values.into_iter().for_each(|value| CFRelease(value));
-            CFArrayAppendValue(feature_array, dict as _);
-            CFRelease(dict as _);
         }
         feature_array
     }
 }
 
-fn generate_fallback_array(fallbacks: &FontFallbacks, font_ref: CTFontRef) -> CFMutableArrayRef {
+fn generate_fallback_array(
+    fallbacks: &FontFallbacks,
+    font: &CTFont,
+) -> CFRetained<CFMutableArray> {
     unsafe {
-        let fallback_array = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+        let fallback_array =
+            CFMutableArray::new(None, 0, &kCFTypeArrayCallBacks).expect("failed to create array");
         for user_fallback in fallbacks.fallback_list() {
-            let name = CFString::from(user_fallback.as_str());
-            let fallback_desc =
-                CTFontDescriptorCreateWithNameAndSize(name.as_concrete_TypeRef(), 0.0);
-            CFArrayAppendValue(fallback_array, fallback_desc as _);
-            CFRelease(fallback_desc as _);
+            let name = CFString::from_str(user_fallback.as_str());
+            let fallback_desc = CTFontDescriptor::with_name_and_size(&name, 0.0);
+            CFMutableArray::append_value(
+                Some(&fallback_array),
+                &*fallback_desc as *const _ as *const c_void,
+            );
         }
-        append_system_fallbacks(fallback_array, font_ref);
+        append_system_fallbacks(&fallback_array, font);
         fallback_array
     }
 }
 
-fn append_system_fallbacks(fallback_array: CFMutableArrayRef, font_ref: CTFontRef) {
+fn append_system_fallbacks(fallback_array: &CFMutableArray, font: &CTFont) {
     unsafe {
-        let preferred_languages: CFArray<CFString> =
-            CFArray::wrap_under_create_rule(CFLocaleCopyPreferredLanguages());
+        let preferred_languages = objc2_core_foundation::CFLocale::preferred_languages();
+        let preferred_languages = preferred_languages.as_deref();
 
-        let default_fallbacks = CTFontCopyDefaultCascadeListForLanguages(
-            font_ref,
-            preferred_languages.as_concrete_TypeRef(),
-        );
-        let default_fallbacks: CFArray<CTFontDescriptor> =
-            CFArray::wrap_under_create_rule(default_fallbacks);
+        let default_fallbacks = font.default_cascade_list_for_languages(preferred_languages);
 
-        default_fallbacks
-            .iter()
-            .filter(|desc| desc.font_path().is_some())
-            .map(|desc| {
-                CFArrayAppendValue(fallback_array, desc.as_concrete_TypeRef() as _);
-            });
+        if let Some(default_fallbacks) = default_fallbacks {
+            let count = default_fallbacks.count();
+            for i in 0..count {
+                let ptr = default_fallbacks.value_at_index(i);
+                if ptr.is_null() {
+                    continue;
+                }
+                let desc: &CTFontDescriptor =
+                    &*(ptr as *const CTFontDescriptor);
+                if desc.attribute(kCTFontURLAttribute).is_some() {
+                    CFMutableArray::append_value(
+                        Some(fallback_array),
+                        desc as *const _ as *const c_void,
+                    );
+                }
+            }
+        }
     }
-}
-
-#[link(name = "CoreText", kind = "framework")]
-unsafe extern "C" {
-    static kCTFontOpenTypeFeatureTag: CFStringRef;
-    static kCTFontOpenTypeFeatureValue: CFStringRef;
-
-    fn CTFontCreateCopyWithAttributes(
-        font: CTFontRef,
-        size: CGFloat,
-        matrix: *const CGAffineTransform,
-        attributes: CTFontDescriptorRef,
-    ) -> CTFontRef;
-    fn CTFontCopyDefaultCascadeListForLanguages(
-        font: CTFontRef,
-        languagePrefList: CFArrayRef,
-    ) -> CFArrayRef;
 }

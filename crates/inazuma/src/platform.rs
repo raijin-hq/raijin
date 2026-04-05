@@ -47,7 +47,7 @@ pub(crate) type PlatformScreenCaptureFrame = scap::frame::Frame;
 #[cfg(not(feature = "screen-capture"))]
 pub(crate) type PlatformScreenCaptureFrame = ();
 #[cfg(all(target_os = "macos", feature = "screen-capture"))]
-pub(crate) type PlatformScreenCaptureFrame = core_video::image_buffer::CVImageBuffer;
+pub(crate) type PlatformScreenCaptureFrame = objc2_core_foundation::CFRetained<objc2_core_video::CVImageBuffer>;
 
 // Re-exports — maintain the same external API
 pub use app_menu::*;

@@ -8,7 +8,7 @@ license = "Apache-2.0"
 autoexamples = false
 
 [features]
-default = ["font-kit"]
+default = []
 test-support = [
     "leak-detection",
     "backtrace",
@@ -25,7 +25,6 @@ screen-capture = []
 wayland = [
     "bitflags",
     "ashpd/wayland",
-    "font-kit",
     "calloop-wayland-source",
     "wayland-backend",
     "wayland-client",
@@ -39,7 +38,6 @@ wayland = [
 ]
 x11 = [
     "ashpd",
-    "font-kit",
     "as-raw-xcb-connection",
     "x11rb",
     "xkbcommon",
@@ -115,26 +113,22 @@ pollster = "0.4"
 chrono = "0.4"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-block = "0.1"
-cocoa = "=0.26.0"
-cocoa-foundation = "=0.2.0"
-core-foundation = "=0.10.0"
-core-foundation-sys = "0.8.6"
-core-graphics = "0.24"
-core-text = "21"
-core-video = { version = "0.4.3", features = ["metal"] }
 dispatch2 = "0.3.1"
 flume = "0.11"
-font-kit = { git = "https://github.com/zed-industries/font-kit", rev = "110523127440aefb11ce0cf280ae7c5071337ec5", package = "zed-font-kit", version = "0.14.1-zed", optional = true }
-foreign-types = "0.5"
+fontique = { version = "0.8", features = ["std", "system"] }
+skrifa = "0.40"
+swash = "0.2"
 mach2 = "0.5"
-metal = "0.29"
-objc = "0.2"
-objc2 = { version = "0.6", optional = true }
-objc2-metal = { version = "0.3", optional = true }
-
-[target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "macos"))'.dependencies]
-pathfinder_geometry = "0.5"
+objc2 = "0.6"
+objc2-foundation = "0.3"
+objc2-app-kit = "0.3"
+objc2-metal = "0.3"
+objc2-quartz-core = "0.3"
+objc2-core-video = { version = "0.3", features = ["CVBase", "CVReturn", "CVDisplayLink", "CVMetalTexture", "CVMetalTextureCache", "CVPixelBuffer", "CVImageBuffer", "objc2-core-graphics", "objc2-metal"] }
+objc2-core-foundation = { version = "0.3", features = ["CFArray", "CFAttributedString", "CFCGTypes", "CFData", "CFDictionary", "CFLocale", "CFNumber", "CFRunLoop", "CFString", "CFUUID", "CFURL"] }
+objc2-core-graphics = { version = "0.3", features = ["CGColorSpace", "CGContext", "CGDataProvider", "CGDirectDisplay", "CGFont", "CGImage", "CGRemoteOperation"] }
+objc2-core-text = { version = "0.3", features = ["CTFont", "CTFontCollection", "CTFontDescriptor", "CTFontTraits", "CTLine", "CTRun", "CTStringAttributes", "objc2-core-graphics"] }
+block2 = "0.6"
 
 [target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.dependencies]
 flume = "0.11"
@@ -148,9 +142,6 @@ swash = "0.2.6"
 bytemuck = "1"
 
 ashpd = { version = "0.11", default-features = false, features = ["async-std"], optional = true }
-font-kit = { git = "https://github.com/zed-industries/font-kit", rev = "110523127440aefb11ce0cf280ae7c5071337ec5", package = "zed-font-kit", version = "0.14.1-zed", features = [
-    "source-fontconfig-dlopen",
-], optional = true }
 
 calloop = "0.14.3"
 filedescriptor = { version = "0.8.2", optional = true }

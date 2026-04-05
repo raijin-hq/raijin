@@ -7,29 +7,15 @@ mod platform_impl;
 mod state;
 
 use super::{
-    BoolExt, DisplayLink, MacDisplay, NSRange, NSStringExt, events::platform_input_from_native,
-    ns_string, renderer,
+    DisplayLink, MacDisplay, events::platform_input_from_native,
+    renderer,
 };
 #[cfg(any(test, feature = "test-support"))]
 use anyhow::Result;
-use block::ConcreteBlock;
-use cocoa::{
-    appkit::{
-        NSAppKitVersionNumber, NSAppKitVersionNumber12_0, NSApplication, NSBackingStoreBuffered,
-        NSColor, NSEvent, NSEventModifierFlags, NSFilenamesPboardType, NSPasteboard, NSScreen,
-        NSView, NSViewHeightSizable, NSViewWidthSizable, NSVisualEffectMaterial,
-        NSVisualEffectState, NSVisualEffectView, NSWindow, NSWindowButton,
-        NSWindowCollectionBehavior, NSWindowOcclusionState, NSWindowOrderingMode,
-        NSWindowStyleMask, NSWindowTitleVisibility,
-    },
-    base::{id, nil},
-    foundation::{
-        NSArray, NSAutoreleasePool, NSDictionary, NSFastEnumeration, NSInteger, NSNotFound,
-        NSOperatingSystemVersion, NSPoint, NSProcessInfo, NSRect, NSSize, NSString, NSUInteger,
-        NSUserDefaults,
-    },
-};
+use block2::RcBlock;
+use objc2_core_graphics::CGDirectDisplayID;
 use dispatch2::DispatchQueue;
+use futures::channel::oneshot;
 use inazuma::{
     AnyWindowHandle, BackgroundExecutor, Bounds, Capslock, ExternalPaths, FileDropEvent,
     ForegroundExecutor, KeyDownEvent, Keystroke, Modifiers, ModifiersChangedEvent, MouseButton,
@@ -41,23 +27,16 @@ use inazuma::{
 };
 #[cfg(any(test, feature = "test-support"))]
 use image::RgbaImage;
-
-use core_graphics::display::{CGDirectDisplayID, CGPoint, CGRect};
-use ctor::ctor;
-use futures::channel::oneshot;
-use objc::{
-    class,
-    declare::ClassDecl,
-    msg_send,
-    runtime::{BOOL, Class, NO, Object, Protocol, Sel, YES},
-    sel, sel_impl,
-};
+use objc2::msg_send;
+use objc2::runtime::AnyObject;
+use objc2::sel;
+use objc2::ClassType;
 use parking_lot::Mutex;
 use raw_window_handle as rwh;
 use smallvec::SmallVec;
 use std::{
     cell::Cell,
-    ffi::{CStr, c_void},
+    ffi::c_void,
     mem,
     ops::Range,
     path::PathBuf,
@@ -68,8 +47,24 @@ use std::{
 };
 use util::ResultExt;
 
+use objc2_foundation::{NSNotFound, NSPoint, NSRange, NSRect, NSSize};
+
+/// Create an NSRange representing "not found" (NSNotFound location, 0 length).
+fn ns_range_invalid() -> NSRange {
+    NSRange::new(NSNotFound as usize, 0)
+}
+
+/// Convert an NSRange to a Rust Range, returning None if location is NSNotFound.
+fn ns_range_to_range(range: NSRange) -> Option<Range<usize>> {
+    if range.location == NSNotFound as usize {
+        None
+    } else {
+        Some(range.location..(range.location + range.length))
+    }
+}
+
 use callbacks::*;
-use callbacks_mouse::*;
+use class_registration::WindowIvars;
 use constants::*;
 use state::*;
 pub(crate) use state::{MacWindow, convert_mouse_position};

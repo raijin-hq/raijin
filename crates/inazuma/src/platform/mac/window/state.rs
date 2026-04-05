@@ -4,9 +4,9 @@ pub(super) struct MacWindowState {
     pub(super) handle: AnyWindowHandle,
     pub(super) foreground_executor: ForegroundExecutor,
     pub(super) background_executor: BackgroundExecutor,
-    pub(super) native_window: id,
-    pub(super) native_view: NonNull<Object>,
-    pub(super) blurred_view: Option<id>,
+    pub(super) native_window: *mut AnyObject,
+    pub(super) native_view: NonNull<AnyObject>,
+    pub(super) blurred_view: Option<*mut AnyObject>,
     pub(super) background_appearance: WindowBackgroundAppearance,
     pub(super) display_link: Option<DisplayLink>,
     pub(super) renderer: renderer::Renderer,
@@ -37,7 +37,7 @@ pub(super) struct MacWindowState {
     pub(super) toggle_tab_bar_callback: Option<Box<dyn FnMut()>>,
     pub(super) activated_least_once: bool,
     // The parent window if this window is a sheet (Dialog kind)
-    pub(super) sheet_parent: Option<id>,
+    pub(super) sheet_parent: Option<*mut AnyObject>,
 }
 
 impl MacWindowState {
@@ -52,22 +52,26 @@ impl MacWindowState {
             let titlebar_height = self.titlebar_height();
 
             unsafe {
-                let close_button: id = msg_send![
+                let close_button: *mut AnyObject = msg_send![
                     self.native_window,
-                    standardWindowButton: NSWindowButton::NSWindowCloseButton
+                    standardWindowButton: 7isize // NSWindowButton::NSWindowCloseButton
                 ];
-                let min_button: id = msg_send![
+                let min_button: *mut AnyObject = msg_send![
                     self.native_window,
-                    standardWindowButton: NSWindowButton::NSWindowMiniaturizeButton
+                    standardWindowButton: 8isize // NSWindowButton::NSWindowMiniaturizeButton
                 ];
-                let zoom_button: id = msg_send![
+                let zoom_button: *mut AnyObject = msg_send![
                     self.native_window,
-                    standardWindowButton: NSWindowButton::NSWindowZoomButton
+                    standardWindowButton: 9isize // NSWindowButton::NSWindowZoomButton
                 ];
 
-                let mut close_button_frame: CGRect = msg_send![close_button, frame];
-                let mut min_button_frame: CGRect = msg_send![min_button, frame];
-                let mut zoom_button_frame: CGRect = msg_send![zoom_button, frame];
+                if close_button.is_null() || min_button.is_null() || zoom_button.is_null() {
+                    return;
+                }
+
+                let mut close_button_frame: NSRect = msg_send![close_button, frame];
+                let mut min_button_frame: NSRect = msg_send![min_button, frame];
+                let mut zoom_button_frame: NSRect = msg_send![zoom_button, frame];
                 let mut origin = point(
                     traffic_light_position.x,
                     titlebar_height
@@ -77,17 +81,16 @@ impl MacWindowState {
                 let button_spacing =
                     px((min_button_frame.origin.x - close_button_frame.origin.x) as f32);
 
-                close_button_frame.origin = CGPoint::new(origin.x.into(), origin.y.into());
+                close_button_frame.origin = NSPoint::new(origin.x.into(), origin.y.into());
                 let _: () = msg_send![close_button, setFrame: close_button_frame];
                 origin.x += button_spacing;
 
-                min_button_frame.origin = CGPoint::new(origin.x.into(), origin.y.into());
+                min_button_frame.origin = NSPoint::new(origin.x.into(), origin.y.into());
                 let _: () = msg_send![min_button, setFrame: min_button_frame];
                 origin.x += button_spacing;
 
-                zoom_button_frame.origin = CGPoint::new(origin.x.into(), origin.y.into());
+                zoom_button_frame.origin = NSPoint::new(origin.x.into(), origin.y.into());
                 let _: () = msg_send![zoom_button, setFrame: zoom_button_frame];
-                origin.x += button_spacing;
             }
         }
     }
@@ -95,15 +98,16 @@ impl MacWindowState {
     pub(super) fn start_display_link(&mut self) {
         self.stop_display_link();
         unsafe {
-            if !self
-                .native_window
-                .occlusionState()
-                .contains(NSWindowOcclusionState::NSWindowOcclusionStateVisible)
-            {
+            let occlusion_state: objc2_app_kit::NSWindowOcclusionState =
+                msg_send![self.native_window, occlusionState];
+            if !occlusion_state.contains(
+                objc2_app_kit::NSWindowOcclusionState::Visible,
+            ) {
                 return;
             }
         }
-        let display_id = unsafe { display_id_for_screen(self.native_window.screen()) };
+        let screen: *mut AnyObject = unsafe { msg_send![self.native_window, screen] };
+        let display_id = unsafe { display_id_for_screen(screen) };
         if let Some(mut display_link) =
             DisplayLink::new(display_id, self.native_view.as_ptr() as *mut c_void, step).log_err()
         {
@@ -117,53 +121,58 @@ impl MacWindowState {
     }
 
     pub(super) fn is_maximized(&self) -> bool {
-        fn rect_to_size(rect: NSRect) -> Size<Pixels> {
-            let NSSize { width, height } = rect.size;
-            size(width.into(), height.into())
-        }
-
-        unsafe {
-            let bounds = self.bounds();
-            let screen_size = rect_to_size(self.native_window.screen().visibleFrame());
-            bounds.size == screen_size
-        }
+        let bounds = self.bounds();
+        let screen_size = unsafe {
+            let screen: *mut AnyObject = msg_send![self.native_window, screen];
+            let visible_frame: NSRect = msg_send![screen, visibleFrame];
+            size(
+                px(visible_frame.size.width as f32),
+                px(visible_frame.size.height as f32),
+            )
+        };
+        bounds.size == screen_size
     }
 
     pub(super) fn is_fullscreen(&self) -> bool {
         unsafe {
-            let style_mask = self.native_window.styleMask();
-            style_mask.contains(NSWindowStyleMask::NSFullScreenWindowMask)
+            let style_mask: objc2_app_kit::NSWindowStyleMask =
+                msg_send![self.native_window, styleMask];
+            style_mask.contains(objc2_app_kit::NSWindowStyleMask::FullScreen)
         }
     }
 
     pub(super) fn bounds(&self) -> Bounds<Pixels> {
-        let mut window_frame = unsafe { NSWindow::frame(self.native_window) };
-        let screen = unsafe { NSWindow::screen(self.native_window) };
-        if screen == nil {
-            return Bounds::new(point(px(0.), px(0.)), inazuma::DEFAULT_WINDOW_SIZE);
+        unsafe {
+            let window_frame: NSRect = msg_send![self.native_window, frame];
+            let screen: *mut AnyObject = msg_send![self.native_window, screen];
+            if screen.is_null() {
+                return Bounds::new(point(px(0.), px(0.)), inazuma::DEFAULT_WINDOW_SIZE);
+            }
+            let screen_frame: NSRect = msg_send![screen, frame];
+
+            // Flip the y coordinate to be top-left origin
+            let flipped_y =
+                screen_frame.size.height - window_frame.origin.y - window_frame.size.height;
+
+            Bounds::new(
+                point(
+                    px((window_frame.origin.x - screen_frame.origin.x) as f32),
+                    px((flipped_y + screen_frame.origin.y) as f32),
+                ),
+                size(
+                    px(window_frame.size.width as f32),
+                    px(window_frame.size.height as f32),
+                ),
+            )
         }
-        let screen_frame = unsafe { NSScreen::frame(screen) };
-
-        // Flip the y coordinate to be top-left origin
-        window_frame.origin.y =
-            screen_frame.size.height - window_frame.origin.y - window_frame.size.height;
-
-        Bounds::new(
-            point(
-                px((window_frame.origin.x - screen_frame.origin.x) as f32),
-                px((window_frame.origin.y + screen_frame.origin.y) as f32),
-            ),
-            size(
-                px(window_frame.size.width as f32),
-                px(window_frame.size.height as f32),
-            ),
-        )
     }
 
     pub(super) fn content_size(&self) -> Size<Pixels> {
-        let NSSize { width, height, .. } =
-            unsafe { NSView::frame(self.native_window.contentView()) }.size;
-        size(px(width as f32), px(height as f32))
+        unsafe {
+            let content_view: *mut AnyObject = msg_send![self.native_window, contentView];
+            let frame: NSRect = msg_send![content_view, frame];
+            size(px(frame.size.width as f32), px(frame.size.height as f32))
+        }
     }
 
     pub(super) fn scale_factor(&self) -> f32 {
@@ -172,8 +181,8 @@ impl MacWindowState {
 
     pub(super) fn titlebar_height(&self) -> Pixels {
         unsafe {
-            let frame = NSWindow::frame(self.native_window);
-            let content_layout_rect: CGRect = msg_send![self.native_window, contentLayoutRect];
+            let frame: NSRect = msg_send![self.native_window, frame];
+            let content_layout_rect: NSRect = msg_send![self.native_window, contentLayoutRect];
             px((frame.size.height - content_layout_rect.size.height) as f32)
         }
     }
@@ -199,7 +208,7 @@ impl Drop for MacWindow {
         let sheet_parent = this.sheet_parent.take();
         this.display_link.take();
         unsafe {
-            this.native_window.setDelegate_(nil);
+            let _: () = msg_send![this.native_window, setDelegate: ptr::null_mut::<AnyObject>()];
         }
         this.input_handler.take();
         this.foreground_executor
@@ -208,8 +217,8 @@ impl Drop for MacWindow {
                     if let Some(parent) = sheet_parent {
                         let _: () = msg_send![parent, endSheet: window];
                     }
-                    window.close();
-                    window.autorelease();
+                    let _: () = msg_send![window, close];
+                    let _: *mut AnyObject = msg_send![window, autorelease];
                 }
             })
             .detach();
@@ -224,13 +233,14 @@ pub(crate) fn convert_mouse_position(position: NSPoint, window_height: Pixels) -
     )
 }
 
-pub(super) fn get_scale_factor(native_window: id) -> f32 {
+pub(super) fn get_scale_factor(native_window: *mut AnyObject) -> f32 {
     let factor = unsafe {
-        let screen: id = msg_send![native_window, screen];
+        let screen: *mut AnyObject = msg_send![native_window, screen];
         if screen.is_null() {
             return 2.0;
         }
-        NSScreen::backingScaleFactor(screen) as f32
+        let factor: f64 = msg_send![screen, backingScaleFactor];
+        factor as f32
     };
 
     // We are not certain what triggers this, but it seems that sometimes
@@ -242,29 +252,26 @@ pub(super) fn get_scale_factor(native_window: id) -> f32 {
     if factor == 0.0 { 2. } else { factor }
 }
 
-pub(super) unsafe fn get_window_state(object: &Object) -> Arc<Mutex<MacWindowState>> {
-    unsafe {
-        let raw: *mut c_void = *object.get_ivar(WINDOW_STATE_IVAR);
-        let rc1 = Arc::from_raw(raw as *mut Mutex<MacWindowState>);
-        let rc2 = rc1.clone();
-        mem::forget(rc1);
-        rc2
+impl super::class_registration::WindowIvars {
+    pub(super) fn get_state(&self) -> Arc<Mutex<MacWindowState>> {
+        let raw = self.window_state.get();
+        assert!(!raw.is_null(), "window state not initialized");
+        unsafe {
+            let rc = Arc::from_raw(raw as *const Mutex<MacWindowState>);
+            let clone = rc.clone();
+            mem::forget(rc);
+            clone
+        }
     }
 }
 
-pub(super) unsafe fn drop_window_state(object: &Object) {
+pub(super) unsafe fn display_id_for_screen(screen: *mut AnyObject) -> CGDirectDisplayID {
     unsafe {
-        let raw: *mut c_void = *object.get_ivar(WINDOW_STATE_IVAR);
-        Arc::from_raw(raw as *mut Mutex<MacWindowState>);
-    }
-}
-
-pub(super) unsafe fn display_id_for_screen(screen: id) -> CGDirectDisplayID {
-    unsafe {
-        let device_description = NSScreen::deviceDescription(screen);
-        let screen_number_key: id = ns_string("NSScreenNumber");
-        let screen_number = device_description.objectForKey_(screen_number_key);
-        let screen_number: NSUInteger = msg_send![screen_number, unsignedIntegerValue];
+        let device_description: *mut AnyObject = msg_send![screen, deviceDescription];
+        let screen_number_key = objc2_foundation::NSString::from_str("NSScreenNumber");
+        let screen_number: *mut AnyObject =
+            msg_send![device_description, objectForKey: &*screen_number_key];
+        let screen_number: usize = msg_send![screen_number, unsignedIntegerValue];
         screen_number as CGDirectDisplayID
     }
 }

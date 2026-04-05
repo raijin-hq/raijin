@@ -1,9 +1,5 @@
 use super::*;
 
-pub(super) const MAC_PLATFORM_IVAR: &str = "platform";
-pub(super) static mut APP_CLASS: *const Class = ptr::null();
-pub(super) static mut APP_DELEGATE_CLASS: *const Class = ptr::null();
-
 /// The macOS implementation of the GPUI platform.
 pub struct MacPlatform(pub(super) Mutex<MacPlatformState>);
 
@@ -25,7 +21,7 @@ pub(super) struct MacPlatformState {
     pub(super) menu_actions: Vec<Box<dyn Action>>,
     pub(super) open_urls: Option<Box<dyn FnMut(Vec<String>)>>,
     pub(super) finish_launching: Option<Box<dyn FnOnce()>>,
-    pub(super) dock_menu: Option<id>,
+    pub(super) dock_menu: Option<Retained<NSMenu>>,
     pub(super) menus: Option<Vec<OwnedMenu>>,
     pub(super) keyboard_mapper: Rc<MacKeyboardMapper>,
 }
@@ -35,11 +31,7 @@ impl MacPlatform {
     pub fn new(headless: bool) -> Self {
         let dispatcher = Arc::new(MacDispatcher::new());
 
-        #[cfg(feature = "font-kit")]
         let text_system = Arc::new(super::super::MacTextSystem::new());
-
-        #[cfg(not(feature = "font-kit"))]
-        let text_system = Arc::new(inazuma::NoopTextSystem::new());
 
         let keyboard_layout = MacKeyboardLayout::new();
         let keyboard_mapper = Rc::new(MacKeyboardMapper::new(keyboard_layout.id()));
@@ -68,40 +60,37 @@ impl MacPlatform {
         }))
     }
 
-    pub(super) unsafe fn create_menu_bar(
+    pub(super) fn create_menu_bar(
         &self,
         menus: &Vec<Menu>,
-        delegate: id,
+        delegate: &ProtocolObject<dyn NSMenuDelegate>,
         actions: &mut Vec<Box<dyn Action>>,
         keymap: &Keymap,
-    ) -> id {
+    ) -> Retained<NSMenu> {
         unsafe {
-            let application_menu = NSMenu::new(nil).autorelease();
-            application_menu.setDelegate_(delegate);
+            let mtm = MainThreadMarker::new_unchecked();
+            let application_menu = NSMenu::new(mtm);
+            application_menu.setDelegate(Some(delegate));
 
             for menu_config in menus {
-                let menu = NSMenu::new(nil).autorelease();
-                let menu_title = ns_string(&menu_config.name);
-                menu.setTitle_(menu_title);
-                menu.setDelegate_(delegate);
+                let menu = NSMenu::new(mtm);
+                let menu_title = NSString::from_str(&menu_config.name);
+                menu.setTitle(&menu_title);
+                menu.setDelegate(Some(delegate));
 
                 for item_config in &menu_config.items {
-                    menu.addItem_(Self::create_menu_item(
-                        item_config,
-                        delegate,
-                        actions,
-                        keymap,
-                    ));
+                    let item = Self::create_menu_item(item_config, delegate, actions, keymap);
+                    menu.addItem(&item);
                 }
 
-                let menu_item = NSMenuItem::new(nil).autorelease();
-                menu_item.setTitle_(menu_title);
-                menu_item.setSubmenu_(menu);
-                application_menu.addItem_(menu_item);
+                let menu_item = NSMenuItem::new(mtm);
+                menu_item.setTitle(&menu_title);
+                menu_item.setSubmenu(Some(&menu));
+                application_menu.addItem(&menu_item);
 
                 if menu_config.name == "Window" {
-                    let app: id = msg_send![APP_CLASS, sharedApplication];
-                    app.setWindowsMenu_(menu);
+                    let app = NSApplication::sharedApplication(mtm);
+                    app.setWindowsMenu(Some(&menu));
                 }
             }
 
@@ -109,40 +98,39 @@ impl MacPlatform {
         }
     }
 
-    pub(super) unsafe fn create_dock_menu(
+    pub(super) fn create_dock_menu(
         &self,
         menu_items: Vec<MenuItem>,
-        delegate: id,
+        delegate: &ProtocolObject<dyn NSMenuDelegate>,
         actions: &mut Vec<Box<dyn Action>>,
         keymap: &Keymap,
-    ) -> id {
+    ) -> Retained<NSMenu> {
         unsafe {
-            let dock_menu = NSMenu::new(nil);
-            dock_menu.setDelegate_(delegate);
+            let mtm = MainThreadMarker::new_unchecked();
+            let dock_menu = NSMenu::new(mtm);
+            dock_menu.setDelegate(Some(delegate));
             for item_config in menu_items {
-                dock_menu.addItem_(Self::create_menu_item(
-                    &item_config,
-                    delegate,
-                    actions,
-                    keymap,
-                ));
+                let item = Self::create_menu_item(&item_config, delegate, actions, keymap);
+                dock_menu.addItem(&item);
             }
 
             dock_menu
         }
     }
 
-    unsafe fn create_menu_item(
+    fn create_menu_item(
         item: &MenuItem,
-        delegate: id,
+        delegate: &ProtocolObject<dyn NSMenuDelegate>,
         actions: &mut Vec<Box<dyn Action>>,
         keymap: &Keymap,
-    ) -> id {
+    ) -> Retained<NSMenuItem> {
         static DEFAULT_CONTEXT: OnceLock<Vec<KeyContext>> = OnceLock::new();
 
         unsafe {
+            let mtm = MainThreadMarker::new_unchecked();
+
             match item {
-                MenuItem::Separator => NSMenuItem::separatorItem(nil),
+                MenuItem::Separator => NSMenuItem::separatorItem(mtm),
                 MenuItem::Action {
                     name,
                     action,
@@ -171,13 +159,13 @@ impl MacPlatform {
                         .map(|binding| binding.keystrokes());
 
                     let selector = match os_action {
-                        Some(inazuma::OsAction::Cut) => selector("cut:"),
-                        Some(inazuma::OsAction::Copy) => selector("copy:"),
-                        Some(inazuma::OsAction::Paste) => selector("paste:"),
-                        Some(inazuma::OsAction::SelectAll) => selector("selectAll:"),
-                        Some(inazuma::OsAction::Undo) => selector("handleGPUIMenuItem:"),
-                        Some(inazuma::OsAction::Redo) => selector("handleGPUIMenuItem:"),
-                        None => selector("handleGPUIMenuItem:"),
+                        Some(inazuma::OsAction::Cut) => sel!(cut:),
+                        Some(inazuma::OsAction::Copy) => sel!(copy:),
+                        Some(inazuma::OsAction::Paste) => sel!(paste:),
+                        Some(inazuma::OsAction::SelectAll) => sel!(selectAll:),
+                        Some(inazuma::OsAction::Undo) => sel!(handleGPUIMenuItem:),
+                        Some(inazuma::OsAction::Redo) => sel!(handleGPUIMenuItem:),
+                        None => sel!(handleGPUIMenuItem:),
                     };
 
                     let item;
@@ -186,71 +174,84 @@ impl MacPlatform {
                             let keystroke = &keystrokes[0];
                             let mut mask = NSEventModifierFlags::empty();
                             for (modifier, flag) in &[
-                                (keystroke.modifiers().platform, NSEventModifierFlags::NSCommandKeyMask),
-                                (keystroke.modifiers().control, NSEventModifierFlags::NSControlKeyMask),
-                                (keystroke.modifiers().alt, NSEventModifierFlags::NSAlternateKeyMask),
-                                (keystroke.modifiers().shift, NSEventModifierFlags::NSShiftKeyMask),
+                                (keystroke.modifiers().platform, NSEventModifierFlags::Command),
+                                (keystroke.modifiers().control, NSEventModifierFlags::Control),
+                                (keystroke.modifiers().alt, NSEventModifierFlags::Option),
+                                (keystroke.modifiers().shift, NSEventModifierFlags::Shift),
                             ] {
                                 if *modifier {
                                     mask |= *flag;
                                 }
                             }
 
-                            item = NSMenuItem::alloc(nil)
-                                .initWithTitle_action_keyEquivalent_(
-                                    ns_string(name),
-                                    selector,
-                                    ns_string(key_to_native(keystroke.key()).as_ref()),
-                                )
-                                .autorelease();
+                            let title = NSString::from_str(name);
+                            let key_equiv =
+                                NSString::from_str(key_to_native(keystroke.key()).as_ref());
+                            item = NSMenuItem::initWithTitle_action_keyEquivalent(
+                                mtm.alloc(),
+                                &title,
+                                Some(selector),
+                                &key_equiv,
+                            );
                             if Self::os_version() >= Version::new(12, 0, 0) {
-                                let _: () = msg_send![item, setAllowsAutomaticKeyEquivalentLocalization: NO];
+                                item.setAllowsAutomaticKeyEquivalentLocalization(false);
                             }
-                            item.setKeyEquivalentModifierMask_(mask);
+                            item.setKeyEquivalentModifierMask(mask);
                         } else {
-                            item = NSMenuItem::alloc(nil)
-                                .initWithTitle_action_keyEquivalent_(ns_string(name), selector, ns_string(""))
-                                .autorelease();
+                            let title = NSString::from_str(name);
+                            let empty = NSString::from_str("");
+                            item = NSMenuItem::initWithTitle_action_keyEquivalent(
+                                mtm.alloc(),
+                                &title,
+                                Some(selector),
+                                &empty,
+                            );
                         }
                     } else {
-                        item = NSMenuItem::alloc(nil)
-                            .initWithTitle_action_keyEquivalent_(ns_string(name), selector, ns_string(""))
-                            .autorelease();
+                        let title = NSString::from_str(name);
+                        let empty = NSString::from_str("");
+                        item = NSMenuItem::initWithTitle_action_keyEquivalent(
+                            mtm.alloc(),
+                            &title,
+                            Some(selector),
+                            &empty,
+                        );
                     }
 
                     if *checked {
-                        item.setState_(NSVisualEffectState::Active);
+                        item.setState(objc2_app_kit::NSControlStateValueOn);
                     }
-                    item.setEnabled_(if *disabled { NO } else { YES });
+                    item.setEnabled(!*disabled);
 
                     let tag = actions.len() as NSInteger;
-                    let _: () = msg_send![item, setTag: tag];
+                    item.setTag(tag);
                     actions.push(action.boxed_clone());
                     item
                 }
                 MenuItem::Submenu(Menu { name, items, disabled }) => {
-                    let item = NSMenuItem::new(nil).autorelease();
-                    let submenu = NSMenu::new(nil).autorelease();
-                    submenu.setDelegate_(delegate);
-                    for item in items {
-                        submenu.addItem_(Self::create_menu_item(item, delegate, actions, keymap));
+                    let item = NSMenuItem::new(mtm);
+                    let submenu = NSMenu::new(mtm);
+                    submenu.setDelegate(Some(delegate));
+                    for sub_item in items {
+                        let mi = Self::create_menu_item(sub_item, delegate, actions, keymap);
+                        submenu.addItem(&mi);
                     }
-                    item.setSubmenu_(submenu);
-                    item.setEnabled_(if *disabled { NO } else { YES });
-                    item.setTitle_(ns_string(name));
+                    item.setSubmenu(Some(&submenu));
+                    item.setEnabled(!*disabled);
+                    item.setTitle(&NSString::from_str(name));
                     item
                 }
                 MenuItem::SystemMenu(OsMenu { name, menu_type }) => {
-                    let item = NSMenuItem::new(nil).autorelease();
-                    let submenu = NSMenu::new(nil).autorelease();
-                    submenu.setDelegate_(delegate);
-                    item.setSubmenu_(submenu);
-                    item.setTitle_(ns_string(name));
+                    let item = NSMenuItem::new(mtm);
+                    let submenu = NSMenu::new(mtm);
+                    submenu.setDelegate(Some(delegate));
+                    item.setSubmenu(Some(&submenu));
+                    item.setTitle(&NSString::from_str(name));
 
                     match menu_type {
                         SystemMenuType::Services => {
-                            let app: id = msg_send![APP_CLASS, sharedApplication];
-                            app.setServicesMenu_(item);
+                            let app = NSApplication::sharedApplication(mtm);
+                            app.setServicesMenu(Some(&submenu));
                         }
                     }
 
@@ -261,14 +262,11 @@ impl MacPlatform {
     }
 
     pub(super) fn os_version() -> Version {
-        let version = unsafe {
-            let process_info = NSProcessInfo::processInfo(nil);
-            process_info.operatingSystemVersion()
-        };
+        let version = NSProcessInfo::processInfo().operatingSystemVersion();
         Version::new(
-            version.majorVersion,
-            version.minorVersion,
-            version.patchVersion,
+            version.majorVersion as u64,
+            version.minorVersion as u64,
+            version.patchVersion as u64,
         )
     }
 }

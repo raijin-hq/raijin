@@ -2,33 +2,14 @@ mod callbacks;
 mod platform_impl;
 mod state;
 
-use super::{
-    BoolExt, MacDispatcher, MacDisplay, MacKeyboardLayout, MacKeyboardMapper, MacWindow,
-    events::key_to_native, ns_string, pasteboard::Pasteboard, renderer,
-};
+use super::{MacDispatcher, MacDisplay, MacKeyboardLayout, MacKeyboardMapper, pasteboard::Pasteboard, renderer};
 use crate::command::{new_command, new_std_command};
 use anyhow::{Context as _, anyhow};
-use block::ConcreteBlock;
-use cocoa::{
-    appkit::{
-        NSApplication, NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular,
-        NSControl as _, NSEventModifierFlags, NSMenu, NSMenuItem, NSModalResponse, NSOpenPanel,
-        NSSavePanel, NSVisualEffectState, NSVisualEffectView, NSWindow,
-    },
-    base::{BOOL, NO, YES, id, nil, selector},
-    foundation::{
-        NSArray, NSAutoreleasePool, NSBundle, NSInteger, NSProcessInfo, NSString, NSUInteger, NSURL,
-    },
+use block2::RcBlock;
+use objc2_core_foundation::{
+    CFBoolean, CFData, CFDictionary, CFMutableDictionary, CFRunLoop, CFString,
+    kCFBooleanTrue, kCFTypeDictionaryKeyCallBacks, kCFTypeDictionaryValueCallBacks,
 };
-use core_foundation::{
-    base::{CFRelease, CFType, CFTypeRef, OSStatus, TCFType},
-    boolean::CFBoolean,
-    data::CFData,
-    dictionary::{CFDictionary, CFDictionaryRef, CFMutableDictionary},
-    runloop::CFRunLoopRun,
-    string::{CFString, CFStringRef},
-};
-use ctor::ctor;
 use dispatch2::DispatchQueue;
 use futures::channel::oneshot;
 use inazuma::{
@@ -38,33 +19,34 @@ use inazuma::{
     PlatformWindow, Result, SystemMenuType, Task, ThermalState, WindowAppearance, WindowParams,
 };
 use itertools::Itertools;
-use objc::{
-    class,
-    declare::ClassDecl,
-    msg_send,
-    runtime::{Class, Object, Sel},
-    sel, sel_impl,
+use objc2::rc::Retained;
+use objc2::runtime::{AnyObject, ProtocolObject};
+use objc2::{define_class, msg_send, sel, ClassType, MainThreadMarker, MainThreadOnly};
+use objc2_app_kit::{
+    NSApplication, NSApplicationActivationPolicy, NSApplicationDelegate, NSCursor,
+    NSDocumentController, NSEventModifierFlags, NSMenu, NSMenuDelegate, NSMenuItem,
+    NSModalResponse, NSModalResponseOK, NSOpenPanel, NSSavePanel, NSScroller, NSScrollerStyle,
+    NSWorkspace,
+};
+use objc2_foundation::{
+    NSArray, NSBundle, NSError, NSInteger, NSNotification, NSNotificationCenter,
+    NSNotificationName, NSObject, NSObjectProtocol, NSProcessInfo, NSProcessInfoThermalState,
+    NSProcessInfoThermalStateDidChangeNotification, NSString, NSUserDefaults, NSURL,
 };
 use parking_lot::Mutex;
-use ptr::null_mut;
 use semver::Version;
 use std::{
     cell::Cell,
     ffi::{CStr, OsStr, c_void},
-    os::{raw::c_char, unix::ffi::OsStrExt},
+    os::unix::ffi::OsStrExt,
     path::{Path, PathBuf},
     ptr,
     rc::Rc,
-    slice, str,
     sync::{Arc, OnceLock},
 };
 use util::ResultExt;
 
-#[allow(non_upper_case_globals)]
-const NSUTF8StringEncoding: NSUInteger = 4;
-
 use callbacks::*;
-use state::*;
 pub use state::MacPlatform;
 pub(crate) use callbacks::{
     TISCopyCurrentKeyboardLayoutInputSource, TISGetInputSourceProperty, UCKeyTranslate,
@@ -72,92 +54,132 @@ pub(crate) use callbacks::{
     kTISPropertyLocalizedName,
 };
 
-#[ctor]
-unsafe fn build_classes() {
-    unsafe {
-        APP_CLASS = {
-            let mut decl = ClassDecl::new("GPUIApplication", class!(NSApplication)).unwrap();
-            decl.add_ivar::<*mut c_void>(MAC_PLATFORM_IVAR);
-            decl.register()
+use super::events::key_to_native;
+
+/// Ivars for GPUIApplication — stores a raw pointer to the MacPlatform.
+#[derive(Default)]
+struct AppIvars {
+    platform: Cell<*const c_void>,
+}
+
+/// Ivars for GPUIApplicationDelegate — stores a raw pointer to the MacPlatform.
+#[derive(Default)]
+struct DelegateIvars {
+    platform: Cell<*const c_void>,
+}
+
+define_class!(
+    #[unsafe(super(NSApplication))]
+    #[name = "GPUIApplication"]
+    #[ivars = AppIvars]
+    #[thread_kind = MainThreadOnly]
+    struct GPUIApplication;
+
+    impl GPUIApplication {}
+);
+
+define_class!(
+    #[unsafe(super(NSObject))]
+    #[name = "GPUIApplicationDelegate"]
+    #[ivars = DelegateIvars]
+    #[thread_kind = MainThreadOnly]
+    struct GPUIApplicationDelegate;
+
+    impl GPUIApplicationDelegate {
+        #[unsafe(method(applicationWillFinishLaunching:))]
+        fn application_will_finish_launching(&self, _notification: &NSNotification) {
+            will_finish_launching(self);
         }
-    };
-    unsafe {
-        APP_DELEGATE_CLASS = unsafe {
-            let mut decl = ClassDecl::new("GPUIApplicationDelegate", class!(NSResponder)).unwrap();
-            decl.add_ivar::<*mut c_void>(MAC_PLATFORM_IVAR);
-            decl.add_method(
-                sel!(applicationWillFinishLaunching:),
-                will_finish_launching as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(applicationDidFinishLaunching:),
-                did_finish_launching as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(applicationShouldHandleReopen:hasVisibleWindows:),
-                should_handle_reopen as extern "C" fn(&mut Object, Sel, id, bool),
-            );
-            decl.add_method(
-                sel!(applicationWillTerminate:),
-                will_terminate as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(handleGPUIMenuItem:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            // Add menu item handlers so that OS save panels have the correct key commands
-            decl.add_method(
-                sel!(cut:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(copy:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(paste:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(selectAll:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(undo:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(redo:),
-                handle_menu_item as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(validateMenuItem:),
-                validate_menu_item as extern "C" fn(&mut Object, Sel, id) -> bool,
-            );
-            decl.add_method(
-                sel!(menuWillOpen:),
-                menu_will_open as extern "C" fn(&mut Object, Sel, id),
-            );
-            decl.add_method(
-                sel!(applicationDockMenu:),
-                handle_dock_menu as extern "C" fn(&mut Object, Sel, id) -> id,
-            );
-            decl.add_method(
-                sel!(application:openURLs:),
-                open_urls as extern "C" fn(&mut Object, Sel, id, id),
-            );
 
-            decl.add_method(
-                sel!(onKeyboardLayoutChange:),
-                on_keyboard_layout_change as extern "C" fn(&mut Object, Sel, id),
-            );
+        #[unsafe(method(applicationDidFinishLaunching:))]
+        fn application_did_finish_launching(&self, _notification: &NSNotification) {
+            did_finish_launching(self);
+        }
 
-            decl.add_method(
-                sel!(onThermalStateChange:),
-                on_thermal_state_change as extern "C" fn(&mut Object, Sel, id),
-            );
+        #[unsafe(method(applicationShouldHandleReopen:hasVisibleWindows:))]
+        fn application_should_handle_reopen(
+            &self,
+            _sender: &NSApplication,
+            has_visible_windows: bool,
+        ) -> bool {
+            should_handle_reopen(self, has_visible_windows);
+            true
+        }
 
-            decl.register()
+        #[unsafe(method(applicationWillTerminate:))]
+        fn application_will_terminate(&self, _notification: &NSNotification) {
+            will_terminate(self);
+        }
+
+        #[unsafe(method(handleGPUIMenuItem:))]
+        fn handle_gpui_menu_item(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(cut:))]
+        fn cut(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(copy:))]
+        fn copy(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(paste:))]
+        fn paste(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(selectAll:))]
+        fn select_all(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(undo:))]
+        fn undo(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(redo:))]
+        fn redo(&self, item: &NSMenuItem) {
+            handle_menu_item(self, item);
+        }
+
+        #[unsafe(method(validateMenuItem:))]
+        fn validate_menu_item(&self, item: &NSMenuItem) -> bool {
+            validate_menu_item_callback(self, item)
+        }
+
+        #[unsafe(method(menuWillOpen:))]
+        fn menu_will_open(&self, _menu: &NSMenu) {
+            menu_will_open_callback(self);
+        }
+
+        #[unsafe(method(applicationDockMenu:))]
+        fn application_dock_menu(&self, _sender: &NSApplication) -> *mut NSMenu {
+            handle_dock_menu(self)
+        }
+
+        #[unsafe(method(application:openURLs:))]
+        fn application_open_urls(&self, _application: &NSApplication, urls: &NSArray<NSURL>) {
+            open_urls_callback(self, urls);
+        }
+
+        #[unsafe(method(onKeyboardLayoutChange:))]
+        fn on_keyboard_layout_change(&self, _notification: &NSNotification) {
+            keyboard_layout_change(self);
+        }
+
+        #[unsafe(method(onThermalStateChange:))]
+        fn on_thermal_state_change(&self, _notification: &NSNotification) {
+            thermal_state_change(self);
         }
     }
-}
+
+    unsafe impl NSObjectProtocol for GPUIApplicationDelegate {}
+
+    unsafe impl NSApplicationDelegate for GPUIApplicationDelegate {}
+
+    unsafe impl NSMenuDelegate for GPUIApplicationDelegate {}
+);

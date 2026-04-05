@@ -1,29 +1,31 @@
 use super::*;
 
+use objc2_foundation::{NSSize, NSString};
+
 pub(crate) struct MetalRenderer {
-    pub(super) device: metal::Device,
-    pub(super) layer: Option<metal::MetalLayer>,
+    pub(super) device: Retained<ProtocolObject<dyn MTLDevice>>,
+    pub(super) layer: Option<Retained<CAMetalLayer>>,
     pub(super) is_apple_gpu: bool,
     pub(super) is_unified_memory: bool,
     pub(super) presents_with_transaction: bool,
     /// For headless rendering, tracks whether output should be opaque
     pub(super) opaque: bool,
-    pub(super) command_queue: CommandQueue,
-    pub(super) paths_rasterization_pipeline_state: metal::RenderPipelineState,
-    pub(super) path_sprites_pipeline_state: metal::RenderPipelineState,
-    pub(super) shadows_pipeline_state: metal::RenderPipelineState,
-    pub(super) quads_pipeline_state: metal::RenderPipelineState,
-    pub(super) underlines_pipeline_state: metal::RenderPipelineState,
-    pub(super) monochrome_sprites_pipeline_state: metal::RenderPipelineState,
-    pub(super) polychrome_sprites_pipeline_state: metal::RenderPipelineState,
-    pub(super) surfaces_pipeline_state: metal::RenderPipelineState,
-    pub(super) unit_vertices: metal::Buffer,
+    pub(super) command_queue: Retained<ProtocolObject<dyn MTLCommandQueue>>,
+    pub(super) paths_rasterization_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) path_sprites_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) shadows_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) quads_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) underlines_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) monochrome_sprites_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) polychrome_sprites_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) surfaces_pipeline_state: Retained<ProtocolObject<dyn MTLRenderPipelineState>>,
+    pub(super) unit_vertices: Retained<ProtocolObject<dyn MTLBuffer>>,
     #[allow(clippy::arc_with_non_send_sync)]
     pub(super) instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>,
     pub(super) sprite_atlas: Arc<MetalAtlas>,
-    pub(super) core_video_texture_cache: core_video::metal_texture_cache::CVMetalTextureCache,
-    pub(super) path_intermediate_texture: Option<metal::Texture>,
-    pub(super) path_intermediate_msaa_texture: Option<metal::Texture>,
+    pub(super) core_video_texture_cache: *mut CVMetalTextureCache,
+    pub(super) path_intermediate_texture: Option<Retained<ProtocolObject<dyn MTLTexture>>>,
+    pub(super) path_intermediate_msaa_texture: Option<Retained<ProtocolObject<dyn MTLTexture>>>,
     pub(super) path_sample_count: u32,
 }
 
@@ -32,23 +34,22 @@ impl MetalRenderer {
     pub fn new(instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>, transparent: bool) -> Self {
         let device = Self::create_device();
 
-        let layer = metal::MetalLayer::new();
-        layer.set_device(&device);
-        layer.set_pixel_format(MTLPixelFormat::BGRA8Unorm);
+        let layer = CAMetalLayer::new();
+        layer.setDevice(Some(&device));
+        layer.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
         // Support direct-to-display rendering if the window is not transparent
         // https://developer.apple.com/documentation/metal/managing-your-game-window-for-metal-in-macos
-        layer.set_opaque(!transparent);
-        layer.set_maximum_drawable_count(3);
+        layer.setOpaque(!transparent);
+        layer.setMaximumDrawableCount(3);
         // Allow texture reading for visual tests (captures screenshots without ScreenCaptureKit)
         #[cfg(any(test, feature = "test-support"))]
-        layer.set_framebuffer_only(false);
+        layer.setFramebufferOnly(false);
         unsafe {
-            let _: () = msg_send![&*layer, setAllowsNextDrawableTimeout: NO];
-            let _: () = msg_send![&*layer, setNeedsDisplayOnBoundsChange: YES];
+            let _: () = msg_send![&layer, setAllowsNextDrawableTimeout: false];
+            let _: () = msg_send![&layer, setNeedsDisplayOnBoundsChange: true];
             let _: () = msg_send![
-                &*layer,
-                setAutoresizingMask: AutoresizingMask::WIDTH_SIZABLE
-                    | AutoresizingMask::HEIGHT_SIZABLE
+                &layer,
+                setAutoresizingMask: 0x12u32
             ];
         }
 
@@ -65,22 +66,23 @@ impl MetalRenderer {
         Self::new_internal(device, None, true, instance_buffer_pool)
     }
 
-    fn create_device() -> metal::Device {
+    fn create_device() -> Retained<ProtocolObject<dyn MTLDevice>> {
         // Prefer low-power integrated GPUs on Intel Mac. On Apple
         // Silicon, there is only ever one GPU, so this is equivalent to
-        // `metal::Device::system_default()`.
-        if let Some(d) = metal::Device::all()
+        // `MTLCreateSystemDefaultDevice()`.
+        let all_devices = MTLCopyAllDevices();
+        if let Some(d) = all_devices
             .into_iter()
-            .min_by_key(|d| (d.is_removable(), !d.is_low_power()))
+            .min_by_key(|d| (d.isRemovable(), !d.isLowPower()))
         {
             d
         } else {
-            // For some reason `all()` can return an empty list, see https://github.com/zed-industries/zed/issues/37689
+            // For some reason `MTLCopyAllDevices()` can return an empty list, see https://github.com/zed-industries/zed/issues/37689
             // In that case, we fall back to the system default device.
             log::error!(
                 "Unable to enumerate Metal devices; attempting to use system default device"
             );
-            metal::Device::system_default().unwrap_or_else(|| {
+            MTLCreateSystemDefaultDevice().unwrap_or_else(|| {
                 log::error!("unable to access a compatible graphics device");
                 std::process::exit(1);
             })
@@ -88,18 +90,18 @@ impl MetalRenderer {
     }
 
     fn new_internal(
-        device: metal::Device,
-        layer: Option<metal::MetalLayer>,
+        device: Retained<ProtocolObject<dyn MTLDevice>>,
+        layer: Option<Retained<CAMetalLayer>>,
         opaque: bool,
         instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>,
     ) -> Self {
         #[cfg(feature = "runtime_shaders")]
         let library = device
-            .new_library_with_source(&SHADERS_SOURCE_FILE, &metal::CompileOptions::new())
+            .newLibraryWithSource_options_error(&NSString::from_str(&SHADERS_SOURCE_FILE), None)
             .expect("error building metal library");
         #[cfg(not(feature = "runtime_shaders"))]
         let library = device
-            .new_library_with_data(SHADERS_METALLIB)
+            .newLibraryWithData_error(&dispatch2::DispatchData::from_bytes(SHADERS_METALLIB))
             .expect("error building metal library");
 
         fn to_float2_bits(point: PointF) -> u64 {
@@ -111,12 +113,12 @@ impl MetalRenderer {
 
         // Shared memory can be used only if CPU and GPU share the same memory space.
         // https://developer.apple.com/documentation/metal/setting-resource-storage-modes
-        let is_unified_memory = device.has_unified_memory();
+        let is_unified_memory = device.hasUnifiedMemory();
         // Apple GPU families support memoryless textures, which can significantly reduce
         // memory usage by keeping render targets in on-chip tile memory instead of
         // allocating backing store in system memory.
         // https://developer.apple.com/documentation/metal/mtlgpufamily
-        let is_apple_gpu = device.supports_family(MTLGPUFamily::Apple1);
+        let is_apple_gpu = device.supportsFamily(MTLGPUFamily::Apple1);
 
         let unit_vertices = [
             to_float2_bits(point(0., 0.)),
@@ -126,16 +128,19 @@ impl MetalRenderer {
             to_float2_bits(point(1., 0.)),
             to_float2_bits(point(1., 1.)),
         ];
-        let unit_vertices = device.new_buffer_with_data(
-            unit_vertices.as_ptr() as *const c_void,
-            mem::size_of_val(&unit_vertices) as u64,
-            if is_unified_memory {
-                MTLResourceOptions::StorageModeShared
-                    | MTLResourceOptions::CPUCacheModeWriteCombined
-            } else {
-                MTLResourceOptions::StorageModeManaged
-            },
-        );
+        let unit_vertices = unsafe {
+            device.newBufferWithBytes_length_options(
+                NonNull::new_unchecked(unit_vertices.as_ptr() as *mut c_void),
+                mem::size_of_val(&unit_vertices),
+                if is_unified_memory {
+                    MTLResourceOptions::CPUCacheModeWriteCombined
+                        | MTLResourceOptions::StorageModeShared
+                } else {
+                    MTLResourceOptions::StorageModeManaged
+                },
+            )
+        }
+        .expect("failed to create unit vertices buffer");
 
         let paths_rasterization_pipeline_state = build_path_rasterization_pipeline_state(
             &device,
@@ -203,10 +208,21 @@ impl MetalRenderer {
             MTLPixelFormat::BGRA8Unorm,
         );
 
-        let command_queue = device.new_command_queue();
+        let command_queue = device.newCommandQueue().expect("failed to create command queue");
         let sprite_atlas = Arc::new(MetalAtlas::new(device.clone(), is_apple_gpu));
-        let core_video_texture_cache =
-            CVMetalTextureCache::new(None, device.clone(), None).unwrap();
+
+        let core_video_texture_cache = unsafe {
+            let mut cache: *mut CVMetalTextureCache = ptr::null_mut();
+            let status = CVMetalTextureCache::create(
+                None,
+                None,
+                &device,
+                None,
+                NonNull::new_unchecked(&mut cache),
+            );
+            assert_eq!(status, kCVReturnSuccess, "failed to create CVMetalTextureCache");
+            cache
+        };
 
         Self {
             device,
@@ -234,14 +250,14 @@ impl MetalRenderer {
         }
     }
 
-    pub fn layer(&self) -> Option<&metal::MetalLayerRef> {
-        self.layer.as_ref().map(|l| l.as_ref())
+    pub fn layer(&self) -> Option<&CAMetalLayer> {
+        self.layer.as_deref()
     }
 
-    pub fn layer_ptr(&self) -> *mut CAMetalLayer {
+    pub fn layer_ptr(&self) -> *mut c_void {
         self.layer
             .as_ref()
-            .map(|l| l.as_ptr())
+            .map(|l| Retained::as_ptr(l) as *mut c_void)
             .unwrap_or(ptr::null_mut())
     }
 
@@ -252,22 +268,16 @@ impl MetalRenderer {
     pub fn set_presents_with_transaction(&mut self, presents_with_transaction: bool) {
         self.presents_with_transaction = presents_with_transaction;
         if let Some(layer) = &self.layer {
-            layer.set_presents_with_transaction(presents_with_transaction);
+            layer.setPresentsWithTransaction(presents_with_transaction);
         }
     }
 
     pub fn update_drawable_size(&mut self, size: Size<DevicePixels>) {
         if let Some(layer) = &self.layer {
-            let ns_size = NSSize {
+            layer.setDrawableSize(NSSize {
                 width: size.width.0 as f64,
                 height: size.height.0 as f64,
-            };
-            unsafe {
-                let _: () = msg_send![
-                    layer.as_ref(),
-                    setDrawableSize: ns_size
-                ];
-            }
+            });
         }
         self.update_path_intermediate_textures(size);
     }
@@ -282,38 +292,44 @@ impl MetalRenderer {
             return;
         }
 
-        let texture_descriptor = metal::TextureDescriptor::new();
-        texture_descriptor.set_width(size.width.0 as u64);
-        texture_descriptor.set_height(size.height.0 as u64);
-        texture_descriptor.set_pixel_format(metal::MTLPixelFormat::BGRA8Unorm);
-        texture_descriptor.set_storage_mode(metal::MTLStorageMode::Private);
-        texture_descriptor
-            .set_usage(metal::MTLTextureUsage::RenderTarget | metal::MTLTextureUsage::ShaderRead);
-        self.path_intermediate_texture = Some(self.device.new_texture(&texture_descriptor));
+        unsafe {
+            let texture_descriptor = MTLTextureDescriptor::new();
+            texture_descriptor.setWidth(size.width.0 as usize);
+            texture_descriptor.setHeight(size.height.0 as usize);
+            texture_descriptor.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
+            texture_descriptor.setStorageMode(MTLStorageMode::Private);
+            texture_descriptor
+                .setUsage(MTLTextureUsage::RenderTarget | MTLTextureUsage::ShaderRead);
+            self.path_intermediate_texture =
+                Some(self.device.newTextureWithDescriptor(&texture_descriptor)
+                    .expect("failed to create path intermediate texture"));
 
-        if self.path_sample_count > 1 {
-            // https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus
-            // Rendering MSAA textures are done in a single pass, so we can use memory-less storage on Apple Silicon
-            let storage_mode = if self.is_apple_gpu {
-                metal::MTLStorageMode::Memoryless
+            if self.path_sample_count > 1 {
+                // https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus
+                // Rendering MSAA textures are done in a single pass, so we can use memory-less storage on Apple Silicon
+                let storage_mode = if self.is_apple_gpu {
+                    MTLStorageMode::Memoryless
+                } else {
+                    MTLStorageMode::Private
+                };
+
+                let msaa_descriptor = texture_descriptor;
+                msaa_descriptor.setTextureType(MTLTextureType::Type2DMultisample);
+                msaa_descriptor.setStorageMode(storage_mode);
+                msaa_descriptor.setSampleCount(self.path_sample_count as _);
+                self.path_intermediate_msaa_texture =
+                    Some(self.device.newTextureWithDescriptor(&msaa_descriptor)
+                        .expect("failed to create path intermediate MSAA texture"));
             } else {
-                metal::MTLStorageMode::Private
-            };
-
-            let msaa_descriptor = texture_descriptor;
-            msaa_descriptor.set_texture_type(metal::MTLTextureType::D2Multisample);
-            msaa_descriptor.set_storage_mode(storage_mode);
-            msaa_descriptor.set_sample_count(self.path_sample_count as _);
-            self.path_intermediate_msaa_texture = Some(self.device.new_texture(&msaa_descriptor));
-        } else {
-            self.path_intermediate_msaa_texture = None;
+                self.path_intermediate_msaa_texture = None;
+            }
         }
     }
 
     pub fn update_transparency(&mut self, transparent: bool) {
         self.opaque = !transparent;
         if let Some(layer) = &self.layer {
-            layer.set_opaque(!transparent);
+            layer.setOpaque(!transparent);
         }
     }
 
@@ -323,108 +339,108 @@ impl MetalRenderer {
 }
 
 pub(super) fn build_pipeline_state(
-    device: &metal::DeviceRef,
-    library: &metal::LibraryRef,
+    device: &ProtocolObject<dyn MTLDevice>,
+    library: &ProtocolObject<dyn MTLLibrary>,
     label: &str,
     vertex_fn_name: &str,
     fragment_fn_name: &str,
-    pixel_format: metal::MTLPixelFormat,
-) -> metal::RenderPipelineState {
+    pixel_format: MTLPixelFormat,
+) -> Retained<ProtocolObject<dyn MTLRenderPipelineState>> {
     let vertex_fn = library
-        .get_function(vertex_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(vertex_fn_name))
         .expect("error locating vertex function");
     let fragment_fn = library
-        .get_function(fragment_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(fragment_fn_name))
         .expect("error locating fragment function");
 
-    let descriptor = metal::RenderPipelineDescriptor::new();
-    descriptor.set_label(label);
-    descriptor.set_vertex_function(Some(vertex_fn.as_ref()));
-    descriptor.set_fragment_function(Some(fragment_fn.as_ref()));
-    let color_attachment = descriptor.color_attachments().object_at(0).unwrap();
-    color_attachment.set_pixel_format(pixel_format);
-    color_attachment.set_blending_enabled(true);
-    color_attachment.set_rgb_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_alpha_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_source_rgb_blend_factor(metal::MTLBlendFactor::SourceAlpha);
-    color_attachment.set_source_alpha_blend_factor(metal::MTLBlendFactor::One);
-    color_attachment.set_destination_rgb_blend_factor(metal::MTLBlendFactor::OneMinusSourceAlpha);
-    color_attachment.set_destination_alpha_blend_factor(metal::MTLBlendFactor::One);
+    let descriptor = MTLRenderPipelineDescriptor::new();
+    descriptor.setLabel(Some(&NSString::from_str(label)));
+    descriptor.setVertexFunction(Some(&vertex_fn));
+    descriptor.setFragmentFunction(Some(&fragment_fn));
+    let color_attachment = unsafe { descriptor.colorAttachments().objectAtIndexedSubscript(0) };
+    color_attachment.setPixelFormat(pixel_format);
+    color_attachment.setBlendingEnabled(true);
+    color_attachment.setRgbBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setAlphaBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setSourceRGBBlendFactor(MTLBlendFactor::SourceAlpha);
+    color_attachment.setSourceAlphaBlendFactor(MTLBlendFactor::One);
+    color_attachment.setDestinationRGBBlendFactor(MTLBlendFactor::OneMinusSourceAlpha);
+    color_attachment.setDestinationAlphaBlendFactor(MTLBlendFactor::One);
 
     device
-        .new_render_pipeline_state(&descriptor)
+        .newRenderPipelineStateWithDescriptor_error(&descriptor)
         .expect("could not create render pipeline state")
 }
 
 pub(super) fn build_path_sprite_pipeline_state(
-    device: &metal::DeviceRef,
-    library: &metal::LibraryRef,
+    device: &ProtocolObject<dyn MTLDevice>,
+    library: &ProtocolObject<dyn MTLLibrary>,
     label: &str,
     vertex_fn_name: &str,
     fragment_fn_name: &str,
-    pixel_format: metal::MTLPixelFormat,
-) -> metal::RenderPipelineState {
+    pixel_format: MTLPixelFormat,
+) -> Retained<ProtocolObject<dyn MTLRenderPipelineState>> {
     let vertex_fn = library
-        .get_function(vertex_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(vertex_fn_name))
         .expect("error locating vertex function");
     let fragment_fn = library
-        .get_function(fragment_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(fragment_fn_name))
         .expect("error locating fragment function");
 
-    let descriptor = metal::RenderPipelineDescriptor::new();
-    descriptor.set_label(label);
-    descriptor.set_vertex_function(Some(vertex_fn.as_ref()));
-    descriptor.set_fragment_function(Some(fragment_fn.as_ref()));
-    let color_attachment = descriptor.color_attachments().object_at(0).unwrap();
-    color_attachment.set_pixel_format(pixel_format);
-    color_attachment.set_blending_enabled(true);
-    color_attachment.set_rgb_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_alpha_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_source_rgb_blend_factor(metal::MTLBlendFactor::One);
-    color_attachment.set_source_alpha_blend_factor(metal::MTLBlendFactor::One);
-    color_attachment.set_destination_rgb_blend_factor(metal::MTLBlendFactor::OneMinusSourceAlpha);
-    color_attachment.set_destination_alpha_blend_factor(metal::MTLBlendFactor::One);
+    let descriptor = MTLRenderPipelineDescriptor::new();
+    descriptor.setLabel(Some(&NSString::from_str(label)));
+    descriptor.setVertexFunction(Some(&vertex_fn));
+    descriptor.setFragmentFunction(Some(&fragment_fn));
+    let color_attachment = unsafe { descriptor.colorAttachments().objectAtIndexedSubscript(0) };
+    color_attachment.setPixelFormat(pixel_format);
+    color_attachment.setBlendingEnabled(true);
+    color_attachment.setRgbBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setAlphaBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setSourceRGBBlendFactor(MTLBlendFactor::One);
+    color_attachment.setSourceAlphaBlendFactor(MTLBlendFactor::One);
+    color_attachment.setDestinationRGBBlendFactor(MTLBlendFactor::OneMinusSourceAlpha);
+    color_attachment.setDestinationAlphaBlendFactor(MTLBlendFactor::One);
 
     device
-        .new_render_pipeline_state(&descriptor)
+        .newRenderPipelineStateWithDescriptor_error(&descriptor)
         .expect("could not create render pipeline state")
 }
 
 pub(super) fn build_path_rasterization_pipeline_state(
-    device: &metal::DeviceRef,
-    library: &metal::LibraryRef,
+    device: &ProtocolObject<dyn MTLDevice>,
+    library: &ProtocolObject<dyn MTLLibrary>,
     label: &str,
     vertex_fn_name: &str,
     fragment_fn_name: &str,
-    pixel_format: metal::MTLPixelFormat,
+    pixel_format: MTLPixelFormat,
     path_sample_count: u32,
-) -> metal::RenderPipelineState {
+) -> Retained<ProtocolObject<dyn MTLRenderPipelineState>> {
     let vertex_fn = library
-        .get_function(vertex_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(vertex_fn_name))
         .expect("error locating vertex function");
     let fragment_fn = library
-        .get_function(fragment_fn_name, None)
+        .newFunctionWithName(&NSString::from_str(fragment_fn_name))
         .expect("error locating fragment function");
 
-    let descriptor = metal::RenderPipelineDescriptor::new();
-    descriptor.set_label(label);
-    descriptor.set_vertex_function(Some(vertex_fn.as_ref()));
-    descriptor.set_fragment_function(Some(fragment_fn.as_ref()));
+    let descriptor = MTLRenderPipelineDescriptor::new();
+    descriptor.setLabel(Some(&NSString::from_str(label)));
+    descriptor.setVertexFunction(Some(&vertex_fn));
+    descriptor.setFragmentFunction(Some(&fragment_fn));
     if path_sample_count > 1 {
-        descriptor.set_raster_sample_count(path_sample_count as _);
-        descriptor.set_alpha_to_coverage_enabled(false);
+        descriptor.setRasterSampleCount(path_sample_count as _);
+        descriptor.setAlphaToCoverageEnabled(false);
     }
-    let color_attachment = descriptor.color_attachments().object_at(0).unwrap();
-    color_attachment.set_pixel_format(pixel_format);
-    color_attachment.set_blending_enabled(true);
-    color_attachment.set_rgb_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_alpha_blend_operation(metal::MTLBlendOperation::Add);
-    color_attachment.set_source_rgb_blend_factor(metal::MTLBlendFactor::One);
-    color_attachment.set_source_alpha_blend_factor(metal::MTLBlendFactor::One);
-    color_attachment.set_destination_rgb_blend_factor(metal::MTLBlendFactor::OneMinusSourceAlpha);
-    color_attachment.set_destination_alpha_blend_factor(metal::MTLBlendFactor::OneMinusSourceAlpha);
+    let color_attachment = unsafe { descriptor.colorAttachments().objectAtIndexedSubscript(0) };
+    color_attachment.setPixelFormat(pixel_format);
+    color_attachment.setBlendingEnabled(true);
+    color_attachment.setRgbBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setAlphaBlendOperation(MTLBlendOperation::Add);
+    color_attachment.setSourceRGBBlendFactor(MTLBlendFactor::One);
+    color_attachment.setSourceAlphaBlendFactor(MTLBlendFactor::One);
+    color_attachment.setDestinationRGBBlendFactor(MTLBlendFactor::OneMinusSourceAlpha);
+    color_attachment.setDestinationAlphaBlendFactor(MTLBlendFactor::OneMinusSourceAlpha);
 
     device
-        .new_render_pipeline_state(&descriptor)
+        .newRenderPipelineStateWithDescriptor_error(&descriptor)
         .expect("could not create render pipeline state")
 }

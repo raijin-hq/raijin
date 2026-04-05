@@ -516,33 +516,6 @@ impl CosmicTextSystemState {
     }
 }
 
-#[cfg(feature = "font-kit")]
-fn find_best_match(
-    font: &Font,
-    candidates: &[FontId],
-    state: &CosmicTextSystemState,
-) -> Result<usize> {
-    let candidate_properties = candidates
-        .iter()
-        .map(|font_id| {
-            let database_id = state.loaded_font(*font_id).font.id();
-            let face_info = state
-                .font_system
-                .db()
-                .face(database_id)
-                .context("font face not found in database")?;
-            Ok(face_info_into_properties(face_info))
-        })
-        .collect::<Result<SmallVec<[_; 4]>>>()?;
-
-    let ix =
-        font_kit::matching::find_best_match(&candidate_properties, &font_into_properties(font))
-            .context("requested font family contains no font matching the other parameters")?;
-
-    Ok(ix)
-}
-
-#[cfg(not(feature = "font-kit"))]
 fn find_best_match(
     font: &Font,
     candidates: &[FontId],
@@ -555,38 +528,42 @@ fn find_best_match(
         return Ok(0);
     }
 
-    let target_weight = font.weight.0;
-    let target_italic = matches!(
-        font.style,
-        inazuma::FontStyle::Italic | inazuma::FontStyle::Oblique
-    );
+    // Use fontdb's CSS Fonts Level 3 matching algorithm.
+    // Get the family name from the first candidate to query against.
+    let first_db_id = state.loaded_font(candidates[0]).font.id();
+    let family_name = state
+        .font_system
+        .db()
+        .face(first_db_id)
+        .map(|f| f.families.first().map(|(name, _)| name.as_str()))
+        .flatten()
+        .unwrap_or("");
 
-    let mut best_index = 0;
-    let mut best_score = u32::MAX;
+    let query_style = match font.style {
+        inazuma::FontStyle::Normal => cosmic_text::fontdb::Style::Normal,
+        inazuma::FontStyle::Italic => cosmic_text::fontdb::Style::Italic,
+        inazuma::FontStyle::Oblique => cosmic_text::fontdb::Style::Oblique,
+    };
 
-    for (index, font_id) in candidates.iter().enumerate() {
-        let database_id = state.loaded_font(*font_id).font.id();
-        let face_info = state
-            .font_system
-            .db()
-            .face(database_id)
-            .context("font face not found in database")?;
+    let matched_id = state.font_system.db().query(&cosmic_text::fontdb::Query {
+        families: &[cosmic_text::fontdb::Family::Name(family_name)],
+        weight: cosmic_text::fontdb::Weight(font.weight.0 as u16),
+        stretch: cosmic_text::fontdb::Stretch::Normal,
+        style: query_style,
+    });
 
-        let is_italic = matches!(
-            face_info.style,
-            cosmic_text::Style::Italic | cosmic_text::Style::Oblique
-        );
-        let style_penalty: u32 = if is_italic == target_italic { 0 } else { 1000 };
-        let weight_diff = (face_info.weight.0 as i32 - target_weight as i32).unsigned_abs();
-        let score = style_penalty + weight_diff;
-
-        if score < best_score {
-            best_score = score;
-            best_index = index;
+    // Find which candidate index corresponds to the matched fontdb ID.
+    if let Some(matched_id) = matched_id {
+        for (index, font_id) in candidates.iter().enumerate() {
+            let db_id = state.loaded_font(*font_id).font.id();
+            if db_id == matched_id {
+                return Ok(index);
+            }
         }
     }
 
-    Ok(best_index)
+    // Fallback: return first candidate if fontdb match isn't in our candidate list.
+    Ok(0)
 }
 
 fn cosmic_font_features(features: &FontFeatures) -> Result<CosmicFontFeatures> {
@@ -603,44 +580,6 @@ fn cosmic_font_features(features: &FontFeatures) -> Result<CosmicFontFeatures> {
         result.set(tag, feature.1);
     }
     Ok(result)
-}
-
-#[cfg(feature = "font-kit")]
-fn font_into_properties(font: &inazuma::Font) -> font_kit::properties::Properties {
-    font_kit::properties::Properties {
-        style: match font.style {
-            inazuma::FontStyle::Normal => font_kit::properties::Style::Normal,
-            inazuma::FontStyle::Italic => font_kit::properties::Style::Italic,
-            inazuma::FontStyle::Oblique => font_kit::properties::Style::Oblique,
-        },
-        weight: font_kit::properties::Weight(font.weight.0),
-        stretch: Default::default(),
-    }
-}
-
-#[cfg(feature = "font-kit")]
-fn face_info_into_properties(
-    face_info: &cosmic_text::fontdb::FaceInfo,
-) -> font_kit::properties::Properties {
-    font_kit::properties::Properties {
-        style: match face_info.style {
-            cosmic_text::Style::Normal => font_kit::properties::Style::Normal,
-            cosmic_text::Style::Italic => font_kit::properties::Style::Italic,
-            cosmic_text::Style::Oblique => font_kit::properties::Style::Oblique,
-        },
-        weight: font_kit::properties::Weight(face_info.weight.0.into()),
-        stretch: match face_info.stretch {
-            cosmic_text::Stretch::Condensed => font_kit::properties::Stretch::CONDENSED,
-            cosmic_text::Stretch::Expanded => font_kit::properties::Stretch::EXPANDED,
-            cosmic_text::Stretch::ExtraCondensed => font_kit::properties::Stretch::EXTRA_CONDENSED,
-            cosmic_text::Stretch::ExtraExpanded => font_kit::properties::Stretch::EXTRA_EXPANDED,
-            cosmic_text::Stretch::Normal => font_kit::properties::Stretch::NORMAL,
-            cosmic_text::Stretch::SemiCondensed => font_kit::properties::Stretch::SEMI_CONDENSED,
-            cosmic_text::Stretch::SemiExpanded => font_kit::properties::Stretch::SEMI_EXPANDED,
-            cosmic_text::Stretch::UltraCondensed => font_kit::properties::Stretch::ULTRA_CONDENSED,
-            cosmic_text::Stretch::UltraExpanded => font_kit::properties::Stretch::ULTRA_EXPANDED,
-        },
-    }
 }
 
 fn check_is_known_emoji_font(postscript_name: &str) -> bool {

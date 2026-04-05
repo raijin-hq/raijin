@@ -1,4 +1,5 @@
 use super::*;
+use objc2_foundation::NSString as Objc2NSString;
 
 pub(crate) struct MacKeyboardLayout {
     id: String,
@@ -45,19 +46,19 @@ impl MacKeyboardLayout {
         unsafe {
             let current_keyboard = TISCopyCurrentKeyboardLayoutInputSource();
 
-            let id: *mut Object = TISGetInputSourceProperty(
+            let id_ptr = TISGetInputSourceProperty(
                 current_keyboard,
                 kTISPropertyInputSourceID as *const c_void,
             );
-            let id: *const std::os::raw::c_char = msg_send![id, UTF8String];
-            let id = CStr::from_ptr(id).to_str().unwrap().to_string();
+            let id_ns: &Objc2NSString = &*(id_ptr as *const Objc2NSString);
+            let id = id_ns.to_string();
 
-            let name: *mut Object = TISGetInputSourceProperty(
+            let name_ptr = TISGetInputSourceProperty(
                 current_keyboard,
                 kTISPropertyLocalizedName as *const c_void,
             );
-            let name: *const std::os::raw::c_char = msg_send![name, UTF8String];
-            let name = CStr::from_ptr(name).to_str().unwrap().to_string();
+            let name_ns: &Objc2NSString = &*(name_ptr as *const Objc2NSString);
+            let name = name_ns.to_string();
 
             Self { id, name }
         }

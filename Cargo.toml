@@ -33,8 +33,6 @@ raijin-shell = { path = "crates/raijin-shell" }
 raijin-settings = { path = "crates/raijin-settings" }
 toml = "0.8"
 
-cocoa = "=0.26.0"
-objc = "0.2"
 clap = { version = "4", features = ["derive"] }
 
 anyhow = "1"

@@ -1,15 +1,11 @@
-use super::*;
-
-pub(super) const WINDOW_STATE_IVAR: &str = "windowState";
-
-pub(super) static mut WINDOW_CLASS: *const Class = ptr::null();
-pub(super) static mut PANEL_CLASS: *const Class = ptr::null();
-pub(super) static mut VIEW_CLASS: *const Class = ptr::null();
-pub(super) static mut BLURRED_VIEW_CLASS: *const Class = ptr::null();
+use objc2::runtime::AnyObject;
+use objc2_app_kit::NSWindowStyleMask;
+use objc2_foundation::NSInteger;
 
 #[allow(non_upper_case_globals)]
 pub(super) const NSWindowStyleMaskNonactivatingPanel: NSWindowStyleMask =
     NSWindowStyleMask::from_bits_retain(1 << 7);
+
 // WindowLevel const value ref: https://docs.rs/core-graphics2/0.4.1/src/core_graphics2/window_level.rs.html
 #[allow(non_upper_case_globals)]
 pub(super) const NSNormalWindowLevel: NSInteger = 0;
@@ -18,19 +14,20 @@ pub(super) const NSFloatingWindowLevel: NSInteger = 3;
 #[allow(non_upper_case_globals)]
 pub(super) const NSPopUpWindowLevel: NSInteger = 101;
 #[allow(non_upper_case_globals)]
-pub(super) const NSTrackingMouseEnteredAndExited: NSUInteger = 0x01;
+pub(super) const NSTrackingMouseEnteredAndExited: usize = 0x01;
 #[allow(non_upper_case_globals)]
-pub(super) const NSTrackingMouseMoved: NSUInteger = 0x02;
+pub(super) const NSTrackingMouseMoved: usize = 0x02;
 #[allow(non_upper_case_globals)]
-pub(super) const NSTrackingActiveAlways: NSUInteger = 0x80;
+pub(super) const NSTrackingActiveAlways: usize = 0x80;
 #[allow(non_upper_case_globals)]
-pub(super) const NSTrackingInVisibleRect: NSUInteger = 0x200;
+pub(super) const NSTrackingInVisibleRect: usize = 0x200;
 #[allow(non_upper_case_globals)]
 pub(super) const NSWindowAnimationBehaviorUtilityWindow: NSInteger = 4;
 #[allow(non_upper_case_globals)]
 pub(super) const NSViewLayerContentsRedrawDuringViewResize: NSInteger = 2;
+
 // https://developer.apple.com/documentation/appkit/nsdragoperation
-pub(super) type NSDragOperation = NSUInteger;
+pub(super) type NSDragOperation = usize;
 #[allow(non_upper_case_globals)]
 pub(super) const NSDragOperationNone: NSDragOperation = 0;
 #[allow(non_upper_case_globals)]
@@ -46,9 +43,9 @@ pub enum UserTabbingPreference {
 #[link(name = "CoreGraphics", kind = "framework")]
 unsafe extern "C" {
     // Widely used private APIs; Apple uses them for their Terminal.app.
-    pub(super) fn CGSMainConnectionID() -> id;
+    pub(super) fn CGSMainConnectionID() -> *mut AnyObject;
     pub(super) fn CGSSetWindowBackgroundBlurRadius(
-        connection_id: id,
+        connection_id: *mut AnyObject,
         window_id: NSInteger,
         radius: i64,
     ) -> i32;

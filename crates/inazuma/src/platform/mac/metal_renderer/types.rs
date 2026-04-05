@@ -26,7 +26,7 @@ pub(crate) unsafe fn new_renderer(
 
 pub(crate) struct InstanceBufferPool {
     pub(super) buffer_size: usize,
-    pub(super) buffers: Vec<metal::Buffer>,
+    pub(super) buffers: Vec<Retained<ProtocolObject<dyn MTLBuffer>>>,
 }
 
 impl Default for InstanceBufferPool {
@@ -39,7 +39,7 @@ impl Default for InstanceBufferPool {
 }
 
 pub(crate) struct InstanceBuffer {
-    pub(super) metal_buffer: metal::Buffer,
+    pub(super) metal_buffer: Retained<ProtocolObject<dyn MTLBuffer>>,
     pub(super) size: usize,
 }
 
@@ -51,7 +51,7 @@ impl InstanceBufferPool {
 
     pub(crate) fn acquire(
         &mut self,
-        device: &metal::Device,
+        device: &ProtocolObject<dyn MTLDevice>,
         unified_memory: bool,
     ) -> InstanceBuffer {
         let buffer = self.buffers.pop().unwrap_or_else(|| {
@@ -64,7 +64,9 @@ impl InstanceBufferPool {
                 MTLResourceOptions::StorageModeManaged
             };
 
-            device.new_buffer(self.buffer_size as u64, options)
+            device
+                .newBufferWithLength_options(self.buffer_size, options)
+                .unwrap()
         });
         InstanceBuffer {
             metal_buffer: buffer,

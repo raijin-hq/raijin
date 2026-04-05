@@ -3,9 +3,7 @@ mod key_equivalents_ext;
 mod layout;
 
 use collections::HashMap;
-use std::ffi::{CStr, c_void};
-
-use objc::{msg_send, runtime::Object, sel, sel_impl};
+use std::ffi::c_void;
 
 use inazuma::{KeybindingKeystroke, Keystroke, PlatformKeyboardLayout, PlatformKeyboardMapper};
 

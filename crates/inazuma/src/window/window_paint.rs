@@ -10,7 +10,9 @@ use crate::{
     size,
 };
 #[cfg(target_os = "macos")]
-use core_video::pixel_buffer::CVPixelBuffer;
+use objc2_core_foundation::CFRetained;
+#[cfg(target_os = "macos")]
+use objc2_core_video::CVPixelBuffer;
 use anyhow::Result;
 use std::any::TypeId;
 use std::borrow::Cow;
@@ -716,7 +718,7 @@ impl Window {
     ///
     /// This method should only be called as part of the paint phase of element drawing.
     #[cfg(target_os = "macos")]
-    pub fn paint_surface(&mut self, bounds: Bounds<Pixels>, image_buffer: CVPixelBuffer) {
+    pub fn paint_surface(&mut self, bounds: Bounds<Pixels>, image_buffer: CFRetained<CVPixelBuffer>) {
         use crate::PaintSurface;
 
         self.invalidator.debug_assert_paint();

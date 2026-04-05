@@ -3,7 +3,9 @@ use crate::{
     ObjectFit, Pixels, Style, StyleRefinement, Styled, Window,
 };
 #[cfg(target_os = "macos")]
-use core_video::pixel_buffer::CVPixelBuffer;
+use objc2_core_foundation::CFRetained;
+#[cfg(target_os = "macos")]
+use objc2_core_video::{CVPixelBuffer, CVPixelBufferGetWidth, CVPixelBufferGetHeight};
 use refineable::Refineable;
 
 /// A source of a surface's content.
@@ -11,12 +13,12 @@ use refineable::Refineable;
 pub enum SurfaceSource {
     /// A macOS image buffer from CoreVideo
     #[cfg(target_os = "macos")]
-    Surface(CVPixelBuffer),
+    Surface(CFRetained<CVPixelBuffer>),
 }
 
 #[cfg(target_os = "macos")]
-impl From<CVPixelBuffer> for SurfaceSource {
-    fn from(value: CVPixelBuffer) -> Self {
+impl From<CFRetained<CVPixelBuffer>> for SurfaceSource {
+    fn from(value: CFRetained<CVPixelBuffer>) -> Self {
         SurfaceSource::Surface(value)
     }
 }
@@ -95,7 +97,9 @@ impl Element for Surface {
         match &self.source {
             #[cfg(target_os = "macos")]
             SurfaceSource::Surface(surface) => {
-                let size = crate::size(surface.get_width().into(), surface.get_height().into());
+                let width = crate::DevicePixels(CVPixelBufferGetWidth(surface) as i32);
+                let height = crate::DevicePixels(CVPixelBufferGetHeight(surface) as i32);
+                let size = crate::size(width, height);
                 let new_bounds = self.object_fit.get_bounds(bounds, size);
                 // TODO: Add support for corner_radii
                 window.paint_surface(new_bounds, surface.clone());
