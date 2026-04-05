@@ -5,7 +5,7 @@ use futures::channel::oneshot;
 use crate::{
     AnyView, App, AppContext as _, Context, Entity, EventEmitter, FocusHandle, Focusable,
     InteractiveElement, IntoElement, ParentElement, PromptButton, PromptLevel, Render,
-    StatefulInteractiveElement, Styled, div, opaque_grey, white,
+    Oklch, StatefulInteractiveElement, Styled, div, hsla,
 };
 
 use super::Window;
@@ -105,7 +105,7 @@ impl Render for FallbackPromptRenderer {
             .cursor_default()
             .track_focus(&self.focus)
             .w_72()
-            .bg(white())
+            .bg(Oklch::white())
             .rounded_lg()
             .overflow_hidden()
             .p_3()
@@ -133,7 +133,7 @@ impl Render for FallbackPromptRenderer {
                     .flex_row()
                     .justify_around()
                     .border_1()
-                    .border_color(opaque_grey(0.2, 0.5))
+                    .border_color(hsla(0., 0.,0.2, 0.5))
                     .mt_1()
                     .rounded_xs()
                     .cursor_pointer()
@@ -151,7 +151,7 @@ impl Render for FallbackPromptRenderer {
             .child(
                 div()
                     .size_full()
-                    .bg(opaque_grey(0.5, 0.6))
+                    .bg(hsla(0., 0.,0.5, 0.6))
                     .absolute()
                     .top_0()
                     .left_0(),

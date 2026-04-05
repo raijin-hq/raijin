@@ -6,10 +6,10 @@
 //!   └── TerminalGridElement (Grid output — renders from pre-extracted snapshot)
 
 use inazuma::{
-    Font, InteractiveElement, IntoElement, ParentElement, SharedString, StatefulInteractiveElement,
-    Styled, Window, div, hsla, prelude::FluentBuilder, px,
+    Font, InteractiveElement, IntoElement, Oklch, ParentElement, SharedString, StatefulInteractiveElement,
+    Styled, Window, div, oklcha, prelude::FluentBuilder, px,
 };
-use raijin_settings::ResolvedTheme;
+use raijin_theme::Theme;
 
 use super::constants::*;
 use super::grid_element::{GridOriginStore, TerminalGridElement};
@@ -88,7 +88,7 @@ pub fn render_fold_line(
     header: &super::grid_snapshot::BlockHeaderSnapshot,
     command: &str,
     index: usize,
-    theme: &ResolvedTheme,
+    theme: &Theme,
     on_click: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
 ) -> impl IntoElement {
     let (badge, badge_color) = if header.is_running {
@@ -150,7 +150,7 @@ pub fn render_fold_line(
 /// - `hidden_count == 0`: shows "▾ show less" (click → collapse back to 3)
 pub fn render_fold_counter(
     hidden_count: usize,
-    theme: &ResolvedTheme,
+    theme: &Theme,
     on_click: impl Fn(&inazuma::ClickEvent, &mut Window, &mut inazuma::App) + 'static,
 ) -> impl IntoElement {
     let text: SharedString = if hidden_count > 0 {
@@ -185,7 +185,7 @@ pub fn render_block(
     font_size: f32,
     line_height_multiplier: f32,
     selected: bool,
-    theme: &ResolvedTheme,
+    theme: &Theme,
     grid_origin_store: Option<GridOriginStore>,
 ) -> impl IntoElement {
     let header = &snapshot.header;
@@ -193,6 +193,7 @@ pub fn render_block(
 
     let is_error = header.is_error;
 
+    let selection_highlight = accent_color(theme).opacity(0.45);
     let mut grid_element = TerminalGridElement::new(
         snapshot.grid,
         snapshot.selection,
@@ -200,6 +201,7 @@ pub fn render_block(
         font_size,
         line_height_multiplier,
         terminal_bg(theme),
+        selection_highlight,
     );
     if let Some(store) = grid_origin_store {
         grid_element = grid_element.with_origin_store(store);
@@ -207,14 +209,14 @@ pub fn render_block(
 
     // No permanent background — transparent like Warp, so the background
     // image shows through uniformly. Only selected/error states get a tint.
-    let error_bg = hsla(0.0, 0.5, 0.18, 0.15);
+    let error_bg = oklcha(0.25, 0.08, 25.0, 0.15);
 
     div()
         .w_full()
         .when(selected, |d| d.bg(block_selected_bg(theme)))
         .when(is_error && !selected, |d| d.bg(error_bg))
         .border_t_1()
-        .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+        .border_color(Oklch::white().opacity(0.08))
         .pb(px(BLOCK_BODY_PAD_BOTTOM))
         .when(is_error, |d| {
             d.border_l(px(BLOCK_LEFT_BORDER))

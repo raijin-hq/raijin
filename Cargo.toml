@@ -7,12 +7,16 @@ members = [
     "crates/inazuma-component/assets",
     "crates/raijin-app",
     "crates/raijin-terminal",
-    "crates/raijin-ui",
+    "crates/raijin-theme",
     "crates/raijin-shell",
     "crates/raijin-settings",
     "crates/raijin-term",
     "crates/raijin-completions",
+    "crates/raijin-theme-settings",
+    "crates/raijin-theme-extension",
+    "crates/raijin-theme-selector",
     "crates/cargo-raijin",
+    "crates/raijin-theme-importer",
 ]
 default-members = ["crates/raijin-app"]
 resolver = "3"
@@ -27,7 +31,11 @@ inazuma = { path = "crates/inazuma" }
 inazuma-component = { path = "crates/inazuma-component/ui" }
 inazuma-component-macros = { path = "crates/inazuma-component/macros" }
 inazuma-component-assets = { path = "crates/inazuma-component/assets" }
-raijin-ui = { path = "crates/raijin-ui" }
+raijin-theme = { path = "crates/raijin-theme" }
+raijin-theme-importer = { path = "crates/raijin-theme-importer" }
+raijin-theme-settings = { path = "crates/raijin-theme-settings" }
+raijin-theme-extension = { path = "crates/raijin-theme-extension" }
+raijin-theme-selector = { path = "crates/raijin-theme-selector" }
 raijin-terminal = { path = "crates/raijin-terminal" }
 raijin-shell = { path = "crates/raijin-shell" }
 raijin-settings = { path = "crates/raijin-settings" }

@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use inazuma::{App, Bounds, Hsla, Pixels, Window};
+use inazuma::{App, Bounds, Oklch, Pixels, Window};
 use inazuma_component_macros::IntoPlot;
 use num_traits::Zero;
 
@@ -21,7 +21,7 @@ pub struct PieChart<T: 'static> {
     outer_radius_fn: Option<Rc<dyn Fn(&ArcData<T>) -> f32 + 'static>>,
     pad_angle: f32,
     value: Option<Rc<dyn Fn(&T) -> f32>>,
-    color: Option<Rc<dyn Fn(&T) -> Hsla>>,
+    color: Option<Rc<dyn Fn(&T) -> Oklch>>,
 }
 
 impl<T> PieChart<T> {
@@ -101,7 +101,7 @@ impl<T> PieChart<T> {
     /// Set the color of the pie chart.
     pub fn color<H>(mut self, color: impl Fn(&T) -> H + 'static) -> Self
     where
-        H: Into<Hsla> + 'static,
+        H: Into<Oklch> + 'static,
     {
         self.color = Some(Rc::new(move |t| color(t).into()));
         self

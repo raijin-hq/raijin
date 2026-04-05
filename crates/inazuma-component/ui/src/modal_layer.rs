@@ -8,7 +8,7 @@
 use inazuma::{
     AnyView, App, AppContext as _, Context, DismissEvent, Entity, EventEmitter, FocusHandle,
     Focusable as _, InteractiveElement as _, IntoElement, ManagedView, MouseButton,
-    ParentElement as _, Render, Styled as _, Subscription, Window, div, hsla,
+    Oklch, ParentElement as _, Render, Styled as _, Subscription, Window, div,
     prelude::FluentBuilder as _, px,
 };
 
@@ -196,7 +196,7 @@ impl Render for ModalLayer {
             .inset_0()
             .occlude()
             .when(fade_bg, |this| {
-                this.bg(hsla(0.0, 0.0, 0.0, 0.5))
+                this.bg(Oklch::black().opacity(0.5))
             })
             .on_mouse_down(
                 MouseButton::Left,

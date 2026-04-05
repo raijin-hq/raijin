@@ -1,11 +1,11 @@
-use inazuma::{px, Bounds, Hsla, PathBuilder, Pixels, Point, Window};
+use inazuma::{px, Bounds, Oklch, PathBuilder, Pixels, Point, Window};
 
 use super::origin_point;
 
 pub struct Grid {
     x: Vec<Pixels>,
     y: Vec<Pixels>,
-    stroke: Hsla,
+    stroke: Oklch,
     dash_array: Option<Vec<Pixels>>,
 }
 
@@ -33,7 +33,7 @@ impl Grid {
     }
 
     /// Set the stroke color of the Grid.
-    pub fn stroke(mut self, stroke: impl Into<Hsla>) -> Self {
+    pub fn stroke(mut self, stroke: impl Into<Oklch>) -> Self {
         self.stroke = stroke.into();
         self
     }

@@ -5,7 +5,7 @@ use inazuma::{
     Entity, EntityInputHandler, FocusHandle, Focusable, GlobalElementId, KeyBinding, Keystroke,
     LayoutId, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, PaintQuad, Pixels, Point,
     ShapedLine, SharedString, Style, TextRun, UTF16Selection, UnderlineStyle, Window, WindowBounds,
-    WindowOptions, actions, black, div, fill, hsla, opaque_grey, point, prelude::*, px, relative,
+    WindowOptions, actions, black, div, fill, opaque_grey, point, prelude::*, px, relative,
     rgb, rgba, size, white, yellow,
 };
 use unicode_segmentation::*;
@@ -444,7 +444,7 @@ impl Element for TextElement {
         let style = window.text_style();
 
         let (display_text, text_color) = if content.is_empty() {
-            (input.placeholder.clone(), hsla(0., 0., 0., 0.2))
+            (input.placeholder.clone(), inazuma::Oklch::black().opacity(0.2))
         } else {
             (content, style.color)
         };

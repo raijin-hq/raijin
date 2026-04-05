@@ -4,7 +4,7 @@ use crate::{
     ActiveTheme, Icon, IconName, InteractiveElementExt as _, Sizable as _, StyledExt, h_flex,
 };
 use inazuma::{
-    AnyElement, App, ClickEvent, Context, Decorations, Hsla, InteractiveElement, IntoElement,
+    AnyElement, App, ClickEvent, Context, Decorations, Oklch, InteractiveElement, IntoElement,
     MouseButton, ParentElement, Pixels, Render, RenderOnce, StatefulInteractiveElement as _,
     StyleRefinement, Styled, TitlebarOptions, Window, WindowControlArea, div,
     prelude::FluentBuilder as _, px,
@@ -121,7 +121,7 @@ impl ControlIcon {
     }
 
     #[inline]
-    fn hover_fg(&self, cx: &App) -> Hsla {
+    fn hover_fg(&self, cx: &App) -> Oklch {
         if self.is_close() {
             cx.theme().danger_foreground
         } else {
@@ -130,7 +130,7 @@ impl ControlIcon {
     }
 
     #[inline]
-    fn hover_bg(&self, cx: &App) -> Hsla {
+    fn hover_bg(&self, cx: &App) -> Oklch {
         if self.is_close() {
             cx.theme().danger
         } else {
@@ -139,7 +139,7 @@ impl ControlIcon {
     }
 
     #[inline]
-    fn active_bg(&self, cx: &mut App) -> Hsla {
+    fn active_bg(&self, cx: &mut App) -> Oklch {
         if self.is_close() {
             cx.theme().danger_active
         } else {

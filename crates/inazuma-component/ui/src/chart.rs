@@ -10,7 +10,7 @@ pub use candlestick_chart::CandlestickChart;
 pub use line_chart::LineChart;
 pub use pie_chart::PieChart;
 
-use inazuma::{Hsla, SharedString, TextAlign};
+use inazuma::{Oklch, SharedString, TextAlign};
 
 use crate::plot::{
     AxisText,
@@ -26,7 +26,7 @@ pub(crate) fn build_point_x_labels<T, X>(
     x_fn: &dyn Fn(&T) -> X,
     x_scale: &ScalePoint<X>,
     tick_margin: usize,
-    color: Hsla,
+    color: Oklch,
 ) -> Vec<AxisText>
 where
     X: PartialEq + Into<SharedString>,
@@ -62,7 +62,7 @@ pub(crate) fn build_band_x_labels<T, X>(
     x_scale: &ScaleBand<X>,
     band_width: f32,
     tick_margin: usize,
-    color: Hsla,
+    color: Oklch,
 ) -> Vec<AxisText>
 where
     X: PartialEq + Into<SharedString>,

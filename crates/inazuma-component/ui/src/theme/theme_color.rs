@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use crate::{ThemeMode, theme::DEFAULT_THEME_COLORS};
 
-use inazuma::Hsla;
+use inazuma::Oklch;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -10,238 +10,238 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, JsonSchema)]
 pub struct ThemeColor {
     /// Used for accents such as hover background on MenuItem, ListItem, etc.
-    pub accent: Hsla,
+    pub accent: Oklch,
     /// Used for accent text color.
-    pub accent_foreground: Hsla,
+    pub accent_foreground: Oklch,
     /// Accordion background color.
-    pub accordion: Hsla,
+    pub accordion: Oklch,
     /// Accordion hover background color.
-    pub accordion_hover: Hsla,
+    pub accordion_hover: Oklch,
     /// Default background color.
-    pub background: Hsla,
+    pub background: Oklch,
     /// Default border color
-    pub border: Hsla,
+    pub border: Oklch,
     /// Button primary background color, fallback to `primary`.
-    pub button_primary: Hsla,
+    pub button_primary: Oklch,
     /// Button primary active background color, fallback to `primary_active`.
-    pub button_primary_active: Hsla,
+    pub button_primary_active: Oklch,
     /// Button primary text color, fallback to `primary_foreground`.
-    pub button_primary_foreground: Hsla,
+    pub button_primary_foreground: Oklch,
     /// Button primary hover background color, fallback to `primary_hover`.
-    pub button_primary_hover: Hsla,
+    pub button_primary_hover: Oklch,
     /// Background color for GroupBox.
-    pub group_box: Hsla,
+    pub group_box: Oklch,
     /// Text color for GroupBox.
-    pub group_box_foreground: Hsla,
+    pub group_box_foreground: Oklch,
     /// Input caret color (Blinking cursor).
-    pub caret: Hsla,
+    pub caret: Oklch,
     /// Chart 1 color.
-    pub chart_1: Hsla,
+    pub chart_1: Oklch,
     /// Chart 2 color.
-    pub chart_2: Hsla,
+    pub chart_2: Oklch,
     /// Chart 3 color.
-    pub chart_3: Hsla,
+    pub chart_3: Oklch,
     /// Chart 4 color.
-    pub chart_4: Hsla,
+    pub chart_4: Oklch,
     /// Chart 5 color.
-    pub chart_5: Hsla,
+    pub chart_5: Oklch,
     /// Bullish color for candlestick charts (upward price movement).
-    pub chart_bullish: Hsla,
+    pub chart_bullish: Oklch,
     /// Bearish color for candlestick charts (downward price movement).
-    pub chart_bearish: Hsla,
+    pub chart_bearish: Oklch,
     /// Danger background color.
-    pub danger: Hsla,
+    pub danger: Oklch,
     /// Danger active background color.
-    pub danger_active: Hsla,
+    pub danger_active: Oklch,
     /// Danger text color.
-    pub danger_foreground: Hsla,
+    pub danger_foreground: Oklch,
     /// Danger hover background color.
-    pub danger_hover: Hsla,
+    pub danger_hover: Oklch,
     /// Description List label background color.
-    pub description_list_label: Hsla,
+    pub description_list_label: Oklch,
     /// Description List label foreground color.
-    pub description_list_label_foreground: Hsla,
+    pub description_list_label_foreground: Oklch,
     /// Drag border color.
-    pub drag_border: Hsla,
+    pub drag_border: Oklch,
     /// Drop target background color.
-    pub drop_target: Hsla,
+    pub drop_target: Oklch,
     /// Default text color.
-    pub foreground: Hsla,
+    pub foreground: Oklch,
     /// Info background color.
-    pub info: Hsla,
+    pub info: Oklch,
     /// Info active background color.
-    pub info_active: Hsla,
+    pub info_active: Oklch,
     /// Info text color.
-    pub info_foreground: Hsla,
+    pub info_foreground: Oklch,
     /// Info hover background color.
-    pub info_hover: Hsla,
+    pub info_hover: Oklch,
     /// Border color for inputs such as Input, Select, etc.
-    pub input: Hsla,
+    pub input: Oklch,
     /// Link text color.
-    pub link: Hsla,
+    pub link: Oklch,
     /// Active link text color.
-    pub link_active: Hsla,
+    pub link_active: Oklch,
     /// Hover link text color.
-    pub link_hover: Hsla,
+    pub link_hover: Oklch,
     /// Background color for List and ListItem.
-    pub list: Hsla,
+    pub list: Oklch,
     /// Background color for active ListItem.
-    pub list_active: Hsla,
+    pub list_active: Oklch,
     /// Border color for active ListItem.
-    pub list_active_border: Hsla,
+    pub list_active_border: Oklch,
     /// Stripe background color for even ListItem.
-    pub list_even: Hsla,
+    pub list_even: Oklch,
     /// Background color for List header.
-    pub list_head: Hsla,
+    pub list_head: Oklch,
     /// Hover background color for ListItem.
-    pub list_hover: Hsla,
+    pub list_hover: Oklch,
     /// Muted backgrounds such as Skeleton and Switch.
-    pub muted: Hsla,
+    pub muted: Oklch,
     /// Muted text color, as used in disabled text.
-    pub muted_foreground: Hsla,
+    pub muted_foreground: Oklch,
     /// Background color for Popover.
-    pub popover: Hsla,
+    pub popover: Oklch,
     /// Text color for Popover.
-    pub popover_foreground: Hsla,
+    pub popover_foreground: Oklch,
     /// Primary background color.
-    pub primary: Hsla,
+    pub primary: Oklch,
     /// Active primary background color.
-    pub primary_active: Hsla,
+    pub primary_active: Oklch,
     /// Primary text color.
-    pub primary_foreground: Hsla,
+    pub primary_foreground: Oklch,
     /// Hover primary background color.
-    pub primary_hover: Hsla,
+    pub primary_hover: Oklch,
     /// Progress bar background color.
-    pub progress_bar: Hsla,
+    pub progress_bar: Oklch,
     /// Used for focus ring.
-    pub ring: Hsla,
+    pub ring: Oklch,
     /// Scrollbar background color.
-    pub scrollbar: Hsla,
+    pub scrollbar: Oklch,
     /// Scrollbar thumb background color.
-    pub scrollbar_thumb: Hsla,
+    pub scrollbar_thumb: Oklch,
     /// Scrollbar thumb hover background color.
-    pub scrollbar_thumb_hover: Hsla,
+    pub scrollbar_thumb_hover: Oklch,
     /// Secondary background color.
-    pub secondary: Hsla,
+    pub secondary: Oklch,
     /// Active secondary background color.
-    pub secondary_active: Hsla,
+    pub secondary_active: Oklch,
     /// Secondary text color, used for secondary Button text color or secondary text.
-    pub secondary_foreground: Hsla,
+    pub secondary_foreground: Oklch,
     /// Hover secondary background color.
-    pub secondary_hover: Hsla,
+    pub secondary_hover: Oklch,
     /// Input selection background color.
-    pub selection: Hsla,
+    pub selection: Oklch,
     /// Sidebar background color.
-    pub sidebar: Hsla,
+    pub sidebar: Oklch,
     /// Sidebar accent background color.
-    pub sidebar_accent: Hsla,
+    pub sidebar_accent: Oklch,
     /// Sidebar accent text color.
-    pub sidebar_accent_foreground: Hsla,
+    pub sidebar_accent_foreground: Oklch,
     /// Sidebar border color.
-    pub sidebar_border: Hsla,
+    pub sidebar_border: Oklch,
     /// Sidebar text color.
-    pub sidebar_foreground: Hsla,
+    pub sidebar_foreground: Oklch,
     /// Sidebar primary background color.
-    pub sidebar_primary: Hsla,
+    pub sidebar_primary: Oklch,
     /// Sidebar primary text color.
-    pub sidebar_primary_foreground: Hsla,
+    pub sidebar_primary_foreground: Oklch,
     /// Skeleton background color.
-    pub skeleton: Hsla,
+    pub skeleton: Oklch,
     /// Slider bar background color.
-    pub slider_bar: Hsla,
+    pub slider_bar: Oklch,
     /// Slider thumb background color.
-    pub slider_thumb: Hsla,
+    pub slider_thumb: Oklch,
     /// Success background color.
-    pub success: Hsla,
+    pub success: Oklch,
     /// Success text color.
-    pub success_foreground: Hsla,
+    pub success_foreground: Oklch,
     /// Success hover background color.
-    pub success_hover: Hsla,
+    pub success_hover: Oklch,
     /// Success active background color.
-    pub success_active: Hsla,
+    pub success_active: Oklch,
     /// Switch background color.
-    pub switch: Hsla,
+    pub switch: Oklch,
     /// Switch thumb background color.
-    pub switch_thumb: Hsla,
+    pub switch_thumb: Oklch,
     /// Tab background color.
-    pub tab: Hsla,
+    pub tab: Oklch,
     /// Tab active background color.
-    pub tab_active: Hsla,
+    pub tab_active: Oklch,
     /// Tab active text color.
-    pub tab_active_foreground: Hsla,
+    pub tab_active_foreground: Oklch,
     /// TabBar background color.
-    pub tab_bar: Hsla,
+    pub tab_bar: Oklch,
     /// TabBar segmented background color.
-    pub tab_bar_segmented: Hsla,
+    pub tab_bar_segmented: Oklch,
     /// Tab text color.
-    pub tab_foreground: Hsla,
+    pub tab_foreground: Oklch,
     /// Table background color.
-    pub table: Hsla,
+    pub table: Oklch,
     /// Table active item background color.
-    pub table_active: Hsla,
+    pub table_active: Oklch,
     /// Table active item border color.
-    pub table_active_border: Hsla,
+    pub table_active_border: Oklch,
     /// Stripe background color for even TableRow.
-    pub table_even: Hsla,
+    pub table_even: Oklch,
     /// Table head background color.
-    pub table_head: Hsla,
+    pub table_head: Oklch,
     /// Table head text color.
-    pub table_head_foreground: Hsla,
+    pub table_head_foreground: Oklch,
     /// Table footer background color.
-    pub table_foot: Hsla,
+    pub table_foot: Oklch,
     /// Table footer text color.
-    pub table_foot_foreground: Hsla,
+    pub table_foot_foreground: Oklch,
     /// Table item hover background color.
-    pub table_hover: Hsla,
+    pub table_hover: Oklch,
     /// Table row border color.
-    pub table_row_border: Hsla,
+    pub table_row_border: Oklch,
     /// TitleBar background color, use for Window title bar.
-    pub title_bar: Hsla,
+    pub title_bar: Oklch,
     /// TitleBar border color.
-    pub title_bar_border: Hsla,
+    pub title_bar_border: Oklch,
     /// Background color for Tiles.
-    pub tiles: Hsla,
+    pub tiles: Oklch,
     /// Warning background color.
-    pub warning: Hsla,
+    pub warning: Oklch,
     /// Warning active background color.
-    pub warning_active: Hsla,
+    pub warning_active: Oklch,
     /// Warning hover background color.
-    pub warning_hover: Hsla,
+    pub warning_hover: Oklch,
     /// Warning foreground color.
-    pub warning_foreground: Hsla,
+    pub warning_foreground: Oklch,
     /// Overlay background color.
-    pub overlay: Hsla,
+    pub overlay: Oklch,
     /// Window border color.
     ///
     /// # Platform specific:
     ///
     /// This is only works on Linux, other platforms we can't change the window border color.
-    pub window_border: Hsla,
+    pub window_border: Oklch,
 
     /// The base red color.
-    pub red: Hsla,
+    pub red: Oklch,
     /// The base red light color.
-    pub red_light: Hsla,
+    pub red_light: Oklch,
     /// The base green color.
-    pub green: Hsla,
+    pub green: Oklch,
     /// The base green light color.
-    pub green_light: Hsla,
+    pub green_light: Oklch,
     /// The base blue color.
-    pub blue: Hsla,
+    pub blue: Oklch,
     /// The base blue light color.
-    pub blue_light: Hsla,
+    pub blue_light: Oklch,
     /// The base yellow color.
-    pub yellow: Hsla,
+    pub yellow: Oklch,
     /// The base yellow light color.
-    pub yellow_light: Hsla,
+    pub yellow_light: Oklch,
     /// The base magenta color.
-    pub magenta: Hsla,
+    pub magenta: Oklch,
     /// The base magenta light color.
-    pub magenta_light: Hsla,
+    pub magenta_light: Oklch,
     /// The base cyan color.
-    pub cyan: Hsla,
+    pub cyan: Oklch,
     /// The base cyan light color.
-    pub cyan_light: Hsla,
+    pub cyan_light: Oklch,
 }
 
 impl ThemeColor {

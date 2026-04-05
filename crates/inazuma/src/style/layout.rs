@@ -1,4 +1,4 @@
-use crate::{Hsla, Pixels, Point};
+use crate::{Oklch, Pixels, Point};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct BoxShadow {
     /// What color should the shadow have?
-    pub color: Hsla,
+    pub color: Oklch,
     /// How should it be offset from its element?
     pub offset: Point<Pixels>,
     /// How much should the shadow be blurred?

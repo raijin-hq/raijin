@@ -2,7 +2,7 @@ use instant::Duration;
 use crate::{Icon, IconName, Sizable, Size};
 use inazuma::{
     div, ease_in_out, percentage, prelude::FluentBuilder as _, Animation, AnimationExt as _, App,
-    Hsla, IntoElement, ParentElement, RenderOnce, Styled as _, Transformation, Window,
+    Oklch, IntoElement, ParentElement, RenderOnce, Styled as _, Transformation, Window,
 };
 
 /// A cycling loading spinner.
@@ -11,7 +11,7 @@ pub struct Spinner {
     size: Size,
     icon: Icon,
     speed: Duration,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
 }
 
 impl Spinner {
@@ -36,7 +36,7 @@ impl Spinner {
     }
 
     /// Set the icon color.
-    pub fn color(mut self, color: Hsla) -> Self {
+    pub fn color(mut self, color: Oklch) -> Self {
         self.color = Some(color);
         self
     }

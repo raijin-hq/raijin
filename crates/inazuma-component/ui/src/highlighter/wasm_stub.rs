@@ -117,7 +117,7 @@ pub enum FontWeightContent {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct ThemeStyle {
-    pub color: Option<inazuma::Hsla>,
+    pub color: Option<inazuma::Oklch>,
     pub font_style: Option<FontStyle>,
     pub font_weight: Option<FontWeightContent>,
 }
@@ -171,75 +171,75 @@ pub struct StatusColors {
 }
 
 impl StatusColors {
-    pub fn error(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn error(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn error_background(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn error_background(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn error_border(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn error_border(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn warning(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn warning(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn warning_background(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn warning_background(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn warning_border(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn warning_border(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn info(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn info(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn info_background(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn info_background(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn info_border(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn info_border(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn success(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn success(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn success_background(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn success_background(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn success_border(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn success_border(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn hint(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn hint(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn hint_background(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn hint_background(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 
-    pub fn hint_border(&self, _cx: &inazuma::App) -> inazuma::Hsla {
-        inazuma::Hsla::default()
+    pub fn hint_border(&self, _cx: &inazuma::App) -> inazuma::Oklch {
+        inazuma::Oklch::default()
     }
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct HighlightThemeStyle {
-    pub editor_background: Option<inazuma::Hsla>,
-    pub editor_foreground: Option<inazuma::Hsla>,
-    pub editor_active_line: Option<inazuma::Hsla>,
-    pub editor_line_number: Option<inazuma::Hsla>,
-    pub editor_active_line_number: Option<inazuma::Hsla>,
-    pub editor_invisible: Option<inazuma::Hsla>,
+    pub editor_background: Option<inazuma::Oklch>,
+    pub editor_foreground: Option<inazuma::Oklch>,
+    pub editor_active_line: Option<inazuma::Oklch>,
+    pub editor_line_number: Option<inazuma::Oklch>,
+    pub editor_active_line_number: Option<inazuma::Oklch>,
+    pub editor_invisible: Option<inazuma::Oklch>,
     #[serde(flatten)]
     pub status: StatusColors,
     #[serde(rename = "syntax")]

@@ -1,6 +1,14 @@
-# Inazuma: Modernization Migrations
+# Inazuma: Modernization Migrations — ✅ ERLEDIGT (2026-04-05)
 
-## Ziel
+## Status: KOMPLETT
+
+Erledigt auf Branch `refactor/inazuma-objc2-migration`:
+- **objc2:** cocoa/objc komplett entfernt, 183/228 msg_send! → typed methods, 45 bleiben (super-init/private APIs)
+- **OKLCH:** Hsla komplett eliminiert (814→0 Stellen), Oklch als einziger Farbtyp
+- **P3 Wide Gamut:** sRGB auf CAMetalLayer, Gamut-Mapping, WindowColorspace Config
+- **mod.rs:** 2 Dateien umbenannt
+
+## Ziel (Original)
 
 Alle `cocoa` (0.26) und `objc` (0.2) Nutzung in `crates/inazuma/` durch `objc2`, `objc2-app-kit`, `objc2-foundation` ersetzen.
 

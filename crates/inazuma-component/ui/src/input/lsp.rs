@@ -1,5 +1,5 @@
 use anyhow::Result;
-use inazuma::{App, Context, Hsla, MouseMoveEvent, Task, Window};
+use inazuma::{App, Context, Oklch, MouseMoveEvent, Task, Window};
 use ropey::Rope;
 use std::rc::Rc;
 
@@ -32,7 +32,7 @@ pub struct Lsp {
     /// The document color provider.
     pub document_color_provider: Option<Rc<dyn DocumentColorProvider>>,
 
-    document_colors: Vec<(lsp_types::Range, Hsla)>,
+    document_colors: Vec<(lsp_types::Range, Oklch)>,
     _hover_task: Task<Result<()>>,
     _document_color_task: Task<()>,
 }

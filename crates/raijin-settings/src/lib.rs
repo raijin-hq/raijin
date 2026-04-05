@@ -1,108 +1,12 @@
 pub mod defaults;
 
 use anyhow::{Context, Result};
-use inazuma::{Global, Hsla, rgb};
+use inazuma::{Global, WindowColorspace};
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 
 impl Global for RaijinConfig {}
-
-// ---------------------------------------------------------------------------
-// Resolved Theme — parsed colors + derived values, set as Global
-// ---------------------------------------------------------------------------
-
-impl Global for ResolvedTheme {}
-
-/// Parsed theme with Hsla colors, ready for rendering.
-///
-/// Loaded once at startup from the theme TOML, set as `Global`.
-/// All UI code reads colors from here via `cx.global::<ResolvedTheme>()`.
-#[derive(Debug, Clone)]
-pub struct ResolvedTheme {
-    // --- Base colors (from theme file) ---
-    pub accent: Hsla,
-    pub background: Hsla,
-    pub foreground: Hsla,
-    pub error: Hsla,
-
-    // --- Derived colors (computed from base) ---
-    /// Block/sticky header background — base bg with configurable alpha
-    pub block_bg: Hsla,
-    /// Selected block highlight — accent at low alpha
-    pub selected_bg: Hsla,
-    /// Sticky header hover — accent at medium alpha
-    pub sticky_hover_bg: Hsla,
-    /// Block header metadata text — foreground at low alpha
-    pub metadata_fg: Hsla,
-    /// Command text in headers
-    pub command_fg: Hsla,
-
-    // --- Background image ---
-    pub background_image: Option<(PathBuf, f32)>,
-}
-
-impl ResolvedTheme {
-    /// Resolve a theme into parsed Hsla values with derived colors.
-    pub fn from_theme(theme: &RaijinTheme) -> Self {
-        let accent = parse_hex_color(&theme.accent).unwrap_or(rgb(0x00BFFF).into());
-        let background = parse_hex_color(&theme.background).unwrap_or(rgb(0x121212).into());
-        let foreground = parse_hex_color(&theme.foreground).unwrap_or(rgb(0xf1f1f1).into());
-        let error = parse_hex_color(&theme.error).unwrap_or(rgb(0xff5f5f).into());
-        let block_alpha = (theme.block_opacity as f32 / 100.0).clamp(0.0, 1.0);
-
-        // Block bg: background color with configurable alpha
-        let mut block_bg = background;
-        block_bg.a = block_alpha;
-
-        // Selected bg: accent at 8% alpha
-        let mut selected_bg = accent;
-        selected_bg.a = 0.08;
-
-        // Sticky hover: accent at 15% alpha
-        let mut sticky_hover_bg = accent;
-        sticky_hover_bg.a = 0.15;
-
-        // Metadata fg: foreground at 35% alpha
-        let mut metadata_fg = foreground;
-        metadata_fg.a = 0.35;
-
-        // Command fg: full foreground
-        let command_fg = foreground;
-
-        let background_image = theme.resolve_background_image();
-
-        Self {
-            accent,
-            background,
-            foreground,
-            error,
-            block_bg,
-            selected_bg,
-            sticky_hover_bg,
-            metadata_fg,
-            command_fg,
-            background_image,
-        }
-    }
-
-    /// Create a default resolved theme (no theme file loaded).
-    pub fn default_theme() -> Self {
-        Self::from_theme(&RaijinTheme::default())
-    }
-}
-
-/// Parse a hex color string like "#00BFFF" into Hsla.
-fn parse_hex_color(hex: &str) -> Option<Hsla> {
-    let hex = hex.strip_prefix('#')?;
-    if hex.len() != 6 {
-        return None;
-    }
-    let r = u8::from_str_radix(&hex[0..2], 16).ok()?;
-    let g = u8::from_str_radix(&hex[2..4], 16).ok()?;
-    let b = u8::from_str_radix(&hex[4..6], 16).ok()?;
-    Some(rgb(u32::from(r) << 16 | u32::from(g) << 8 | u32::from(b)).into())
-}
 
 // ---------------------------------------------------------------------------
 // Config structs
@@ -139,6 +43,14 @@ pub struct AppearanceConfig {
     pub font_size: f64,
     #[serde(default = "defaults_line_height")]
     pub line_height: f64,
+    /// Window colorspace for the Metal rendering layer.
+    /// Controls how colors are interpreted on wide-gamut (P3) displays.
+    ///
+    /// - `srgb` (default): Explicit sRGB tagging prevents oversaturation on P3 displays.
+    /// - `display_p3`: Enable the wider P3 gamut for richer colors.
+    /// - `native`: Use the display's native colorspace without explicit tagging.
+    #[serde(default)]
+    pub window_colorspace: WindowColorspace,
     /// Symbol maps: map Unicode ranges to specific font families.
     /// Useful for Nerd Font icons, Powerline glyphs, etc.
     ///
@@ -207,10 +119,6 @@ pub struct RaijinTheme {
     /// Error indicator color (hex).
     #[serde(default = "defaults::theme_error")]
     pub error: String,
-    /// Opacity for block/sticky header backgrounds (0–100).
-    /// Controls how much the background image shows through.
-    #[serde(default = "defaults::theme_block_opacity")]
-    pub block_opacity: u32,
     /// Optional background image.
     #[serde(default)]
     pub background_image: Option<ThemeBackgroundImage>,
@@ -364,6 +272,7 @@ impl Default for AppearanceConfig {
             font_family: defaults::FONT_FAMILY.to_string(),
             font_size: defaults::FONT_SIZE,
             line_height: defaults::LINE_HEIGHT,
+            window_colorspace: WindowColorspace::default(),
             symbol_map: Vec::new(),
         }
     }

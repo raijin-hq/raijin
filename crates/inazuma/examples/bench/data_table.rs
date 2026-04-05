@@ -121,11 +121,11 @@ impl Quote {
         (self.last_done - self.prev_close) / self.prev_close * 100.0
     }
 
-    fn change_color(&self) -> inazuma::Hsla {
+    fn change_color(&self) -> inazuma::Oklch {
         if self.change() > 0.0 {
-            inazuma::green()
+            inazuma::green().into()
         } else {
-            inazuma::red()
+            inazuma::red().into()
         }
     }
 
@@ -144,7 +144,7 @@ impl TableRow {
         Self { ix, quote }
     }
 
-    fn render_cell(&self, key: &str, width: Pixels, color: inazuma::Hsla) -> impl IntoElement {
+    fn render_cell(&self, key: &str, width: Pixels, color: inazuma::Oklch) -> impl IntoElement {
         div()
             .whitespace_nowrap()
             .truncate()

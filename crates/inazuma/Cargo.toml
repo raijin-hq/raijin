@@ -21,7 +21,7 @@ test-support = [
 inspector = ["inazuma-macros/inspector"]
 leak-detection = ["backtrace"]
 runtime_shaders = []
-screen-capture = []
+screen-capture = ["objc2-core-media", "objc2-screen-capture-kit"]
 wayland = [
     "bitflags",
     "ashpd/wayland",
@@ -123,12 +123,14 @@ objc2 = "0.6"
 objc2-foundation = "0.3"
 objc2-app-kit = "0.3"
 objc2-metal = "0.3"
-objc2-quartz-core = "0.3"
+objc2-quartz-core = { version = "0.3", features = ["objc2-core-graphics"] }
 objc2-core-video = { version = "0.3", features = ["CVBase", "CVReturn", "CVDisplayLink", "CVMetalTexture", "CVMetalTextureCache", "CVPixelBuffer", "CVImageBuffer", "objc2-core-graphics", "objc2-metal"] }
 objc2-core-foundation = { version = "0.3", features = ["CFArray", "CFAttributedString", "CFCGTypes", "CFData", "CFDictionary", "CFLocale", "CFNumber", "CFRunLoop", "CFString", "CFUUID", "CFURL"] }
 objc2-core-graphics = { version = "0.3", features = ["CGColorSpace", "CGContext", "CGDataProvider", "CGDirectDisplay", "CGFont", "CGImage", "CGRemoteOperation"] }
 objc2-core-text = { version = "0.3", features = ["CTFont", "CTFontCollection", "CTFontDescriptor", "CTFontTraits", "CTLine", "CTRun", "CTStringAttributes", "objc2-core-graphics"] }
 block2 = "0.6"
+objc2-core-media = { version = "0.3", optional = true }
+objc2-screen-capture-kit = { version = "0.3", optional = true }
 
 [target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.dependencies]
 flume = "0.11"

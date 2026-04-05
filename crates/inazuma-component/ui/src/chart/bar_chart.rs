@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use inazuma::{App, Bounds, Hsla, Pixels, SharedString, TextAlign, Window, px};
+use inazuma::{App, Bounds, Oklch, Pixels, SharedString, TextAlign, Window, px};
 use inazuma_component_macros::IntoPlot;
 use num_traits::{Num, ToPrimitive};
 
@@ -26,7 +26,7 @@ where
     data: Vec<T>,
     x: Option<Rc<dyn Fn(&T) -> X>>,
     y: Option<Rc<dyn Fn(&T) -> Y>>,
-    fill: Option<Rc<dyn Fn(&T) -> Hsla>>,
+    fill: Option<Rc<dyn Fn(&T) -> Oklch>>,
     tick_margin: usize,
     label: Option<Rc<dyn Fn(&T) -> SharedString>>,
     x_axis: bool,
@@ -66,7 +66,7 @@ where
 
     pub fn fill<H>(mut self, fill: impl Fn(&T) -> H + 'static) -> Self
     where
-        H: Into<Hsla> + 'static,
+        H: Into<Oklch> + 'static,
     {
         self.fill = Some(Rc::new(move |t| fill(t).into()));
         self

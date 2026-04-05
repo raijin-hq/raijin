@@ -1,5 +1,5 @@
 use inazuma::{
-    div, prelude::FluentBuilder, px, relative, AnyElement, App, Hsla, IntoElement, ParentElement,
+    div, prelude::FluentBuilder, px, relative, AnyElement, App, Oklch, IntoElement, ParentElement,
     RenderOnce, StyleRefinement, Styled, Window,
 };
 
@@ -34,7 +34,7 @@ pub struct Badge {
     max: usize,
     variant: BadgeVariant,
     children: Vec<AnyElement>,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     size: Size,
 }
 
@@ -79,7 +79,7 @@ impl Badge {
     }
 
     /// Set the color (background) of the badge.
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
         self.color = Some(color.into());
         self
     }

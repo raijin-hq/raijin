@@ -2,7 +2,7 @@
 
 use std::{f32::consts::PI, fmt::Debug};
 
-use inazuma::{Bounds, Hsla, Path, PathBuilder, Pixels, Point, Window, point, px};
+use inazuma::{Bounds, Oklch, Path, PathBuilder, Pixels, Point, Window, point, px};
 
 const EPSILON: f32 = 1e-12;
 const HALF_PI: f32 = PI / 2.;
@@ -176,7 +176,7 @@ impl Arc {
     pub fn paint<T>(
         &self,
         arc: &ArcData<T>,
-        color: impl Into<Hsla>,
+        color: impl Into<Oklch>,
         inner_radius: Option<f32>,
         outer_radius: Option<f32>,
         bounds: &Bounds<Pixels>,

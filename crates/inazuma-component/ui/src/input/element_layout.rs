@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use inazuma::{
-    App, Bounds, Corners, Half, HighlightStyle, HitboxBehavior, Hsla, InteractiveElement,
+    App, Bounds, Corners, Half, HighlightStyle, HitboxBehavior, Oklch, InteractiveElement,
     IntoElement, MouseButton, Path, Pixels, Point, ShapedLine, SharedString, Styled as _,
     TextAlign, TextRun, TextStyle, Window, point, px, size,
 };
@@ -418,11 +418,11 @@ impl TextElement {
 
     pub(super) fn layout_document_colors(
         &self,
-        document_colors: &[(Range<usize>, Hsla)],
+        document_colors: &[(Range<usize>, Oklch)],
         last_layout: &LastLayout,
         bounds: &Bounds<Pixels>,
         _cx: &mut App,
-    ) -> Vec<(Path<Pixels>, Hsla)> {
+    ) -> Vec<(Path<Pixels>, Oklch)> {
         let mut paths = vec![];
         for (range, color) in document_colors.iter() {
             if let Some(path) = Self::layout_match_range(range.clone(), last_layout, bounds) {
@@ -558,7 +558,7 @@ impl TextElement {
                 &[TextRun {
                     len: line_number_len,
                     font: style.font(),
-                    color: inazuma::black(),
+                    color: inazuma::Oklch::black(),
                     background_color: None,
                     underline: None,
                     strikethrough: None,
@@ -595,12 +595,13 @@ impl TextElement {
             return None;
         }
 
-        let invisible_color = cx
+        let invisible_color: inazuma::Oklch = cx
             .theme()
             .highlight_theme
             .style
             .editor_invisible
-            .unwrap_or(cx.theme().muted_foreground);
+            .unwrap_or(cx.theme().muted_foreground)
+            .into();
 
         let space_font_size = text_size.half();
         let tab_font_size = text_size;
@@ -668,7 +669,7 @@ impl TextElement {
         }
 
         let completion_text = &completion_item.insert_text;
-        let completion_color = cx.theme().muted_foreground.opacity(0.5);
+        let completion_color: inazuma::Oklch = inazuma::Oklch::from(cx.theme().muted_foreground).opacity(0.5);
 
         let text_style = window.text_style();
         let font = text_style.font();
@@ -876,7 +877,7 @@ impl TextElement {
         last_layout: &LastLayout,
         font_size: Pixels,
         runs: &[TextRun],
-        bg_segments: &[(Range<usize>, Hsla)],
+        bg_segments: &[(Range<usize>, Oklch)],
         whitespace_indicators: Option<WhitespaceIndicators>,
         window: &mut Window,
     ) -> Vec<LineLayout> {
@@ -1095,7 +1096,7 @@ pub(super) fn runs_for_range(
 pub(super) fn split_runs_by_bg_segments(
     start_offset: usize,
     runs: &[TextRun],
-    bg_segments: &[(Range<usize>, Hsla)],
+    bg_segments: &[(Range<usize>, Oklch)],
 ) -> Vec<TextRun> {
     let mut result = vec![];
 
@@ -1121,10 +1122,10 @@ pub(super) fn split_runs_by_bg_segments(
             // Add the overlapping part with background color
             let overlap_start = run_start.max(bg_range.start);
             let overlap_end = run_end.min(bg_range.end);
-            let text_color = if bg_color.l >= 0.5 {
-                inazuma::black()
+            let text_color: inazuma::Oklch = if bg_color.l >= 0.5 {
+                inazuma::Oklch::black()
             } else {
-                inazuma::white()
+                inazuma::Oklch::white()
             };
 
             let run_len = overlap_end.saturating_sub(overlap_start);
@@ -1163,7 +1164,7 @@ mod tests {
         let run = TextRun {
             len: 0,
             font: inazuma::font(".SystemUIFont"),
-            color: inazuma::black(),
+            color: inazuma::Oklch::black(),
             background_color: None,
             underline: None,
             strikethrough: None,
@@ -1221,7 +1222,7 @@ mod tests {
         let run = TextRun {
             len: 0,
             font: inazuma::font(".SystemUIFont"),
-            color: inazuma::blue(),
+            color: Oklch::from(inazuma::blue()),
             background_color: None,
             underline: None,
             strikethrough: None,
@@ -1242,17 +1243,23 @@ mod tests {
             },
         ];
 
-        let bg_segments = vec![(8..12, inazuma::red()), (12..18, inazuma::blue())];
+        let bg_segments = vec![(8..12, Oklch::from(inazuma::red())), (12..18, Oklch::from(inazuma::blue()))];
         let result = split_runs_by_bg_segments(5, &runs, &bg_segments);
         assert_eq!(
             result.iter().map(|run| run.len).collect::<Vec<_>>(),
             vec![3, 2, 2, 5, 1, 23]
         );
-        assert_eq!(result[0].color, inazuma::blue());
-        assert_eq!(result[1].color, inazuma::black());
-        assert_eq!(result[2].color, inazuma::black());
-        assert_eq!(result[3].color, inazuma::black());
-        assert_eq!(result[4].color, inazuma::black());
-        assert_eq!(result[5].color, inazuma::blue());
+        // Segments outside bg_segments keep original color
+        assert_eq!(result[0].color, Oklch::from(inazuma::blue()));
+        assert_eq!(result[5].color, Oklch::from(inazuma::blue()));
+        // Segments within bg_segments get contrasting text color (black or white)
+        // based on bg lightness threshold of 0.5
+        for idx in 1..5 {
+            let c = result[idx].color;
+            assert!(
+                c == Oklch::black() || c == Oklch::white(),
+                "segment {} should have black or white text, got {:?}", idx, c
+            );
+        }
     }
 }

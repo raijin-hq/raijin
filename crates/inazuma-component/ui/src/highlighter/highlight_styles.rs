@@ -341,12 +341,12 @@ impl SyntaxHighlighter {
 
 #[cfg(test)]
 mod tests {
-    use inazuma::Hsla;
+    use inazuma::Oklch;
 
     use super::*;
     use crate::Colorize as _;
 
-    fn color_style(color: Hsla) -> HighlightStyle {
+    fn color_style(color: Oklch) -> HighlightStyle {
         let mut style = HighlightStyle::default();
         style.color = Some(color);
         style
@@ -358,14 +358,14 @@ mod tests {
         left: Vec<(Range<usize>, HighlightStyle)>,
         right: Vec<(Range<usize>, HighlightStyle)>,
     ) {
-        fn color_name(c: Option<Hsla>) -> String {
+        fn color_name(c: Option<Oklch>) -> String {
             match c {
                 Some(c) => {
-                    if c == inazuma::red() {
+                    if c == Oklch::from(inazuma::red()) {
                         "red".to_string()
-                    } else if c == inazuma::green() {
+                    } else if c == Oklch::from(inazuma::green()) {
                         "green".to_string()
-                    } else if c == inazuma::blue() {
+                    } else if c == Oklch::from(inazuma::blue()) {
                         "blue".to_string()
                     } else {
                         c.to_hex()
@@ -448,9 +448,9 @@ $x = 1;
 
     #[test]
     fn test_unique_styles() {
-        let red = color_style(inazuma::red());
-        let green = color_style(inazuma::green());
-        let blue = color_style(inazuma::blue());
+        let red = color_style(Oklch::from(inazuma::red()));
+        let green = color_style(Oklch::from(inazuma::green()));
+        let blue = color_style(Oklch::from(inazuma::blue()));
         let clean = HighlightStyle::default();
 
         assert_unique_styles(

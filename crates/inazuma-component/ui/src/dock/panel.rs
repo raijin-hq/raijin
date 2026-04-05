@@ -1,7 +1,7 @@
 use crate::{button::Button, dock::TabPanel, menu::PopupMenu};
 use inazuma::{
     AnyElement, AnyView, App, AppContext as _, Context, Entity, EntityId, EventEmitter,
-    FocusHandle, Focusable, Global, Hsla, IntoElement, Render, SharedString, WeakEntity, Window,
+    FocusHandle, Focusable, Global, Oklch, IntoElement, Render, SharedString, WeakEntity, Window,
 };
 use rust_i18n::t;
 use std::{collections::HashMap, sync::Arc};
@@ -25,8 +25,8 @@ pub enum PanelStyle {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct TitleStyle {
-    pub background: Hsla,
-    pub foreground: Hsla,
+    pub background: Oklch,
+    pub foreground: Oklch,
 }
 
 #[derive(Clone, Copy, Default)]

@@ -1,6 +1,6 @@
 use raijin_term::term::TermMode;
 use inazuma::{
-    div, hsla, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
+    div, Oklch, oklcha, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
     ParentElement, Render, Styled, Window, prelude::*,
 };
 use inazuma_component::{
@@ -502,7 +502,7 @@ impl Workspace {
                 state.overlay_highlights.push((
                     cmd_start..cmd_start + cmd_end,
                     inazuma::HighlightStyle {
-                        color: Some(inazuma::hsla(195. / 360., 1.0, 0.5, 1.0)),
+                        color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 1.0).into()),
                         ..Default::default()
                     },
                 ));
@@ -515,7 +515,7 @@ impl Workspace {
                     state.overlay_highlights.push((
                         range.start..clamped_end,
                         inazuma::HighlightStyle {
-                            color: Some(inazuma::hsla(195. / 360., 1.0, 0.5, 0.6)),
+                            color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 0.6).into()),
                             ..Default::default()
                         },
                     ));
@@ -604,7 +604,7 @@ impl Workspace {
     fn render_title_bar(&self, cx: &mut Context<Self>) -> impl IntoElement {
         let is_terminal = self.view_mode == ViewMode::Terminal;
         let is_settings = self.view_mode == ViewMode::Settings;
-        let border_color = hsla(0.0, 0.0, 1.0, 0.08);
+        let border_color = Oklch::white().opacity(0.08);
         let active_bg = rgb(0x222222);
 
         TitleBar::new().child(
@@ -681,8 +681,8 @@ impl Workspace {
         Popover::new("shell-selector")
             .anchor(Anchor::BottomLeft)
             // Override popover chrome to match completion menu design
-            .bg(hsla(0.0, 0.0, 0.16, 1.0))
-            .border_color(hsla(0.0, 0.0, 0.22, 1.0))
+            .bg(oklcha(0.23, 0.0, 0.0, 1.0))
+            .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
             .rounded_lg()
             .shadow_lg()
             .trigger(Chip::new(&current, rgb(0xa78bfa).into()).interactive())
@@ -710,7 +710,7 @@ impl Workspace {
                         .rounded(px(4.0))
                         .when(!is_current, |s| {
                             s.cursor_pointer()
-                                .hover(|s| s.bg(hsla(0.0, 0.0, 1.0, 0.06)))
+                                .hover(|s| s.bg(Oklch::white().opacity(0.06)))
                         })
                         .on_mouse_down(
                             inazuma::MouseButton::Left,
@@ -757,7 +757,7 @@ impl Workspace {
                                                     s.text_color(rgb(0xf1f1f1))
                                                 })
                                                 .when(!installed, |s| {
-                                                    s.text_color(hsla(0.0, 0.0, 1.0, 0.4))
+                                                    s.text_color(Oklch::white().opacity(0.4))
                                                 })
                                                 .child(name),
                                         ),
@@ -766,7 +766,7 @@ impl Workspace {
                                     div()
                                         .text_xs()
                                         .when(installed, |s| {
-                                            s.text_color(hsla(0.0, 0.0, 1.0, 0.3))
+                                            s.text_color(Oklch::white().opacity(0.3))
                                                 .child(detail)
                                         })
                                         .when(!installed, |s| {
@@ -941,7 +941,7 @@ impl Workspace {
         div()
             .flex_shrink_0()
             .w_full()
-            .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+            .border_color(Oklch::white().opacity(0.08))
             .border_t_1()
             .child(chips)
             .child(
@@ -961,7 +961,7 @@ impl Workspace {
     fn render_correction_banner(
         &self,
         correction: &command_correction::CorrectionResult,
-        theme: &raijin_settings::ResolvedTheme,
+        theme: &raijin_theme::Theme,
     ) -> impl IntoElement {
         let original = correction.original.clone();
         let suggestion = correction.suggestion.clone();
@@ -973,10 +973,10 @@ impl Workspace {
             .h(px(32.0))
             .px_4()
             .gap_2()
-            .bg(hsla(0.0, 0.0, 1.0, 0.04))
+            .bg(Oklch::white().opacity(0.04))
             .border_t_1()
             .border_b_1()
-            .border_color(hsla(0.0, 0.0, 1.0, 0.08))
+            .border_color(Oklch::white().opacity(0.08))
             .text_xs()
             .child(
                 div()
@@ -992,7 +992,7 @@ impl Workspace {
                 div()
                     .px_2()
                     .py(px(2.0))
-                    .bg(hsla(0.0, 0.0, 1.0, 0.08))
+                    .bg(Oklch::white().opacity(0.08))
                     .rounded(px(4.0))
                     .text_color(crate::terminal::constants::accent_color(theme))
                     .child(format!("{} ({}%)", suggestion, confidence_pct)),
@@ -1033,9 +1033,8 @@ impl Render for Workspace {
             });
         }
 
-        let resolved = cx.global::<raijin_settings::ResolvedTheme>().clone();
-        let bg_color = resolved.background;
-        let bg_image = resolved.background_image.clone();
+        let theme = cx.global::<raijin_theme::GlobalTheme>().0.clone();
+        let bg_color = theme.styles.colors.background;
 
         let mut container = div()
             .flex()
@@ -1046,7 +1045,10 @@ impl Render for Workspace {
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive));
 
-        // Background image layer from theme — behind all content
+        // Background image layer from theme settings — behind all content
+        let config = cx.global::<raijin_settings::RaijinConfig>();
+        let bg_image = raijin_settings::RaijinTheme::load(&config.appearance.theme)
+            .and_then(|t| t.resolve_background_image());
         if let Some((image_path, opacity)) = bg_image {
             if let Some(render_image) = self.bg_render_image(&image_path) {
                 container = container.child(
@@ -1119,7 +1121,7 @@ impl Render for Workspace {
 
                     // Correction banner (e.g. "Did you mean `git status`?")
                     if let Some(ref correction) = self.correction_suggestion {
-                        container = container.child(self.render_correction_banner(correction, &resolved));
+                        container = container.child(self.render_correction_banner(correction, &theme));
                     }
 
                     // Input area only visible when no command is running

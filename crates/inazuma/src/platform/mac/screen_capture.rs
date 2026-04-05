@@ -37,7 +37,7 @@ pub struct MacScreenCaptureStream {
 impl ScreenCaptureSource for MacScreenCaptureSource {
     fn metadata(&self) -> Result<SourceMetadata> {
         let (display_id, size) = {
-            let display_id = self.sc_display.displayID();
+            let display_id = unsafe { self.sc_display.displayID() };
             let display_mode = CGDisplayCopyDisplayMode(display_id);
             let width = CGDisplayMode::pixel_width(display_mode.as_deref());
             let height = CGDisplayMode::pixel_height(display_mode.as_deref());
@@ -192,7 +192,8 @@ struct ScreenMeta {
 fn screen_id_to_human_label() -> HashMap<CGDirectDisplayID, ScreenMeta> {
     use objc2::MainThreadMarker;
     use objc2_app_kit::NSScreen;
-    use objc2_foundation::{NSNumber, NSString};
+    use objc2::rc::Retained;
+    use objc2_foundation::{NSDictionary, NSNumber, NSString};
 
     unsafe {
         let mtm = MainThreadMarker::new_unchecked();
@@ -202,12 +203,12 @@ fn screen_id_to_human_label() -> HashMap<CGDirectDisplayID, ScreenMeta> {
 
         for (i, screen) in screens.iter().enumerate() {
             let device_desc = screen.deviceDescription();
-            let screen_number: *const objc2::runtime::AnyObject =
-                objc2::msg_send![&device_desc, objectForKey: &*screen_number_key];
-            if screen_number.is_null() {
+            let Some(screen_number) =
+                NSDictionary::objectForKey(&device_desc, &screen_number_key)
+            else {
                 continue;
-            }
-            let screen_number: &NSNumber = &*(screen_number as *const NSNumber);
+            };
+            let screen_number: Retained<NSNumber> = Retained::cast(screen_number);
             let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
 
             let name = screen.localizedName();

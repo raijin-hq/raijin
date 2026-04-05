@@ -34,22 +34,22 @@ struct Edges {
     float left;
 };
 
-struct Hsla {
-    float h;
-    float s;
+struct Oklch {
     float l;
+    float c;
+    float h;
     float a;
 };
 
-struct EdgesHsla {
-    Hsla top;
-    Hsla right;
-    Hsla bottom;
-    Hsla left;
+struct EdgesOklch {
+    Oklch top;
+    Oklch right;
+    Oklch bottom;
+    Oklch left;
 };
 
 struct LinearColorStop {
-    Hsla color;
+    Oklch color;
     float percentage;
 };
 
@@ -61,7 +61,7 @@ struct Background {
     // 0u is sRGB linear color
     // 1u is Oklab color
     uint color_space;
-    Hsla solid;
+    Oklch solid;
     float gradient_angle_or_pattern_height;
     LinearColorStop colors[2];
     uint pad;
@@ -135,53 +135,29 @@ float3 srgb_to_linear(float3 color) {
     return pow(color, float3(1.0 / 2.2, 1.0 / 2.2, 1.0 / 2.2));
 }
 
-/// Hsla to linear RGBA conversion.
-float4 hsla_to_rgba(Hsla hsla) {
-    float h = hsla.h * 6.0; // Now, it's an angle but scaled in [0, 6) range
-    float s = hsla.s;
-    float l = hsla.l;
-    float a = hsla.a;
+/// Oklch to linear RGBA conversion.
+/// Converts polar Oklch (L, C, H degrees, alpha) to linear sRGB via Oklab.
+float4 oklch_to_rgba(Oklch oklch) {
+    float h_rad = oklch.h * 3.141592653589793 / 180.0;
+    float a_lab = oklch.c * cos(h_rad);
+    float b_lab = oklch.c * sin(h_rad);
 
-    float c = (1.0 - abs(2.0 * l - 1.0)) * s;
-    float x = c * (1.0 - abs(fmod(h, 2.0) - 1.0));
-    float m = l - c / 2.0;
+    // Oklab to linear sRGB (same matrix as oklab_to_srgb but without gamma encoding)
+    float l_ = oklch.l + 0.3963377774 * a_lab + 0.2158037573 * b_lab;
+    float m_ = oklch.l - 0.1055613458 * a_lab - 0.0638541728 * b_lab;
+    float s_ = oklch.l - 0.0894841775 * a_lab - 1.2914855480 * b_lab;
 
-    float r = 0.0;
-    float g = 0.0;
-    float b = 0.0;
+    float l = l_ * l_ * l_;
+    float m = m_ * m_ * m_;
+    float s = s_ * s_ * s_;
 
-    if (h >= 0.0 && h < 1.0) {
-        r = c;
-        g = x;
-        b = 0.0;
-    } else if (h >= 1.0 && h < 2.0) {
-        r = x;
-        g = c;
-        b = 0.0;
-    } else if (h >= 2.0 && h < 3.0) {
-        r = 0.0;
-        g = c;
-        b = x;
-    } else if (h >= 3.0 && h < 4.0) {
-        r = 0.0;
-        g = x;
-        b = c;
-    } else if (h >= 4.0 && h < 5.0) {
-        r = x;
-        g = 0.0;
-        b = c;
-    } else {
-        r = c;
-        g = 0.0;
-        b = x;
-    }
+    float3 linear_rgb = float3(
+        4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+       -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+       -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+    );
 
-    float4 rgba;
-    rgba.x = (r + m);
-    rgba.y = (g + m);
-    rgba.z = (b + m);
-    rgba.w = a;
-    return rgba;
+    return float4(linear_rgb, oklch.a);
 }
 
 // Converts a sRGB color to the Oklab color space.
@@ -314,13 +290,13 @@ float quad_sdf(float2 pt, Bounds bounds, Corners corner_radii) {
     return quad_sdf_impl(corner_center_to_point, corner_radius);
 }
 
-GradientColor prepare_gradient_color(uint tag, uint color_space, Hsla solid, LinearColorStop colors[2]) {
+GradientColor prepare_gradient_color(uint tag, uint color_space, Oklch solid, LinearColorStop colors[2]) {
     GradientColor output;
     if (tag == 0 || tag == 2 || tag == 3) {
-        output.solid = hsla_to_rgba(solid);
+        output.solid = oklch_to_rgba(solid);
     } else if (tag == 1) {
-        output.color0 = hsla_to_rgba(colors[0].color);
-        output.color1 = hsla_to_rgba(colors[1].color);
+        output.color0 = oklch_to_rgba(colors[0].color);
+        output.color1 = oklch_to_rgba(colors[1].color);
 
         // Prepare color space in vertex for avoid conversion
         // in fragment shader for performance reasons
@@ -490,7 +466,7 @@ struct Quad {
     Bounds bounds;
     Bounds content_mask;
     Background background;
-    EdgesHsla border_colors;
+    EdgesOklch border_colors;
     Corners corner_radii;
     Edges border_widths;
 };
@@ -651,12 +627,12 @@ float4 quad_fragment(QuadFragmentInput input): SV_Target {
         bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
         if (in_horizontal_border) {
             border_color = center_to_point.x < 0.0
-                ? hsla_to_rgba(quad.border_colors.left)
-                : hsla_to_rgba(quad.border_colors.right);
+                ? oklch_to_rgba(quad.border_colors.left)
+                : oklch_to_rgba(quad.border_colors.right);
         } else {
             border_color = center_to_point.y < 0.0
-                ? hsla_to_rgba(quad.border_colors.top)
-                : hsla_to_rgba(quad.border_colors.bottom);
+                ? oklch_to_rgba(quad.border_colors.top)
+                : oklch_to_rgba(quad.border_colors.bottom);
         }
         // Dashed border logic when border_style == 1
         if (quad.border_style == 1) {
@@ -850,7 +826,7 @@ struct Shadow {
     Bounds bounds;
     Corners corner_radii;
     Bounds content_mask;
-    Hsla color;
+    Oklch color;
 };
 
 struct ShadowVertexOutput {
@@ -879,7 +855,7 @@ ShadowVertexOutput shadow_vertex(uint vertex_id: SV_VertexID, uint shadow_id: SV
 
     float4 device_position = to_device_position(unit_vertex, bounds);
     float4 clip_distance = distance_from_clip_rect(unit_vertex, bounds, shadow.content_mask);
-    float4 color = hsla_to_rgba(shadow.color);
+    float4 color = oklch_to_rgba(shadow.color);
 
     ShadowVertexOutput output;
     output.position = device_position;
@@ -1032,7 +1008,7 @@ struct Underline {
     uint pad;
     Bounds bounds;
     Bounds content_mask;
-    Hsla color;
+    Oklch color;
     float thickness;
     uint wavy;
 };
@@ -1058,7 +1034,7 @@ UnderlineVertexOutput underline_vertex(uint vertex_id: SV_VertexID, uint underli
     float4 device_position = to_device_position(unit_vertex, underline.bounds);
     float4 clip_distance = distance_from_clip_rect(unit_vertex, underline.bounds,
                                                     underline.content_mask);
-    float4 color = hsla_to_rgba(underline.color);
+    float4 color = oklch_to_rgba(underline.color);
 
     UnderlineVertexOutput output;
     output.position = device_position;
@@ -1106,7 +1082,7 @@ struct MonochromeSprite {
     uint pad;
     Bounds bounds;
     Bounds content_mask;
-    Hsla color;
+    Oklch color;
     AtlasTile tile;
     TransformationMatrix transformation;
 };
@@ -1134,7 +1110,7 @@ MonochromeSpriteVertexOutput monochrome_sprite_vertex(uint vertex_id: SV_VertexI
         to_device_position_transformed(unit_vertex, sprite.bounds, sprite.transformation);
     float4 clip_distance = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds, sprite.content_mask, sprite.transformation);
     float2 tile_position = to_tile_position(unit_vertex, sprite.tile);
-    float4 color = hsla_to_rgba(sprite.color);
+    float4 color = oklch_to_rgba(sprite.color);
 
     MonochromeSpriteVertexOutput output;
     output.position = device_position;

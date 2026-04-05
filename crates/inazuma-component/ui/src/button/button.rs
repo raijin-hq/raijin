@@ -5,7 +5,7 @@ use crate::{
     Sizable, Size, StyleSized, StyledExt, button::ButtonIcon, h_flex, tooltip::Tooltip,
 };
 use inazuma::{
-    Action, AnyElement, App, ClickEvent, Corners, Div, Edges, ElementId, Hsla, InteractiveElement,
+    Action, AnyElement, App, ClickEvent, Corners, Div, Edges, ElementId, Oklch, InteractiveElement,
     Interactivity, IntoElement, MouseButton, ParentElement, Pixels, RenderOnce, SharedString,
     Stateful, StatefulInteractiveElement as _, StyleRefinement, Styled, Window, div,
     prelude::FluentBuilder as _, px, relative,
@@ -29,11 +29,11 @@ impl From<Pixels> for ButtonRounded {
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct ButtonCustomVariant {
-    pub(super) color: Hsla,
-    foreground: Hsla,
+    pub(super) color: Oklch,
+    foreground: Oklch,
     pub(super) shadow: bool,
-    hover: Hsla,
-    pub(super) active: Hsla,
+    hover: Oklch,
+    pub(super) active: Oklch,
 }
 
 pub trait ButtonVariants: Sized {
@@ -102,25 +102,25 @@ impl ButtonCustomVariant {
     }
 
     /// Set background color, default is transparent.
-    pub fn color(mut self, color: Hsla) -> Self {
+    pub fn color(mut self, color: Oklch) -> Self {
         self.color = color;
         self
     }
 
     /// Set foreground color, default is theme foreground.
-    pub fn foreground(mut self, color: Hsla) -> Self {
+    pub fn foreground(mut self, color: Oklch) -> Self {
         self.foreground = color;
         self
     }
 
     /// Set hover background color, default is transparent.
-    pub fn hover(mut self, color: Hsla) -> Self {
+    pub fn hover(mut self, color: Oklch) -> Self {
         self.hover = color;
         self
     }
 
     /// Set active background color, default is transparent.
-    pub fn active(mut self, color: Hsla) -> Self {
+    pub fn active(mut self, color: Oklch) -> Self {
         self.active = color;
         self
     }

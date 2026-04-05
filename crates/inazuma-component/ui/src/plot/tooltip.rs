@@ -1,5 +1,5 @@
 use inazuma::{
-    AnyElement, App, Div, Half as _, Hsla, IntoElement, ParentElement, Pixels, Point, RenderOnce,
+    AnyElement, App, Div, Half as _, Oklch, IntoElement, ParentElement, Pixels, Point, RenderOnce,
     StyleRefinement, Styled, Window, div, prelude::FluentBuilder, px,
 };
 
@@ -110,8 +110,8 @@ impl RenderOnce for CrossLine {
 pub struct Dot {
     point: Point<Pixels>,
     size: Pixels,
-    stroke: Hsla,
-    fill: Hsla,
+    stroke: Oklch,
+    fill: Oklch,
 }
 
 impl Dot {
@@ -119,8 +119,8 @@ impl Dot {
         Self {
             point,
             size: px(6.),
-            stroke: inazuma::transparent_black(),
-            fill: inazuma::transparent_black(),
+            stroke: Oklch::transparent_black(),
+            fill: Oklch::transparent_black(),
         }
     }
 
@@ -131,13 +131,13 @@ impl Dot {
     }
 
     /// Set the stroke of the dot.
-    pub fn stroke(mut self, stroke: Hsla) -> Self {
+    pub fn stroke(mut self, stroke: Oklch) -> Self {
         self.stroke = stroke;
         self
     }
 
     /// Set the fill of the dot.
-    pub fn fill(mut self, fill: Hsla) -> Self {
+    pub fn fill(mut self, fill: Oklch) -> Self {
         self.fill = fill;
         self
     }

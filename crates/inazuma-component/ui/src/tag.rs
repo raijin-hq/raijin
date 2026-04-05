@@ -1,7 +1,7 @@
 use crate::{theme::ActiveTheme as _, ColorName, Sizable, Size, StyledExt};
 use inazuma::{
     div, prelude::FluentBuilder as _, relative, rems, transparent_white, AbsoluteLength,
-    AnyElement, App, Hsla, InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
+    AnyElement, App, Oklch, InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
     StyleRefinement, Styled, Window,
 };
 
@@ -17,14 +17,14 @@ pub enum TagVariant {
     Info,
     Color(ColorName),
     Custom {
-        color: Hsla,
-        foreground: Hsla,
-        border: Hsla,
+        color: Oklch,
+        foreground: Oklch,
+        border: Oklch,
     },
 }
 
 impl TagVariant {
-    fn bg(&self, cx: &App) -> Hsla {
+    fn bg(&self, cx: &App) -> Oklch {
         match self {
             Self::Primary => cx.theme().primary,
             Self::Secondary => cx.theme().secondary,
@@ -43,7 +43,7 @@ impl TagVariant {
         }
     }
 
-    fn border(&self, cx: &App) -> Hsla {
+    fn border(&self, cx: &App) -> Oklch {
         match self {
             Self::Primary => cx.theme().primary,
             Self::Secondary => cx.theme().border,
@@ -62,7 +62,7 @@ impl TagVariant {
         }
     }
 
-    fn fg(&self, outline: bool, cx: &App) -> Hsla {
+    fn fg(&self, outline: bool, cx: &App) -> Oklch {
         match self {
             Self::Primary => {
                 if outline {
@@ -174,7 +174,7 @@ impl Tag {
     }
 
     /// Create a new tag with default variant ([`TagVariant::Custom`]).
-    pub fn custom(color: Hsla, foreground: Hsla, border: Hsla) -> Self {
+    pub fn custom(color: Oklch, foreground: Oklch, border: Oklch) -> Self {
         Self::new().with_variant(TagVariant::Custom {
             color,
             foreground,
@@ -234,7 +234,7 @@ impl Styled for Tag {
 impl RenderOnce for Tag {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         let bg = if self.outline {
-            transparent_white()
+            Oklch::from(transparent_white())
         } else {
             self.variant.bg(cx)
         };

@@ -8,7 +8,7 @@
 
 use inazuma::colors::Colors;
 use inazuma::{
-    App, Application, Bounds, Context, FocusHandle, Hsla, KeyBinding, Menu, MenuItem, Render, Rgba,
+    App, Application, Bounds, Context, FocusHandle, KeyBinding, Menu, MenuItem, Oklch, Render, Rgba,
     Window, WindowBounds, WindowOptions, actions, div, prelude::*, px, rgb, size,
 };
 
@@ -147,7 +147,7 @@ fn list_item(
                 .text_color(text_muted)
         })
         .when(!is_disabled && is_selected, move |el| {
-            let accent_bg: Hsla = accent.into();
+            let accent_bg: Oklch = accent.into();
             el.bg(accent_bg.opacity(0.2))
                 .border_color(accent)
                 .text_color(text)
@@ -438,8 +438,8 @@ impl Render for StylingExample {
 }
 
 fn section(colors: &Colors, title: &'static str, content: impl IntoElement) -> impl IntoElement {
-    let surface: Hsla = colors.container.into();
-    let border: Hsla = colors.border.into();
+    let surface: Oklch = colors.container.into();
+    let border: Oklch = colors.border.into();
 
     div()
         .flex()

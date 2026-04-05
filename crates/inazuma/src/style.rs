@@ -64,7 +64,7 @@ mod tests {
             color: Some(blue().alpha(0.7)),
             strikethrough: Some(StrikethroughStyle {
                 thickness: px(4.),
-                color: Some(crate::red()),
+                color: Some(red()),
             }),
             fade_out: Some(0.),
             font_style: Some(FontStyle::Oblique),

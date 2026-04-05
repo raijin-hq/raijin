@@ -11,8 +11,8 @@
 
 use inazuma::{
     point, px, relative, size, App, Bounds, Element, ElementId, Font, FontWeight,
-    FontId, GlyphId, GlobalElementId, Hsla, InspectorElementId, IntoElement, LayoutId,
-    Pixels, Point, SharedString, Style, Window, fill,
+    FontId, GlyphId, GlobalElementId, InspectorElementId, IntoElement, LayoutId,
+    Oklch, Pixels, Point, SharedString, Style, Window, fill,
 };
 
 use std::sync::Arc;
@@ -28,7 +28,7 @@ struct CellGlyph {
     origin: Point<Pixels>,
     font_id: FontId,
     glyph_id: GlyphId,
-    color: Hsla,
+    color: Oklch,
     is_emoji: bool,
 }
 
@@ -37,13 +37,13 @@ struct BuiltinGlyph {
     bc: BuiltinChar,
     x: Pixels,
     y: Pixels,
-    color: Hsla,
+    color: Oklch,
 }
 
 /// Pre-painted state for the grid element.
 pub struct GridPrepaint {
-    backgrounds: Vec<(Bounds<Pixels>, Hsla)>,
-    selections: Vec<(Bounds<Pixels>, Hsla)>,
+    backgrounds: Vec<(Bounds<Pixels>, Oklch)>,
+    selections: Vec<(Bounds<Pixels>, Oklch)>,
     glyphs: Vec<CellGlyph>,
     builtins: Vec<BuiltinGlyph>,
     font_size: Pixels,
@@ -69,7 +69,9 @@ pub struct TerminalGridElement {
     font_size: f32,
     line_height_multiplier: f32,
     /// Terminal background color — cells with this bg skip painting.
-    terminal_bg: Hsla,
+    terminal_bg: Oklch,
+    /// Selection highlight color (terminal_accent @ 45% alpha).
+    selection_color: Oklch,
     /// If set, the actual bounds.origin.y is written here during prepaint.
     origin_store: Option<GridOriginStore>,
 }
@@ -81,7 +83,8 @@ impl TerminalGridElement {
         font: Font,
         font_size: f32,
         line_height_multiplier: f32,
-        terminal_bg: Hsla,
+        terminal_bg: Oklch,
+        selection_color: Oklch,
     ) -> Self {
         Self {
             snapshot,
@@ -90,6 +93,7 @@ impl TerminalGridElement {
             font_size,
             line_height_multiplier,
             terminal_bg,
+            selection_color,
             origin_store: None,
         }
     }
@@ -196,7 +200,7 @@ impl Element for TerminalGridElement {
         let mut glyphs = Vec::new();
         let mut builtins = Vec::new();
 
-        let selection_color = inazuma::hsla(220.0 / 360.0, 0.4, 0.55, 0.45); // Blue-gray like Warp
+        let selection_color = self.selection_color;
         let selection = &self.selection;
 
         let viewport_top = viewport.origin.y;
@@ -258,7 +262,7 @@ impl Element for TerminalGridElement {
                 if !skip {
                     // Built-in box-drawing / block elements
                     if let Some(bc) = builtin_font::builtin_char(cell.c) {
-                        builtins.push(BuiltinGlyph { bc, x, y: current_y, color: cell.fg });
+                        builtins.push(BuiltinGlyph { bc, x, y: current_y, color: cell.fg.into() });
                     } else {
                         // Regular character — resolve font and glyph, position at grid cell
                         let font_id = if cell.font_family_override.is_some() || cell.bold || cell.italic {
@@ -307,7 +311,7 @@ impl Element for TerminalGridElement {
                                 origin: point(x, baseline_y),
                                 font_id,
                                 glyph_id,
-                                color: cell.fg,
+                                color: cell.fg.into(),
                                 is_emoji,
                             });
                         } else {
@@ -332,7 +336,7 @@ impl Element for TerminalGridElement {
                                     style: if cell.italic { inazuma::FontStyle::Italic } else { inazuma::FontStyle::Normal },
                                     ..Font::default()
                                 },
-                                color: cell.fg,
+                                color: cell.fg.into(),
                                 background_color: None,
                                 underline: None,
                                 strikethrough: None,
@@ -345,7 +349,7 @@ impl Element for TerminalGridElement {
                                         origin: point(x, baseline_y),
                                         font_id: run.font_id,
                                         glyph_id: glyph.id,
-                                        color: cell.fg,
+                                        color: cell.fg.into(),
                                         is_emoji: window.text_system().is_emoji(run.font_id),
                                     });
                                 }

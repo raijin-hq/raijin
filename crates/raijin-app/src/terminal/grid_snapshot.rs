@@ -8,7 +8,7 @@
 
 use std::sync::Arc;
 
-use inazuma::Hsla;
+use inazuma::Oklch;
 use raijin_term::block_grid::BlockId;
 use raijin_term::grid::Dimensions;
 use raijin_term::term::cell::Flags;
@@ -22,8 +22,8 @@ use super::colors::resolve_colors;
 pub struct SnapshotCell {
     pub c: char,
     pub zerowidth: Vec<char>,
-    pub fg: Hsla,
-    pub bg: Hsla,
+    pub fg: Oklch,
+    pub bg: Oklch,
     pub bold: bool,
     pub italic: bool,
     pub underline: bool,
@@ -148,7 +148,7 @@ pub fn extract_all_block_snapshots(
     handle: &TerminalHandle,
     cache: &mut BlockSnapshotCache,
     symbol_maps: &[raijin_settings::ResolvedSymbolMap],
-    theme: &raijin_settings::ResolvedTheme,
+    theme: &raijin_theme::Theme,
 ) -> Vec<BlockSnapshot> {
     let term = handle.lock();
     let colors = term.colors();
@@ -217,7 +217,7 @@ fn extract_single_block(
     block: &raijin_term::block_grid::BlockGrid,
     colors: &raijin_term::term::color::Colors,
     symbol_maps: &[raijin_settings::ResolvedSymbolMap],
-    theme: &raijin_settings::ResolvedTheme,
+    theme: &raijin_theme::Theme,
 ) -> BlockSnapshot {
     let grid = &block.grid;
     let history_size = grid.history_size();
@@ -237,8 +237,8 @@ fn extract_single_block(
     // Prepend command text as the first line(s) of the snapshot.
     // This makes the command selectable, uses the same font as output,
     // and preserves multi-line formatting.
-    let command_fg = theme.command_fg;
-    let bg = theme.background;
+    let command_fg = theme.styles.colors.text;
+    let bg = theme.styles.colors.terminal_background;
     let mut command_lines: Vec<SnapshotLine> = Vec::new();
     if !block.command.is_empty() {
         for cmd_line in block.command.lines() {

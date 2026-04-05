@@ -1,7 +1,7 @@
 // From:
 // https://github.com/zed-industries/zed/blob/56daba28d40301ee4c05546fadb691d070b7b2b6/crates/gpui/examples/window_shadow.rs
 use inazuma::{
-    AnyElement, App, Bounds, CursorStyle, Decorations, Edges, HitboxBehavior, Hsla,
+    AnyElement, App, Bounds, CursorStyle, Decorations, Edges, HitboxBehavior,
     InteractiveElement as _, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
     ResizeEdge, Size, Styled as _, Window, canvas, div, point, prelude::FluentBuilder as _, px,
 };
@@ -191,12 +191,7 @@ impl RenderOnce for WindowBorder {
                             .when(!tiling.right, |div| div.border_r(BORDER_SIZE))
                             .when(!tiling.is_tiled(), |div| {
                                 div.shadow(vec![inazuma::BoxShadow {
-                                    color: Hsla {
-                                        h: 0.,
-                                        s: 0.,
-                                        l: 0.,
-                                        a: 0.3,
-                                    },
+                                    color: inazuma::Oklch::black().opacity(0.3),
                                     blur_radius: shadow_size / 2.,
                                     spread_radius: px(0.),
                                     offset: point(px(0.0), px(0.0)),

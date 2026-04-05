@@ -2,9 +2,9 @@ use std::{rc::Rc, sync::LazyLock, time::Duration};
 
 use inazuma::{
     Animation, AnimationExt as _, AnyElement, App, Bounds, BoxShadow, ClickEvent, Edges,
-    FocusHandle, Hsla, InteractiveElement, IntoElement, KeyBinding, MouseButton, ParentElement,
+    FocusHandle, Oklch, InteractiveElement, IntoElement, KeyBinding, MouseButton, ParentElement,
     Pixels, Point, RenderOnce, SharedString, StyleRefinement, Styled, Window, WindowControlArea,
-    actions, anchored, div, hsla, point, prelude::FluentBuilder, px,
+    actions, anchored, div, point, prelude::FluentBuilder, px,
 };
 use rust_i18n::t;
 
@@ -215,9 +215,9 @@ pub struct Dialog {
     pub(crate) layer_ix: usize,
 }
 
-pub(crate) fn overlay_color(overlay: bool, cx: &App) -> Hsla {
+pub(crate) fn overlay_color(overlay: bool, cx: &App) -> Oklch {
     if !overlay {
-        return hsla(0., 0., 0., 0.);
+        return Oklch::transparent_black();
     }
 
     cx.theme().overlay
@@ -648,13 +648,13 @@ impl RenderOnce for Dialog {
                                 // This is equivalent to `shadow_xl` with an extra opacity.
                                 let shadow = vec![
                                     BoxShadow {
-                                        color: hsla(0., 0., 0., 0.1 * delta),
+                                        color: inazuma::Oklch::black().opacity(0.1 * delta),
                                         offset: point(px(0.), px(20.)),
                                         blur_radius: px(25.),
                                         spread_radius: px(-5.),
                                     },
                                     BoxShadow {
-                                        color: hsla(0., 0., 0., 0.1 * delta),
+                                        color: inazuma::Oklch::black().opacity(0.1 * delta),
                                         offset: point(px(0.), px(8.)),
                                         blur_radius: px(10.),
                                         spread_radius: px(-6.),

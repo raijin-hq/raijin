@@ -1,7 +1,7 @@
 // @reference: https://d3js.org/d3-shape/line
 
 use inazuma::{
-    Background, BorderStyle, Bounds, Edges, Hsla, PaintQuad, Path, PathBuilder, Pixels, Point,
+    Background, BorderStyle, Bounds, Edges, Oklch, PaintQuad, Path, PathBuilder, Pixels, Point,
     Window, px, quad, size,
 };
 
@@ -17,8 +17,8 @@ pub struct Line<T> {
     stroke_style: StrokeStyle,
     dot: bool,
     dot_size: Pixels,
-    dot_fill_color: Hsla,
-    dot_stroke_color: Option<Hsla>,
+    dot_fill_color: Oklch,
+    dot_stroke_color: Option<Oklch>,
 }
 
 impl<T> Default for Line<T> {
@@ -32,7 +32,7 @@ impl<T> Default for Line<T> {
             stroke_style: Default::default(),
             dot: false,
             dot_size: px(4.),
-            dot_fill_color: inazuma::transparent_black(),
+            dot_fill_color: Oklch::transparent_black(),
             dot_stroke_color: None,
         }
     }
@@ -101,13 +101,13 @@ impl<T> Line<T> {
     }
 
     /// Set the fill color of the dots on the Line.
-    pub fn dot_fill_color(mut self, dot_fill_color: impl Into<Hsla>) -> Self {
+    pub fn dot_fill_color(mut self, dot_fill_color: impl Into<Oklch>) -> Self {
         self.dot_fill_color = dot_fill_color.into();
         self
     }
 
     /// Set the stroke color of the dots on the Line.
-    pub fn dot_stroke_color(mut self, dot_stroke_color: impl Into<Hsla>) -> Self {
+    pub fn dot_stroke_color(mut self, dot_stroke_color: impl Into<Oklch>) -> Self {
         self.dot_stroke_color = Some(dot_stroke_color.into());
         self
     }

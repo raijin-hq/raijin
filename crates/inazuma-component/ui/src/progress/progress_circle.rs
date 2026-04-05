@@ -1,7 +1,7 @@
 use crate::{ActiveTheme, Sizable, Size, StyledExt};
 use inazuma::prelude::FluentBuilder as _;
 use inazuma::{
-    Animation, AnimationExt as _, AnyElement, App, ElementId, Hsla, InteractiveElement as _,
+    Animation, AnimationExt as _, AnyElement, App, ElementId, Oklch, InteractiveElement as _,
     IntoElement, ParentElement, Pixels, RenderOnce, StyleRefinement, Styled, Window, canvas, px,
     relative,
 };
@@ -17,7 +17,7 @@ use crate::plot::shape::{Arc, ArcData};
 pub struct ProgressCircle {
     id: ElementId,
     style: StyleRefinement,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     value: f32,
     size: Size,
     children: Vec<AnyElement>,
@@ -37,7 +37,7 @@ impl ProgressCircle {
     }
 
     /// Set the color of the progress circle.
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
         self.color = Some(color.into());
         self
     }
@@ -50,7 +50,7 @@ impl ProgressCircle {
         self
     }
 
-    fn render_circle(current_value: f32, color: Hsla) -> impl IntoElement {
+    fn render_circle(current_value: f32, color: Oklch) -> impl IntoElement {
         struct PrepaintState {
             current_value: f32,
             actual_inner_radius: f32,

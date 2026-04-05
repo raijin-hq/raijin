@@ -1,7 +1,7 @@
 use crate::{
     AnyElement, App, Background, Bounds, BoxShadow, ContentMask,
     Corners, DevicePixels, Edges, FontId, GlobalElementId, GlyphId,
-    Hsla, MonochromeSprite, Path, Pixels, Point, PolychromeSprite, Quad,
+    MonochromeSprite, Oklch, Path, Pixels, Point, PolychromeSprite, Quad,
     RenderGlyphParams, RenderImage, RenderImageParams, RenderSvgParams,
     SMOOTH_SVG_SCALE_FACTOR, SUBPIXEL_VARIANTS_X, SUBPIXEL_VARIANTS_Y,
     ScaledPixels, Shadow, SharedString, StrikethroughStyle,
@@ -226,7 +226,7 @@ impl Window {
                 bounds: shadow_bounds.scale(scale_factor),
                 content_mask: content_mask.scale(scale_factor),
                 corner_radii: corner_radii.scale(scale_factor),
-                color: shadow.color.opacity(opacity),
+                color: shadow.color.opacity(opacity).into(),
             });
         }
     }
@@ -309,7 +309,7 @@ impl Window {
             pad: 0,
             bounds: bounds.scale(scale_factor),
             content_mask: content_mask.scale(scale_factor),
-            color: style.color.unwrap_or_default().opacity(element_opacity),
+            color: style.color.unwrap_or_default().opacity(element_opacity).into(),
             thickness: style.thickness.scale(scale_factor),
             wavy: if style.wavy { 1 } else { 0 },
         });
@@ -341,7 +341,7 @@ impl Window {
             bounds: bounds.scale(scale_factor),
             content_mask: content_mask.scale(scale_factor),
             thickness: style.thickness.scale(scale_factor),
-            color: style.color.unwrap_or_default().opacity(opacity),
+            color: style.color.unwrap_or_default().opacity(opacity).into(),
             wavy: 0,
         });
     }
@@ -360,7 +360,7 @@ impl Window {
         font_id: FontId,
         glyph_id: GlyphId,
         font_size: Pixels,
-        color: Hsla,
+        color: Oklch,
     ) -> Result<()> {
         self.invalidator.debug_assert_paint();
 
@@ -404,7 +404,7 @@ impl Window {
                     pad: 0,
                     bounds,
                     content_mask,
-                    color: color.opacity(element_opacity),
+                    color: color.opacity(element_opacity).into(),
                     tile,
                     transformation: TransformationMatrix::unit(),
                 });
@@ -414,7 +414,7 @@ impl Window {
                     pad: 0,
                     bounds,
                     content_mask,
-                    color: color.opacity(element_opacity),
+                    color: color.opacity(element_opacity).into(),
                     tile,
                     transformation: TransformationMatrix::unit(),
                 });
@@ -433,7 +433,7 @@ impl Window {
         _font_id: FontId,
         _glyph_id: GlyphId,
         _font_size: Pixels,
-        color: Hsla,
+        color: Oklch,
         raster_bounds: Bounds<DevicePixels>,
         params: &RenderGlyphParams,
     ) -> Result<()> {
@@ -461,7 +461,7 @@ impl Window {
                 pad: 0,
                 bounds,
                 content_mask,
-                color: color.opacity(element_opacity),
+                color: color.opacity(element_opacity).into(),
                 tile,
                 transformation: TransformationMatrix::unit(),
             });
@@ -606,7 +606,7 @@ impl Window {
         path: SharedString,
         mut data: Option<&[u8]>,
         transformation: TransformationMatrix,
-        color: Hsla,
+        color: Oklch,
         cx: &App,
     ) -> Result<()> {
         self.invalidator.debug_assert_paint();
@@ -654,7 +654,7 @@ impl Window {
                 .map_origin(|origin| origin.round())
                 .map_size(|size| size.ceil()),
             content_mask,
-            color: color.opacity(element_opacity),
+            color: color.opacity(element_opacity).into(),
             tile,
             transformation,
         });

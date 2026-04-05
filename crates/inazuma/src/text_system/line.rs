@@ -1,7 +1,7 @@
 use crate::{
-    App, Bounds, DevicePixels, Half, Hsla, LineLayout, Pixels, Point, RenderGlyphParams, Result,
+    App, Bounds, DevicePixels, Half, Oklch, LineLayout, Pixels, Point, RenderGlyphParams, Result,
     ShapedGlyph, ShapedRun, SharedString, StrikethroughStyle, TextAlign, UnderlineStyle, Window,
-    WrapBoundary, WrappedLineLayout, black, fill, point, px, size,
+    WrapBoundary, WrappedLineLayout, fill, point, px, size,
 };
 use derive_more::{Deref, DerefMut};
 use smallvec::SmallVec;
@@ -26,10 +26,10 @@ pub struct DecorationRun {
     pub len: u32,
 
     /// The color for this run
-    pub color: Hsla,
+    pub color: Oklch,
 
     /// The background color for this run
-    pub background_color: Option<Hsla>,
+    pub background_color: Option<Oklch>,
 
     /// The underline style for this run
     pub underline: Option<UnderlineStyle>,
@@ -347,7 +347,7 @@ fn paint_line(
         let mut decoration_runs = decoration_runs.iter();
         let mut wraps = wrap_boundaries.iter().peekable();
         let mut run_end = 0;
-        let mut color = black();
+        let mut color = Oklch::black();
         let mut current_underline: Option<(Point<Pixels>, UnderlineStyle)> = None;
         let mut current_strikethrough: Option<(Point<Pixels>, StrikethroughStyle)> = None;
         let text_system = cx.text_system().clone();
@@ -583,7 +583,7 @@ fn paint_line_background(
         let mut decoration_runs = decoration_runs.iter();
         let mut wraps = wrap_boundaries.iter().peekable();
         let mut run_end = 0;
-        let mut current_background: Option<(Point<Pixels>, Hsla)> = None;
+        let mut current_background: Option<(Point<Pixels>, Oklch)> = None;
         let text_system = cx.text_system().clone();
         let mut glyph_origin = point(
             aligned_origin_x(
@@ -634,7 +634,7 @@ fn paint_line_background(
                 }
                 prev_glyph_position = glyph.position;
 
-                let mut finished_background: Option<(Point<Pixels>, Hsla)> = None;
+                let mut finished_background: Option<(Point<Pixels>, Oklch)> = None;
                 if glyph.index >= run_end {
                     let mut style_run = decoration_runs.next();
 
@@ -921,24 +921,9 @@ mod tests {
     fn test_split_at_decorations() {
         // Three decoration runs: red [0..2), green [2..5), blue [5..6).
         // Split at byte 3 — red goes entirely left, green straddles, blue goes entirely right.
-        let red = Hsla {
-            h: 0.0,
-            s: 1.0,
-            l: 0.5,
-            a: 1.0,
-        };
-        let green = Hsla {
-            h: 0.3,
-            s: 1.0,
-            l: 0.5,
-            a: 1.0,
-        };
-        let blue = Hsla {
-            h: 0.6,
-            s: 1.0,
-            l: 0.5,
-            a: 1.0,
-        };
+        let red = crate::hsla(0.0, 1.0, 0.5, 1.0);
+        let green = crate::hsla(0.3, 1.0, 0.5, 1.0);
+        let blue = crate::hsla(0.6, 1.0, 0.5, 1.0);
 
         let line = make_shaped_line(
             "abcdef",

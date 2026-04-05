@@ -1,7 +1,7 @@
 use std::ops::Range;
 use instant::Duration;
 use anyhow::Result;
-use inazuma::{App, Context, Hsla, Task, Window};
+use inazuma::{App, Context, Oklch, Task, Window};
 use lsp_types::ColorInformation;
 use ropey::Rope;
 
@@ -29,7 +29,7 @@ impl Lsp {
         &self,
         text: &Rope,
         visible_range: &Range<usize>,
-    ) -> Vec<(Range<usize>, Hsla)> {
+    ) -> Vec<(Range<usize>, Oklch)> {
         self.document_colors
             .iter()
             .filter_map(|(range, color)| {
@@ -74,7 +74,7 @@ impl Lsp {
             if let Some(task) = task_result {
                 if let Ok(colors) = task.await {
                     let _ = input_state.update(cx, |input_state, cx| {
-                        let mut document_colors: Vec<(lsp_types::Range, Hsla)> = colors
+                        let mut document_colors: Vec<(lsp_types::Range, Oklch)> = colors
                             .iter()
                             .map(|info| {
                                 let color = inazuma::Rgba {

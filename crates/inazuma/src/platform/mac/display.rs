@@ -1,13 +1,11 @@
 use anyhow::Result;
 use inazuma::{Bounds, DisplayId, Pixels, PlatformDisplay, point, px, size};
-use objc2::msg_send;
-use objc2::rc::Retained;
-use objc2::runtime::AnyObject;
 use objc2::MainThreadMarker;
+use objc2::rc::Retained;
 use objc2_app_kit::NSScreen;
 use objc2_core_foundation::CFUUID;
 use objc2_core_graphics::{CGDirectDisplayID, CGDisplayBounds, CGError, CGGetActiveDisplayList};
-use objc2_foundation::{NSNumber, NSString};
+use objc2_foundation::{NSDictionary, NSNumber, NSString};
 use uuid::Uuid;
 
 #[derive(Debug)]
@@ -37,9 +35,11 @@ impl MacDisplay {
             let screen = screens.objectAtIndex(0);
             let device_description = screen.deviceDescription();
             let screen_number_key = NSString::from_str("NSScreenNumber");
-            let screen_number: *const AnyObject =
-                msg_send![&device_description, objectForKey: &*screen_number_key];
-            let screen_number: &NSNumber = &*(screen_number as *const NSNumber);
+            let screen_number: Retained<NSNumber> = {
+                let obj = NSDictionary::objectForKey(&device_description, &screen_number_key)
+                    .expect("NSScreen deviceDescription missing NSScreenNumber");
+                Retained::cast(obj)
+            };
             let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
             Self(screen_id)
         }
@@ -153,12 +153,12 @@ impl MacDisplay {
 
             for screen in screens.iter() {
                 let device_description = screen.deviceDescription();
-                let screen_number: *const AnyObject =
-                    msg_send![&device_description, objectForKey: &*screen_number_key];
-                if screen_number.is_null() {
+                let Some(screen_number) =
+                    NSDictionary::objectForKey(&device_description, &screen_number_key)
+                else {
                     continue;
-                }
-                let screen_number: &NSNumber = &*(screen_number as *const NSNumber);
+                };
+                let screen_number: Retained<NSNumber> = Retained::cast(screen_number);
                 let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
                 if screen_id == self.0 {
                     return Some(screen.clone());

@@ -1,5 +1,5 @@
 use inazuma::{
-    Bounds, Context, EntityInputHandler as _, Hsla, Path, PathBuilder, Pixels, SharedString,
+    Bounds, Context, EntityInputHandler as _, Path, PathBuilder, Pixels, SharedString,
     TextRun, TextStyle, Window, point, px,
 };
 use ropey::RopeSlice;
@@ -97,7 +97,7 @@ impl TextElement {
             &[TextRun {
                 len: column,
                 font: style.font(),
-                color: Hsla::default(),
+                color: inazuma::Oklch::default(),
                 background_color: None,
                 strikethrough: None,
                 underline: None,

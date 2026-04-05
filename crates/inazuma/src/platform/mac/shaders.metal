@@ -3,7 +3,7 @@
 
 using namespace metal;
 
-float4 hsla_to_rgba(Hsla hsla);
+float4 oklch_to_rgba(Oklch oklch);
 float3 srgb_to_linear(float3 color);
 float3 linear_to_srgb(float3 color);
 float4 srgb_to_oklab(float4 color);
@@ -42,7 +42,7 @@ struct GradientColor {
   float4 color0;
   float4 color1;
 };
-GradientColor prepare_fill_color(uint tag, uint color_space, Hsla solid, Hsla color0, Hsla color1);
+GradientColor prepare_fill_color(uint tag, uint color_space, Oklch solid, Oklch color0, Oklch color1);
 
 struct QuadVertexOutput {
   uint quad_id [[flat]];
@@ -212,12 +212,12 @@ fragment float4 quad_fragment(QuadFragmentInput input [[stage_in]],
     bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
     if (in_horizontal_border) {
       border_color = center_to_point.x < 0.0
-        ? hsla_to_rgba(quad.border_colors.left)
-        : hsla_to_rgba(quad.border_colors.right);
+        ? oklch_to_rgba(quad.border_colors.left)
+        : oklch_to_rgba(quad.border_colors.right);
     } else {
       border_color = center_to_point.y < 0.0
-        ? hsla_to_rgba(quad.border_colors.top)
-        : hsla_to_rgba(quad.border_colors.bottom);
+        ? oklch_to_rgba(quad.border_colors.top)
+        : oklch_to_rgba(quad.border_colors.bottom);
     }
 
     // Dashed border logic when border_style == 1
@@ -489,7 +489,7 @@ vertex ShadowVertexOutput shadow_vertex(
       to_device_position(unit_vertex, bounds, viewport_size);
   float4 clip_distance =
       distance_from_clip_rect(unit_vertex, bounds, shadow.content_mask.bounds);
-  float4 color = hsla_to_rgba(shadow.color);
+  float4 color = oklch_to_rgba(shadow.color);
 
   return ShadowVertexOutput{
       device_position,
@@ -574,7 +574,7 @@ vertex UnderlineVertexOutput underline_vertex(
       to_device_position(unit_vertex, underline.bounds, viewport_size);
   float4 clip_distance = distance_from_clip_rect(unit_vertex, underline.bounds,
                                                  underline.content_mask.bounds);
-  float4 color = hsla_to_rgba(underline.color);
+  float4 color = oklch_to_rgba(underline.color);
   return UnderlineVertexOutput{
       device_position,
       color,
@@ -642,7 +642,7 @@ vertex MonochromeSpriteVertexOutput monochrome_sprite_vertex(
   float4 clip_distance = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds,
                                                  sprite.content_mask.bounds, sprite.transformation);
   float2 tile_position = to_tile_position(unit_vertex, sprite.tile, atlas_size);
-  float4 color = hsla_to_rgba(sprite.color);
+  float4 color = oklch_to_rgba(sprite.color);
   return MonochromeSpriteVertexOutput{
       device_position,
       tile_position,
@@ -894,52 +894,28 @@ fragment float4 surface_fragment(SurfaceFragmentInput input [[stage_in]],
   return ycbcrToRGBTransform * ycbcr;
 }
 
-float4 hsla_to_rgba(Hsla hsla) {
-  float h = hsla.h * 6.0; // Now, it's an angle but scaled in [0, 6) range
-  float s = hsla.s;
-  float l = hsla.l;
-  float a = hsla.a;
+// Oklch to linear RGBA conversion.
+// Converts polar Oklch (L, C, H degrees, alpha) to linear sRGB via Oklab.
+float4 oklch_to_rgba(Oklch oklch) {
+  float h_rad = oklch.h * 3.141592653589793 / 180.0;
+  float a_lab = oklch.c * cos(h_rad);
+  float b_lab = oklch.c * sin(h_rad);
 
-  float c = (1.0 - fabs(2.0 * l - 1.0)) * s;
-  float x = c * (1.0 - fabs(fmod(h, 2.0) - 1.0));
-  float m = l - c / 2.0;
+  // Oklab to linear sRGB (same matrix as oklab_to_srgb but without gamma encoding)
+  float l_ = oklch.l + 0.3963377774 * a_lab + 0.2158037573 * b_lab;
+  float m_ = oklch.l - 0.1055613458 * a_lab - 0.0638541728 * b_lab;
+  float s_ = oklch.l - 0.0894841775 * a_lab - 1.2914855480 * b_lab;
 
-  float r = 0.0;
-  float g = 0.0;
-  float b = 0.0;
+  float l = l_ * l_ * l_;
+  float m = m_ * m_ * m_;
+  float s = s_ * s_ * s_;
 
-  if (h >= 0.0 && h < 1.0) {
-    r = c;
-    g = x;
-    b = 0.0;
-  } else if (h >= 1.0 && h < 2.0) {
-    r = x;
-    g = c;
-    b = 0.0;
-  } else if (h >= 2.0 && h < 3.0) {
-    r = 0.0;
-    g = c;
-    b = x;
-  } else if (h >= 3.0 && h < 4.0) {
-    r = 0.0;
-    g = x;
-    b = c;
-  } else if (h >= 4.0 && h < 5.0) {
-    r = x;
-    g = 0.0;
-    b = c;
-  } else {
-    r = c;
-    g = 0.0;
-    b = x;
-  }
-
-  float4 rgba;
-  rgba.x = (r + m);
-  rgba.y = (g + m);
-  rgba.z = (b + m);
-  rgba.w = a;
-  return rgba;
+  return float4(
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+   -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+   -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+    oklch.a
+  );
 }
 
 float3 srgb_to_linear(float3 color) {
@@ -1145,14 +1121,14 @@ float4 over(float4 below, float4 above) {
   return result;
 }
 
-GradientColor prepare_fill_color(uint tag, uint color_space, Hsla solid,
-                                     Hsla color0, Hsla color1) {
+GradientColor prepare_fill_color(uint tag, uint color_space, Oklch solid,
+                                     Oklch color0, Oklch color1) {
   GradientColor out;
   if (tag == 0 || tag == 2 || tag == 3) {
-    out.solid = hsla_to_rgba(solid);
+    out.solid = oklch_to_rgba(solid);
   } else if (tag == 1) {
-    out.color0 = hsla_to_rgba(color0);
-    out.color1 = hsla_to_rgba(color1);
+    out.color0 = oklch_to_rgba(color0);
+    out.color1 = oklch_to_rgba(color1);
 
     // Prepare color space in vertex for avoid conversion
     // in fragment shader for performance reasons

@@ -1,11 +1,15 @@
 [package]
-name = "raijin-ui"
+name = "raijin-theme-extension"
 version = "0.1.0"
 edition.workspace = true
 publish.workspace = true
 
 [dependencies]
+raijin-theme = { workspace = true }
 inazuma = { workspace = true }
+anyhow = { workspace = true }
+parking_lot = { workspace = true }
+log = "0.4"
 
 [lints]
 workspace = true

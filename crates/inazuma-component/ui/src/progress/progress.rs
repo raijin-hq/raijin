@@ -1,6 +1,6 @@
 use crate::{ActiveTheme, Sizable, Size, StyledExt};
 use inazuma::{
-    Animation, AnimationExt as _, App, ElementId, Hsla, InteractiveElement as _, IntoElement,
+    Animation, AnimationExt as _, App, ElementId, Oklch, InteractiveElement as _, IntoElement,
     ParentElement, RenderOnce, StyleRefinement, Styled, Window, div, prelude::FluentBuilder, px,
     relative,
 };
@@ -13,7 +13,7 @@ use super::ProgressState;
 pub struct Progress {
     id: ElementId,
     style: StyleRefinement,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     value: f32,
     size: Size,
 }
@@ -31,7 +31,7 @@ impl Progress {
     }
 
     /// Set the color of the progress bar.
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
         self.color = Some(color.into());
         self
     }

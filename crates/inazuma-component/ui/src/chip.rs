@@ -1,6 +1,6 @@
 use inazuma::{
-    App, CursorStyle, Hsla, InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled, StyleRefinement, Window, div, hsla, prelude::FluentBuilder as _, px, rgb,
+    App, CursorStyle, InteractiveElement as _, IntoElement, Oklch, ParentElement, RenderOnce,
+    SharedString, Styled, StyleRefinement, Window, div, prelude::FluentBuilder as _, px, rgb,
 };
 
 use crate::{Icon, IconName, Selectable, Sizable, h_flex};
@@ -12,10 +12,10 @@ use crate::{Icon, IconName, Selectable, Sizable, h_flex};
 const CHIP_BORDER_OPACITY: f32 = 0.08;
 const CHIP_BG_OPACITY: f32 = 0.03;
 
-fn chip_base_style() -> (Hsla, Hsla) {
+fn chip_base_style() -> (Oklch, Oklch) {
     (
-        hsla(0.0, 0.0, 1.0, CHIP_BORDER_OPACITY),
-        hsla(0.0, 0.0, 1.0, CHIP_BG_OPACITY),
+        Oklch::white().opacity(CHIP_BORDER_OPACITY),
+        Oklch::white().opacity(CHIP_BG_OPACITY),
     )
 }
 
@@ -30,8 +30,8 @@ fn chip_base_style() -> (Hsla, Hsla) {
 #[derive(IntoElement)]
 pub struct Chip {
     label: SharedString,
-    color: Hsla,
-    icon: Option<(IconName, Option<Hsla>)>,
+    color: Oklch,
+    icon: Option<(IconName, Option<Oklch>)>,
     selected: bool,
     interactive: bool,
     style: StyleRefinement,
@@ -39,7 +39,7 @@ pub struct Chip {
 
 impl Chip {
     /// Create a text-only chip.
-    pub fn new(label: impl Into<SharedString>, color: Hsla) -> Self {
+    pub fn new(label: impl Into<SharedString>, color: Oklch) -> Self {
         Self {
             label: label.into(),
             color,
@@ -57,7 +57,7 @@ impl Chip {
     }
 
     /// Add an icon prefix with a different color than the label.
-    pub fn icon_colored(mut self, icon: IconName, icon_color: Hsla) -> Self {
+    pub fn icon_colored(mut self, icon: IconName, icon_color: Oklch) -> Self {
         self.icon = Some((icon, Some(icon_color)));
         self
     }
@@ -110,10 +110,10 @@ impl RenderOnce for Chip {
             .text_color(self.color)
             .when(interactive, |this| {
                 this.cursor(CursorStyle::PointingHand)
-                    .hover(|this| this.bg(hsla(0.0, 0.0, 1.0, 0.08)))
+                    .hover(|this| this.bg(Oklch::white().opacity(0.08)))
             })
             .when(selected, |this| {
-                this.bg(hsla(0.0, 0.0, 1.0, 0.10))
+                this.bg(Oklch::white().opacity(0.10))
             })
             .when_some(self.icon, |this, (icon, _)| {
                 this.child(Icon::new(icon).small().text_color(icon_color))
@@ -130,8 +130,8 @@ impl RenderOnce for Chip {
 #[derive(IntoElement)]
 pub struct GitBranchChip {
     branch: SharedString,
-    icon_color: Hsla,
-    text_color: Hsla,
+    icon_color: Oklch,
+    text_color: Oklch,
 }
 
 impl GitBranchChip {
@@ -143,12 +143,12 @@ impl GitBranchChip {
         }
     }
 
-    pub fn icon_color(mut self, color: Hsla) -> Self {
+    pub fn icon_color(mut self, color: Oklch) -> Self {
         self.icon_color = color;
         self
     }
 
-    pub fn text_color(mut self, color: Hsla) -> Self {
+    pub fn text_color(mut self, color: Oklch) -> Self {
         self.text_color = color;
         self
     }
@@ -183,9 +183,9 @@ pub struct GitStatsChip {
     files_changed: u32,
     insertions: u32,
     deletions: u32,
-    neutral_color: Hsla,
-    insert_color: Hsla,
-    delete_color: Hsla,
+    neutral_color: Oklch,
+    insert_color: Oklch,
+    delete_color: Oklch,
 }
 
 impl GitStatsChip {

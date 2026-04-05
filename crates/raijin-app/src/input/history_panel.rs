@@ -4,7 +4,7 @@
 /// with relative timestamps. The selected command is displayed in the input editor
 /// with full syntax highlighting.
 use inazuma::{
-    div, hsla, px, rgb, IntoElement, ParentElement, Styled,
+    div, Oklch, oklcha, px, rgb, IntoElement, ParentElement, Styled,
     prelude::*,
 };
 
@@ -119,7 +119,7 @@ impl HistoryPanel {
     /// Render the history panel as an Inazuma element.
     pub fn render(&self) -> impl IntoElement {
         let bg = rgb(0x1a1a1a);
-        let border_color = hsla(0.0, 0.0, 1.0, 0.08);
+        let border_color = Oklch::white().opacity(0.08);
 
         let visible_start = self.scroll_offset;
         let visible_end = (self.scroll_offset + MAX_VISIBLE_ROWS).min(self.entries.len());
@@ -159,12 +159,7 @@ impl HistoryPanel {
                 .gap_2()
                 .text_xs()
                 .when(is_selected, |this| {
-                    this.bg(hsla(
-                        153.0 / 360.0,
-                        0.93,
-                        0.51,
-                        0.10,
-                    ))
+                    this.bg(oklcha(0.70, 0.15, 160.0, 0.10))
                 })
                 // >_ icon
                 .child(

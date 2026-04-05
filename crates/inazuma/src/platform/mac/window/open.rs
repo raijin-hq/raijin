@@ -1,6 +1,12 @@
 use super::*;
 use class_registration::{GPUIPanel, GPUIView, GPUIWindow};
 use objc2::{ClassType, DefinedClass};
+use objc2_app_kit::{
+    NSAutoresizingMaskOptions, NSTrackingArea, NSTrackingAreaOptions, NSView,
+    NSViewLayerContentsRedrawPolicy, NSWindow, NSWindowAnimationBehavior,
+    NSWindowCollectionBehavior, NSWindowOrderingMode, NSWindowTitleVisibility,
+};
+use objc2_foundation::NSObjectProtocol;
 
 impl MacWindow {
     pub fn open(
@@ -24,12 +30,13 @@ impl MacWindow {
     ) -> Self {
         unsafe {
             let pool = objc2_foundation::NSAutoreleasePool::new();
+            let mtm = objc2::MainThreadMarker::new_unchecked();
 
             let allows_automatic_window_tabbing = tabbing_identifier.is_some();
-            let _: () = msg_send![
-                objc2_app_kit::NSWindow::class(),
-                setAllowsAutomaticWindowTabbing: allows_automatic_window_tabbing
-            ];
+            objc2_app_kit::NSWindow::setAllowsAutomaticWindowTabbing(
+                allows_automatic_window_tabbing,
+                mtm,
+            );
 
             let mut style_mask;
             if let Some(titlebar) = titlebar.as_ref() {
@@ -51,8 +58,6 @@ impl MacWindow {
                 style_mask = objc2_app_kit::NSWindowStyleMask::Titled
                     | objc2_app_kit::NSWindowStyleMask::FullSizeContentView;
             }
-
-            let mtm = objc2::MainThreadMarker::new_unchecked();
 
             let display = display_id
                 .and_then(MacDisplay::find_by_id)
@@ -98,8 +103,8 @@ impl MacWindow {
 
             // Alloc + set_ivars + init in one step via the typed init method
             // defined in define_class!. set_ivars is called inside init_with_content_rect.
-            // Alloc + init with set_ivars handled inside the define_class! init method.
-            // We use msg_send! to call initWithContentRect: which internally calls set_ivars.
+            // We use msg_send![super(...)] to call initWithContentRect: which internally calls set_ivars.
+            // There is no typed alternative for super-dispatch init calls on custom subclasses.
             let native_window: *mut AnyObject = match kind {
                 WindowKind::Normal => {
                     let alloc = mtm.alloc::<GPUIWindow>();
@@ -141,14 +146,21 @@ impl MacWindow {
             };
             assert!(!native_window.is_null());
 
+            // Cast native_window to typed &NSWindow for calling typed methods.
+            // All our custom window classes (GPUIWindow, GPUIPanel) inherit from NSWindow.
+            let window_ref: &NSWindow = &*(native_window as *const NSWindow);
+
             #[allow(deprecated)]
             let filenames_type: objc2::rc::Retained<objc2_foundation::NSString> = objc2_app_kit::NSFilenamesPboardType.to_owned();
             let types_array = objc2_foundation::NSArray::from_retained_slice(&[filenames_type]);
-            let _: () = msg_send![native_window, registerForDraggedTypes: &*types_array];
-            let _: () = msg_send![native_window, setReleasedWhenClosed: false];
+            window_ref.registerForDraggedTypes(&types_array);
+            window_ref.setReleasedWhenClosed(false);
 
-            let content_view: *mut AnyObject = msg_send![native_window, contentView];
-            let content_bounds: NSRect = msg_send![content_view, bounds];
+            let content_view = window_ref.contentView()
+                .expect("window must have a content view");
+            let content_bounds = content_view.bounds();
+            // initWithFrame: is a super-dispatch init call on our custom GPUIView subclass;
+            // no typed alternative exists for super-dispatch on custom subclasses.
             let native_view: *mut AnyObject = {
                 let alloc = mtm.alloc::<GPUIView>();
                 let view: Option<objc2::rc::Retained<GPUIView>> = msg_send![
@@ -158,6 +170,9 @@ impl MacWindow {
                 objc2::rc::Retained::into_raw(view.expect("failed to init GPUIView")) as *mut AnyObject
             };
             assert!(!native_view.is_null());
+
+            // Cast native_view to typed &NSView for calling typed methods.
+            let view_ref: &NSView = &*(native_view as *const NSView);
 
             let mut window = Self(Arc::new(Mutex::new(MacWindowState {
                 handle,
@@ -211,6 +226,9 @@ impl MacWindow {
             let window_state_ptr = Arc::into_raw(window.0.clone()) as *const c_void;
             let window_obj: &GPUIWindow = &*(native_window as *const GPUIWindow);
             window_obj.ivars().window_state.set(window_state_ptr);
+            // setDelegate expects ProtocolObject<dyn NSWindowDelegate>, but constructing one
+            // from our raw pointer requires going through msg_send! since the window sets itself
+            // as its own delegate (GPUIWindow/GPUIPanel implement NSWindowDelegate).
             let _: () = msg_send![native_window, setDelegate: native_window];
 
             // Set window state ivar on the view
@@ -225,23 +243,26 @@ impl MacWindow {
                 window.set_title(title);
             }
 
-            let _: () = msg_send![native_window, setMovable: is_movable];
+            window_ref.setMovable(is_movable);
 
             if let Some(window_min_size) = window_min_size {
                 let min_size = NSSize {
                     width: window_min_size.width.to_f64(),
                     height: window_min_size.height.to_f64(),
                 };
-                let _: () = msg_send![native_window, setContentMinSize: min_size];
+                window_ref.setContentMinSize(min_size);
             }
 
             if titlebar.is_none_or(|titlebar| titlebar.appears_transparent) {
-                let _: () = msg_send![native_window, setTitlebarAppearsTransparent: true];
-                let _: () = msg_send![native_window, setTitleVisibility: 1isize]; // NSWindowTitleHidden
+                window_ref.setTitlebarAppearsTransparent(true);
+                window_ref.setTitleVisibility(NSWindowTitleVisibility::Hidden);
             }
 
-            let autoresizing_mask: usize = (1 << 4) | (1 << 1); // NSViewWidthSizable | NSViewHeightSizable
-            let _: () = msg_send![native_view, setAutoresizingMask: autoresizing_mask];
+            let autoresizing_mask = NSAutoresizingMaskOptions::ViewWidthSizable
+                | NSAutoresizingMaskOptions::ViewHeightSizable;
+            view_ref.setAutoresizingMask(autoresizing_mask);
+            // setWantsBestResolutionOpenGLSurface is an NSOpenGLView method, not on NSView.
+            // No typed method available on NSView in objc2-app-kit.
             let _: () = msg_send![native_view, setWantsBestResolutionOpenGLSurface: true];
 
             // From winit crate: On Mojave, views automatically become layer-backed shortly after
@@ -249,142 +270,125 @@ impl MacWindow {
             // association between the view and its associated OpenGL context. To work around this,
             // on we explicitly make the view layer-backed up front so that AppKit doesn't do it
             // itself and break the association with its context.
-            let _: () = msg_send![native_view, setWantsLayer: true];
-            let _: () = msg_send![
-                native_view,
-                setLayerContentsRedrawPolicy: NSViewLayerContentsRedrawDuringViewResize
-            ];
+            view_ref.setWantsLayer(true);
+            view_ref.setLayerContentsRedrawPolicy(
+                NSViewLayerContentsRedrawPolicy::DuringViewResize,
+            );
 
-            let _: () = msg_send![content_view, addSubview: native_view];
+            content_view.addSubview(view_ref);
             let _: *mut AnyObject = msg_send![native_view, autorelease];
-            let _: bool = msg_send![native_window, makeFirstResponder: native_view];
+            window_ref.makeFirstResponder(Some(view_ref.as_ref()));
 
             let app = objc2_app_kit::NSApplication::sharedApplication(mtm);
-            let main_window: *mut AnyObject = msg_send![&*app, mainWindow];
+            let main_window_opt = app.mainWindow();
             let mut sheet_parent = None;
 
             match kind {
                 WindowKind::Normal | WindowKind::Floating => {
                     if kind == WindowKind::Floating {
                         // Let the window float keep above normal windows.
-                        let _: () = msg_send![native_window, setLevel: NSFloatingWindowLevel];
+                        window_ref.setLevel(NSFloatingWindowLevel);
                     } else {
-                        let _: () = msg_send![native_window, setLevel: NSNormalWindowLevel];
+                        window_ref.setLevel(NSNormalWindowLevel);
                     }
-                    let _: () = msg_send![native_window, setAcceptsMouseMovedEvents: true];
+                    window_ref.setAcceptsMouseMovedEvents(true);
 
                     if let Some(tabbing_identifier) = tabbing_identifier {
                         let tabbing_id =
                             objc2_foundation::NSString::from_str(tabbing_identifier.as_str());
-                        let _: () = msg_send![native_window, setTabbingIdentifier: &*tabbing_id];
+                        window_ref.setTabbingIdentifier(&tabbing_id);
                     } else {
-                        let _: () = msg_send![
-                            native_window,
-                            setTabbingIdentifier: ptr::null_mut::<AnyObject>()
-                        ];
+                        // Pass an empty string to clear the tabbing identifier.
+                        // The typed API requires a reference, not null.
+                        let empty = objc2_foundation::NSString::new();
+                        window_ref.setTabbingIdentifier(&empty);
                     }
                 }
                 WindowKind::PopUp => {
                     // Use a tracking area to allow receiving MouseMoved events even when
                     // the window or application aren't active, which is often the case
                     // e.g. for notification windows.
-                    let tracking_area: *mut AnyObject =
-                        msg_send![objc2_app_kit::NSTrackingArea::class(), alloc];
-                    let tracking_options: usize = NSTrackingMouseEnteredAndExited
-                        | NSTrackingMouseMoved
-                        | NSTrackingActiveAlways
-                        | NSTrackingInVisibleRect;
-                    let _: *mut AnyObject = msg_send![
-                        tracking_area,
-                        initWithRect: NSRect::new(NSPoint::new(0., 0.), NSSize::new(0., 0.)),
-                        options: tracking_options,
-                        owner: native_view,
-                        userInfo: ptr::null_mut::<AnyObject>()
-                    ];
-                    let _: () = msg_send![native_view, addTrackingArea: tracking_area];
-                    let _: *mut AnyObject = msg_send![tracking_area, autorelease];
+                    let tracking_options = NSTrackingAreaOptions::MouseEnteredAndExited
+                        | NSTrackingAreaOptions::MouseMoved
+                        | NSTrackingAreaOptions::ActiveAlways
+                        | NSTrackingAreaOptions::InVisibleRect;
+                    let tracking_area = NSTrackingArea::initWithRect_options_owner_userInfo(
+                        mtm.alloc::<NSTrackingArea>(),
+                        NSRect::new(NSPoint::new(0., 0.), NSSize::new(0., 0.)),
+                        tracking_options,
+                        Some(view_ref.as_ref()),
+                        None,
+                    );
+                    view_ref.addTrackingArea(&tracking_area);
 
-                    let _: () = msg_send![native_window, setLevel: NSPopUpWindowLevel];
-                    let _: () = msg_send![
-                        native_window,
-                        setAnimationBehavior: NSWindowAnimationBehaviorUtilityWindow
-                    ];
-                    let collection_behavior: usize = (1 << 0) | (1 << 8); // CanJoinAllSpaces | FullScreenAuxiliary
-                    let _: () = msg_send![native_window, setCollectionBehavior: collection_behavior];
+                    window_ref.setLevel(NSPopUpWindowLevel);
+                    window_ref.setAnimationBehavior(NSWindowAnimationBehavior::UtilityWindow);
+                    let collection_behavior = NSWindowCollectionBehavior::CanJoinAllSpaces
+                        | NSWindowCollectionBehavior::FullScreenAuxiliary;
+                    window_ref.setCollectionBehavior(collection_behavior);
                 }
                 WindowKind::Dialog => {
-                    if !main_window.is_null() {
-                        let parent = {
-                            let active_sheet: *mut AnyObject =
-                                msg_send![main_window, attachedSheet];
-                            if active_sheet.is_null() {
-                                main_window
-                            } else {
-                                active_sheet
-                            }
+                    if let Some(ref main_win) = main_window_opt {
+                        let parent = match main_win.attachedSheet() {
+                            Some(sheet) => sheet,
+                            None => main_win.clone(),
                         };
-                        let _: () = msg_send![
-                            parent,
-                            beginSheet: native_window,
-                            completionHandler: ptr::null_mut::<AnyObject>()
-                        ];
-                        sheet_parent = Some(parent);
+                        parent.beginSheet_completionHandler(window_ref, None);
+                        sheet_parent = Some(
+                            objc2::rc::Retained::as_ptr(&parent) as *mut AnyObject
+                        );
                     }
                 }
             }
 
-            if allows_automatic_window_tabbing
-                && !main_window.is_null()
-                && main_window != native_window
-            {
-                let main_style: objc2_app_kit::NSWindowStyleMask =
-                    msg_send![main_window, styleMask];
-                let main_window_is_fullscreen =
-                    main_style.contains(objc2_app_kit::NSWindowStyleMask::FullScreen);
-                let user_tabbing_preference = Self::get_user_tabbing_preference()
-                    .unwrap_or(UserTabbingPreference::InFullScreen);
-                let should_add_as_tab = user_tabbing_preference == UserTabbingPreference::Always
-                    || user_tabbing_preference == UserTabbingPreference::InFullScreen
-                        && main_window_is_fullscreen;
+            if allows_automatic_window_tabbing {
+                if let Some(ref main_win) = main_window_opt {
+                    let main_window_ptr =
+                        objc2::rc::Retained::as_ptr(main_win) as *mut AnyObject;
+                    if main_window_ptr != native_window {
+                        let main_style = main_win.styleMask();
+                        let main_window_is_fullscreen =
+                            main_style.contains(objc2_app_kit::NSWindowStyleMask::FullScreen);
+                        let user_tabbing_preference = Self::get_user_tabbing_preference()
+                            .unwrap_or(UserTabbingPreference::InFullScreen);
+                        let should_add_as_tab =
+                            user_tabbing_preference == UserTabbingPreference::Always
+                                || user_tabbing_preference == UserTabbingPreference::InFullScreen
+                                    && main_window_is_fullscreen;
 
-                if should_add_as_tab {
-                    let main_window_can_tab: bool = msg_send![
-                        main_window,
-                        respondsToSelector: sel!(addTabbedWindow:ordered:)
-                    ];
-                    let main_window_visible: bool = msg_send![main_window, isVisible];
+                        if should_add_as_tab {
+                            let main_window_can_tab =
+                                main_win.respondsToSelector(sel!(addTabbedWindow:ordered:));
+                            let main_window_visible = main_win.isVisible();
 
-                    if main_window_can_tab && main_window_visible {
-                        let _: () = msg_send![
-                            main_window,
-                            addTabbedWindow: native_window,
-                            ordered: 1isize // NSWindowAbove
-                        ];
+                            if main_window_can_tab && main_window_visible {
+                                main_win.addTabbedWindow_ordered(
+                                    window_ref,
+                                    NSWindowOrderingMode::Above,
+                                );
 
-                        // Ensure the window is visible immediately after adding the tab, since the tab bar is updated with a new entry at this point.
-                        // Note: Calling orderFront here can break fullscreen mode (makes fullscreen windows exit fullscreen), so only do this if the main window is not fullscreen.
-                        if !main_window_is_fullscreen {
-                            let _: () = msg_send![
-                                native_window,
-                                orderFront: ptr::null_mut::<AnyObject>()
-                            ];
+                                // Ensure the window is visible immediately after adding the tab, since the tab bar is updated with a new entry at this point.
+                                // Note: Calling orderFront here can break fullscreen mode (makes fullscreen windows exit fullscreen), so only do this if the main window is not fullscreen.
+                                if !main_window_is_fullscreen {
+                                    window_ref.orderFront(None);
+                                }
+                            }
                         }
                     }
                 }
             }
 
             if focus && show {
-                let _: () =
-                    msg_send![native_window, makeKeyAndOrderFront: ptr::null_mut::<AnyObject>()];
+                window_ref.makeKeyAndOrderFront(None);
             } else if show {
-                let _: () = msg_send![native_window, orderFront: ptr::null_mut::<AnyObject>()];
+                window_ref.orderFront(None);
             }
 
             // Set the initial position of the window to the specified origin.
             // Although we already specified the position using `initWithContentRect_styleMask_backing_defer_screen_`,
             // the window position might be incorrect if the main screen (the screen that contains the window that has focus)
             //  is different from the primary screen.
-            let _: () = msg_send![native_window, setFrameTopLeftPoint: window_rect.origin];
+            window_ref.setFrameTopLeftPoint(window_rect.origin);
             {
                 let mut window_state = window.0.lock();
                 window_state.move_traffic_light();
@@ -401,15 +405,11 @@ impl MacWindow {
         unsafe {
             let mtm = objc2::MainThreadMarker::new_unchecked();
             let app = objc2_app_kit::NSApplication::sharedApplication(mtm);
-            let main_window: *mut AnyObject = msg_send![&*app, mainWindow];
-            if main_window.is_null() {
-                return None;
-            }
+            let main_window = app.mainWindow()?;
 
-            let is_gpui_window: bool =
-                msg_send![main_window, isKindOfClass: GPUIWindow::class()];
-            if is_gpui_window {
-                let window_ref: &GPUIWindow = &*(main_window as *const GPUIWindow);
+            if main_window.isKindOfClass(GPUIWindow::class()) {
+                let window_ref: &GPUIWindow =
+                    &*(objc2::rc::Retained::as_ptr(&main_window) as *const GPUIWindow);
                 let handle = window_ref.ivars().get_state().lock().handle;
                 Some(handle)
             } else {
@@ -422,16 +422,15 @@ impl MacWindow {
         unsafe {
             let mtm = objc2::MainThreadMarker::new_unchecked();
             let app = objc2_app_kit::NSApplication::sharedApplication(mtm);
-            let windows: *mut AnyObject = msg_send![&*app, orderedWindows];
-            let count: usize = msg_send![windows, count];
+            let windows = app.orderedWindows();
+            let count = windows.count();
 
             let mut window_handles = Vec::new();
             for i in 0..count {
-                let window: *mut AnyObject = msg_send![windows, objectAtIndex: i];
-                let is_gpui_window: bool =
-                    msg_send![window, isKindOfClass: GPUIWindow::class()];
-                if is_gpui_window {
-                    let window_ref: &GPUIWindow = &*(window as *const GPUIWindow);
+                let window = windows.objectAtIndex(i);
+                if window.isKindOfClass(GPUIWindow::class()) {
+                    let window_ref: &GPUIWindow =
+                        &*(&*window as *const NSWindow as *const GPUIWindow);
                     let handle = window_ref.ivars().get_state().lock().handle;
                     window_handles.push(handle);
                 }
@@ -446,27 +445,17 @@ impl MacWindow {
         let domain = objc2_foundation::NSString::from_str("NSGlobalDomain");
         let key = objc2_foundation::NSString::from_str("AppleWindowTabbingMode");
 
-        unsafe {
-            let dict: *mut AnyObject = msg_send![&*defaults, persistentDomainForName: &*domain];
-            let value: *mut AnyObject = if !dict.is_null() {
-                msg_send![dict, objectForKey: &*key]
-            } else {
-                ptr::null_mut()
-            };
+        let dict = defaults.persistentDomainForName(&domain)?;
+        let value = dict.objectForKey(&key)?;
 
-            if value.is_null() {
-                return Some(UserTabbingPreference::InFullScreen);
-            }
+        let ns_string: &objc2_foundation::NSString =
+            unsafe { &*(&*value as *const AnyObject as *const objc2_foundation::NSString) };
+        let value_str = ns_string.to_string();
 
-            let ns_string: &objc2_foundation::NSString =
-                &*(value as *const AnyObject as *const objc2_foundation::NSString);
-            let value_str = ns_string.to_string();
-
-            match value_str.as_str() {
-                "manual" => Some(UserTabbingPreference::Never),
-                "always" => Some(UserTabbingPreference::Always),
-                _ => Some(UserTabbingPreference::InFullScreen),
-            }
+        match value_str.as_str() {
+            "manual" => Some(UserTabbingPreference::Never),
+            "always" => Some(UserTabbingPreference::Always),
+            _ => Some(UserTabbingPreference::InFullScreen),
         }
     }
 }

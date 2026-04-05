@@ -19,8 +19,8 @@ static DEPTH: LazyLock<u64> = LazyLock::new(|| {
 impl Render for Tree {
     fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
         let mut depth = *DEPTH;
-        static COLORS: [inazuma::Hsla; 4] = [inazuma::red(), inazuma::blue(), inazuma::green(), inazuma::yellow()];
-        let mut colors = COLORS.iter().cycle().copied();
+        let palette: [inazuma::Oklch; 4] = [inazuma::red().into(), inazuma::blue().into(), inazuma::green().into(), inazuma::yellow().into()];
+        let mut colors = palette.iter().cycle().copied();
         let mut next_div = || div().p_0p5().bg(colors.next().unwrap());
         let mut innermost_node = next_div();
         while depth > 0 {

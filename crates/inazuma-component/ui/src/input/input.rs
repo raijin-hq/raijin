@@ -1,6 +1,6 @@
 use inazuma::prelude::FluentBuilder as _;
 use inazuma::{
-    AnyElement, App, DefiniteLength, Edges, EdgesRefinement, Entity, Hsla, InteractiveElement as _,
+    AnyElement, App, DefiniteLength, Edges, EdgesRefinement, Entity, Oklch, InteractiveElement as _,
     IntoElement, IsZero, MouseButton, ParentElement as _, Rems, RenderOnce, StyleRefinement,
     Styled, TextAlign, Window, div, px, relative,
 };
@@ -18,7 +18,7 @@ use crate::{Sizable, StyleSized};
 use super::InputState;
 
 /// Returns `(background, foreground)` colors for input-like components.
-pub(crate) fn input_style(disabled: bool, cx: &App) -> (Hsla, Hsla) {
+pub(crate) fn input_style(disabled: bool, cx: &App) -> (Oklch, Oklch) {
     if disabled {
         (
             cx.theme().input.mix_oklab(cx.theme().transparent, 0.8),

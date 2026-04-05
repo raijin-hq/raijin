@@ -3,7 +3,7 @@ use std::{fs, path::PathBuf};
 use anyhow::Result;
 use inazuma::{
     App, Application, AssetSource, Bounds, BoxShadow, ClickEvent, Context, SharedString, Task,
-    Window, WindowBounds, WindowOptions, div, hsla, img, point, prelude::*, px, rgb, size, svg,
+    Window, WindowBounds, WindowOptions, div, img, point, prelude::*, px, rgb, size, svg,
 };
 
 struct Assets {
@@ -112,7 +112,7 @@ impl Render for HelloWorld {
                             .border_3()
                             .border_color(inazuma::black())
                             .shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.5),
+                                color: inazuma::Oklch::black().opacity(0.5),
                                 blur_radius: px(1.0),
                                 spread_radius: px(5.0),
                                 offset: point(px(10.0), px(10.0)),

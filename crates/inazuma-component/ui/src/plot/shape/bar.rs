@@ -1,4 +1,4 @@
-use inazuma::{App, Bounds, Hsla, PaintQuad, Pixels, Point, Window, fill, point, px};
+use inazuma::{App, Bounds, Oklch, PaintQuad, Pixels, Point, Window, fill, point, px};
 
 use crate::plot::{
     label::{PlotLabel, TEXT_GAP, TEXT_HEIGHT, Text},
@@ -12,7 +12,7 @@ pub struct Bar<T> {
     band_width: f32,
     y0: Box<dyn Fn(&T) -> f32>,
     y1: Box<dyn Fn(&T) -> Option<f32>>,
-    fill: Box<dyn Fn(&T) -> Hsla>,
+    fill: Box<dyn Fn(&T) -> Oklch>,
     label: Option<Box<dyn Fn(&T, Point<Pixels>) -> Vec<Text>>>,
 }
 
@@ -24,7 +24,7 @@ impl<T> Default for Bar<T> {
             band_width: 0.,
             y0: Box::new(|_| 0.),
             y1: Box::new(|_| None),
-            fill: Box::new(|_| inazuma::black()),
+            fill: Box::new(|_| Oklch::black()),
             label: None,
         }
     }
@@ -81,7 +81,7 @@ impl<T> Bar<T> {
     pub fn fill<F, C>(mut self, fill: F) -> Self
     where
         F: Fn(&T) -> C + 'static,
-        C: Into<Hsla>,
+        C: Into<Oklch>,
     {
         self.fill = Box::new(move |v| fill(v).into());
         self

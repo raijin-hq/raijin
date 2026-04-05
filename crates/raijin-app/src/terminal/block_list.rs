@@ -5,7 +5,7 @@
 //! handles both rendering and mouse interaction for the terminal output area.
 
 use inazuma::{
-    div, hsla, list, px,
+    div, Oklch, list, px,
     App, Context, Font, InteractiveElement, IntoElement, ListAlignment, ListState,
     MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, ParentElement, Pixels,
     Point as GpuiPoint, Render, Styled, Window,
@@ -228,7 +228,7 @@ impl Render for BlockListView {
         // Read current config every frame (respects live config changes)
         let (font, font_size, line_height_multiplier, symbol_maps) = Self::read_config(cx);
 
-        let theme = cx.global::<raijin_settings::ResolvedTheme>().clone();
+        let theme = cx.global::<raijin_theme::GlobalTheme>().0.clone();
 
         // Extract snapshots with single lock
         let snapshots = extract_all_block_snapshots(
@@ -312,7 +312,7 @@ impl Render for BlockListView {
                     .flex_shrink_0()
                     .flex_col()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 1.0, 0.12));
+                    .border_color(Oklch::white().opacity(0.12));
 
                 if fold_hidden_count > 0 {
                     fold_area = fold_area.child(render_fold_counter(

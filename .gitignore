@@ -3,5 +3,6 @@
 *.pdb
 .DS_Store
 .reference/
+.claude/
 node_modules/
 package-lock.json

@@ -3,7 +3,7 @@ use std::ops::Range;
 use crate::{ActiveTheme, AxisExt, ElementExt, StyledExt, h_flex};
 use inazuma::{
     Along, App, AppContext as _, Axis, Background, Bounds, Context, Corners, DefiniteLength,
-    DragMoveEvent, Empty, Entity, EntityId, EventEmitter, Hsla, InteractiveElement, IntoElement,
+    DragMoveEvent, Empty, Entity, EntityId, EventEmitter, InteractiveElement, IntoElement,
     IsZero, MouseButton, MouseDownEvent, ParentElement as _, Pixels, Point, Render, RenderOnce,
     StatefulInteractiveElement as _, StyleRefinement, Styled, Window, div,
     prelude::FluentBuilder as _, px, relative,
@@ -419,7 +419,7 @@ impl Slider {
         start: DefiniteLength,
         is_start: bool,
         bar_color: Background,
-        thumb_color: Hsla,
+        thumb_color: inazuma::Oklch,
         radius: Corners<Pixels>,
         window: &mut Window,
         cx: &mut App,
@@ -515,7 +515,7 @@ impl RenderOnce for Slider {
             .style
             .text
             .color
-            .unwrap_or_else(|| cx.theme().slider_thumb);
+            .unwrap_or_else(|| cx.theme().slider_thumb.into());
         let corner_radii = self.style.corner_radii.clone();
         let default_radius = px(999.);
         let mut radius = Corners {

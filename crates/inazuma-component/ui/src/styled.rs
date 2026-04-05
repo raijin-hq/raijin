@@ -1,6 +1,6 @@
 use crate::ActiveTheme;
 use inazuma::{
-    App, BoxShadow, Corners, DefiniteLength, Div, Edges, FocusHandle, Hsla, ParentElement, Pixels,
+    App, BoxShadow, Corners, DefiniteLength, Div, Edges, FocusHandle, ParentElement, Pixels,
     Refineable, StyleRefinement, Styled, Window, div, point, px,
 };
 use serde::{Deserialize, Serialize};
@@ -23,20 +23,20 @@ pub fn v_flex() -> Div {
 ///
 /// If CSS is `box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);`
 ///
-/// Then the equivalent in Rust is `box_shadow(0., 0., 10., 0., hsla(0., 0., 0., 0.1))`
+/// Then the equivalent in Rust is `box_shadow(0., 0., 10., 0., Oklch::black().opacity(0.1))`
 #[inline(always)]
 pub fn box_shadow(
     x: impl Into<Pixels>,
     y: impl Into<Pixels>,
     blur: impl Into<Pixels>,
     spread: impl Into<Pixels>,
-    color: Hsla,
+    color: impl Into<inazuma::Oklch>,
 ) -> BoxShadow {
     BoxShadow {
         offset: point(x.into(), y.into()),
         blur_radius: blur.into(),
         spread_radius: spread.into(),
-        color,
+        color: color.into(),
     }
 }
 

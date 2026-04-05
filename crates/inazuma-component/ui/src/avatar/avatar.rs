@@ -1,5 +1,5 @@
 use inazuma::{
-    App, Div, Hsla, ImageSource, InteractiveElement, Interactivity, IntoElement,
+    App, Div, Oklch, ImageSource, InteractiveElement, Interactivity, IntoElement,
     ParentElement as _, RenderOnce, SharedString, StyleRefinement, Styled, Window, div, img,
     prelude::FluentBuilder,
 };
@@ -85,7 +85,7 @@ impl RenderOnce for Avatar {
         inner_style.corner_radii = corner_radii;
 
         const COLOR_COUNT: u64 = 360 / 15;
-        fn default_color(ix: u64, cx: &mut App) -> Hsla {
+        fn default_color(ix: u64, cx: &mut App) -> Oklch {
             let h = (ix * 15).clamp(0, 360) as f32;
             cx.theme().blue.hue(h / 360.0)
         }

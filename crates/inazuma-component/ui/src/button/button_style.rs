@@ -1,18 +1,18 @@
 use crate::{ActiveTheme, Colorize as _};
-use inazuma::{App, Hsla, transparent_white};
+use inazuma::{App, Oklch, transparent_white};
 
 use super::ButtonVariant;
 
 pub(super) struct ButtonVariantStyle {
-    pub(super) bg: Hsla,
-    pub(super) border: Hsla,
-    pub(super) fg: Hsla,
+    pub(super) bg: Oklch,
+    pub(super) border: Oklch,
+    pub(super) fg: Oklch,
     pub(super) underline: bool,
     pub(super) shadow: bool,
 }
 
 impl ButtonVariant {
-    fn bg_color(&self, outline: bool, cx: &mut App) -> Hsla {
+    fn bg_color(&self, outline: bool, cx: &mut App) -> Oklch {
         if outline {
             return cx.theme().input_background();
         }
@@ -30,7 +30,7 @@ impl ButtonVariant {
         }
     }
 
-    fn text_color(&self, outline: bool, cx: &mut App) -> Hsla {
+    fn text_color(&self, outline: bool, cx: &mut App) -> Oklch {
         match self {
             Self::Default => cx.theme().foreground,
             Self::Primary => {
@@ -51,35 +51,35 @@ impl ButtonVariant {
         }
     }
 
-    fn border_color(&self, _bg: Hsla, outline: bool, cx: &mut App) -> Hsla {
+    fn border_color(&self, _bg: Oklch, outline: bool, cx: &mut App) -> Oklch {
         match self {
             Self::Default => cx.theme().input,
             Self::Secondary => cx.theme().border,
             Self::Primary => cx.theme().button_primary,
             Self::Danger => {
                 if outline {
-                    cx.theme().danger.mix_oklab(transparent_white(), 0.4)
+                    cx.theme().danger.mix_oklab(Oklch::from(transparent_white()), 0.4)
                 } else {
                     cx.theme().danger
                 }
             }
             Self::Info => {
                 if outline {
-                    cx.theme().info.mix_oklab(transparent_white(), 0.4)
+                    cx.theme().info.mix_oklab(Oklch::from(transparent_white()), 0.4)
                 } else {
                     cx.theme().info
                 }
             }
             Self::Warning => {
                 if outline {
-                    cx.theme().warning.mix_oklab(transparent_white(), 0.4)
+                    cx.theme().warning.mix_oklab(Oklch::from(transparent_white()), 0.4)
                 } else {
                     cx.theme().warning
                 }
             }
             Self::Success => {
                 if outline {
-                    cx.theme().success.mix_oklab(transparent_white(), 0.4)
+                    cx.theme().success.mix_oklab(Oklch::from(transparent_white()), 0.4)
                 } else {
                     cx.theme().success
                 }
@@ -87,7 +87,7 @@ impl ButtonVariant {
             Self::Ghost | Self::Link | Self::Text => cx.theme().transparent,
             Self::Custom(colors) => {
                 if outline {
-                    colors.color.mix_oklab(transparent_white(), 0.4)
+                    colors.color.mix_oklab(Oklch::from(transparent_white()), 0.4)
                 } else {
                     colors.color
                 }

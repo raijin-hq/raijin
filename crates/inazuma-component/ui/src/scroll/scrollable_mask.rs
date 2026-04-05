@@ -1,6 +1,6 @@
 use inazuma::{
     px, relative, App, Axis, BorderStyle, Bounds, ContentMask, Corners, Edges, Element, ElementId,
-    GlobalElementId, Hitbox, Hsla, IntoElement, IsZero as _, LayoutId, PaintQuad, Pixels, Point,
+    GlobalElementId, Hitbox, Oklch, IntoElement, IsZero as _, LayoutId, PaintQuad, Pixels, Point,
     Position, ScrollHandle, ScrollWheelEvent, Style, Window,
 };
 
@@ -14,7 +14,7 @@ use crate::AxisExt;
 pub struct ScrollableMask {
     axis: Axis,
     scroll_handle: ScrollHandle,
-    debug: Option<Hsla>,
+    debug: Option<Oklch>,
 }
 
 impl ScrollableMask {
@@ -30,7 +30,7 @@ impl ScrollableMask {
     /// Enable the debug border, to show the mask bounds.
     #[allow(dead_code)]
     pub fn debug(mut self) -> Self {
-        self.debug = Some(inazuma::yellow());
+        self.debug = Some(Oklch::from(inazuma::yellow()));
         self
     }
 }
@@ -113,7 +113,7 @@ impl Element for ScrollableMask {
                 window.paint_quad(PaintQuad {
                     bounds,
                     border_widths: Edges::all(px(1.0)),
-                    border_colors: Edges { top: color, right: color, bottom: color, left: color },
+                    border_colors: Edges { top: color.into(), right: color.into(), bottom: color.into(), left: color.into() },
                     background: inazuma::transparent_white().into(),
                     corner_radii: Corners::all(px(0.)),
                     border_style: BorderStyle::default(),

@@ -1,4 +1,4 @@
-use crate::{Bounds, Hsla, Pixels, SharedString, StrikethroughStyle, UnderlineStyle, px};
+use crate::{Bounds, Oklch, Pixels, SharedString, StrikethroughStyle, UnderlineStyle, px};
 use core::fmt;
 use derive_more::{Add, FromStr, Sub};
 use schemars::JsonSchema;
@@ -267,9 +267,9 @@ pub struct TextRun {
     /// The font to use for this run.
     pub font: Font,
     /// The color
-    pub color: Hsla,
+    pub color: Oklch,
     /// The background color (if any)
-    pub background_color: Option<Hsla>,
+    pub background_color: Option<Oklch>,
     /// The underline style (if any)
     pub underline: Option<UnderlineStyle>,
     /// The strikethrough style (if any)

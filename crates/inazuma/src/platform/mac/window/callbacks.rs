@@ -1,5 +1,7 @@
 use super::*;
-use objc2::ClassType;
+use objc2::{AnyThread, ClassType};
+use objc2_app_kit::{NSView, NSWindow};
+use objc2_foundation::{NSArray, NSAttributedString, NSString};
 
 pub(super) fn handle_key_equivalent(ivars: &WindowIvars, native_view: &AnyObject, native_event: &objc2_app_kit::NSEvent) -> bool {
     handle_key_event(ivars, native_view, native_event, true)
@@ -108,11 +110,11 @@ fn handle_key_event(
                 }
 
                 let handled: bool = unsafe {
-                    let input_context: *mut AnyObject = msg_send![native_view, inputContext];
-                    if input_context.is_null() {
-                        false
+                    let view = &*(native_view as *const AnyObject as *const NSView);
+                    if let Some(input_context) = view.inputContext() {
+                        input_context.handleEvent(native_event)
                     } else {
-                        msg_send![&*input_context, handleEvent: native_event]
+                        false
                     }
                 };
                 window_state.as_ref().lock().keystroke_for_do_command.take();
@@ -153,8 +155,9 @@ fn handle_key_event(
             }
 
             unsafe {
-                let input_context: *mut AnyObject = msg_send![native_view, inputContext];
-                msg_send![input_context, handleEvent: native_event]
+                let view = &*(native_view as *const AnyObject as *const NSView);
+                view.inputContext()
+                    .map_or(false, |ctx| ctx.handleEvent(native_event))
             }
         }
 
@@ -237,8 +240,10 @@ pub(super) fn handle_view_event(ivars: &WindowIvars, native_view: &AnyObject, na
             PlatformInput::MouseDown(_) => {
                 drop(lock);
                 unsafe {
-                    let input_context: *mut AnyObject = msg_send![native_view, inputContext];
-                    let _: bool = msg_send![input_context, handleEvent: native_event];
+                    let view = &*(native_view as *const AnyObject as *const NSView);
+                    if let Some(input_context) = view.inputContext() {
+                        let _ = input_context.handleEvent(native_event);
+                    }
                 }
                 lock = window_state.as_ref().lock();
             }
@@ -301,17 +306,13 @@ pub(super) fn handle_view_event(ivars: &WindowIvars, native_view: &AnyObject, na
 pub(super) fn window_did_change_occlusion_state(ivars: &WindowIvars) {
     let window_state = ivars.get_state();
     let lock = &mut *window_state.lock();
-    unsafe {
-        let occlusion_state: objc2_app_kit::NSWindowOcclusionState =
-            msg_send![lock.native_window, occlusionState];
-        if occlusion_state
-            .contains(objc2_app_kit::NSWindowOcclusionState::Visible)
-        {
-            lock.move_traffic_light();
-            lock.start_display_link();
-        } else {
-            lock.stop_display_link();
-        }
+    let native_window = unsafe { &*(lock.native_window as *const NSWindow) };
+    let occlusion_state = native_window.occlusionState();
+    if occlusion_state.contains(objc2_app_kit::NSWindowOcclusionState::Visible) {
+        lock.move_traffic_light();
+        lock.start_display_link();
+    } else {
+        lock.stop_display_link();
     }
 }
 
@@ -328,9 +329,8 @@ pub(super) fn window_will_enter_fullscreen(ivars: &WindowIvars) {
     let min_version = objc2_foundation::NSOperatingSystemVersion { majorVersion: 15, minorVersion: 3, patchVersion: 0 };
 
     if is_macos_version_at_least(min_version) {
-        unsafe {
-            let _: () = msg_send![lock.native_window, setTitlebarAppearsTransparent: false];
-        }
+        let native_window = unsafe { &*(lock.native_window as *const NSWindow) };
+        native_window.setTitlebarAppearsTransparent(false);
     }
 }
 
@@ -341,9 +341,8 @@ pub(super) fn window_will_exit_fullscreen(ivars: &WindowIvars) {
     let min_version = objc2_foundation::NSOperatingSystemVersion { majorVersion: 15, minorVersion: 3, patchVersion: 0 };
 
     if is_macos_version_at_least(min_version) && lock.transparent_titlebar {
-        unsafe {
-            let _: () = msg_send![lock.native_window, setTitlebarAppearsTransparent: true];
-        }
+        let native_window = unsafe { &*(lock.native_window as *const NSWindow) };
+        native_window.setTitlebarAppearsTransparent(true);
     }
 }
 
@@ -371,12 +370,7 @@ fn update_window_scale_factor(window_state: &Arc<Mutex<MacWindowState>>) {
     let size = lock.content_size();
     let drawable_size = size.to_device_pixels(scale_factor);
     if let Some(layer) = lock.renderer.layer() {
-        unsafe {
-            let _: () = msg_send![
-                layer,
-                setContentsScale: scale_factor as f64
-            ];
-        }
+        layer.setContentsScale(scale_factor as f64);
     }
 
     lock.renderer.update_drawable_size(drawable_size);
@@ -401,7 +395,7 @@ pub(super) fn window_did_change_screen(ivars: &WindowIvars) {
 pub(super) fn window_did_change_key_status(ivars: &WindowIvars, selector: objc2::runtime::Sel) {
     let window_state = ivars.get_state();
     let lock = window_state.lock();
-    let is_active: bool = unsafe { msg_send![lock.native_window, isKeyWindow] };
+    let is_active = unsafe { &*(lock.native_window as *const NSWindow) }.isKeyWindow();
 
     // When opening a pop-up while the application isn't active, Cocoa sends a spurious
     // `windowDidBecomeKey` message to the previous key window even though that window
@@ -415,9 +409,7 @@ pub(super) fn window_did_change_key_status(ivars: &WindowIvars, selector: objc2:
     if selector == sel!(windowDidBecomeKey:) && !is_active {
         let native_window = lock.native_window;
         drop(lock);
-        unsafe {
-            let _: () = msg_send![native_window, resignKeyWindow];
-        }
+        unsafe { &*(native_window as *const NSWindow) }.resignKeyWindow();
         return;
     }
 
@@ -492,7 +484,8 @@ pub(super) fn close_window(ivars: &WindowIvars, this: &AnyObject) {
             callback();
         }
 
-        let _: () = msg_send![super(this, objc2_app_kit::NSWindow::class()), close];
+        // msg_send! required: super call to NSWindow's implementation
+        let _: () = msg_send![super(this, NSWindow::class()), close];
     }
 }
 
@@ -519,9 +512,9 @@ pub(super) fn set_frame_size(ivars: &WindowIvars, native_view: &AnyObject, size:
     let mut lock = window_state.as_ref().lock();
 
     let new_size = convert(size);
-    let old_size = unsafe {
-        let old_frame: NSRect = msg_send![native_view, frame];
-        convert(old_frame.size)
+    let old_size = {
+        let view = unsafe { &*(native_view as *const AnyObject as *const NSView) };
+        convert(view.frame().size)
     };
 
     if old_size == new_size {
@@ -529,7 +522,8 @@ pub(super) fn set_frame_size(ivars: &WindowIvars, native_view: &AnyObject, size:
     }
 
     unsafe {
-        let _: () = msg_send![super(native_view, objc2_app_kit::NSView::class()), setFrameSize: size];
+        // msg_send! required: super call to NSView's implementation
+        let _: () = msg_send![super(native_view, NSView::class()), setFrameSize: size];
     }
 
     let scale_factor = lock.scale_factor();
@@ -575,7 +569,8 @@ pub(super) extern "C" fn step(view: *mut c_void) {
 }
 
 pub(super) fn valid_attributes_for_marked_text() -> *mut AnyObject {
-    unsafe { msg_send![objc2_foundation::NSArray::<AnyObject>::class(), array] }
+    let array = NSArray::<AnyObject>::array();
+    objc2::rc::Retained::into_raw(array) as *mut AnyObject
 }
 
 pub(super) fn has_marked_text(ivars: &WindowIvars) -> bool {
@@ -631,37 +626,29 @@ pub(super) fn first_rect_for_character_range(
 }
 
 pub(super) fn get_frame(ivars: &WindowIvars) -> NSRect {
-    unsafe {
-        let state = ivars.get_state();
-        let lock = state.lock();
-        let mut frame: NSRect = msg_send![lock.native_window, frame];
-        let content_layout_rect: NSRect = msg_send![lock.native_window, contentLayoutRect];
-        let style_mask: objc2_app_kit::NSWindowStyleMask =
-            msg_send![lock.native_window, styleMask];
-        if !style_mask.contains(objc2_app_kit::NSWindowStyleMask::FullSizeContentView) {
-            frame.origin.y -= frame.size.height - content_layout_rect.size.height;
-        }
-        frame
+    let state = ivars.get_state();
+    let lock = state.lock();
+    let native_window = unsafe { &*(lock.native_window as *const NSWindow) };
+    let mut frame = native_window.frame();
+    let content_layout_rect = native_window.contentLayoutRect();
+    let style_mask = native_window.styleMask();
+    if !style_mask.contains(objc2_app_kit::NSWindowStyleMask::FullSizeContentView) {
+        frame.origin.y -= frame.size.height - content_layout_rect.size.height;
     }
+    frame
 }
 
 pub(super) fn insert_text(ivars: &WindowIvars, text: &AnyObject, replacement_range: NSRange) {
-    unsafe {
-        let is_attributed_string: bool =
-            msg_send![text, isKindOfClass: objc2_foundation::NSAttributedString::class()];
-        let text: &AnyObject = if is_attributed_string {
-            msg_send![text, string]
-        } else {
-            text
-        };
-
-        let ns_string: &objc2_foundation::NSString = &*(text as *const AnyObject as *const objc2_foundation::NSString);
-        let text_str = ns_string.to_string();
-        let replacement_range = ns_range_to_range(replacement_range);
-        with_input_handler(ivars, |input_handler| {
-            input_handler.replace_text_in_range(replacement_range, &text_str)
-        });
-    }
+    let ns_string: &NSString = if let Some(attributed) = text.downcast_ref::<NSAttributedString>() {
+        &attributed.string()
+    } else {
+        unsafe { &*(text as *const AnyObject as *const NSString) }
+    };
+    let text_str = ns_string.to_string();
+    let replacement_range = ns_range_to_range(replacement_range);
+    with_input_handler(ivars, |input_handler| {
+        input_handler.replace_text_in_range(replacement_range, &text_str)
+    });
 }
 
 pub(super) fn set_marked_text(
@@ -670,22 +657,17 @@ pub(super) fn set_marked_text(
     selected_range: NSRange,
     replacement_range: NSRange,
 ) {
-    unsafe {
-        let is_attributed_string: bool =
-            msg_send![text, isKindOfClass: objc2_foundation::NSAttributedString::class()];
-        let text: &AnyObject = if is_attributed_string {
-            msg_send![text, string]
-        } else {
-            text
-        };
-        let selected_range = ns_range_to_range(selected_range);
-        let replacement_range = ns_range_to_range(replacement_range);
-        let ns_string: &objc2_foundation::NSString = &*(text as *const AnyObject as *const objc2_foundation::NSString);
-        let text_str = ns_string.to_string();
-        with_input_handler(ivars, |input_handler| {
-            input_handler.replace_and_mark_text_in_range(replacement_range, &text_str, selected_range)
-        });
-    }
+    let ns_string: &NSString = if let Some(attributed) = text.downcast_ref::<NSAttributedString>() {
+        &attributed.string()
+    } else {
+        unsafe { &*(text as *const AnyObject as *const NSString) }
+    };
+    let selected_range = ns_range_to_range(selected_range);
+    let replacement_range = ns_range_to_range(replacement_range);
+    let text_str = ns_string.to_string();
+    with_input_handler(ivars, |input_handler| {
+        input_handler.replace_and_mark_text_in_range(replacement_range, &text_str, selected_range)
+    });
 }
 
 pub(super) fn unmark_text(ivars: &WindowIvars) {
@@ -710,14 +692,13 @@ pub(super) fn attributed_substring_for_proposed_range(
         {
             unsafe { (actual_range as *mut NSRange).write(NSRange::from(adjusted)) };
         }
-        unsafe {
-            let ns_str = objc2_foundation::NSString::from_str(&selected_text);
-            let string: *mut AnyObject = msg_send![
-                objc2_foundation::NSAttributedString::class(),
-                alloc
-            ];
-            let string: *mut AnyObject = msg_send![string, initWithString: &*ns_str];
-            Some(string)
+        {
+            let ns_str = NSString::from_str(&selected_text);
+            let attributed = NSAttributedString::initWithString(
+                NSAttributedString::alloc(),
+                &ns_str,
+            );
+            Some(objc2::rc::Retained::into_raw(attributed) as *mut AnyObject)
         }
     })
     .flatten()
@@ -796,24 +777,27 @@ where
 
 pub(super) fn add_titlebar_accessory_view_controller(this: &AnyObject, view_controller: &AnyObject) {
     unsafe {
+        // msg_send! required: super call to NSWindow's implementation
         let _: () = msg_send![
-            super(this, objc2_app_kit::NSWindow::class()),
+            super(this, NSWindow::class()),
             addTitlebarAccessoryViewController: view_controller
         ];
 
         // Hide the native tab bar and set its height to 0, since we render our own.
-        let accessory_view: *mut AnyObject = msg_send![view_controller, view];
-        let _: () = msg_send![accessory_view, setHidden: true];
-        let mut frame: NSRect = msg_send![accessory_view, frame];
+        let vc = &*(view_controller as *const AnyObject as *const objc2_app_kit::NSViewController);
+        let accessory_view = vc.view();
+        accessory_view.setHidden(true);
+        let mut frame = accessory_view.frame();
         frame.size.height = 0.0;
-        let _: () = msg_send![accessory_view, setFrame: frame];
+        accessory_view.setFrame(frame);
     }
 }
 
 pub(super) fn move_tab_to_new_window(ivars: &WindowIvars, this: &AnyObject) {
     unsafe {
+        // msg_send! required: super call to NSWindow's implementation
         let _: () = msg_send![
-            super(this, objc2_app_kit::NSWindow::class()),
+            super(this, NSWindow::class()),
             moveTabToNewWindow: ptr::null_mut::<AnyObject>()
         ];
 
@@ -829,8 +813,9 @@ pub(super) fn move_tab_to_new_window(ivars: &WindowIvars, this: &AnyObject) {
 
 pub(super) fn merge_all_windows(ivars: &WindowIvars, this: &AnyObject) {
     unsafe {
+        // msg_send! required: super call to NSWindow's implementation
         let _: () = msg_send![
-            super(this, objc2_app_kit::NSWindow::class()),
+            super(this, NSWindow::class()),
             mergeAllWindows: ptr::null_mut::<AnyObject>()
         ];
 
@@ -866,8 +851,9 @@ pub(super) fn select_previous_tab(ivars: &WindowIvars) {
 
 pub(super) fn toggle_tab_bar(ivars: &WindowIvars, this: &AnyObject) {
     unsafe {
+        // msg_send! required: super call to NSWindow's implementation
         let _: () = msg_send![
-            super(this, objc2_app_kit::NSWindow::class()),
+            super(this, NSWindow::class()),
             toggleTabBar: ptr::null_mut::<AnyObject>()
         ];
 

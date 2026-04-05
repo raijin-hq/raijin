@@ -1,6 +1,6 @@
 use inazuma::{
-    App, AppContext, Context, Entity, EventEmitter, FocusHandle, Focusable, Hsla, IntoElement,
-    KeyBinding, Render, Subscription, Window, hsla,
+    App, AppContext, Context, Entity, EventEmitter, FocusHandle, Focusable, IntoElement,
+    KeyBinding, Oklch, Render, Subscription, Window, hsla, oklch_to_hsla,
 };
 
 use crate::{
@@ -22,10 +22,10 @@ pub(crate) fn init(cx: &mut App) {
 /// Events emitted by the [`ColorPicker`](super::ColorPicker).
 #[derive(Clone)]
 pub enum ColorPickerEvent {
-    Change(Option<Hsla>),
+    Change(Option<Oklch>),
 }
 
-pub(super) fn color_palettes() -> Vec<Vec<Hsla>> {
+pub(super) fn color_palettes() -> Vec<Vec<Oklch>> {
     use crate::theme::DEFAULT_COLORS;
     use itertools::Itertools as _;
 
@@ -35,7 +35,7 @@ pub(super) fn color_palettes() -> Vec<Vec<Hsla>> {
                 .$color
                 .keys()
                 .sorted()
-                .map(|k| DEFAULT_COLORS.$color.get(k).map(|c| c.hsla).unwrap())
+                .map(|k| DEFAULT_COLORS.$color.get(k).map(|c| c.color).unwrap())
                 .collect::<Vec<_>>()
         };
     }
@@ -54,14 +54,14 @@ pub(super) fn color_palettes() -> Vec<Vec<Hsla>> {
 }
 
 #[derive(Clone)]
-pub(super) struct HslaSliders {
+pub(super) struct HslSliders {
     pub(super) hue: Entity<SliderState>,
     pub(super) saturation: Entity<SliderState>,
     pub(super) lightness: Entity<SliderState>,
     pub(super) alpha: Entity<SliderState>,
 }
 
-impl HslaSliders {
+impl HslSliders {
     pub(super) fn new(cx: &mut App) -> Self {
         Self {
             hue: cx.new(|_| {
@@ -95,7 +95,7 @@ impl HslaSliders {
         }
     }
 
-    pub(super) fn read(&self, cx: &App) -> Hsla {
+    pub(super) fn read(&self, cx: &App) -> Oklch {
         hsla(
             self.hue.read(cx).value().start(),
             self.saturation.read(cx).value().start(),
@@ -104,18 +104,19 @@ impl HslaSliders {
         )
     }
 
-    pub(super) fn update(&self, new_color: Hsla, window: &mut Window, cx: &mut App) {
+    pub(super) fn update(&self, new_color: Oklch, window: &mut Window, cx: &mut App) {
+        let (h, s, l, a) = oklch_to_hsla(new_color);
         self.hue.update(cx, |slider, cx| {
-            slider.set_value(new_color.h, window, cx);
+            slider.set_value(h, window, cx);
         });
         self.saturation.update(cx, |slider, cx| {
-            slider.set_value(new_color.s, window, cx);
+            slider.set_value(s, window, cx);
         });
         self.lightness.update(cx, |slider, cx| {
-            slider.set_value(new_color.l, window, cx);
+            slider.set_value(l, window, cx);
         });
         self.alpha.update(cx, |slider, cx| {
-            slider.set_value(new_color.a, window, cx);
+            slider.set_value(a, window, cx);
         });
     }
 }
@@ -123,10 +124,10 @@ impl HslaSliders {
 /// State of the [`ColorPicker`](super::ColorPicker).
 pub struct ColorPickerState {
     pub(super) focus_handle: FocusHandle,
-    pub(super) value: Option<Hsla>,
-    pub(super) hovered_color: Option<Hsla>,
+    pub(super) value: Option<Oklch>,
+    pub(super) hovered_color: Option<Oklch>,
     pub(super) state: Entity<InputState>,
-    pub(super) hsla_sliders: HslaSliders,
+    pub(super) hsl_sliders: HslSliders,
     pub(super) needs_slider_sync: bool,
     pub(super) suppress_input_change: bool,
     pub(super) active_tab: usize,
@@ -140,7 +141,7 @@ impl ColorPickerState {
         let state = cx.new(|cx| {
             InputState::new(window, cx).pattern(regex::Regex::new(r"^#[0-9a-fA-F]{0,8}$").unwrap())
         });
-        let hsla_sliders = HslaSliders::new(cx);
+        let hsl_sliders = HslSliders::new(cx);
 
         let mut _subscriptions = vec![
             cx.subscribe_in(
@@ -152,14 +153,14 @@ impl ColorPickerState {
                             return;
                         }
                         let value = state.read(cx).value();
-                        if let Ok(color) = Hsla::parse_hex(value.as_str()) {
+                        if let Ok(color) = Oklch::parse_hex(value.as_str()) {
                             this.hovered_color = Some(color);
                             this.sync_sliders(Some(color), window, cx);
                         }
                     }
                     InputEvent::PressEnter { .. } => {
                         let val = this.state.read(cx).value();
-                        if let Ok(color) = Hsla::parse_hex(&val) {
+                        if let Ok(color) = Oklch::parse_hex(&val) {
                             this.open = false;
                             this.update_value(Some(color), true, window, cx);
                         }
@@ -168,34 +169,34 @@ impl ColorPickerState {
                 },
             ),
             cx.subscribe_in(
-                &hsla_sliders.hue,
+                &hsl_sliders.hue,
                 window,
                 |this, _, _: &SliderEvent, window, cx| {
-                    let color = this.hsla_sliders.read(cx);
+                    let color = this.hsl_sliders.read(cx);
                     this.update_value_from_slider(color, true, window, cx);
                 },
             ),
             cx.subscribe_in(
-                &hsla_sliders.saturation,
+                &hsl_sliders.saturation,
                 window,
                 |this, _, _: &SliderEvent, window, cx| {
-                    let color = this.hsla_sliders.read(cx);
+                    let color = this.hsl_sliders.read(cx);
                     this.update_value_from_slider(color, true, window, cx);
                 },
             ),
             cx.subscribe_in(
-                &hsla_sliders.lightness,
+                &hsl_sliders.lightness,
                 window,
                 |this, _, _: &SliderEvent, window, cx| {
-                    let color = this.hsla_sliders.read(cx);
+                    let color = this.hsl_sliders.read(cx);
                     this.update_value_from_slider(color, true, window, cx);
                 },
             ),
             cx.subscribe_in(
-                &hsla_sliders.alpha,
+                &hsl_sliders.alpha,
                 window,
                 |this, _, _: &SliderEvent, window, cx| {
-                    let color = this.hsla_sliders.read(cx);
+                    let color = this.hsl_sliders.read(cx);
                     this.update_value_from_slider(color, true, window, cx);
                 },
             ),
@@ -206,7 +207,7 @@ impl ColorPickerState {
             value: None,
             hovered_color: None,
             state,
-            hsla_sliders,
+            hsl_sliders,
             needs_slider_sync: false,
             suppress_input_change: false,
             active_tab: 0,
@@ -216,7 +217,7 @@ impl ColorPickerState {
     }
 
     /// Set default color value.
-    pub fn default_value(mut self, value: impl Into<Hsla>) -> Self {
+    pub fn default_value(mut self, value: impl Into<Oklch>) -> Self {
         let value = value.into();
         self.value = Some(value);
         self.hovered_color = Some(value);
@@ -227,7 +228,7 @@ impl ColorPickerState {
     /// Set current color value.
     pub fn set_value(
         &mut self,
-        value: impl Into<Hsla>,
+        value: impl Into<Oklch>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -235,7 +236,7 @@ impl ColorPickerState {
     }
 
     /// Get current color value.
-    pub fn value(&self) -> Option<Hsla> {
+    pub fn value(&self) -> Option<Oklch> {
         self.value
     }
 
@@ -246,7 +247,7 @@ impl ColorPickerState {
 
     pub(super) fn update_value(
         &mut self,
-        value: Option<Hsla>,
+        value: Option<Oklch>,
         emit: bool,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -269,7 +270,7 @@ impl ColorPickerState {
 
     fn update_value_from_slider(
         &mut self,
-        value: Hsla,
+        value: Oklch,
         emit: bool,
         _: &mut Window,
         cx: &mut Context<Self>,
@@ -283,9 +284,9 @@ impl ColorPickerState {
         cx.notify();
     }
 
-    fn sync_sliders(&mut self, color: Option<Hsla>, window: &mut Window, cx: &mut Context<Self>) {
+    fn sync_sliders(&mut self, color: Option<Oklch>, window: &mut Window, cx: &mut Context<Self>) {
         if let Some(color) = color {
-            self.hsla_sliders.update(color, window, cx);
+            self.hsl_sliders.update(color, window, cx);
         }
     }
 }

@@ -1,5 +1,5 @@
 use inazuma::{
-    App, Application, Bounds, Context, CursorStyle, Decorations, HitboxBehavior, Hsla, MouseButton,
+    App, Application, Bounds, Context, CursorStyle, Decorations, HitboxBehavior, MouseButton, Oklch,
     Pixels, Point, ResizeEdge, Size, Window, WindowBackgroundAppearance, WindowBounds,
     WindowDecorations, WindowOptions, black, canvas, div, green, point, prelude::*, px, rgb, size,
     transparent_black, white,
@@ -105,12 +105,7 @@ impl Render for WindowShadow {
                             .when(!tiling.right, |div| div.border_r(border_size))
                             .when(!tiling.is_tiled(), |div| {
                                 div.shadow(vec![inazuma::BoxShadow {
-                                    color: Hsla {
-                                        h: 0.,
-                                        s: 0.,
-                                        l: 0.,
-                                        a: 0.4,
-                                    },
+                                    color: Oklch::black().opacity(0.4),
                                     blur_radius: shadow_size / 2.,
                                     spread_radius: px(0.),
                                     offset: point(px(0.0), px(0.0)),
@@ -145,12 +140,7 @@ impl Render for WindowShadow {
                                         .h(px(100.0))
                                         .bg(green())
                                         .shadow(vec![inazuma::BoxShadow {
-                                            color: Hsla {
-                                                h: 0.,
-                                                s: 0.,
-                                                l: 0.,
-                                                a: 1.0,
-                                            },
+                                            color: Oklch::black(),
                                             blur_radius: px(20.0),
                                             spread_radius: px(0.0),
                                             offset: point(px(0.0), px(0.0)),

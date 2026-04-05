@@ -9,7 +9,7 @@
 
 use inazuma::colors::Colors;
 use inazuma::{
-    App, Application, Bounds, Context, Hsla, MouseButton, MouseDownEvent, MouseMoveEvent,
+    App, Application, Bounds, Context, MouseButton, MouseDownEvent, MouseMoveEvent, Oklch,
     MouseUpEvent, Path, PathBuilder, Pixels, Point, Render, Rgba, Window, WindowBounds,
     WindowOptions, canvas, div, fill, point, prelude::*, px, rgb, size,
 };
@@ -430,7 +430,7 @@ fn section(
     content: impl IntoElement,
     height: Pixels,
 ) -> impl IntoElement {
-    let surface: Hsla = colors.container.into();
+    let surface: Oklch = colors.container.into();
 
     div()
         .flex()

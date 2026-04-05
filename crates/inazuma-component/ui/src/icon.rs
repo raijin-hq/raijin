@@ -1,6 +1,6 @@
 use crate::{ActiveTheme, Sizable, Size};
 use inazuma::{
-    AnyElement, App, AppContext, Context, Entity, Hsla, IntoElement, Radians, Render, RenderOnce,
+    AnyElement, App, AppContext, Context, Entity, IntoElement, Oklch, Radians, Render, RenderOnce,
     SharedString, StyleRefinement, Styled, Svg, Transformation, Window,
     prelude::FluentBuilder as _, svg,
 };
@@ -47,7 +47,7 @@ pub struct Icon {
     base: Svg,
     style: StyleRefinement,
     path: SharedString,
-    text_color: Option<Hsla>,
+    text_color: Option<Oklch>,
     size: Option<Size>,
     rotation: Option<Radians>,
 }
@@ -121,7 +121,7 @@ impl Styled for Icon {
         &mut self.style
     }
 
-    fn text_color(mut self, color: impl Into<Hsla>) -> Self {
+    fn text_color(mut self, color: impl Into<Oklch>) -> Self {
         self.text_color = Some(color.into());
         self
     }
@@ -165,7 +165,7 @@ impl From<Icon> for AnyElement {
 
 impl Render for Icon {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let text_color = self.text_color.unwrap_or_else(|| cx.theme().foreground);
+        let text_color = self.text_color.unwrap_or_else(|| cx.theme().foreground.into());
         let text_size = window.text_style().font_size.to_pixels(window.rem_size());
         let has_base_size = self.style.size.width.is_some() || self.style.size.height.is_some();
 

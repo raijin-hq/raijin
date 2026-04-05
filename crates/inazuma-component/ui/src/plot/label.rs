@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use inazuma::{
-    point, px, App, Bounds, FontWeight, Hsla, Pixels, Point, SharedString, TextAlign, TextRun,
+    point, px, App, Bounds, FontWeight, Oklch, Pixels, Point, SharedString, TextAlign, TextRun,
     Window,
 };
 
@@ -14,14 +14,14 @@ pub const TEXT_HEIGHT: f32 = TEXT_SIZE + TEXT_GAP;
 pub struct Text {
     pub text: SharedString,
     pub origin: Point<Pixels>,
-    pub color: Hsla,
+    pub color: Oklch,
     pub font_size: Pixels,
     pub font_weight: FontWeight,
     pub align: TextAlign,
 }
 
 impl Text {
-    pub fn new<T>(text: impl Into<SharedString>, origin: Point<T>, color: Hsla) -> Self
+    pub fn new<T>(text: impl Into<SharedString>, origin: Point<T>, color: Oklch) -> Self
     where
         T: Default + Clone + Copy + Debug + PartialEq + Into<Pixels>,
     {
@@ -89,7 +89,7 @@ impl PlotLabel {
             let text_run = TextRun {
                 len: text.len(),
                 font: window.text_style().highlight(*font_weight).font(),
-                color: *color,
+                color: (*color).into(),
                 background_color: None,
                 underline: None,
                 strikethrough: None,

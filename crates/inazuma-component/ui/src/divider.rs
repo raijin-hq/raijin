@@ -1,6 +1,6 @@
 use crate::{ActiveTheme, StyledExt};
 use inazuma::{
-    App, Axis, Div, Hsla, IntoElement, ParentElement, PathBuilder, RenderOnce, SharedString,
+    App, Axis, Div, Oklch, IntoElement, ParentElement, PathBuilder, RenderOnce, SharedString,
     StyleRefinement, Styled, Window, canvas, div, point, prelude::FluentBuilder as _, px,
 };
 
@@ -19,7 +19,7 @@ pub struct Divider {
     style: StyleRefinement,
     label: Option<SharedString>,
     axis: Axis,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     line_style: DividerStyle,
 }
 
@@ -65,7 +65,7 @@ impl Divider {
     }
 
     /// Sets the color for the divider line.
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
         self.color = Some(color.into());
         self
     }
@@ -83,11 +83,11 @@ impl Divider {
         })
     }
 
-    fn render_solid(axis: Axis, color: Hsla) -> impl IntoElement {
+    fn render_solid(axis: Axis, color: Oklch) -> impl IntoElement {
         Self::render_base(axis).bg(color)
     }
 
-    fn render_dashed(axis: Axis, color: Hsla) -> impl IntoElement {
+    fn render_dashed(axis: Axis, color: Oklch) -> impl IntoElement {
         Self::render_base(axis).child(
             canvas(
                 move |_, _, _| {},

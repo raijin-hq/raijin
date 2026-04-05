@@ -1,7 +1,7 @@
 use crate::{
     AbsoluteLength, App, BackgroundTag, BorderStyle, Bounds, ContentMask, Corners,
     CornersRefinement, CursorStyle, DefiniteLength, DevicePixels, Edges, EdgesRefinement,
-    GridLocation, Hsla, Length, Pixels, Point, PointRefinement, Size, SizeRefinement, Styled,
+    GridLocation, Oklch, Length, Pixels, Point, PointRefinement, Size, SizeRefinement, Styled,
     Window, point, quad, size,
 };
 use refineable::Refineable;
@@ -273,7 +273,7 @@ pub struct Style {
     pub background: Option<Fill>,
 
     /// Per-side border colors of this element.
-    pub border_colors: Edges<Option<Hsla>>,
+    pub border_colors: Edges<Option<Oklch>>,
 
     /// The border style of this element
     pub border_style: BorderStyle,
@@ -441,7 +441,7 @@ impl Style {
                         .map(|stop| stop.color)
                         .unwrap_or_default(),
                 },
-                None => Hsla::default(),
+                None => Oklch::default(),
             };
             bg_border.a = 0.;
             let transparent_edges = Edges { top: bg_border, right: bg_border, bottom: bg_border, left: bg_border };
@@ -493,12 +493,12 @@ impl Style {
                 bottom: self.border_colors.bottom.unwrap_or_default(),
                 left: self.border_colors.left.unwrap_or_default(),
             };
-            let mut background_hsla = resolved_border_colors.top;
-            background_hsla.a = 0.;
+            let mut background_oklch = resolved_border_colors.top;
+            background_oklch.a = 0.;
             let quad = quad(
                 bounds,
                 corner_radii,
-                background_hsla,
+                background_oklch,
                 border_widths,
                 resolved_border_colors,
                 self.border_style,

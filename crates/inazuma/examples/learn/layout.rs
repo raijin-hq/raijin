@@ -12,13 +12,14 @@ mod example_prelude;
 use example_prelude::init_example;
 use inazuma::colors::Colors;
 use inazuma::{
-    App, Application, Bounds, Context, Div, Hsla, Render, Rgba, Window, WindowBounds,
+    App, Application, Bounds, Context, Div, Oklch, Render, Rgba, Window, WindowBounds,
     WindowOptions, div, prelude::*, px, size,
 };
 
 // Helper: Colored block for visualization
 
-fn block(label: &'static str, color: Hsla, text_color: Rgba) -> Div {
+fn block(label: &'static str, color: impl Into<Oklch>, text_color: Rgba) -> Div {
+    let color: Oklch = color.into();
     div()
         .flex()
         .items_center()
@@ -464,7 +465,7 @@ impl Render for LayoutExample {
 }
 
 fn section(colors: &Colors, title: &'static str, content: impl IntoElement) -> impl IntoElement {
-    let surface: Hsla = colors.container.into();
+    let surface: Oklch = colors.container.into();
 
     div()
         .flex()

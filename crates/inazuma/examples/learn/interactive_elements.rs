@@ -13,7 +13,7 @@ mod example_prelude;
 use example_prelude::init_example;
 use inazuma::colors::Colors;
 use inazuma::{
-    App, Application, Bounds, ClickEvent, Context, Entity, Half, Hsla, IntoElement, MouseButton,
+    App, Application, Bounds, ClickEvent, Context, Entity, Half, IntoElement, MouseButton, Oklch,
     MouseMoveEvent, Pixels, Point, Render, Window, WindowBounds, WindowOptions, div, prelude::*,
     px, rgb, size,
 };
@@ -339,12 +339,12 @@ impl Render for MouseEventsDemo {
 #[derive(Clone, Copy)]
 struct DragData {
     index: usize,
-    color: Hsla,
+    color: Oklch,
     position: Point<Pixels>,
 }
 
 impl DragData {
-    fn new(index: usize, color: Hsla) -> Self {
+    fn new(index: usize, color: Oklch) -> Self {
         Self {
             index,
             color,
@@ -437,7 +437,7 @@ impl Render for DragDropDemo {
                             .text_xs()
                             .cursor_grab()
                             .hover(move |style| {
-                                let c: Hsla = color.into();
+                                let c: Oklch = color.into();
                                 style.bg(c.opacity(0.1))
                             })
                             .child(format!("Item {}", index + 1))

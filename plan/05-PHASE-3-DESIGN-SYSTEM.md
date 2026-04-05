@@ -663,29 +663,83 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 
 ## 3.1 — Farb-System & Theming (Tasks)
 
-- [ ] `Oklch` Struct in `crates/inazuma/src/color.rs` definieren
-- [ ] Konvertierungen: `Oklch ↔ Oklab ↔ Linear sRGB ↔ Rgba`
-- [ ] Konvertierungen: `Oklch ↔ Hsla` (über Rgba)
-- [ ] Multi-Format Color Parser: `#hex`, `rgb()`, `oklch()`, `hsl()`
-- [ ] `oklch()` und `oklcha()` Constructor-Funktionen
-- [ ] Blending & Interpolation direkt in Oklch
-- [ ] `ThemeColors` Struct mit allen semantischen Tokens
-- [ ] `StatusColors`, `AccentColors`, `SyntaxTheme`
-- [ ] `ColorScale` (12-Step, OKLCH-basiert)
-- [ ] `Theme`, `ThemeFamily`, `ThemeStyles` Structs
-- [ ] `GlobalTheme` via `inazuma::Global` + `ActiveTheme` Trait
-- [ ] `ThemeColorsRefinement` für partielle Overrides
-- [ ] `ThemeRegistry` mit TOML-Loader
-- [ ] Theme-Lade-Pipeline: TOML → Parse → Registry → Global
-- [ ] Raijin Dark als Default-Theme (aktuell hardcoded: `#121212` bg, `#14F195` accent, `#f1f1f1` fg)
-- [ ] Alle hardcodierten Farben in `terminal_element.rs` durch `cx.theme()` ersetzen
-- [ ] Theme Library: Min. 5 Themes (Dark, Light, Dracula, Nord, Gruvbox)
-- [ ] Accent-Color konfigurierbar in `~/.config/raijin/config.toml`
-- [ ] Tab-Farben pro Tab konfigurierbar (6 Farben wie Warp)
-- [ ] Transparenter Background mit Opacity-Slider
-- [ ] Hot-Reload: Theme-Dateien überwachen, bei Änderung neu laden
-- [ ] Zed-Theme-Importer: `import_zed_theme(json) -> Theme` Konverter im `ThemeRegistry`
-- [ ] Token-Kompatibilität: Alle ~120 Zed `ThemeStyleContent` Tokens unterstützen (identische Namen)
+### Erledigt (2026-04-05)
+
+- [x] `Oklch` Struct in `crates/inazuma/src/color/types.rs` — Hsla komplett entfernt (814 Stellen, 96 Files)
+- [x] Konvertierungen: Oklch ↔ Rgba (via Oklab intern), culori-Referenz-Koeffizienten
+- [x] `oklch()` und `oklcha()` Constructor-Funktionen + `hsla()` gibt jetzt Oklch zurück
+- [x] Blending & Interpolation direkt in Oklch (shortest-arc Hue)
+- [x] `ThemeColors` Struct mit 278 semantischen Tokens (Zed-kompatibel)
+- [x] `StatusColors`, `AccentColors`, `SyntaxTheme`, `ColorScale`, `PlayerColors`
+- [x] `Theme`, `ThemeFamily`, `ThemeStyles`, `ThemeColorsRefinement`
+- [x] `GlobalTheme` via `inazuma::Global` + `ActiveTheme` Trait
+- [x] `ThemeRegistry` (HashMap-basiert)
+- [x] Raijin Dark Fallback-Theme (hardcoded: #121212 bg, #00BFFF accent, #f1f1f1 fg)
+- [x] 6 Bundled Theme TOML-Dateien: Raijin Dark, Dracula, Nord, Gruvbox, One Dark, Catppuccin
+- [x] Zed-Theme-Importer: `import_zed_theme(json)` + VS Code Importer
+- [x] Token-Kompatibilität: 278 Zed-kompatible ThemeColors Tokens
+- [x] GPU-Shaders (Metal/WGSL/HLSL): `oklch_to_rgba()` ersetzt `hsla_to_rgba()`
+- [x] GPU-Primitive Structs: `Edges<Oklch>`, `color: Oklch`
+- [x] Wide Gamut P3: sRGB auf CAMetalLayer, Gamut-Mapping (clamp_to_srgb/p3)
+- [x] `WindowColorspace` Enum (Srgb/DisplayP3/Native) + Config
+- [x] 5 Theme-Crates: raijin-theme, raijin-theme-settings, raijin-theme-importer, raijin-theme-extension, raijin-theme-selector
+- [x] Alle hardcodierten Farben in raijin-app durch `cx.theme()` ersetzt
+
+### KRITISCH — Altes Theme-System komplett entfernen
+
+**Problem:** Zwei Theme-Systeme laufen parallel — das alte `RaijinTheme` (raijin-settings) und das neue `GlobalTheme` (raijin-theme). Die App liest Hintergrundbild aus dem alten, Farben aus dem neuen System. Das muss EIN System werden.
+
+**Saubere Trennung:**
+
+| Bereich | Zuständig für | Crate |
+|---------|--------------|-------|
+| **Theme** | ALLES Visuelle: Farben, ANSI-Palette, terminal_accent, background_image, Syntax | `raijin-theme` |
+| **Theme-Settings** | Welches Theme aktiv, Overrides, Light/Dark Switch | `raijin-theme-settings` |
+| **App-Settings** | Font, Scrollback, Cursor, Working-Dir, Input-Mode — NICHTS Visuelles | `raijin-settings` |
+
+**Was aus `raijin-settings` raus muss:**
+- [ ] `RaijinTheme` struct komplett löschen (accent, background, foreground, error, terminal_colors)
+- [ ] `RaijinTheme::load()` löschen — Theme-Loading macht `raijin-theme-settings`
+- [ ] `ThemeBackgroundImage` struct → nach `raijin-theme` verschieben
+- [ ] `ThemeTerminalColors`, `ThemeAnsiColors` → ersetzt durch ThemeColors.terminal_ansi_*
+- [ ] `background_opacity` aus AppearanceConfig → weg
+- [ ] `block_opacity` → weg (Blocks sind transparent, wie Warp)
+- [ ] `ResolvedTheme` → weg (bereits gelöscht)
+- [ ] Was in raijin-settings BLEIBT: Font, Scrollback, Cursor, Working-Dir, Input-Mode, symbol_map
+
+**Was in `raijin-theme` rein muss:**
+- [ ] `background_image` (path + opacity 0-100) als Feld in `ThemeStyles`
+- [ ] `fallback.rs` LÖSCHEN — kein hardcoded Fallback, Default-Theme ist TOML
+- [ ] Das "Raijin" Theme ist eine gebundelte TOML-Datei mit `default = true` Markierung
+
+**Das Default-Theme "Raijin":**
+- [ ] Vollständiges TOML mit allen Tokens + ANSI-Palette + terminal_accent (#00BFFF) + background_image
+- [ ] Markiert als Default-Theme
+- [ ] Wird mit der App ausgeliefert (gebundelt in `crates/raijin-theme/themes/raijin.toml`)
+- [ ] KEIN hardcoded Fallback in Rust — wenn Theme-Files fehlen, Error statt stilles Fallback
+
+### Offen — TOML-Loader + Theme-Loading Pipeline
+
+- [ ] **TOML-Parser** in `raijin-theme-settings::init()`: Liest `crates/raijin-theme/themes/*.toml` (Bundled) + `~/.raijin/themes/*.toml` (User) → ThemeRegistry
+- [ ] **Theme-Format**: Neues Format mit 170+ Tokens. Altes Format (accent/background/foreground) mit Compat-Layer automatisch konvertieren
+- [ ] **Theme-Persistenz**: Gewähltes Theme in `~/.raijin/config.toml` speichern + beim Start laden
+- [ ] **Hot-Reload**: Theme-Dateien watchen, bei Änderung neu laden
+- [ ] **workspace.rs aufräumen**: Hintergrundbild aus `GlobalTheme` lesen statt aus altem `RaijinTheme`
+
+### Offen — Rendering-Modell (wie Warp)
+
+- [ ] **Blocks transparent**: Kein eigener Background — nur Text, Linien, farbiger Rand
+- [ ] **Hintergrundbild-Layer**: Fenster-Hintergrundfarbe (opak) → Bild darüber (mit `background_image.opacity`)
+- [ ] **`terminal_accent`**: Selection (@8%), Hover (@15%), Cursor, aktive Ränder — Opacity hardcoded, nur Farbe einstellbar
+- [ ] **Window Opacity**: Separates Feature (NSWindow), NICHT Theme — für später
+
+### Offen — App Chrome (wie Zed)
+
+- [ ] **Command Palette**: `Shift+Cmd+P` → Modal mit allen Actions (Referenz: `.reference/zed/crates/command_palette/`)
+- [ ] **Theme Picker**: Via Command Palette "theme" eingeben → ThemeSelector Modal
+- [ ] **User Menu**: Dropdown oben rechts mit Settings, Themes..., Extensions
+- [ ] **Extensions Page**: `Cmd+Shift+X` → Tab/Panel mit Theme-Browser
+- [ ] Tab-Farben pro Tab (6 Farben wie Warp)
 
 ---
 
@@ -725,7 +779,7 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 | **Palette-Generierung** | Manuelle Korrekturen pro Hue nötig | L linear skalieren bei konstantem C/H |
 | **Gamut-Mapping (P3)** | Nicht unterstützt | Oklch Chroma-Clipping für sRGB/P3 |
 | **Contrast-Checks** | Ungenau (HSLA L ≠ wahrgenommene Helligkeit) | L-Differenz ≈ tatsächlicher Kontrast |
-| **Framework-Primitiv** | `Hsla` in GPUI | `Oklch` in Inazuma (+ Hsla Compat) |
+| **Framework-Primitiv** | `Hsla` in GPUI | `Oklch` in Inazuma (Hsla komplett entfernt) |
 | **Struct Felder** | ~100 ThemeColors Felder | ~100 ThemeColors + Raijin-spezifische (Blocks, Input) |
 | **Global Access** | `cx.theme()` via Global Trait | Identisch: `cx.theme()` via `inazuma::Global` |
 | **Refinement** | `ThemeColorsRefinement` (alle Optional) | Identisch: partielle Overrides |
@@ -735,19 +789,24 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 
 ## Abhängigkeiten auf andere Pläne
 
-- **Plan 10 — OKLCH-Migration:** `Oklch` Struct in Inazuma's `color.rs` ist die Grundlage für das gesamte Token-System
-- **Plan 10 — Wide Gamut P3:** Die Inazuma Metal Renderer Änderungen (CAMetalLayer, Shader, Pixel-Format) leben dort. `raijin-ui` nutzt P3 für Gamut-Mapping: Theme-Autoren können OKLCH-Farben mit hohem Chroma definieren die den P3-Gamut ausnutzen, mit automatischem Fallback auf sRGB
-- **Plan 10 — objc2 Migration:** P3 Support braucht ggf. objc2 Bindings für `CGColorSpace`. Kann parallel laufen
+- ~~**Plan 10 — OKLCH-Migration:**~~ ✅ Erledigt (2026-04-05) — Oklch als einziger Farbtyp, Hsla eliminiert
+- ~~**Plan 10 — Wide Gamut P3:**~~ ✅ Erledigt — sRGB auf CAMetalLayer, Gamut-Mapping
+- ~~**Plan 10 — objc2 Migration:**~~ ✅ Erledigt — 183/228 msg_send! zu typed methods
 
 ---
 
 ## Milestone
 
-✅ OKLCH als interner Farbraum in Inazuma
-✅ Semantische Design-Tokens statt hardcodierter Hex-Werte
-✅ Multi-Format Color Input (Hex, RGB, OKLCH, HSL)
-✅ Wide Gamut Display P3 via OKLCH Gamut-Mapping (Implementierung in Plan 10)
-✅ App sieht visuell auf Warp-Niveau aus
-✅ Mindestens 5 Themes verfügbar
-✅ Animationen fühlen sich smooth und polished an
-✅ Perceptually korrekte Farb-Interpolation überall
+✅ OKLCH als einziger interner Farbraum (Hsla komplett entfernt)
+✅ 278 semantische Design-Tokens (ThemeColors)
+✅ Wide Gamut Display P3 via OKLCH Gamut-Mapping
+✅ 6 Bundled Themes verfügbar (TOML)
+✅ Perceptually korrekte Farb-Interpolation (Oklch Blending)
+✅ GPU-Shaders auf Oklch migriert (Metal + WGSL + HLSL)
+✅ Zed + VS Code Theme-Importer
+⬜ TOML-Themes tatsächlich laden (Loader nicht verdrahtet)
+⬜ Theme-Switching zur Laufzeit (Command Palette + Modal)
+⬜ User Menu mit Settings/Themes/Extensions
+⬜ Extensions Page für Theme-Browser
+⬜ App sieht visuell auf Warp-Niveau aus
+⬜ Animationen fühlen sich smooth und polished an

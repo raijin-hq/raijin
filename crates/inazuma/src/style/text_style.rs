@@ -1,6 +1,6 @@
 use crate::{
-    AbsoluteLength, DefiniteLength, Font, FontFallbacks, FontFeatures, FontStyle, FontWeight, Hsla,
-    Pixels, SharedString, TextRun, black, phi, rems,
+    AbsoluteLength, DefiniteLength, Font, FontFallbacks, FontFeatures, FontStyle, FontWeight,
+    Oklch, Pixels, SharedString, TextRun, phi, rems,
 };
 use refineable::Refineable;
 use schemars::JsonSchema;
@@ -57,7 +57,7 @@ pub enum TextAlign {
 #[refineable(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct TextStyle {
     /// The color of the text
-    pub color: Hsla,
+    pub color: Oklch,
 
     /// The font family to use
     pub font_family: SharedString,
@@ -81,7 +81,7 @@ pub struct TextStyle {
     pub font_style: FontStyle,
 
     /// The background color of the text
-    pub background_color: Option<Hsla>,
+    pub background_color: Option<Oklch>,
 
     /// The underline style of the text
     pub underline: Option<UnderlineStyle>,
@@ -108,7 +108,7 @@ pub type TextStyleRefinementRefinement = TextStyleRefinement;
 impl Default for TextStyle {
     fn default() -> Self {
         TextStyle {
-            color: black(),
+            color: Oklch::black(),
             font_family: ".SystemUIFont".into(),
             font_features: FontFeatures::default(),
             font_fallbacks: None,
@@ -205,7 +205,7 @@ pub struct UnderlineStyle {
     pub thickness: Pixels,
 
     /// The color of the underline.
-    pub color: Option<Hsla>,
+    pub color: Option<Oklch>,
 
     /// Whether the underline should be wavy, like in a spell checker.
     pub wavy: bool,
@@ -220,7 +220,7 @@ pub struct StrikethroughStyle {
     pub thickness: Pixels,
 
     /// The color of the strikethrough.
-    pub color: Option<Hsla>,
+    pub color: Option<Oklch>,
 }
 
 use super::HighlightStyle;

@@ -57,7 +57,7 @@ mod macos {
             "Size".into(),
             "Pixels".into(),
             "PointF".into(),
-            "Hsla".into(),
+            "Oklch".into(),
             "ContentMask".into(),
             "Uniforms".into(),
             "AtlasTile".into(),

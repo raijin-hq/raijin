@@ -1,8 +1,8 @@
 use inazuma::{
-    App, AppContext, Corner, Div, ElementId, Entity, FocusHandle, Focusable, Hsla, IntoElement,
-    InteractiveElement as _, ParentElement, RenderOnce, SharedString, Stateful,
+    App, AppContext, Corner, Div, ElementId, Entity, FocusHandle, Focusable, IntoElement,
+    InteractiveElement as _, Oklch, ParentElement, RenderOnce, SharedString, Stateful,
     StatefulInteractiveElement as _, StyleRefinement, Styled, TextAlign, Window, div, hsla,
-    linear_color_stop, linear_gradient, prelude::FluentBuilder as _,
+    linear_color_stop, linear_gradient, oklch_to_hsla, prelude::FluentBuilder as _,
 };
 use rust_i18n::t;
 
@@ -26,7 +26,7 @@ pub struct ColorPicker {
     id: ElementId,
     style: StyleRefinement,
     state: Entity<ColorPickerState>,
-    featured_colors: Option<Vec<Hsla>>,
+    featured_colors: Option<Vec<Oklch>>,
     label: Option<SharedString>,
     icon: Option<Icon>,
     size: Size,
@@ -52,7 +52,7 @@ impl ColorPicker {
     ///
     /// This is used to display a set of colors that the user can quickly select from,
     /// for example provided user's last used colors.
-    pub fn featured_colors(mut self, colors: Vec<Hsla>) -> Self {
+    pub fn featured_colors(mut self, colors: Vec<Oklch>) -> Self {
         self.featured_colors = Some(colors);
         self
     }
@@ -84,14 +84,15 @@ impl ColorPicker {
 
     fn render_item(
         &self,
-        color: Hsla,
+        color: Oklch,
         clickable: bool,
         window: &mut Window,
         _: &mut App,
     ) -> Stateful<Div> {
         let state = self.state.clone();
+        let hex = color.to_hex();
         div()
-            .id(SharedString::from(format!("color-{}", color.to_hex())))
+            .id(SharedString::from(format!("color-{}", &hex)))
             .h_5()
             .w_5()
             .bg(color)
@@ -137,7 +138,7 @@ impl ColorPicker {
             let slider_color = state
                 .hovered_color
                 .or(state.value)
-                .unwrap_or_else(|| hsla(0., 0., 0., 1.));
+                .unwrap_or(Oklch::black());
             (slider_color, state.hovered_color)
         };
 
@@ -222,8 +223,9 @@ impl ColorPicker {
             )
     }
 
-    fn render_slider_tab_panel(&self, slider_color: Hsla, cx: &mut App) -> impl IntoElement {
-        let hsla_sliders = self.state.read(cx).hsla_sliders.clone();
+    fn render_slider_tab_panel(&self, slider_color: Oklch, cx: &mut App) -> impl IntoElement {
+        let hsl_sliders = self.state.read(cx).hsl_sliders.clone();
+        let (sc_h, sc_s, sc_l, sc_a) = oklch_to_hsla(slider_color);
         let steps = 96usize;
         let hue_colors = (0..steps)
             .map(|ix| {
@@ -231,16 +233,16 @@ impl ColorPicker {
                 hsla(h, 1.0, 0.5, 1.0)
             })
             .collect::<Vec<_>>();
-        let saturation_start = hsla(slider_color.h, 0.0, slider_color.l, 1.0);
-        let saturation_end = hsla(slider_color.h, 1.0, slider_color.l, 1.0);
+        let saturation_start = hsla(sc_h, 0.0, sc_l, 1.0);
+        let saturation_end = hsla(sc_h, 1.0, sc_l, 1.0);
         let lightness_colors = (0..steps)
             .map(|ix| {
                 let l = ix as f32 / (steps.saturating_sub(1)) as f32;
-                hsla(slider_color.h, 1.0, l, 1.0)
+                hsla(sc_h, 1.0, l, 1.0)
             })
             .collect::<Vec<_>>();
-        let alpha_start = hsla(slider_color.h, slider_color.s, slider_color.l, 0.0);
-        let alpha_end = hsla(slider_color.h, slider_color.s, slider_color.l, 1.0);
+        let alpha_start = hsla(sc_h, sc_s, sc_l, 0.0);
+        let alpha_end = hsla(sc_h, sc_s, sc_l, 1.0);
 
         let label_color = cx.theme().foreground.opacity(0.7);
 
@@ -266,7 +268,7 @@ impl ColorPicker {
                             .h_8()
                             .child(self.render_slider_track(hue_colors, cx))
                             .child(
-                                Slider::new(&hsla_sliders.hue)
+                                Slider::new(&hsl_sliders.hue)
                                     .flex_1()
                                     .bg(cx.theme().transparent),
                             ),
@@ -277,7 +279,7 @@ impl ColorPicker {
                             .text_xs()
                             .text_color(label_color)
                             .text_align(TextAlign::Right)
-                            .child(format!("{:.0}", slider_color.h * 360.)),
+                            .child(format!("{:.0}", sc_h * 360.)),
                     ),
             )
             .child(
@@ -304,7 +306,7 @@ impl ColorPicker {
                                 cx,
                             ))
                             .child(
-                                Slider::new(&hsla_sliders.saturation)
+                                Slider::new(&hsl_sliders.saturation)
                                     .flex_1()
                                     .bg(cx.theme().transparent),
                             ),
@@ -315,7 +317,7 @@ impl ColorPicker {
                             .text_xs()
                             .text_color(label_color)
                             .text_align(TextAlign::Right)
-                            .child(format!("{:.0}", slider_color.s * 100.)),
+                            .child(format!("{:.0}", sc_s * 100.)),
                     ),
             )
             .child(
@@ -338,7 +340,7 @@ impl ColorPicker {
                             .h_8()
                             .child(self.render_slider_track(lightness_colors, cx))
                             .child(
-                                Slider::new(&hsla_sliders.lightness)
+                                Slider::new(&hsl_sliders.lightness)
                                     .flex_1()
                                     .bg(cx.theme().transparent),
                             ),
@@ -349,7 +351,7 @@ impl ColorPicker {
                             .text_xs()
                             .text_color(label_color)
                             .text_align(TextAlign::Right)
-                            .child(format!("{:.0}", slider_color.l * 100.)),
+                            .child(format!("{:.0}", sc_l * 100.)),
                     ),
             )
             .child(
@@ -372,7 +374,7 @@ impl ColorPicker {
                             .h_8()
                             .child(self.render_slider_track_gradient(alpha_start, alpha_end, cx))
                             .child(
-                                Slider::new(&hsla_sliders.alpha)
+                                Slider::new(&hsl_sliders.alpha)
                                     .flex_1()
                                     .bg(cx.theme().transparent),
                             ),
@@ -383,12 +385,12 @@ impl ColorPicker {
                             .text_xs()
                             .text_color(label_color)
                             .text_align(TextAlign::Right)
-                            .child(format!("{:.0}", slider_color.a * 100.)),
+                            .child(format!("{:.0}", sc_a * 100.)),
                     ),
             )
     }
 
-    fn render_slider_track(&self, colors: Vec<Hsla>, _: &App) -> impl IntoElement {
+    fn render_slider_track(&self, colors: Vec<Oklch>, _: &App) -> impl IntoElement {
         h_flex()
             .absolute()
             .left_0()
@@ -402,7 +404,7 @@ impl ColorPicker {
             )
     }
 
-    fn render_slider_track_gradient(&self, start: Hsla, end: Hsla, _: &App) -> impl IntoElement {
+    fn render_slider_track_gradient(&self, start: Oklch, end: Oklch, _: &App) -> impl IntoElement {
         div()
             .absolute()
             .left_0()
@@ -486,7 +488,7 @@ struct ColorPickerButton {
     id: ElementId,
     selected: bool,
     icon: Option<Icon>,
-    value: Option<Hsla>,
+    value: Option<Oklch>,
     size: Size,
     label: Option<SharedString>,
     tooltip: Option<SharedString>,

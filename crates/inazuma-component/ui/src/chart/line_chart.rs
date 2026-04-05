@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use inazuma::{App, Bounds, Hsla, Pixels, SharedString, Window, px};
+use inazuma::{App, Bounds, Oklch, Pixels, SharedString, Window, px};
 use inazuma_component_macros::IntoPlot;
 use num_traits::{Num, ToPrimitive};
 
@@ -25,7 +25,7 @@ where
     data: Vec<T>,
     x: Option<Rc<dyn Fn(&T) -> X>>,
     y: Option<Rc<dyn Fn(&T) -> Y>>,
-    stroke: Option<Hsla>,
+    stroke: Option<Oklch>,
     stroke_style: StrokeStyle,
     dot: bool,
     tick_margin: usize,
@@ -65,7 +65,7 @@ where
         self
     }
 
-    pub fn stroke(mut self, stroke: impl Into<Hsla>) -> Self {
+    pub fn stroke(mut self, stroke: impl Into<Oklch>) -> Self {
         self.stroke = Some(stroke.into());
         self
     }

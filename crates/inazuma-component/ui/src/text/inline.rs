@@ -83,7 +83,7 @@ impl Inline {
             bounds,
             background: cx.theme().blue.alpha(0.01).into(),
             corner_radii: inazuma::Corners::default(),
-            border_colors: inazuma::Edges { top: inazuma::transparent_black(), right: inazuma::transparent_black(), bottom: inazuma::transparent_black(), left: inazuma::transparent_black() },
+            border_colors: inazuma::Edges { top: inazuma::Oklch::transparent_black(), right: inazuma::Oklch::transparent_black(), bottom: inazuma::Oklch::transparent_black(), left: inazuma::Oklch::transparent_black() },
             border_style: BorderStyle::default(),
             border_widths: inazuma::Edges::all(px(0.)),
         });

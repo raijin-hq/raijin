@@ -2,7 +2,7 @@ use std::{path::Path, sync::Arc, time::Duration};
 
 use inazuma::{
     Animation, AnimationExt, App, Application, Asset, AssetLogger, AssetSource, Bounds, Context,
-    Hsla, ImageAssetLoader, ImageCacheError, ImgResourceLoader, LOADING_DELAY, Length, RenderImage,
+    ImageAssetLoader, ImageCacheError, ImgResourceLoader, LOADING_DELAY, Length, Oklch, RenderImage,
     Resource, SharedString, Window, WindowBounds, WindowOptions, black, div, img, prelude::*,
     pulsating_between, px, red, size,
 };
@@ -80,7 +80,7 @@ impl ImageLoadingExample {
     }
 
     fn fallback_element() -> impl IntoElement {
-        let fallback_color: Hsla = black().opacity(0.5);
+        let fallback_color: Oklch = Oklch::black().opacity(0.5);
 
         div().size_full().flex_none().p_0p5().child(
             div()

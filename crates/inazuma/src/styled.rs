@@ -1,7 +1,7 @@
 use crate::{
     self as inazuma, AbsoluteLength, AlignContent, AlignItems, AlignSelf, BorderStyle, CursorStyle,
     DefiniteLength, Display, Fill, FlexDirection, FlexWrap, Font, FontFeatures, FontStyle,
-    FontWeight, GridPlacement, GridTemplate, Hsla, JustifyContent, Length, SharedString,
+    FontWeight, GridPlacement, GridTemplate, Oklch, JustifyContent, Length, SharedString,
     StrikethroughStyle, StyleRefinement, TemplateColumnMinSize, TextAlign, TextOverflow,
     TextStyleRefinement, UnderlineStyle, WhiteSpace, px, relative, rems,
 };
@@ -472,7 +472,7 @@ pub trait Styled: Sized {
     /// Sets the text color of this element.
     ///
     /// This value cascades to its child elements.
-    fn text_color(mut self, color: impl Into<Hsla>) -> Self {
+    fn text_color(mut self, color: impl Into<Oklch>) -> Self {
         self.text_style().color = Some(color.into());
         self
     }
@@ -488,7 +488,7 @@ pub trait Styled: Sized {
     /// Sets the background color of this element.
     ///
     /// This value cascades to its child elements.
-    fn text_bg(mut self, bg: impl Into<Hsla>) -> Self {
+    fn text_bg(mut self, bg: impl Into<Oklch>) -> Self {
         self.text_style().background_color = Some(bg.into());
         self
     }
@@ -595,7 +595,7 @@ pub trait Styled: Sized {
     }
 
     /// Sets the color for the underline on this element
-    fn text_decoration_color(mut self, color: impl Into<Hsla>) -> Self {
+    fn text_decoration_color(mut self, color: impl Into<Oklch>) -> Self {
         let style = self.text_style();
         let underline = style.underline.get_or_insert_with(Default::default);
         underline.color = Some(color.into());

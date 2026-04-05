@@ -14,8 +14,9 @@ inazuma-component = { workspace = true }
 raijin-terminal = { workspace = true }
 raijin-shell = { workspace = true }
 raijin-settings = { workspace = true }
+raijin-theme = { workspace = true }
+raijin-theme-settings = { workspace = true }
 raijin-completions = { path = "../raijin-completions" }
-raijin-ui = { workspace = true }
 anyhow = { workspace = true }
 log = { workspace = true }
 env_logger = "0.11"

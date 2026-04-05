@@ -119,33 +119,29 @@ impl Serialize for Rgba {
     }
 }
 
-impl From<Hsla> for Rgba {
-    fn from(color: Hsla) -> Self {
-        let h = color.h;
-        let s = color.s;
-        let l = color.l;
+/// Convert HSL values (h, s, l in 0..1) + alpha to an Rgba color.
+/// Used internally by the `hsla()` convenience function.
+fn hsl_to_rgba(h: f32, s: f32, l: f32, a: f32) -> Rgba {
+    let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
+    let x = c * (1.0 - ((h * 6.0) % 2.0 - 1.0).abs());
+    let m = l - c / 2.0;
+    let cm = c + m;
+    let xm = x + m;
 
-        let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
-        let x = c * (1.0 - ((h * 6.0) % 2.0 - 1.0).abs());
-        let m = l - c / 2.0;
-        let cm = c + m;
-        let xm = x + m;
+    let (r, g, b) = match (h * 6.0).floor() as i32 {
+        0 | 6 => (cm, xm, m),
+        1 => (xm, cm, m),
+        2 => (m, cm, xm),
+        3 => (m, xm, cm),
+        4 => (xm, m, cm),
+        _ => (cm, m, xm),
+    };
 
-        let (r, g, b) = match (h * 6.0).floor() as i32 {
-            0 | 6 => (cm, xm, m),
-            1 => (xm, cm, m),
-            2 => (m, cm, xm),
-            3 => (m, xm, cm),
-            4 => (xm, m, cm),
-            _ => (cm, m, xm),
-        };
-
-        Rgba {
-            r: r.clamp(0., 1.),
-            g: g.clamp(0., 1.),
-            b: b.clamp(0., 1.),
-            a: color.a,
-        }
+    Rgba {
+        r: r.clamp(0., 1.),
+        g: g.clamp(0., 1.),
+        b: b.clamp(0., 1.),
+        a,
     }
 }
 
@@ -256,365 +252,156 @@ impl TryFrom<&'_ str> for Rgba {
     }
 }
 
-/// An HSLA color
+/// An OKLCH color — Inazuma's primary perceptually uniform color type.
+///
+/// OKLCH is the polar form of Oklab: L = perceived lightness, C = chroma (colorfulness),
+/// H = hue angle, A = alpha. It provides perceptually uniform lightness and hue, making it
+/// ideal for palette generation, contrast checks, and color blending.
+///
+/// User-facing input remains hex (#rrggbb). OKLCH is the internal representation.
 #[derive(Default, Copy, Clone, Debug)]
 #[repr(C)]
-pub struct Hsla {
-    /// Hue, in a range from 0 to 1
-    pub h: f32,
-
-    /// Saturation, in a range from 0 to 1
-    pub s: f32,
-
-    /// Lightness, in a range from 0 to 1
+pub struct Oklch {
+    /// Perceived lightness, range 0.0 (black) to 1.0 (white)
     pub l: f32,
-
-    /// Alpha, in a range from 0 to 1
+    /// Chroma (colorfulness), range 0.0 (gray) to ~0.4 (most vivid)
+    pub c: f32,
+    /// Hue angle in degrees, range 0.0 to 360.0
+    pub h: f32,
+    /// Alpha, range 0.0 (transparent) to 1.0 (opaque)
     pub a: f32,
 }
 
-impl PartialEq for Hsla {
-    fn eq(&self, other: &Self) -> bool {
-        self.h
-            .total_cmp(&other.h)
-            .then(self.s.total_cmp(&other.s))
-            .then(self.l.total_cmp(&other.l).then(self.a.total_cmp(&other.a)))
-            .is_eq()
+// --- sRGB gamma encode/decode (culori reference) ---
+
+/// sRGB → Linear RGB (gamma decode)
+fn srgb_to_linear(c: f32) -> f32 {
+    let abs = c.abs();
+    if abs <= 0.04045 {
+        c / 12.92
+    } else {
+        c.signum() * ((abs + 0.055) / 1.055).powf(2.4)
     }
 }
 
-impl PartialOrd for Hsla {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
+/// Linear RGB → sRGB (gamma encode)
+fn linear_to_srgb(c: f32) -> f32 {
+    let abs = c.abs();
+    if abs > 0.0031308 {
+        c.signum() * (1.055 * abs.powf(1.0 / 2.4) - 0.055)
+    } else {
+        c * 12.92
     }
 }
 
-impl Ord for Hsla {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.h
-            .total_cmp(&other.h)
-            .then(self.s.total_cmp(&other.s))
-            .then(self.l.total_cmp(&other.l).then(self.a.total_cmp(&other.a)))
-    }
-}
-
-impl Eq for Hsla {}
-
-impl Hash for Hsla {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_u32(u32::from_be_bytes(self.h.to_be_bytes()));
-        state.write_u32(u32::from_be_bytes(self.s.to_be_bytes()));
-        state.write_u32(u32::from_be_bytes(self.l.to_be_bytes()));
-        state.write_u32(u32::from_be_bytes(self.a.to_be_bytes()));
-    }
-}
-
-impl Display for Hsla {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "hsla({:.2}, {:.2}%, {:.2}%, {:.2})",
-            self.h * 360.,
-            self.s * 100.,
-            self.l * 100.,
-            self.a
-        )
-    }
-}
-
-/// Construct an [`Hsla`] object from plain values
-pub fn hsla(h: f32, s: f32, l: f32, a: f32) -> Hsla {
-    Hsla {
-        h: h.clamp(0., 1.),
-        s: s.clamp(0., 1.),
-        l: l.clamp(0., 1.),
-        a: a.clamp(0., 1.),
-    }
-}
-
-/// Pure black in [`Hsla`]
-pub const fn black() -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 0.,
-        l: 0.,
-        a: 1.,
-    }
-}
-
-/// Transparent black in [`Hsla`]
-pub const fn transparent_black() -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 0.,
-        l: 0.,
-        a: 0.,
-    }
-}
-
-/// Transparent white in [`Hsla`]
-pub const fn transparent_white() -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 0.,
-        l: 1.,
-        a: 0.,
-    }
-}
-
-/// Opaque grey in [`Hsla`], values will be clamped to the range [0, 1]
-pub fn opaque_grey(lightness: f32, opacity: f32) -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 0.,
-        l: lightness.clamp(0., 1.),
-        a: opacity.clamp(0., 1.),
-    }
-}
-
-/// Pure white in [`Hsla`]
-pub const fn white() -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 0.,
-        l: 1.,
-        a: 1.,
-    }
-}
-
-/// The color red in [`Hsla`]
-pub const fn red() -> Hsla {
-    Hsla {
-        h: 0.,
-        s: 1.,
-        l: 0.5,
-        a: 1.,
-    }
-}
-
-/// The color blue in [`Hsla`]
-pub const fn blue() -> Hsla {
-    Hsla {
-        h: 0.6666666667,
-        s: 1.,
-        l: 0.5,
-        a: 1.,
-    }
-}
-
-/// The color green in [`Hsla`]
-pub const fn green() -> Hsla {
-    Hsla {
-        h: 0.3333333333,
-        s: 1.,
-        l: 0.25,
-        a: 1.,
-    }
-}
-
-/// The color yellow in [`Hsla`]
-pub const fn yellow() -> Hsla {
-    Hsla {
-        h: 0.1666666667,
-        s: 1.,
-        l: 0.5,
-        a: 1.,
-    }
-}
-
-impl Hsla {
-    /// Converts this HSLA color to an RGBA color.
-    pub fn to_rgb(self) -> Rgba {
-        self.into()
-    }
-
-    /// The color red
-    pub const fn red() -> Self {
-        red()
-    }
-
-    /// The color green
-    pub const fn green() -> Self {
-        green()
-    }
-
-    /// The color blue
-    pub const fn blue() -> Self {
-        blue()
-    }
-
-    /// The color black
-    pub const fn black() -> Self {
-        black()
-    }
-
-    /// The color white
-    pub const fn white() -> Self {
-        white()
-    }
-
-    /// The color transparent black
-    pub const fn transparent_black() -> Self {
-        transparent_black()
-    }
-
-    /// Returns true if the HSLA color is fully transparent, false otherwise.
-    pub fn is_transparent(&self) -> bool {
-        self.a == 0.0
-    }
-
-    /// Returns true if the HSLA color is fully opaque, false otherwise.
-    pub fn is_opaque(&self) -> bool {
-        self.a == 1.0
-    }
-
-    /// Blends `other` on top of `self` based on `other`'s alpha value. The resulting color is a combination of `self`'s and `other`'s colors.
-    ///
-    /// If `other`'s alpha value is 1.0 or greater, `other` color is fully opaque, thus `other` is returned as the output color.
-    /// If `other`'s alpha value is 0.0 or less, `other` color is fully transparent, thus `self` is returned as the output color.
-    /// Else, the output color is calculated as a blend of `self` and `other` based on their weighted alpha values.
-    ///
-    /// Assumptions:
-    /// - Alpha values are contained in the range [0, 1], with 1 as fully opaque and 0 as fully transparent.
-    /// - The relative contributions of `self` and `other` is based on `self`'s alpha value (`self.a`) and `other`'s  alpha value (`other.a`), `self` contributing `self.a * (1.0 - other.a)` and `other` contributing its own alpha value.
-    /// - RGB color components are contained in the range [0, 1].
-    /// - If `self` and `other` colors are out of the valid range, the blend operation's output and behavior is undefined.
-    pub fn blend(self, other: Hsla) -> Hsla {
-        let alpha = other.a;
-
-        if alpha >= 1.0 {
-            other
-        } else if alpha <= 0.0 {
-            self
+impl From<Oklch> for Rgba {
+    fn from(color: Oklch) -> Self {
+        // Oklch → Oklab (polar → cartesian)
+        let (ca, cb) = if color.c == 0.0 || color.l == 0.0 || color.l == 1.0 {
+            (0.0, 0.0)
         } else {
-            let converted_self = Rgba::from(self);
-            let converted_other = Rgba::from(other);
-            let blended_rgb = converted_self.blend(converted_other);
-            Hsla::from(blended_rgb)
-        }
-    }
-
-    /// Returns a new HSLA color with the same hue, and lightness, but with no saturation.
-    pub fn grayscale(&self) -> Self {
-        Hsla {
-            h: self.h,
-            s: 0.,
-            l: self.l,
-            a: self.a,
-        }
-    }
-
-    /// Fade out the color by a given factor. This factor should be between 0.0 and 1.0.
-    /// Where 0.0 will leave the color unchanged, and 1.0 will completely fade out the color.
-    pub fn fade_out(&mut self, factor: f32) {
-        self.a *= 1.0 - factor.clamp(0., 1.);
-    }
-
-    /// Multiplies the alpha value of the color by a given factor
-    /// and returns a new HSLA color.
-    ///
-    /// Useful for transforming colors with dynamic opacity,
-    /// like a color from an external source.
-    ///
-    /// Example:
-    /// ```
-    /// let color = inazuma::red();
-    /// let faded_color = color.opacity(0.5);
-    /// assert_eq!(faded_color.a, 0.5);
-    /// ```
-    ///
-    /// This will return a red color with half the opacity.
-    ///
-    /// Example:
-    /// ```
-    /// use inazuma::hsla;
-    /// let color = hsla(0.7, 1.0, 0.5, 0.7); // A saturated blue
-    /// let faded_color = color.opacity(0.16);
-    /// assert!((faded_color.a - 0.112).abs() < 1e-6);
-    /// ```
-    ///
-    /// This will return a blue color with around ~10% opacity,
-    /// suitable for an element's hover or selected state.
-    ///
-    pub fn opacity(&self, factor: f32) -> Self {
-        Hsla {
-            h: self.h,
-            s: self.s,
-            l: self.l,
-            a: self.a * factor.clamp(0., 1.),
-        }
-    }
-
-    /// Returns a new HSLA color with the same hue, saturation,
-    /// and lightness, but with a new alpha value.
-    ///
-    /// Example:
-    /// ```
-    /// let color = inazuma::red();
-    /// let red_color = color.alpha(0.25);
-    /// assert_eq!(red_color.a, 0.25);
-    /// ```
-    ///
-    /// This will return a red color with half the opacity.
-    ///
-    /// Example:
-    /// ```
-    /// use inazuma::hsla;
-    /// let color = hsla(0.7, 1.0, 0.5, 0.7); // A saturated blue
-    /// let faded_color = color.alpha(0.25);
-    /// assert_eq!(faded_color.a, 0.25);
-    /// ```
-    ///
-    /// This will return a blue color with 25% opacity.
-    pub fn alpha(&self, a: f32) -> Self {
-        Hsla {
-            h: self.h,
-            s: self.s,
-            l: self.l,
-            a: a.clamp(0., 1.),
-        }
-    }
-}
-
-impl From<Rgba> for Hsla {
-    fn from(color: Rgba) -> Self {
-        let r = color.r;
-        let g = color.g;
-        let b = color.b;
-
-        let max = r.max(g.max(b));
-        let min = r.min(g.min(b));
-        let delta = max - min;
-
-        let l = (max + min) / 2.0;
-        let s = if l == 0.0 || l == 1.0 {
-            0.0
-        } else if l < 0.5 {
-            delta / (2.0 * l)
-        } else {
-            delta / (2.0 - 2.0 * l)
+            let h_rad = color.h.to_radians();
+            (color.c * h_rad.cos(), color.c * h_rad.sin())
         };
 
-        let h = if delta == 0.0 {
-            0.0
-        } else if max == r {
-            ((g - b) / delta).rem_euclid(6.0) / 6.0
-        } else if max == g {
-            ((b - r) / delta + 2.0) / 6.0
-        } else {
-            ((r - g) / delta + 4.0) / 6.0
-        };
+        // Oklab → LMS (cube)
+        let l_ = color.l + 0.3963377773761749 * ca + 0.2158037573099136 * cb;
+        let m_ = color.l - 0.1055613458156586 * ca - 0.0638541728258133 * cb;
+        let s_ = color.l - 0.0894841775298119 * ca - 1.2914855480194092 * cb;
 
-        Hsla {
-            h,
-            s,
-            l,
+        let l_3 = l_ * l_ * l_;
+        let m_3 = m_ * m_ * m_;
+        let s_3 = s_ * s_ * s_;
+
+        // LMS → Linear RGB
+        let r_lin = 4.0767416360759574 * l_3 - 3.3077115392580616 * m_3 + 0.2309699031821044 * s_3;
+        let g_lin = -1.2684379732850317 * l_3 + 2.6097573492876887 * m_3 - 0.3413193760026573 * s_3;
+        let b_lin = -0.0041960761386756 * l_3 - 0.7034186179359362 * m_3 + 1.7076146940746117 * s_3;
+
+        // Linear RGB → sRGB (gamma encode + clamp)
+        Rgba {
+            r: linear_to_srgb(r_lin).clamp(0.0, 1.0),
+            g: linear_to_srgb(g_lin).clamp(0.0, 1.0),
+            b: linear_to_srgb(b_lin).clamp(0.0, 1.0),
             a: color.a,
         }
     }
 }
 
-impl JsonSchema for Hsla {
+impl From<Rgba> for Oklch {
+    fn from(color: Rgba) -> Self {
+        // sRGB → Linear RGB (gamma decode)
+        let r_lin = srgb_to_linear(color.r);
+        let g_lin = srgb_to_linear(color.g);
+        let b_lin = srgb_to_linear(color.b);
+
+        // Linear RGB → LMS (cbrt)
+        let l_ = (0.412221469470763 * r_lin + 0.5363325372617348 * g_lin + 0.0514459932675022 * b_lin).cbrt();
+        let m_ = (0.2119034958178252 * r_lin + 0.6806995506452344 * g_lin + 0.1073969535369406 * b_lin).cbrt();
+        let s_ = (0.0883024591900564 * r_lin + 0.2817188391361215 * g_lin + 0.6299787016738222 * b_lin).cbrt();
+
+        // LMS → Oklab (cartesian)
+        let l = 0.210454268309314 * l_ + 0.7936177747023054 * m_ - 0.0040720430116193 * s_;
+        let ca = 1.9779985324311684 * l_ - 2.4285922420485799 * m_ + 0.450593709617411 * s_;
+        let cb = 0.0259040424655478 * l_ + 0.7827717124575296 * m_ - 0.8086757549230774 * s_;
+
+        // Oklab → Oklch (cartesian → polar)
+        let c = (ca * ca + cb * cb).sqrt();
+        let h = if c < 1e-8 {
+            0.0 // achromatic
+        } else {
+            cb.atan2(ca).to_degrees().rem_euclid(360.0)
+        };
+
+        Oklch { l, c, h, a: color.a }
+    }
+}
+
+impl PartialEq for Oklch {
+    fn eq(&self, other: &Self) -> bool {
+        self.l.total_cmp(&other.l)
+            .then(self.c.total_cmp(&other.c))
+            .then(self.h.total_cmp(&other.h).then(self.a.total_cmp(&other.a)))
+            .is_eq()
+    }
+}
+
+impl PartialOrd for Oklch {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Oklch {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.l.total_cmp(&other.l)
+            .then(self.c.total_cmp(&other.c))
+            .then(self.h.total_cmp(&other.h).then(self.a.total_cmp(&other.a)))
+    }
+}
+
+impl Eq for Oklch {}
+
+impl Hash for Oklch {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write_u32(u32::from_be_bytes(self.l.to_be_bytes()));
+        state.write_u32(u32::from_be_bytes(self.c.to_be_bytes()));
+        state.write_u32(u32::from_be_bytes(self.h.to_be_bytes()));
+        state.write_u32(u32::from_be_bytes(self.a.to_be_bytes()));
+    }
+}
+
+impl Display for Oklch {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        if (self.a - 1.0).abs() < f32::EPSILON {
+            write!(f, "oklch({:.4} {:.4} {:.2})", self.l, self.c, self.h)
+        } else {
+            write!(f, "oklch({:.4} {:.4} {:.2} / {:.2})", self.l, self.c, self.h, self.a)
+        }
+    }
+}
+
+impl JsonSchema for Oklch {
     fn schema_name() -> Cow<'static, str> {
         Rgba::schema_name()
     }
@@ -624,7 +411,7 @@ impl JsonSchema for Hsla {
     }
 }
 
-impl Serialize for Hsla {
+impl Serialize for Oklch {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -633,11 +420,361 @@ impl Serialize for Hsla {
     }
 }
 
-impl<'de> Deserialize<'de> for Hsla {
+impl<'de> Deserialize<'de> for Oklch {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
-        Ok(Rgba::deserialize(deserializer)?.into())
+        Ok(Oklch::from(Rgba::deserialize(deserializer)?))
     }
+}
+
+/// Construct an [`Oklch`] color from lightness, chroma, and hue
+pub fn oklch(l: f32, c: f32, h: f32) -> Oklch {
+    Oklch {
+        l: l.clamp(0.0, 1.0),
+        c: c.max(0.0),
+        h: h.rem_euclid(360.0),
+        a: 1.0,
+    }
+}
+
+/// Construct an [`Oklch`] color from lightness, chroma, hue, and alpha
+pub fn oklcha(l: f32, c: f32, h: f32, a: f32) -> Oklch {
+    Oklch {
+        l: l.clamp(0.0, 1.0),
+        c: c.max(0.0),
+        h: h.rem_euclid(360.0),
+        a: a.clamp(0.0, 1.0),
+    }
+}
+
+impl Oklch {
+    /// Converts this OKLCH color to an RGBA color.
+    pub fn to_rgb(self) -> Rgba {
+        self.into()
+    }
+
+    /// The color black
+    pub const fn black() -> Self {
+        Oklch { l: 0.0, c: 0.0, h: 0.0, a: 1.0 }
+    }
+
+    /// The color white
+    pub const fn white() -> Self {
+        Oklch { l: 1.0, c: 0.0, h: 0.0, a: 1.0 }
+    }
+
+    /// Transparent black
+    pub const fn transparent_black() -> Self {
+        Oklch { l: 0.0, c: 0.0, h: 0.0, a: 0.0 }
+    }
+
+    /// Returns true if fully transparent
+    pub fn is_transparent(&self) -> bool {
+        self.a == 0.0
+    }
+
+    /// Returns true if fully opaque
+    pub fn is_opaque(&self) -> bool {
+        self.a == 1.0
+    }
+
+    /// Multiplies the alpha value by a given factor, returns a new color.
+    pub fn opacity(&self, factor: f32) -> Self {
+        Oklch {
+            l: self.l,
+            c: self.c,
+            h: self.h,
+            a: self.a * factor.clamp(0.0, 1.0),
+        }
+    }
+
+    /// Returns a new color with the given alpha value.
+    pub fn alpha(&self, a: f32) -> Self {
+        Oklch {
+            l: self.l,
+            c: self.c,
+            h: self.h,
+            a: a.clamp(0.0, 1.0),
+        }
+    }
+
+    /// Fade out by a given factor (0.0 = unchanged, 1.0 = fully transparent).
+    pub fn fade_out(&mut self, factor: f32) {
+        self.a *= 1.0 - factor.clamp(0.0, 1.0);
+    }
+
+    /// Lighten by increasing L towards 1.0.
+    pub fn lighten(&self, amount: f32) -> Self {
+        Oklch {
+            l: (self.l + amount).clamp(0.0, 1.0),
+            c: self.c,
+            h: self.h,
+            a: self.a,
+        }
+    }
+
+    /// Darken by decreasing L towards 0.0.
+    pub fn darken(&self, amount: f32) -> Self {
+        Oklch {
+            l: (self.l - amount).clamp(0.0, 1.0),
+            c: self.c,
+            h: self.h,
+            a: self.a,
+        }
+    }
+
+    /// Check if this color is within the sRGB gamut.
+    ///
+    /// A color is in-gamut when its sRGB R, G, B components are all in [0.0, 1.0]
+    /// after conversion from Oklch (without clamping).
+    pub fn in_srgb_gamut(&self) -> bool {
+        let rgba = self.to_rgb_unclamped();
+        rgba.r >= 0.0 && rgba.r <= 1.0 &&
+        rgba.g >= 0.0 && rgba.g <= 1.0 &&
+        rgba.b >= 0.0 && rgba.b <= 1.0
+    }
+
+    /// Clamp this color to the sRGB gamut by reducing chroma.
+    ///
+    /// Uses binary search on chroma (C) while keeping lightness (L) and hue (H) constant.
+    /// This preserves the perceived color as much as possible while bringing it into gamut.
+    pub fn clamp_to_srgb(self) -> Self {
+        if self.in_srgb_gamut() {
+            return self;
+        }
+        Self::gamut_clamp_by_chroma(self, |oklch| oklch.in_srgb_gamut())
+    }
+
+    /// Clamp this color to the Display P3 gamut by reducing chroma.
+    ///
+    /// Uses binary search on chroma (C) while keeping lightness (L) and hue (H) constant.
+    /// Display P3 covers approximately 25% more colors than sRGB.
+    pub fn clamp_to_p3(self) -> Self {
+        if self.in_p3_gamut() {
+            return self;
+        }
+        Self::gamut_clamp_by_chroma(self, |oklch| oklch.in_p3_gamut())
+    }
+
+    /// Check if this color is within the Display P3 gamut.
+    ///
+    /// Converts to linear P3 RGB and checks that all components are in [0.0, 1.0].
+    pub fn in_p3_gamut(&self) -> bool {
+        let (r, g, b) = self.to_linear_p3();
+        r >= 0.0 && r <= 1.0 &&
+        g >= 0.0 && g <= 1.0 &&
+        b >= 0.0 && b <= 1.0
+    }
+
+    /// Binary-search chroma reduction to fit within a target gamut.
+    fn gamut_clamp_by_chroma(color: Self, in_gamut: impl Fn(&Self) -> bool) -> Self {
+        let mut lo = 0.0_f32;
+        let mut hi = color.c;
+        let epsilon = 0.001;
+
+        // Binary search: find the highest chroma that is still in gamut
+        while hi - lo > epsilon {
+            let mid = (lo + hi) * 0.5;
+            let candidate = Oklch { c: mid, ..color };
+            if in_gamut(&candidate) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+
+        Oklch { c: lo, ..color }
+    }
+
+    /// Convert to unclamped sRGB (components may exceed [0,1] for out-of-gamut colors).
+    fn to_rgb_unclamped(&self) -> Rgba {
+        let (ca, cb) = if self.c == 0.0 || self.l == 0.0 || self.l == 1.0 {
+            (0.0, 0.0)
+        } else {
+            let h_rad = self.h.to_radians();
+            (self.c * h_rad.cos(), self.c * h_rad.sin())
+        };
+
+        let l_ = self.l + 0.3963377773761749 * ca + 0.2158037573099136 * cb;
+        let m_ = self.l - 0.1055613458156586 * ca - 0.0638541728258133 * cb;
+        let s_ = self.l - 0.0894841775298119 * ca - 1.2914855480194092 * cb;
+
+        let l_3 = l_ * l_ * l_;
+        let m_3 = m_ * m_ * m_;
+        let s_3 = s_ * s_ * s_;
+
+        let r_lin = 4.0767416360759574 * l_3 - 3.3077115392580616 * m_3 + 0.2309699031821044 * s_3;
+        let g_lin = -1.2684379732850317 * l_3 + 2.6097573492876887 * m_3 - 0.3413193760026573 * s_3;
+        let b_lin = -0.0041960761386756 * l_3 - 0.7034186179359362 * m_3 + 1.7076146940746117 * s_3;
+
+        Rgba {
+            r: linear_to_srgb(r_lin),
+            g: linear_to_srgb(g_lin),
+            b: linear_to_srgb(b_lin),
+            a: self.a,
+        }
+    }
+
+    /// Convert Oklch to linear Display P3 RGB (unclamped).
+    ///
+    /// Uses the Oklab-to-LMS-to-linear-P3 matrix (D65-adapted).
+    fn to_linear_p3(&self) -> (f32, f32, f32) {
+        let (ca, cb) = if self.c == 0.0 || self.l == 0.0 || self.l == 1.0 {
+            (0.0, 0.0)
+        } else {
+            let h_rad = self.h.to_radians();
+            (self.c * h_rad.cos(), self.c * h_rad.sin())
+        };
+
+        let l_ = self.l + 0.3963377773761749 * ca + 0.2158037573099136 * cb;
+        let m_ = self.l - 0.1055613458156586 * ca - 0.0638541728258133 * cb;
+        let s_ = self.l - 0.0894841775298119 * ca - 1.2914855480194092 * cb;
+
+        let l_3 = l_ * l_ * l_;
+        let m_3 = m_ * m_ * m_;
+        let s_3 = s_ * s_ * s_;
+
+        // Linear sRGB from LMS (same as existing conversion)
+        let r_lin = 4.0767416360759574 * l_3 - 3.3077115392580616 * m_3 + 0.2309699031821044 * s_3;
+        let g_lin = -1.2684379732850317 * l_3 + 2.6097573492876887 * m_3 - 0.3413193760026573 * s_3;
+        let b_lin = -0.0041960761386756 * l_3 - 0.7034186179359362 * m_3 + 1.7076146940746117 * s_3;
+
+        // sRGB-to-P3 matrix (linear): convert linear sRGB to linear Display P3
+        // Derived from: P3_from_XYZ * XYZ_from_sRGB
+        // Display P3 uses the same D65 whitepoint and transfer function as sRGB
+        // but with wider primaries, so this is a simple 3x3 matrix multiply.
+        let p3_r =  0.8224621 * r_lin + 0.17753792 * g_lin + 0.0 * b_lin;
+        let p3_g =  0.033194 * r_lin  + 0.96680605 * g_lin + 0.0 * b_lin;
+        let p3_b =  0.017082631 * r_lin + 0.072396955 * g_lin + 0.9105204 * b_lin;
+
+        (p3_r, p3_g, p3_b)
+    }
+
+    /// Blend this color with another in OKLCH space.
+    /// Uses shortest-arc hue interpolation.
+    pub fn blend(self, other: Oklch) -> Oklch {
+        let alpha = other.a;
+        if alpha >= 1.0 {
+            return other;
+        }
+        if alpha <= 0.0 {
+            return self;
+        }
+
+        let t = alpha;
+        let l = self.l + (other.l - self.l) * t;
+        let c = self.c + (other.c - self.c) * t;
+        let a = self.a + (other.a - self.a) * t;
+
+        // Hue: shortest-arc interpolation
+        let h = if self.c < 1e-8 {
+            other.h // self is achromatic, use other's hue
+        } else if other.c < 1e-8 {
+            self.h // other is achromatic, use self's hue
+        } else {
+            let mut diff = other.h - self.h;
+            if diff > 180.0 {
+                diff -= 360.0;
+            } else if diff < -180.0 {
+                diff += 360.0;
+            }
+            (self.h + diff * t).rem_euclid(360.0)
+        };
+
+        Oklch { l, c, h, a }
+    }
+}
+
+/// Construct an [`Oklch`] color from HSL values (all in 0..1 range) and alpha.
+///
+/// This is a convenience function for specifying colors in HSL terms.
+/// The conversion goes HSL → sRGB → Oklch internally.
+pub fn hsla(h: f32, s: f32, l: f32, a: f32) -> Oklch {
+    let h = h.clamp(0., 1.);
+    let s = s.clamp(0., 1.);
+    let l = l.clamp(0., 1.);
+    let a = a.clamp(0., 1.);
+    Oklch::from(hsl_to_rgba(h, s, l, a))
+}
+
+/// Convert an Oklch color to HSL values (h, s, l, a), all in 0..1 range.
+///
+/// Useful for color pickers and UI that need HSL slider representation.
+pub fn oklch_to_hsla(color: Oklch) -> (f32, f32, f32, f32) {
+    let rgba = Rgba::from(color);
+    let r = rgba.r;
+    let g = rgba.g;
+    let b = rgba.b;
+
+    let max = r.max(g.max(b));
+    let min = r.min(g.min(b));
+    let delta = max - min;
+
+    let l = (max + min) / 2.0;
+    let s = if l == 0.0 || l == 1.0 {
+        0.0
+    } else if l < 0.5 {
+        delta / (2.0 * l)
+    } else {
+        delta / (2.0 - 2.0 * l)
+    };
+
+    let h = if delta == 0.0 {
+        0.0
+    } else if max == r {
+        ((g - b) / delta).rem_euclid(6.0) / 6.0
+    } else if max == g {
+        ((b - r) / delta + 2.0) / 6.0
+    } else {
+        ((r - g) / delta + 4.0) / 6.0
+    };
+
+    (h, s, l, rgba.a)
+}
+
+/// Pure black in [`Oklch`]
+pub const fn black() -> Oklch {
+    Oklch::black()
+}
+
+/// Transparent black in [`Oklch`]
+pub const fn transparent_black() -> Oklch {
+    Oklch::transparent_black()
+}
+
+/// Transparent white in [`Oklch`]
+pub const fn transparent_white() -> Oklch {
+    Oklch { l: 1.0, c: 0.0, h: 0.0, a: 0.0 }
+}
+
+/// Opaque grey in [`Oklch`], values will be clamped to the range [0, 1]
+pub fn opaque_grey(lightness: f32, opacity: f32) -> Oklch {
+    hsla(0., 0., lightness.clamp(0., 1.), opacity.clamp(0., 1.))
+}
+
+/// Pure white in [`Oklch`]
+pub const fn white() -> Oklch {
+    Oklch::white()
+}
+
+/// The color red in [`Oklch`]
+pub fn red() -> Oklch {
+    hsla(0., 1., 0.5, 1.)
+}
+
+/// The color blue in [`Oklch`]
+pub fn blue() -> Oklch {
+    hsla(0.6666666667, 1., 0.5, 1.)
+}
+
+/// The color green in [`Oklch`]
+pub fn green() -> Oklch {
+    hsla(0.3333333333, 1., 0.25, 1.)
+}
+
+/// The color yellow in [`Oklch`]
+pub fn yellow() -> Oklch {
+    hsla(0.1666666667, 1., 0.5, 1.)
 }

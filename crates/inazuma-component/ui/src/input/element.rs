@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use inazuma::{
     App, Bounds, Element, ElementId, ElementInputHandler, Entity, GlobalElementId, Half,
-    Hitbox, Hsla, IntoElement, LayoutId, MouseButton, MouseMoveEvent, Path, Pixels, Point,
+    Hitbox, Oklch, IntoElement, LayoutId, MouseButton, MouseMoveEvent, Path, Pixels, Point,
     ShapedLine, SharedString, Size, Style, TextAlign, TextRun, UnderlineStyle, Window, fill,
     px, relative, size,
 };
@@ -81,7 +81,7 @@ pub(super) struct PrepaintState {
     pub(super) selection_path: Option<Path<Pixels>>,
     pub(super) hover_highlight_path: Option<Path<Pixels>>,
     pub(super) search_match_paths: Vec<(Path<Pixels>, bool)>,
-    pub(super) document_color_paths: Vec<(Path<Pixels>, Hsla)>,
+    pub(super) document_color_paths: Vec<(Path<Pixels>, Oklch)>,
     pub(super) hover_definition_hitbox: Option<Hitbox>,
     pub(super) indent_guides_path: Option<Path<Pixels>>,
     pub(super) bounds: Bounds<Pixels>,
@@ -245,18 +245,18 @@ impl Element for TextElement {
 
         let mut bounds = bounds;
 
-        let (display_text, text_color) = if is_empty {
+        let (display_text, text_color): (_, inazuma::Oklch) = if is_empty {
             (
                 &Rope::from(placeholder.as_str()),
-                cx.theme().muted_foreground,
+                cx.theme().muted_foreground.into(),
             )
         } else if state.masked {
             (
                 &Rope::from("*".repeat(text.chars().count())),
-                cx.theme().foreground,
+                cx.theme().foreground.into(),
             )
         } else {
-            (&text, cx.theme().foreground)
+            (&text, cx.theme().foreground.into())
         };
 
         let text_style = window.text_style();
@@ -392,7 +392,7 @@ impl Element for TextElement {
                     &[TextRun {
                         len: longest_line.len(),
                         font: style.font(),
-                        color: inazuma::black(),
+                        color: inazuma::Oklch::black(),
                         background_color: None,
                         underline: None,
                         strikethrough: None,
@@ -455,7 +455,7 @@ impl Element for TextElement {
             let other_line_runs = vec![TextRun {
                 len: line_number_len,
                 font: style.font(),
-                color: cx.theme().muted_foreground,
+                color: cx.theme().muted_foreground.into(),
                 background_color: None,
                 underline: None,
                 strikethrough: None,
@@ -463,7 +463,7 @@ impl Element for TextElement {
             let current_line_runs = vec![TextRun {
                 len: line_number_len,
                 font: style.font(),
-                color: cx.theme().foreground,
+                color: cx.theme().foreground.into(),
                 background_color: None,
                 underline: None,
                 strikethrough: None,

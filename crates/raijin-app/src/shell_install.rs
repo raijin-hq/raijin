@@ -3,7 +3,7 @@
 /// When the user selects a shell that is not installed (e.g., Nushell, Fish),
 /// Raijin shows a modal dialog with platform-specific installation instructions
 /// instead of silently falling back to a default shell.
-use inazuma::{App, Window, hsla, px};
+use inazuma::{App, Oklch, Window, oklcha, px};
 
 /// Target platform for install commands.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -376,9 +376,9 @@ impl inazuma::Render for ShellInstallModal {
             .key_context("ShellInstallModal")
             .track_focus(&self.focus_handle)
             .w(px(380.0))
-            .bg(hsla(0.0, 0.0, 0.16, 1.0))
+            .bg(oklcha(0.23, 0.0, 0.0, 1.0))
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.22, 1.0))
+            .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
             .rounded(px(8.0))
             .shadow_lg()
             .p(px(16.0))
@@ -397,7 +397,7 @@ impl inazuma::Render for ShellInstallModal {
                     .child(
                         div()
                             .text_sm()
-                            .text_color(hsla(0.0, 0.0, 1.0, 0.5))
+                            .text_color(Oklch::white().opacity(0.5))
                             .child(description),
                     ),
             )
@@ -434,13 +434,13 @@ impl inazuma::Render for ShellInstallModal {
                     use inazuma::{BoxShadow, point};
                     let shadow = vec![
                         BoxShadow {
-                            color: hsla(0.0, 0.0, 0.0, 0.25 * delta),
+                            color: inazuma::Oklch::black().opacity(0.25 * delta),
                             offset: point(px(0.0), px(25.0)),
                             blur_radius: px(50.0),
                             spread_radius: px(-12.0),
                         },
                         BoxShadow {
-                            color: hsla(0.0, 0.0, 0.0, 0.15 * delta),
+                            color: inazuma::Oklch::black().opacity(0.15 * delta),
                             offset: point(px(0.0), px(8.0)),
                             blur_radius: px(16.0),
                             spread_radius: px(-8.0),

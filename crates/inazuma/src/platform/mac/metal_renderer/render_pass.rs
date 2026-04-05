@@ -54,7 +54,7 @@ impl MetalRenderer {
                     if self.presents_with_transaction {
                         command_buffer.commit();
                         command_buffer.waitUntilScheduled();
-                        let _: () = unsafe { msg_send![&*drawable, present] };
+                        drawable.present();
                     } else {
                         let drawable_as_mtl: &ProtocolObject<dyn MTLDrawable> =
                             ProtocolObject::from_ref(&*drawable);
@@ -125,8 +125,7 @@ impl MetalRenderer {
                     command_buffer.commit();
                     command_buffer.waitUntilCompleted();
 
-                    let texture: &ProtocolObject<dyn MTLTexture> =
-                        unsafe { msg_send![&*drawable, texture] };
+                    let texture = drawable.texture();
                     let width = texture.width() as u32;
                     let height = texture.height() as u32;
                     let bytes_per_row = width as usize * 4;
@@ -303,8 +302,8 @@ impl MetalRenderer {
         drawable: &ProtocolObject<dyn CAMetalDrawable>,
         viewport_size: Size<DevicePixels>,
     ) -> Result<Retained<ProtocolObject<dyn MTLCommandBuffer>>> {
-        let texture: &ProtocolObject<dyn MTLTexture> = unsafe { msg_send![drawable, texture] };
-        self.draw_primitives_to_texture(scene, instance_buffer, texture, viewport_size)
+        let texture = drawable.texture();
+        self.draw_primitives_to_texture(scene, instance_buffer, &texture, viewport_size)
     }
 
     fn draw_primitives_to_texture(

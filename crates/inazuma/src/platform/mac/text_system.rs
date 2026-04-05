@@ -14,7 +14,7 @@ use objc2_core_foundation::{
 };
 use objc2_core_graphics::{
     CGBitmapContextCreate, CGColorSpace, CGContext, CGDataProvider, CGFont, CGGlyph,
-    CGImageAlphaInfo, CGTextDrawingMode,
+    CGImageAlphaInfo, CGTextDrawingMode, kCGColorSpaceSRGB,
 };
 use objc2_core_text::{
     CTFont, CTFontCollection, CTFontDescriptor, CTLine, CTRun, kCTFontAttributeName,
@@ -1004,8 +1004,10 @@ impl MacTextSystemState {
         let loaded = &self.fonts[params.font_id.0];
 
         let mut bytes = vec![0u8; bitmap_size.width.0 as usize * 4 * bitmap_size.height.0 as usize];
-        let color_space = CGColorSpace::new_device_rgb()
-            .ok_or_else(|| anyhow!("Failed to create RGB color space"))?;
+        // Use explicit sRGB colorspace instead of device RGB to prevent
+        // color shifts on P3 displays where device RGB would be P3.
+        let color_space = unsafe { CGColorSpace::with_name(Some(kCGColorSpaceSRGB)) }
+            .ok_or_else(|| anyhow!("Failed to create sRGB color space"))?;
         let cx = unsafe {
             CGBitmapContextCreate(
                 bytes.as_mut_ptr() as *mut c_void,

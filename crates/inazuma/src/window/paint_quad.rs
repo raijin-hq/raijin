@@ -1,5 +1,5 @@
 use crate::{
-    Background, BorderStyle, Bounds, Corners, Edges, Hsla, Pixels, transparent_black,
+    Background, BorderStyle, Bounds, Corners, Edges, Oklch, Pixels,
 };
 
 /// A rectangle to be rendered in the window at the given position and size.
@@ -15,7 +15,7 @@ pub struct PaintQuad {
     /// The widths of the quad's borders.
     pub border_widths: Edges<Pixels>,
     /// Per-side border colors (top, right, bottom, left).
-    pub border_colors: Edges<Hsla>,
+    pub border_colors: Edges<Oklch>,
     /// The style of the quad's borders.
     pub border_style: BorderStyle,
 }
@@ -38,7 +38,7 @@ impl PaintQuad {
     }
 
     /// Sets the border color for all sides.
-    pub fn border_color(self, border_color: impl Into<Hsla>) -> Self {
+    pub fn border_color(self, border_color: impl Into<Oklch>) -> Self {
         let c = border_color.into();
         PaintQuad {
             border_colors: Edges { top: c, right: c, bottom: c, left: c },
@@ -47,25 +47,25 @@ impl PaintQuad {
     }
 
     /// Sets the border color for a specific side.
-    pub fn border_left_color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn border_left_color(mut self, color: impl Into<Oklch>) -> Self {
         self.border_colors.left = color.into();
         self
     }
 
     /// Sets the border color for a specific side.
-    pub fn border_right_color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn border_right_color(mut self, color: impl Into<Oklch>) -> Self {
         self.border_colors.right = color.into();
         self
     }
 
     /// Sets the border color for a specific side.
-    pub fn border_top_color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn border_top_color(mut self, color: impl Into<Oklch>) -> Self {
         self.border_colors.top = color.into();
         self
     }
 
     /// Sets the border color for a specific side.
-    pub fn border_bottom_color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn border_bottom_color(mut self, color: impl Into<Oklch>) -> Self {
         self.border_colors.bottom = color.into();
         self
     }
@@ -85,7 +85,7 @@ pub fn quad(
     corner_radii: impl Into<Corners<Pixels>>,
     background: impl Into<Background>,
     border_widths: impl Into<Edges<Pixels>>,
-    border_colors: impl Into<Edges<Hsla>>,
+    border_colors: impl Into<Edges<Oklch>>,
     border_style: BorderStyle,
 ) -> PaintQuad {
     PaintQuad {
@@ -100,7 +100,7 @@ pub fn quad(
 
 /// Creates a filled quad with the given bounds and background color.
 pub fn fill(bounds: impl Into<Bounds<Pixels>>, background: impl Into<Background>) -> PaintQuad {
-    let transparent = transparent_black();
+    let transparent = Oklch::transparent_black();
     PaintQuad {
         bounds: bounds.into(),
         corner_radii: (0.).into(),
@@ -114,14 +114,14 @@ pub fn fill(bounds: impl Into<Bounds<Pixels>>, background: impl Into<Background>
 /// Creates a rectangle outline with the given bounds, border color, and a 1px border width
 pub fn outline(
     bounds: impl Into<Bounds<Pixels>>,
-    border_color: impl Into<Hsla>,
+    border_color: impl Into<Oklch>,
     border_style: BorderStyle,
 ) -> PaintQuad {
     let c = border_color.into();
     PaintQuad {
         bounds: bounds.into(),
         corner_radii: (0.).into(),
-        background: transparent_black().into(),
+        background: Oklch::transparent_black().into(),
         border_widths: (1.).into(),
         border_colors: Edges { top: c, right: c, bottom: c, left: c },
         border_style,

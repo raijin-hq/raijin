@@ -34,13 +34,12 @@ fn main() {
             cx,
         );
 
-        // Load Raijin config and theme, set both as globals
+        // Load Raijin config, set as global
         let config = raijin_settings::RaijinConfig::load().unwrap_or_default();
-        let theme = raijin_settings::RaijinTheme::load(&config.appearance.theme)
-            .unwrap_or_default();
-        let resolved_theme = raijin_settings::ResolvedTheme::from_theme(&theme);
         cx.set_global(config);
-        cx.set_global(resolved_theme);
+
+        // Initialize the raijin-theme system (ThemeRegistry, ThemeSettings, GlobalTheme)
+        raijin_theme_settings::init(cx);
         cx.set_global(workspace::PendingShellSwitch(None));
         cx.set_global(workspace::PendingShellInstallName(None));
 

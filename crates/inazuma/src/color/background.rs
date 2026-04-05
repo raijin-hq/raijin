@@ -39,7 +39,7 @@ impl Display for ColorSpace {
 pub struct Background {
     pub(crate) tag: BackgroundTag,
     pub(crate) color_space: ColorSpace,
-    pub(crate) solid: Hsla,
+    pub(crate) solid: Oklch,
     pub(crate) gradient_angle_or_pattern_height: f32,
     pub(crate) colors: [LinearColorStop; 2],
     /// Padding for alignment for repr(C) layout.
@@ -74,7 +74,7 @@ impl Default for Background {
     fn default() -> Self {
         Self {
             tag: BackgroundTag::Solid,
-            solid: Hsla::default(),
+            solid: Oklch::default(),
             color_space: ColorSpace::default(),
             gradient_angle_or_pattern_height: 0.0,
             colors: [LinearColorStop::default(), LinearColorStop::default()],
@@ -84,7 +84,7 @@ impl Default for Background {
 }
 
 /// Creates a hash pattern background
-pub fn pattern_slash(color: impl Into<Hsla>, width: f32, interval: f32) -> Background {
+pub fn pattern_slash(color: impl Into<Oklch>, width: f32, interval: f32) -> Background {
     let width_scaled = (width * 255.0) as u32;
     let interval_scaled = (interval * 255.0) as u32;
     let height = ((width_scaled * 0xFFFF) + interval_scaled) as f32;
@@ -98,7 +98,7 @@ pub fn pattern_slash(color: impl Into<Hsla>, width: f32, interval: f32) -> Backg
 }
 
 /// Creates a checkerboard pattern background
-pub fn checkerboard(color: impl Into<Hsla>, size: f32) -> Background {
+pub fn checkerboard(color: impl Into<Oklch>, size: f32) -> Background {
     Background {
         tag: BackgroundTag::Checkerboard,
         solid: color.into(),
@@ -108,7 +108,7 @@ pub fn checkerboard(color: impl Into<Hsla>, size: f32) -> Background {
 }
 
 /// Creates a solid background color.
-pub fn solid_background(color: impl Into<Hsla>) -> Background {
+pub fn solid_background(color: impl Into<Oklch>) -> Background {
     Background {
         solid: color.into(),
         ..Default::default()
@@ -142,7 +142,7 @@ pub fn linear_gradient(
 #[repr(C)]
 pub struct LinearColorStop {
     /// The color of the color stop.
-    pub color: Hsla,
+    pub color: Oklch,
     /// The percentage of the gradient, in the range 0.0 to 1.0.
     pub percentage: f32,
 }
@@ -150,7 +150,7 @@ pub struct LinearColorStop {
 /// Creates a new linear color stop.
 ///
 /// The percentage of the gradient, in the range 0.0 to 1.0.
-pub fn linear_color_stop(color: impl Into<Hsla>, percentage: f32) -> LinearColorStop {
+pub fn linear_color_stop(color: impl Into<Oklch>, percentage: f32) -> LinearColorStop {
     LinearColorStop {
         color: color.into(),
         percentage,
@@ -169,7 +169,7 @@ impl LinearColorStop {
 
 impl Background {
     /// Returns the solid color if this is a solid background, None otherwise.
-    pub fn as_solid(&self) -> Option<Hsla> {
+    pub fn as_solid(&self) -> Option<Oklch> {
         if self.tag == BackgroundTag::Solid {
             Some(self.solid)
         } else {
@@ -207,8 +207,8 @@ impl Background {
     }
 }
 
-impl From<Hsla> for Background {
-    fn from(value: Hsla) -> Self {
+impl From<Oklch> for Background {
+    fn from(value: Oklch) -> Self {
         Background {
             tag: BackgroundTag::Solid,
             solid: value,
@@ -220,7 +220,7 @@ impl From<Rgba> for Background {
     fn from(value: Rgba) -> Self {
         Background {
             tag: BackgroundTag::Solid,
-            solid: Hsla::from(value),
+            solid: Oklch::from(value),
             ..Default::default()
         }
     }
@@ -276,14 +276,14 @@ mod tests {
 
     #[test]
     fn test_background_solid() {
-        let color = Hsla::from(rgba(0xff0099ff));
+        let color = Oklch::from(rgba(0xff0099ff));
         let mut background = Background::from(color);
         assert_eq!(background.tag, BackgroundTag::Solid);
         assert_eq!(background.solid, color);
 
         assert_eq!(background.opacity(0.5).solid, color.opacity(0.5));
         assert!(!background.is_transparent());
-        background.solid = hsla(0.0, 0.0, 0.0, 0.0);
+        background.solid = Oklch::transparent_black();
         assert!(background.is_transparent());
     }
 

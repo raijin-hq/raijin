@@ -1,4 +1,4 @@
-use inazuma::{App, FontWeight, HighlightStyle, Hsla, SharedString};
+use inazuma::{App, FontWeight, HighlightStyle, Oklch, SharedString};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -199,7 +199,7 @@ impl From<FontWeightContent> for FontWeight {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct ThemeStyle {
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     font_style: Option<FontStyle>,
     font_weight: Option<FontWeightContent>,
 }
@@ -207,7 +207,7 @@ pub struct ThemeStyle {
 impl From<ThemeStyle> for HighlightStyle {
     fn from(style: ThemeStyle) -> Self {
         HighlightStyle {
-            color: style.color,
+            color: style.color.map(Into::into),
             font_weight: style.font_weight.map(Into::into),
             font_style: style.font_style.map(Into::into),
             ..Default::default()
@@ -291,120 +291,120 @@ impl SyntaxColors {
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct StatusColors {
     #[serde(rename = "error")]
-    error: Option<Hsla>,
+    error: Option<Oklch>,
     #[serde(rename = "error.background")]
-    error_background: Option<Hsla>,
+    error_background: Option<Oklch>,
     #[serde(rename = "error.border")]
-    error_border: Option<Hsla>,
+    error_border: Option<Oklch>,
     #[serde(rename = "warning")]
-    warning: Option<Hsla>,
+    warning: Option<Oklch>,
     #[serde(rename = "warning.background")]
-    warning_background: Option<Hsla>,
+    warning_background: Option<Oklch>,
     #[serde(rename = "warning.border")]
-    warning_border: Option<Hsla>,
+    warning_border: Option<Oklch>,
     #[serde(rename = "info")]
-    info: Option<Hsla>,
+    info: Option<Oklch>,
     #[serde(rename = "info.background")]
-    info_background: Option<Hsla>,
+    info_background: Option<Oklch>,
     #[serde(rename = "info.border")]
-    info_border: Option<Hsla>,
+    info_border: Option<Oklch>,
     #[serde(rename = "success")]
-    success: Option<Hsla>,
+    success: Option<Oklch>,
     #[serde(rename = "success.background")]
-    success_background: Option<Hsla>,
+    success_background: Option<Oklch>,
     #[serde(rename = "success.border")]
-    success_border: Option<Hsla>,
+    success_border: Option<Oklch>,
     #[serde(rename = "hint")]
-    hint: Option<Hsla>,
+    hint: Option<Oklch>,
     #[serde(rename = "hint.background")]
-    hint_background: Option<Hsla>,
+    hint_background: Option<Oklch>,
     #[serde(rename = "hint.border")]
-    hint_border: Option<Hsla>,
+    hint_border: Option<Oklch>,
 }
 
 impl StatusColors {
     #[inline]
-    pub fn error(&self, cx: &App) -> Hsla {
+    pub fn error(&self, cx: &App) -> Oklch {
         self.error.unwrap_or(cx.theme().red)
     }
 
     #[inline]
-    pub fn error_background(&self, cx: &App) -> Hsla {
+    pub fn error_background(&self, cx: &App) -> Oklch {
         let bg = cx.theme().background;
         self.error_background
             .unwrap_or(bg.blend(self.error(cx).alpha(0.2)))
     }
 
     #[inline]
-    pub fn error_border(&self, cx: &App) -> Hsla {
+    pub fn error_border(&self, cx: &App) -> Oklch {
         self.error_border.unwrap_or(self.error(cx))
     }
 
     #[inline]
-    pub fn warning(&self, cx: &App) -> Hsla {
+    pub fn warning(&self, cx: &App) -> Oklch {
         self.warning.unwrap_or(cx.theme().yellow)
     }
 
     #[inline]
-    pub fn warning_background(&self, cx: &App) -> Hsla {
+    pub fn warning_background(&self, cx: &App) -> Oklch {
         let bg = cx.theme().background;
         self.warning_background
             .unwrap_or(bg.blend(self.warning(cx).alpha(0.2)))
     }
 
     #[inline]
-    pub fn warning_border(&self, cx: &App) -> Hsla {
+    pub fn warning_border(&self, cx: &App) -> Oklch {
         self.warning_border.unwrap_or(self.warning(cx))
     }
 
     #[inline]
-    pub fn info(&self, cx: &App) -> Hsla {
+    pub fn info(&self, cx: &App) -> Oklch {
         self.info.unwrap_or(cx.theme().blue)
     }
 
     #[inline]
-    pub fn info_background(&self, cx: &App) -> Hsla {
+    pub fn info_background(&self, cx: &App) -> Oklch {
         let bg = cx.theme().background;
         self.info_background
             .unwrap_or(bg.blend(self.info(cx).alpha(0.2)))
     }
 
     #[inline]
-    pub fn info_border(&self, cx: &App) -> Hsla {
+    pub fn info_border(&self, cx: &App) -> Oklch {
         self.info_border.unwrap_or(self.info(cx))
     }
 
     #[inline]
-    pub fn success(&self, cx: &App) -> Hsla {
+    pub fn success(&self, cx: &App) -> Oklch {
         self.success.unwrap_or(cx.theme().green)
     }
 
     #[inline]
-    pub fn success_background(&self, cx: &App) -> Hsla {
+    pub fn success_background(&self, cx: &App) -> Oklch {
         let bg = cx.theme().background;
         self.success_background
             .unwrap_or(bg.blend(self.success(cx).alpha(0.2)))
     }
 
     #[inline]
-    pub fn success_border(&self, cx: &App) -> Hsla {
+    pub fn success_border(&self, cx: &App) -> Oklch {
         self.success_border.unwrap_or(self.success(cx))
     }
 
     #[inline]
-    pub fn hint(&self, cx: &App) -> Hsla {
+    pub fn hint(&self, cx: &App) -> Oklch {
         self.hint.unwrap_or(cx.theme().cyan)
     }
 
     #[inline]
-    pub fn hint_background(&self, cx: &App) -> Hsla {
+    pub fn hint_background(&self, cx: &App) -> Oklch {
         let bg = cx.theme().background;
         self.hint_background
             .unwrap_or(bg.blend(self.hint(cx).alpha(0.2)))
     }
 
     #[inline]
-    pub fn hint_border(&self, cx: &App) -> Hsla {
+    pub fn hint_border(&self, cx: &App) -> Oklch {
         self.hint_border.unwrap_or(self.hint(cx))
     }
 }
@@ -412,17 +412,17 @@ impl StatusColors {
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct HighlightThemeStyle {
     #[serde(rename = "editor.background")]
-    pub editor_background: Option<Hsla>,
+    pub editor_background: Option<Oklch>,
     #[serde(rename = "editor.foreground")]
-    pub editor_foreground: Option<Hsla>,
+    pub editor_foreground: Option<Oklch>,
     #[serde(rename = "editor.active_line.background")]
-    pub editor_active_line: Option<Hsla>,
+    pub editor_active_line: Option<Oklch>,
     #[serde(rename = "editor.line_number")]
-    pub editor_line_number: Option<Hsla>,
+    pub editor_line_number: Option<Oklch>,
     #[serde(rename = "editor.active_line_number")]
-    pub editor_active_line_number: Option<Hsla>,
+    pub editor_active_line_number: Option<Oklch>,
     #[serde(rename = "editor.invisible")]
-    pub editor_invisible: Option<Hsla>,
+    pub editor_invisible: Option<Oklch>,
     #[serde(flatten)]
     pub status: StatusColors,
     #[serde(rename = "syntax")]

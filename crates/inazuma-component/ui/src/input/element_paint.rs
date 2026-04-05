@@ -1,8 +1,8 @@
 use inazuma::{
-    App, Bounds, Hsla, Pixels, Point, Size, TextAlign, Window, fill, point, px, size,
+    App, Bounds, Oklch, Pixels, Point, Size, TextAlign, Window, fill, point, px, size,
 };
 
-use crate::{ActiveTheme as _, Colorize};
+use crate::ActiveTheme as _;
 
 use super::element::{PrepaintState, TextElement, LINE_NUMBER_RIGHT_MARGIN};
 
@@ -13,7 +13,7 @@ impl TextElement {
         input_bounds: &Bounds<Pixels>,
         origin: Point<Pixels>,
         line_height: Pixels,
-        active_line_color: Option<Hsla>,
+        active_line_color: Option<Oklch>,
         window: &mut Window,
     ) {
         let Some(line_numbers) = prepaint.line_numbers.as_ref() else {
@@ -51,7 +51,11 @@ impl TextElement {
             return;
         }
 
-        let secondary_selection = cx.theme().selection.saturation(0.1);
+        let secondary_selection = {
+            let mut c = cx.theme().selection;
+            c.c *= 0.1;
+            c
+        };
         for (path, is_active) in prepaint.search_match_paths.iter() {
             window.paint_path(path.clone(), secondary_selection);
 
@@ -170,7 +174,7 @@ impl TextElement {
         input_bounds: &Bounds<Pixels>,
         origin: Point<Pixels>,
         line_height: Pixels,
-        active_line_color: Option<Hsla>,
+        active_line_color: Option<Oklch>,
         window: &mut Window,
         cx: &mut App,
     ) {

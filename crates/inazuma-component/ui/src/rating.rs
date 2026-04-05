@@ -6,7 +6,7 @@ use inazuma::{
     App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, StyleRefinement,
     Styled, Window, div, prelude::FluentBuilder as _,
 };
-use inazuma::{ClickEvent, Hsla, StatefulInteractiveElement};
+use inazuma::{ClickEvent, Oklch, StatefulInteractiveElement};
 
 /// A simple star Rating element.
 #[derive(IntoElement)]
@@ -17,7 +17,7 @@ pub struct Rating {
     disabled: bool,
     value: usize,
     max: usize,
-    color: Option<Hsla>,
+    color: Option<Oklch>,
     on_click: Option<Rc<dyn Fn(&usize, &mut Window, &mut App) + 'static>>,
 }
 
@@ -49,7 +49,7 @@ impl Rating {
     }
 
     /// Set active color, default will use `yellow` from theme colors.
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
         self.color = Some(color.into());
         self
     }

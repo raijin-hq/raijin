@@ -4,7 +4,7 @@ use std::{
     usize,
 };
 
-use inazuma::{px, App, HighlightStyle, Hsla, SharedString, UnderlineStyle};
+use inazuma::{px, App, HighlightStyle, Oklch, SharedString, UnderlineStyle};
 use ropey::Rope;
 use sum_tree::{Bias, SeekTarget, SumTree};
 
@@ -99,7 +99,7 @@ impl From<lsp_types::DiagnosticSeverity> for DiagnosticSeverity {
 }
 
 impl DiagnosticSeverity {
-    pub(crate) fn bg(&self, cx: &App) -> Hsla {
+    pub(crate) fn bg(&self, cx: &App) -> Oklch {
         let theme = &cx.theme().highlight_theme;
 
         match self {
@@ -110,7 +110,7 @@ impl DiagnosticSeverity {
         }
     }
 
-    pub(crate) fn fg(&self, cx: &App) -> Hsla {
+    pub(crate) fn fg(&self, cx: &App) -> Oklch {
         let theme = &cx.theme().highlight_theme;
 
         match self {
@@ -121,7 +121,7 @@ impl DiagnosticSeverity {
         }
     }
 
-    pub(crate) fn border(&self, cx: &App) -> Hsla {
+    pub(crate) fn border(&self, cx: &App) -> Oklch {
         let theme = &cx.theme().highlight_theme;
         match self {
             Self::Error => theme.style.status.error_border(cx),
@@ -143,7 +143,7 @@ impl DiagnosticSeverity {
 
         let mut style = HighlightStyle::default();
         style.underline = Some(UnderlineStyle {
-            color: color,
+            color: color.map(Into::into),
             thickness: px(1.),
             wavy: true,
         });

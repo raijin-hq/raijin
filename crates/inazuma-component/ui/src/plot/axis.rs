@@ -1,5 +1,5 @@
 use inazuma::{
-    App, Bounds, FontWeight, Hsla, PathBuilder, Pixels, Point, SharedString, TextAlign, Window,
+    App, Bounds, FontWeight, Oklch, PathBuilder, Pixels, Point, SharedString, TextAlign, Window,
     point, px,
 };
 
@@ -10,13 +10,13 @@ pub const AXIS_GAP: f32 = 18.;
 pub struct AxisText {
     pub text: SharedString,
     pub tick: Pixels,
-    pub color: Hsla,
+    pub color: Oklch,
     pub font_size: Pixels,
     pub align: TextAlign,
 }
 
 impl AxisText {
-    pub fn new(text: impl Into<SharedString>, tick: impl Into<Pixels>, color: Hsla) -> Self {
+    pub fn new(text: impl Into<SharedString>, tick: impl Into<Pixels>, color: Oklch) -> Self {
         Self {
             text: text.into(),
             tick: tick.into(),
@@ -45,7 +45,7 @@ pub struct PlotAxis {
     y: Option<Pixels>,
     y_label: PlotLabel,
     y_axis: bool,
-    stroke: Hsla,
+    stroke: Oklch,
 }
 
 impl PlotAxis {
@@ -121,7 +121,7 @@ impl PlotAxis {
     }
 
     /// Set the stroke color of the Axis.
-    pub fn stroke(mut self, stroke: impl Into<Hsla>) -> Self {
+    pub fn stroke(mut self, stroke: impl Into<Oklch>) -> Self {
         self.stroke = stroke.into();
         self
     }

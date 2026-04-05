@@ -3,6 +3,24 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::fmt::{self, Debug};
 
+/// The colorspace a window's Metal/GPU layer should be tagged with.
+///
+/// On macOS, P3 displays are common. Without explicit tagging, the system may
+/// interpret sRGB framebuffer values in the native (P3) colorspace, causing
+/// oversaturation. Setting `Srgb` ensures correct color reproduction.
+/// Setting `DisplayP3` opts in to the wider gamut.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum WindowColorspace {
+    /// Explicit sRGB — prevents oversaturation on P3 displays (recommended default).
+    #[default]
+    Srgb,
+    /// Display P3 — enables the wider gamut on supported displays.
+    DisplayP3,
+    /// Use the display's native colorspace without explicit tagging.
+    Native,
+}
+
 /// Thermal state of the system
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ThermalState {

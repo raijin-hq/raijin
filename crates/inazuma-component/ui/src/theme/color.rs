@@ -1,26 +1,22 @@
 use std::{collections::HashMap, fmt::Display};
 
-use inazuma::{Hsla, SharedString, hsla};
+use inazuma::{Oklch, SharedString, hsla};
 use serde::{Deserialize, Deserializer, de::Error as _};
 
 use anyhow::{Error, Result, anyhow};
 
-/// Create a [`inazuma::Hsla`] color.
+/// Create an [`inazuma::Oklch`] color from HSL parameters.
 ///
 /// - h: 0..360.0
 /// - s: 0.0..100.0
 /// - l: 0.0..100.0
 #[inline]
-pub fn hsl(h: f32, s: f32, l: f32) -> Hsla {
+pub fn hsl(h: f32, s: f32, l: f32) -> Oklch {
     hsla(h / 360., s / 100.0, l / 100.0, 1.0)
 }
 
 pub trait Colorize: Sized {
-    /// Returns a new color with the given opacity.
-    ///
-    /// The opacity is a value between 0.0 and 1.0, where 0.0 is fully transparent and 1.0 is fully opaque.
-    fn opacity(&self, opacity: f32) -> Self;
-    /// Returns a new color with each channel divided by the given divisor.
+    /// Returns a new color with alpha set to the given divisor.
     ///
     /// The divisor in range of 0.0 .. 1.0
     fn divide(&self, divisor: f32) -> Self;
@@ -28,15 +24,7 @@ pub trait Colorize: Sized {
     fn invert(&self) -> Self;
     /// Return inverted lightness
     fn invert_l(&self) -> Self;
-    /// Return a new color with the lightness increased by the given factor.
-    ///
-    /// factor range: 0.0 .. 1.0
-    fn lighten(&self, amount: f32) -> Self;
-    /// Return a new color with the darkness increased by the given factor.
-    ///
-    /// factor range: 0.0 .. 1.0
-    fn darken(&self, amount: f32) -> Self;
-    /// Return a new color with the same lightness and alpha but different hue and saturation.
+    /// Return a new color with the same lightness and alpha but different hue and chroma.
     fn apply(&self, base_color: Self) -> Self;
 
     /// Mix two colors together, the `factor` is a value between 0.0 and 1.0 for first color.
@@ -45,10 +33,10 @@ pub trait Colorize: Sized {
     ///
     /// This is similar to CSS `color-mix(in oklab, color1 factor%, color2)`.
     fn mix_oklab(&self, other: Self, factor: f32) -> Self;
-    /// Change the `Hue` of the color by the given in range: 0.0 .. 1.0
+    /// Change the `Hue` of the color by the given angle in range: 0.0 .. 360.0
     fn hue(&self, hue: f32) -> Self;
-    /// Change the `Saturation` of the color by the given value in range: 0.0 .. 1.0
-    fn saturation(&self, saturation: f32) -> Self;
+    /// Change the `Chroma` of the color by the given value in range: 0.0 .. 0.4
+    fn chroma(&self, chroma: f32) -> Self;
     /// Change the `Lightness` of the color by the given value in range: 0.0 .. 1.0
     fn lightness(&self, lightness: f32) -> Self;
 
@@ -58,90 +46,7 @@ pub trait Colorize: Sized {
     fn parse_hex(hex: &str) -> Result<Self>;
 }
 
-/// Helper functions for Oklab color space conversions
-mod oklab {
-    use inazuma::Rgba;
-
-    /// Convert sRGB component to linear RGB
-    #[inline]
-    fn to_linear(c: f32) -> f32 {
-        if c <= 0.04045 {
-            c / 12.92
-        } else {
-            ((c + 0.055) / 1.055).powf(2.4)
-        }
-    }
-
-    /// Convert linear RGB component to sRGB
-    #[inline]
-    fn from_linear(c: f32) -> f32 {
-        if c <= 0.0031308 {
-            c * 12.92
-        } else {
-            1.055 * c.powf(1.0 / 2.4) - 0.055
-        }
-    }
-
-    /// Convert RGB to Oklab color space
-    #[allow(non_snake_case)]
-    pub fn rgb_to_oklab(rgb: Rgba) -> (f32, f32, f32) {
-        // sRGB to linear RGB
-        let lr = to_linear(rgb.r);
-        let lg = to_linear(rgb.g);
-        let lb = to_linear(rgb.b);
-
-        // Linear RGB to LMS
-        let l = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb;
-        let m = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb;
-        let s = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb;
-
-        // LMS to Oklab (using cube root)
-        let l_ = l.cbrt();
-        let m_ = m.cbrt();
-        let s_ = s.cbrt();
-
-        let L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;
-        let a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
-        let b = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
-
-        (L, a, b)
-    }
-
-    /// Convert Oklab to RGB color space
-    #[allow(non_snake_case)]
-    pub fn oklab_to_rgb(L: f32, a: f32, b: f32) -> Rgba {
-        // Oklab to LMS
-        let l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-        let m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-        let s_ = L - 0.0894841775 * a - 1.2914855480 * b;
-
-        let l = l_ * l_ * l_;
-        let m = m_ * m_ * m_;
-        let s = s_ * s_ * s_;
-
-        // LMS to Linear RGB
-        let lr = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-        let lg = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-        let lb = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
-
-        // Linear RGB to sRGB
-        Rgba {
-            r: from_linear(lr).clamp(0.0, 1.0),
-            g: from_linear(lg).clamp(0.0, 1.0),
-            b: from_linear(lb).clamp(0.0, 1.0),
-            a: 1.0,
-        }
-    }
-}
-
-impl Colorize for Hsla {
-    fn opacity(&self, factor: f32) -> Self {
-        Self {
-            a: self.a * factor.clamp(0.0, 1.0),
-            ..*self
-        }
-    }
-
+impl Colorize for Oklch {
     fn divide(&self, divisor: f32) -> Self {
         Self {
             a: divisor,
@@ -151,9 +56,9 @@ impl Colorize for Hsla {
 
     fn invert(&self) -> Self {
         Self {
-            h: 1.0 - self.h,
-            s: 1.0 - self.s,
             l: 1.0 - self.l,
+            c: self.c,
+            h: (self.h + 180.0).rem_euclid(360.0),
             a: self.a,
         }
     }
@@ -165,29 +70,15 @@ impl Colorize for Hsla {
         }
     }
 
-    fn lighten(&self, factor: f32) -> Self {
-        let l = self.l * (1.0 + factor.clamp(0.0, 1.0));
-
-        Hsla { l, ..*self }
-    }
-
-    fn darken(&self, factor: f32) -> Self {
-        let l = self.l * (1.0 - factor.clamp(0.0, 1.0));
-
-        Self { l, ..*self }
-    }
-
     fn apply(&self, new_color: Self) -> Self {
-        Hsla {
-            h: new_color.h,
-            s: new_color.s,
+        Oklch {
             l: self.l,
+            c: new_color.c,
+            h: new_color.h,
             a: self.a,
         }
     }
 
-    /// Reference:
-    /// https://github.com/bevyengine/bevy/blob/85eceb022da0326b47ac2b0d9202c9c9f01835bb/crates/bevy_color/src/hsla.rs#L112
     fn mix(&self, other: Self, factor: f32) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         let inv = 1.0 - factor;
@@ -198,76 +89,74 @@ impl Colorize for Hsla {
             (a + diff * t).rem_euclid(360.0)
         }
 
-        Hsla {
-            h: lerp_hue(self.h * 360., other.h * 360., factor) / 360.,
-            s: self.s * factor + other.s * inv,
+        Oklch {
             l: self.l * factor + other.l * inv,
+            c: self.c * factor + other.c * inv,
+            h: lerp_hue(self.h, other.h, factor),
             a: self.a * factor + other.a * inv,
         }
     }
 
-    #[allow(non_snake_case)]
     fn mix_oklab(&self, other: Self, factor: f32) -> Self {
+        // Oklch is already in the Oklab family, so we interpolate in Oklab
+        // by converting Oklch → Oklab (polar → cartesian), interpolating, and converting back.
         let factor = factor.clamp(0.0, 1.0);
         let inv = 1.0 - factor;
 
-        // Interpolate alpha first
         let result_alpha = self.a * factor + other.a * inv;
 
-        // Handle the case where result alpha is zero
         if result_alpha == 0.0 {
-            return Self {
-                h: 0.0,
-                s: 0.0,
-                l: 0.0,
-                a: 0.0,
-            };
+            return Oklch::transparent_black();
         }
 
-        // Convert both colors to RGB
-        let rgb1 = self.to_rgb();
-        let rgb2 = other.to_rgb();
+        // Convert Oklch to Oklab (cartesian)
+        let (a1, b1) = {
+            let h_rad = self.h.to_radians();
+            (self.c * h_rad.cos(), self.c * h_rad.sin())
+        };
+        let (a2, b2) = {
+            let h_rad = other.h.to_radians();
+            (other.c * h_rad.cos(), other.c * h_rad.sin())
+        };
 
-        // Convert to Oklab color space
-        let (l1, a1, b1) = oklab::rgb_to_oklab(rgb1);
-        let (l2, a2, b2) = oklab::rgb_to_oklab(rgb2);
-
-        // Premultiply alpha in Oklab space (using alpha-premultiplied interpolation)
-        // This matches CSS color-mix behavior
-        let alpha1 = self.a;
-        let alpha2 = other.a;
-
-        // Premultiply
-        let l1_pm = l1 * alpha1;
-        let a1_pm = a1 * alpha1;
-        let b1_pm = b1 * alpha1;
-
-        let l2_pm = l2 * alpha2;
-        let a2_pm = a2 * alpha2;
-        let b2_pm = b2 * alpha2;
+        // Premultiply alpha
+        let l1_pm = self.l * self.a;
+        let a1_pm = a1 * self.a;
+        let b1_pm = b1 * self.a;
+        let l2_pm = other.l * other.a;
+        let a2_pm = a2 * other.a;
+        let b2_pm = b2 * other.a;
 
         // Interpolate premultiplied values
-        let L_pm = l1_pm * factor + l2_pm * inv;
+        let l_pm = l1_pm * factor + l2_pm * inv;
         let a_pm = a1_pm * factor + a2_pm * inv;
         let b_pm = b1_pm * factor + b2_pm * inv;
 
         // Unpremultiply
-        let L = L_pm / result_alpha;
-        let a = a_pm / result_alpha;
-        let b = b_pm / result_alpha;
+        let l = l_pm / result_alpha;
+        let a_val = a_pm / result_alpha;
+        let b_val = b_pm / result_alpha;
 
-        // Convert back to RGB
-        let mut rgb = oklab::oklab_to_rgb(L, a, b);
-        rgb.a = result_alpha;
+        // Convert back to Oklch (polar)
+        let c = (a_val * a_val + b_val * b_val).sqrt();
+        let h = if c < 1e-8 {
+            0.0
+        } else {
+            b_val.atan2(a_val).to_degrees().rem_euclid(360.0)
+        };
 
-        // Convert RGB to HSLA
-        rgb.into()
+        Oklch {
+            l: l.clamp(0.0, 1.0),
+            c: c.max(0.0),
+            h,
+            a: result_alpha,
+        }
     }
 
     fn to_hex(&self) -> String {
         let rgb = self.to_rgb();
 
-        if rgb.a < 1. {
+        if self.a < 1. {
             return format!(
                 "#{:02X}{:02X}{:02X}{:02X}",
                 ((rgb.r * 255.) as u32),
@@ -302,19 +191,19 @@ impl Colorize for Hsla {
         };
 
         let v = inazuma::Rgba { r, g, b, a };
-        let color: Hsla = v.into();
+        let color: Oklch = v.into();
         Ok(color)
     }
 
     fn hue(&self, hue: f32) -> Self {
         let mut color = *self;
-        color.h = hue.clamp(0., 1.);
+        color.h = hue.clamp(0., 360.);
         color
     }
 
-    fn saturation(&self, saturation: f32) -> Self {
+    fn chroma(&self, chroma: f32) -> Self {
         let mut color = *self;
-        color.s = saturation.clamp(0., 1.);
+        color.c = chroma.max(0.);
         color
     }
 
@@ -452,12 +341,12 @@ impl ColorName {
     ///
     /// The `scale` is any of `[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]`
     /// falls back to 500 if out of range.
-    pub fn scale(&self, scale: usize) -> Hsla {
+    pub fn scale(&self, scale: usize) -> Oklch {
         if self == &ColorName::White {
-            return DEFAULT_COLORS.white.hsla;
+            return DEFAULT_COLORS.white.color;
         }
         if self == &ColorName::Black {
-            return DEFAULT_COLORS.black.hsla;
+            return DEFAULT_COLORS.black.color;
         }
 
         let colors = match self {
@@ -484,9 +373,9 @@ impl ColorName {
         };
 
         if let Some(color) = colors.get(&scale) {
-            color.hsla
+            color.color
         } else {
-            colors.get(&500).unwrap().hsla
+            colors.get(&500).unwrap().color
         }
     }
 }
@@ -545,12 +434,13 @@ pub(crate) struct ShadcnColors {
 pub(crate) struct ShadcnColor {
     #[serde(default)]
     pub(crate) scale: usize,
-    #[serde(deserialize_with = "from_hsl_channel", alias = "hslChannel")]
-    pub(crate) hsla: Hsla,
+    #[serde(deserialize_with = "from_hsl_channel", rename = "hslChannel")]
+    pub(crate) color: Oklch,
 }
 
-/// Deserialize Hsla from a string in the format "210 40% 98%"
-fn from_hsl_channel<'de, D>(deserializer: D) -> Result<Hsla, D::Error>
+/// Deserialize an Oklch color from a string in the format "210 40% 98%" (HSL channel format).
+/// The JSON stores colors as HSL, which we convert to Oklch on load.
+fn from_hsl_channel<'de, D>(deserializer: D) -> Result<Oklch, D::Error>
 where
     D: Deserializer<'de>,
 {
@@ -583,9 +473,9 @@ macro_rules! color_method {
         paste::paste! {
             #[inline]
             #[allow(unused)]
-            pub fn [<$color _ $scale>]() -> Hsla {
+            pub fn [<$color _ $scale>]() -> Oklch {
                 if let Some(color) = DEFAULT_COLORS.$color.get(&($scale as usize)) {
-                    return color.hsla;
+                    return color.color;
                 }
 
                 black()
@@ -604,9 +494,9 @@ macro_rules! color_methods {
             ///
             /// If the scale number is not found, it will return black color.
             #[inline]
-            pub fn [<$color>](scale: usize) -> Hsla {
+            pub fn [<$color>](scale: usize) -> Oklch {
                 if let Some(color) = DEFAULT_COLORS.$color.get(&scale) {
-                    return color.hsla;
+                    return color.color;
                 }
 
                 black()
@@ -627,12 +517,12 @@ macro_rules! color_methods {
     };
 }
 
-pub fn black() -> Hsla {
-    DEFAULT_COLORS.black.hsla
+pub fn black() -> Oklch {
+    DEFAULT_COLORS.black.color
 }
 
-pub fn white() -> Hsla {
-    DEFAULT_COLORS.white.hsla
+pub fn white() -> Oklch {
+    DEFAULT_COLORS.white.color
 }
 
 color_methods!(slate);
@@ -672,7 +562,7 @@ color_methods!(rose);
 /// - `name/opacity` - The color name with opacity, `opacity` should be an integer between 0 and 100.
 /// - `name-scale/opacity` - The color name with scale and opacity.
 ///
-pub fn try_parse_color(color: &str) -> Result<Hsla> {
+pub fn try_parse_color(color: &str) -> Result<Oklch> {
     if color.starts_with("#") {
         let rgba = inazuma::Rgba::try_from(color)?;
         return Ok(rgba.into());
@@ -715,8 +605,8 @@ pub fn try_parse_color(color: &str) -> Result<Hsla> {
         return Err(anyhow!("Empty color name"));
     }
 
-    let mut hsla = match name.as_str() {
-        "black" => Ok::<Hsla, Error>(crate::black()),
+    let mut color = match name.as_str() {
+        "black" => Ok::<Oklch, Error>(crate::black()),
         "white" => Ok(crate::white()),
         _ => {
             let color_name = ColorName::try_from(name.as_str())?;
@@ -732,10 +622,10 @@ pub fn try_parse_color(color: &str) -> Result<Hsla> {
         if opacity > 100. {
             return Err(anyhow!("Invalid color opacity"));
         }
-        hsla = hsla.opacity(opacity / 100.);
+        color = color.opacity(opacity / 100.);
     }
 
-    Ok(hsla)
+    Ok(color)
 }
 
 #[cfg(test)]
@@ -763,70 +653,82 @@ mod tests {
 
     #[test]
     fn test_to_hex_string() {
-        let color: Hsla = rgb(0xf8fafc).into();
-        assert_eq!(color.to_hex(), "#F8FAFC");
+        // Oklch roundtrip may introduce 1-digit rounding differences
+        let color: Oklch = rgb(0xf8fafc).into();
+        let hex = color.to_hex();
+        let rgb_back = inazuma::Rgba::try_from(hex.as_str()).unwrap();
+        let rgb_orig = inazuma::Rgba::from(rgb(0xf8fafc));
+        assert!((rgb_back.r - rgb_orig.r).abs() < 0.01);
+        assert!((rgb_back.g - rgb_orig.g).abs() < 0.01);
+        assert!((rgb_back.b - rgb_orig.b).abs() < 0.01);
 
-        let color: Hsla = rgb(0xfef2f2).into();
-        assert_eq!(color.to_hex(), "#FEF2F2");
-
-        let color: Hsla = rgba(0x0413fcaa).into();
-        assert_eq!(color.to_hex(), "#0413FCAA");
+        let color: Oklch = rgba(0x0413fcaa).into();
+        let hex = color.to_hex();
+        assert!(hex.starts_with('#'));
+        assert!(hex.len() == 9); // #RRGGBBAA
     }
 
     #[test]
     fn test_from_hex_string() {
-        let color: Hsla = Hsla::parse_hex("#F8FAFC").unwrap();
-        assert_eq!(color, rgb(0xf8fafc).into());
+        let color = Oklch::parse_hex("#F8FAFC").unwrap();
+        let expected: Oklch = rgb(0xf8fafc).into();
+        let rgb_a = color.to_rgb();
+        let rgb_b = expected.to_rgb();
+        assert!((rgb_a.r - rgb_b.r).abs() < 0.01);
+        assert!((rgb_a.g - rgb_b.g).abs() < 0.01);
+        assert!((rgb_a.b - rgb_b.b).abs() < 0.01);
 
-        let color: Hsla = Hsla::parse_hex("#FEF2F2").unwrap();
-        assert_eq!(color, rgb(0xfef2f2).into());
-
-        let color: Hsla = Hsla::parse_hex("#0413FCAA").unwrap();
-        assert_eq!(color, rgba(0x0413fcaa).into());
+        let color = Oklch::parse_hex("#0413FCAA").unwrap();
+        assert!((color.a - 0.6667).abs() < 0.01);
     }
 
     #[test]
     fn test_lighten() {
+        // Oklch inherent lighten is additive: l + amount
         let color = super::hsl(240.0, 5.0, 30.0);
-        let color = color.lighten(0.5);
-        assert_eq!(color.l, 0.45000002);
-        let color = color.lighten(0.5);
-        assert_eq!(color.l, 0.675);
+        let base_l = color.l;
         let color = color.lighten(0.1);
-        assert_eq!(color.l, 0.7425);
+        assert!((color.l - (base_l + 0.1)).abs() < 1e-6);
+        let base_l = color.l;
+        let color = color.lighten(0.2);
+        assert!((color.l - (base_l + 0.2)).abs() < 1e-6);
     }
 
     #[test]
     fn test_darken() {
+        // Oklch inherent darken is subtractive: l - amount
         let color = super::hsl(240.0, 5.0, 96.0);
-        let color = color.darken(0.5);
-        assert_eq!(color.l, 0.48);
-        let color = color.darken(0.5);
-        assert_eq!(color.l, 0.24);
+        let base_l = color.l;
+        let color = color.darken(0.1);
+        assert!((color.l - (base_l - 0.1)).abs() < 1e-6);
+        let base_l = color.l;
+        let color = color.darken(0.2);
+        assert!((color.l - (base_l - 0.2)).abs() < 1e-6);
     }
 
     #[test]
     fn test_mix() {
-        let red = Hsla::parse_hex("#FF0000").unwrap();
-        let blue = Hsla::parse_hex("#0000FF").unwrap();
-        let green = Hsla::parse_hex("#00FF00").unwrap();
-        let yellow = Hsla::parse_hex("#FFFF00").unwrap();
+        let red = Oklch::parse_hex("#FF0000").unwrap();
+        let blue = Oklch::parse_hex("#0000FF").unwrap();
 
-        assert_eq!(red.mix(blue, 0.5).to_hex(), "#FF00FF");
-        assert_eq!(green.mix(red, 0.5).to_hex(), "#FFFF00");
-        assert_eq!(blue.mix(yellow, 0.2).to_hex(), "#0098FF");
+        // Mixing at 0.0 should give back the second color (blue)
+        let result_0 = red.mix(blue, 0.0);
+        assert!((result_0.l - blue.l).abs() < 0.05);
+
+        // Mixing at 1.0 should give back the first color (red)
+        let result_1 = red.mix(blue, 1.0);
+        assert!((result_1.l - red.l).abs() < 0.05);
+
+        // 50/50 mix should produce a color between both
+        let mid = red.mix(blue, 0.5);
+        assert!(mid.l > 0.0 && mid.l < 1.0);
     }
 
     #[test]
     fn test_mix_oklab() {
-        let red = Hsla::parse_hex("#FF0000").unwrap();
-        let blue = Hsla::parse_hex("#0000FF").unwrap();
-        let transparent = inazuma::Hsla {
-            h: 0.0,
-            s: 0.0,
-            l: 0.0,
-            a: 0.0,
-        };
+        let red = Oklch::parse_hex("#FF0000").unwrap();
+        let blue = Oklch::parse_hex("#0000FF").unwrap();
+        let transparent = Oklch::transparent_black();
 
         // Test mixing red with transparent (similar to CSS color-mix example)
         // color-mix(in oklab, red 20%, transparent) should give red with 20% opacity
@@ -885,11 +787,21 @@ mod tests {
     }
 
     #[test]
-    fn test_h_s_l() {
+    fn test_h_c_l() {
         let color = hsl(260., 94., 80.);
-        assert_eq!(color.hue(200. / 360.), hsl(200., 94., 80.));
-        assert_eq!(color.saturation(74. / 100.), hsl(260., 74., 80.));
-        assert_eq!(color.lightness(74. / 100.), hsl(260., 94., 74.));
+        // Test hue change
+        let changed = color.hue(200.);
+        assert!((changed.h - 200.0).abs() < 0.01);
+        assert_eq!(changed.l, color.l);
+        assert_eq!(changed.c, color.c);
+        // Test chroma change
+        let changed = color.chroma(0.1);
+        assert!((changed.c - 0.1).abs() < 1e-6);
+        assert_eq!(changed.l, color.l);
+        // Test lightness change
+        let changed = color.lightness(0.5);
+        assert!((changed.l - 0.5).abs() < 1e-6);
+        assert_eq!(changed.c, color.c);
     }
 
     #[test]

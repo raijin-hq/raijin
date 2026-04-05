@@ -5,7 +5,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    Colorize, Theme, ThemeColor, ThemeMode,
+    Theme, ThemeColor, ThemeMode,
     highlighter::{HighlightTheme, HighlightThemeStyle},
     try_parse_color,
 };

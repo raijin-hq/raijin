@@ -4,7 +4,7 @@ use std::{
     ops::Range,
 };
 
-use crate::{Background, FontStyle, FontWeight, Hsla, Rgba};
+use crate::{Background, FontStyle, FontWeight, Oklch, Rgba};
 use collections::HashSet;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -35,8 +35,8 @@ impl Default for Fill {
     }
 }
 
-impl From<Hsla> for Fill {
-    fn from(color: Hsla) -> Self {
+impl From<Oklch> for Fill {
+    fn from(color: Oklch) -> Self {
         Self::Color(color.into())
     }
 }
@@ -58,7 +58,7 @@ impl From<Background> for Fill {
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct HighlightStyle {
     /// The color of the text
-    pub color: Option<Hsla>,
+    pub color: Option<Oklch>,
 
     /// The font weight, e.g. bold
     pub font_weight: Option<FontWeight>,
@@ -67,7 +67,7 @@ pub struct HighlightStyle {
     pub font_style: Option<FontStyle>,
 
     /// The background color of the text
-    pub background_color: Option<Hsla>,
+    pub background_color: Option<Oklch>,
 
     /// The underline style of the text
     pub underline: Option<UnderlineStyle>,
@@ -97,7 +97,7 @@ impl Hash for HighlightStyle {
 
 impl HighlightStyle {
     /// Create a highlight style with just a color
-    pub fn color(color: Hsla) -> Self {
+    pub fn color(color: Oklch) -> Self {
         Self {
             color: Some(color),
             ..Default::default()
@@ -135,8 +135,8 @@ impl HighlightStyle {
     }
 }
 
-impl From<Hsla> for HighlightStyle {
-    fn from(color: Hsla) -> Self {
+impl From<Oklch> for HighlightStyle {
+    fn from(color: Oklch) -> Self {
         Self {
             color: Some(color),
             ..Default::default()
@@ -165,7 +165,7 @@ impl From<FontStyle> for HighlightStyle {
 impl From<Rgba> for HighlightStyle {
     fn from(color: Rgba) -> Self {
         Self {
-            color: Some(color.into()),
+            color: Some(Oklch::from(color)),
             ..Default::default()
         }
     }

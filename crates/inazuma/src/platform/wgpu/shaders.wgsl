@@ -117,22 +117,22 @@ struct Edges {
     left: f32,
 }
 
-struct Hsla {
-    h: f32,
-    s: f32,
+struct Oklch {
     l: f32,
+    c: f32,
+    h: f32,
     a: f32,
 }
 
-struct EdgesHsla {
-    top: Hsla,
-    right: Hsla,
-    bottom: Hsla,
-    left: Hsla,
+struct EdgesOklch {
+    top: Oklch,
+    right: Oklch,
+    bottom: Oklch,
+    left: Oklch,
 }
 
 struct LinearColorStop {
-    color: Hsla,
+    color: Oklch,
     percentage: f32,
 }
 
@@ -145,7 +145,7 @@ struct Background {
     // 0u is sRGB linear color
     // 1u is Oklab color
     color_space: u32,
-    solid: Hsla,
+    solid: Oklch,
     gradient_angle_or_pattern_height: f32,
     colors: array<LinearColorStop, 2>,
     pad: u32,
@@ -244,39 +244,13 @@ fn srgba_to_linear(color: vec4<f32>) -> vec4<f32> {
     return vec4<f32>(srgb_to_linear(color.rgb), color.a);
 }
 
-/// Hsla to linear RGBA conversion.
-fn hsla_to_rgba(hsla: Hsla) -> vec4<f32> {
-    let h = hsla.h * 6.0; // Now, it's an angle but scaled in [0, 6) range
-    let s = hsla.s;
-    let l = hsla.l;
-    let a = hsla.a;
-
-    let c = (1.0 - abs(2.0 * l - 1.0)) * s;
-    let x = c * (1.0 - abs(h % 2.0 - 1.0));
-    let m = l - c / 2.0;
-    var color = vec3<f32>(m);
-
-    if (h >= 0.0 && h < 1.0) {
-        color.r += c;
-        color.g += x;
-    } else if (h >= 1.0 && h < 2.0) {
-        color.r += x;
-        color.g += c;
-    } else if (h >= 2.0 && h < 3.0) {
-        color.g += c;
-        color.b += x;
-    } else if (h >= 3.0 && h < 4.0) {
-        color.g += x;
-        color.b += c;
-    } else if (h >= 4.0 && h < 5.0) {
-        color.r += x;
-        color.b += c;
-    } else {
-        color.r += c;
-        color.b += x;
-    }
-
-    return vec4<f32>(color, a);
+/// Oklch to linear RGBA conversion.
+/// Converts polar Oklch (L, C, H degrees, alpha) to linear sRGB via Oklab.
+fn oklch_to_rgba(oklch: Oklch) -> vec4<f32> {
+    let h_rad = oklch.h * 3.141592653589793 / 180.0;
+    let a_lab = oklch.c * cos(h_rad);
+    let b_lab = oklch.c * sin(h_rad);
+    return oklab_to_linear_srgb(vec4<f32>(oklch.l, a_lab, b_lab, oklch.a));
 }
 
 /// Convert a linear sRGB to Oklab space.
@@ -408,15 +382,15 @@ struct GradientColor {
 }
 
 fn prepare_gradient_color(tag: u32, color_space: u32,
-    solid: Hsla, colors: array<LinearColorStop, 2>) -> GradientColor {
+    solid: Oklch, colors: array<LinearColorStop, 2>) -> GradientColor {
     var result = GradientColor();
 
     if (tag == 0u || tag == 2u || tag == 3u) {
-        result.solid = hsla_to_rgba(solid);
+        result.solid = oklch_to_rgba(solid);
     } else if (tag == 1u) {
-        // The hsla_to_rgba is returns a linear sRGB color
-        result.color0 = hsla_to_rgba(colors[0].color);
-        result.color1 = hsla_to_rgba(colors[1].color);
+        // The oklch_to_rgba returns a linear sRGB color
+        result.color0 = oklch_to_rgba(colors[0].color);
+        result.color1 = oklch_to_rgba(colors[1].color);
 
         // Prepare color space in vertex for avoid conversion
         // in fragment shader for performance reasons
@@ -528,7 +502,7 @@ struct Quad {
     bounds: Bounds,
     content_mask: Bounds,
     background: Background,
-    border_colors: EdgesHsla,
+    border_colors: EdgesOklch,
     corner_radii: Corners,
     border_widths: Edges,
 }
@@ -695,14 +669,14 @@ fn fs_quad(input: QuadVarying) -> @location(0) vec4<f32> {
         let in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
         if (in_horizontal_border) {
             border_color = select(
-                hsla_to_rgba(quad.border_colors.right),
-                hsla_to_rgba(quad.border_colors.left),
+                oklch_to_rgba(quad.border_colors.right),
+                oklch_to_rgba(quad.border_colors.left),
                 center_to_point.x < 0.0
             );
         } else {
             border_color = select(
-                hsla_to_rgba(quad.border_colors.bottom),
-                hsla_to_rgba(quad.border_colors.top),
+                oklch_to_rgba(quad.border_colors.bottom),
+                oklch_to_rgba(quad.border_colors.top),
                 center_to_point.y < 0.0
             );
         }
@@ -972,7 +946,7 @@ struct Shadow {
     bounds: Bounds,
     corner_radii: Corners,
     content_mask: Bounds,
-    color: Hsla,
+    color: Oklch,
 }
 @group(1) @binding(0) var<storage, read> b_shadows: array<Shadow>;
 
@@ -997,7 +971,7 @@ fn vs_shadow(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index) ins
 
     var out = ShadowVarying();
     out.position = to_device_position(unit_vertex, shadow.bounds);
-    out.color = hsla_to_rgba(shadow.color);
+    out.color = oklch_to_rgba(shadow.color);
     out.shadow_id = instance_id;
     out.clip_distances = distance_from_clip_rect(unit_vertex, shadow.bounds, shadow.content_mask);
     return out;
@@ -1143,7 +1117,7 @@ struct Underline {
     pad: u32,
     bounds: Bounds,
     content_mask: Bounds,
-    color: Hsla,
+    color: Oklch,
     thickness: f32,
     wavy: u32,
 }
@@ -1164,7 +1138,7 @@ fn vs_underline(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index) 
 
     var out = UnderlineVarying();
     out.position = to_device_position(unit_vertex, underline.bounds);
-    out.color = hsla_to_rgba(underline.color);
+    out.color = oklch_to_rgba(underline.color);
     out.underline_id = instance_id;
     out.clip_distances = distance_from_clip_rect(unit_vertex, underline.bounds, underline.content_mask);
     return out;
@@ -1209,7 +1183,7 @@ struct MonochromeSprite {
     pad: u32,
     bounds: Bounds,
     content_mask: Bounds,
-    color: Hsla,
+    color: Oklch,
     tile: AtlasTile,
     transformation: TransformationMatrix,
 }
@@ -1231,7 +1205,7 @@ fn vs_mono_sprite(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index
     out.position = to_device_position_transformed(unit_vertex, sprite.bounds, sprite.transformation);
 
     out.tile_position = to_tile_position(unit_vertex, sprite.tile);
-    out.color = hsla_to_rgba(sprite.color);
+    out.color = oklch_to_rgba(sprite.color);
     out.clip_distances = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds, sprite.content_mask, sprite.transformation);
     return out;
 }

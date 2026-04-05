@@ -9,7 +9,7 @@ use instant::Instant;
 
 use crate::{ActiveTheme, AxisExt};
 use inazuma::{
-    App, Axis, ElementId, Hsla, IntoElement, ListState, Pixels, Point, ScrollHandle, Size,
+    App, Axis, ElementId, Oklch, IntoElement, ListState, Pixels, Point, ScrollHandle, Size,
     UniformListScrollHandle, point, px,
 };
 use schemars::JsonSchema;
@@ -389,7 +389,7 @@ impl Scrollbar {
         WIDTH
     }
 
-    pub(super) fn style_for_active(cx: &App) -> (Hsla, Hsla, Hsla, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_active(cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         (
             cx.theme().scrollbar_thumb_hover,
             cx.theme().scrollbar,
@@ -400,7 +400,7 @@ impl Scrollbar {
         )
     }
 
-    pub(super) fn style_for_hovered_thumb(cx: &App) -> (Hsla, Hsla, Hsla, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_hovered_thumb(cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         (
             cx.theme().scrollbar_thumb_hover,
             cx.theme().scrollbar,
@@ -411,18 +411,18 @@ impl Scrollbar {
         )
     }
 
-    pub(super) fn style_for_hovered_bar(cx: &App) -> (Hsla, Hsla, Hsla, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_hovered_bar(cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         (
             cx.theme().scrollbar_thumb,
             cx.theme().scrollbar,
-            inazuma::transparent_black(),
+            Oklch::transparent_black(),
             THUMB_ACTIVE_WIDTH,
             THUMB_ACTIVE_INSET,
             THUMB_ACTIVE_RADIUS,
         )
     }
 
-    pub(super) fn style_for_normal(&self, cx: &App) -> (Hsla, Hsla, Hsla, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_normal(&self, cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         let scrollbar_show = self.scrollbar_show.unwrap_or(cx.theme().scrollbar_show);
         let (width, inset, radius) = match scrollbar_show {
             ScrollbarShow::Scrolling => (THUMB_WIDTH, THUMB_INSET, THUMB_RADIUS),
@@ -432,14 +432,14 @@ impl Scrollbar {
         (
             cx.theme().scrollbar_thumb,
             cx.theme().scrollbar,
-            inazuma::transparent_black(),
+            Oklch::transparent_black(),
             width,
             inset,
             radius,
         )
     }
 
-    pub(super) fn style_for_idle(&self, cx: &App) -> (Hsla, Hsla, Hsla, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_idle(&self, cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         let scrollbar_show = self.scrollbar_show.unwrap_or(cx.theme().scrollbar_show);
         let (width, inset, radius) = match scrollbar_show {
             ScrollbarShow::Scrolling => (THUMB_WIDTH, THUMB_INSET, THUMB_RADIUS),
@@ -447,9 +447,9 @@ impl Scrollbar {
         };
 
         (
-            inazuma::transparent_black(),
-            inazuma::transparent_black(),
-            inazuma::transparent_black(),
+            Oklch::transparent_black(),
+            Oklch::transparent_black(),
+            Oklch::transparent_black(),
             width,
             inset,
             radius,
@@ -478,11 +478,11 @@ pub struct AxisPrepaintState {
     pub(super) bar_hitbox: inazuma::Hitbox,
     pub(super) bounds: inazuma::Bounds<Pixels>,
     pub(super) radius: Pixels,
-    pub(super) bg: Hsla,
-    pub(super) border: Hsla,
+    pub(super) bg: Oklch,
+    pub(super) border: Oklch,
     pub(super) thumb_bounds: inazuma::Bounds<Pixels>,
     pub(super) thumb_fill_bounds: inazuma::Bounds<Pixels>,
-    pub(super) thumb_bg: Hsla,
+    pub(super) thumb_bg: Oklch,
     pub(super) scroll_size: Pixels,
     pub(super) container_size: Pixels,
     pub(super) thumb_size: Pixels,

@@ -3,7 +3,7 @@ use std::rc::Rc;
 use crate::{ActiveTheme, Icon, IconName, Selectable, Sizable, Size, StyledExt, h_flex};
 use inazuma::prelude::FluentBuilder as _;
 use inazuma::{
-    AnyElement, App, ClickEvent, Div, Edges, Hsla, InteractiveElement, IntoElement, MouseButton,
+    AnyElement, App, ClickEvent, Div, Edges, Oklch, InteractiveElement, IntoElement, MouseButton,
     ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window,
     div, px, relative,
 };
@@ -368,22 +368,22 @@ impl TabVariant {
 #[allow(dead_code)]
 struct TabStyle {
     borders: Edges<Pixels>,
-    border_color: Hsla,
-    bg: Hsla,
-    fg: Hsla,
+    border_color: Oklch,
+    bg: Oklch,
+    fg: Oklch,
     shadow: bool,
-    inner_bg: Hsla,
+    inner_bg: Oklch,
 }
 
 impl Default for TabStyle {
     fn default() -> Self {
         TabStyle {
             borders: Edges::all(px(0.)),
-            border_color: inazuma::transparent_white(),
-            bg: inazuma::transparent_white(),
-            fg: inazuma::transparent_white(),
+            border_color: Oklch::from(inazuma::transparent_white()),
+            bg: Oklch::from(inazuma::transparent_white()),
+            fg: Oklch::from(inazuma::transparent_white()),
             shadow: false,
-            inner_bg: inazuma::transparent_white(),
+            inner_bg: Oklch::from(inazuma::transparent_white()),
         }
     }
 }

@@ -9,7 +9,7 @@
 //! is decomposed into 4 directional segments (top, bottom, left, right) with a weight
 //! (none, light, heavy, double). A single rendering function handles all 128 combinations.
 
-use inazuma::{point, px, size, Bounds, Hsla, Pixels, Window, fill};
+use inazuma::{point, px, size, Bounds, Oklch, Pixels, Window, fill};
 
 // ── Segment weight for box drawing lines ──────────────────────────────────────
 
@@ -258,7 +258,7 @@ pub fn draw_builtin(
     y: Pixels,
     cell_width: Pixels,
     cell_height: Pixels,
-    color: Hsla,
+    color: inazuma::Oklch,
     window: &mut Window,
 ) {
     let w = f32::from(cell_width);
@@ -291,7 +291,7 @@ pub fn draw_builtin(
             draw_block(kind, x, y, w, h, color, window);
         }
         BuiltinChar::Shade(opacity) => {
-            let shaded = Hsla { a: color.a * opacity, ..color };
+            let shaded = color.opacity(opacity);
             paint_rect(x, y, w, h, shaded, window);
         }
         BuiltinChar::Quadrant(bits) => {
@@ -307,7 +307,7 @@ fn draw_box_segments(
     x: f32, y: f32, w: f32, h: f32,
     cx: f32, cy: f32,
     stroke: f32,
-    color: Hsla,
+    color: Oklch,
     window: &mut Window,
 ) {
     let heavy = stroke * 2.0;
@@ -364,7 +364,7 @@ fn draw_box_segments(
 
 // ── Dashed lines ──────────────────────────────────────────────────────────────
 
-fn draw_dashed_h(x: f32, cy: f32, w: f32, stroke: f32, dashes: u8, color: Hsla, window: &mut Window) {
+fn draw_dashed_h(x: f32, cy: f32, w: f32, stroke: f32, dashes: u8, color: Oklch, window: &mut Window) {
     let count = dashes as f32;
     let dash_w = w / (count * 2.0 - 1.0);
     for i in 0..dashes {
@@ -373,7 +373,7 @@ fn draw_dashed_h(x: f32, cy: f32, w: f32, stroke: f32, dashes: u8, color: Hsla, 
     }
 }
 
-fn draw_dashed_v(y: f32, cx: f32, h: f32, stroke: f32, dashes: u8, color: Hsla, window: &mut Window) {
+fn draw_dashed_v(y: f32, cx: f32, h: f32, stroke: f32, dashes: u8, color: Oklch, window: &mut Window) {
     let count = dashes as f32;
     let dash_h = h / (count * 2.0 - 1.0);
     for i in 0..dashes {
@@ -389,7 +389,7 @@ fn draw_rounded_corner(
     x: f32, y: f32, w: f32, h: f32,
     cx: f32, cy: f32,
     stroke: f32,
-    color: Hsla,
+    color: Oklch,
     window: &mut Window,
 ) {
     let radius = (w / 4.0).max(stroke);
@@ -429,7 +429,7 @@ fn paint_rounded_corner_quad(
     cx: f32, cy: f32,
     radius: f32, stroke: f32,
     corner: Corner,
-    color: Hsla,
+    color: Oklch,
     window: &mut Window,
 ) {
     // Use Inazuma's PaintQuad with corner_radii for a GPU-native rounded corner.
@@ -494,7 +494,7 @@ fn paint_rounded_corner_quad(
         corner_radii,
         background: inazuma::transparent_black().into(),
         border_widths,
-        border_colors: border_color,
+        border_colors: border_color.into(),
         border_style: inazuma::BorderStyle::Solid,
     });
 }
@@ -505,7 +505,7 @@ fn draw_diagonal(
     x: f32, y: f32, w: f32, h: f32,
     stroke: f32,
     rising: bool, falling: bool,
-    color: Hsla,
+    color: Oklch,
     window: &mut Window,
 ) {
     // Approximate diagonals with multiple thin horizontal rects (scanline approach)
@@ -531,7 +531,7 @@ fn draw_diagonal(
 
 // ── Block elements ────────────────────────────────────────────────────────────
 
-fn draw_block(kind: BlockKind, x: f32, y: f32, w: f32, h: f32, color: Hsla, window: &mut Window) {
+fn draw_block(kind: BlockKind, x: f32, y: f32, w: f32, h: f32, color: Oklch, window: &mut Window) {
     match kind {
         BlockKind::Full => paint_rect(x, y, w, h, color, window),
         BlockKind::Lower(eighths) => {
@@ -555,7 +555,7 @@ fn draw_block(kind: BlockKind, x: f32, y: f32, w: f32, h: f32, color: Hsla, wind
 
 // ── Quadrant rendering ────────────────────────────────────────────────────────
 
-fn draw_quadrant(bits: u8, x: f32, y: f32, w: f32, h: f32, color: Hsla, window: &mut Window) {
+fn draw_quadrant(bits: u8, x: f32, y: f32, w: f32, h: f32, color: Oklch, window: &mut Window) {
     let hw = w / 2.0;
     let hh = h / 2.0;
     // Bit 3 = top-left, Bit 2 = top-right, Bit 1 = bottom-left, Bit 0 = bottom-right
@@ -568,7 +568,7 @@ fn draw_quadrant(bits: u8, x: f32, y: f32, w: f32, h: f32, color: Hsla, window: 
 // ── Utility ───────────────────────────────────────────────────────────────────
 
 #[inline]
-fn paint_rect(x: f32, y: f32, w: f32, h: f32, color: Hsla, window: &mut Window) {
+fn paint_rect(x: f32, y: f32, w: f32, h: f32, color: Oklch, window: &mut Window) {
     if w <= 0.0 || h <= 0.0 {
         return;
     }

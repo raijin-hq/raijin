@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use inazuma::{App, Bounds, Hsla, PathBuilder, Pixels, SharedString, Window, fill, px};
+use inazuma::{App, Bounds, Oklch, PathBuilder, Pixels, SharedString, Window, fill, px};
 use inazuma_component_macros::IntoPlot;
 use num_traits::{Num, ToPrimitive};
 
@@ -197,7 +197,7 @@ where
 
             // Determine if bullish (close > open) or bearish (close < open)
             let is_bullish = close > open;
-            let color: Hsla = if is_bullish {
+            let color: Oklch = if is_bullish {
                 cx.theme().chart_bullish
             } else {
                 cx.theme().chart_bearish

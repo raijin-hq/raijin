@@ -1,5 +1,6 @@
 use super::*;
 
+use objc2_core_graphics::{CGColorSpace, kCGColorSpaceSRGB};
 use objc2_foundation::{NSSize, NSString};
 
 pub(crate) struct MetalRenderer {
@@ -37,6 +38,14 @@ impl MetalRenderer {
         let layer = CAMetalLayer::new();
         layer.setDevice(Some(&device));
         layer.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
+        // Set explicit sRGB colorspace to prevent oversaturation on P3 displays.
+        // Without this, macOS assumes the native display colorspace (often P3),
+        // causing sRGB content to appear oversaturated.
+        unsafe {
+            if let Some(srgb) = CGColorSpace::with_name(Some(kCGColorSpaceSRGB)) {
+                layer.setColorspace(Some(&srgb));
+            }
+        }
         // Support direct-to-display rendering if the window is not transparent
         // https://developer.apple.com/documentation/metal/managing-your-game-window-for-metal-in-macos
         layer.setOpaque(!transparent);

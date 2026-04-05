@@ -1,5 +1,5 @@
 use inazuma::{
-    App, Application, Bounds, BoxShadow, Context, Div, SharedString, Window, WindowBounds,
+    App, Application, Bounds, BoxShadow, Context, Div, Oklch, SharedString, Window, WindowBounds,
     WindowOptions, current_platform, div, hsla, point, prelude::*, px, relative, rgb, size,
 };
 
@@ -12,7 +12,7 @@ impl Shadow {
             .bg(rgb(0xffffff))
             .rounded_full()
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.0, 0.1))
+            .border_color(Oklch::black().opacity(0.1))
     }
 
     fn square() -> Div {
@@ -20,7 +20,7 @@ impl Shadow {
             .size_16()
             .bg(rgb(0xffffff))
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.0, 0.1))
+            .border_color(Oklch::black().opacity(0.1))
     }
 
     fn rounded_small() -> Div {
@@ -29,7 +29,7 @@ impl Shadow {
             .bg(rgb(0xffffff))
             .rounded(px(4.))
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.0, 0.1))
+            .border_color(Oklch::black().opacity(0.1))
     }
 
     fn rounded_medium() -> Div {
@@ -38,7 +38,7 @@ impl Shadow {
             .bg(rgb(0xffffff))
             .rounded(px(8.))
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.0, 0.1))
+            .border_color(Oklch::black().opacity(0.1))
     }
 
     fn rounded_large() -> Div {
@@ -47,7 +47,7 @@ impl Shadow {
             .bg(rgb(0xffffff))
             .rounded(px(12.))
             .border_1()
-            .border_color(hsla(0.0, 0.0, 0.0, 0.1))
+            .border_color(Oklch::black().opacity(0.1))
     }
 }
 
@@ -61,7 +61,7 @@ fn example(label: impl Into<SharedString>, example: impl IntoElement) -> impl In
         .items_center()
         .w(relative(1. / 6.))
         .border_r_1()
-        .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+        .border_color(Oklch::black())
         .child(
             div()
                 .flex()
@@ -75,7 +75,7 @@ fn example(label: impl Into<SharedString>, example: impl IntoElement) -> impl In
             div()
                 .w_full()
                 .border_t_1()
-                .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                .border_color(Oklch::black())
                 .p_1()
                 .flex()
                 .items_center()
@@ -94,7 +94,7 @@ impl Render for Shadow {
             .child(div().flex().flex_col().w_full().children(vec![
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .flex_row()
                     .children(vec![
@@ -151,7 +151,7 @@ impl Render for Shadow {
                     ]),
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .w_full()
                     .children(vec![
@@ -172,13 +172,13 @@ impl Render for Shadow {
                 // Horizontal list of increasing blur radii
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
                             "Blur 0",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(0.),
                                 spread_radius: px(0.),
@@ -187,7 +187,7 @@ impl Render for Shadow {
                         example(
                             "Blur 2",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(2.),
                                 spread_radius: px(0.),
@@ -196,7 +196,7 @@ impl Render for Shadow {
                         example(
                             "Blur 4",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(4.),
                                 spread_radius: px(0.),
@@ -205,7 +205,7 @@ impl Render for Shadow {
                         example(
                             "Blur 8",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(0.),
@@ -214,7 +214,7 @@ impl Render for Shadow {
                         example(
                             "Blur 16",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(16.),
                                 spread_radius: px(0.),
@@ -224,13 +224,13 @@ impl Render for Shadow {
                 // Horizontal list of increasing spread radii
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
                             "Spread 0",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(0.),
@@ -239,7 +239,7 @@ impl Render for Shadow {
                         example(
                             "Spread 2",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(2.),
@@ -248,7 +248,7 @@ impl Render for Shadow {
                         example(
                             "Spread 4",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(4.),
@@ -257,7 +257,7 @@ impl Render for Shadow {
                         example(
                             "Spread 8",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(8.),
@@ -266,7 +266,7 @@ impl Render for Shadow {
                         example(
                             "Spread 16",
                             Shadow::base().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(16.),
@@ -276,13 +276,13 @@ impl Render for Shadow {
                 // Square spread examples
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
                             "Square Spread 0",
                             Shadow::square().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(0.),
@@ -291,7 +291,7 @@ impl Render for Shadow {
                         example(
                             "Square Spread 8",
                             Shadow::square().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(8.),
@@ -300,7 +300,7 @@ impl Render for Shadow {
                         example(
                             "Square Spread 16",
                             Shadow::square().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(16.),
@@ -310,13 +310,13 @@ impl Render for Shadow {
                 // Rounded large spread examples
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
                             "Rounded Large Spread 0",
                             Shadow::rounded_large().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(0.),
@@ -325,7 +325,7 @@ impl Render for Shadow {
                         example(
                             "Rounded Large Spread 8",
                             Shadow::rounded_large().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(8.),
@@ -334,7 +334,7 @@ impl Render for Shadow {
                         example(
                             "Rounded Large Spread 16",
                             Shadow::rounded_large().shadow(vec![BoxShadow {
-                                color: hsla(0.0, 0.0, 0.0, 0.3),
+                                color: Oklch::black().opacity(0.3),
                                 offset: point(px(0.), px(8.)),
                                 blur_radius: px(8.),
                                 spread_radius: px(16.),
@@ -344,7 +344,7 @@ impl Render for Shadow {
                 // Directional shadows
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
@@ -387,7 +387,7 @@ impl Render for Shadow {
                 // Square directional shadows
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
@@ -430,7 +430,7 @@ impl Render for Shadow {
                 // Rounded large directional shadows
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(
@@ -473,7 +473,7 @@ impl Render for Shadow {
                 // Multiple shadows for different shapes
                 div()
                     .border_b_1()
-                    .border_color(hsla(0.0, 0.0, 0.0, 1.0))
+                    .border_color(Oklch::black())
                     .flex()
                     .children(vec![
                         example(

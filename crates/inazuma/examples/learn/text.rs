@@ -14,7 +14,7 @@ mod example_prelude;
 
 use example_prelude::init_example;
 use inazuma::{
-    App, Application, Bounds, Context, FontStyle, FontWeight, Hsla, Render, StyledText,
+    App, Application, Bounds, Context, FontStyle, FontWeight, Oklch, Render, StyledText,
     TextOverflow, Window, WindowBounds, WindowOptions, colors::Colors, current_platform, div,
     prelude::*, px, relative, rgb, size,
 };
@@ -547,7 +547,7 @@ impl Render for TextExample {
 }
 
 fn section(colors: &Colors, title: &'static str, content: impl IntoElement) -> impl IntoElement {
-    let surface: Hsla = colors.container.into();
+    let surface: Oklch = colors.container.into();
 
     div()
         .flex()

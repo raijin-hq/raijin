@@ -15,7 +15,7 @@ use std::time::Duration;
 use anyhow::Result;
 use inazuma::colors::Colors;
 use inazuma::{
-    Animation, AnimationExt as _, App, Application, AssetSource, Bounds, Context, Hsla,
+    Animation, AnimationExt as _, App, Application, AssetSource, Bounds, Context, Oklch,
     SharedString, Transformation, Window, WindowBounds, WindowOptions, bounce, div, ease_in_out,
     linear, percentage, prelude::*, px, rgb, size as gpui_size, svg,
 };
@@ -241,7 +241,7 @@ fn combined_example(colors: &Colors) -> impl IntoElement {
 }
 
 fn section(colors: &Colors, title: &'static str, content: impl IntoElement) -> impl IntoElement {
-    let surface: Hsla = colors.container.into();
+    let surface: Oklch = colors.container.into();
 
     div()
         .flex()
