@@ -124,11 +124,25 @@ struct Oklch {
     a: f32,
 }
 
+struct Rgba {
+    r: f32,
+    g: f32,
+    b: f32,
+    a: f32,
+}
+
 struct EdgesOklch {
     top: Oklch,
     right: Oklch,
     bottom: Oklch,
     left: Oklch,
+}
+
+struct EdgesRgba {
+    top: Rgba,
+    right: Rgba,
+    bottom: Rgba,
+    left: Rgba,
 }
 
 struct LinearColorStop {
@@ -145,7 +159,7 @@ struct Background {
     // 0u is sRGB linear color
     // 1u is Oklab color
     color_space: u32,
-    solid: Oklch,
+    solid: Rgba,
     gradient_angle_or_pattern_height: f32,
     colors: array<LinearColorStop, 2>,
     pad: u32,
@@ -383,11 +397,11 @@ struct GradientColor {
 }
 
 fn prepare_gradient_color(tag: u32, color_space: u32,
-    solid: Oklch, colors: array<LinearColorStop, 2>) -> GradientColor {
+    solid: Rgba, colors: array<LinearColorStop, 2>) -> GradientColor {
     var result = GradientColor();
 
     if (tag == 0u || tag == 2u || tag == 3u) {
-        result.solid = oklch_to_rgba(solid);
+        result.solid = vec4<f32>(solid.r, solid.g, solid.b, solid.a);
     } else if (tag == 1u) {
         // oklch_to_rgba returns sRGB (gamma-encoded)
         result.color0 = oklch_to_rgba(colors[0].color);
@@ -503,7 +517,7 @@ struct Quad {
     bounds: Bounds,
     content_mask: Bounds,
     background: Background,
-    border_colors: EdgesOklch,
+    border_colors: EdgesRgba,
     corner_radii: Corners,
     border_widths: Edges,
 }
@@ -670,14 +684,14 @@ fn fs_quad(input: QuadVarying) -> @location(0) vec4<f32> {
         let in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
         if (in_horizontal_border) {
             border_color = select(
-                oklch_to_rgba(quad.border_colors.right),
-                oklch_to_rgba(quad.border_colors.left),
+                vec4<f32>(quad.border_colors.right.r, quad.border_colors.right.g, quad.border_colors.right.b, quad.border_colors.right.a),
+                vec4<f32>(quad.border_colors.left.r, quad.border_colors.left.g, quad.border_colors.left.b, quad.border_colors.left.a),
                 center_to_point.x < 0.0
             );
         } else {
             border_color = select(
-                oklch_to_rgba(quad.border_colors.bottom),
-                oklch_to_rgba(quad.border_colors.top),
+                vec4<f32>(quad.border_colors.bottom.r, quad.border_colors.bottom.g, quad.border_colors.bottom.b, quad.border_colors.bottom.a),
+                vec4<f32>(quad.border_colors.top.r, quad.border_colors.top.g, quad.border_colors.top.b, quad.border_colors.top.a),
                 center_to_point.y < 0.0
             );
         }
@@ -947,7 +961,7 @@ struct Shadow {
     bounds: Bounds,
     corner_radii: Corners,
     content_mask: Bounds,
-    color: Oklch,
+    color: Rgba,
 }
 @group(1) @binding(0) var<storage, read> b_shadows: array<Shadow>;
 
@@ -972,7 +986,7 @@ fn vs_shadow(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index) ins
 
     var out = ShadowVarying();
     out.position = to_device_position(unit_vertex, shadow.bounds);
-    out.color = oklch_to_rgba(shadow.color);
+    out.color = vec4<f32>(shadow.color.r, shadow.color.g, shadow.color.b, shadow.color.a);
     out.shadow_id = instance_id;
     out.clip_distances = distance_from_clip_rect(unit_vertex, shadow.bounds, shadow.content_mask);
     return out;
@@ -1118,7 +1132,7 @@ struct Underline {
     pad: u32,
     bounds: Bounds,
     content_mask: Bounds,
-    color: Oklch,
+    color: Rgba,
     thickness: f32,
     wavy: u32,
 }
@@ -1139,7 +1153,7 @@ fn vs_underline(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index) 
 
     var out = UnderlineVarying();
     out.position = to_device_position(unit_vertex, underline.bounds);
-    out.color = oklch_to_rgba(underline.color);
+    out.color = vec4<f32>(underline.color.r, underline.color.g, underline.color.b, underline.color.a);
     out.underline_id = instance_id;
     out.clip_distances = distance_from_clip_rect(unit_vertex, underline.bounds, underline.content_mask);
     return out;
@@ -1184,7 +1198,7 @@ struct MonochromeSprite {
     pad: u32,
     bounds: Bounds,
     content_mask: Bounds,
-    color: Oklch,
+    color: Rgba,
     tile: AtlasTile,
     transformation: TransformationMatrix,
 }
@@ -1206,7 +1220,7 @@ fn vs_mono_sprite(@builtin(vertex_index) vertex_id: u32, @builtin(instance_index
     out.position = to_device_position_transformed(unit_vertex, sprite.bounds, sprite.transformation);
 
     out.tile_position = to_tile_position(unit_vertex, sprite.tile);
-    out.color = oklch_to_rgba(sprite.color);
+    out.color = vec4<f32>(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
     out.clip_distances = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds, sprite.content_mask, sprite.transformation);
     return out;
 }

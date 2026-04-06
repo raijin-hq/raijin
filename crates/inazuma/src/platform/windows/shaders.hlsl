@@ -41,11 +41,18 @@ struct Oklch {
     float a;
 };
 
-struct EdgesOklch {
-    Oklch top;
-    Oklch right;
-    Oklch bottom;
-    Oklch left;
+struct Rgba {
+    float r;
+    float g;
+    float b;
+    float a;
+};
+
+struct EdgesRgba {
+    Rgba top;
+    Rgba right;
+    Rgba bottom;
+    Rgba left;
 };
 
 struct LinearColorStop {
@@ -61,7 +68,7 @@ struct Background {
     // 0u is sRGB linear color
     // 1u is Oklab color
     uint color_space;
-    Oklch solid;
+    Rgba solid;
     float gradient_angle_or_pattern_height;
     LinearColorStop colors[2];
     uint pad;
@@ -304,10 +311,10 @@ float quad_sdf(float2 pt, Bounds bounds, Corners corner_radii) {
     return quad_sdf_impl(corner_center_to_point, corner_radius);
 }
 
-GradientColor prepare_gradient_color(uint tag, uint color_space, Oklch solid, LinearColorStop colors[2]) {
+GradientColor prepare_gradient_color(uint tag, uint color_space, Rgba solid, LinearColorStop colors[2]) {
     GradientColor output;
     if (tag == 0 || tag == 2 || tag == 3) {
-        output.solid = oklch_to_rgba(solid);
+        output.solid = float4(solid.r, solid.g, solid.b, solid.a);
     } else if (tag == 1) {
         output.color0 = oklch_to_rgba(colors[0].color);
         output.color1 = oklch_to_rgba(colors[1].color);
@@ -480,7 +487,7 @@ struct Quad {
     Bounds bounds;
     Bounds content_mask;
     Background background;
-    EdgesOklch border_colors;
+    EdgesRgba border_colors;
     Corners corner_radii;
     Edges border_widths;
 };
@@ -640,13 +647,11 @@ float4 quad_fragment(QuadFragmentInput input): SV_Target {
         float4 border_color;
         bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
         if (in_horizontal_border) {
-            border_color = center_to_point.x < 0.0
-                ? oklch_to_rgba(quad.border_colors.left)
-                : oklch_to_rgba(quad.border_colors.right);
+            Rgba bc = center_to_point.x < 0.0 ? quad.border_colors.left : quad.border_colors.right;
+            border_color = float4(bc.r, bc.g, bc.b, bc.a);
         } else {
-            border_color = center_to_point.y < 0.0
-                ? oklch_to_rgba(quad.border_colors.top)
-                : oklch_to_rgba(quad.border_colors.bottom);
+            Rgba bc = center_to_point.y < 0.0 ? quad.border_colors.top : quad.border_colors.bottom;
+            border_color = float4(bc.r, bc.g, bc.b, bc.a);
         }
         // Dashed border logic when border_style == 1
         if (quad.border_style == 1) {
@@ -840,7 +845,7 @@ struct Shadow {
     Bounds bounds;
     Corners corner_radii;
     Bounds content_mask;
-    Oklch color;
+    Rgba color;
 };
 
 struct ShadowVertexOutput {
@@ -869,7 +874,7 @@ ShadowVertexOutput shadow_vertex(uint vertex_id: SV_VertexID, uint shadow_id: SV
 
     float4 device_position = to_device_position(unit_vertex, bounds);
     float4 clip_distance = distance_from_clip_rect(unit_vertex, bounds, shadow.content_mask);
-    float4 color = oklch_to_rgba(shadow.color);
+    float4 color = float4(shadow.color.r, shadow.color.g, shadow.color.b, shadow.color.a);
 
     ShadowVertexOutput output;
     output.position = device_position;
@@ -1022,7 +1027,7 @@ struct Underline {
     uint pad;
     Bounds bounds;
     Bounds content_mask;
-    Oklch color;
+    Rgba color;
     float thickness;
     uint wavy;
 };
@@ -1048,7 +1053,7 @@ UnderlineVertexOutput underline_vertex(uint vertex_id: SV_VertexID, uint underli
     float4 device_position = to_device_position(unit_vertex, underline.bounds);
     float4 clip_distance = distance_from_clip_rect(unit_vertex, underline.bounds,
                                                     underline.content_mask);
-    float4 color = oklch_to_rgba(underline.color);
+    float4 color = float4(underline.color.r, underline.color.g, underline.color.b, underline.color.a);
 
     UnderlineVertexOutput output;
     output.position = device_position;
@@ -1096,7 +1101,7 @@ struct MonochromeSprite {
     uint pad;
     Bounds bounds;
     Bounds content_mask;
-    Oklch color;
+    Rgba color;
     AtlasTile tile;
     TransformationMatrix transformation;
 };
@@ -1124,7 +1129,7 @@ MonochromeSpriteVertexOutput monochrome_sprite_vertex(uint vertex_id: SV_VertexI
         to_device_position_transformed(unit_vertex, sprite.bounds, sprite.transformation);
     float4 clip_distance = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds, sprite.content_mask, sprite.transformation);
     float2 tile_position = to_tile_position(unit_vertex, sprite.tile);
-    float4 color = oklch_to_rgba(sprite.color);
+    float4 color = float4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
 
     MonochromeSpriteVertexOutput output;
     output.position = device_position;

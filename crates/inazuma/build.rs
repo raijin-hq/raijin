@@ -58,6 +58,7 @@ mod macos {
             "Pixels".into(),
             "PointF".into(),
             "Oklch".into(),
+            "Rgba".into(),
             "ContentMask".into(),
             "Uniforms".into(),
             "AtlasTile".into(),

@@ -39,8 +39,11 @@ impl Display for ColorSpace {
 pub struct Background {
     pub(crate) tag: BackgroundTag,
     pub(crate) color_space: ColorSpace,
-    pub(crate) solid: Oklch,
+    /// Pre-converted sRGB color for solid/pattern/checkerboard backgrounds.
+    /// Sent directly to the framebuffer — no GPU-side conversion needed.
+    pub(crate) solid: Rgba,
     pub(crate) gradient_angle_or_pattern_height: f32,
+    /// Gradient color stops in Oklch for per-pixel Oklab interpolation in the shader.
     pub(crate) colors: [LinearColorStop; 2],
     /// Padding for alignment for repr(C) layout.
     pad: u32,
@@ -74,7 +77,7 @@ impl Default for Background {
     fn default() -> Self {
         Self {
             tag: BackgroundTag::Solid,
-            solid: Oklch::default(),
+            solid: Rgba::default(),
             color_space: ColorSpace::default(),
             gradient_angle_or_pattern_height: 0.0,
             colors: [LinearColorStop::default(), LinearColorStop::default()],
@@ -91,7 +94,7 @@ pub fn pattern_slash(color: impl Into<Oklch>, width: f32, interval: f32) -> Back
 
     Background {
         tag: BackgroundTag::PatternSlash,
-        solid: color.into(),
+        solid: color.into().to_rgb(),
         gradient_angle_or_pattern_height: height,
         ..Default::default()
     }
@@ -101,7 +104,7 @@ pub fn pattern_slash(color: impl Into<Oklch>, width: f32, interval: f32) -> Back
 pub fn checkerboard(color: impl Into<Oklch>, size: f32) -> Background {
     Background {
         tag: BackgroundTag::Checkerboard,
-        solid: color.into(),
+        solid: color.into().to_rgb(),
         gradient_angle_or_pattern_height: size,
         ..Default::default()
     }
@@ -110,7 +113,7 @@ pub fn checkerboard(color: impl Into<Oklch>, size: f32) -> Background {
 /// Creates a solid background color.
 pub fn solid_background(color: impl Into<Oklch>) -> Background {
     Background {
-        solid: color.into(),
+        solid: color.into().to_rgb(),
         ..Default::default()
     }
 }
@@ -169,7 +172,7 @@ impl LinearColorStop {
 
 impl Background {
     /// Returns the solid color if this is a solid background, None otherwise.
-    pub fn as_solid(&self) -> Option<Oklch> {
+    pub fn as_solid(&self) -> Option<Rgba> {
         if self.tag == BackgroundTag::Solid {
             Some(self.solid)
         } else {
@@ -185,10 +188,10 @@ impl Background {
         self
     }
 
-    /// Returns a new background color with the same hue, saturation, and lightness, but with a modified alpha value.
+    /// Returns a new background color with a modified alpha value.
     pub fn opacity(&self, factor: f32) -> Self {
         let mut background = *self;
-        background.solid = background.solid.opacity(factor);
+        background.solid.a *= factor.clamp(0.0, 1.0);
         background.colors = [
             self.colors[0].opacity(factor),
             self.colors[1].opacity(factor),
@@ -199,10 +202,10 @@ impl Background {
     /// Returns whether the background color is transparent.
     pub fn is_transparent(&self) -> bool {
         match self.tag {
-            BackgroundTag::Solid => self.solid.is_transparent(),
+            BackgroundTag::Solid => self.solid.a < f32::EPSILON,
             BackgroundTag::LinearGradient => self.colors.iter().all(|c| c.color.is_transparent()),
-            BackgroundTag::PatternSlash => self.solid.is_transparent(),
-            BackgroundTag::Checkerboard => self.solid.is_transparent(),
+            BackgroundTag::PatternSlash => self.solid.a < f32::EPSILON,
+            BackgroundTag::Checkerboard => self.solid.a < f32::EPSILON,
         }
     }
 }
@@ -211,7 +214,7 @@ impl From<Oklch> for Background {
     fn from(value: Oklch) -> Self {
         Background {
             tag: BackgroundTag::Solid,
-            solid: value,
+            solid: value.to_rgb(),
             ..Default::default()
         }
     }
@@ -220,7 +223,7 @@ impl From<Rgba> for Background {
     fn from(value: Rgba) -> Self {
         Background {
             tag: BackgroundTag::Solid,
-            solid: Oklch::from(value),
+            solid: value,
             ..Default::default()
         }
     }
@@ -279,11 +282,14 @@ mod tests {
         let color = Oklch::from(rgba(0xff0099ff));
         let mut background = Background::from(color);
         assert_eq!(background.tag, BackgroundTag::Solid);
-        assert_eq!(background.solid, color);
+        assert_eq!(background.solid, color.to_rgb());
 
-        assert_eq!(background.opacity(0.5).solid, color.opacity(0.5));
+        let half = background.opacity(0.5).solid;
+        let expected = color.opacity(0.5).to_rgb();
+        assert!((half.r - expected.r).abs() < 0.01);
+        assert!((half.a - expected.a).abs() < 0.01);
         assert!(!background.is_transparent());
-        background.solid = Oklch::transparent_black();
+        background.solid = Rgba { r: 0.0, g: 0.0, b: 0.0, a: 0.0 };
         assert!(background.is_transparent());
     }
 

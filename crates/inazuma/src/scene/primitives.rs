@@ -2,8 +2,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    AtlasTile, Background, Bounds, ContentMask, Corners, Edges, Oklch, Pixels, Point, Radians,
-    ScaledPixels, Size, point,
+    AtlasTile, Background, Bounds, ContentMask, Corners, Edges, Pixels, Point, Radians,
+    Rgba, ScaledPixels, Size, point,
 };
 use std::fmt::Debug;
 use std::ops::{Add, Sub};
@@ -91,7 +91,7 @@ pub struct Quad {
     pub bounds: Bounds<ScaledPixels>,
     pub content_mask: ContentMask<ScaledPixels>,
     pub background: Background,
-    pub border_colors: Edges<Oklch>,
+    pub border_colors: Edges<Rgba>,
     pub corner_radii: Corners<ScaledPixels>,
     pub border_widths: Edges<ScaledPixels>,
 }
@@ -110,7 +110,7 @@ pub struct Underline {
     pub pad: u32, // align to 8 bytes
     pub bounds: Bounds<ScaledPixels>,
     pub content_mask: ContentMask<ScaledPixels>,
-    pub color: Oklch,
+    pub color: Rgba,
     pub thickness: ScaledPixels,
     pub wavy: u32,
 }
@@ -130,7 +130,7 @@ pub struct Shadow {
     pub bounds: Bounds<ScaledPixels>,
     pub corner_radii: Corners<ScaledPixels>,
     pub content_mask: ContentMask<ScaledPixels>,
-    pub color: Oklch,
+    pub color: Rgba,
 }
 
 impl From<Shadow> for Primitive {
@@ -261,7 +261,7 @@ pub struct MonochromeSprite {
     pub pad: u32,
     pub bounds: Bounds<ScaledPixels>,
     pub content_mask: ContentMask<ScaledPixels>,
-    pub color: Oklch,
+    pub color: Rgba,
     pub tile: AtlasTile,
     pub transformation: TransformationMatrix,
 }
@@ -280,7 +280,7 @@ pub struct SubpixelSprite {
     pub pad: u32, // align to 8 bytes
     pub bounds: Bounds<ScaledPixels>,
     pub content_mask: ContentMask<ScaledPixels>,
-    pub color: Oklch,
+    pub color: Rgba,
     pub tile: AtlasTile,
     pub transformation: TransformationMatrix,
 }

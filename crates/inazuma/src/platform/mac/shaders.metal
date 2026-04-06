@@ -42,7 +42,7 @@ struct GradientColor {
   float4 color0;
   float4 color1;
 };
-GradientColor prepare_fill_color(uint tag, uint color_space, Oklch solid, Oklch color0, Oklch color1);
+GradientColor prepare_fill_color(uint tag, uint color_space, float4 solid, Oklch color0, Oklch color1);
 
 struct QuadVertexOutput {
   uint quad_id [[flat]];
@@ -78,7 +78,7 @@ vertex QuadVertexOutput quad_vertex(uint unit_vertex_id [[vertex_id]],
   GradientColor gradient = prepare_fill_color(
     quad.background.tag,
     quad.background.color_space,
-    quad.background.solid,
+    float4(quad.background.solid.r, quad.background.solid.g, quad.background.solid.b, quad.background.solid.a),
     quad.background.colors[0].color,
     quad.background.colors[1].color
   );
@@ -212,12 +212,12 @@ fragment float4 quad_fragment(QuadFragmentInput input [[stage_in]],
     bool in_horizontal_border = straight_border_inner_corner_to_point.x > straight_border_inner_corner_to_point.y;
     if (in_horizontal_border) {
       border_color = center_to_point.x < 0.0
-        ? oklch_to_rgba(quad.border_colors.left)
-        : oklch_to_rgba(quad.border_colors.right);
+        ? float4(quad.border_colors.left.r, quad.border_colors.left.g, quad.border_colors.left.b, quad.border_colors.left.a)
+        : float4(quad.border_colors.right.r, quad.border_colors.right.g, quad.border_colors.right.b, quad.border_colors.right.a);
     } else {
       border_color = center_to_point.y < 0.0
-        ? oklch_to_rgba(quad.border_colors.top)
-        : oklch_to_rgba(quad.border_colors.bottom);
+        ? float4(quad.border_colors.top.r, quad.border_colors.top.g, quad.border_colors.top.b, quad.border_colors.top.a)
+        : float4(quad.border_colors.bottom.r, quad.border_colors.bottom.g, quad.border_colors.bottom.b, quad.border_colors.bottom.a);
     }
 
     // Dashed border logic when border_style == 1
@@ -489,7 +489,7 @@ vertex ShadowVertexOutput shadow_vertex(
       to_device_position(unit_vertex, bounds, viewport_size);
   float4 clip_distance =
       distance_from_clip_rect(unit_vertex, bounds, shadow.content_mask.bounds);
-  float4 color = oklch_to_rgba(shadow.color);
+  float4 color = float4(shadow.color.r, shadow.color.g, shadow.color.b, shadow.color.a);
 
   return ShadowVertexOutput{
       device_position,
@@ -574,7 +574,7 @@ vertex UnderlineVertexOutput underline_vertex(
       to_device_position(unit_vertex, underline.bounds, viewport_size);
   float4 clip_distance = distance_from_clip_rect(unit_vertex, underline.bounds,
                                                  underline.content_mask.bounds);
-  float4 color = oklch_to_rgba(underline.color);
+  float4 color = float4(underline.color.r, underline.color.g, underline.color.b, underline.color.a);
   return UnderlineVertexOutput{
       device_position,
       color,
@@ -642,7 +642,7 @@ vertex MonochromeSpriteVertexOutput monochrome_sprite_vertex(
   float4 clip_distance = distance_from_clip_rect_transformed(unit_vertex, sprite.bounds,
                                                  sprite.content_mask.bounds, sprite.transformation);
   float2 tile_position = to_tile_position(unit_vertex, sprite.tile, atlas_size);
-  float4 color = oklch_to_rgba(sprite.color);
+  float4 color = float4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
   return MonochromeSpriteVertexOutput{
       device_position,
       tile_position,
@@ -790,7 +790,7 @@ fragment float4 path_rasterization_fragment(
   GradientColor gradient_color = prepare_fill_color(
     background.tag,
     background.color_space,
-    background.solid,
+    float4(background.solid.r, background.solid.g, background.solid.b, background.solid.a),
     background.colors[0].color,
     background.colors[1].color
   );
@@ -1135,11 +1135,11 @@ float4 over(float4 below, float4 above) {
   return result;
 }
 
-GradientColor prepare_fill_color(uint tag, uint color_space, Oklch solid,
+GradientColor prepare_fill_color(uint tag, uint color_space, float4 solid,
                                      Oklch color0, Oklch color1) {
   GradientColor out;
   if (tag == 0 || tag == 2 || tag == 3) {
-    out.solid = oklch_to_rgba(solid);
+    out.solid = solid; // Already sRGB from CPU — no conversion needed
   } else if (tag == 1) {
     out.color0 = oklch_to_rgba(color0);
     out.color1 = oklch_to_rgba(color1);
