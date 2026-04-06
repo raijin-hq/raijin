@@ -115,7 +115,7 @@ pub struct Workspace {
 
 impl Workspace {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let config = cx.global::<raijin_settings::RaijinConfig>().clone();
+        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
         let cwd = config.resolve_working_directory();
         let input_mode = match config.general.input_mode {
             raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
@@ -225,6 +225,19 @@ impl Workspace {
         // Synchronously load and decode — instant first-frame display
         let render = inazuma::preload_image(path)?;
         self.cached_bg_image = Some((path.to_path_buf(), Arc::clone(&render)));
+        Some(render)
+    }
+
+    fn bg_render_image_from_bytes(&mut self, bytes: &[u8]) -> Option<Arc<inazuma::RenderImage>> {
+        // Check if we already have a cached bundled bg image (use sentinel path)
+        let sentinel = std::path::PathBuf::from("__bundled_bg__");
+        if let Some((cached_path, cached_img)) = &self.cached_bg_image {
+            if cached_path == &sentinel {
+                return Some(Arc::clone(cached_img));
+            }
+        }
+        let render = inazuma::preload_image_from_bytes(bytes)?;
+        self.cached_bg_image = Some((sentinel, Arc::clone(&render)));
         Some(render)
     }
 
@@ -817,7 +830,7 @@ impl Workspace {
             None => return, // Not installed — should show install modal instead
         };
         let shell_name = &shell.name;
-        let config = cx.global::<raijin_settings::RaijinConfig>().clone();
+        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
         let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
         let input_mode = match config.general.input_mode {
             raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
@@ -1045,12 +1058,31 @@ impl Render for Workspace {
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive));
 
-        // Background image layer from theme settings — behind all content
-        let config = cx.global::<raijin_settings::RaijinConfig>();
-        let bg_image = raijin_settings::RaijinTheme::load(&config.appearance.theme)
-            .and_then(|t| t.resolve_background_image());
-        if let Some((image_path, opacity)) = bg_image {
-            if let Some(render_image) = self.bg_render_image(&image_path) {
+        // Background image layer from theme — behind all content.
+        // The image is decoded once and cached as a GPU texture — subsequent
+        // frames reuse the cached Arc<RenderImage> without re-decoding or
+        // re-loading from the asset pipeline.
+        if let Some(bg_config) = &theme.styles.background_image {
+            let opacity = (bg_config.opacity as f32 / 100.0).clamp(0.0, 1.0);
+
+            // Fast path: return cached image if available (no asset loading)
+            let render_image = if self.cached_bg_image.is_some() {
+                self.cached_bg_image.as_ref().map(|(_, img)| Arc::clone(img))
+            } else if let Some(base_dir) = &theme.base_dir {
+                // User theme: decode from filesystem (first frame only)
+                let image_path = base_dir.join(&bg_config.path);
+                self.bg_render_image(&image_path)
+            } else {
+                // Bundled theme: decode from asset pipeline (first frame only)
+                let asset_path = format!("themes/{}/{}", theme.id, bg_config.path);
+                cx.asset_source()
+                    .load(&asset_path)
+                    .ok()
+                    .flatten()
+                    .and_then(|bytes| self.bg_render_image_from_bytes(&bytes))
+            };
+
+            if let Some(render_image) = render_image {
                 container = container.child(
                     inazuma::img(inazuma::ImageSource::Render(render_image))
                         .absolute()
@@ -1068,7 +1100,7 @@ impl Render for Workspace {
         match self.view_mode {
             ViewMode::Terminal => {
                 let handle = self.terminal.handle();
-                let config = cx.global::<raijin_settings::RaijinConfig>();
+                let config = cx.global::<raijin_settings::RaijinSettings>();
                 let font_family = config.appearance.font_family.clone();
                 let font_size = config.appearance.font_size as f32;
                 let line_height_multiplier = config.appearance.line_height as f32;

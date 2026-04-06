@@ -133,7 +133,9 @@ fn convert_zed_theme(theme: &ZedTheme, _family_name: &str) -> Result<Theme> {
             status,
             syntax,
             players,
+            background_image: None,
         },
+        base_dir: None,
     })
 }
 

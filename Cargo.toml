@@ -17,6 +17,7 @@ members = [
     "crates/raijin-theme-selector",
     "crates/cargo-raijin",
     "crates/raijin-theme-importer",
+    "crates/raijin-assets",
 ]
 default-members = ["crates/raijin-app"]
 resolver = "3"
@@ -39,6 +40,7 @@ raijin-theme-selector = { path = "crates/raijin-theme-selector" }
 raijin-terminal = { path = "crates/raijin-terminal" }
 raijin-shell = { path = "crates/raijin-shell" }
 raijin-settings = { path = "crates/raijin-settings" }
+raijin-assets = { path = "crates/raijin-assets" }
 toml = "0.8"
 
 clap = { version = "4", features = ["derive"] }
@@ -50,6 +52,8 @@ log = "0.4"
 smol = "2"
 parking_lot = "0.12"
 flume = "0.11"
+indexmap = { version = "2", features = ["serde"] }
+notify = "7"
 
 [profile.dev]
 split-debuginfo = "unpacked"

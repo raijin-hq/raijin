@@ -22,7 +22,7 @@ log = { workspace = true }
 env_logger = "0.11"
 parking_lot = { workspace = true }
 raijin-term = { path = "../raijin-term" }
-inazuma-component-assets = { path = "../inazuma-component/assets" }
+raijin-assets = { workspace = true }
 time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
 serde_json = { workspace = true }
 dirs = "6"

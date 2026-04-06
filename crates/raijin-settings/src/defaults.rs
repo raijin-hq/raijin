@@ -10,15 +10,3 @@ pub const LINE_HEIGHT: f64 = 1.2;
 
 /// Default scrollback history lines.
 pub const SCROLLBACK_HISTORY: u32 = 10_000;
-
-/// Default theme name.
-pub const THEME: &str = "raijin-dark";
-
-// ---------------------------------------------------------------------------
-// Theme color defaults (Raijin Dark)
-// ---------------------------------------------------------------------------
-
-pub fn theme_accent() -> String { "#00BFFF".to_string() }
-pub fn theme_background() -> String { "#121212".to_string() }
-pub fn theme_foreground() -> String { "#f1f1f1".to_string() }
-pub fn theme_error() -> String { "#ff5f5f".to_string() }

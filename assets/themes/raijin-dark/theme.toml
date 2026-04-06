@@ -1,0 +1,223 @@
+# Raijin Dark — The default Raijin theme
+# Background: #121212, Accent: #00BFFF (Cyan), Text: #f1f1f1
+
+[theme]
+name = "Raijin Dark"
+author = "nyxb"
+appearance = "dark"
+
+[style]
+# === Backgrounds ===
+background = "#121212"
+"surface.background" = "#1a1a1a"
+"elevated_surface.background" = "#222222"
+"element.background" = "#1e1e1e"
+"element.hover" = "#2a2a2a"
+"element.active" = "#333333"
+"element.selected" = "#333333"
+"element.disabled" = "#1e1e1e"
+"drop_target.background" = "#00BFFF40"
+"ghost_element.background" = "#00000000"
+"ghost_element.hover" = "#2a2a2a"
+"ghost_element.active" = "#333333"
+"ghost_element.selected" = "#333333"
+
+# === Borders ===
+border = "#2a2a2a"
+"border.variant" = "#222222"
+"border.focused" = "#00BFFF"
+"border.selected" = "#00BFFF66"
+"border.transparent" = "#00000000"
+"border.disabled" = "#1e1e1e"
+
+# === Text ===
+text = "#f1f1f1"
+"text.muted" = "#888888"
+"text.placeholder" = "#555555"
+"text.disabled" = "#555555"
+"text.accent" = "#00BFFF"
+
+# === Icons ===
+icon = "#f1f1f1"
+"icon.muted" = "#888888"
+"icon.disabled" = "#555555"
+"icon.accent" = "#00BFFF"
+
+# === Workspace Chrome ===
+"status_bar.background" = "#121212"
+"title_bar.background" = "#121212"
+"title_bar.inactive_background" = "#0e0e0e"
+"toolbar.background" = "#1a1a1a"
+"tab_bar.background" = "#0e0e0e"
+"tab.active_background" = "#1a1a1a"
+"tab.inactive_background" = "#0e0e0e"
+"panel.background" = "#0e0e0e"
+
+# === Editor ===
+"editor.foreground" = "#f1f1f1"
+"editor.background" = "#121212"
+"editor.gutter.background" = "#121212"
+"editor.active_line.background" = "#1a1a1abf"
+"editor.line_number" = "#4e5a5f"
+"editor.active_line_number" = "#f1f1f1"
+"editor.invisible" = "#333333"
+"editor.wrap_guide" = "#2a2a2a0d"
+
+# === Search ===
+"search.match_background" = "#00BFFF40"
+
+# === Scrollbar ===
+"scrollbar.thumb.background" = "#ffffff1a"
+"scrollbar.thumb.hover_background" = "#ffffff33"
+"scrollbar.track.background" = "#00000000"
+
+# === Terminal (ANSI-16 + dim) ===
+"terminal.background" = "#121212"
+"terminal.accent" = "#00BFFF"
+"terminal.foreground" = "#f1f1f1"
+"terminal.bright_foreground" = "#ffffff"
+"terminal.dim_foreground" = "#888888"
+"terminal.ansi.black" = "#282828"
+"terminal.ansi.red" = "#f7768e"
+"terminal.ansi.green" = "#14F195"
+"terminal.ansi.yellow" = "#e0af68"
+"terminal.ansi.blue" = "#7aa2f7"
+"terminal.ansi.magenta" = "#bb9af7"
+"terminal.ansi.cyan" = "#7dcfff"
+"terminal.ansi.white" = "#c0caf5"
+"terminal.ansi.bright_black" = "#555555"
+"terminal.ansi.bright_red" = "#ff9e9e"
+"terminal.ansi.bright_green" = "#3dffc0"
+"terminal.ansi.bright_yellow" = "#ffcf88"
+"terminal.ansi.bright_blue" = "#9db8ff"
+"terminal.ansi.bright_magenta" = "#d4b4ff"
+"terminal.ansi.bright_cyan" = "#a8e4ff"
+"terminal.ansi.bright_white" = "#ffffff"
+"terminal.ansi.dim_black" = "#1a1a1a"
+"terminal.ansi.dim_red" = "#a55060"
+"terminal.ansi.dim_green" = "#0ea56a"
+"terminal.ansi.dim_yellow" = "#a58050"
+"terminal.ansi.dim_blue" = "#5575a5"
+"terminal.ansi.dim_magenta" = "#8570a5"
+"terminal.ansi.dim_cyan" = "#5590a5"
+"terminal.ansi.dim_white" = "#888888"
+
+# === Git / Version Control ===
+"version_control.added" = "#14F195"
+"version_control.modified" = "#e0af68"
+"version_control.deleted" = "#f7768e"
+
+# === Status ===
+error = "#f7768e"
+"error.background" = "#f7768e1a"
+"error.border" = "#f7768e33"
+warning = "#e0af68"
+"warning.background" = "#e0af681a"
+"warning.border" = "#e0af6833"
+success = "#14F195"
+"success.background" = "#14F1951a"
+"success.border" = "#14F19533"
+info = "#7dcfff"
+"info.background" = "#7dcfff1a"
+"info.border" = "#7dcfff33"
+
+# === Link ===
+"link_text.hover" = "#00BFFF"
+
+# === Background Image ===
+[style.background_image]
+path = "bg.png"
+opacity = 30
+
+# === Raijin-spezifisch (Block-System) ===
+"block.success_badge" = "#14F195"
+"block.error_badge" = "#f7768e"
+"block.running_badge" = "#e0af68"
+
+# === Players ===
+[[style.players]]
+cursor = "#00BFFF"
+background = "#00BFFF"
+selection = "#00BFFF3d"
+
+[[style.players]]
+cursor = "#7aa2f7"
+background = "#7aa2f7"
+selection = "#7aa2f73d"
+
+[[style.players]]
+cursor = "#bb9af7"
+background = "#bb9af7"
+selection = "#bb9af73d"
+
+[[style.players]]
+cursor = "#f7768e"
+background = "#f7768e"
+selection = "#f7768e3d"
+
+# === Syntax Highlighting ===
+[style.syntax.attribute]
+color = "#7aa2f7"
+
+[style.syntax.boolean]
+color = "#ff9e64"
+
+[style.syntax.comment]
+color = "#565f89"
+font_style = "italic"
+
+[style.syntax."comment.doc"]
+color = "#6a7394"
+font_style = "italic"
+
+[style.syntax.constant]
+color = "#ff9e64"
+
+[style.syntax.constructor]
+color = "#7aa2f7"
+
+[style.syntax.function]
+color = "#7aa2f7"
+
+[style.syntax.keyword]
+color = "#bb9af7"
+
+[style.syntax.number]
+color = "#ff9e64"
+
+[style.syntax.operator]
+color = "#89ddff"
+
+[style.syntax.property]
+color = "#73daca"
+
+[style.syntax.string]
+color = "#14F195"
+
+[style.syntax."string.escape"]
+color = "#89ddff"
+
+[style.syntax."string.regex"]
+color = "#b4f9f8"
+
+[style.syntax.tag]
+color = "#f7768e"
+
+[style.syntax.type]
+color = "#2ac3de"
+
+[style.syntax.variable]
+color = "#c0caf5"
+
+[style.syntax."variable.special"]
+color = "#ff9e64"
+
+[style.syntax.punctuation]
+color = "#c0caf5"
+
+[style.syntax."punctuation.bracket"]
+color = "#9aa5ce"
+
+[style.syntax.title]
+color = "#f7768e"
+font_weight = 700

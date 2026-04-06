@@ -38,7 +38,8 @@ impl MacDisplay {
             let screen_number: Retained<NSNumber> = {
                 let obj = NSDictionary::objectForKey(&device_description, &screen_number_key)
                     .expect("NSScreen deviceDescription missing NSScreenNumber");
-                Retained::cast(obj)
+                Retained::downcast(obj)
+                    .expect("NSScreenNumber value is not an NSNumber")
             };
             let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
             Self(screen_id)
@@ -158,7 +159,11 @@ impl MacDisplay {
                 else {
                     continue;
                 };
-                let screen_number: Retained<NSNumber> = Retained::cast(screen_number);
+                let Ok(screen_number): std::result::Result<Retained<NSNumber>, _> =
+                    Retained::downcast(screen_number)
+                else {
+                    continue;
+                };
                 let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
                 if screen_id == self.0 {
                     return Some(screen.clone());

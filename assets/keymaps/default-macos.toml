@@ -1,0 +1,50 @@
+# Raijin Default Keybindings — macOS
+#
+# Format: [[section]] with context + bindings
+# User overrides go in ~/.raijin/keymap.toml
+
+# === Global (no context restriction) ===
+[[section]]
+context = ""
+
+[section.bindings]
+"cmd-q" = "raijin::Quit"
+"cmd-," = "raijin::OpenSettings"
+"cmd-shift-p" = "raijin::ToggleCommandPalette"
+"cmd-shift-t" = "raijin::ToggleThemeSelector"
+"cmd-n" = "raijin::NewWindow"
+"cmd-w" = "raijin::CloseWindow"
+"cmd-+" = "raijin::IncreaseFontSize"
+"cmd-=" = "raijin::IncreaseFontSize"
+"cmd--" = "raijin::DecreaseFontSize"
+"cmd-0" = "raijin::ResetFontSize"
+
+# === Terminal context ===
+[[section]]
+context = "Terminal"
+
+[section.bindings]
+"cmd-c" = "terminal::Copy"
+"cmd-v" = "terminal::Paste"
+"cmd-k" = "terminal::Clear"
+"cmd-t" = "terminal::NewTab"
+"cmd-shift-]" = "terminal::NextTab"
+"cmd-shift-[" = "terminal::PreviousTab"
+"cmd-up" = "terminal::ScrollPageUp"
+"cmd-down" = "terminal::ScrollPageDown"
+"cmd-home" = "terminal::ScrollToTop"
+"cmd-end" = "terminal::ScrollToBottom"
+"cmd-f" = "terminal::Find"
+
+# === Input context (Raijin Mode) ===
+[[section]]
+context = "RaijinInput"
+
+[section.bindings]
+"enter" = "input::Submit"
+"tab" = "input::AcceptCompletion"
+"up" = "input::HistoryPrev"
+"down" = "input::HistoryNext"
+"escape" = "input::Cancel"
+"ctrl-c" = "input::Interrupt"
+"ctrl-l" = "terminal::Clear"

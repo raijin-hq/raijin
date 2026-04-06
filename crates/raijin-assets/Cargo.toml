@@ -1,0 +1,17 @@
+[package]
+name = "raijin-assets"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+description = "Bundled assets for Raijin — themes, fonts, keymaps"
+
+[dependencies]
+inazuma = { workspace = true }
+inazuma-component-assets = { workspace = true }
+anyhow = { workspace = true }
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+rust-embed = { version = "8.7.2", features = ["interpolate-folder-path", "include-exclude"] }
+
+[lints]
+workspace = true

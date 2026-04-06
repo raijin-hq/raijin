@@ -1,0 +1,218 @@
+# Gruvbox Dark — Retro groove color scheme
+# https://github.com/morhetz/gruvbox
+
+[theme]
+name = "Gruvbox Dark"
+author = "Pavel Pertsev"
+appearance = "dark"
+
+[style]
+# === Backgrounds ===
+background = "#282828"
+"surface.background" = "#32302f"
+"elevated_surface.background" = "#3c3836"
+"element.background" = "#32302f"
+"element.hover" = "#3c3836"
+"element.active" = "#504945"
+"element.selected" = "#504945"
+"element.disabled" = "#32302f"
+"drop_target.background" = "#98971a40"
+"ghost_element.background" = "#00000000"
+"ghost_element.hover" = "#3c3836"
+"ghost_element.active" = "#504945"
+"ghost_element.selected" = "#504945"
+
+# === Borders ===
+border = "#504945"
+"border.variant" = "#3c3836"
+"border.focused" = "#d79921"
+"border.selected" = "#d7992166"
+"border.transparent" = "#00000000"
+"border.disabled" = "#32302f"
+
+# === Text ===
+text = "#ebdbb2"
+"text.muted" = "#a89984"
+"text.placeholder" = "#665c54"
+"text.disabled" = "#665c54"
+"text.accent" = "#d79921"
+
+# === Icons ===
+icon = "#ebdbb2"
+"icon.muted" = "#a89984"
+"icon.disabled" = "#665c54"
+"icon.accent" = "#d79921"
+
+# === Workspace Chrome ===
+"status_bar.background" = "#282828"
+"title_bar.background" = "#282828"
+"title_bar.inactive_background" = "#1d2021"
+"toolbar.background" = "#32302f"
+"tab_bar.background" = "#1d2021"
+"tab.active_background" = "#32302f"
+"tab.inactive_background" = "#1d2021"
+"panel.background" = "#1d2021"
+
+# === Editor ===
+"editor.foreground" = "#ebdbb2"
+"editor.background" = "#282828"
+"editor.gutter.background" = "#282828"
+"editor.active_line.background" = "#32302fbf"
+"editor.line_number" = "#665c54"
+"editor.active_line_number" = "#ebdbb2"
+"editor.invisible" = "#504945"
+"editor.wrap_guide" = "#504945"
+
+# === Search ===
+"search.match_background" = "#fabd2f40"
+
+# === Scrollbar ===
+"scrollbar.thumb.background" = "#ffffff1a"
+"scrollbar.thumb.hover_background" = "#ffffff33"
+"scrollbar.track.background" = "#00000000"
+
+# === Terminal (ANSI-16 + dim) ===
+"terminal.background" = "#282828"
+"terminal.accent" = "#d79921"
+"terminal.foreground" = "#ebdbb2"
+"terminal.bright_foreground" = "#fbf1c7"
+"terminal.dim_foreground" = "#a89984"
+"terminal.ansi.black" = "#282828"
+"terminal.ansi.red" = "#cc241d"
+"terminal.ansi.green" = "#98971a"
+"terminal.ansi.yellow" = "#d79921"
+"terminal.ansi.blue" = "#458588"
+"terminal.ansi.magenta" = "#b16286"
+"terminal.ansi.cyan" = "#689d6a"
+"terminal.ansi.white" = "#a89984"
+"terminal.ansi.bright_black" = "#928374"
+"terminal.ansi.bright_red" = "#fb4934"
+"terminal.ansi.bright_green" = "#b8bb26"
+"terminal.ansi.bright_yellow" = "#fabd2f"
+"terminal.ansi.bright_blue" = "#83a598"
+"terminal.ansi.bright_magenta" = "#d3869b"
+"terminal.ansi.bright_cyan" = "#8ec07c"
+"terminal.ansi.bright_white" = "#ebdbb2"
+"terminal.ansi.dim_black" = "#1a1a1a"
+"terminal.ansi.dim_red" = "#8e1914"
+"terminal.ansi.dim_green" = "#6a6b12"
+"terminal.ansi.dim_yellow" = "#966b17"
+"terminal.ansi.dim_blue" = "#305d5f"
+"terminal.ansi.dim_magenta" = "#7c455d"
+"terminal.ansi.dim_cyan" = "#496e4a"
+"terminal.ansi.dim_white" = "#766b5c"
+
+# === Git / Version Control ===
+"version_control.added" = "#b8bb26"
+"version_control.modified" = "#fabd2f"
+"version_control.deleted" = "#fb4934"
+
+# === Status ===
+error = "#fb4934"
+"error.background" = "#fb49341a"
+"error.border" = "#fb493433"
+warning = "#fabd2f"
+"warning.background" = "#fabd2f1a"
+"warning.border" = "#fabd2f33"
+success = "#b8bb26"
+"success.background" = "#b8bb261a"
+"success.border" = "#b8bb2633"
+info = "#83a598"
+"info.background" = "#83a5981a"
+"info.border" = "#83a59833"
+
+# === Link ===
+"link_text.hover" = "#83a598"
+
+# === Raijin-spezifisch (Block-System) ===
+"block.success_badge" = "#b8bb26"
+"block.error_badge" = "#fb4934"
+"block.running_badge" = "#fabd2f"
+
+# === Players ===
+[[style.players]]
+cursor = "#fabd2f"
+background = "#fabd2f"
+selection = "#fabd2f3d"
+
+[[style.players]]
+cursor = "#83a598"
+background = "#83a598"
+selection = "#83a5983d"
+
+[[style.players]]
+cursor = "#d3869b"
+background = "#d3869b"
+selection = "#d3869b3d"
+
+[[style.players]]
+cursor = "#fb4934"
+background = "#fb4934"
+selection = "#fb49343d"
+
+# === Syntax Highlighting ===
+[style.syntax.attribute]
+color = "#83a598"
+
+[style.syntax.boolean]
+color = "#d3869b"
+
+[style.syntax.comment]
+color = "#928374"
+font_style = "italic"
+
+[style.syntax."comment.doc"]
+color = "#a09080"
+font_style = "italic"
+
+[style.syntax.constant]
+color = "#d3869b"
+
+[style.syntax.constructor]
+color = "#83a598"
+
+[style.syntax.function]
+color = "#b8bb26"
+
+[style.syntax.keyword]
+color = "#fb4934"
+
+[style.syntax.number]
+color = "#d3869b"
+
+[style.syntax.operator]
+color = "#fe8019"
+
+[style.syntax.property]
+color = "#83a598"
+
+[style.syntax.string]
+color = "#b8bb26"
+
+[style.syntax."string.escape"]
+color = "#fe8019"
+
+[style.syntax."string.regex"]
+color = "#8ec07c"
+
+[style.syntax.tag]
+color = "#fb4934"
+
+[style.syntax.type]
+color = "#fabd2f"
+
+[style.syntax.variable]
+color = "#ebdbb2"
+
+[style.syntax."variable.special"]
+color = "#fe8019"
+
+[style.syntax.punctuation]
+color = "#ebdbb2"
+
+[style.syntax."punctuation.bracket"]
+color = "#a89984"
+
+[style.syntax.title]
+color = "#b8bb26"
+font_weight = 700

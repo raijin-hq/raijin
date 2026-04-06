@@ -1,0 +1,50 @@
+# Raijin Default Keybindings — Windows
+#
+# Format: [[section]] with context + bindings
+# User overrides go in ~/.raijin/keymap.toml
+
+# === Global (no context restriction) ===
+[[section]]
+context = ""
+
+[section.bindings]
+"alt-f4" = "raijin::Quit"
+"ctrl-," = "raijin::OpenSettings"
+"ctrl-shift-p" = "raijin::ToggleCommandPalette"
+"ctrl-shift-t" = "raijin::ToggleThemeSelector"
+"ctrl-shift-n" = "raijin::NewWindow"
+"ctrl-shift-w" = "raijin::CloseWindow"
+"ctrl-+" = "raijin::IncreaseFontSize"
+"ctrl-=" = "raijin::IncreaseFontSize"
+"ctrl--" = "raijin::DecreaseFontSize"
+"ctrl-0" = "raijin::ResetFontSize"
+
+# === Terminal context ===
+[[section]]
+context = "Terminal"
+
+[section.bindings]
+"ctrl-shift-c" = "terminal::Copy"
+"ctrl-shift-v" = "terminal::Paste"
+"ctrl-shift-k" = "terminal::Clear"
+"ctrl-shift-t" = "terminal::NewTab"
+"ctrl-tab" = "terminal::NextTab"
+"ctrl-shift-tab" = "terminal::PreviousTab"
+"shift-pageup" = "terminal::ScrollPageUp"
+"shift-pagedown" = "terminal::ScrollPageDown"
+"ctrl-home" = "terminal::ScrollToTop"
+"ctrl-end" = "terminal::ScrollToBottom"
+"ctrl-shift-f" = "terminal::Find"
+
+# === Input context (Raijin Mode) ===
+[[section]]
+context = "RaijinInput"
+
+[section.bindings]
+"enter" = "input::Submit"
+"tab" = "input::AcceptCompletion"
+"up" = "input::HistoryPrev"
+"down" = "input::HistoryNext"
+"escape" = "input::Cancel"
+"ctrl-c" = "input::Interrupt"
+"ctrl-l" = "terminal::Clear"

@@ -4971,10 +4971,10 @@ dependencies = [
  "env_logger",
  "inazuma",
  "inazuma-component",
- "inazuma-component-assets",
  "log",
  "lsp-types",
  "parking_lot",
+ "raijin-assets",
  "raijin-completions",
  "raijin-settings",
  "raijin-shell",
@@ -4986,6 +4986,16 @@ dependencies = [
  "serde_json",
  "strsim",
  "time",
+]
+
+[[package]]
+name = "raijin-assets"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "inazuma",
+ "inazuma-component-assets",
+ "rust-embed",
 ]
 
 [[package]]
@@ -5003,9 +5013,14 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "dirs 6.0.0",
+ "flume",
  "inazuma",
+ "indexmap",
  "log",
+ "notify",
+ "rust-embed",
  "serde",
+ "serde_json",
  "toml 0.8.23",
 ]
 
@@ -5096,7 +5111,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "inazuma",
- "parking_lot",
+ "log",
+ "raijin-settings",
  "raijin-theme",
 ]
 
@@ -5107,6 +5123,7 @@ dependencies = [
  "anyhow",
  "inazuma",
  "log",
+ "raijin-settings",
  "raijin-theme",
  "serde",
  "serde_json",

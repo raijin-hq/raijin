@@ -1,4 +1,6 @@
 pub mod defaults;
+pub mod keymap_file;
+pub mod watcher;
 
 use anyhow::{Context, Result};
 use inazuma::{Global, WindowColorspace};
@@ -6,27 +8,101 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 
-impl Global for RaijinConfig {}
+impl Global for RaijinSettings {}
 
 // ---------------------------------------------------------------------------
-// Config structs
+// Settings structs
 // ---------------------------------------------------------------------------
 
-/// Root configuration for Raijin.
+/// Root settings for Raijin.
 ///
-/// Stored at `~/.config/raijin/config.toml`.
+/// Stored at `~/.raijin/settings.toml`.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RaijinConfig {
+pub struct RaijinSettings {
     #[serde(default)]
-    pub general: GeneralConfig,
+    pub general: GeneralSettings,
     #[serde(default)]
-    pub appearance: AppearanceConfig,
+    pub appearance: AppearanceSettings,
     #[serde(default)]
-    pub terminal: TerminalConfig,
+    pub terminal: TerminalSettings,
+    /// Theme selection — which theme(s) to use.
+    ///
+    /// ```toml
+    /// [theme]
+    /// mode = "dark"
+    /// light = "Catppuccin Latte"
+    /// dark = "Raijin Dark"
+    /// ```
+    #[serde(default)]
+    pub theme: ThemeConfig,
+}
+
+/// Theme selection configuration.
+///
+/// Supports static (single mode) or dynamic (system appearance aware):
+/// - `mode = "dark"` — always use the `dark` theme
+/// - `mode = "light"` — always use the `light` theme
+/// - `mode = "system"` — follow OS appearance setting
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ThemeConfig {
+    /// How the theme appearance is determined.
+    #[serde(default)]
+    pub mode: ThemeMode,
+    /// Theme name for dark mode.
+    #[serde(default = "default_dark_theme")]
+    pub dark: String,
+    /// Theme name for light mode.
+    #[serde(default = "default_light_theme")]
+    pub light: String,
+}
+
+impl Default for ThemeConfig {
+    fn default() -> Self {
+        Self {
+            mode: ThemeMode::default(),
+            dark: default_dark_theme(),
+            light: default_light_theme(),
+        }
+    }
+}
+
+impl ThemeConfig {
+    /// Resolves the effective theme name based on the mode.
+    pub fn theme_name(&self) -> &str {
+        match self.mode {
+            ThemeMode::Light => &self.light,
+            ThemeMode::Dark => &self.dark,
+            ThemeMode::System => {
+                // Default to dark until system appearance detection is implemented.
+                &self.dark
+            }
+        }
+    }
+}
+
+/// How the theme appearance is determined.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ThemeMode {
+    /// Follow the OS light/dark setting.
+    System,
+    /// Always light.
+    Light,
+    /// Always dark.
+    #[default]
+    Dark,
+}
+
+fn default_dark_theme() -> String {
+    "Raijin Dark".to_string()
+}
+
+fn default_light_theme() -> String {
+    "Raijin Dark".to_string()
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct GeneralConfig {
+pub struct GeneralSettings {
     #[serde(default)]
     pub working_directory: WorkingDirectory,
     #[serde(default)]
@@ -34,9 +110,7 @@ pub struct GeneralConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct AppearanceConfig {
-    #[serde(default = "defaults_theme")]
-    pub theme: String,
+pub struct AppearanceSettings {
     #[serde(default = "defaults_font_family")]
     pub font_family: String,
     #[serde(default = "defaults_font_size")]
@@ -54,7 +128,7 @@ pub struct AppearanceConfig {
     /// Symbol maps: map Unicode ranges to specific font families.
     /// Useful for Nerd Font icons, Powerline glyphs, etc.
     ///
-    /// Example in config.toml:
+    /// Example in settings.toml:
     /// ```toml
     /// [[appearance.symbol_map]]
     /// start = "E0B0"
@@ -98,110 +172,8 @@ impl SymbolMapEntry {
 }
 
 // ---------------------------------------------------------------------------
-// Theme
+// (Theme structs removed — all visual theming now lives in raijin-theme)
 // ---------------------------------------------------------------------------
-
-/// A Raijin theme file loaded from `~/.raijin/themes/{name}.toml`.
-///
-/// Defines colors, background image, and terminal ANSI colors.
-/// Same concept as Warp's `.yml` theme files in `~/.warp/themes/`.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RaijinTheme {
-    /// Accent color for UI elements (hex, e.g. "#00BFFF").
-    #[serde(default = "defaults::theme_accent")]
-    pub accent: String,
-    /// Terminal background color (hex).
-    #[serde(default = "defaults::theme_background")]
-    pub background: String,
-    /// Terminal foreground color (hex).
-    #[serde(default = "defaults::theme_foreground")]
-    pub foreground: String,
-    /// Error indicator color (hex).
-    #[serde(default = "defaults::theme_error")]
-    pub error: String,
-    /// Optional background image.
-    #[serde(default)]
-    pub background_image: Option<ThemeBackgroundImage>,
-    /// Terminal ANSI colors.
-    #[serde(default)]
-    pub terminal_colors: Option<ThemeTerminalColors>,
-}
-
-/// ANSI terminal color palette.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ThemeTerminalColors {
-    #[serde(default)]
-    pub normal: ThemeAnsiColors,
-    #[serde(default)]
-    pub bright: ThemeAnsiColors,
-}
-
-/// 8 ANSI colors.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ThemeAnsiColors {
-    #[serde(default)]
-    pub black: Option<String>,
-    #[serde(default)]
-    pub red: Option<String>,
-    #[serde(default)]
-    pub green: Option<String>,
-    #[serde(default)]
-    pub yellow: Option<String>,
-    #[serde(default)]
-    pub blue: Option<String>,
-    #[serde(default)]
-    pub magenta: Option<String>,
-    #[serde(default)]
-    pub cyan: Option<String>,
-    #[serde(default)]
-    pub white: Option<String>,
-}
-
-/// Background image configuration within a theme.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ThemeBackgroundImage {
-    /// Path to the image, relative to `~/.raijin/themes/`.
-    pub path: String,
-    /// Opacity 0–100 (like Warp).
-    #[serde(default = "default_bg_image_opacity")]
-    pub opacity: u32,
-}
-
-fn default_bg_image_opacity() -> u32 {
-    15
-}
-
-impl RaijinTheme {
-    /// Load a theme by name from `~/.raijin/themes/{name}.toml`.
-    pub fn load(name: &str) -> Option<Self> {
-        let path = RaijinConfig::themes_dir().join(format!("{name}.toml"));
-        if !path.exists() {
-            return None;
-        }
-        let content = fs::read_to_string(&path).ok()?;
-        toml::from_str(&content).ok()
-    }
-
-    /// Resolve the background image to an absolute path.
-    pub fn resolve_background_image(&self) -> Option<(PathBuf, f32)> {
-        let bg = self.background_image.as_ref()?;
-        let path = PathBuf::from(&bg.path);
-
-        let resolved = if path.is_absolute() {
-            path
-        } else {
-            RaijinConfig::themes_dir().join(&path)
-        };
-
-        if resolved.exists() {
-            let opacity = (bg.opacity as f32 / 100.0).clamp(0.0, 1.0);
-            Some((resolved, opacity))
-        } else {
-            log::warn!("Background image not found: {}", resolved.display());
-            None
-        }
-    }
-}
 
 impl ResolvedSymbolMap {
     /// Check if a character falls in this range and return the font family.
@@ -216,7 +188,7 @@ impl ResolvedSymbolMap {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct TerminalConfig {
+pub struct TerminalSettings {
     #[serde(default = "defaults_scrollback")]
     pub scrollback_history: u32,
     #[serde(default)]
@@ -265,10 +237,9 @@ pub enum CursorStyle {
 // Defaults (for serde)
 // ---------------------------------------------------------------------------
 
-impl Default for AppearanceConfig {
+impl Default for AppearanceSettings {
     fn default() -> Self {
         Self {
-            theme: defaults::THEME.to_string(),
             font_family: defaults::FONT_FAMILY.to_string(),
             font_size: defaults::FONT_SIZE,
             line_height: defaults::LINE_HEIGHT,
@@ -278,7 +249,7 @@ impl Default for AppearanceConfig {
     }
 }
 
-impl Default for TerminalConfig {
+impl Default for TerminalSettings {
     fn default() -> Self {
         Self {
             scrollback_history: defaults::SCROLLBACK_HISTORY,
@@ -287,9 +258,6 @@ impl Default for TerminalConfig {
     }
 }
 
-fn defaults_theme() -> String {
-    defaults::THEME.to_string()
-}
 fn defaults_font_family() -> String {
     defaults::FONT_FAMILY.to_string()
 }
@@ -307,7 +275,7 @@ fn defaults_scrollback() -> u32 {
 // Load / Save
 // ---------------------------------------------------------------------------
 
-impl RaijinConfig {
+impl RaijinSettings {
     /// Returns the Raijin home directory: `~/.raijin/`
     pub fn home_dir() -> PathBuf {
         dirs::home_dir()
@@ -320,46 +288,51 @@ impl RaijinConfig {
         Self::home_dir().join("themes")
     }
 
-    /// Returns the config file path: `~/.raijin/config.toml`
-    pub fn config_path() -> PathBuf {
-        Self::home_dir().join("config.toml")
+    /// Returns the settings file path: `~/.raijin/settings.toml`
+    pub fn settings_path() -> PathBuf {
+        Self::home_dir().join("settings.toml")
     }
 
-    /// Load config from disk. Creates default if file doesn't exist.
+    /// Returns the keymap file path: `~/.raijin/keymap.toml`
+    pub fn keymap_path() -> PathBuf {
+        Self::home_dir().join("keymap.toml")
+    }
+
+    /// Load settings from disk. Creates default if file doesn't exist.
     pub fn load() -> Result<Self> {
-        let path = Self::config_path();
+        let path = Self::settings_path();
 
         if !path.exists() {
-            let config = Self::default();
-            config.save().ok();
-            return Ok(config);
+            let settings = Self::default();
+            settings.save().ok();
+            return Ok(settings);
         }
 
         let content = fs::read_to_string(&path)
-            .with_context(|| format!("failed to read config at {}", path.display()))?;
+            .with_context(|| format!("failed to read settings at {}", path.display()))?;
 
-        let config: Self = toml::from_str(&content).unwrap_or_else(|e| {
-            log::warn!("Failed to parse config, using defaults: {e}");
+        let settings: Self = toml::from_str(&content).unwrap_or_else(|e| {
+            log::warn!("Failed to parse settings, using defaults: {e}");
             Self::default()
         });
 
-        Ok(config)
+        Ok(settings)
     }
 
-    /// Save config to disk.
+    /// Save settings to disk.
     pub fn save(&self) -> Result<()> {
         let dir = Self::home_dir();
         fs::create_dir_all(&dir)
-            .with_context(|| format!("failed to create config dir {}", dir.display()))?;
+            .with_context(|| format!("failed to create settings dir {}", dir.display()))?;
 
-        let path = Self::config_path();
+        let path = Self::settings_path();
         let content = toml::to_string_pretty(self)
-            .context("failed to serialize config")?;
+            .context("failed to serialize settings")?;
 
         fs::write(&path, content)
-            .with_context(|| format!("failed to write config to {}", path.display()))?;
+            .with_context(|| format!("failed to write settings to {}", path.display()))?;
 
-        log::info!("Config saved to {}", path.display());
+        log::info!("Settings saved to {}", path.display());
         Ok(())
     }
 

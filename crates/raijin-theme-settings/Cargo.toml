@@ -6,6 +6,7 @@ publish.workspace = true
 
 [dependencies]
 raijin-theme = { workspace = true }
+raijin-settings = { workspace = true }
 inazuma = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

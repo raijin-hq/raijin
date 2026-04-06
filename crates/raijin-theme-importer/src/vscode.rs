@@ -103,7 +103,9 @@ pub fn import_vscode_theme(json: &str) -> Result<ThemeFamily> {
             status,
             syntax,
             players,
+            background_image: None,
         },
+        base_dir: None,
     };
 
     Ok(ThemeFamily {

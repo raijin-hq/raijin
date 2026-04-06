@@ -2,7 +2,7 @@ use inazuma::{IntoElement, ParentElement, SharedString, div};
 use inazuma_component::setting::{
     NumberFieldOptions, SettingField, SettingGroup, SettingItem, SettingPage, Settings,
 };
-use raijin_settings::RaijinConfig;
+use raijin_settings::RaijinSettings;
 
 /// Build the Settings view as a full-page component (rendered inside a tab).
 pub fn build_settings() -> impl IntoElement {
@@ -27,7 +27,7 @@ fn general_page() -> SettingPage {
                             ("previous".into(), "Previous Session".into()),
                         ],
                         |cx| {
-                            let config = cx.global::<RaijinConfig>();
+                            let config = cx.global::<RaijinSettings>();
                             match &config.general.working_directory {
                                 raijin_settings::WorkingDirectory::Home => "home".into(),
                                 raijin_settings::WorkingDirectory::Previous => "previous".into(),
@@ -37,7 +37,7 @@ fn general_page() -> SettingPage {
                             }
                         },
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.general.working_directory = match val.as_ref() {
                                 "home" => raijin_settings::WorkingDirectory::Home,
                                 "previous" => raijin_settings::WorkingDirectory::Previous,
@@ -60,14 +60,14 @@ fn general_page() -> SettingPage {
                             ("shell_ps1".into(), "Shell PS1 (Starship, P10k)".into()),
                         ],
                         |cx| {
-                            let config = cx.global::<RaijinConfig>();
+                            let config = cx.global::<RaijinSettings>();
                             match config.general.input_mode {
                                 raijin_settings::InputMode::Raijin => "raijin".into(),
                                 raijin_settings::InputMode::ShellPs1 => "shell_ps1".into(),
                             }
                         },
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.general.input_mode = match val.as_ref() {
                                 "shell_ps1" => raijin_settings::InputMode::ShellPs1,
                                 _ => raijin_settings::InputMode::Raijin,
@@ -89,11 +89,11 @@ fn appearance_page() -> SettingPage {
                     "Font Family",
                     SettingField::<SharedString>::input(
                         |cx| {
-                            let config = cx.global::<RaijinConfig>();
+                            let config = cx.global::<RaijinSettings>();
                             SharedString::from(config.appearance.font_family.clone())
                         },
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.appearance.font_family = val.to_string();
                             let _ = config.save();
                         },
@@ -110,9 +110,9 @@ fn appearance_page() -> SettingPage {
                             max: 32.0,
                             step: 1.0,
                         },
-                        |cx| cx.global::<RaijinConfig>().appearance.font_size,
+                        |cx| cx.global::<RaijinSettings>().appearance.font_size,
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.appearance.font_size = val;
                             let _ = config.save();
                         },
@@ -136,10 +136,10 @@ fn terminal_page() -> SettingPage {
                             step: 1000.0,
                         },
                         |cx| {
-                            cx.global::<RaijinConfig>().terminal.scrollback_history as f64
+                            cx.global::<RaijinSettings>().terminal.scrollback_history as f64
                         },
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.terminal.scrollback_history = val as u32;
                             let _ = config.save();
                         },
@@ -159,7 +159,7 @@ fn terminal_page() -> SettingPage {
                             ("underline".into(), "Underline".into()),
                         ],
                         |cx| {
-                            let config = cx.global::<RaijinConfig>();
+                            let config = cx.global::<RaijinSettings>();
                             match config.terminal.cursor_style {
                                 raijin_settings::CursorStyle::Beam => "beam".into(),
                                 raijin_settings::CursorStyle::Block => "block".into(),
@@ -167,7 +167,7 @@ fn terminal_page() -> SettingPage {
                             }
                         },
                         |val, cx| {
-                            let config = cx.global_mut::<RaijinConfig>();
+                            let config = cx.global_mut::<RaijinSettings>();
                             config.terminal.cursor_style = match val.as_ref() {
                                 "block" => raijin_settings::CursorStyle::Block,
                                 "underline" => raijin_settings::CursorStyle::Underline,
