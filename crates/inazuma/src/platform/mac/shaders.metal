@@ -922,12 +922,22 @@ float4 oklch_to_rgba(Oklch oklch) {
   return float4(linear_to_srgb(linear_rgb), oklch.a);
 }
 
+// Piecewise sRGB transfer functions (IEC 61966-2-1).
+// Matches WGSL and Rust implementations exactly — no pow(2.2) approximation.
 float3 srgb_to_linear(float3 color) {
-  return pow(color, float3(2.2));
+  return float3(
+    color.r <= 0.04045 ? color.r / 12.92 : pow((color.r + 0.055) / 1.055, 2.4),
+    color.g <= 0.04045 ? color.g / 12.92 : pow((color.g + 0.055) / 1.055, 2.4),
+    color.b <= 0.04045 ? color.b / 12.92 : pow((color.b + 0.055) / 1.055, 2.4)
+  );
 }
 
 float3 linear_to_srgb(float3 color) {
-  return pow(color, float3(1.0 / 2.2));
+  return float3(
+    color.r <= 0.0031308 ? color.r * 12.92 : 1.055 * pow(color.r, 1.0 / 2.4) - 0.055,
+    color.g <= 0.0031308 ? color.g * 12.92 : 1.055 * pow(color.g, 1.0 / 2.4) - 0.055,
+    color.b <= 0.0031308 ? color.b * 12.92 : 1.055 * pow(color.b, 1.0 / 2.4) - 0.055
+  );
 }
 
 // Converts a sRGB color to the Oklab color space.
