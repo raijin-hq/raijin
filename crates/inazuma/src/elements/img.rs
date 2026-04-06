@@ -203,8 +203,25 @@ pub struct Img {
 pub fn preload_image(path: &std::path::Path) -> Option<Arc<RenderImage>> {
     let bytes = std::fs::read(path).ok()?;
     let img = image::load_from_memory(&bytes).ok()?;
-    let rgba = img.to_rgba8();
-    let frame = image::Frame::new(rgba);
+    let mut data = img.to_rgba8();
+    // Convert from RGBA to BGRA for Metal/DX/wgpu atlas textures.
+    for pixel in data.chunks_exact_mut(4) {
+        pixel.swap(0, 2);
+    }
+    let frame = image::Frame::new(data);
+    Some(Arc::new(RenderImage::new(smallvec::smallvec![frame])))
+}
+
+/// Synchronously decode an image from raw bytes.
+/// Returns `Arc<RenderImage>` for use with `ImageSource::Render`.
+pub fn preload_image_from_bytes(bytes: &[u8]) -> Option<Arc<RenderImage>> {
+    let img = image::load_from_memory(bytes).ok()?;
+    let mut data = img.to_rgba8();
+    // Convert from RGBA to BGRA for Metal/DX/wgpu atlas textures.
+    for pixel in data.chunks_exact_mut(4) {
+        pixel.swap(0, 2);
+    }
+    let frame = image::Frame::new(data);
     Some(Arc::new(RenderImage::new(smallvec::smallvec![frame])))
 }
 
