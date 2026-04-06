@@ -1,6 +1,8 @@
 use super::*;
 
-use objc2_core_graphics::{CGColorSpace, kCGColorSpaceDisplayP3, kCGColorSpaceSRGB};
+use objc2_core_graphics::{
+    CGColorSpace, kCGColorSpaceDisplayP3, kCGColorSpaceExtendedLinearDisplayP3, kCGColorSpaceSRGB,
+};
 use objc2_foundation::{NSSize, NSString};
 
 pub(crate) struct MetalRenderer {
@@ -28,6 +30,7 @@ pub(crate) struct MetalRenderer {
     pub(super) path_intermediate_texture: Option<Retained<ProtocolObject<dyn MTLTexture>>>,
     pub(super) path_intermediate_msaa_texture: Option<Retained<ProtocolObject<dyn MTLTexture>>>,
     pub(super) path_sample_count: u32,
+    pub(super) pixel_format: MTLPixelFormat,
 }
 
 impl MetalRenderer {
@@ -39,19 +42,31 @@ impl MetalRenderer {
     ) -> Self {
         let device = Self::create_device();
 
+        let is_hdr = matches!(colorspace, crate::WindowColorspace::Hdr);
+        let pixel_format = if is_hdr {
+            MTLPixelFormat::RGBA16Float
+        } else {
+            MTLPixelFormat::BGRA8Unorm
+        };
+
         let layer = CAMetalLayer::new();
         layer.setDevice(Some(&device));
-        layer.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
-        // Tag the layer with the correct colorspace so the display compositor
-        // interprets pixel values correctly. Display P3 enables wider gamut
-        // on supported displays; sRGB is the safe default.
+        layer.setPixelFormat(pixel_format);
+        // Tag the layer with the correct colorspace:
+        // - sRGB: safe default, prevents oversaturation on P3 displays
+        // - Display P3: wider gamut (25% more colors), same gamma as sRGB
+        // - HDR: extended linear P3, values > 1.0 = HDR brightness, RGBA16Float
         unsafe {
             let cs_name = match colorspace {
+                crate::WindowColorspace::Hdr => kCGColorSpaceExtendedLinearDisplayP3,
                 crate::WindowColorspace::DisplayP3 => kCGColorSpaceDisplayP3,
                 _ => kCGColorSpaceSRGB,
             };
             if let Some(cs) = CGColorSpace::with_name(Some(cs_name)) {
                 layer.setColorspace(Some(&cs));
+            }
+            if is_hdr {
+                let _: () = msg_send![&layer, setWantsExtendedDynamicRangeContent: true];
             }
         }
         // Support direct-to-display rendering if the window is not transparent
@@ -70,7 +85,7 @@ impl MetalRenderer {
             ];
         }
 
-        Self::new_internal(device, Some(layer), !transparent, instance_buffer_pool)
+        Self::new_internal(device, Some(layer), !transparent, instance_buffer_pool, pixel_format)
     }
 
     /// Creates a new headless MetalRenderer for offscreen rendering without a window.
@@ -80,7 +95,7 @@ impl MetalRenderer {
     #[cfg(any(test, feature = "test-support"))]
     pub fn new_headless(instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>) -> Self {
         let device = Self::create_device();
-        Self::new_internal(device, None, true, instance_buffer_pool)
+        Self::new_internal(device, None, true, instance_buffer_pool, MTLPixelFormat::BGRA8Unorm)
     }
 
     fn create_device() -> Retained<ProtocolObject<dyn MTLDevice>> {
@@ -111,6 +126,7 @@ impl MetalRenderer {
         layer: Option<Retained<CAMetalLayer>>,
         opaque: bool,
         instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>,
+        pixel_format: MTLPixelFormat,
     ) -> Self {
         #[cfg(feature = "runtime_shaders")]
         let library = device
@@ -165,7 +181,7 @@ impl MetalRenderer {
             "paths_rasterization",
             "path_rasterization_vertex",
             "path_rasterization_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
             PATH_SAMPLE_COUNT,
         );
         let path_sprites_pipeline_state = build_path_sprite_pipeline_state(
@@ -174,7 +190,7 @@ impl MetalRenderer {
             "path_sprites",
             "path_sprite_vertex",
             "path_sprite_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let shadows_pipeline_state = build_pipeline_state(
             &device,
@@ -182,7 +198,7 @@ impl MetalRenderer {
             "shadows",
             "shadow_vertex",
             "shadow_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let quads_pipeline_state = build_pipeline_state(
             &device,
@@ -190,7 +206,7 @@ impl MetalRenderer {
             "quads",
             "quad_vertex",
             "quad_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let underlines_pipeline_state = build_pipeline_state(
             &device,
@@ -198,7 +214,7 @@ impl MetalRenderer {
             "underlines",
             "underline_vertex",
             "underline_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let monochrome_sprites_pipeline_state = build_pipeline_state(
             &device,
@@ -206,7 +222,7 @@ impl MetalRenderer {
             "monochrome_sprites",
             "monochrome_sprite_vertex",
             "monochrome_sprite_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let polychrome_sprites_pipeline_state = build_pipeline_state(
             &device,
@@ -214,7 +230,7 @@ impl MetalRenderer {
             "polychrome_sprites",
             "polychrome_sprite_vertex",
             "polychrome_sprite_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
         let surfaces_pipeline_state = build_pipeline_state(
             &device,
@@ -222,7 +238,7 @@ impl MetalRenderer {
             "surfaces",
             "surface_vertex",
             "surface_fragment",
-            MTLPixelFormat::BGRA8Unorm,
+            pixel_format,
         );
 
         let command_queue = device.newCommandQueue().expect("failed to create command queue");
@@ -264,6 +280,7 @@ impl MetalRenderer {
             path_intermediate_texture: None,
             path_intermediate_msaa_texture: None,
             path_sample_count: PATH_SAMPLE_COUNT,
+            pixel_format,
         }
     }
 
@@ -313,7 +330,7 @@ impl MetalRenderer {
             let texture_descriptor = MTLTextureDescriptor::new();
             texture_descriptor.setWidth(size.width.0 as usize);
             texture_descriptor.setHeight(size.height.0 as usize);
-            texture_descriptor.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
+            texture_descriptor.setPixelFormat(self.pixel_format);
             texture_descriptor.setStorageMode(MTLStorageMode::Private);
             texture_descriptor
                 .setUsage(MTLTextureUsage::RenderTarget | MTLTextureUsage::ShaderRead);

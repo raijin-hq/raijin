@@ -196,7 +196,7 @@ impl MetalRenderer {
             let texture_descriptor = MTLTextureDescriptor::new();
             texture_descriptor.setWidth(size.width.0 as usize);
             texture_descriptor.setHeight(size.height.0 as usize);
-            texture_descriptor.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
+            texture_descriptor.setPixelFormat(self.pixel_format);
             texture_descriptor
                 .setUsage(MTLTextureUsage::RenderTarget | MTLTextureUsage::ShaderRead);
             texture_descriptor.setStorageMode(MTLStorageMode::Managed);

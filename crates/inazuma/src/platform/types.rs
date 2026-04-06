@@ -17,6 +17,10 @@ pub enum WindowColorspace {
     Srgb,
     /// Display P3 — enables the wider gamut on supported displays.
     DisplayP3,
+    /// Display P3 + HDR/EDR — enables wider gamut AND extended dynamic range.
+    /// Uses RGBA16Float pixel format and linear colorspace. Values > 1.0 = HDR brightness.
+    /// Requires a display that supports EDR (most Apple displays since 2018).
+    Hdr,
     /// Use the display's native colorspace without explicit tagging.
     Native,
 }
