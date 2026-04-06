@@ -1,6 +1,6 @@
 use super::*;
 
-use objc2_core_graphics::{CGColorSpace, kCGColorSpaceSRGB};
+use objc2_core_graphics::{CGColorSpace, kCGColorSpaceDisplayP3, kCGColorSpaceSRGB};
 use objc2_foundation::{NSSize, NSString};
 
 pub(crate) struct MetalRenderer {
@@ -32,18 +32,26 @@ pub(crate) struct MetalRenderer {
 
 impl MetalRenderer {
     /// Creates a new MetalRenderer with a CAMetalLayer for window-based rendering.
-    pub fn new(instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>, transparent: bool) -> Self {
+    pub fn new(
+        instance_buffer_pool: Arc<Mutex<InstanceBufferPool>>,
+        transparent: bool,
+        colorspace: crate::WindowColorspace,
+    ) -> Self {
         let device = Self::create_device();
 
         let layer = CAMetalLayer::new();
         layer.setDevice(Some(&device));
         layer.setPixelFormat(MTLPixelFormat::BGRA8Unorm);
-        // Set explicit sRGB colorspace to prevent oversaturation on P3 displays.
-        // Without this, macOS assumes the native display colorspace (often P3),
-        // causing sRGB content to appear oversaturated.
+        // Tag the layer with the correct colorspace so the display compositor
+        // interprets pixel values correctly. Display P3 enables wider gamut
+        // on supported displays; sRGB is the safe default.
         unsafe {
-            if let Some(srgb) = CGColorSpace::with_name(Some(kCGColorSpaceSRGB)) {
-                layer.setColorspace(Some(&srgb));
+            let cs_name = match colorspace {
+                crate::WindowColorspace::DisplayP3 => kCGColorSpaceDisplayP3,
+                _ => kCGColorSpaceSRGB,
+            };
+            if let Some(cs) = CGColorSpace::with_name(Some(cs_name)) {
+                layer.setColorspace(Some(&cs));
             }
         }
         // Support direct-to-display rendering if the window is not transparent

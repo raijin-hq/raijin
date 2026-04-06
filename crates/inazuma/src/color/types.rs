@@ -652,6 +652,20 @@ impl Oklch {
         (p3_r, p3_g, p3_b)
     }
 
+    /// Convert this Oklch color to gamma-encoded Display P3 RGB.
+    ///
+    /// Display P3 uses the same transfer function (piecewise gamma 2.4) as sRGB
+    /// but with wider primaries, covering ~25% more visible colors.
+    pub fn to_p3_rgb(self) -> Rgba {
+        let (r, g, b) = self.to_linear_p3();
+        Rgba {
+            r: linear_to_srgb(r).clamp(0.0, 1.0),
+            g: linear_to_srgb(g).clamp(0.0, 1.0),
+            b: linear_to_srgb(b).clamp(0.0, 1.0),
+            a: self.a,
+        }
+    }
+
     /// Blend this color with another in OKLCH space.
     /// Uses shortest-arc hue interpolation.
     pub fn blend(self, other: Oklch) -> Oklch {

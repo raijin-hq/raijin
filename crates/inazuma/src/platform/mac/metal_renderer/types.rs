@@ -20,8 +20,9 @@ pub(crate) unsafe fn new_renderer(
     _native_view: *mut c_void,
     _bounds: inazuma::Size<f32>,
     transparent: bool,
+    colorspace: inazuma::WindowColorspace,
 ) -> Renderer {
-    MetalRenderer::new(context, transparent)
+    MetalRenderer::new(context, transparent, colorspace)
 }
 
 pub(crate) struct InstanceBufferPool {

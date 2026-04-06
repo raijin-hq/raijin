@@ -7,10 +7,57 @@ mod terminal;
 mod workspace;
 
 use std::borrow::Cow;
-use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, px, size};
+use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, actions, px, size};
 use inazuma_component::Root;
 use inazuma_component::TitleBar;
 use workspace::Workspace;
+
+// Global actions — available everywhere
+actions!(
+    raijin,
+    [
+        Quit,
+        OpenSettings,
+        ToggleCommandPalette,
+        ToggleThemeSelector,
+        NewWindow,
+        CloseWindow,
+        IncreaseFontSize,
+        DecreaseFontSize,
+        ResetFontSize,
+    ]
+);
+
+// Terminal actions
+actions!(
+    terminal,
+    [
+        Copy,
+        Paste,
+        Clear,
+        NewTab,
+        NextTab,
+        PreviousTab,
+        ScrollPageUp,
+        ScrollPageDown,
+        ScrollToTop,
+        ScrollToBottom,
+        Find,
+    ]
+);
+
+// Input actions (Raijin Mode)
+actions!(
+    input,
+    [
+        Submit,
+        AcceptCompletion,
+        HistoryPrev,
+        HistoryNext,
+        Cancel,
+        Interrupt,
+    ]
+);
 
 fn main() {
     env_logger::Builder::from_env(
@@ -18,13 +65,14 @@ fn main() {
     ).init();
 
     Application::new()
-        .with_assets(inazuma_component_assets::Assets)
+        .with_assets(raijin_assets::Assets)
         .run(|cx: &mut App| {
-        // Register bundled terminal font (DankMono Nerd Font Mono)
-        let bundled_fonts: Vec<Cow<'static, [u8]>> = vec![
-            Cow::Borrowed(include_bytes!("../assets/fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Regular.otf")),
-            Cow::Borrowed(include_bytes!("../assets/fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Bold.otf")),
-        ];
+        // Register bundled terminal fonts via asset pipeline
+        let font_paths = ["fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Regular.otf", "fonts/dankmono-nerd-font-mono/DankMonoNerdFontMono-Bold.otf"];
+        let bundled_fonts: Vec<Cow<'static, [u8]>> = font_paths
+            .iter()
+            .filter_map(|path| cx.asset_source().load(path).ok().flatten())
+            .collect();
         cx.text_system().add_fonts(bundled_fonts).expect("failed to register bundled fonts");
 
         inazuma_component::init(cx);
@@ -34,20 +82,49 @@ fn main() {
             cx,
         );
 
-        // Load Raijin config, set as global
-        let config = raijin_settings::RaijinConfig::load().unwrap_or_default();
-        cx.set_global(config);
+        // Load Raijin settings, set as global
+        let settings = raijin_settings::RaijinSettings::load().unwrap_or_default();
+        cx.set_global(settings);
 
         // Initialize the raijin-theme system (ThemeRegistry, ThemeSettings, GlobalTheme)
         raijin_theme_settings::init(cx);
+
+        // Register global action handlers
+        cx.on_action::<Quit>(|_, cx| cx.quit());
+        cx.on_action::<CloseWindow>(|_, cx| {
+            cx.defer(|cx| {
+                cx.windows().iter().find(|window| {
+                    window
+                        .update(cx, |_, window, _| {
+                            if window.is_window_active() {
+                                window.remove_window();
+                                true
+                            } else {
+                                false
+                            }
+                        })
+                        .unwrap_or(false)
+                });
+            });
+        });
+
+        // Load keybindings from default + user keymap
+        raijin_settings::keymap_file::load_default_and_user_keymap(cx);
+
+        // File watchers — hot-reload settings, themes, and keymaps on change
+        start_file_watchers(cx);
+
         cx.set_global(workspace::PendingShellSwitch(None));
         cx.set_global(workspace::PendingShellInstallName(None));
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
+        let colorspace = cx.global::<raijin_settings::RaijinSettings>()
+            .appearance.window_colorspace;
         cx.open_window(
             WindowOptions {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 titlebar: Some(TitleBar::title_bar_options()),
+                colorspace,
                 ..Default::default()
             },
             |window, cx| {
@@ -58,4 +135,90 @@ fn main() {
         .unwrap();
         cx.activate(true);
     });
+}
+
+/// Starts file watchers for settings.toml and the themes directory.
+/// Changes are hot-reloaded without requiring an app restart.
+fn start_file_watchers(cx: &mut App) {
+    // Watch settings.toml — reload settings on change
+    let settings_path = raijin_settings::RaijinSettings::settings_path();
+    let (settings_rx, _settings_handle) = raijin_settings::watcher::watch_file(settings_path);
+    cx.spawn(async move |cx| {
+        while let Ok(_path) = settings_rx.recv_async().await {
+            cx.update(|cx| {
+                match raijin_settings::RaijinSettings::load() {
+                    Ok(new_settings) => {
+                        cx.set_global(new_settings);
+                        cx.refresh_windows();
+                        log::info!("Settings reloaded from disk");
+                    }
+                    Err(err) => {
+                        log::warn!("Failed to reload settings: {err}");
+                    }
+                }
+            });
+        }
+    })
+    .detach();
+
+    // Watch ~/.raijin/themes/ — reload changed theme files
+    let themes_dir = raijin_settings::RaijinSettings::themes_dir();
+    if !themes_dir.exists() {
+        std::fs::create_dir_all(&themes_dir).ok();
+    }
+    let (themes_rx, _themes_handle) = raijin_settings::watcher::watch_dir(themes_dir);
+    cx.spawn(async move |cx| {
+        while let Ok(changed_path) = themes_rx.recv_async().await {
+            if changed_path.extension().and_then(|e| e.to_str()) != Some("toml") {
+                continue;
+            }
+            cx.update(|cx| {
+                let content = match std::fs::read_to_string(&changed_path) {
+                    Ok(c) => c,
+                    Err(err) => {
+                        log::warn!("Failed to read changed theme '{}': {err}", changed_path.display());
+                        return;
+                    }
+                };
+                let id = changed_path
+                    .file_stem()
+                    .and_then(|s| s.to_str())
+                    .unwrap_or("unknown");
+                let base_dir = changed_path.parent().map(|p| p.to_path_buf());
+
+                match raijin_theme::load_theme_from_toml_with_base_dir(id, &content, base_dir) {
+                    Ok(theme) => {
+                        let theme_name = theme.name.clone();
+                        let registry = cx.global_mut::<raijin_theme::ThemeRegistry>();
+                        registry.insert_theme(theme);
+                        log::info!("Hot-reloaded theme: {theme_name}");
+
+                        // If the active theme was the one that changed, refresh it
+                        let active = cx.global::<raijin_theme::GlobalTheme>().0.clone();
+                        if active.name == theme_name {
+                            raijin_theme_settings::reload_theme(cx);
+                        }
+                    }
+                    Err(err) => {
+                        log::warn!("Failed to parse changed theme '{}': {err}", changed_path.display());
+                    }
+                }
+            });
+        }
+    })
+    .detach();
+
+    // Watch ~/.raijin/keymap.toml — reload keybindings on change
+    let keymap_path = raijin_settings::RaijinSettings::keymap_path();
+    let (keymap_rx, _keymap_handle) = raijin_settings::watcher::watch_file(keymap_path);
+    cx.spawn(async move |cx| {
+        while let Ok(_path) = keymap_rx.recv_async().await {
+            cx.update(|cx| {
+                cx.clear_key_bindings();
+                raijin_settings::keymap_file::load_default_and_user_keymap(cx);
+                log::info!("Keybindings reloaded from disk");
+            });
+        }
+    })
+    .detach();
 }

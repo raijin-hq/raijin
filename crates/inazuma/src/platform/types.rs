@@ -288,6 +288,9 @@ pub struct WindowOptions {
     /// Note that this may be ignored.
     pub window_decorations: Option<WindowDecorations>,
 
+    /// Colorspace for the GPU rendering layer.
+    pub colorspace: WindowColorspace,
+
     /// Tab group name, allows opening the window as a native tab on macOS 10.12+. Windows with the same tabbing identifier will be grouped together.
     pub tabbing_identifier: Option<String>,
 }
@@ -312,6 +315,7 @@ impl Default for WindowOptions {
             app_id: None,
             window_min_size: None,
             window_decorations: None,
+            colorspace: WindowColorspace::default(),
             tabbing_identifier: None,
         }
     }
@@ -363,6 +367,11 @@ pub struct WindowParams {
     pub display_id: Option<DisplayId>,
 
     pub window_min_size: Option<Size<Pixels>>,
+
+    /// Colorspace for the GPU rendering layer.
+    /// Controls whether the window renders in sRGB or Display P3.
+    pub colorspace: WindowColorspace,
+
     #[cfg(target_os = "macos")]
     pub tabbing_identifier: Option<String>,
 }
