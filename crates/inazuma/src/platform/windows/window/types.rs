@@ -70,6 +70,7 @@ impl WindowsWindowState {
         appearance: WindowAppearance,
         disable_direct_composition: bool,
         invalidate_devices: Arc<AtomicBool>,
+        colorspace: crate::WindowColorspace,
     ) -> Result<Self> {
         let scale_factor = {
             let monitor_dpi = unsafe { GetDpiForWindow(hwnd) } as f32;
@@ -89,7 +90,7 @@ impl WindowsWindowState {
         };
         let border_offset = WindowBorderOffset::default();
         let restore_from_minimized = None;
-        let renderer = DirectXRenderer::new(hwnd, directx_devices, disable_direct_composition)
+        let renderer = DirectXRenderer::new(hwnd, directx_devices, disable_direct_composition, colorspace)
             .context("Creating DirectX renderer")?;
         let callbacks = Callbacks::default();
         let input_handler = None;
@@ -202,6 +203,7 @@ impl WindowsWindowInner {
             context.appearance,
             context.disable_direct_composition,
             context.invalidate_devices.clone(),
+            context.colorspace,
         )?;
 
         Ok(Rc::new(Self {
@@ -345,5 +347,6 @@ pub(super) struct WindowCreateContext {
     pub(super) directx_devices: DirectXDevices,
     pub(super) invalidate_devices: Arc<AtomicBool>,
     pub(super) parent_hwnd: Option<HWND>,
+    pub(super) colorspace: crate::WindowColorspace,
 }
 

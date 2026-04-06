@@ -112,10 +112,20 @@ impl WgpuRenderer {
         atlas: Arc<WgpuAtlas>,
     ) -> anyhow::Result<Self> {
         let surface_caps = surface.get_capabilities(&context.adapter);
-        let preferred_formats = [
-            wgpu::TextureFormat::Bgra8Unorm,
-            wgpu::TextureFormat::Rgba8Unorm,
-        ];
+        let colorspace = config.colorspace;
+        let preferred_formats: &[wgpu::TextureFormat] = match colorspace {
+            crate::WindowColorspace::Hdr => &[
+                wgpu::TextureFormat::Rgba16Float,
+                wgpu::TextureFormat::Bgra8Unorm,
+                wgpu::TextureFormat::Rgba8Unorm,
+            ],
+            // Srgb, DisplayP3, and Native all use the same 8-bit formats on Linux.
+            // P3 wide-gamut is handled at the compositor/display level, not the texture format.
+            _ => &[
+                wgpu::TextureFormat::Bgra8Unorm,
+                wgpu::TextureFormat::Rgba8Unorm,
+            ],
+        };
         let surface_format = preferred_formats
             .iter()
             .find(|f| surface_caps.formats.contains(f))
@@ -328,6 +338,7 @@ impl WgpuRenderer {
             last_error,
             failed_frame_count: 0,
             device_lost: context.device_lost_flag(),
+            colorspace,
         })
     }
 

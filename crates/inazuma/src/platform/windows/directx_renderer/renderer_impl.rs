@@ -5,6 +5,7 @@ impl DirectXRenderer {
         hwnd: HWND,
         directx_devices: &DirectXDevices,
         disable_direct_composition: bool,
+        colorspace: crate::WindowColorspace,
     ) -> Result<Self> {
         if disable_direct_composition {
             log::info!("Direct Composition is disabled.");
@@ -14,7 +15,7 @@ impl DirectXRenderer {
             .context("Creating DirectX devices")?;
         let atlas = Arc::new(DirectXAtlas::new(&devices.device, &devices.device_context));
 
-        let resources = DirectXResources::new(&devices, 1, 1, hwnd, disable_direct_composition)
+        let resources = DirectXResources::new(&devices, 1, 1, hwnd, disable_direct_composition, colorspace)
             .context("Creating DirectX resources")?;
         let globals = DirectXGlobalElements::new(&devices.device)
             .context("Creating DirectX global elements")?;
@@ -41,6 +42,7 @@ impl DirectXRenderer {
             pipelines,
             direct_composition,
             font_info: Self::get_font_info(),
+            colorspace,
             width: 1,
             height: 1,
             skip_draws: false,
@@ -136,6 +138,7 @@ impl DirectXRenderer {
             self.height,
             self.hwnd,
             disable_direct_composition,
+            self.colorspace,
         )
         .context("Creating DirectX resources")?;
         let globals = DirectXGlobalElements::new(&devices.device)
@@ -250,13 +253,13 @@ impl DirectXRenderer {
                     BUFFER_COUNT as u32,
                     width,
                     height,
-                    RENDER_TARGET_FORMAT,
+                    render_target_format(self.colorspace),
                     DXGI_SWAP_CHAIN_FLAG(0),
                 )
                 .context("Failed to resize swap chain")?;
         }
 
-        resources.recreate_resources(devices, width, height)?;
+        resources.recreate_resources(devices, width, height, render_target_format(self.colorspace))?;
 
         unsafe {
             devices
@@ -419,7 +422,7 @@ impl DirectXRenderer {
                 0,
                 &resources.path_intermediate_msaa_texture,
                 0,
-                RENDER_TARGET_FORMAT,
+                render_target_format(self.colorspace),
             );
             // Restore main render target
             devices

@@ -7,15 +7,19 @@ impl DirectXResources {
         height: u32,
         hwnd: HWND,
         disable_direct_composition: bool,
+        colorspace: crate::WindowColorspace,
     ) -> Result<Self> {
+        let format = render_target_format(colorspace);
         let swap_chain = if disable_direct_composition {
-            create_swap_chain(&devices.dxgi_factory, &devices.device, hwnd, width, height)?
+            create_swap_chain(&devices.dxgi_factory, &devices.device, hwnd, width, height, format, colorspace)?
         } else {
             create_swap_chain_for_composition(
                 &devices.dxgi_factory,
                 &devices.device,
                 width,
                 height,
+                format,
+                colorspace,
             )?
         };
 
@@ -27,7 +31,7 @@ impl DirectXResources {
             path_intermediate_msaa_texture,
             path_intermediate_msaa_view,
             viewport,
-        ) = create_resources(devices, &swap_chain, width, height)?;
+        ) = create_resources(devices, &swap_chain, width, height, format)?;
         set_rasterizer_state(&devices.device, &devices.device_context)?;
 
         Ok(Self {
@@ -48,6 +52,7 @@ impl DirectXResources {
         devices: &DirectXRendererDevices,
         width: u32,
         height: u32,
+        format: DXGI_FORMAT,
     ) -> Result<()> {
         let (
             render_target,
@@ -57,7 +62,7 @@ impl DirectXResources {
             path_intermediate_msaa_texture,
             path_intermediate_msaa_view,
             viewport,
-        ) = create_resources(devices, &self.swap_chain, width, height)?;
+        ) = create_resources(devices, &self.swap_chain, width, height, format)?;
         self.render_target = Some(render_target);
         self.render_target_view = render_target_view;
         self.path_intermediate_texture = path_intermediate_texture;

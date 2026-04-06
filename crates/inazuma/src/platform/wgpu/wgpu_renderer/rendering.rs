@@ -648,6 +648,7 @@ impl WgpuRenderer {
                 height: inazuma::DevicePixels(self.surface_config.height as i32),
             },
             transparent: self.surface_config.alpha_mode != wgpu::CompositeAlphaMode::Opaque,
+            colorspace: self.colorspace,
         };
         let gpu_context = Rc::clone(gpu_context);
         let ctx_ref = gpu_context.borrow();

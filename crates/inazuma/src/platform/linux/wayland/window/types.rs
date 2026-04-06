@@ -303,6 +303,7 @@ impl WaylandWindowState {
                     height: DevicePixels(f32::from(options.bounds.size.height) as i32),
                 },
                 transparent: true,
+                colorspace: options.colorspace,
             };
             WgpuRenderer::new(gpu_context, &raw_window, config, compositor_gpu)?
         };

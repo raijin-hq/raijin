@@ -140,6 +140,7 @@ impl WebWindow {
         let renderer_config = WgpuSurfaceConfig {
             size: device_size,
             transparent: false,
+            colorspace: crate::WindowColorspace::Srgb,
         };
 
         let renderer = WgpuRenderer::new_from_canvas(context, &canvas, renderer_config)?;

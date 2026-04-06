@@ -58,6 +58,7 @@ pub(super) struct PathRasterizationVertex {
 pub struct WgpuSurfaceConfig {
     pub size: Size<DevicePixels>,
     pub transparent: bool,
+    pub colorspace: crate::WindowColorspace,
 }
 
 pub(super) struct WgpuPipelines {
@@ -125,5 +126,6 @@ pub struct WgpuRenderer {
     pub(super) last_error: Arc<Mutex<Option<String>>>,
     pub(super) failed_frame_count: u32,
     pub(super) device_lost: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    pub(super) colorspace: crate::WindowColorspace,
 }
 

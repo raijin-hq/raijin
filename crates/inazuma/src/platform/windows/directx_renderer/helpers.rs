@@ -9,11 +9,13 @@ pub(super) fn create_swap_chain_for_composition(
     device: &ID3D11Device,
     width: u32,
     height: u32,
+    format: DXGI_FORMAT,
+    colorspace: crate::WindowColorspace,
 ) -> Result<IDXGISwapChain1> {
     let desc = DXGI_SWAP_CHAIN_DESC1 {
         Width: width,
         Height: height,
-        Format: RENDER_TARGET_FORMAT,
+        Format: format,
         Stereo: false.into(),
         SampleDesc: DXGI_SAMPLE_DESC {
             Count: 1,
@@ -27,7 +29,10 @@ pub(super) fn create_swap_chain_for_composition(
         AlphaMode: DXGI_ALPHA_MODE_PREMULTIPLIED,
         Flags: 0,
     };
-    Ok(unsafe { dxgi_factory.CreateSwapChainForComposition(device, &desc, None)? })
+    let swap_chain =
+        unsafe { dxgi_factory.CreateSwapChainForComposition(device, &desc, None)? };
+    apply_swap_chain_colorspace(&swap_chain, colorspace);
+    Ok(swap_chain)
 }
 
 pub(super) fn create_swap_chain(
@@ -36,13 +41,15 @@ pub(super) fn create_swap_chain(
     hwnd: HWND,
     width: u32,
     height: u32,
+    format: DXGI_FORMAT,
+    colorspace: crate::WindowColorspace,
 ) -> Result<IDXGISwapChain1> {
     use windows::Win32::Graphics::Dxgi::DXGI_MWA_NO_ALT_ENTER;
 
     let desc = DXGI_SWAP_CHAIN_DESC1 {
         Width: width,
         Height: height,
-        Format: RENDER_TARGET_FORMAT,
+        Format: format,
         Stereo: false.into(),
         SampleDesc: DXGI_SAMPLE_DESC {
             Count: 1,
@@ -58,7 +65,36 @@ pub(super) fn create_swap_chain(
     let swap_chain =
         unsafe { dxgi_factory.CreateSwapChainForHwnd(device, hwnd, &desc, None, None) }?;
     unsafe { dxgi_factory.MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER) }?;
+    apply_swap_chain_colorspace(&swap_chain, colorspace);
     Ok(swap_chain)
+}
+
+/// Applies a DXGI colorspace to the swap chain if the platform supports it (IDXGISwapChain3).
+/// On older Windows versions that lack IDXGISwapChain3, this is a no-op.
+fn apply_swap_chain_colorspace(
+    swap_chain: &IDXGISwapChain1,
+    colorspace: crate::WindowColorspace,
+) {
+    use windows::Win32::Graphics::Dxgi::IDXGISwapChain3;
+
+    let dxgi_colorspace = match colorspace {
+        // scRGB linear — the standard Windows HDR colorspace for float16 buffers.
+        crate::WindowColorspace::Hdr => DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709,
+        // sRGB gamma with BT.709 primaries — closest to Display P3 on Windows.
+        // True Display P3 is not natively available in the DXGI colorspace enum.
+        crate::WindowColorspace::DisplayP3 => DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709,
+        _ => return,
+    };
+
+    if let Ok(swap_chain3) = swap_chain.cast::<IDXGISwapChain3>() {
+        unsafe {
+            swap_chain3
+                .SetColorSpace1(dxgi_colorspace)
+                .ok()
+                .context("SetColorSpace1 failed")
+                .log_err();
+        }
+    }
 }
 
 #[inline]
@@ -67,6 +103,7 @@ pub(super) fn create_resources(
     swap_chain: &IDXGISwapChain1,
     width: u32,
     height: u32,
+    format: DXGI_FORMAT,
 ) -> Result<(
     ID3D11Texture2D,
     Option<ID3D11RenderTargetView>,
@@ -79,9 +116,9 @@ pub(super) fn create_resources(
     let (render_target, render_target_view) =
         create_render_target_and_its_view(swap_chain, &devices.device)?;
     let (path_intermediate_texture, path_intermediate_srv) =
-        create_path_intermediate_texture(&devices.device, width, height)?;
+        create_path_intermediate_texture(&devices.device, width, height, format)?;
     let (path_intermediate_msaa_texture, path_intermediate_msaa_view) =
-        create_path_intermediate_msaa_texture_and_view(&devices.device, width, height)?;
+        create_path_intermediate_msaa_texture_and_view(&devices.device, width, height, format)?;
     let viewport = set_viewport(&devices.device_context, width as f32, height as f32);
     Ok((
         render_target,
@@ -110,6 +147,7 @@ pub(super) fn create_path_intermediate_texture(
     device: &ID3D11Device,
     width: u32,
     height: u32,
+    format: DXGI_FORMAT,
 ) -> Result<(ID3D11Texture2D, Option<ID3D11ShaderResourceView>)> {
     let texture = unsafe {
         let mut output = None;
@@ -118,7 +156,7 @@ pub(super) fn create_path_intermediate_texture(
             Height: height,
             MipLevels: 1,
             ArraySize: 1,
-            Format: RENDER_TARGET_FORMAT,
+            Format: format,
             SampleDesc: DXGI_SAMPLE_DESC {
                 Count: 1,
                 Quality: 0,
@@ -143,6 +181,7 @@ pub(super) fn create_path_intermediate_msaa_texture_and_view(
     device: &ID3D11Device,
     width: u32,
     height: u32,
+    format: DXGI_FORMAT,
 ) -> Result<(ID3D11Texture2D, Option<ID3D11RenderTargetView>)> {
     let msaa_texture = unsafe {
         let mut output = None;
@@ -151,7 +190,7 @@ pub(super) fn create_path_intermediate_msaa_texture_and_view(
             Height: height,
             MipLevels: 1,
             ArraySize: 1,
-            Format: RENDER_TARGET_FORMAT,
+            Format: format,
             SampleDesc: DXGI_SAMPLE_DESC {
                 Count: PATH_MULTISAMPLE_COUNT,
                 Quality: D3D11_STANDARD_MULTISAMPLE_PATTERN.0 as u32,

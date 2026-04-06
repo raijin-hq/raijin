@@ -1,7 +1,12 @@
 use super::*;
 
 pub(crate) const DISABLE_DIRECT_COMPOSITION: &str = "GPUI_DISABLE_DIRECT_COMPOSITION";
-pub(super) const RENDER_TARGET_FORMAT: DXGI_FORMAT = DXGI_FORMAT_B8G8R8A8_UNORM;
+pub(super) fn render_target_format(colorspace: crate::WindowColorspace) -> DXGI_FORMAT {
+    match colorspace {
+        crate::WindowColorspace::Hdr => DXGI_FORMAT_R16G16B16A16_FLOAT,
+        _ => DXGI_FORMAT_B8G8R8A8_UNORM,
+    }
+}
 // This configuration is used for MSAA rendering on paths only, and it's guaranteed to be supported by DirectX 11.
 pub(super) const PATH_MULTISAMPLE_COUNT: u32 = 4;
 
@@ -20,6 +25,7 @@ pub(crate) struct DirectXRenderer {
     pub(super) pipelines: DirectXRenderPipelines,
     pub(super) direct_composition: Option<DirectComposition>,
     pub(super) font_info: &'static FontInfo,
+    pub(super) colorspace: crate::WindowColorspace,
 
     pub(super) width: u32,
     pub(super) height: u32,

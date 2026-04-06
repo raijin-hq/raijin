@@ -98,6 +98,7 @@ impl WindowsWindow {
             directx_devices,
             invalidate_devices,
             parent_hwnd,
+            colorspace: params.colorspace,
         };
         let creation_result = unsafe {
             CreateWindowExW(
