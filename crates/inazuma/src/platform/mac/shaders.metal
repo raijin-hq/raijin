@@ -894,14 +894,15 @@ fragment float4 surface_fragment(SurfaceFragmentInput input [[stage_in]],
   return ycbcrToRGBTransform * ycbcr;
 }
 
-// Oklch to linear RGBA conversion.
-// Converts polar Oklch (L, C, H degrees, alpha) to linear sRGB via Oklab.
+// Oklch to sRGB RGBA conversion.
+// Converts polar Oklch (L, C, H degrees, alpha) to gamma-encoded sRGB via Oklab.
+// Output is sRGB (not linear) to match the BGRA8Unorm framebuffer format.
 float4 oklch_to_rgba(Oklch oklch) {
   float h_rad = oklch.h * 3.141592653589793 / 180.0;
   float a_lab = oklch.c * cos(h_rad);
   float b_lab = oklch.c * sin(h_rad);
 
-  // Oklab to linear sRGB (same matrix as oklab_to_srgb but without gamma encoding)
+  // Oklab → LMS
   float l_ = oklch.l + 0.3963377774 * a_lab + 0.2158037573 * b_lab;
   float m_ = oklch.l - 0.1055613458 * a_lab - 0.0638541728 * b_lab;
   float s_ = oklch.l - 0.0894841775 * a_lab - 1.2914855480 * b_lab;
@@ -910,12 +911,15 @@ float4 oklch_to_rgba(Oklch oklch) {
   float m = m_ * m_ * m_;
   float s = s_ * s_ * s_;
 
-  return float4(
+  // LMS → linear sRGB
+  float3 linear_rgb = float3(
     4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-   -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
-    oklch.a
+   -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
   );
+
+  // linear sRGB → gamma-encoded sRGB
+  return float4(linear_to_srgb(linear_rgb), oklch.a);
 }
 
 float3 srgb_to_linear(float3 color) {

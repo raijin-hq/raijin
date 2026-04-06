@@ -156,22 +156,18 @@ impl Colorize for Oklch {
     fn to_hex(&self) -> String {
         let rgb = self.to_rgb();
 
+        // Use round() like culori's fixup: Math.round(clamp(value) * 255)
+        // `as u32` truncates (floors), causing off-by-one errors.
+        let r = (rgb.r.clamp(0., 1.) * 255.).round() as u32;
+        let g = (rgb.g.clamp(0., 1.) * 255.).round() as u32;
+        let b = (rgb.b.clamp(0., 1.) * 255.).round() as u32;
+
         if self.a < 1. {
-            return format!(
-                "#{:02X}{:02X}{:02X}{:02X}",
-                ((rgb.r * 255.) as u32),
-                ((rgb.g * 255.) as u32),
-                ((rgb.b * 255.) as u32),
-                ((self.a * 255.) as u32)
-            );
+            let a = (self.a.clamp(0., 1.) * 255.).round() as u32;
+            return format!("#{r:02X}{g:02X}{b:02X}{a:02X}");
         }
 
-        format!(
-            "#{:02X}{:02X}{:02X}",
-            ((rgb.r * 255.) as u32),
-            ((rgb.g * 255.) as u32),
-            ((rgb.b * 255.) as u32)
-        )
+        format!("#{r:02X}{g:02X}{b:02X}")
     }
 
     fn parse_hex(hex: &str) -> Result<Self> {
@@ -777,8 +773,8 @@ mod tests {
         assert_eq!(format!("{:?}", ColorName::Yellow), "Yellow");
 
         let color = ColorName::Green;
-        assert_eq!(color.scale(500).to_hex(), "#21C55E");
-        assert_eq!(color.scale(1500).to_hex(), "#21C55E");
+        assert_eq!(color.scale(500).to_hex(), "#22C55E");
+        assert_eq!(color.scale(1500).to_hex(), "#22C55E");
 
         for name in ColorName::all().iter() {
             let name1: ColorName = name.to_string().as_str().try_into().unwrap();
