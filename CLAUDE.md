@@ -99,52 +99,55 @@ Inazuma/GPUI ist ein **Editor-Framework**. Terminal-Rendering hat fundamental an
 
 ## Crate Architecture Rules
 
-**Every piece of logic must live in its own dedicated crate, not in `raijin-app`.** `raijin-app` is ONLY the entry point (`main.rs`) and app bootstrap. It imports and wires up crates — it contains no business logic, no rendering code, no UI components.
+This project follows Zed's crate architecture. These rules apply to **every crate in the entire repo**, not just specific subsystems.
 
-This mirrors Zed's architecture where the `zed` crate is thin and everything lives in dedicated crates.
+### 1. One responsibility per crate
 
-### Where code lives:
+Every crate has exactly one job. If a crate does two things, split it. If you're adding code and it doesn't fit the crate's purpose, find the right crate or create a new one.
 
-| Code Type | Crate | NOT in |
-|---|---|---|
-| Terminal backend (PTY, events, state) | `raijin-terminal` | raijin-app |
-| Terminal rendering (grid, blocks, colors) | `raijin-terminal-view` | raijin-app |
-| Terminal panel (Item trait, Workspace integration) | `raijin-terminal-view` | raijin-app |
-| Shell completions | `raijin-completions` | raijin-app |
-| Command history, session state | `raijin-session` | raijin-app |
-| Settings UI | `raijin-settings-ui` | raijin-app |
-| Theme system | `raijin-theme` + `raijin-theme-settings` | raijin-app |
-| UI components | `inazuma-component` or `raijin-ui` | raijin-app |
-| Workspace layout | `raijin-workspace` | raijin-app |
-| Project model (buffers, LSP, git) | `raijin-project` | raijin-app |
+- **Backend crates** contain logic, data structures, algorithms. No UI, no rendering, no Workspace traits.
+- **View crates** (`*-view`, `*-ui`, `*-panel`) are thin wrappers that wire backend crates into the UI/Workspace. They contain NO business logic — only `impl Item`, `impl Panel`, `impl Render`, event routing.
+- **`raijin-app`** is ONLY the entry point (`main.rs`) and bootstrap. It imports and initializes crates. Zero business logic, zero rendering, zero UI components.
 
-### View crates are thin wrappers:
+### 2. Before writing code, find the right crate
 
-A `*-view` crate (like `raijin-terminal-view`) does NOT contain business logic. It only:
-1. Imports types from backend crates (`raijin-terminal`, `raijin-completions`, etc.)
-2. Implements Workspace traits (`Item`, `Panel`, `Render`)
-3. Wires up event handling between crates
+Before adding code anywhere, check:
+- Does a crate for this already exist? (We have 220+ crates — check `crates/` directory)
+- Does Zed have a crate for this? (Check `.reference/zed/crates/`)
+- If the code is UI: does it belong in `raijin-ui`, `inazuma-component`, or a dedicated `*-view` crate?
+- If the code is logic: does it belong in an existing backend crate?
 
-If you find yourself writing logic in a view crate, it belongs in the backend crate instead.
+**Never dump code into `raijin-app` because it's convenient.** Find or create the proper crate.
 
-### Inazuma vs Raijin naming:
+### 3. Naming convention
 
-- **`inazuma-*`** = Framework-level, reusable without Raijin (collections, text, rope, fuzzy, settings, UI primitives)
-- **`raijin-*`** = Application-level, Raijin-specific (terminal, theme, workspace, editor, agent)
+- **`inazuma-*`** = Framework-level, reusable independent of Raijin (collections, text, rope, fuzzy, settings framework, UI primitives, GPU rendering)
+- **`raijin-*`** = Application-level, Raijin-specific features (terminal, theme, workspace, editor, agent, collab, project)
 
-### Dependencies flow downward:
+### 4. Dependencies flow downward
 
 ```
-raijin-app (entry point only)
-  → raijin-terminal-view (thin view)
-    → raijin-terminal (backend)
-    → raijin-completions (backend)
-    → raijin-workspace (workspace framework)
-    → raijin-ui (UI components)
-      → inazuma (GPU framework)
+raijin-app (entry point — imports everything, contains nothing)
+  ├── *-view crates (thin wrappers — import backend + workspace, implement UI traits)
+  │     ├── backend crates (logic — raijin-terminal, raijin-completions, raijin-project, etc.)
+  │     ├── raijin-workspace (workspace framework — panels, docks, items)
+  │     └── raijin-ui / inazuma-component (UI components)
+  └── inazuma (GPU framework — lowest level)
 ```
 
-Never create circular dependencies. Backend crates must not depend on view crates.
+- Backend crates NEVER depend on view crates
+- View crates NEVER depend on `raijin-app`
+- No circular dependencies — if two crates need each other, extract the shared part into a third crate
+- Framework crates (`inazuma-*`) never depend on application crates (`raijin-*`)
+
+### 5. Match Zed's structure
+
+When in doubt, check how Zed organizes the same functionality in `.reference/zed/crates/`. Our architecture mirrors theirs — same separation of concerns, same crate boundaries, same patterns. The only differences are:
+- Naming (`gpui` → `inazuma`, `zed` → `raijin`)
+- Colors (OKLCH instead of HSLA)
+- Settings format (TOML instead of JSON)
+- Terminal (our own Block system, not Zed's simple wrapper)
+- Platform code (`objc2` instead of `cocoa`/`objc`)
 
 ## Project Phases
 
