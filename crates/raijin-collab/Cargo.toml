@@ -1,0 +1,141 @@
+[package]
+authors = ["Raijin Contributors"]
+default-run = "raijin-collab"
+edition.workspace = true
+name = "raijin-collab"
+version = "0.44.0"
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "raijin-collab"
+
+[features]
+sqlite = ["sea-orm/sqlx-sqlite", "sqlx/sqlite"]
+test-support = ["sqlite"]
+
+[lib]
+test = false
+
+[[test]]
+name = "collab_tests"
+required-features = ["test-support"]
+path = "tests/integration/collab_tests.rs"
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+async-tungstenite = { workspace = true, features = ["tokio", "tokio-rustls-manual-roots" ] }
+aws-config = { version = "1.1.5" }
+aws-sdk-kinesis = "1.51.0"
+aws-sdk-s3 = { version = "1.15.0" }
+axum = { version = "0.6", features = ["json", "headers", "ws"] }
+chrono.workspace = true
+inazuma-clock.workspace = true
+raijin-cloud-api-types.workspace = true
+inazuma-collections.workspace = true
+dashmap.workspace = true
+envy = "0.4.2"
+futures.workspace = true
+inazuma.workspace = true
+hex.workspace = true
+raijin-http-client.workspace = true
+raijin-livekit-api.workspace = true
+log.workspace = true
+nanoid.workspace = true
+parking_lot.workspace = true
+prometheus = "0.14"
+prost.workspace = true
+rand.workspace = true
+reqwest = { version = "0.11", features = ["json"] }
+raijin-rpc.workspace = true
+# sea-orm and sea-orm-macros versions must match exactly.
+sea-orm = { version = "=1.1.10", features = ["sqlx-postgres", "postgres-array", "runtime-tokio-rustls", "with-uuid"] }
+sea-orm-macros = "=1.1.10"
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "json", "time", "uuid", "any"] }
+strum.workspace = true
+raijin-telemetry-events.workspace = true
+inazuma-text.workspace = true
+time.workspace = true
+tokio = { workspace = true, features = ["full"] }
+toml.workspace = true
+tower = "0.4"
+tower-http = { workspace = true, features = ["trace"] }
+tracing.workspace = true
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json", "registry", "tracing-log"] } # workaround for https://github.com/tokio-rs/tracing/issues/2927
+inazuma-util.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+raijin-agent = { workspace = true, features = ["test-support"] }
+
+
+
+raijin-assistant-text-thread.workspace = true
+raijin-assistant-slash-command.workspace = true
+async-trait.workspace = true
+
+raijin-buffer-diff.workspace = true
+raijin-call = { workspace = true, features = ["test-support"] }
+raijin-channel.workspace = true
+raijin-client = { workspace = true, features = ["test-support"] }
+raijin-collab = { workspace = true, features = ["test-support"] }
+raijin-collab-ui = { workspace = true, features = ["test-support"] }
+inazuma-collections = { workspace = true, features = ["test-support"] }
+raijin-command-palette-hooks.workspace = true
+
+ctor.workspace = true
+raijin-dap = { workspace = true, features = ["test-support"] }
+raijin-dap-adapters = { workspace = true, features = ["test-support"] }
+
+raijin-debugger-ui = { workspace = true, features = ["test-support"] }
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-extension.workspace = true
+raijin-file-finder.workspace = true
+raijin-fs = { workspace = true, features = ["test-support"] }
+raijin-git = { workspace = true, features = ["test-support"] }
+raijin-git-hosting-providers.workspace = true
+raijin-git-ui = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+inazuma-tokio.workspace = true
+
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-language-model = { workspace = true, features = ["test-support"] }
+raijin-livekit-client =  { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
+inazuma-menu.workspace = true
+raijin-multi-buffer = { workspace = true, features = ["test-support"] }
+raijin-node-runtime.workspace = true
+raijin-notifications = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-prompt-store.workspace = true
+raijin-recent-projects = { workspace = true, features = ["test-support"] }
+raijin-release-channel.workspace = true
+raijin-remote = { workspace = true, features = ["test-support"] }
+raijin-remote-server.workspace = true
+raijin-rpc = { workspace = true, features = ["test-support"] }
+sea-orm = { version = "=1.1.10", features = ["sqlx-sqlite"] }
+serde_json.workspace = true
+raijin-session = { workspace = true, features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+smol.workspace = true
+sqlx = { version = "0.8", features = ["sqlite"] }
+raijin-task.workspace = true
+raijin-theme-settings = { workspace = true, features = ["test-support"] }
+raijin-theme.workspace = true
+
+unindent.workspace = true
+inazuma-util.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }
+raijin-worktree = { workspace = true, features = ["test-support"] }
+raijin-actions.workspace = true
+raijin-log.workspace = true

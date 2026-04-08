@@ -525,6 +525,16 @@ impl Oklch {
         }
     }
 
+    /// Returns a grayscale version of this color by setting chroma to 0.
+    pub fn grayscale(&self) -> Self {
+        Oklch {
+            l: self.l,
+            c: 0.0,
+            h: self.h,
+            a: self.a,
+        }
+    }
+
     /// Check if this color is within the sRGB gamut.
     ///
     /// A color is in-gamut when its sRGB R, G, B components are all in [0.0, 1.0]

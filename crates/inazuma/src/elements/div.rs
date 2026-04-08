@@ -44,7 +44,7 @@ use crate::{
     StyleRefinement, Styled, Task, TooltipId, Visibility, Window, WindowControlArea, point, px,
     size,
 };
-use collections::HashMap;
+use inazuma_collections::HashMap;
 use refineable::Refineable;
 use smallvec::SmallVec;
 use stacksafe::{StackSafe, stacksafe};
@@ -59,7 +59,7 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use super::ImageCacheProvider;
 

@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use itertools::Itertools;
-use util::ResultExt;
+use inazuma_util::ResultExt;
 use windows::Win32::{
     Foundation::HMODULE,
     Graphics::{

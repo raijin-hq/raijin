@@ -1,0 +1,73 @@
+[package]
+name = "raijin-settings-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/settings_ui.rs"
+
+[features]
+default = []
+test-support = []
+
+[dependencies]
+raijin-agent.workspace = true
+raijin-agent-settings.workspace = true
+anyhow.workspace = true
+raijin-audio.workspace = true
+inazuma-component.workspace = true
+raijin-codestral.workspace = true
+raijin-copilot.workspace = true
+raijin-copilot-ui.workspace = true
+cpal.workspace = true
+raijin-edit-prediction.workspace = true
+raijin-edit-prediction-ui.workspace = true
+raijin-editor.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+heck.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+inazuma-menu.workspace = true
+raijin-paths.workspace = true
+inazuma-picker.workspace = true
+regex.workspace = true
+raijin-platform-title-bar.workspace = true
+raijin-project.workspace = true
+raijin-release-channel.workspace = true
+rodio.workspace = true
+schemars.workspace = true
+raijin-search.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-shell-command-parser.workspace = true
+strum.workspace = true
+raijin-telemetry.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-fs = { workspace = true, features = ["test-support"] }
+futures.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-paths.workspace = true
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-title-bar = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

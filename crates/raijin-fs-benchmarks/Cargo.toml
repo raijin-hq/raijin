@@ -1,0 +1,13 @@
+[package]
+name = "raijin-fs-benchmarks"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+
+[dependencies]
+raijin-fs.workspace = true
+inazuma.workspace = true
+inazuma-platform.workspace = true
+
+[lints]
+workspace = true

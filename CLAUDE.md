@@ -40,7 +40,18 @@ raijin-app (binary — entry point, workspace layout, terminal rendering)
 ├── raijin-shell (shell context: CWD, git branch, user info)
 ├── raijin-settings (user config at ~/.config/raijin/config.toml — theme, font, cursor, scrollback, symbol_map)
 ├── raijin-completions (spec-based CLI completion engine — JSON specs for git, cargo, etc.)
-├── raijin-ui (design token system — WIP, currently empty)
+├── raijin-assets (compile-time asset bundling via rust-embed — themes, fonts, keymaps; falls back to inazuma-component-assets)
+├── raijin-theme (theme system — ThemeRegistry, ThemeColors, ThemeStyles, OKLCH color pipeline)
+│   ├── raijin-theme-settings (connects themes to raijin-settings — ThemeSelection, reload_theme)
+│   ├── raijin-theme-extension (dynamic theme loading — ExtensionThemeProxy)
+│   ├── raijin-theme-selector (UI picker for browsing/switching themes)
+│   └── raijin-theme-importer (imports Zed and VS Code themes)
+├── inazuma-fuzzy (fuzzy matching engine — CharBag, match_strings)
+├── inazuma-util (general utilities — fs, paths, shell, markdown, etc.)
+├── inazuma-collections (FxHashMap/FxHashSet aliases, VecMap)
+├── inazuma-gpui-util (GPUI helpers — post_inc, measure, ArcCow)
+├── inazuma-util-macros (proc-macros — path! for cross-platform paths)
+├── inazuma-perf (perf profiler data types)
 └── cargo-raijin (dev tooling binary: cargo raijin dev/build/icon — not a library)
 ```
 
@@ -58,13 +69,15 @@ raijin-app (binary — entry point, workspace layout, terminal rendering)
 
 **Terminal Element** (`raijin-app/src/terminal_element.rs`) — Custom Inazuma element that renders the alacritty grid cell-by-cell with ANSI color mapping, block headers (command + duration + exit badge), cursor, and content masking.
 
+**Theme System** (`raijin-theme`) — Full theme pipeline: TOML theme definitions in `assets/themes/`, loaded into `ThemeRegistry` at startup. `GlobalTheme` provides app-wide access. All colors are token-based via `ThemeColors`/`ThemeStyles` — no hardcoded colors. Supports importing Zed and VS Code themes.
+
 **Settings** (`raijin-settings`) — `RaijinConfig` implements `inazuma::Global` for app-wide access. Config sections: `GeneralConfig` (working_directory, input_mode), `AppearanceConfig` (theme, font_family, font_size, symbol_map for Nerd Font ranges), `TerminalConfig` (scrollback_history, cursor_style).
 
 **Completions** (`raijin-completions`) — Parses the user's current input line into `CommandContext` + `TokenPosition`, matches against embedded JSON specs (`specs/git.json`, `specs/cargo.json`), returns `CompletionCandidate`s. Supports file paths, git branches/tags/remotes, env vars, process IDs.
 
 ### Theme
 
-Raijin Dark: `#121212` background, `#14F195` accent (Solana green), `#f1f1f1` foreground. Colors are currently hardcoded in `terminal_element.rs` — the `raijin-ui` crate will house typed tokens once implemented.
+Raijin Dark: `#121212` background, `#00BFFF` accent (Cyan), `#f1f1f1` foreground. Theme definitions live in `assets/themes/` as TOML files, loaded through `raijin-theme::ThemeRegistry`.
 
 ## Terminal vs Editor Rendering
 
@@ -86,4 +99,4 @@ Inazuma/GPUI ist ein **Editor-Framework**. Terminal-Rendering hat fundamental an
 
 ## Project Phases
 
-Roadmap lives in `plan/` (00–14). Current status: Phase 2A (Shell Integration + Block System) is in progress. Phases 0 (foundation) and 1 (minimal terminal) are complete. Completed plans are in `plan/done/`.
+Roadmap lives in `plan/` (00–18). Completed: Phase 0 (foundation), Phase 1 (minimal terminal), Phase 2A/2B (shell integration + block system), Phase 4 (input editor). In progress: Phase 2C (block interaction), Phase 3 (design system). Completed plans are in `plan/done/`.

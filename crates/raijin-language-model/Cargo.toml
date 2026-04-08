@@ -1,0 +1,48 @@
+[package]
+name = "raijin-language-model"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/language_model.rs"
+doctest = false
+
+[features]
+test-support = []
+
+[dependencies]
+raijin-anthropic = { workspace = true, features = ["schemars"] }
+anyhow.workspace = true
+raijin-credentials-provider.workspace = true
+base64.workspace = true
+raijin-client.workspace = true
+raijin-cloud-api-client.workspace = true
+raijin-cloud-api-types.workspace = true
+raijin-cloud-llm-client.workspace = true
+inazuma-collections.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-http-client.workspace = true
+inazuma-icons.workspace = true
+image.workspace = true
+log.workspace = true
+raijin-open-ai = { workspace = true, features = ["schemars"] }
+raijin-open-router.workspace = true
+parking_lot.workspace = true
+raijin-proto.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+thiserror.workspace = true
+inazuma-util.workspace = true
+raijin-env-vars.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }

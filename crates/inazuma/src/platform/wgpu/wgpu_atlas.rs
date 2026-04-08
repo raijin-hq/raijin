@@ -1,5 +1,5 @@
 use anyhow::{Context as _, Result};
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use etagere::{BucketedAtlasAllocator, size2};
 use inazuma::{
     AtlasKey, AtlasTextureId, AtlasTextureKind, AtlasTextureList, AtlasTile, Bounds, DevicePixels,

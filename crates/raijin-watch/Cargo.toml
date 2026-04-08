@@ -1,0 +1,22 @@
+[package]
+name = "raijin-watch"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "Apache-2.0"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/raijin_watch.rs"
+doctest = true
+
+[dependencies]
+parking_lot.workspace = true
+
+[dev-dependencies]
+ctor.workspace = true
+futures.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true

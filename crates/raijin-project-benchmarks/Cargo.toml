@@ -1,0 +1,27 @@
+[package]
+name = "raijin-project-benchmarks"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+raijin-askpass.workspace = true
+clap.workspace = true
+raijin-client.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+inazuma-platform.workspace = true
+raijin-http-client = { workspace = true, features = ["test-support"]}
+raijin-language.workspace = true
+raijin-node-runtime.workspace = true
+raijin-project.workspace = true
+raijin-release-channel.workspace = true
+raijin-remote = { workspace = true, features = ["build-remote-server-binary"] }
+rpassword = "7.4"
+semver.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-watch.workspace = true
+
+[lints]
+workspace = true

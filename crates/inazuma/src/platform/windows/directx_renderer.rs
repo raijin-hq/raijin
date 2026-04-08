@@ -9,7 +9,7 @@ use std::{
     sync::{Arc, OnceLock},
 };
 
-use ::util::ResultExt;
+use ::inazuma_util::ResultExt;
 use anyhow::{Context, Result};
 use windows::{
     Win32::{

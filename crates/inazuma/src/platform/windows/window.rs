@@ -15,7 +15,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use ::util::ResultExt;
+use ::inazuma_util::ResultExt;
 use anyhow::{Context as _, Result};
 use futures::channel::oneshot::{self, Receiver};
 use raw_window_handle as rwh;

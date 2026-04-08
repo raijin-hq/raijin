@@ -1,0 +1,88 @@
+[package]
+name = "raijin-git-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/git_ui.rs"
+
+[features]
+test-support = ["raijin-multi-buffer/test-support", "raijin-remote-connection/test-support"]
+
+[dependencies]
+raijin-agent-settings.workspace = true
+anyhow.workspace = true
+raijin-askpass.workspace = true
+raijin-buffer-diff.workspace = true
+raijin-call.workspace = true
+inazuma-collections.workspace = true
+inazuma-component-registry.workspace = true
+raijin-db.workspace = true
+raijin-editor.workspace = true
+raijin-file-icons.workspace = true
+futures.workspace = true
+raijin-feature-flags.workspace = true
+inazuma-fuzzy.workspace = true
+raijin-git.workspace = true
+inazuma.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+raijin-language-model.workspace = true
+linkify.workspace = true
+log.workspace = true
+raijin-markdown.workspace = true
+inazuma-menu.workspace = true
+raijin-multi-buffer.workspace = true
+raijin-notifications.workspace = true
+raijin-panel.workspace = true
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+raijin-proto.workspace = true
+raijin-remote-connection.workspace = true
+raijin-remote.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+smol.workspace = true
+strum.workspace = true
+raijin-telemetry.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+time.workspace = true
+raijin-time-format.workspace = true
+raijin-ui.workspace = true
+raijin-ui-input.workspace = true
+inazuma-util.workspace = true
+raijin-watch.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+zeroize.workspace = true
+raijin-tracing.workspace = true
+tracing.workspace = true
+[target.'cfg(windows)'.dependencies]
+windows.workspace = true
+
+[dev-dependencies]
+ctor.workspace = true
+raijin-editor = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+rand.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+unindent.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true
+raijin-remote-connection = { workspace = true, features = ["test-support"] }
+
+[package.metadata.cargo-machete]
+ignored = ["tracing"]

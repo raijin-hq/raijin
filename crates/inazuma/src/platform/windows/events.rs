@@ -4,7 +4,7 @@ mod wndproc_ext;
 
 use std::rc::Rc;
 
-use ::util::ResultExt;
+use ::inazuma_util::ResultExt;
 use anyhow::Context as _;
 use windows::{
     Win32::{

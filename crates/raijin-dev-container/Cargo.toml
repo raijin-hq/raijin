@@ -1,0 +1,38 @@
+[package]
+name = "raijin-dev-container"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+license = "GPL-3.0-or-later"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+raijin-http-client.workspace = true
+http.workspace = true
+inazuma.workspace = true
+futures.workspace = true
+log.workspace = true
+raijin-node-runtime.workspace = true
+inazuma-menu.workspace = true
+raijin-paths.workspace = true
+inazuma-picker.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-worktree.workspace = true
+raijin-workspace.workspace = true
+
+[dev-dependencies]
+raijin-fs = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+
+raijin-workspace = { workspace = true, features = ["test-support"] }
+raijin-worktree = { workspace = true, features = ["test-support"] }
+
+[lints]
+workspace = true

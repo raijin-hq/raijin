@@ -1,0 +1,50 @@
+[package]
+name = "raijin-dap-adapters"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[features]
+test-support = [
+    "raijin-dap/test-support",
+    "inazuma/test-support",
+    "raijin-task/test-support",
+    "inazuma-util/test-support",
+]
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/dap_adapters.rs"
+doctest = false
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+inazuma-collections.workspace = true
+raijin-dap.workspace = true
+dotenvy.workspace = true
+futures.workspace = true
+raijin-fs.workspace = true
+inazuma.workspace = true
+json_dotpath.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-paths.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+smol.workspace = true
+raijin-task.workspace = true
+inazuma-util.workspace = true
+
+[dev-dependencies]
+raijin-dap = { workspace = true, features = ["test-support"] }
+raijin-fs = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-http-client.workspace = true
+raijin-node-runtime.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-task = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }

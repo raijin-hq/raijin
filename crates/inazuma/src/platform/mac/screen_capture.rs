@@ -1,6 +1,6 @@
 use anyhow::{Result, anyhow};
 use block2::RcBlock;
-use collections::HashMap;
+use inazuma_collections::HashMap;
 use objc2_core_graphics::{
     CGDirectDisplayID, CGDisplayCopyDisplayMode, CGDisplayMode,
 };

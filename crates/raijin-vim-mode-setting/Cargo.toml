@@ -1,0 +1,16 @@
+[package]
+name = "raijin-vim-mode-setting"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/vim_mode_setting.rs"
+
+[dependencies]
+inazuma.workspace = true
+inazuma-settings-framework.workspace = true

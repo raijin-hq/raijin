@@ -1,0 +1,42 @@
+[package]
+name = "raijin-outline"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/outline.rs"
+doctest = false
+
+[dependencies]
+raijin-editor.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+ordered-float.workspace = true
+inazuma-picker.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-lsp.workspace = true
+inazuma-menu.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+inazuma-rope.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

@@ -17,9 +17,9 @@ use inazuma::{
     WindowDecorations, WindowKind, WindowParams, px,
 };
 
-use collections::FxHashSet;
+use inazuma_collections::FxHashSet;
 use raw_window_handle as rwh;
-use util::{ResultExt, maybe};
+use inazuma_util::{ResultExt, maybe};
 use x11rb::{
     connection::Connection,
     cookie::{Cookie, VoidCookie},

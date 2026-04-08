@@ -1,14 +1,17 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use anyhow::{Context, Result, anyhow, bail};
-use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, oklcha};
+use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, WindowBackgroundAppearance, oklcha};
 
+use crate::accent::AccentColors;
 use crate::colors::ThemeColors;
-use crate::players::PlayerColor;
+use crate::players::{PlayerColor, PlayerColors};
 use crate::refinement::ThemeColorsRefinement;
 use crate::status::{StatusColors, StatusStyle};
 use crate::syntax::SyntaxTheme;
+use crate::system::SystemColors;
 use crate::theme::{Appearance, Theme, ThemeBackgroundImage, ThemeStyles};
 
 // ---------------------------------------------------------------------------
@@ -88,10 +91,13 @@ pub fn load_theme_from_toml_with_base_dir(
         name: name.into(),
         appearance,
         styles: ThemeStyles {
+            window_background_appearance: WindowBackgroundAppearance::Opaque,
+            system: SystemColors::default(),
+            accents: AccentColors(Arc::from(Vec::<Oklch>::new())),
             colors,
             status,
-            syntax,
-            players,
+            syntax: Arc::new(syntax),
+            players: PlayerColors(players),
             background_image,
         },
         base_dir,
@@ -108,10 +114,18 @@ pub fn load_theme_from_toml_with_base_dir(
 /// - `#RGB` (e.g. `#f00`)
 /// - `#RRGGBB` (e.g. `#ff0000`)
 /// - `#RRGGBBAA` (e.g. `#ff0000ff`)
+/// - `oklch(l c h)` (e.g. `oklch(0.627 0.258 29.23)`)
+/// - `oklch(l c h / a)` (e.g. `oklch(0.627 0.258 29.23 / 0.5)`)
+/// - `oklch(l 0 none)` for achromatic colors (hue is undefined)
 pub fn parse_color(s: &str) -> Result<Oklch> {
     let s = s.trim();
+
+    if s.starts_with("oklch(") {
+        return parse_oklch_functional(s);
+    }
+
     if !s.starts_with('#') {
-        bail!("unsupported color format (expected #hex): '{s}'");
+        bail!("unsupported color format (expected #hex or oklch(...)): '{s}'");
     }
 
     let hex = &s[1..];
@@ -148,6 +162,43 @@ pub fn parse_color(s: &str) -> Result<Oklch> {
         a: a as f32 / 255.0,
     };
     Ok(Oklch::from(rgba))
+}
+
+/// Parses `oklch(l c h)` or `oklch(l c h / a)` functional notation.
+///
+/// - `l`: lightness 0.0–1.0
+/// - `c`: chroma 0.0–0.4 (typically)
+/// - `h`: hue 0–360 (degrees) or `none` for achromatic
+/// - `a`: alpha 0.0–1.0 (defaults to 1.0)
+fn parse_oklch_functional(s: &str) -> Result<Oklch> {
+    let inner = s
+        .strip_prefix("oklch(")
+        .and_then(|s| s.strip_suffix(')'))
+        .ok_or_else(|| anyhow!("malformed oklch(): '{s}'"))?
+        .trim();
+
+    // Split on '/' to separate color components from alpha
+    let (color_part, alpha) = if let Some((cp, ap)) = inner.split_once('/') {
+        let a: f32 = ap.trim().parse().context("invalid oklch alpha")?;
+        (cp.trim(), a)
+    } else {
+        (inner, 1.0f32)
+    };
+
+    let parts: Vec<&str> = color_part.split_whitespace().collect();
+    if parts.len() != 3 {
+        bail!("oklch() requires 3 components (l c h), got {}: '{s}'", parts.len());
+    }
+
+    let l: f32 = parts[0].parse().context("invalid oklch lightness")?;
+    let c: f32 = parts[1].parse().context("invalid oklch chroma")?;
+    let h: f32 = if parts[2] == "none" {
+        0.0
+    } else {
+        parts[2].parse().context("invalid oklch hue")?
+    };
+
+    Ok(Oklch { l, c, h, a: alpha })
 }
 
 // ---------------------------------------------------------------------------
@@ -372,6 +423,30 @@ fn set_refinement_field(refinement: &mut ThemeColorsRefinement, name: &str, colo
         version_control_word_deleted,
         version_control_conflict_marker_ours,
         version_control_conflict_marker_theirs,
+        minimap_thumb_background,
+        minimap_thumb_hover_background,
+        minimap_thumb_active_background,
+        minimap_thumb_border,
+        vim_normal_background,
+        vim_insert_background,
+        vim_replace_background,
+        vim_visual_background,
+        vim_visual_line_background,
+        vim_visual_block_background,
+        vim_yank_background,
+        vim_helix_normal_background,
+        vim_helix_select_background,
+        vim_normal_foreground,
+        vim_insert_foreground,
+        vim_replace_foreground,
+        vim_visual_foreground,
+        vim_visual_line_foreground,
+        vim_visual_block_foreground,
+        vim_helix_normal_foreground,
+        vim_helix_select_foreground,
+        debugger_accent,
+        editor_debugger_active_line_background,
+        editor_hover_line_number,
         block_success_badge,
         block_error_badge,
         block_running_badge,
@@ -501,7 +576,7 @@ fn parse_players(value: Option<&toml::Value>) -> Result<Vec<PlayerColor>> {
 fn parse_syntax_theme(value: Option<&toml::Value>) -> Result<SyntaxTheme> {
     let table = match value {
         Some(toml::Value::Table(t)) => t,
-        _ => return Ok(SyntaxTheme::empty()),
+        _ => return Ok(SyntaxTheme::default()),
     };
 
     let mut highlights = HashMap::new();
@@ -727,6 +802,30 @@ pub fn default_theme_colors() -> ThemeColors {
         version_control_word_deleted: hex_a(0xff5555, 0.25),
         version_control_conflict_marker_ours: hex_a(0x14F195, 0.2),
         version_control_conflict_marker_theirs: hex_a(0x8be9fd, 0.2),
+        minimap_thumb_background: hex_a(0xffffff, 0.1),
+        minimap_thumb_hover_background: hex_a(0xffffff, 0.15),
+        minimap_thumb_active_background: hex_a(0xffffff, 0.2),
+        minimap_thumb_border: transparent,
+        vim_normal_background: hex(0x6272a4),
+        vim_insert_background: hex(0x14F195),
+        vim_replace_background: hex(0xff5555),
+        vim_visual_background: hex(0xff79c6),
+        vim_visual_line_background: hex(0xff79c6),
+        vim_visual_block_background: hex(0xff79c6),
+        vim_yank_background: hex(0xf1fa8c),
+        vim_helix_normal_background: hex(0x6272a4),
+        vim_helix_select_background: hex(0x8be9fd),
+        vim_normal_foreground: fg,
+        vim_insert_foreground: hex(0x121212),
+        vim_replace_foreground: fg,
+        vim_visual_foreground: hex(0x121212),
+        vim_visual_line_foreground: hex(0x121212),
+        vim_visual_block_foreground: hex(0x121212),
+        vim_helix_normal_foreground: fg,
+        vim_helix_select_foreground: hex(0x121212),
+        debugger_accent: hex(0xff9e64),
+        editor_debugger_active_line_background: hex_a(0xff9e64, 0.15),
+        editor_hover_line_number: fg,
         block_success_badge: hex(0x14F195),
         block_error_badge: hex(0xff5555),
         block_running_badge: hex(0xf1fa8c),
@@ -863,6 +962,30 @@ mod tests {
     }
 
     #[test]
+    fn test_parse_color_oklch() {
+        let c = parse_color("oklch(0.627 0.258 29.23)").unwrap();
+        assert!((c.l - 0.627).abs() < 0.001);
+        assert!((c.c - 0.258).abs() < 0.001);
+        assert!((c.h - 29.23).abs() < 0.01);
+        assert!((c.a - 1.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn test_parse_color_oklch_with_alpha() {
+        let c = parse_color("oklch(0.627 0.258 29.23 / 0.5)").unwrap();
+        assert!((c.l - 0.627).abs() < 0.001);
+        assert!((c.a - 0.5).abs() < 0.001);
+    }
+
+    #[test]
+    fn test_parse_color_oklch_achromatic() {
+        let c = parse_color("oklch(0.156 0 none)").unwrap();
+        assert!((c.l - 0.156).abs() < 0.001);
+        assert!((c.c - 0.0).abs() < 0.001);
+        assert!((c.h - 0.0).abs() < 0.001);
+    }
+
+    #[test]
     fn test_load_minimal_theme() {
         let toml = r##"
 [theme]
@@ -916,11 +1039,11 @@ color = "#f7768e"
 font_weight = 700
 "##;
         let theme = load_theme_from_toml("syntax-test", toml).unwrap();
-        let kw = theme.styles.syntax.get("keyword").unwrap();
+        let kw = theme.styles.syntax.style_for_name("keyword").unwrap();
         assert!(kw.color.is_some());
-        let comment = theme.styles.syntax.get("comment").unwrap();
+        let comment = theme.styles.syntax.style_for_name("comment").unwrap();
         assert_eq!(comment.font_style, Some(FontStyle::Italic));
-        let title = theme.styles.syntax.get("title").unwrap();
+        let title = theme.styles.syntax.style_for_name("title").unwrap();
         assert_eq!(title.font_weight, Some(FontWeight::BOLD));
     }
 

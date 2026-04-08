@@ -10,7 +10,8 @@ use std::borrow::Cow;
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, actions, px, size};
 use inazuma_component::Root;
 use inazuma_component::TitleBar;
-use workspace::Workspace;
+use inazuma_settings_framework::SettingsStore;
+use raijin_workspace::Workspace;
 
 // Global actions — available everywhere
 actions!(
@@ -82,12 +83,28 @@ fn main() {
             cx,
         );
 
-        // Load Raijin settings, set as global
-        let settings = raijin_settings::RaijinSettings::load().unwrap_or_default();
-        cx.set_global(settings);
+        // 1. Initialize SettingsStore with defaults from assets/settings/default.toml
+        //    All #[derive(RegisterSetting)] types are automatically registered via inventory
+        inazuma_settings_framework::init(cx);
 
-        // Initialize the raijin-theme system (ThemeRegistry, ThemeSettings, GlobalTheme)
-        raijin_theme_settings::init(cx);
+        // 2. Load user settings from ~/.raijin/settings.toml into SettingsStore
+        let settings_path = raijin_settings::RaijinSettings::settings_path();
+        if let Ok(content) = std::fs::read_to_string(&settings_path) {
+            SettingsStore::update_global(cx, |store, cx| {
+                store.set_user_settings(&content, cx);
+            });
+        }
+
+        // 3. Also keep RaijinSettings loaded for Raijin-specific settings
+        //    (working_directory, input_mode, colorspace, symbol_map, etc.)
+        //    These will migrate to SettingsStore once GeneralSettings/AppearanceSettings are added
+        let raijin_settings = raijin_settings::RaijinSettings::load().unwrap_or_default();
+        let colorspace = raijin_settings.appearance.window_colorspace;
+        cx.set_global(raijin_settings);
+
+        // 4. Initialize theme system (ThemeSettings via SettingsStore + Provider registration)
+        //    MUST happen after SettingsStore init — registers ThemeSettingsProvider for raijin-ui
+        raijin_theme_settings::init(raijin_theme::LoadThemes::All(Box::new(raijin_assets::Assets)), cx);
 
         // Register global action handlers
         cx.on_action::<Quit>(|_, cx| cx.quit());
@@ -118,8 +135,6 @@ fn main() {
         cx.set_global(workspace::PendingShellInstallName(None));
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
-        let colorspace = cx.global::<raijin_settings::RaijinSettings>()
-            .appearance.window_colorspace;
         cx.open_window(
             WindowOptions {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
@@ -140,12 +155,20 @@ fn main() {
 /// Starts file watchers for settings.toml and the themes directory.
 /// Changes are hot-reloaded without requiring an app restart.
 fn start_file_watchers(cx: &mut App) {
-    // Watch settings.toml — reload settings on change
+    // Watch settings.toml — reload into SettingsStore + RaijinSettings on change
     let settings_path = raijin_settings::RaijinSettings::settings_path();
     let (settings_rx, _settings_handle) = raijin_settings::watcher::watch_file(settings_path);
     cx.spawn(async move |cx| {
         while let Ok(_path) = settings_rx.recv_async().await {
             cx.update(|cx| {
+                let settings_path = raijin_settings::RaijinSettings::settings_path();
+                if let Ok(content) = std::fs::read_to_string(&settings_path) {
+                    // Update SettingsStore (triggers theme/font observers automatically)
+                    SettingsStore::update_global(cx, |store, cx| {
+                        store.set_user_settings(&content, cx);
+                    });
+                }
+                // Also reload RaijinSettings for Raijin-specific values
                 match raijin_settings::RaijinSettings::load() {
                     Ok(new_settings) => {
                         cx.set_global(new_settings);
@@ -189,7 +212,7 @@ fn start_file_watchers(cx: &mut App) {
                 match raijin_theme::load_theme_from_toml_with_base_dir(id, &content, base_dir) {
                     Ok(theme) => {
                         let theme_name = theme.name.clone();
-                        let registry = cx.global_mut::<raijin_theme::ThemeRegistry>();
+                        let registry = raijin_theme::ThemeRegistry::global(cx);
                         registry.insert_theme(theme);
                         log::info!("Hot-reloaded theme: {theme_name}");
 

@@ -6,7 +6,7 @@ use dispatch2::{
 use objc2_core_video::{CVDisplayLink, CVOptionFlags, CVReturn, CVTimeStamp, kCVReturnSuccess};
 use std::ffi::c_void;
 use std::ptr::NonNull;
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 pub struct DisplayLink {
     display_link: Option<objc2_core_foundation::CFRetained<CVDisplayLink>>,

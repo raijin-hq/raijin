@@ -46,8 +46,8 @@ pub(super) use crate::{
     WindowTextSystem, point, px, size,
 };
 pub(super) use anyhow::Context as AnyhowContext;
-pub(super) use util::post_inc;
-pub(super) use util::{ResultExt, measure};
+pub(super) use inazuma_util::post_inc;
+pub(super) use inazuma_util::{ResultExt, measure};
 
 // Std imports shared across sub-modules
 pub(super) use std::{

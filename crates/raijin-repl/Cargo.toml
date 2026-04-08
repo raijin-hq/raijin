@@ -1,0 +1,82 @@
+[package]
+name = "raijin-repl"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[features]
+test-support = []
+
+[lib]
+path = "src/repl.rs"
+doctest = false
+
+[dependencies]
+raijin-term.workspace = true
+anyhow.workspace = true
+async-dispatcher.workspace = true
+async-task.workspace = true
+async-tungstenite = { workspace = true, features = ["tokio", "tokio-rustls-manual-roots", "tokio-runtime"] }
+base64.workspace = true
+raijin-client.workspace = true
+inazuma-collections.workspace = true
+raijin-command-palette-hooks.workspace = true
+raijin-editor.workspace = true
+raijin-feature-flags.workspace = true
+raijin-file-icons.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-html-to-markdown.workspace = true
+raijin-http-client.workspace = true
+image.workspace = true
+jupyter-websocket-client.workspace = true
+jupyter-protocol.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-markdown.workspace = true
+inazuma-menu.workspace = true
+raijin-multi-buffer.workspace = true
+nbformat.workspace = true
+raijin-project.workspace = true
+raijin-remote.workspace = true
+runtimelib.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+shlex.workspace = true
+smol.workspace = true
+raijin-telemetry.workspace = true
+raijin-terminal.workspace = true
+# raijin-terminal-view: REMOVED — wird in Phase 20 gebaut
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+raijin-workspace.workspace = true
+inazuma-picker.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-http-client = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-languages = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+# raijin-terminal-view: REMOVED — wird in Phase 20 gebaut
+raijin-theme = { workspace = true, features = ["test-support"] }
+tree-sitter-md.workspace = true
+tree-sitter-typescript.workspace = true
+tree-sitter-python.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }
+
+[package.metadata.cargo-machete]
+ignored = ["raijin-remote"]

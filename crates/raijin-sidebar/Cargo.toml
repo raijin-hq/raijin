@@ -1,0 +1,61 @@
+[package]
+name = "raijin-sidebar"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/sidebar.rs"
+
+[features]
+default = []
+
+[dependencies]
+raijin-acp-thread.workspace = true
+raijin-action-log.workspace = true
+raijin-agent.workspace = true
+agent-client-protocol.workspace = true
+raijin-agent-settings.workspace = true
+raijin-agent-ui.workspace = true
+anyhow.workspace = true
+chrono.workspace = true
+inazuma-collections.workspace = true
+raijin-editor.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs.workspace = true
+raijin-git.workspace = true
+inazuma.workspace = true
+inazuma-menu.workspace = true
+raijin-project.workspace = true
+raijin-recent-projects.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-vim-mode-setting.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-acp-thread = { workspace = true, features = ["test-support"] }
+raijin-agent = { workspace = true, features = ["test-support"] }
+raijin-agent-ui = { workspace = true, features = ["test-support"] }
+raijin-assistant-text-thread = { workspace = true, features = ["test-support"] }
+raijin-editor.workspace = true
+raijin-language-model = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-prompt-store.workspace = true
+raijin-recent-projects = { workspace = true, features = ["test-support"] }
+serde_json.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs = { workspace = true, features = ["test-support"] }
+raijin-git.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

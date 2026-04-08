@@ -3,6 +3,7 @@ use std::ops::Deref;
 
 mod anchored;
 mod async_util;
+pub mod erased_editor;
 mod element_ext;
 mod event;
 mod focus_trap;

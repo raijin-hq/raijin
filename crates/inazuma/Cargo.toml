@@ -12,9 +12,9 @@ default = []
 test-support = [
     "leak-detection",
     "backtrace",
-    "collections/test-support",
-    "util/test-support",
-    "http_client/test-support",
+    "inazuma-collections/test-support",
+    "inazuma-util/test-support",
+    "raijin-http-client/test-support",
     "wayland",
     "x11",
 ]
@@ -54,32 +54,38 @@ path = "src/inazuma.rs"
 doctest = false
 
 [dependencies]
-anyhow = "1.0.86"
+anyhow.workspace = true
+async-channel = "2"
 async-task = "4.7"
-backtrace = { version = "0.3", optional = true }
-circular-buffer = "1.0"
-collections = { package = "gpui_collections", version = "0.2.2" }
-ctor = "0.4.0"
-derive_more = "0.99.17"
+backtrace = { workspace = true, optional = true }
+chrono.workspace = true
+circular-buffer.workspace = true
+ctor.workspace = true
+derive_more.workspace = true
 etagere = "0.2"
-futures = "0.3"
+futures.workspace = true
 futures-concurrency = "7"
+image.workspace = true
+inazuma-collections.workspace = true
 inazuma-macros = { path = "./tooling/macros", features = ["inspector"] }
-http_client = { package = "gpui_http_client", version = "0.2.2" }
-image = "0.25.1"
-inventory = "0.3.19"
-itertools = "0.14.0"
-libc = "0.2"
+inazuma-sum_tree.workspace = true
+inazuma-util.workspace = true
+inazuma-util-macros.workspace = true
+inventory.workspace = true
+itertools.workspace = true
+libc.workspace = true
 log = { version = "0.4.16", features = ["kv_unstable_serde", "serde"] }
 lyon = "1.0"
 num_cpus = "1.13"
 parking = "2.0.0"
-parking_lot = "0.12.1"
+parking_lot.workspace = true
 pin-project = "1.1.10"
+pollster = "0.4"
 postage = { version = "0.5", features = ["futures-traits"] }
 profiling = "1"
-proptest = "1"
-rand = "0.9"
+proptest.workspace = true
+raijin-http-client.workspace = true
+rand.workspace = true
 raw-window-handle = "0.6"
 refineable = { package = "gpui_refineable", version = "0.2.2" }
 resvg = { version = "0.45.0", default-features = false, features = [
@@ -92,25 +98,19 @@ seahash = "4.1"
 semver = { version = "1.0", features = ["serde"] }
 serde = { version = "1.0.221", features = ["derive", "rc"] }
 serde_json = { version = "1.0.144", features = ["preserve_order", "raw_value"] }
-slotmap = "1.0.6"
-smallvec = { version = "1.6", features = ["union"] }
-smol = "2.0"
+slotmap.workspace = true
+smallvec.workspace = true
+smol.workspace = true
 spin = "0.10.0"
-stacksafe = "0.1"
+stacksafe.workspace = true
 strum = { version = "0.27.2", features = ["derive"] }
-sum_tree = { package = "gpui_sum_tree", version = "0.2.2" }
 taffy = "=0.9.0"
 thiserror = "2.0.12"
-util = { package = "gpui_util", version = "0.2.2" }
-util_macros = { package = "gpui_util_macros", version = "0.2.2" }
+url.workspace = true
 usvg = { version = "0.45.0", default-features = false }
-url = "2"
 uuid = { version = "1.1.2", features = ["v4", "v5", "v7", "serde"] }
 waker-fn = "1.2.0"
 web-time = "1"
-async-channel = "2"
-pollster = "0.4"
-chrono = "0.4"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 dispatch2 = "0.3.1"
@@ -183,7 +183,7 @@ xkbcommon = { version = "0.8.0", features = [
     "wayland",
     "x11",
 ], optional = true }
-xim = { git = "https://github.com/zed-industries/xim-rs.git", rev = "16f35a2c881b815a2b6cdfd6687988e84f8447d8", features = [
+xim = { git = "https://github.com/raijin-hq/xim-rs.git", rev = "16f35a2c881b815a2b6cdfd6687988e84f8447d8", features = [
     "x11rb-xcb",
     "x11rb-client",
 ], package = "zed-xim", version = "0.4.0-zed", optional = true }
@@ -246,16 +246,16 @@ windows-numerics = "0.2"
 windows-registry = "0.5"
 
 [dev-dependencies]
-backtrace = "0.3"
-collections = { package = "gpui_collections", version = "0.2.2", features = ["test-support"] }
-env_logger = "0.11"
-http_client = { package = "gpui_http_client", version = "0.2.2", features = ["test-support"] }
+backtrace.workspace = true
+env_logger.workspace = true
+inazuma-collections = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }
 lyon = { version = "1.0", features = ["extra"] }
-pretty_assertions = { version = "1.3.0", features = ["unstable"] }
-proptest = "1"
-rand = "0.9"
-unicode-segmentation = "1.10"
-util = { package = "gpui_util", version = "0.2.2", features = ["test-support"] }
+pretty_assertions.workspace = true
+proptest.workspace = true
+raijin-http-client = { workspace = true, features = ["test-support"] }
+rand.workspace = true
+unicode-segmentation.workspace = true
 
 [target.'cfg(target_os = "windows")'.build-dependencies]
 embed-resource = "3.0"

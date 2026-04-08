@@ -16,6 +16,7 @@ raijin-shell = { workspace = true }
 raijin-settings = { workspace = true }
 raijin-theme = { workspace = true }
 raijin-theme-settings = { workspace = true }
+inazuma-settings-framework = { workspace = true }
 raijin-completions = { path = "../raijin-completions" }
 anyhow = { workspace = true }
 log = { workspace = true }

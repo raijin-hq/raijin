@@ -3,7 +3,7 @@ use anyhow::Context as _;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 #[cfg(not(target_family = "wasm"))]
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 pub struct WgpuContext {
     pub instance: wgpu::Instance,

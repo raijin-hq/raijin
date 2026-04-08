@@ -1,0 +1,30 @@
+[package]
+name = "raijin-terminal-view"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+# Stub crate — provides type definitions so dependent crates compile.
+# Will be replaced with real implementation in Phase 20 (Workspace Integration)
+# that uses our raijin-terminal + raijin-term Block system.
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/terminal_view.rs"
+doctest = false
+
+[features]
+test-support = ["inazuma/test-support"]
+
+[dependencies]
+inazuma.workspace = true
+raijin-terminal.workspace = true
+raijin-project.workspace = true
+raijin-workspace.workspace = true
+raijin-theme.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }

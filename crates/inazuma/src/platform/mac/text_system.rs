@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use collections::HashMap;
+use inazuma_collections::HashMap;
 use fontique::{
     Collection, CollectionOptions, QueryFamily, QueryFont, QueryStatus, SourceCache,
 };

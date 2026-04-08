@@ -1,0 +1,68 @@
+[package]
+name = "inazuma-util"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "Apache-2.0"
+description = "Utility structs and functions"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/util.rs"
+doctest = true
+
+[features]
+test-support = ["git2", "rand", "inazuma-util-macros"]
+
+[dependencies]
+anyhow = { workspace = true }
+async_zip = { workspace = true }
+inazuma-collections = { workspace = true }
+dunce = { workspace = true }
+futures-lite = { workspace = true }
+futures = { workspace = true }
+globset = { workspace = true }
+itertools = { workspace = true }
+log = { workspace = true }
+rand = { workspace = true, optional = true }
+regex = { workspace = true }
+rust-embed = { version = "8.7.2", features = ["interpolate-folder-path", "include-exclude"] }
+schemars = "1"
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_json_lenient = { workspace = true }
+shlex = { workspace = true }
+take-until = { workspace = true }
+tempfile = { workspace = true }
+unicase = { workspace = true }
+url = { workspace = true }
+percent-encoding = { workspace = true }
+inazuma-util-macros = { workspace = true, optional = true }
+inazuma-gpui-util = { workspace = true }
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+smol = { workspace = true }
+which = { workspace = true }
+git2 = { workspace = true, optional = true }
+async-fs = { workspace = true }
+walkdir = { workspace = true }
+dirs = { workspace = true }
+
+[target.'cfg(unix)'.dependencies]
+command-fds = "0.3.1"
+libc = { workspace = true }
+nix = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+mach2 = { workspace = true }
+
+[target.'cfg(windows)'.dependencies]
+tendril = "0.4.3"
+
+[dev-dependencies]
+git2 = { workspace = true }
+rand = { workspace = true }
+inazuma-util-macros = { workspace = true }
+pretty_assertions = { workspace = true }

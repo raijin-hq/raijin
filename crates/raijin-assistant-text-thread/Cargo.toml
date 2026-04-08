@@ -1,0 +1,62 @@
+[package]
+name = "raijin-assistant-text-thread"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/assistant_text_thread.rs"
+
+[features]
+test-support = []
+
+[dependencies]
+raijin-agent-settings.workspace = true
+anyhow.workspace = true
+raijin-assistant-slash-command.workspace = true
+chrono.workspace = true
+raijin-client.workspace = true
+inazuma-clock.workspace = true
+inazuma-collections.workspace = true
+raijin-context-server.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+raijin-language-model.workspace = true
+log.workspace = true
+raijin-open-ai.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+raijin-proto.workspace = true
+regex.workspace = true
+raijin-rpc.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+smol.workspace = true
+raijin-telemetry.workspace = true
+inazuma-text.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+raijin-workspace.workspace = true
+raijin-env-vars.workspace = true
+
+[dev-dependencies]
+raijin-assistant-slash-commands.workspace = true
+
+raijin-language-model = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+rand.workspace = true
+unindent.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }

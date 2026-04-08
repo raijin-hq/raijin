@@ -1,5 +1,5 @@
 use crate::{App, Effect, EntityId};
-use collections::FxHashSet;
+use inazuma_collections::FxHashSet;
 use std::cell::RefCell;
 use std::mem;
 use std::rc::Rc;

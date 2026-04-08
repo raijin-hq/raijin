@@ -1,5 +1,5 @@
 use anyhow::Result;
-use collections::HashMap;
+use inazuma_collections::HashMap;
 use windows::Win32::UI::{
     Input::KeyboardAndMouse::{
         GetKeyboardLayoutNameW, MAPVK_VK_TO_CHAR, MAPVK_VK_TO_VSC, MapVirtualKeyW, ToUnicode,

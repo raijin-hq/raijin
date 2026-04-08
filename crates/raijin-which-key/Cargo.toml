@@ -1,0 +1,23 @@
+[package]
+name = "raijin-which-key"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/which_key.rs"
+doctest = false
+
+[dependencies]
+raijin-command-palette.workspace = true
+inazuma.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true

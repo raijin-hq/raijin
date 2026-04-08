@@ -1,0 +1,34 @@
+[package]
+name = "raijin-open-path-prompt"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+license = "GPL-3.0-or-later"
+
+[dependencies]
+raijin-file-icons.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+schemars.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+
+[dev-dependencies]
+raijin-editor = {workspace = true, features = ["test-support"]}
+inazuma = {workspace = true, features = ["test-support"]}
+serde_json.workspace = true
+raijin-theme = {workspace = true, features = ["test-support"]}
+raijin-theme-settings.workspace = true
+raijin-workspace = {workspace = true, features = ["test-support"]}
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/open_path_prompt.rs"

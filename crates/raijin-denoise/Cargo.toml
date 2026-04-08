@@ -1,0 +1,20 @@
+[package]
+name = "raijin-denoise"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[dependencies]
+candle-core = "0.10"
+candle-onnx = "0.10"
+log.workspace = true
+
+rodio = { workspace = true, features = ["wav"] }
+
+rustfft = { version = "6.2.0", features = ["avx"] }
+realfft = "3.4.0"
+thiserror.workspace = true

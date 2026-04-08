@@ -1,12 +1,13 @@
 use std::collections::HashMap;
+use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, SharedString};
 use serde::Deserialize;
 
 use raijin_theme::{
-    Appearance, PlayerColor, StatusColors, StatusStyle, SyntaxTheme, Theme, ThemeColors,
-    ThemeFamily, ThemeStyles,
+    AccentColors, Appearance, PlayerColor, PlayerColors, StatusColors, StatusStyle, SyntaxTheme,
+    SystemColors, Theme, ThemeColors, ThemeFamily, ThemeStyles,
 };
 
 // === VS Code Theme JSON Schema ===
@@ -99,10 +100,12 @@ pub fn import_vscode_theme(json: &str) -> Result<ThemeFamily> {
         name: SharedString::from(name.to_owned()),
         appearance,
         styles: ThemeStyles {
+            system: SystemColors::default(),
+            accents: AccentColors(Arc::from(Vec::<Oklch>::new())),
             colors: theme_colors,
             status,
-            syntax,
-            players,
+            syntax: Arc::new(syntax),
+            players: PlayerColors(players),
             background_image: None,
         },
         base_dir: None,
@@ -303,6 +306,36 @@ fn convert_vscode_colors(colors: &HashMap<String, serde_json::Value>, appearance
         },
         version_control_conflict_marker_ours: color_or_map(colors, "merge.currentHeaderBackground", parse_color("#14F19533").unwrap_or_default()),
         version_control_conflict_marker_theirs: color_or_map(colors, "merge.incomingHeaderBackground", parse_color("#8be9fd33").unwrap_or_default()),
+
+        // Minimap
+        minimap_thumb_background: color_or_map(colors, "minimapSlider.background", muted),
+        minimap_thumb_hover_background: color_or_map(colors, "minimapSlider.hoverBackground", muted),
+        minimap_thumb_active_background: color_or_map(colors, "minimapSlider.activeBackground", muted),
+        minimap_thumb_border: transparent,
+
+        // Vim modes (no VS Code equivalent, use sensible defaults)
+        vim_normal_background: parse_color("#6272a4ff").unwrap_or_default(),
+        vim_insert_background: parse_color("#14F195ff").unwrap_or_default(),
+        vim_replace_background: parse_color("#ff5555ff").unwrap_or_default(),
+        vim_visual_background: parse_color("#ff79c6ff").unwrap_or_default(),
+        vim_visual_line_background: parse_color("#ff79c6ff").unwrap_or_default(),
+        vim_visual_block_background: parse_color("#ff79c6ff").unwrap_or_default(),
+        vim_yank_background: parse_color("#f1fa8cff").unwrap_or_default(),
+        vim_helix_normal_background: parse_color("#6272a4ff").unwrap_or_default(),
+        vim_helix_select_background: parse_color("#8be9fdff").unwrap_or_default(),
+        vim_normal_foreground: fg,
+        vim_insert_foreground: default_bg,
+        vim_replace_foreground: fg,
+        vim_visual_foreground: default_bg,
+        vim_visual_line_foreground: default_bg,
+        vim_visual_block_foreground: default_bg,
+        vim_helix_normal_foreground: fg,
+        vim_helix_select_foreground: default_bg,
+
+        // Debugger
+        debugger_accent: parse_color("#ff9e64ff").unwrap_or_default(),
+        editor_debugger_active_line_background: color_or_map(colors, "editor.stackFrameHighlightBackground", parse_color("#ff9e6426").unwrap_or_default()),
+        editor_hover_line_number: fg,
 
         // Raijin-specific (derived from terminal colors)
         block_success_badge: color_or_map(colors, "terminal.ansiGreen", parse_color("#14F195ff").unwrap_or_default()),

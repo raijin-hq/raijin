@@ -1,0 +1,35 @@
+[package]
+name = "raijin-db"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/db.rs"
+doctest = false
+
+[features]
+test-support = []
+
+[dependencies]
+anyhow.workspace = true
+inazuma.workspace = true
+indoc.workspace = true
+inventory.workspace = true
+log.workspace = true
+raijin-paths.workspace = true
+raijin-release-channel.workspace = true
+smol.workspace = true
+raijin-sqlez.workspace = true
+raijin-sqlez-macros.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+raijin-env-vars.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }
+tempfile.workspace = true

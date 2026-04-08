@@ -1,0 +1,50 @@
+[package]
+name = "raijin-extension"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/extension.rs"
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+raijin-cloud-api-types.workspace = true
+inazuma-collections.workspace = true
+raijin-dap.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+heck.workspace = true
+raijin-http-client.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+parking_lot.workspace = true
+raijin-proto.workspace = true
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+raijin-task.workspace = true
+toml.workspace = true
+tracing.workspace = true
+url.workspace = true
+inazuma-util.workspace = true
+wasm-encoder.workspace = true
+wasmparser.workspace = true
+raijin-tracing.workspace = true
+
+[dev-dependencies]
+raijin-fs = { workspace = true, "features" = ["test-support"] }
+inazuma = { workspace = true, "features" = ["test-support"] }
+indoc.workspace = true
+pretty_assertions.workspace = true
+tempfile.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["tracing"]

@@ -1,0 +1,108 @@
+[package]
+name = "raijin-agent"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lib]
+path = "src/agent.rs"
+
+[features]
+test-support = ["raijin-db/test-support"]
+eval = []
+unit-eval = []
+e2e = []
+
+[lints]
+workspace = true
+
+[dependencies]
+raijin-acp-thread.workspace = true
+raijin-action-log.workspace = true
+agent-client-protocol.workspace = true
+raijin-agent-servers.workspace = true
+raijin-agent-settings.workspace = true
+anyhow.workspace = true
+chrono.workspace = true
+raijin-client.workspace = true
+raijin-cloud-api-types.workspace = true
+raijin-cloud-llm-client.workspace = true
+inazuma-collections.workspace = true
+raijin-context-server.workspace = true
+raijin-db.workspace = true
+derive_more.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+raijin-git.workspace = true
+inazuma.workspace = true
+handlebars = { workspace = true, features = ["rust-embed"] }
+heck.workspace = true
+raijin-html-to-markdown.workspace = true
+raijin-http-client.workspace = true
+indoc.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+raijin-language-model.workspace = true
+raijin-language-models.workspace = true
+log.workspace = true
+open.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+regex.workspace = true
+rust-embed.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-shell-command-parser.workspace = true
+smallvec.workspace = true
+smol.workspace = true
+raijin-sqlez.workspace = true
+raijin-streaming-diff.workspace = true
+strsim.workspace = true
+raijin-task.workspace = true
+raijin-telemetry.workspace = true
+inazuma-text.workspace = true
+thiserror.workspace = true
+raijin-ui.workspace = true
+url.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+raijin-watch.workspace = true
+raijin-web-search.workspace = true
+raijin-env-vars.workspace = true
+zstd.workspace = true
+
+[dev-dependencies]
+raijin-agent-servers = { workspace = true, "features" = ["test-support"] }
+raijin-client = { workspace = true, "features" = ["test-support"] }
+inazuma-clock = { workspace = true, "features" = ["test-support"] }
+raijin-context-server = { workspace = true, "features" = ["test-support"] }
+ctor.workspace = true
+raijin-db = { workspace = true, "features" = ["test-support"] }
+raijin-editor = { workspace = true, "features" = ["test-support"] }
+env_logger.workspace = true
+raijin-eval-utils.workspace = true
+raijin-fs = { workspace = true, "features" = ["test-support"] }
+raijin-git = { workspace = true, "features" = ["test-support"] }
+inazuma = { workspace = true, "features" = ["test-support"] }
+inazuma-tokio.workspace = true
+raijin-language = { workspace = true, "features" = ["test-support"] }
+raijin-language-model = { workspace = true, "features" = ["test-support"] }
+raijin-lsp = { workspace = true, "features" = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, "features" = ["test-support"] }
+rand.workspace = true
+raijin-reqwest-client.workspace = true
+inazuma-settings-framework = { workspace = true, "features" = ["test-support"] }
+tempfile.workspace = true
+
+raijin-theme = { workspace = true, "features" = ["test-support"] }
+
+unindent = { workspace = true }
+
+raijin-log.workspace = true

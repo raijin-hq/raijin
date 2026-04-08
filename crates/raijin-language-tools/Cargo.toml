@@ -1,0 +1,48 @@
+[package]
+name = "raijin-language-tools"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/language_tools.rs"
+doctest = false
+
+[dependencies]
+anyhow.workspace = true
+raijin-client.workspace = true
+inazuma-collections.workspace = true
+raijin-command-palette-hooks.workspace = true
+raijin-editor.workspace = true
+raijin-edit-prediction.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+raijin-lsp.workspace = true
+inazuma-menu.workspace = true
+raijin-project.workspace = true
+raijin-proto.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-telemetry.workspace = true
+raijin-theme.workspace = true
+tree-sitter.workspace = true
+sysinfo.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-release-channel.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+semver.workspace = true
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true
+raijin-theme-settings.workspace = true

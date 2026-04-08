@@ -44,7 +44,7 @@ use std::{
     rc::Rc,
     sync::{Arc, OnceLock},
 };
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use callbacks::*;
 pub use state::MacPlatform;

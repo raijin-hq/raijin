@@ -4,7 +4,7 @@ use crate::{
 };
 #[cfg(any(test, feature = "test-support"))]
 use crate::Bounds;
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
 use smallvec::SmallVec;

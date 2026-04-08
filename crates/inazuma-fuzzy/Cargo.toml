@@ -1,0 +1,19 @@
+[package]
+name = "inazuma-fuzzy"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+description = "Fuzzy matching algorithm"
+license = "GPL-3.0-or-later"
+
+[lib]
+path = "src/fuzzy.rs"
+doctest = false
+
+[dependencies]
+inazuma = { workspace = true }
+inazuma-util = { workspace = true }
+log = { workspace = true }
+
+[lints]
+workspace = true

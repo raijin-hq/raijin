@@ -1,0 +1,75 @@
+[package]
+name = "raijin-recent-projects"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/recent_projects.rs"
+doctest = false
+
+[features]
+default = []
+test-support = ["raijin-remote/test-support", "raijin-remote-connection/test-support", "raijin-project/test-support", "raijin-workspace/test-support"]
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+raijin-askpass.workspace = true
+raijin-db.workspace = true
+raijin-dev-container.workspace = true
+raijin-editor.workspace = true
+raijin-extension-host.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+inazuma-menu.workspace = true
+raijin-node-runtime.workspace = true
+raijin-open-path-prompt.workspace = true
+ordered-float.workspace = true
+raijin-paths.workspace = true
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+raijin-release-channel.workspace = true
+raijin-remote.workspace = true
+raijin-remote-connection.workspace = true
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+raijin-task.workspace = true
+raijin-telemetry.workspace = true
+raijin-ui.workspace = true
+raijin-ui-input.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-worktree.workspace = true
+raijin-actions.workspace = true
+indoc.workspace = true
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-registry = "0.6.0"
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-extension.workspace = true
+raijin-fs.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-http-client.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-release-channel.workspace = true
+raijin-remote = { workspace = true, features = ["test-support"] }
+raijin-remote-connection = { workspace = true, features = ["test-support"] }
+raijin-remote-server.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

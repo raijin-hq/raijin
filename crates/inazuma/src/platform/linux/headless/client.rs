@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use calloop::{EventLoop, LoopHandle};
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use crate::platform::linux::{LinuxClient, LinuxCommon, LinuxKeyboardLayout};
 use inazuma::{

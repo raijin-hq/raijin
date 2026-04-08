@@ -45,7 +45,7 @@ use std::{
     sync::{Arc, Weak},
     time::Duration,
 };
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use objc2_foundation::{NSNotFound, NSPoint, NSRange, NSRect, NSSize};
 

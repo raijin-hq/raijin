@@ -1,0 +1,29 @@
+[package]
+name = "raijin-open-ai"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/open_ai.rs"
+
+[features]
+default = []
+schemars = ["dep:schemars"]
+
+[dependencies]
+anyhow.workspace = true
+futures.workspace = true
+raijin-http-client.workspace = true
+rand.workspace = true
+schemars = { workspace = true, optional = true }
+log.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+strum.workspace = true
+thiserror.workspace = true

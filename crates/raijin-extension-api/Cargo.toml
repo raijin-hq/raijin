@@ -1,0 +1,25 @@
+[package]
+name = "raijin-extension-api"
+version = "0.8.0"
+description = "APIs for creating Raijin extensions in Rust"
+repository = "https://github.com/raijin-hq/raijin"
+documentation = "https://docs.rs/raijin_extension_api"
+keywords = ["raijin", "extension"]
+edition.workspace = true
+# Change back to `true` when we're ready to publish v0.8.0.
+publish = false
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/extension_api.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+wit-bindgen = "0.41"
+
+[package.metadata.component]
+target = { path = "wit" }

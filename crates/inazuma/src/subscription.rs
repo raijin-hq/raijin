@@ -1,11 +1,11 @@
-use collections::{BTreeMap, BTreeSet};
+use inazuma_collections::{BTreeMap, BTreeSet};
 use std::{
     cell::{Cell, RefCell},
     fmt::Debug,
     mem,
     rc::Rc,
 };
-use util::post_inc;
+use inazuma_util::post_inc;
 
 pub(crate) struct SubscriberSet<EmitterKey, Callback>(
     Rc<RefCell<SubscriberSetState<EmitterKey, Callback>>>,

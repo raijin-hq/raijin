@@ -1,0 +1,31 @@
+[package]
+name = "raijin-audio"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/audio.rs"
+doctest = false
+
+[dependencies]
+anyhow.workspace = true
+inazuma-collections.workspace = true
+cpal.workspace = true
+crossbeam.workspace = true
+inazuma.workspace = true
+raijin-denoise.workspace = true
+log.workspace = true
+parking_lot.workspace = true
+rodio.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+thiserror.workspace = true
+inazuma-util.workspace = true
+
+[target.'cfg(not(any(all(target_os = "windows", target_env = "gnu"), target_os = "freebsd")))'.dependencies]
+libwebrtc.workspace = true

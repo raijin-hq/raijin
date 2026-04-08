@@ -1,0 +1,22 @@
+[package]
+name = "raijin-csv-preview"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+license = "GPL-3.0-or-later"
+
+[lib]
+path = "src/csv_preview.rs"
+
+[dependencies]
+anyhow.workspace = true
+raijin-feature-flags.workspace = true
+inazuma.workspace = true
+raijin-editor.workspace = true
+raijin-ui.workspace = true
+raijin-workspace.workspace = true
+log.workspace = true
+inazuma-text.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,21 @@
+[package]
+name = "raijin-ui-macros"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/ui_macros.rs"
+proc-macro = true
+
+[dependencies]
+quote.workspace = true
+syn.workspace = true
+
+[dev-dependencies]
+inazuma-component-registry.workspace = true
+raijin-ui.workspace = true

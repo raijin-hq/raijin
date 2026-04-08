@@ -4,8 +4,8 @@ use std::{
     rc::Rc,
 };
 
-use collections::HashMap;
-use util::ResultExt;
+use inazuma_collections::HashMap;
+use inazuma_util::ResultExt;
 
 use super::Effect;
 use crate::{

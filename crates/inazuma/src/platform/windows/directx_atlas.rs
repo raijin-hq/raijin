@@ -1,4 +1,4 @@
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use etagere::BucketedAtlasAllocator;
 use parking_lot::Mutex;
 use windows::Win32::Graphics::{

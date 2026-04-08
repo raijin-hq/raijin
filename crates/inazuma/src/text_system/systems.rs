@@ -3,7 +3,7 @@ use crate::{
     TextRenderingMode,
 };
 use anyhow::{Context as _, anyhow};
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use itertools::Itertools;
 use parking_lot::{Mutex, RwLock, RwLockUpgradableReadGuard};
 use smallvec::{SmallVec, smallvec};

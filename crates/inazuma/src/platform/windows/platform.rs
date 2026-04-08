@@ -14,7 +14,7 @@ use std::{
     },
 };
 
-use ::util::{ResultExt, paths::SanitizedPath};
+use ::inazuma_util::{ResultExt, paths::SanitizedPath};
 use anyhow::{Context as _, Result, anyhow};
 use futures::channel::oneshot::{self, Receiver};
 use itertools::Itertools;

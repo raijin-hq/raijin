@@ -1,0 +1,80 @@
+[package]
+name = "raijin-languages"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[features]
+test-support = [
+    "load-grammars"
+]
+load-grammars = [
+    "raijin-grammars/load-grammars",
+    "tree-sitter",
+    "tree-sitter-gitcommit",
+]
+
+[dependencies]
+anyhow.workspace = true
+async-compression.workspace = true
+async-fs.workspace = true
+async-tar.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+inazuma-collections.workspace = true
+futures.workspace = true
+globset.workspace = true
+inazuma.workspace = true
+raijin-grammars.workspace = true
+raijin-http-client.workspace = true
+itertools.workspace = true
+raijin-json-schema-store.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+raijin-node-runtime.workspace = true
+parking_lot.workspace = true
+pet-conda.workspace = true
+pet-core.workspace = true
+pet-fs.workspace = true
+pet-poetry.workspace = true
+pet-reporter.workspace = true
+pet-virtualenv.workspace = true
+pet.workspace = true
+raijin-project.workspace = true
+regex.workspace = true
+inazuma-rope.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_json_lenient.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+semver.workspace = true
+smol.workspace = true
+raijin-snippet.workspace = true
+raijin-task.workspace = true
+raijin-terminal.workspace = true
+raijin-theme.workspace = true
+tree-sitter = { workspace = true, optional = true }
+tree-sitter-gitcommit = { workspace = true, optional = true }
+url.workspace = true
+inazuma-util.workspace = true
+
+[dev-dependencies]
+raijin-fs = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-theme = { workspace = true, features = ["test-support"] }
+tree-sitter-bash.workspace = true
+tree-sitter-c.workspace = true
+tree-sitter-cpp.workspace = true
+tree-sitter-css.workspace = true
+tree-sitter-go.workspace = true
+tree-sitter-python.workspace = true
+tree-sitter-rust.workspace = true
+tree-sitter-typescript.workspace = true
+tree-sitter.workspace = true
+unindent.workspace = true

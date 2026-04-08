@@ -96,7 +96,7 @@ pub use inazuma_macros::{
     AppContext, IntoElement, Render, VisualContext, derive_inspector_reflection, property_test,
     register_action, test,
 };
-pub use http_client;
+pub use raijin_http_client as http_client;
 pub use input::*;
 pub use inspector::*;
 pub use interactive::*;
@@ -123,7 +123,7 @@ pub use taffy::{AvailableSpace, LayoutId};
 #[cfg(any(test, feature = "test-support"))]
 pub use test::*;
 pub use text_system::*;
-pub use util::arc_cow::ArcCow;
+pub use inazuma_util::arc_cow::ArcCow;
 pub use view::*;
 pub use window::*;
 

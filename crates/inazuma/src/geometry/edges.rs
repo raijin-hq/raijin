@@ -418,6 +418,17 @@ impl Edges<Pixels> {
     }
 }
 
+impl From<crate::Oklch> for Edges<crate::Oklch> {
+    fn from(val: crate::Oklch) -> Self {
+        Edges {
+            top: val,
+            right: val,
+            bottom: val,
+            left: val,
+        }
+    }
+}
+
 impl From<f32> for Edges<Pixels> {
     fn from(val: f32) -> Self {
         let val: Pixels = val.into();

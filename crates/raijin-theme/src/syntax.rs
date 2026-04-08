@@ -1,50 +1,241 @@
-use std::collections::HashMap;
+#![allow(missing_docs)]
+
+use std::{
+    collections::{BTreeMap, btree_map::Entry},
+    sync::Arc,
+};
 
 use inazuma::HighlightStyle;
+#[cfg(any(test, feature = "test-support"))]
+use inazuma::Oklch;
 
-/// Syntax highlighting theme mapping scope names to highlight styles.
-///
-/// Scope names follow TextMate/Tree-sitter conventions (e.g. "keyword", "string", "comment").
-#[derive(Clone, Debug)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct SyntaxTheme {
-    highlights: HashMap<String, HighlightStyle>,
+    pub(self) highlights: Vec<HighlightStyle>,
+    pub(self) capture_name_map: BTreeMap<String, usize>,
 }
 
 impl SyntaxTheme {
-    /// Creates a new syntax theme from a map of scope names to highlight styles.
-    pub fn new(highlights: HashMap<String, HighlightStyle>) -> Self {
-        Self { highlights }
-    }
+    pub fn new(highlights: impl IntoIterator<Item = (String, HighlightStyle)>) -> Self {
+        let (capture_names, highlights) = highlights.into_iter().unzip();
 
-    /// Creates an empty syntax theme with no highlight rules.
-    pub fn empty() -> Self {
         Self {
-            highlights: HashMap::new(),
+            capture_name_map: Self::create_capture_name_map(capture_names),
+            highlights,
         }
     }
 
-    /// Returns the highlight style for the given scope name, if any.
-    pub fn get(&self, scope: &str) -> Option<&HighlightStyle> {
-        self.highlights.get(scope)
+    fn create_capture_name_map(highlights: Vec<String>) -> BTreeMap<String, usize> {
+        highlights
+            .into_iter()
+            .enumerate()
+            .map(|(i, key)| (key, i))
+            .collect()
     }
 
-    /// Inserts a highlight style for the given scope name.
-    pub fn insert(&mut self, scope: String, style: HighlightStyle) {
-        self.highlights.insert(scope, style);
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn new_test(colors: impl IntoIterator<Item = (&'static str, Oklch)>) -> Self {
+        Self::new_test_styles(colors.into_iter().map(|(key, color)| {
+            (
+                key,
+                HighlightStyle {
+                    color: Some(color),
+                    ..Default::default()
+                },
+            )
+        }))
     }
 
-    /// Returns an iterator over all scope name and highlight style pairs.
-    pub fn iter(&self) -> impl Iterator<Item = (&String, &HighlightStyle)> {
-        self.highlights.iter()
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn new_test_styles(
+        colors: impl IntoIterator<Item = (&'static str, HighlightStyle)>,
+    ) -> Self {
+        Self::new(
+            colors
+                .into_iter()
+                .map(|(key, style)| (key.to_owned(), style)),
+        )
     }
 
-    /// Returns the number of highlight rules.
-    pub fn len(&self) -> usize {
-        self.highlights.len()
+    pub fn get(&self, highlight_index: impl Into<usize>) -> Option<&HighlightStyle> {
+        self.highlights.get(highlight_index.into())
     }
 
-    /// Returns true if there are no highlight rules.
-    pub fn is_empty(&self) -> bool {
-        self.highlights.is_empty()
+    pub fn style_for_name(&self, name: &str) -> Option<HighlightStyle> {
+        self.capture_name_map
+            .get(name)
+            .map(|highlight_idx| self.highlights[*highlight_idx])
+    }
+
+    pub fn get_capture_name(&self, idx: impl Into<usize>) -> Option<&str> {
+        let idx = idx.into();
+        self.capture_name_map
+            .iter()
+            .find(|(_, value)| **value == idx)
+            .map(|(key, _)| key.as_ref())
+    }
+
+    pub fn highlight_id(&self, capture_name: &str) -> Option<u32> {
+        self.capture_name_map
+            .range::<str, _>((
+                capture_name.split(".").next().map_or(
+                    std::ops::Bound::Included(capture_name),
+                    std::ops::Bound::Included,
+                ),
+                std::ops::Bound::Included(capture_name),
+            ))
+            .rfind(|(prefix, _)| {
+                capture_name
+                    .strip_prefix(*prefix)
+                    .is_some_and(|remainder| remainder.is_empty() || remainder.starts_with('.'))
+            })
+            .map(|(_, index)| *index as u32)
+    }
+
+    /// Returns a new [`Arc<SyntaxTheme>`] with the given syntax styles merged in.
+    pub fn merge(base: Arc<Self>, user_syntax_styles: Vec<(String, HighlightStyle)>) -> Arc<Self> {
+        if user_syntax_styles.is_empty() {
+            return base;
+        }
+
+        let mut base = Arc::try_unwrap(base).unwrap_or_else(|base| (*base).clone());
+
+        for (name, highlight) in user_syntax_styles {
+            match base.capture_name_map.entry(name) {
+                Entry::Occupied(entry) => {
+                    if let Some(existing_highlight) = base.highlights.get_mut(*entry.get()) {
+                        existing_highlight.color = highlight.color.or(existing_highlight.color);
+                        existing_highlight.font_weight =
+                            highlight.font_weight.or(existing_highlight.font_weight);
+                        existing_highlight.font_style =
+                            highlight.font_style.or(existing_highlight.font_style);
+                        existing_highlight.background_color = highlight
+                            .background_color
+                            .or(existing_highlight.background_color);
+                        existing_highlight.underline =
+                            highlight.underline.or(existing_highlight.underline);
+                        existing_highlight.strikethrough =
+                            highlight.strikethrough.or(existing_highlight.strikethrough);
+                        existing_highlight.fade_out =
+                            highlight.fade_out.or(existing_highlight.fade_out);
+                    }
+                }
+                Entry::Vacant(vacant) => {
+                    vacant.insert(base.highlights.len());
+                    base.highlights.push(highlight);
+                }
+            }
+        }
+
+        Arc::new(base)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use inazuma::FontStyle;
+
+    use super::*;
+
+    #[test]
+    fn test_syntax_theme_merge() {
+        // Merging into an empty `SyntaxTheme` keeps all the user-defined styles.
+        let syntax_theme = SyntaxTheme::merge(
+            Arc::new(SyntaxTheme::new_test([])),
+            vec![
+                (
+                    "foo".to_string(),
+                    HighlightStyle {
+                        color: Some(inazuma::red()),
+                        ..Default::default()
+                    },
+                ),
+                (
+                    "foo.bar".to_string(),
+                    HighlightStyle {
+                        color: Some(inazuma::green()),
+                        ..Default::default()
+                    },
+                ),
+            ],
+        );
+        assert_eq!(
+            syntax_theme,
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::red()),
+                ("foo.bar", inazuma::green())
+            ]))
+        );
+
+        // Merging empty user-defined styles keeps all the base styles.
+        let syntax_theme = SyntaxTheme::merge(
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::blue()),
+                ("foo.bar", inazuma::red()),
+            ])),
+            Vec::new(),
+        );
+        assert_eq!(
+            syntax_theme,
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::blue()),
+                ("foo.bar", inazuma::red())
+            ]))
+        );
+
+        let syntax_theme = SyntaxTheme::merge(
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::red()),
+                ("foo.bar", inazuma::green()),
+            ])),
+            vec![(
+                "foo.bar".to_string(),
+                HighlightStyle {
+                    color: Some(inazuma::yellow()),
+                    ..Default::default()
+                },
+            )],
+        );
+        assert_eq!(
+            syntax_theme,
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::red()),
+                ("foo.bar", inazuma::yellow())
+            ]))
+        );
+
+        let syntax_theme = SyntaxTheme::merge(
+            Arc::new(SyntaxTheme::new_test([
+                ("foo", inazuma::red()),
+                ("foo.bar", inazuma::green()),
+            ])),
+            vec![(
+                "foo.bar".to_string(),
+                HighlightStyle {
+                    font_style: Some(FontStyle::Italic),
+                    ..Default::default()
+                },
+            )],
+        );
+        assert_eq!(
+            syntax_theme,
+            Arc::new(SyntaxTheme::new_test_styles([
+                (
+                    "foo",
+                    HighlightStyle {
+                        color: Some(inazuma::red()),
+                        ..Default::default()
+                    }
+                ),
+                (
+                    "foo.bar",
+                    HighlightStyle {
+                        color: Some(inazuma::green()),
+                        font_style: Some(FontStyle::Italic),
+                        ..Default::default()
+                    }
+                )
+            ]))
+        );
     }
 }

@@ -7,7 +7,7 @@ use std::{
     fmt::Debug, future::Future, marker::PhantomData, mem, pin::Pin, rc::Rc, sync::Arc,
     time::Duration,
 };
-use util::TryFutureExt;
+use inazuma_util::TryFutureExt;
 
 pub use crate::scheduler::{
     FallibleTask, ForegroundExecutor as SchedulerForegroundExecutor, Priority,
@@ -561,7 +561,7 @@ mod test {
 
         let platform = TestPlatform::new(background_executor.clone(), foreground_executor);
         let asset_source = Arc::new(());
-        let http_client = http_client::FakeHttpClient::with_404_response();
+        let http_client = raijin_http_client::FakeHttpClient::with_404_response();
 
         let app = App::new_app(platform, asset_source, http_client);
         (dispatcher, background_executor, app)

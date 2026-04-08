@@ -1,0 +1,19 @@
+[package]
+name = "inazuma-platform"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/platform.rs"
+doctest = false
+
+[features]
+screen-capture = []
+
+[dependencies]
+inazuma.workspace = true

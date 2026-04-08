@@ -1,0 +1,15 @@
+# Raijin Settings
+# Customize your Raijin experience here.
+# Changes are hot-reloaded automatically.
+
+# [theme]
+# theme = "Raijin Dark"
+# ui_font_family = "DankMono Nerd Font Mono"
+# buffer_font_size = 15
+
+# [terminal]
+# scrollback_history = 10000
+# cursor_style = "beam"
+
+# [appearance]
+# window_colorspace = "srgb"

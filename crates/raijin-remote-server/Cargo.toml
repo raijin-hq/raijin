@@ -1,0 +1,114 @@
+[package]
+name = "raijin-remote-server"
+description = "Daemon used for remote editing"
+edition.workspace = true
+version = "0.1.0"
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/server.rs"
+doctest = false
+
+[[bin]]
+name = "raijin-remote-server"
+
+[features]
+default = []
+debug-embed = ["dep:rust-embed"]
+test-support = ["raijin-fs/test-support"]
+
+[dependencies]
+anyhow.workspace = true
+raijin-askpass.workspace = true
+clap.workspace = true
+raijin-client.workspace = true
+inazuma-collections.workspace = true
+raijin-crashes.workspace = true
+raijin-dap-adapters.workspace = true
+raijin-debug-adapter-extension.workspace = true
+env_logger.workspace = true
+raijin-extension.workspace = true
+raijin-extension-host.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+raijin-git.workspace = true
+raijin-git-hosting-providers.workspace = true
+git2 = { workspace = true, features = ["vendored-libgit2"] }
+inazuma.workspace = true
+inazuma-platform.workspace = true
+inazuma-tokio.workspace = true
+raijin-http-client.workspace = true
+image.workspace = true
+raijin-json-schema-store.workspace = true
+raijin-language.workspace = true
+raijin-language-extension.workspace = true
+raijin-languages.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+raijin-net.workspace = true
+raijin-node-runtime.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+raijin-proto.workspace = true
+raijin-release-channel.workspace = true
+raijin-remote.workspace = true
+raijin-reqwest-client.workspace = true
+raijin-rpc.workspace = true
+rust-embed = { workspace = true, optional = true, features = ["debug-embed"] }
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+shellexpand.workspace = true
+smol.workspace = true
+sysinfo.workspace = true
+raijin-task.workspace = true
+inazuma-util.workspace = true
+raijin-watch.workspace = true
+raijin-worktree.workspace = true
+thiserror.workspace = true
+rayon.workspace = true
+uuid = { workspace = true, features = ["v4"] }
+
+[target.'cfg(not(windows))'.dependencies]
+crash-handler.workspace = true
+fork.workspace = true
+libc.workspace = true
+minidumper.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows.workspace = true
+inazuma = { workspace = true, features = ["windows-manifest"] }
+
+[dev-dependencies]
+raijin-action-log.workspace = true
+raijin-agent = { workspace = true, features = ["test-support"] }
+raijin-client = { workspace = true, features = ["test-support"] }
+inazuma-clock = { workspace = true, features = ["test-support"] }
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-fs = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-http-client = { workspace = true, features = ["test-support"] }
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-node-runtime = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-remote = { workspace = true, features = ["test-support"] }
+raijin-theme-settings.workspace = true
+raijin-theme = { workspace = true, features = ["test-support"] }
+raijin-language-model = { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
+unindent.workspace = true
+serde_json.workspace = true
+raijin-log.workspace = true
+
+[build-dependencies]
+cargo_toml.workspace = true
+toml.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["git2", "rust-embed", "paths"]

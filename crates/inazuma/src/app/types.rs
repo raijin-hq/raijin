@@ -7,7 +7,7 @@ use std::{
 
 use derive_more::{Deref, DerefMut};
 use futures::future::LocalBoxFuture;
-use http_client::{HttpClient, Url};
+use raijin_http_client::{HttpClient, Url};
 
 use crate::{
     Action, AnyEntity, AnyView, App, ArenaBox, Bounds,
@@ -247,16 +247,12 @@ pub struct KeystrokeEvent {
 pub(super) struct NullHttpClient;
 
 impl HttpClient for NullHttpClient {
-    fn type_name(&self) -> &'static str {
-        "NullHttpClient"
-    }
-
     fn send(
         &self,
-        _req: http_client::Request<http_client::AsyncBody>,
+        _req: raijin_http_client::Request<raijin_http_client::AsyncBody>,
     ) -> futures::future::BoxFuture<
         'static,
-        anyhow::Result<http_client::Response<http_client::AsyncBody>>,
+        anyhow::Result<raijin_http_client::Response<raijin_http_client::AsyncBody>>,
     > {
         use futures::FutureExt;
         async move {
@@ -265,7 +261,7 @@ impl HttpClient for NullHttpClient {
         .boxed()
     }
 
-    fn user_agent(&self) -> Option<&http_client::http::HeaderValue> {
+    fn user_agent(&self) -> Option<&raijin_http_client::http::HeaderValue> {
         None
     }
 

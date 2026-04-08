@@ -1,0 +1,20 @@
+[package]
+name = "raijin-ui-input"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/ui_input.rs"
+
+[dependencies]
+inazuma-component-registry.workspace = true
+inazuma.workspace = true
+raijin-ui.workspace = true
+
+[features]
+default = []

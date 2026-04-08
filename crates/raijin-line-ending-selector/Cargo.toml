@@ -1,0 +1,23 @@
+[package]
+name = "raijin-line-ending-selector"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/line_ending_selector.rs"
+doctest = false
+
+[dependencies]
+raijin-editor.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true

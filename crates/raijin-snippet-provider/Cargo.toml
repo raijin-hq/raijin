@@ -1,0 +1,33 @@
+[package]
+name = "raijin-snippet-provider"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[features]
+test-support = []
+
+[dependencies]
+anyhow.workspace = true
+inazuma-collections.workspace = true
+raijin-extension.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_json_lenient.workspace = true
+raijin-snippet.workspace = true
+inazuma-util.workspace = true
+schemars.workspace = true
+
+[dev-dependencies]
+raijin-fs = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true

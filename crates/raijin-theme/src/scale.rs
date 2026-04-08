@@ -1,67 +1,301 @@
-use inazuma::Oklch;
+#![allow(missing_docs)]
+use inazuma::{App, Oklch, SharedString};
 
-/// A 12-step OKLCH color scale, inspired by Radix UI color scales.
+use crate::{ActiveTheme, Appearance};
+
+/// A collection of colors that are used to style the UI.
 ///
-/// Steps progress from near-black (step 1) to near-white (step 12),
-/// maintaining consistent chroma and hue from the base color.
+/// Each step has a semantic meaning, and is used to style different parts of the UI.
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy)]
+pub struct ColorScaleStep(usize);
+
+impl ColorScaleStep {
+    pub const ONE: Self = Self(1);
+    pub const TWO: Self = Self(2);
+    pub const THREE: Self = Self(3);
+    pub const FOUR: Self = Self(4);
+    pub const FIVE: Self = Self(5);
+    pub const SIX: Self = Self(6);
+    pub const SEVEN: Self = Self(7);
+    pub const EIGHT: Self = Self(8);
+    pub const NINE: Self = Self(9);
+    pub const TEN: Self = Self(10);
+    pub const ELEVEN: Self = Self(11);
+    pub const TWELVE: Self = Self(12);
+
+    /// All of the steps in a [`ColorScale`].
+    pub const ALL: [ColorScaleStep; 12] = [
+        Self::ONE,
+        Self::TWO,
+        Self::THREE,
+        Self::FOUR,
+        Self::FIVE,
+        Self::SIX,
+        Self::SEVEN,
+        Self::EIGHT,
+        Self::NINE,
+        Self::TEN,
+        Self::ELEVEN,
+        Self::TWELVE,
+    ];
+}
+
+/// A scale of colors for a given [`ColorScaleSet`].
+///
+/// Each [`ColorScale`] contains exactly 12 colors. Refer to
+/// [`ColorScaleStep`] for a reference of what each step is used for.
 #[derive(Clone, Debug)]
-pub struct ColorScale {
-    /// The 12 color steps, from darkest to lightest.
-    pub colors: [Oklch; 12],
-}
+pub struct ColorScale(Vec<Oklch>);
 
-/// Named steps in a 12-step color scale.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-#[repr(u8)]
-pub enum ColorScaleStep {
-    /// Step 1: App background (darkest).
-    One = 0,
-    /// Step 2: Subtle background.
-    Two = 1,
-    /// Step 3: UI element background.
-    Three = 2,
-    /// Step 4: Hovered UI element background.
-    Four = 3,
-    /// Step 5: Active / selected UI element background.
-    Five = 4,
-    /// Step 6: Subtle borders and separators.
-    Six = 5,
-    /// Step 7: UI element border and focus rings.
-    Seven = 6,
-    /// Step 8: Hovered UI element border.
-    Eight = 7,
-    /// Step 9: Solid backgrounds (most saturated).
-    Nine = 8,
-    /// Step 10: Hovered solid backgrounds.
-    Ten = 9,
-    /// Step 11: Low-contrast text.
-    Eleven = 10,
-    /// Step 12: High-contrast text (lightest).
-    Twelve = 11,
+impl FromIterator<Oklch> for ColorScale {
+    fn from_iter<T: IntoIterator<Item = Oklch>>(iter: T) -> Self {
+        Self(Vec::from_iter(iter))
+    }
 }
-
-/// Lightness values for each of the 12 scale steps.
-const SCALE_LIGHTNESS: [f32; 12] = [
-    0.13, 0.17, 0.22, 0.27, 0.33, 0.40, 0.48, 0.57, 0.66, 0.75, 0.85, 0.95,
-];
 
 impl ColorScale {
-    /// Generates a 12-step color scale from a base OKLCH color.
-    ///
-    /// The base color's chroma and hue are preserved across all steps.
-    /// Lightness is distributed from ~0.13 (dark) to ~0.95 (light).
-    pub fn from_base(base: Oklch) -> Self {
-        let colors = SCALE_LIGHTNESS.map(|l| Oklch {
-            l,
-            c: base.c,
-            h: base.h,
-            a: base.a,
-        });
-        Self { colors }
+    /// Returns the specified step in the [`ColorScale`].
+    #[inline]
+    pub fn step(&self, step: ColorScaleStep) -> Oklch {
+        // Steps are one-based, so we need convert to the zero-based vec index.
+        self.0[step.0 - 1]
     }
 
-    /// Returns the color at the given scale step.
-    pub fn step(&self, step: ColorScaleStep) -> Oklch {
-        self.colors[step as usize]
+    /// `Step 1` - Used for main application backgrounds.
+    ///
+    /// This step provides a neutral base for any overlaying components, ideal for applications' main backdrop or empty spaces such as canvas areas.
+    ///
+    #[inline]
+    pub fn step_1(&self) -> Oklch {
+        self.step(ColorScaleStep::ONE)
+    }
+
+    /// `Step 2` - Used for both main application backgrounds and subtle component backgrounds.
+    ///
+    /// Like `Step 1`, this step allows variations in background styles, from striped tables, sidebar backgrounds, to card backgrounds.
+    #[inline]
+    pub fn step_2(&self) -> Oklch {
+        self.step(ColorScaleStep::TWO)
+    }
+
+    /// `Step 3` - Used for UI component backgrounds in their normal states.
+    ///
+    /// This step maintains accessibility by guaranteeing a contrast ratio of 4.5:1 with steps 11 and 12 for text. It could also suit hover states for transparent components.
+    #[inline]
+    pub fn step_3(&self) -> Oklch {
+        self.step(ColorScaleStep::THREE)
+    }
+
+    /// `Step 4` - Used for UI component backgrounds in their hover states.
+    ///
+    /// Also suited for pressed or selected states of components with a transparent background.
+    #[inline]
+    pub fn step_4(&self) -> Oklch {
+        self.step(ColorScaleStep::FOUR)
+    }
+
+    /// `Step 5` - Used for UI component backgrounds in their pressed or selected states.
+    #[inline]
+    pub fn step_5(&self) -> Oklch {
+        self.step(ColorScaleStep::FIVE)
+    }
+
+    /// `Step 6` - Used for subtle borders on non-interactive components.
+    ///
+    /// Its usage spans from sidebars' borders, headers' dividers, cards' outlines, to alerts' edges and separators.
+    #[inline]
+    pub fn step_6(&self) -> Oklch {
+        self.step(ColorScaleStep::SIX)
+    }
+
+    /// `Step 7` - Used for subtle borders on interactive components.
+    ///
+    /// This step subtly delineates the boundary of elements users interact with.
+    #[inline]
+    pub fn step_7(&self) -> Oklch {
+        self.step(ColorScaleStep::SEVEN)
+    }
+
+    /// `Step 8` - Used for stronger borders on interactive components and focus rings.
+    ///
+    /// It strengthens the visibility and accessibility of active elements and their focus states.
+    #[inline]
+    pub fn step_8(&self) -> Oklch {
+        self.step(ColorScaleStep::EIGHT)
+    }
+
+    /// `Step 9` - Used for solid backgrounds.
+    ///
+    /// `Step 9` is the most saturated step, having the least mix of white or black.
+    ///
+    /// Due to its high chroma, `Step 9` is versatile and particularly useful for semantic colors such as
+    /// error, warning, and success indicators.
+    #[inline]
+    pub fn step_9(&self) -> Oklch {
+        self.step(ColorScaleStep::NINE)
+    }
+
+    /// `Step 10` - Used for hovered or active solid backgrounds, particularly when `Step 9` is their normal state.
+    ///
+    /// May also be used for extremely low contrast text. This should be used sparingly, as it may be difficult to read.
+    #[inline]
+    pub fn step_10(&self) -> Oklch {
+        self.step(ColorScaleStep::TEN)
+    }
+
+    /// `Step 11` - Used for text and icons requiring low contrast or less emphasis.
+    #[inline]
+    pub fn step_11(&self) -> Oklch {
+        self.step(ColorScaleStep::ELEVEN)
+    }
+
+    /// `Step 12` - Used for text and icons requiring high contrast or prominence.
+    #[inline]
+    pub fn step_12(&self) -> Oklch {
+        self.step(ColorScaleStep::TWELVE)
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ColorScales {
+    pub gray: ColorScaleSet,
+    pub mauve: ColorScaleSet,
+    pub slate: ColorScaleSet,
+    pub sage: ColorScaleSet,
+    pub olive: ColorScaleSet,
+    pub sand: ColorScaleSet,
+    pub gold: ColorScaleSet,
+    pub bronze: ColorScaleSet,
+    pub brown: ColorScaleSet,
+    pub yellow: ColorScaleSet,
+    pub amber: ColorScaleSet,
+    pub orange: ColorScaleSet,
+    pub tomato: ColorScaleSet,
+    pub red: ColorScaleSet,
+    pub ruby: ColorScaleSet,
+    pub crimson: ColorScaleSet,
+    pub pink: ColorScaleSet,
+    pub plum: ColorScaleSet,
+    pub purple: ColorScaleSet,
+    pub violet: ColorScaleSet,
+    pub iris: ColorScaleSet,
+    pub indigo: ColorScaleSet,
+    pub blue: ColorScaleSet,
+    pub cyan: ColorScaleSet,
+    pub teal: ColorScaleSet,
+    pub jade: ColorScaleSet,
+    pub green: ColorScaleSet,
+    pub grass: ColorScaleSet,
+    pub lime: ColorScaleSet,
+    pub mint: ColorScaleSet,
+    pub sky: ColorScaleSet,
+    pub black: ColorScaleSet,
+    pub white: ColorScaleSet,
+}
+
+impl IntoIterator for ColorScales {
+    type Item = ColorScaleSet;
+
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        vec![
+            self.gray,
+            self.mauve,
+            self.slate,
+            self.sage,
+            self.olive,
+            self.sand,
+            self.gold,
+            self.bronze,
+            self.brown,
+            self.yellow,
+            self.amber,
+            self.orange,
+            self.tomato,
+            self.red,
+            self.ruby,
+            self.crimson,
+            self.pink,
+            self.plum,
+            self.purple,
+            self.violet,
+            self.iris,
+            self.indigo,
+            self.blue,
+            self.cyan,
+            self.teal,
+            self.jade,
+            self.green,
+            self.grass,
+            self.lime,
+            self.mint,
+            self.sky,
+            self.black,
+            self.white,
+        ]
+        .into_iter()
+    }
+}
+
+/// Provides groups of [`ColorScale`]s for light and dark themes, as well as transparent versions of each scale.
+#[derive(Clone, Debug)]
+pub struct ColorScaleSet {
+    name: SharedString,
+    light: ColorScale,
+    dark: ColorScale,
+    light_alpha: ColorScale,
+    dark_alpha: ColorScale,
+}
+
+impl ColorScaleSet {
+    pub fn new(
+        name: impl Into<SharedString>,
+        light: ColorScale,
+        light_alpha: ColorScale,
+        dark: ColorScale,
+        dark_alpha: ColorScale,
+    ) -> Self {
+        Self {
+            name: name.into(),
+            light,
+            light_alpha,
+            dark,
+            dark_alpha,
+        }
+    }
+
+    pub fn name(&self) -> &SharedString {
+        &self.name
+    }
+
+    pub fn light(&self) -> &ColorScale {
+        &self.light
+    }
+
+    pub fn light_alpha(&self) -> &ColorScale {
+        &self.light_alpha
+    }
+
+    pub fn dark(&self) -> &ColorScale {
+        &self.dark
+    }
+
+    pub fn dark_alpha(&self) -> &ColorScale {
+        &self.dark_alpha
+    }
+
+    pub fn step(&self, cx: &App, step: ColorScaleStep) -> Oklch {
+        match cx.theme().appearance {
+            Appearance::Light => self.light().step(step),
+            Appearance::Dark => self.dark().step(step),
+        }
+    }
+
+    pub fn step_alpha(&self, cx: &App, step: ColorScaleStep) -> Oklch {
+        match cx.theme().appearance {
+            Appearance::Light => self.light_alpha.step(step),
+            Appearance::Dark => self.dark_alpha.step(step),
+        }
     }
 }

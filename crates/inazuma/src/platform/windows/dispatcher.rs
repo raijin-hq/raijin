@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::Context;
-use util::ResultExt;
+use inazuma_util::ResultExt;
 use windows::{
     System::Threading::{
         ThreadPool, ThreadPoolTimer, TimerElapsedHandler, WorkItemHandler, WorkItemPriority,
@@ -199,7 +199,7 @@ impl PlatformDispatcher for WindowsDispatcher {
         unsafe {
             timeBeginPeriod(1);
         }
-        util::defer(Box::new(|| unsafe {
+        inazuma_util::defer(Box::new(|| unsafe {
             timeEndPeriod(1);
         }))
     }

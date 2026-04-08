@@ -8,211 +8,211 @@ appearance = "dark"
 
 [style]
 # === Backgrounds ===
-background = "#1e1e2e"
-"surface.background" = "#24243e"  # surface0 blend
-"elevated_surface.background" = "#313244"  # surface1
-"element.background" = "#24243e"
-"element.hover" = "#313244"
-"element.active" = "#45475a"
-"element.selected" = "#45475a"
-"element.disabled" = "#24243e"
-"drop_target.background" = "#a6e3a140"
-"ghost_element.background" = "#00000000"
-"ghost_element.hover" = "#313244"
-"ghost_element.active" = "#45475a"
-"ghost_element.selected" = "#45475a"
+background = "oklch(0.2429 0.0304 283.91)"
+"surface.background" = "oklch(0.2737 0.0477 282.79)"  # surface0 blend
+"elevated_surface.background" = "oklch(0.324 0.0319 281.98)"  # surface1
+"element.background" = "oklch(0.2737 0.0477 282.79)"
+"element.hover" = "oklch(0.324 0.0319 281.98)"
+"element.active" = "oklch(0.4037 0.032 280.15)"
+"element.selected" = "oklch(0.4037 0.032 280.15)"
+"element.disabled" = "oklch(0.2737 0.0477 282.79)"
+"drop_target.background" = "oklch(0.8577 0.1092 142.72 / 0.251)"
+"ghost_element.background" = "oklch(0 0 none / 0)"
+"ghost_element.hover" = "oklch(0.324 0.0319 281.98)"
+"ghost_element.active" = "oklch(0.4037 0.032 280.15)"
+"ghost_element.selected" = "oklch(0.4037 0.032 280.15)"
 
 # === Borders ===
-border = "#45475a"
-"border.variant" = "#313244"
-"border.focused" = "#89b4fa"
-"border.selected" = "#89b4fa66"
-"border.transparent" = "#00000000"
-"border.disabled" = "#313244"
+border = "oklch(0.4037 0.032 280.15)"
+"border.variant" = "oklch(0.324 0.0319 281.98)"
+"border.focused" = "oklch(0.7664 0.1113 259.88)"
+"border.selected" = "oklch(0.7664 0.1113 259.88 / 0.4)"
+"border.transparent" = "oklch(0 0 none / 0)"
+"border.disabled" = "oklch(0.324 0.0319 281.98)"
 
 # === Text ===
-text = "#cdd6f4"
-"text.muted" = "#a6adc8"
-"text.placeholder" = "#585b70"
-"text.disabled" = "#585b70"
-"text.accent" = "#89b4fa"
+text = "oklch(0.8787 0.0426 272.28)"
+"text.muted" = "oklch(0.751 0.0396 273.93)"
+"text.placeholder" = "oklch(0.4765 0.034 278.64)"
+"text.disabled" = "oklch(0.4765 0.034 278.64)"
+"text.accent" = "oklch(0.7664 0.1113 259.88)"
 
 # === Icons ===
-icon = "#cdd6f4"
-"icon.muted" = "#a6adc8"
-"icon.disabled" = "#585b70"
-"icon.accent" = "#89b4fa"
+icon = "oklch(0.8787 0.0426 272.28)"
+"icon.muted" = "oklch(0.751 0.0396 273.93)"
+"icon.disabled" = "oklch(0.4765 0.034 278.64)"
+"icon.accent" = "oklch(0.7664 0.1113 259.88)"
 
 # === Workspace Chrome ===
-"status_bar.background" = "#181825"
-"title_bar.background" = "#181825"
-"title_bar.inactive_background" = "#11111b"
-"toolbar.background" = "#1e1e2e"
-"tab_bar.background" = "#181825"
-"tab.active_background" = "#1e1e2e"
-"tab.inactive_background" = "#181825"
-"panel.background" = "#181825"
+"status_bar.background" = "oklch(0.2155 0.0254 284.06)"
+"title_bar.background" = "oklch(0.2155 0.0254 284.06)"
+"title_bar.inactive_background" = "oklch(0.1828 0.0204 284.2)"
+"toolbar.background" = "oklch(0.2429 0.0304 283.91)"
+"tab_bar.background" = "oklch(0.2155 0.0254 284.06)"
+"tab.active_background" = "oklch(0.2429 0.0304 283.91)"
+"tab.inactive_background" = "oklch(0.2155 0.0254 284.06)"
+"panel.background" = "oklch(0.2155 0.0254 284.06)"
 
 # === Editor ===
-"editor.foreground" = "#cdd6f4"
-"editor.background" = "#1e1e2e"
-"editor.gutter.background" = "#1e1e2e"
-"editor.active_line.background" = "#313244bf"
-"editor.line_number" = "#585b70"
-"editor.active_line_number" = "#cdd6f4"
-"editor.invisible" = "#45475a"
-"editor.wrap_guide" = "#45475a0d"
+"editor.foreground" = "oklch(0.8787 0.0426 272.28)"
+"editor.background" = "oklch(0.2429 0.0304 283.91)"
+"editor.gutter.background" = "oklch(0.2429 0.0304 283.91)"
+"editor.active_line.background" = "oklch(0.324 0.0319 281.98 / 0.749)"
+"editor.line_number" = "oklch(0.4765 0.034 278.64)"
+"editor.active_line_number" = "oklch(0.8787 0.0426 272.28)"
+"editor.invisible" = "oklch(0.4037 0.032 280.15)"
+"editor.wrap_guide" = "oklch(0.4037 0.032 280.15 / 0.051)"
 
 # === Search ===
-"search.match_background" = "#f9e2af40"
+"search.match_background" = "oklch(0.9193 0.0704 86.53 / 0.251)"
 
 # === Scrollbar ===
-"scrollbar.thumb.background" = "#ffffff1a"
-"scrollbar.thumb.hover_background" = "#ffffff33"
-"scrollbar.track.background" = "#00000000"
+"scrollbar.thumb.background" = "oklch(1 0 none / 0.102)"
+"scrollbar.thumb.hover_background" = "oklch(1 0 none / 0.2)"
+"scrollbar.track.background" = "oklch(0 0 none / 0)"
 
 # === Terminal (ANSI-16 + dim) ===
-"terminal.background" = "#1e1e2e"
-"terminal.accent" = "#89b4fa"
-"terminal.foreground" = "#cdd6f4"
-"terminal.bright_foreground" = "#e4e8f8"
-"terminal.dim_foreground" = "#a6adc8"
-"terminal.ansi.black" = "#45475a"
-"terminal.ansi.red" = "#f38ba8"
-"terminal.ansi.green" = "#a6e3a1"
-"terminal.ansi.yellow" = "#f9e2af"
-"terminal.ansi.blue" = "#89b4fa"
-"terminal.ansi.magenta" = "#cba6f7"
-"terminal.ansi.cyan" = "#94e2d5"
-"terminal.ansi.white" = "#bac2de"
-"terminal.ansi.bright_black" = "#585b70"
-"terminal.ansi.bright_red" = "#f5a0b8"
-"terminal.ansi.bright_green" = "#b8eab4"
-"terminal.ansi.bright_yellow" = "#fae9c2"
-"terminal.ansi.bright_blue" = "#a1c5fb"
-"terminal.ansi.bright_magenta" = "#d8bbf9"
-"terminal.ansi.bright_cyan" = "#abe9df"
-"terminal.ansi.bright_white" = "#e4e8f8"
-"terminal.ansi.dim_black" = "#303040"
-"terminal.ansi.dim_red" = "#aa6175"
-"terminal.ansi.dim_green" = "#749f71"
-"terminal.ansi.dim_yellow" = "#ae9e7a"
-"terminal.ansi.dim_blue" = "#607eaf"
-"terminal.ansi.dim_magenta" = "#8e74ad"
-"terminal.ansi.dim_cyan" = "#689e95"
-"terminal.ansi.dim_white" = "#82889b"
+"terminal.background" = "oklch(0.2429 0.0304 283.91)"
+"terminal.accent" = "oklch(0.7664 0.1113 259.88)"
+"terminal.foreground" = "oklch(0.8787 0.0426 272.28)"
+"terminal.bright_foreground" = "oklch(0.9327 0.022 274.73)"
+"terminal.dim_foreground" = "oklch(0.751 0.0396 273.93)"
+"terminal.ansi.black" = "oklch(0.4037 0.032 280.15)"
+"terminal.ansi.red" = "oklch(0.7556 0.1297 2.76)"
+"terminal.ansi.green" = "oklch(0.8577 0.1092 142.72)"
+"terminal.ansi.yellow" = "oklch(0.9193 0.0704 86.53)"
+"terminal.ansi.blue" = "oklch(0.7664 0.1113 259.88)"
+"terminal.ansi.magenta" = "oklch(0.7871 0.1187 304.77)"
+"terminal.ansi.cyan" = "oklch(0.8585 0.0792 182.75)"
+"terminal.ansi.white" = "oklch(0.8168 0.0403 272.86)"
+"terminal.ansi.bright_black" = "oklch(0.4765 0.034 278.64)"
+"terminal.ansi.bright_red" = "oklch(0.7965 0.1047 1.39)"
+"terminal.ansi.bright_green" = "oklch(0.8883 0.0894 142.9)"
+"terminal.ansi.bright_yellow" = "oklch(0.9379 0.054 87.25)"
+"terminal.ansi.bright_blue" = "oklch(0.8166 0.086 258.33)"
+"terminal.ansi.bright_magenta" = "oklch(0.8375 0.0903 305.83)"
+"terminal.ansi.bright_cyan" = "oklch(0.8893 0.0641 183.81)"
+"terminal.ansi.bright_white" = "oklch(0.9327 0.022 274.73)"
+"terminal.ansi.dim_black" = "oklch(0.3161 0.0284 284.66)"
+"terminal.ansi.dim_red" = "oklch(0.581 0.0971 2.94)"
+"terminal.ansi.dim_green" = "oklch(0.6587 0.0817 143)"
+"terminal.ansi.dim_yellow" = "oklch(0.7039 0.0531 86.82)"
+"terminal.ansi.dim_blue" = "oklch(0.5903 0.0832 259.96)"
+"terminal.ansi.dim_magenta" = "oklch(0.6054 0.0892 304.79)"
+"terminal.ansi.dim_cyan" = "oklch(0.6588 0.0589 182.85)"
+"terminal.ansi.dim_white" = "oklch(0.6283 0.0294 271.64)"
 
 # === Git / Version Control ===
-"version_control.added" = "#a6e3a1"
-"version_control.modified" = "#f9e2af"
-"version_control.deleted" = "#f38ba8"
+"version_control.added" = "oklch(0.8577 0.1092 142.72)"
+"version_control.modified" = "oklch(0.9193 0.0704 86.53)"
+"version_control.deleted" = "oklch(0.7556 0.1297 2.76)"
 
 # === Status ===
-error = "#f38ba8"
-"error.background" = "#f38ba81a"
-"error.border" = "#f38ba833"
-warning = "#fab387"
-"warning.background" = "#fab3871a"
-"warning.border" = "#fab38733"
-success = "#a6e3a1"
-"success.background" = "#a6e3a11a"
-"success.border" = "#a6e3a133"
-info = "#89dceb"
-"info.background" = "#89dceb1a"
-"info.border" = "#89dceb33"
+error = "oklch(0.7556 0.1297 2.76)"
+"error.background" = "oklch(0.7556 0.1297 2.76 / 0.102)"
+"error.border" = "oklch(0.7556 0.1297 2.76 / 0.2)"
+warning = "oklch(0.8237 0.1015 52.63)"
+"warning.background" = "oklch(0.8237 0.1015 52.63 / 0.102)"
+"warning.border" = "oklch(0.8237 0.1015 52.63 / 0.2)"
+success = "oklch(0.8577 0.1092 142.72)"
+"success.background" = "oklch(0.8577 0.1092 142.72 / 0.102)"
+"success.border" = "oklch(0.8577 0.1092 142.72 / 0.2)"
+info = "oklch(0.8467 0.0833 210.25)"
+"info.background" = "oklch(0.8467 0.0833 210.25 / 0.102)"
+"info.border" = "oklch(0.8467 0.0833 210.25 / 0.2)"
 
 # === Link ===
-"link_text.hover" = "#89b4fa"
+"link_text.hover" = "oklch(0.7664 0.1113 259.88)"
 
 # === Raijin-spezifisch (Block-System) ===
-"block.success_badge" = "#a6e3a1"
-"block.error_badge" = "#f38ba8"
-"block.running_badge" = "#f9e2af"
+"block.success_badge" = "oklch(0.8577 0.1092 142.72)"
+"block.error_badge" = "oklch(0.7556 0.1297 2.76)"
+"block.running_badge" = "oklch(0.9193 0.0704 86.53)"
 
 # === Players ===
 [[style.players]]
-cursor = "#89b4fa"
-background = "#89b4fa"
-selection = "#89b4fa3d"
+cursor = "oklch(0.7664 0.1113 259.88)"
+background = "oklch(0.7664 0.1113 259.88)"
+selection = "oklch(0.7664 0.1113 259.88 / 0.239)"
 
 [[style.players]]
-cursor = "#a6e3a1"
-background = "#a6e3a1"
-selection = "#a6e3a13d"
+cursor = "oklch(0.8577 0.1092 142.72)"
+background = "oklch(0.8577 0.1092 142.72)"
+selection = "oklch(0.8577 0.1092 142.72 / 0.239)"
 
 [[style.players]]
-cursor = "#cba6f7"
-background = "#cba6f7"
-selection = "#cba6f73d"
+cursor = "oklch(0.7871 0.1187 304.77)"
+background = "oklch(0.7871 0.1187 304.77)"
+selection = "oklch(0.7871 0.1187 304.77 / 0.239)"
 
 [[style.players]]
-cursor = "#f38ba8"
-background = "#f38ba8"
-selection = "#f38ba83d"
+cursor = "oklch(0.7556 0.1297 2.76)"
+background = "oklch(0.7556 0.1297 2.76)"
+selection = "oklch(0.7556 0.1297 2.76 / 0.239)"
 
 # === Syntax Highlighting ===
 [style.syntax.attribute]
-color = "#f9e2af"
+color = "oklch(0.9193 0.0704 86.53)"
 
 [style.syntax.boolean]
-color = "#fab387"
+color = "oklch(0.8237 0.1015 52.63)"
 
 [style.syntax.comment]
-color = "#6c7086"
+color = "oklch(0.5497 0.0345 277.1)"
 font_style = "italic"
 
 [style.syntax."comment.doc"]
-color = "#7c8099"
+color = "oklch(0.6053 0.0382 278.04)"
 font_style = "italic"
 
 [style.syntax.constant]
-color = "#fab387"
+color = "oklch(0.8237 0.1015 52.63)"
 
 [style.syntax.constructor]
-color = "#89b4fa"
+color = "oklch(0.7664 0.1113 259.88)"
 
 [style.syntax.function]
-color = "#89b4fa"
+color = "oklch(0.7664 0.1113 259.88)"
 
 [style.syntax.keyword]
-color = "#cba6f7"
+color = "oklch(0.7871 0.1187 304.77)"
 
 [style.syntax.number]
-color = "#fab387"
+color = "oklch(0.8237 0.1015 52.63)"
 
 [style.syntax.operator]
-color = "#89dceb"
+color = "oklch(0.8467 0.0833 210.25)"
 
 [style.syntax.property]
-color = "#94e2d5"
+color = "oklch(0.8585 0.0792 182.75)"
 
 [style.syntax.string]
-color = "#a6e3a1"
+color = "oklch(0.8577 0.1092 142.72)"
 
 [style.syntax."string.escape"]
-color = "#f5c2e7"
+color = "oklch(0.87 0.0752 336.3)"
 
 [style.syntax."string.regex"]
-color = "#f5c2e7"
+color = "oklch(0.87 0.0752 336.3)"
 
 [style.syntax.tag]
-color = "#f38ba8"
+color = "oklch(0.7556 0.1297 2.76)"
 
 [style.syntax.type]
-color = "#f9e2af"
+color = "oklch(0.9193 0.0704 86.53)"
 
 [style.syntax.variable]
-color = "#cdd6f4"
+color = "oklch(0.8787 0.0426 272.28)"
 
 [style.syntax."variable.special"]
-color = "#eba0ac"
+color = "oklch(0.7821 0.0903 8.85)"
 
 [style.syntax.punctuation]
-color = "#bac2de"
+color = "oklch(0.8168 0.0403 272.86)"
 
 [style.syntax."punctuation.bracket"]
-color = "#9399b2"
+color = "oklch(0.6865 0.0374 274.73)"
 
 [style.syntax.title]
-color = "#89b4fa"
+color = "oklch(0.7664 0.1113 259.88)"
 font_weight = 700

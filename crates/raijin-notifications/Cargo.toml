@@ -1,0 +1,42 @@
+[package]
+name = "raijin-notifications"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/notifications.rs"
+doctest = false
+
+[features]
+test-support = [
+    "raijin-channel/test-support",
+
+    "inazuma/test-support",
+    "raijin-rpc/test-support",
+]
+
+[dependencies]
+anyhow.workspace = true
+raijin-channel.workspace = true
+raijin-client.workspace = true
+inazuma-component.workspace = true
+raijin-db.workspace = true
+inazuma.workspace = true
+raijin-rpc.workspace = true
+inazuma-sum_tree.workspace = true
+time.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-client = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-rpc = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }

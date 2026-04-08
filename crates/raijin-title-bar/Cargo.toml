@@ -1,0 +1,79 @@
+[package]
+name = "raijin-title-bar"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/title_bar.rs"
+doctest = false
+
+[features]
+default = []
+stories = ["dep:inazuma-story"]
+test-support = [
+    "raijin-call/test-support",
+    "raijin-client/test-support",
+
+    "inazuma/test-support",
+
+    "raijin-project/test-support",
+    "raijin-remote/test-support",
+    "inazuma-util/test-support",
+    "raijin-workspace/test-support",
+    "raijin-recent-projects/test-support",
+]
+
+[dependencies]
+anyhow.workspace = true
+raijin-auto-update.workspace = true
+raijin-platform-title-bar.workspace = true
+raijin-call.workspace = true
+raijin-channel.workspace = true
+chrono.workspace = true
+raijin-client.workspace = true
+raijin-cloud-api-types.workspace = true
+raijin-db.workspace = true
+raijin-git-ui.workspace = true
+inazuma = { workspace = true, features = ["screen-capture"] }
+inazuma-icons.workspace = true
+raijin-livekit-client.workspace = true
+raijin-notifications.workspace = true
+raijin-project.workspace = true
+raijin-recent-projects.workspace = true
+raijin-remote.workspace = true
+raijin-remote-connection.workspace = true
+raijin-rpc.workspace = true
+semver.workspace = true
+schemars.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+inazuma-story = { workspace = true, optional = true }
+raijin-telemetry.workspace = true
+raijin-theme.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows.workspace = true
+
+[dev-dependencies]
+raijin-call = { workspace = true, features = ["test-support"] }
+raijin-client = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-notifications = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-release-channel.workspace = true
+raijin-remote = { workspace = true, features = ["test-support"] }
+raijin-rpc = { workspace = true, features = ["test-support"] }
+semver.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

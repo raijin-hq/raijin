@@ -21,7 +21,7 @@ use crate::command::{new_command, new_std_command};
 use anyhow::{Context as _, anyhow};
 use calloop::LoopSignal;
 use futures::channel::oneshot;
-use util::ResultExt as _;
+use inazuma_util::ResultExt as _;
 #[cfg(any(feature = "wayland", feature = "x11"))]
 use xkbcommon::xkb::{self, Keycode, Keysym, State};
 

@@ -1,0 +1,20 @@
+[package]
+name = "raijin-paths"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[features]
+test-support = []
+
+[lib]
+path = "src/raijin_paths.rs"
+
+[dependencies]
+dirs.workspace = true
+ignore.workspace = true
+inazuma-util.workspace = true

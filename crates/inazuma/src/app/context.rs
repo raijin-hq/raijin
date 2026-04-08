@@ -15,7 +15,7 @@ use std::{
     ops,
     sync::Arc,
 };
-use util::Deferred;
+use inazuma_util::Deferred;
 
 use super::{App, AsyncWindowContext, Entity, KeystrokeEvent};
 

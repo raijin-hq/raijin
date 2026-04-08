@@ -1,0 +1,28 @@
+[package]
+name = "raijin-platform-title-bar"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/platform_title_bar.rs"
+doctest = false
+
+[dependencies]
+raijin-feature-flags.workspace = true
+inazuma.workspace = true
+raijin-project.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows.workspace = true

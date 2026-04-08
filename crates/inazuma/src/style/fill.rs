@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{Background, FontStyle, FontWeight, Oklch, Rgba};
-use collections::HashSet;
+use inazuma_collections::HashSet;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 

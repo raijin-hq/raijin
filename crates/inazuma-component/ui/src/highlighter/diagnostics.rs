@@ -6,7 +6,7 @@ use std::{
 
 use inazuma::{px, App, HighlightStyle, Oklch, SharedString, UnderlineStyle};
 use ropey::Rope;
-use sum_tree::{Bias, SeekTarget, SumTree};
+use inazuma_sum_tree::{Bias, SeekTarget, SumTree};
 
 use crate::{
     input::{Position, RopeExt as _},

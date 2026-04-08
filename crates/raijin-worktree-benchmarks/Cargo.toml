@@ -1,0 +1,14 @@
+[package]
+name = "raijin-worktree-benchmarks"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+
+[dependencies]
+raijin-fs.workspace = true
+inazuma-platform.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-worktree.workspace = true
+
+[lints]
+workspace = true

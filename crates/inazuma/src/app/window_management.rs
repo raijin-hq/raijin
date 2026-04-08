@@ -1,7 +1,7 @@
 use std::any::TypeId;
 
 use anyhow::{Context as _, Result};
-use collections::FxHashSet;
+use inazuma_collections::FxHashSet;
 use futures::FutureExt;
 
 use super::{Effect, QuitMode, SHUTDOWN_TIMEOUT};
@@ -277,7 +277,7 @@ impl App {
         R: 'static,
     {
         if self.quitting {
-            util::debug_panic!("Can't spawn on main thread after on_app_quit")
+            inazuma_util::debug_panic!("Can't spawn on main thread after on_app_quit")
         };
 
         let mut cx = self.to_async();
@@ -295,7 +295,7 @@ impl App {
         R: 'static,
     {
         if self.quitting {
-            util::debug_panic!("Can't spawn on main thread after on_app_quit")
+            inazuma_util::debug_panic!("Can't spawn on main thread after on_app_quit")
         };
 
         let mut cx = self.to_async();

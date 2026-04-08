@@ -1,228 +1,387 @@
-use std::collections::HashMap;
+use crate::schema::{status_colors_refinement, syntax_overrides, theme_colors_refinement};
+use inazuma_collections::HashMap;
+use inazuma::{App, Font, FontFallbacks, FontStyle, Global, Pixels, px};
+use inazuma_refineable::Refineable;
+use inazuma_settings_framework::{IntoInazuma, RegisterSetting, Settings, SettingsContent};
+use std::sync::Arc;
+use raijin_theme::{Appearance, SyntaxTheme, Theme, UiDensity};
 
-use inazuma::{App, Global, SharedString};
-use raijin_theme::{
-    DEFAULT_DARK_THEME, GlobalTheme, ThemeColorsRefinement, ThemeRegistry,
-};
+pub use inazuma_settings_content::{FontFamilyName, IconThemeName, ThemeAppearanceMode, ThemeName};
 
-/// Controls how the theme appearance is determined.
-#[derive(Clone, Debug)]
-pub enum ThemeAppearanceMode {
-    /// Follow the OS-level light/dark setting.
-    System,
-    /// Always use a light theme.
-    Light,
-    /// Always use a dark theme.
-    Dark,
+const MIN_FONT_SIZE: Pixels = px(6.0);
+const MAX_FONT_SIZE: Pixels = px(100.0);
+const MIN_LINE_HEIGHT: f32 = 1.0;
+
+fn ui_density_from_settings(val: inazuma_settings_content::UiDensity) -> UiDensity {
+    match val {
+        inazuma_settings_content::UiDensity::Compact => UiDensity::Compact,
+        inazuma_settings_content::UiDensity::Default => UiDensity::Default,
+        inazuma_settings_content::UiDensity::Comfortable => UiDensity::Comfortable,
+    }
 }
 
-/// Describes which theme(s) to use.
-#[derive(Clone, Debug)]
+pub fn appearance_to_mode(appearance: Appearance) -> ThemeAppearanceMode {
+    match appearance {
+        Appearance::Light => ThemeAppearanceMode::Light,
+        Appearance::Dark => ThemeAppearanceMode::Dark,
+    }
+}
+
+/// Customizable settings for the UI and theme system.
+#[derive(Clone, PartialEq, RegisterSetting)]
+pub struct ThemeSettings {
+    ui_font_size: Pixels,
+    pub ui_font: Font,
+    buffer_font_size: Pixels,
+    pub buffer_font: Font,
+    pub buffer_line_height: BufferLineHeight,
+    pub theme: ThemeSelection,
+    pub experimental_theme_overrides: Option<inazuma_settings_content::ThemeStyleContent>,
+    pub theme_overrides: HashMap<String, inazuma_settings_content::ThemeStyleContent>,
+    pub icon_theme: IconThemeSelection,
+    pub ui_density: UiDensity,
+    pub unnecessary_code_fade: f32,
+}
+
+/// Returns the name of the default theme for the given [`Appearance`].
+pub fn default_theme(appearance: Appearance) -> &'static str {
+    match appearance {
+        Appearance::Light => inazuma_settings_content::DEFAULT_LIGHT_THEME,
+        Appearance::Dark => inazuma_settings_content::DEFAULT_DARK_THEME,
+    }
+}
+
+#[derive(Default)]
+struct BufferFontSize(Pixels);
+
+impl Global for BufferFontSize {}
+
+#[derive(Default)]
+pub(crate) struct UiFontSize(Pixels);
+
+impl Global for UiFontSize {}
+
+/// The theme selection — static or dynamic based on system appearance.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ThemeSelection {
-    /// A single theme used regardless of system appearance.
-    Static(SharedString),
-    /// Separate themes for light and dark system appearance.
+    Static(ThemeName),
     Dynamic {
         mode: ThemeAppearanceMode,
-        light: SharedString,
-        dark: SharedString,
+        light: ThemeName,
+        dark: ThemeName,
     },
 }
 
-/// Application-wide theme settings, stored as a global in the Inazuma app context.
-///
-/// Manages the active theme selection, per-theme color overrides, and an optional
-/// experimental override layer applied on top of everything.
-pub struct ThemeSettings {
-    /// The current theme selection strategy.
-    pub theme: ThemeSelection,
-    /// Per-theme color overrides keyed by theme name.
-    pub theme_overrides: HashMap<String, ThemeColorsRefinement>,
-    /// An experimental override layer applied on top of the resolved theme.
-    pub experimental_theme_overrides: Option<ThemeColorsRefinement>,
+impl From<inazuma_settings_content::ThemeSelection> for ThemeSelection {
+    fn from(selection: inazuma_settings_content::ThemeSelection) -> Self {
+        match selection {
+            inazuma_settings_content::ThemeSelection::Static(theme) => {
+                ThemeSelection::Static(theme)
+            }
+            inazuma_settings_content::ThemeSelection::Dynamic { mode, light, dark } => {
+                ThemeSelection::Dynamic { mode, light, dark }
+            }
+        }
+    }
 }
 
-impl Global for ThemeSettings {}
+impl ThemeSelection {
+    pub fn name(&self, system_appearance: Appearance) -> ThemeName {
+        match self {
+            Self::Static(theme) => theme.clone(),
+            Self::Dynamic { mode, light, dark } => match mode {
+                ThemeAppearanceMode::Light => light.clone(),
+                ThemeAppearanceMode::Dark => dark.clone(),
+                ThemeAppearanceMode::System => match system_appearance {
+                    Appearance::Light => light.clone(),
+                    Appearance::Dark => dark.clone(),
+                },
+            },
+        }
+    }
 
-impl Default for ThemeSettings {
-    fn default() -> Self {
-        Self {
-            theme: ThemeSelection::Static(SharedString::from(DEFAULT_DARK_THEME)),
-            theme_overrides: HashMap::new(),
-            experimental_theme_overrides: None,
+    pub fn mode(&self) -> Option<ThemeAppearanceMode> {
+        match self {
+            ThemeSelection::Static(_) => None,
+            ThemeSelection::Dynamic { mode, .. } => Some(*mode),
         }
     }
 }
 
-/// Initializes the theme system.
-///
-/// 1. Parses all bundled TOML themes (compiled into the binary).
-/// 2. Scans `~/.raijin/themes/*.toml` for user themes.
-/// 3. Builds the `ThemeRegistry` with all themes.
-/// 4. Reads the selected theme from `RaijinSettings`.
-/// 5. Sets `ThemeRegistry`, `ThemeSettings`, and `GlobalTheme` as globals.
-pub fn init(cx: &mut App) {
-    let mut registry = ThemeRegistry::new();
+/// The icon theme selection.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum IconThemeSelection {
+    Static(IconThemeName),
+    Dynamic {
+        mode: ThemeAppearanceMode,
+        light: IconThemeName,
+        dark: IconThemeName,
+    },
+}
 
-    // --- Load bundled themes via asset pipeline ---
-    registry.load_bundled_themes(cx.asset_source().as_ref());
-
-    // --- Load user themes from ~/.raijin/themes/ ---
-    // One format: each theme is a directory with theme.toml inside.
-    //   ~/.raijin/themes/my-theme/theme.toml (+ optional assets like wallpaper.png)
-    let themes_dir = raijin_settings::RaijinSettings::themes_dir();
-    if themes_dir.is_dir() {
-        if let Ok(entries) = std::fs::read_dir(&themes_dir) {
-            for entry in entries.flatten() {
-                let path = entry.path();
-                if !path.is_dir() {
-                    continue;
-                }
-
-                let theme_toml = path.join("theme.toml");
-                if !theme_toml.exists() {
-                    continue;
-                }
-
-                let id = path
-                    .file_name()
-                    .and_then(|s| s.to_str())
-                    .unwrap_or("unknown")
-                    .to_string();
-                let toml_path = theme_toml;
-                let base_dir = path;
-
-                match std::fs::read_to_string(&toml_path) {
-                    Ok(content) => {
-                        match raijin_theme::load_theme_from_toml_with_base_dir(
-                            &id,
-                            &content,
-                            Some(base_dir),
-                        ) {
-                            Ok(theme) => {
-                                log::info!(
-                                    "Loaded user theme: {} ({}) from {}",
-                                    theme.name,
-                                    id,
-                                    toml_path.display()
-                                );
-                                registry.insert_theme(theme);
-                            }
-                            Err(err) => {
-                                log::warn!(
-                                    "Failed to parse user theme '{}': {}",
-                                    toml_path.display(),
-                                    err
-                                );
-                            }
-                        }
-                    }
-                    Err(err) => {
-                        log::warn!(
-                            "Failed to read theme file '{}': {}",
-                            toml_path.display(),
-                            err
-                        );
-                    }
-                }
+impl From<inazuma_settings_content::IconThemeSelection> for IconThemeSelection {
+    fn from(selection: inazuma_settings_content::IconThemeSelection) -> Self {
+        match selection {
+            inazuma_settings_content::IconThemeSelection::Static(theme) => {
+                IconThemeSelection::Static(theme)
+            }
+            inazuma_settings_content::IconThemeSelection::Dynamic { mode, light, dark } => {
+                IconThemeSelection::Dynamic { mode, light, dark }
             }
         }
     }
-
-    // --- Resolve initial theme from settings ---
-    let theme_name = cx
-        .try_global::<raijin_settings::RaijinSettings>()
-        .map(|s| SharedString::from(s.theme.theme_name().to_string()))
-        .unwrap_or_else(|| SharedString::from(DEFAULT_DARK_THEME));
-
-    let theme = registry
-        .get(&theme_name)
-        .unwrap_or_else(|_| {
-            log::warn!(
-                "Configured theme '{}' not found, falling back to '{}'",
-                theme_name,
-                DEFAULT_DARK_THEME,
-            );
-            registry
-                .get(&SharedString::from(DEFAULT_DARK_THEME))
-                .unwrap_or_else(|_| {
-                    let themes = registry.list();
-                    let first = themes
-                        .first()
-                        .expect("No themes available in registry — cannot initialize theme system");
-                    registry.get(&first.name).unwrap()
-                })
-        });
-
-    let selection = match cx.try_global::<raijin_settings::RaijinSettings>() {
-        Some(s) => match s.theme.mode {
-            raijin_settings::ThemeMode::System => ThemeSelection::Dynamic {
-                mode: ThemeAppearanceMode::System,
-                light: SharedString::from(s.theme.light.clone()),
-                dark: SharedString::from(s.theme.dark.clone()),
-            },
-            raijin_settings::ThemeMode::Light => ThemeSelection::Dynamic {
-                mode: ThemeAppearanceMode::Light,
-                light: SharedString::from(s.theme.light.clone()),
-                dark: SharedString::from(s.theme.dark.clone()),
-            },
-            raijin_settings::ThemeMode::Dark => ThemeSelection::Static(theme_name.clone()),
-        },
-        None => ThemeSelection::Static(SharedString::from(DEFAULT_DARK_THEME)),
-    };
-
-    cx.set_global(registry);
-    cx.set_global(ThemeSettings {
-        theme: selection,
-        ..ThemeSettings::default()
-    });
-    cx.set_global(GlobalTheme(theme));
-
-    log::info!("Theme system initialized with '{}'", theme_name);
 }
 
-/// Reloads the active theme from the current `ThemeSettings` and `ThemeRegistry`.
-///
-/// Resolves the theme name from `ThemeSettings`, looks it up in the registry,
-/// and updates `GlobalTheme`. Falls back to "Raijin Dark" if the selected
-/// theme is not found in the registry.
-pub fn reload_theme(cx: &mut App) {
-    let settings = cx.global::<ThemeSettings>();
-    let theme_name = match &settings.theme {
-        ThemeSelection::Static(name) => name.clone(),
-        ThemeSelection::Dynamic { mode, light, dark } => match mode {
-            ThemeAppearanceMode::Light => light.clone(),
-            ThemeAppearanceMode::Dark => dark.clone(),
-            ThemeAppearanceMode::System => {
-                // Default to dark when system appearance detection is not yet implemented.
-                dark.clone()
-            }
-        },
-    };
-
-    let registry = cx.global::<ThemeRegistry>();
-    let theme = match registry.get(&theme_name) {
-        Ok(theme) => theme,
-        Err(err) => {
-            log::warn!(
-                "Failed to load theme '{}': {}. Falling back to '{}'.",
-                theme_name,
-                err,
-                DEFAULT_DARK_THEME,
-            );
-            registry
-                .get(&SharedString::from(DEFAULT_DARK_THEME))
-                .unwrap_or_else(|_| {
-                    let themes = registry.list();
-                    let first = themes
-                        .first()
-                        .expect("No themes in registry");
-                    registry.get(&first.name).unwrap()
-                })
+impl IconThemeSelection {
+    pub fn name(&self, system_appearance: Appearance) -> IconThemeName {
+        match self {
+            Self::Static(theme) => theme.clone(),
+            Self::Dynamic { mode, light, dark } => match mode {
+                ThemeAppearanceMode::Light => light.clone(),
+                ThemeAppearanceMode::Dark => dark.clone(),
+                ThemeAppearanceMode::System => match system_appearance {
+                    Appearance::Light => light.clone(),
+                    Appearance::Dark => dark.clone(),
+                },
+            },
         }
-    };
+    }
 
-    cx.set_global(GlobalTheme(theme));
+    pub fn mode(&self) -> Option<ThemeAppearanceMode> {
+        match self {
+            IconThemeSelection::Static(_) => None,
+            IconThemeSelection::Dynamic { mode, .. } => Some(*mode),
+        }
+    }
+}
+
+/// The buffer's line height.
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
+pub enum BufferLineHeight {
+    #[default]
+    Comfortable,
+    Standard,
+    Custom(f32),
+}
+
+impl From<inazuma_settings_content::BufferLineHeight> for BufferLineHeight {
+    fn from(value: inazuma_settings_content::BufferLineHeight) -> Self {
+        match value {
+            inazuma_settings_content::BufferLineHeight::Comfortable => {
+                BufferLineHeight::Comfortable
+            }
+            inazuma_settings_content::BufferLineHeight::Standard => BufferLineHeight::Standard,
+            inazuma_settings_content::BufferLineHeight::Custom(line_height) => {
+                BufferLineHeight::Custom(line_height)
+            }
+        }
+    }
+}
+
+impl BufferLineHeight {
+    pub fn value(&self) -> f32 {
+        match self {
+            BufferLineHeight::Comfortable => 1.618,
+            BufferLineHeight::Standard => 1.3,
+            BufferLineHeight::Custom(line_height) => *line_height,
+        }
+    }
+}
+
+impl ThemeSettings {
+    pub fn buffer_font_size(&self, cx: &App) -> Pixels {
+        let font_size = cx
+            .try_global::<BufferFontSize>()
+            .map(|size| size.0)
+            .unwrap_or(self.buffer_font_size);
+        clamp_font_size(font_size)
+    }
+
+    pub fn ui_font_size(&self, cx: &App) -> Pixels {
+        let font_size = cx
+            .try_global::<UiFontSize>()
+            .map(|size| size.0)
+            .unwrap_or(self.ui_font_size);
+        clamp_font_size(font_size)
+    }
+
+    pub fn buffer_font_size_settings(&self) -> Pixels {
+        self.buffer_font_size
+    }
+
+    pub fn ui_font_size_settings(&self) -> Pixels {
+        self.ui_font_size
+    }
+
+    pub fn line_height(&self) -> f32 {
+        f32::max(self.buffer_line_height.value(), MIN_LINE_HEIGHT)
+    }
+
+    pub fn apply_theme_overrides(&self, mut arc_theme: Arc<Theme>) -> Arc<Theme> {
+        if let Some(experimental_theme_overrides) = &self.experimental_theme_overrides {
+            let mut theme = (*arc_theme).clone();
+            ThemeSettings::modify_theme(&mut theme, experimental_theme_overrides);
+            arc_theme = Arc::new(theme);
+        }
+
+        if let Some(theme_overrides) = self.theme_overrides.get(arc_theme.name.as_ref()) {
+            let mut theme = (*arc_theme).clone();
+            ThemeSettings::modify_theme(&mut theme, theme_overrides);
+            arc_theme = Arc::new(theme);
+        }
+
+        arc_theme
+    }
+
+    fn modify_theme(
+        base_theme: &mut Theme,
+        theme_overrides: &inazuma_settings_content::ThemeStyleContent,
+    ) {
+        let status_color_refinement = status_colors_refinement(&theme_overrides.status);
+
+        base_theme.styles.colors.refine(&theme_colors_refinement(
+            &theme_overrides.colors,
+            &status_color_refinement,
+        ));
+        base_theme.styles.status.refine(&status_color_refinement);
+        base_theme.styles.syntax = SyntaxTheme::merge(
+            base_theme.styles.syntax.clone(),
+            syntax_overrides(theme_overrides),
+        );
+    }
+}
+
+pub fn adjust_buffer_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
+    let buffer_font_size = ThemeSettings::get_global(cx).buffer_font_size;
+    let adjusted_size = cx
+        .try_global::<BufferFontSize>()
+        .map_or(buffer_font_size, |adjusted_size| adjusted_size.0);
+    cx.set_global(BufferFontSize(clamp_font_size(f(adjusted_size))));
     cx.refresh_windows();
-    log::info!("Theme reloaded: {}", theme_name);
+}
+
+pub fn reset_buffer_font_size(cx: &mut App) {
+    if cx.has_global::<BufferFontSize>() {
+        cx.remove_global::<BufferFontSize>();
+        cx.refresh_windows();
+    }
+}
+
+pub fn setup_ui_font(cx: &App) -> Font {
+    let theme_settings = ThemeSettings::get_global(cx);
+    theme_settings.ui_font.clone()
+}
+
+pub fn adjust_ui_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
+    let ui_font_size = ThemeSettings::get_global(cx).ui_font_size(cx);
+    let adjusted_size = cx
+        .try_global::<UiFontSize>()
+        .map_or(ui_font_size, |adjusted_size| adjusted_size.0);
+    cx.set_global(UiFontSize(clamp_font_size(f(adjusted_size))));
+    cx.refresh_windows();
+}
+
+pub fn reset_ui_font_size(cx: &mut App) {
+    if cx.has_global::<UiFontSize>() {
+        cx.remove_global::<UiFontSize>();
+        cx.refresh_windows();
+    }
+}
+
+pub fn clamp_font_size(size: Pixels) -> Pixels {
+    size.clamp(MIN_FONT_SIZE, MAX_FONT_SIZE)
+}
+
+fn font_fallbacks_from_settings(
+    fallbacks: Option<Vec<FontFamilyName>>,
+) -> Option<FontFallbacks> {
+    fallbacks.map(|fallbacks| {
+        FontFallbacks::from_fonts(
+            fallbacks
+                .into_iter()
+                .map(|font_family| font_family.0.to_string())
+                .collect(),
+        )
+    })
+}
+
+impl Settings for ThemeSettings {
+    fn from_settings(content: &SettingsContent) -> Self {
+        let content = &content.theme;
+        let theme_selection: ThemeSelection = content
+            .theme
+            .clone()
+            .unwrap_or_default()
+            .into();
+        let icon_theme_selection: IconThemeSelection = content
+            .icon_theme
+            .clone()
+            .unwrap_or(inazuma_settings_content::IconThemeSelection::Static(
+                IconThemeName(raijin_theme::DEFAULT_DARK_THEME.into()),
+            ))
+            .into();
+        Self {
+            ui_font_size: clamp_font_size(
+                content
+                    .ui_font_size
+                    .unwrap_or(inazuma_settings_content::FontSize(15.0))
+                    .into_inazuma(),
+            ),
+            ui_font: Font {
+                family: content
+                    .ui_font_family
+                    .as_ref()
+                    .map(|f| f.0.clone().into())
+                    .unwrap_or_else(|| "DankMono Nerd Font Mono".into()),
+                features: content
+                    .ui_font_features
+                    .clone()
+                    .unwrap_or_default()
+                    .into_inazuma(),
+                fallbacks: font_fallbacks_from_settings(content.ui_font_fallbacks.clone()),
+                weight: content
+                    .ui_font_weight
+                    .unwrap_or(inazuma_settings_content::FontWeightContent(400.0))
+                    .into_inazuma(),
+                style: Default::default(),
+            },
+            buffer_font: Font {
+                family: content
+                    .buffer_font_family
+                    .as_ref()
+                    .map(|f| f.0.clone().into())
+                    .unwrap_or_else(|| "DankMono Nerd Font Mono".into()),
+                features: content
+                    .buffer_font_features
+                    .clone()
+                    .unwrap_or_default()
+                    .into_inazuma(),
+                fallbacks: font_fallbacks_from_settings(content.buffer_font_fallbacks.clone()),
+                weight: content
+                    .buffer_font_weight
+                    .unwrap_or(inazuma_settings_content::FontWeightContent(400.0))
+                    .into_inazuma(),
+                style: FontStyle::default(),
+            },
+            buffer_font_size: clamp_font_size(
+                content
+                    .buffer_font_size
+                    .unwrap_or(inazuma_settings_content::FontSize(15.0))
+                    .into_inazuma(),
+            ),
+            buffer_line_height: content
+                .buffer_line_height
+                .unwrap_or_default()
+                .into(),
+            theme: theme_selection,
+            experimental_theme_overrides: content.experimental_theme_overrides.clone(),
+            theme_overrides: content.theme_overrides.clone(),
+            icon_theme: icon_theme_selection,
+            ui_density: ui_density_from_settings(content.ui_density.unwrap_or_default()),
+            unnecessary_code_fade: content
+                .unnecessary_code_fade
+                .map(|f| f.0.clamp(0.0, 0.9))
+                .unwrap_or(0.3),
+        }
+    }
 }

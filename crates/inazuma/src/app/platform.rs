@@ -274,12 +274,12 @@ impl App {
     }
 
     /// Returns the HTTP client for the application.
-    pub fn http_client(&self) -> Arc<dyn http_client::HttpClient> {
+    pub fn http_client(&self) -> Arc<dyn raijin_http_client::HttpClient> {
         self.http_client.clone()
     }
 
     /// Sets the HTTP client for the application.
-    pub fn set_http_client(&mut self, new_client: Arc<dyn http_client::HttpClient>) {
+    pub fn set_http_client(&mut self, new_client: Arc<dyn raijin_http_client::HttpClient>) {
         self.http_client = new_client;
     }
 

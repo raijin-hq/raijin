@@ -1,7 +1,7 @@
 use crate::platform::linux::Globals;
 use crate::platform::linux::{DEFAULT_CURSOR_ICON_NAME, log_cursor_icon_warning};
 use anyhow::{Context as _, anyhow};
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use wayland_client::Connection;
 use wayland_client::protocol::wl_surface::WlSurface;

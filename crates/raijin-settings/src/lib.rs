@@ -98,7 +98,7 @@ fn default_dark_theme() -> String {
 }
 
 fn default_light_theme() -> String {
-    "Raijin Dark".to_string()
+    "Raijin Light".to_string()
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

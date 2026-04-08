@@ -1,0 +1,43 @@
+[package]
+name = "raijin-context-server"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/context_server.rs"
+
+[features]
+test-support = ["inazuma/test-support"]
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+inazuma-collections.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-http-client = { workspace = true, features = ["test-support"] }
+log.workspace = true
+raijin-net.workspace = true
+parking_lot.workspace = true
+rand.workspace = true
+postage.workspace = true
+schemars.workspace = true
+serde_json.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+sha2.workspace = true
+slotmap.workspace = true
+smol.workspace = true
+tempfile.workspace = true
+tiny_http.workspace = true
+url = { workspace = true, features = ["serde"] }
+inazuma-util.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }

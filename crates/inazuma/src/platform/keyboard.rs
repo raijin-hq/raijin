@@ -1,4 +1,4 @@
-use collections::HashMap;
+use inazuma_collections::HashMap;
 
 use crate::{KeybindingKeystroke, Keystroke};
 

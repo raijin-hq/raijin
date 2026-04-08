@@ -11,9 +11,9 @@ use std::{
     mem::ManuallyDrop,
 };
 
-use ::util::{ResultExt, maybe};
+use ::inazuma_util::{ResultExt, maybe};
 use anyhow::{Context, Result};
-use collections::HashMap;
+use inazuma_collections::HashMap;
 use parking_lot::{RwLock, RwLockUpgradableReadGuard};
 use windows::{
     Win32::{

@@ -10,7 +10,7 @@ use std::{
     sync::Arc,
 };
 
-use collections::{FxHashSet, HashMap};
+use inazuma_collections::{FxHashSet, HashMap};
 use futures::channel::oneshot::Receiver;
 
 use raw_window_handle as rwh;

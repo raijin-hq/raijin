@@ -2,7 +2,7 @@ mod cache;
 mod layout;
 
 use crate::{FontId, GlyphId, Pixels, PlatformTextSystem, Point, SharedString, Size, point, px};
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use parking_lot::{Mutex, RwLock, RwLockUpgradableReadGuard};
 use smallvec::SmallVec;
 use std::{

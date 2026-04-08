@@ -388,7 +388,7 @@ impl<T> FusedIterator for TryIter<T> {}
 
 #[cfg(test)]
 mod tests {
-    use collections::HashSet;
+    use inazuma_collections::HashSet;
 
     use super::*;
 

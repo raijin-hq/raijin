@@ -1,0 +1,63 @@
+[package]
+name = "raijin-acp-thread"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/acp_thread.rs"
+doctest = false
+
+[features]
+test-support = ["inazuma/test-support", "raijin-project/test-support", "dep:parking_lot", "dep:image"]
+
+[dependencies]
+raijin-action-log.workspace = true
+agent-client-protocol.workspace = true
+base64.workspace = true
+anyhow.workspace = true
+raijin-buffer-diff.workspace = true
+chrono.workspace = true
+inazuma-collections.workspace = true
+raijin-multi-buffer.workspace = true
+raijin-file-icons.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+raijin-language-model.workspace = true
+log.workspace = true
+raijin-markdown.workspace = true
+parking_lot = { workspace = true, optional = true }
+image = { workspace = true, optional = true }
+portable-pty.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+raijin-task.workspace = true
+raijin-telemetry.workspace = true
+raijin-terminal.workspace = true
+inazuma-text.workspace = true
+raijin-ui.workspace = true
+url.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+raijin-watch.workspace = true
+urlencoding.workspace = true
+
+[dev-dependencies]
+env_logger.workspace = true
+inazuma = { workspace = true, "features" = ["test-support"] }
+indoc.workspace = true
+parking_lot.workspace = true
+raijin-project = { workspace = true, "features" = ["test-support"] }
+rand.workspace = true
+inazuma-util.workspace = true
+inazuma-settings-framework.workspace = true

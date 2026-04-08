@@ -1,0 +1,23 @@
+[package]
+name = "raijin-language-onboarding"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/python.rs"
+
+[features]
+default = []
+
+[dependencies]
+raijin-db.workspace = true
+raijin-editor.workspace = true
+inazuma.workspace = true
+raijin-project.workspace = true
+raijin-ui.workspace = true
+raijin-workspace.workspace = true

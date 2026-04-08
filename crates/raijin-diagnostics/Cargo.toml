@@ -1,0 +1,53 @@
+[package]
+name = "raijin-diagnostics"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/diagnostics.rs"
+doctest = false
+
+[dependencies]
+anyhow.workspace = true
+inazuma-collections.workspace = true
+inazuma-component.workspace = true
+ctor.workspace = true
+raijin-editor.workspace = true
+inazuma.workspace = true
+indoc.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+raijin-markdown.workspace = true
+raijin-project.workspace = true
+rand.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+inazuma-text.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+
+raijin-editor = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
+raijin-markdown = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+serde_json.workspace = true
+raijin-theme = { workspace = true, features = ["test-support"] }
+unindent.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true

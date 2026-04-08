@@ -1,23 +1,265 @@
 [workspace]
 members = [
+    # Inazuma Framework
     "crates/inazuma",
     "crates/inazuma/tooling/macros",
+    "crates/inazuma-clock",
+    "crates/inazuma-collections",
+    "crates/inazuma-refineable",
+    "crates/inazuma-refineable/derive_refineable",
     "crates/inazuma-component/ui",
     "crates/inazuma-component/macros",
     "crates/inazuma-component/assets",
+    "crates/inazuma-component-registry",
+    "crates/inazuma-fuzzy",
+    "crates/inazuma-gpui-util",
+    "crates/inazuma-icons",
+    "crates/inazuma-menu",
+    "crates/inazuma-perf",
+    "crates/inazuma-platform",
+    "crates/inazuma-picker",
+    "crates/inazuma-rope",
+    "crates/inazuma-settings-content",
+    "crates/inazuma-settings-framework",
+    "crates/inazuma-settings-macros",
+    "crates/inazuma-story",
+    "crates/inazuma-sum_tree",
+    "crates/inazuma-text",
+    "crates/inazuma-tokio",
+    "crates/inazuma-util",
+    "crates/inazuma-util-macros",
+
+    # Raijin App
+    "crates/raijin-anthropic",
     "crates/raijin-app",
+    "crates/raijin-actions",
+    "crates/raijin-agent-settings",
+    "crates/raijin-askpass",
+    "crates/raijin-assets",
+    "crates/raijin-breadcrumbs",
+    "crates/raijin-buffer-diff",
+    "crates/raijin-client",
+    "crates/raijin-cloud-api-types",
+    "crates/raijin-cloud-api-client",
+    "crates/raijin-cloud-llm-client",
+    "crates/raijin-completions",
+    "crates/raijin-context-server",
+    "crates/raijin-credentials-provider",
+    "crates/raijin-dap",
+    "crates/raijin-db",
+    "crates/raijin-edit-prediction-types",
+    "crates/raijin-editor",
+    "crates/raijin-env-vars",
+    "crates/raijin-extension",
+    "crates/raijin-feature-flags",
+    "crates/raijin-file-icons",
+    "crates/raijin-fs",
+    "crates/raijin-git",
+    "crates/raijin-git-hosting-providers",
+    "crates/raijin-grammars",
+    "crates/raijin-http-client",
+    "crates/raijin-http-client-tls",
+    "crates/raijin-json-schema-store",
+    "crates/raijin-language",
+    "crates/raijin-language-core",
+    "crates/raijin-language-model",
+    "crates/raijin-languages",
+    "crates/raijin-log",
+    "crates/raijin-lsp",
+    "crates/raijin-markdown",
+    "crates/raijin-multi-buffer",
+    "crates/raijin-net",
+    "crates/raijin-node-runtime",
+    "crates/raijin-open-ai",
+    "crates/raijin-open-router",
+    "crates/raijin-paths",
+    "crates/raijin-prettier",
+    "crates/raijin-project",
+    "crates/raijin-proto",
+    "crates/raijin-release-channel",
+    "crates/raijin-remote",
+    "crates/raijin-rpc",
+    "crates/raijin-session",
+    "crates/raijin-settings",
+    "crates/raijin-settings-json",
+    "crates/raijin-shell",
+    "crates/raijin-snippet",
+    "crates/raijin-snippet-provider",
+    "crates/raijin-sqlez",
+    "crates/raijin-sqlez-macros",
+    "crates/raijin-task",
+    "crates/raijin-telemetry",
+    "crates/raijin-telemetry-events",
+    "crates/raijin-term",
     "crates/raijin-terminal",
     "crates/raijin-theme",
-    "crates/raijin-shell",
-    "crates/raijin-settings",
-    "crates/raijin-term",
-    "crates/raijin-completions",
-    "crates/raijin-theme-settings",
     "crates/raijin-theme-extension",
-    "crates/raijin-theme-selector",
-    "crates/cargo-raijin",
     "crates/raijin-theme-importer",
-    "crates/raijin-assets",
+    "crates/raijin-theme-selector",
+    "crates/raijin-theme-settings",
+    "crates/raijin-tracing",
+    "crates/raijin-tracing-macro",
+    "crates/raijin-ui",
+    "crates/raijin-ui-input",
+    "crates/raijin-ui-macros",
+    "crates/raijin-vim-mode-setting",
+    "crates/raijin-watch",
+    "crates/raijin-workspace",
+    "crates/raijin-worktree",
+    "crates/raijin-zeta-prompt",
+
+    # Batch 1 — Leaf Crates
+    "crates/raijin-time-format",
+    "crates/raijin-shell-command-parser",
+    "crates/raijin-streaming-diff",
+    "crates/raijin-html-to-markdown",
+    "crates/raijin-audio",
+    "crates/raijin-media",
+    "crates/raijin-nc",
+    "crates/raijin-denoise",
+    "crates/raijin-crashes",
+    "crates/raijin-system-specs",
+    "crates/raijin-reqwest-client",
+    "crates/raijin-aws-http-client",
+    "crates/raijin-scheduler",
+
+    # Batch 2 — Framework-Dependencies
+    "crates/raijin-panel",
+    "crates/raijin-sidebar",
+    "crates/raijin-command-palette",
+    "crates/raijin-command-palette-hooks",
+    "crates/raijin-ui-prompt",
+    "crates/raijin-platform-title-bar",
+    "crates/raijin-title-bar",
+    "crates/raijin-encoding-selector",
+    "crates/raijin-line-ending-selector",
+    "crates/raijin-go-to-line",
+    "crates/raijin-which-key",
+    "crates/raijin-tab-switcher",
+    "crates/raijin-notifications",
+    "crates/raijin-feedback",
+    "crates/raijin-onboarding",
+    "crates/raijin-settings-ui",
+    "crates/raijin-settings-profile-selector",
+    "crates/raijin-recent-projects",
+    "crates/raijin-activity-indicator",
+
+    # Batch 3 — AI Provider
+    "crates/raijin-google-ai",
+    "crates/raijin-ollama",
+    "crates/raijin-mistral",
+    "crates/raijin-lmstudio",
+    "crates/raijin-deepseek",
+    "crates/raijin-codestral",
+    "crates/raijin-bedrock",
+    "crates/raijin-vercel",
+    "crates/raijin-x-ai",
+    "crates/raijin-opencode",
+    "crates/raijin-copilot",
+    "crates/raijin-copilot-chat",
+    "crates/raijin-copilot-ui",
+    "crates/raijin-language-models",
+
+    # Batch 4 — Editor Features
+    "crates/raijin-outline",
+    "crates/raijin-outline-panel",
+    "crates/raijin-diagnostics",
+    "crates/raijin-search",
+    "crates/raijin-file-finder",
+    "crates/raijin-project-panel",
+    "crates/raijin-project-symbols",
+    "crates/raijin-vim",
+    "crates/raijin-repl",
+    "crates/raijin-snippets-ui",
+    "crates/raijin-csv-preview",
+    "crates/raijin-svg-preview",
+    "crates/raijin-image-viewer",
+    "crates/raijin-markdown-preview",
+    "crates/raijin-journal",
+    "crates/raijin-keymap-editor",
+    "crates/raijin-toolchain-selector",
+    "crates/raijin-language-selector",
+    "crates/raijin-language-extension",
+    "crates/raijin-language-tools",
+    "crates/raijin-language-onboarding",
+
+    # Batch 5 — AI/Agent
+    "crates/raijin-acp-thread",
+    "crates/raijin-acp-tools",
+    "crates/raijin-prompt-store",
+    "crates/raijin-rules-library",
+    "crates/raijin-web-search",
+    "crates/raijin-web-search-providers",
+    "crates/raijin-assistant-slash-command",
+    "crates/raijin-assistant-slash-commands",
+    "crates/raijin-assistant-text-thread",
+    "crates/raijin-agent-servers",
+    "crates/raijin-agent",
+    "crates/raijin-agent-ui",
+    "crates/raijin-ai-onboarding",
+    "crates/raijin-action-log",
+
+    # Batch 6 — Debug/DAP
+    "crates/raijin-dap-adapters",
+    "crates/raijin-debug-adapter-extension",
+    "crates/raijin-debugger-tools",
+    "crates/raijin-debugger-ui",
+
+    # Batch 7 — Collab
+    "crates/raijin-livekit-api",
+    "crates/raijin-livekit-client",
+    "crates/raijin-call",
+    "crates/raijin-channel",
+    "crates/raijin-collab",
+    "crates/raijin-collab-ui",
+
+    # Batch 8 — Extension System
+    "crates/raijin-extension-cli",
+    "crates/raijin-extension-host",
+    "crates/raijin-extensions-ui",
+    "crates/raijin-extension-api",
+
+    # Batch 9 — Edit Prediction
+    "crates/raijin-edit-prediction",
+    "crates/raijin-edit-prediction-cli",
+    "crates/raijin-edit-prediction-context",
+    "crates/raijin-edit-prediction-ui",
+
+    # Batch 10 — Remaining
+    "crates/raijin-terminal-view",
+    "crates/raijin-tasks-ui",
+    "crates/raijin-remote-connection",
+    "crates/raijin-remote-server",
+    "crates/raijin-dev-container",
+    "crates/raijin-auto-update",
+    "crates/raijin-auto-update-helper",
+    "crates/raijin-auto-update-ui",
+    "crates/raijin-install-cli",
+    "crates/raijin-cli",
+    "crates/raijin-migrator",
+    "crates/raijin-miniprofiler-ui",
+    "crates/raijin-inspector-ui",
+    "crates/raijin-component-preview",
+    "crates/raijin-storybook",
+    "crates/raijin-explorer-command-injector",
+    "crates/raijin-etw-tracing",
+    "crates/raijin-open-path-prompt",
+    "crates/raijin-docs-preprocessor",
+    "crates/raijin-schema-generator",
+    "crates/raijin-eval",
+    "crates/raijin-eval-cli",
+    "crates/raijin-eval-utils",
+    "crates/raijin-fs-benchmarks",
+    "crates/raijin-project-benchmarks",
+    "crates/raijin-worktree-benchmarks",
+    "crates/raijin-log-settings",
+    "crates/raijin-git-graph",
+    "crates/raijin-git-ui",
+
+    # Batch 11 — Platform Split (SKIPPED: needs extraction from inazuma/src/platform/ with our objc2 migration, not Zed's cocoa API)
+
+    # Dev tooling
+    "crates/cargo-raijin",
 ]
 default-members = ["crates/raijin-app"]
 resolver = "3"
@@ -28,32 +270,499 @@ publish = false
 license = "Apache-2.0"
 
 [workspace.dependencies]
+# Inazuma Framework Crates
 inazuma = { path = "crates/inazuma" }
+inazuma-macros = { path = "crates/inazuma/tooling/macros" }
+inazuma-clock = { path = "crates/inazuma-clock" }
+inazuma-collections = { path = "crates/inazuma-collections" }
 inazuma-component = { path = "crates/inazuma-component/ui" }
 inazuma-component-macros = { path = "crates/inazuma-component/macros" }
 inazuma-component-assets = { path = "crates/inazuma-component/assets" }
-raijin-theme = { path = "crates/raijin-theme" }
-raijin-theme-importer = { path = "crates/raijin-theme-importer" }
-raijin-theme-settings = { path = "crates/raijin-theme-settings" }
-raijin-theme-extension = { path = "crates/raijin-theme-extension" }
-raijin-theme-selector = { path = "crates/raijin-theme-selector" }
-raijin-terminal = { path = "crates/raijin-terminal" }
-raijin-shell = { path = "crates/raijin-shell" }
-raijin-settings = { path = "crates/raijin-settings" }
+inazuma-component-registry = { path = "crates/inazuma-component-registry" }
+inazuma-fuzzy = { path = "crates/inazuma-fuzzy" }
+inazuma-gpui-util = { path = "crates/inazuma-gpui-util" }
+inazuma-icons = { path = "crates/inazuma-icons" }
+inazuma-menu = { path = "crates/inazuma-menu" }
+inazuma-perf = { path = "crates/inazuma-perf" }
+inazuma-platform = { path = "crates/inazuma-platform" }
+inazuma-refineable = { path = "crates/inazuma-refineable" }
+inazuma-derive-refineable = { path = "crates/inazuma-refineable/derive_refineable" }
+inazuma-picker = { path = "crates/inazuma-picker" }
+inazuma-rope = { path = "crates/inazuma-rope" }
+inazuma-settings-content = { path = "crates/inazuma-settings-content" }
+inazuma-settings-framework = { path = "crates/inazuma-settings-framework" }
+inazuma-settings-macros = { path = "crates/inazuma-settings-macros" }
+inazuma-story = { path = "crates/inazuma-story" }
+inazuma-sum_tree = { path = "crates/inazuma-sum_tree" }
+inazuma-text = { path = "crates/inazuma-text" }
+inazuma-tokio = { path = "crates/inazuma-tokio" }
+inazuma-util = { path = "crates/inazuma-util" }
+inazuma-util-macros = { path = "crates/inazuma-util-macros" }
+
+# Raijin App Crates
+raijin-anthropic = { path = "crates/raijin-anthropic" }
+raijin-actions = { path = "crates/raijin-actions" }
+raijin-agent-settings = { path = "crates/raijin-agent-settings" }
+raijin-askpass = { path = "crates/raijin-askpass" }
 raijin-assets = { path = "crates/raijin-assets" }
-toml = "0.8"
+raijin-breadcrumbs = { path = "crates/raijin-breadcrumbs" }
+raijin-buffer-diff = { path = "crates/raijin-buffer-diff" }
+raijin-client = { path = "crates/raijin-client" }
+raijin-cloud-api-client = { path = "crates/raijin-cloud-api-client" }
+raijin-cloud-api-types = { path = "crates/raijin-cloud-api-types" }
+raijin-cloud-llm-client = { path = "crates/raijin-cloud-llm-client" }
+raijin-completions = { path = "crates/raijin-completions" }
+raijin-context-server = { path = "crates/raijin-context-server" }
+raijin-credentials-provider = { path = "crates/raijin-credentials-provider" }
+raijin-dap = { path = "crates/raijin-dap" }
+raijin-db = { path = "crates/raijin-db" }
+raijin-edit-prediction-types = { path = "crates/raijin-edit-prediction-types" }
+raijin-editor = { path = "crates/raijin-editor" }
+raijin-env-vars = { path = "crates/raijin-env-vars" }
+raijin-extension = { path = "crates/raijin-extension" }
+raijin-feature-flags = { path = "crates/raijin-feature-flags" }
+raijin-file-icons = { path = "crates/raijin-file-icons" }
+raijin-fs = { path = "crates/raijin-fs" }
+raijin-git = { path = "crates/raijin-git" }
+raijin-git-hosting-providers = { path = "crates/raijin-git-hosting-providers" }
+raijin-grammars = { path = "crates/raijin-grammars" }
+raijin-http-client = { path = "crates/raijin-http-client" }
+raijin-http-client-tls = { path = "crates/raijin-http-client-tls" }
+raijin-json-schema-store = { path = "crates/raijin-json-schema-store" }
+raijin-language = { path = "crates/raijin-language" }
+raijin-language-core = { path = "crates/raijin-language-core" }
+raijin-language-model = { path = "crates/raijin-language-model" }
+raijin-languages = { path = "crates/raijin-languages" }
+raijin-log = { path = "crates/raijin-log" }
+raijin-lsp = { path = "crates/raijin-lsp" }
+raijin-markdown = { path = "crates/raijin-markdown" }
+raijin-multi-buffer = { path = "crates/raijin-multi-buffer" }
+raijin-net = { path = "crates/raijin-net" }
+raijin-node-runtime = { path = "crates/raijin-node-runtime" }
+raijin-open-ai = { path = "crates/raijin-open-ai" }
+raijin-open-router = { path = "crates/raijin-open-router" }
+raijin-paths = { path = "crates/raijin-paths" }
+raijin-prettier = { path = "crates/raijin-prettier" }
+raijin-project = { path = "crates/raijin-project" }
+raijin-proto = { path = "crates/raijin-proto" }
+raijin-release-channel = { path = "crates/raijin-release-channel" }
+raijin-remote = { path = "crates/raijin-remote" }
+raijin-rpc = { path = "crates/raijin-rpc" }
+raijin-session = { path = "crates/raijin-session" }
+raijin-settings = { path = "crates/raijin-settings" }
+raijin-settings-json = { path = "crates/raijin-settings-json" }
+raijin-shell = { path = "crates/raijin-shell" }
+raijin-snippet = { path = "crates/raijin-snippet" }
+raijin-snippet-provider = { path = "crates/raijin-snippet-provider" }
+raijin-sqlez = { path = "crates/raijin-sqlez" }
+raijin-sqlez-macros = { path = "crates/raijin-sqlez-macros" }
+raijin-task = { path = "crates/raijin-task" }
+raijin-telemetry = { path = "crates/raijin-telemetry" }
+raijin-telemetry-events = { path = "crates/raijin-telemetry-events" }
+raijin-term = { path = "crates/raijin-term" }
+raijin-terminal = { path = "crates/raijin-terminal" }
+raijin-terminal-view = { path = "crates/raijin-terminal-view" }
+raijin-theme = { path = "crates/raijin-theme" }
+raijin-theme-extension = { path = "crates/raijin-theme-extension" }
+raijin-theme-importer = { path = "crates/raijin-theme-importer" }
+raijin-theme-selector = { path = "crates/raijin-theme-selector" }
+raijin-theme-settings = { path = "crates/raijin-theme-settings" }
+raijin-tracing = { path = "crates/raijin-tracing" }
+raijin-tracing-macro = { path = "crates/raijin-tracing-macro" }
+raijin-ui = { path = "crates/raijin-ui" }
+raijin-ui-input = { path = "crates/raijin-ui-input" }
+raijin-ui-macros = { path = "crates/raijin-ui-macros" }
+raijin-vim-mode-setting = { path = "crates/raijin-vim-mode-setting" }
+raijin-watch = { path = "crates/raijin-watch" }
+raijin-workspace = { path = "crates/raijin-workspace" }
+raijin-worktree = { path = "crates/raijin-worktree" }
+raijin-zeta-prompt = { path = "crates/raijin-zeta-prompt" }
 
-clap = { version = "4", features = ["derive"] }
+# Batch 1 — Leaf Crates
+raijin-time-format = { path = "crates/raijin-time-format" }
+raijin-shell-command-parser = { path = "crates/raijin-shell-command-parser" }
+raijin-streaming-diff = { path = "crates/raijin-streaming-diff" }
+raijin-html-to-markdown = { path = "crates/raijin-html-to-markdown" }
+raijin-audio = { path = "crates/raijin-audio" }
+raijin-media = { path = "crates/raijin-media" }
+raijin-nc = { path = "crates/raijin-nc" }
+raijin-denoise = { path = "crates/raijin-denoise" }
+raijin-crashes = { path = "crates/raijin-crashes" }
+raijin-system-specs = { path = "crates/raijin-system-specs" }
+raijin-reqwest-client = { path = "crates/raijin-reqwest-client" }
+raijin-aws-http-client = { path = "crates/raijin-aws-http-client" }
+raijin-scheduler = { path = "crates/raijin-scheduler" }
 
+# Batch 2
+raijin-panel = { path = "crates/raijin-panel" }
+raijin-sidebar = { path = "crates/raijin-sidebar" }
+raijin-command-palette = { path = "crates/raijin-command-palette" }
+raijin-command-palette-hooks = { path = "crates/raijin-command-palette-hooks" }
+raijin-ui-prompt = { path = "crates/raijin-ui-prompt" }
+raijin-platform-title-bar = { path = "crates/raijin-platform-title-bar" }
+raijin-title-bar = { path = "crates/raijin-title-bar" }
+raijin-encoding-selector = { path = "crates/raijin-encoding-selector" }
+raijin-line-ending-selector = { path = "crates/raijin-line-ending-selector" }
+raijin-go-to-line = { path = "crates/raijin-go-to-line" }
+raijin-which-key = { path = "crates/raijin-which-key" }
+raijin-tab-switcher = { path = "crates/raijin-tab-switcher" }
+raijin-notifications = { path = "crates/raijin-notifications" }
+raijin-feedback = { path = "crates/raijin-feedback" }
+raijin-onboarding = { path = "crates/raijin-onboarding" }
+raijin-settings-ui = { path = "crates/raijin-settings-ui" }
+raijin-settings-profile-selector = { path = "crates/raijin-settings-profile-selector" }
+raijin-recent-projects = { path = "crates/raijin-recent-projects" }
+raijin-activity-indicator = { path = "crates/raijin-activity-indicator" }
+
+# Batch 3
+raijin-google-ai = { path = "crates/raijin-google-ai" }
+raijin-ollama = { path = "crates/raijin-ollama" }
+raijin-mistral = { path = "crates/raijin-mistral" }
+raijin-lmstudio = { path = "crates/raijin-lmstudio" }
+raijin-deepseek = { path = "crates/raijin-deepseek" }
+raijin-codestral = { path = "crates/raijin-codestral" }
+raijin-bedrock = { path = "crates/raijin-bedrock" }
+raijin-vercel = { path = "crates/raijin-vercel" }
+raijin-x-ai = { path = "crates/raijin-x-ai" }
+raijin-opencode = { path = "crates/raijin-opencode" }
+raijin-copilot = { path = "crates/raijin-copilot" }
+raijin-copilot-chat = { path = "crates/raijin-copilot-chat" }
+raijin-copilot-ui = { path = "crates/raijin-copilot-ui" }
+raijin-language-models = { path = "crates/raijin-language-models" }
+
+# Batch 4
+raijin-outline = { path = "crates/raijin-outline" }
+raijin-outline-panel = { path = "crates/raijin-outline-panel" }
+raijin-diagnostics = { path = "crates/raijin-diagnostics" }
+raijin-search = { path = "crates/raijin-search" }
+raijin-file-finder = { path = "crates/raijin-file-finder" }
+raijin-project-panel = { path = "crates/raijin-project-panel" }
+raijin-project-symbols = { path = "crates/raijin-project-symbols" }
+raijin-vim = { path = "crates/raijin-vim" }
+raijin-repl = { path = "crates/raijin-repl" }
+raijin-snippets-ui = { path = "crates/raijin-snippets-ui" }
+raijin-csv-preview = { path = "crates/raijin-csv-preview" }
+raijin-svg-preview = { path = "crates/raijin-svg-preview" }
+raijin-image-viewer = { path = "crates/raijin-image-viewer" }
+raijin-markdown-preview = { path = "crates/raijin-markdown-preview" }
+raijin-journal = { path = "crates/raijin-journal" }
+raijin-keymap-editor = { path = "crates/raijin-keymap-editor" }
+raijin-toolchain-selector = { path = "crates/raijin-toolchain-selector" }
+raijin-language-selector = { path = "crates/raijin-language-selector" }
+raijin-language-extension = { path = "crates/raijin-language-extension" }
+raijin-language-tools = { path = "crates/raijin-language-tools" }
+raijin-language-onboarding = { path = "crates/raijin-language-onboarding" }
+
+# Batch 5
+raijin-acp-thread = { path = "crates/raijin-acp-thread" }
+raijin-acp-tools = { path = "crates/raijin-acp-tools" }
+raijin-prompt-store = { path = "crates/raijin-prompt-store" }
+raijin-rules-library = { path = "crates/raijin-rules-library" }
+raijin-web-search = { path = "crates/raijin-web-search" }
+raijin-web-search-providers = { path = "crates/raijin-web-search-providers" }
+raijin-assistant-slash-command = { path = "crates/raijin-assistant-slash-command" }
+raijin-assistant-slash-commands = { path = "crates/raijin-assistant-slash-commands" }
+raijin-assistant-text-thread = { path = "crates/raijin-assistant-text-thread" }
+raijin-agent-servers = { path = "crates/raijin-agent-servers" }
+raijin-agent = { path = "crates/raijin-agent" }
+raijin-agent-ui = { path = "crates/raijin-agent-ui" }
+raijin-ai-onboarding = { path = "crates/raijin-ai-onboarding" }
+raijin-action-log = { path = "crates/raijin-action-log" }
+
+# Batch 6
+raijin-dap-adapters = { path = "crates/raijin-dap-adapters" }
+raijin-debug-adapter-extension = { path = "crates/raijin-debug-adapter-extension" }
+raijin-debugger-tools = { path = "crates/raijin-debugger-tools" }
+raijin-debugger-ui = { path = "crates/raijin-debugger-ui" }
+
+# Batch 7
+raijin-livekit-api = { path = "crates/raijin-livekit-api" }
+raijin-livekit-client = { path = "crates/raijin-livekit-client" }
+raijin-call = { path = "crates/raijin-call" }
+raijin-channel = { path = "crates/raijin-channel" }
+raijin-collab = { path = "crates/raijin-collab" }
+raijin-collab-ui = { path = "crates/raijin-collab-ui" }
+
+# Batch 8
+raijin-extension-cli = { path = "crates/raijin-extension-cli" }
+raijin-extension-host = { path = "crates/raijin-extension-host" }
+raijin-extensions-ui = { path = "crates/raijin-extensions-ui" }
+raijin-extension-api = { path = "crates/raijin-extension-api" }
+
+# Batch 9
+raijin-edit-prediction = { path = "crates/raijin-edit-prediction" }
+raijin-edit-prediction-cli = { path = "crates/raijin-edit-prediction-cli" }
+raijin-edit-prediction-context = { path = "crates/raijin-edit-prediction-context" }
+raijin-edit-prediction-ui = { path = "crates/raijin-edit-prediction-ui" }
+
+# Batch 10
+raijin-tasks-ui = { path = "crates/raijin-tasks-ui" }
+raijin-remote-connection = { path = "crates/raijin-remote-connection" }
+raijin-remote-server = { path = "crates/raijin-remote-server" }
+raijin-dev-container = { path = "crates/raijin-dev-container" }
+raijin-auto-update = { path = "crates/raijin-auto-update" }
+raijin-auto-update-helper = { path = "crates/raijin-auto-update-helper" }
+raijin-auto-update-ui = { path = "crates/raijin-auto-update-ui" }
+raijin-install-cli = { path = "crates/raijin-install-cli" }
+raijin-cli = { path = "crates/raijin-cli" }
+raijin-migrator = { path = "crates/raijin-migrator" }
+raijin-miniprofiler-ui = { path = "crates/raijin-miniprofiler-ui" }
+raijin-inspector-ui = { path = "crates/raijin-inspector-ui" }
+raijin-component-preview = { path = "crates/raijin-component-preview" }
+raijin-storybook = { path = "crates/raijin-storybook" }
+raijin-explorer-command-injector = { path = "crates/raijin-explorer-command-injector" }
+raijin-etw-tracing = { path = "crates/raijin-etw-tracing" }
+raijin-open-path-prompt = { path = "crates/raijin-open-path-prompt" }
+raijin-docs-preprocessor = { path = "crates/raijin-docs-preprocessor" }
+raijin-schema-generator = { path = "crates/raijin-schema-generator" }
+raijin-eval = { path = "crates/raijin-eval" }
+raijin-eval-cli = { path = "crates/raijin-eval-cli" }
+raijin-eval-utils = { path = "crates/raijin-eval-utils" }
+raijin-fs-benchmarks = { path = "crates/raijin-fs-benchmarks" }
+raijin-project-benchmarks = { path = "crates/raijin-project-benchmarks" }
+raijin-worktree-benchmarks = { path = "crates/raijin-worktree-benchmarks" }
+raijin-log-settings = { path = "crates/raijin-log-settings" }
+raijin-git-graph = { path = "crates/raijin-git-graph" }
+raijin-git-ui = { path = "crates/raijin-git-ui" }
+
+# Batch 11 — Platform Split (SKIPPED: needs objc2 extraction from inazuma, not Zed's cocoa API)
+
+# External Dependencies
+agent-client-protocol = { version = "=0.10.2", features = ["unstable"] }
+aho-corasick = "1.1"
+any_vec = "0.14"
+ashpd = { version = "0.11", default-features = false, features = ["async-std"] }
 anyhow = "1"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-log = "0.4"
-smol = "2"
-parking_lot = "0.12"
+async-compression = { version = "0.4", features = ["bzip2", "gzip", "futures-io"] }
+async-fs = "2"
+async-lock = "2.1"
+async-pipe = { git = "https://github.com/raijin-hq/async-pipe-rs", rev = "82d00a04211cf4e1236029aa03e6b6ce2a74c553" }
+async-recursion = "1"
+async-tar = "0.5.1"
+async-trait = "0.1"
+async-tungstenite = "0.31.0"
+async_zip = { version = "0.0.17", features = ["full"] }
+backtrace = "0.3"
+base64 = "0.22"
+bytes = "1.0"
+cargo_metadata = "0.19"
+cargo_toml = "0.21"
+chardetng = "0.1"
+ciborium = "0.2"
+circular-buffer = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive"] }
+convert_case = "0.4"
+criterion = { version = "0.5", features = ["async_tokio"] }
+ctor = "0.4"
+dap-types = { git = "https://github.com/raijin-hq/dap-types", rev = "1b461b310481d01e02b2603c16d7144b926339f8" }
+derive_more = "0.99"
+dirs = "6"
+documented = "0.9.1"
+dunce = "1"
+ec4rs = "1.1"
+emojis = "0.6"
+encoding_rs = "0.8"
+env_logger = "0.11"
+fancy-regex = "0.14"
 flume = "0.11"
+futures = "0.3"
+futures-lite = "2"
+gh-workflow = { git = "https://github.com/raijin-hq/gh-workflow", rev = "37f3c0575d379c218a9c455ee67585184e40d43f" }
+git2 = "0.20"
+globset = "0.4"
+heapless = "0.9.2"
+heck = "0.5"
+hex = "0.4"
+html5ever = "0.27"
+http = "1.1"
+http-body = "1.0"
+ignore = "0.4"
+image = "0.25"
+imara-diff = "0.1.8"
+indoc = "2"
 indexmap = { version = "2", features = ["serde"] }
+inventory = "0.3"
+itertools = "0.14"
+libc = "0.2"
+libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
+linkify = "0.10"
+log = { version = "0.4", features = ["std"] }
+lsp-types = { git = "https://github.com/raijin-hq/lsp-types", rev = "a4f410987660bf560d1e617cb78117c6b6b9f599" }
+mach2 = "0.4"
+markup5ever_rcdom = "0.3"
+mermaid-rs-renderer = { git = "https://github.com/raijin-hq/mermaid-rs-renderer", rev = "374db9ead5426697c6c2111151d9f246899bc638", default-features = false }
+nix = { version = "0.29", features = ["user"] }
 notify = "7"
+ordered-float = "4"
+parking_lot = "0.12"
+percent-encoding = "2"
+pet = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-conda = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-core = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-fs = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-poetry = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-reporter = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+pet-virtualenv = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
+proc-macro2 = "1.0.93"
+postage = "0.5"
+pretty_assertions = "1"
+proptest = "1"
+proptest-derive = "0.8.0"
+prost = "0.9"
+prost-build = "0.9"
+pulldown-cmark = { version = "0.13.0", default-features = false }
+quote = "1"
+rand = "0.9"
+rayon = "1"
+regex = "1"
+rsa = "0.9.6"
+rust-embed = "8"
+rustc-hash = "2"
+rustls = "0.23.26"
+rustls-platform-verifier = "0.5.0"
+schemars = "1"
+semver = "1"
+serde = { version = "1.0.221", features = ["derive", "rc"] }
+serde_json = "1"
+serde_json_lenient = "0.2"
+serde_path_to_error = "0.1.17"
+serde_urlencoded = "0.7"
+sha2 = "0.10"
+shellexpand = "3"
+slotmap = "1.0.6"
+shlex = "1"
+smallvec = { version = "1.6", features = ["union", "const_new"] }
+smol = "2"
+sqlformat = "0.2"
+sys-locale = "0.3.1"
+stacksafe = "0.1"
+streaming-iterator = "0.1"
+strsim = "0.11"
+strum = { version = "0.26", features = ["derive"] }
+syn = { version = "2", features = ["full", "extra-traits"] }
+take-until = "0.2"
+tempfile = "3"
+thiserror = "2.0.12"
+time = { version = "0.3", features = ["macros", "parsing", "serde", "serde-well-known", "formatting", "local-offset"] }
+tiny_http = "0.12"
+tokio = { version = "1", features = ["full"] }
+tokio-socks = { version = "0.5.2", default-features = false, features = ["futures-io", "tokio"] }
+toml = "0.8"
+toml_edit = { version = "0.22", default-features = false, features = ["parse", "serde"] }
+tracing = "0.1"
+tree-sitter = { version = "0.26", features = ["wasm"] }
+tree-sitter-bash = "0.25.1"
+tree-sitter-c = "0.24.1"
+tree-sitter-cpp = { git = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "5cb9b693cfd7bfacab1d9ff4acac1a4150700609" }
+tree-sitter-css = "0.23"
+tree-sitter-diff = "0.1.0"
+tree-sitter-elixir = "0.3"
+tree-sitter-embedded-template = "0.23"
+tree-sitter-gitcommit = { git = "https://github.com/raijin-hq/tree-sitter-git-commit", rev = "88309716a69dd13ab83443721ba6e0b491d37ee9" }
+tree-sitter-go = "0.25"
+tree-sitter-go-mod = { git = "https://github.com/camdencheek/tree-sitter-go-mod", rev = "2e886870578eeba1927a2dc4bd2e2b3f598c5f9a", package = "tree-sitter-gomod" }
+tree-sitter-gowork = { git = "https://github.com/raijin-hq/tree-sitter-go-work", rev = "acb0617bf7f4fda02c6217676cc64acb89536dc7" }
+tree-sitter-heex = { git = "https://github.com/raijin-hq/tree-sitter-heex", rev = "1dd45142fbb05562e35b2040c6129c9bca346592" }
+tree-sitter-html = "0.23"
+tree-sitter-jsdoc = "0.23"
+tree-sitter-json = "0.24"
+tree-sitter-md = { git = "https://github.com/tree-sitter-grammars/tree-sitter-markdown", rev = "9a23c1a96c0513d8fc6520972beedd419a973539" }
+tree-sitter-python = "0.25"
+tree-sitter-regex = "0.24"
+tree-sitter-ruby = "0.23"
+tree-sitter-rust = "0.24.1"
+tree-sitter-typescript = { git = "https://github.com/raijin-hq/tree-sitter-typescript", rev = "e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899" }
+tree-sitter-yaml = { git = "https://github.com/raijin-hq/tree-sitter-yaml", rev = "baff0b51c64ef6a1fb1f8390f3ad6015b83ec13a" }
+unicase = "2"
+unicode-script = "0.5"
+unicode-segmentation = "1"
+unicode-width = "0.1"
+unindent = "0.2.0"
+url = "2"
+urlencoding = "2.1.2"
+uuid = { version = "1", features = ["v4", "serde"] }
+walkdir = "2"
+wasm-encoder = "0.221"
+wasmparser = "0.221"
+wax = "0.7"
+which = "7"
+windows = "0.61"
+yawc = "0.2.5"
+zeroize = "1"
+zstd = "0.13"
+
+# --- objc2 ecosystem (shared across inazuma + media + livekit) ---
+objc2 = "0.6"
+objc2-foundation = "0.3"
+objc2-app-kit = "0.3"
+objc2-metal = "0.3"
+objc2-quartz-core = { version = "0.3", features = ["objc2-core-graphics"] }
+objc2-core-video = { version = "0.3", features = ["CVBase", "CVReturn", "CVDisplayLink", "CVMetalTexture", "CVMetalTextureCache", "CVPixelBuffer", "CVImageBuffer", "objc2-core-graphics", "objc2-metal"] }
+objc2-core-foundation = { version = "0.3", features = ["CFArray", "CFAttributedString", "CFCGTypes", "CFData", "CFDictionary", "CFLocale", "CFNumber", "CFRunLoop", "CFString", "CFUUID", "CFURL"] }
+objc2-core-graphics = { version = "0.3", features = ["CGColorSpace", "CGContext", "CGDataProvider", "CGDirectDisplay", "CGFont", "CGImage", "CGRemoteOperation"] }
+objc2-core-text = { version = "0.3", features = ["CTFont", "CTFontCollection", "CTFontDescriptor", "CTFontTraits", "CTLine", "CTRun", "CTStringAttributes", "objc2-core-graphics"] }
+objc2-core-media = "0.3"
+objc2-screen-capture-kit = "0.3"
+
+# --- Phase 21: Dependencies für portierte Zed-Crates ---
+async-compat = "0.2.1"
+async-dispatcher = "0.1"
+async-task = "4.7"
+aws-config = { version = "1.8.10", features = ["behavior-version-latest"] }
+aws-credential-types = { version = "1.2.8", features = ["hardcoded-credentials"] }
+aws-sdk-bedrockruntime = { version = "1.112.0", features = ["behavior-version-latest"] }
+aws-smithy-runtime-api = { version = "1.9.2", features = ["http-1x", "client"] }
+aws-smithy-types = { version = "1.3.4", features = ["http-body-1-x"] }
+bitflags = "2.6.0"
+brush-parser = "0.3"
+cfg-if = "1.0.3"
+core-foundation = "=0.10.0"
+core-foundation-sys = "0.8.6"
+core-video = { version = "0.5.2", features = ["metal"] }
+cpal = "0.17"
+crash-handler = "0.6"
+crossbeam = "0.8.4"
+dashmap = "6.0"
+dotenvy = "0.15.0"
+exec = "0.3.1"
+fork = "0.4.0"
+handlebars = "4.3"
+heed = { version = "0.21.0", features = ["read-txn-no-tls"] }
+human_bytes = "0.4.1"
+json_dotpath = "1.1"
+jsonschema = "0.37.0"
+jsonwebtoken = "10.0"
+jupyter-protocol = "1.4.0"
+jupyter-websocket-client = "1.0.0"
+libwebrtc = "0.3.26"
+livekit = { version = "0.7.32", features = ["tokio", "rustls-tls-native-roots"] }
+metal = "0.33"
+minidumper = "0.9"
+moka = { version = "0.12.10", features = ["sync"] }
+nanoid = "0.4"
+nbformat = "1.2.0"
+num-format = "0.4.4"
+open = "5.0.0"
+parse_int = "0.9"
+partial-json-fixer = "0.5.3"
+pathdiff = "0.2"
+pciid-parser = "0.8.0"
+portable-pty = "0.9.0"
+prost-types = "0.9"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+rodio = { version = "0.20", features = ["wav"] }
+runtimelib = { version = "1.4.0", default-features = false }
+scap = "0.0.8"
+simplelog = "0.12.2"
+sysinfo = "0.37.0"
+tiktoken-rs = "0.6"
+tower-http = "0.4.4"
+wasmtime = { version = "33", default-features = false, features = ["cranelift", "gc"] }
+wasmtime-wasi = "33"
+web-time = "1.1.0"
+webrtc-sys = "0.3.23"
+windows-core = "0.61"
 
 [profile.dev]
 split-debuginfo = "unpacked"

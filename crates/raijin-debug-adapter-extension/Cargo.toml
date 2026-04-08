@@ -1,0 +1,23 @@
+[package]
+name = "raijin-debug-adapter-extension"
+version = "0.1.0"
+license = "GPL-3.0-or-later"
+publish.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+inazuma-collections.workspace = true
+raijin-dap.workspace = true
+raijin-extension.workspace = true
+inazuma.workspace = true
+serde_json.workspace = true
+inazuma-util.workspace = true
+raijin-task.workspace = true
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/debug_adapter_extension.rs"

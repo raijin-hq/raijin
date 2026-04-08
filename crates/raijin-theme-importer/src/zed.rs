@@ -1,12 +1,13 @@
 use std::collections::HashMap;
+use std::sync::Arc;
 
 use anyhow::{Context, Result, bail};
 use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, SharedString};
 use serde::Deserialize;
 
 use raijin_theme::{
-    Appearance, PlayerColor, StatusColors, StatusStyle, SyntaxTheme, Theme, ThemeColors,
-    ThemeFamily, ThemeStyles,
+    AccentColors, Appearance, PlayerColor, PlayerColors, StatusColors, StatusStyle, SyntaxTheme,
+    SystemColors, Theme, ThemeColors, ThemeFamily, ThemeStyles,
 };
 
 // === Zed Theme JSON Schema ===
@@ -129,10 +130,12 @@ fn convert_zed_theme(theme: &ZedTheme, _family_name: &str) -> Result<Theme> {
         name: SharedString::from(theme.name.clone()),
         appearance,
         styles: ThemeStyles {
+            system: SystemColors::default(),
+            accents: AccentColors(Arc::from(Vec::<Oklch>::new())),
             colors,
             status,
-            syntax,
-            players,
+            syntax: Arc::new(syntax),
+            players: PlayerColors(players),
             background_image: None,
         },
         base_dir: None,
@@ -308,6 +311,36 @@ fn convert_theme_colors(colors: &HashMap<String, serde_json::Value>, appearance:
         version_control_word_deleted: color_or(colors, "version_control.word_deleted", parse_color("#ff555540").unwrap_or_default()),
         version_control_conflict_marker_ours: color_or(colors, "version_control.conflict_marker_ours", parse_color("#14F19533").unwrap_or_default()),
         version_control_conflict_marker_theirs: color_or(colors, "version_control.conflict_marker_theirs", parse_color("#8be9fd33").unwrap_or_default()),
+
+        // Minimap
+        minimap_thumb_background: color_or(colors, "minimap.thumb.background", default_muted),
+        minimap_thumb_hover_background: color_or(colors, "minimap.thumb.hover_background", default_muted),
+        minimap_thumb_active_background: color_or(colors, "minimap.thumb.active_background", default_muted),
+        minimap_thumb_border: color_or(colors, "minimap.thumb.border", transparent),
+
+        // Vim modes
+        vim_normal_background: color_or(colors, "vim.normal.background", parse_color("#6272a4ff").unwrap_or_default()),
+        vim_insert_background: color_or(colors, "vim.insert.background", parse_color("#14F195ff").unwrap_or_default()),
+        vim_replace_background: color_or(colors, "vim.replace.background", parse_color("#ff5555ff").unwrap_or_default()),
+        vim_visual_background: color_or(colors, "vim.visual.background", parse_color("#ff79c6ff").unwrap_or_default()),
+        vim_visual_line_background: color_or(colors, "vim.visual_line.background", parse_color("#ff79c6ff").unwrap_or_default()),
+        vim_visual_block_background: color_or(colors, "vim.visual_block.background", parse_color("#ff79c6ff").unwrap_or_default()),
+        vim_yank_background: color_or(colors, "vim.yank.background", parse_color("#f1fa8cff").unwrap_or_default()),
+        vim_helix_normal_background: color_or(colors, "vim.helix_normal.background", parse_color("#6272a4ff").unwrap_or_default()),
+        vim_helix_select_background: color_or(colors, "vim.helix_select.background", parse_color("#8be9fdff").unwrap_or_default()),
+        vim_normal_foreground: color_or(colors, "vim.normal.foreground", fg),
+        vim_insert_foreground: color_or(colors, "vim.insert.foreground", default_bg),
+        vim_replace_foreground: color_or(colors, "vim.replace.foreground", fg),
+        vim_visual_foreground: color_or(colors, "vim.visual.foreground", default_bg),
+        vim_visual_line_foreground: color_or(colors, "vim.visual_line.foreground", default_bg),
+        vim_visual_block_foreground: color_or(colors, "vim.visual_block.foreground", default_bg),
+        vim_helix_normal_foreground: color_or(colors, "vim.helix_normal.foreground", fg),
+        vim_helix_select_foreground: color_or(colors, "vim.helix_select.foreground", default_bg),
+
+        // Debugger
+        debugger_accent: color_or(colors, "debugger.accent", parse_color("#ff9e64ff").unwrap_or_default()),
+        editor_debugger_active_line_background: color_or(colors, "editor.debugger_active_line.background", parse_color("#ff9e6426").unwrap_or_default()),
+        editor_hover_line_number: color_or(colors, "editor.hover_line_number", fg),
 
         // Raijin-specific (derived from other colors since Zed themes won't have these)
         block_success_badge: color_or(colors, "block_success.badge",

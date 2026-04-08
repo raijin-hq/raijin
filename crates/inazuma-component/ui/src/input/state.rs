@@ -14,7 +14,7 @@ use ropey::{Rope, RopeSlice};
 use serde::Deserialize;
 use std::ops::Range;
 use std::rc::Rc;
-use sum_tree::Bias;
+use inazuma_sum_tree::Bias;
 
 use super::{
     DisplayMap, blink_cursor::BlinkCursor, change::Change, element::TextElement,

@@ -376,7 +376,7 @@ pub(crate) struct LeakDetector {
 /// handles remain between the snapshot and the current state.
 #[cfg(any(test, feature = "leak-detection"))]
 pub struct LeakDetectorSnapshot {
-    entity_ids: collections::HashSet<EntityId>,
+    entity_ids: inazuma_collections::HashSet<EntityId>,
 }
 
 #[cfg(any(test, feature = "leak-detection"))]
@@ -398,7 +398,7 @@ impl LeakDetector {
         entity_id: EntityId,
         type_name: Option<&'static str>,
     ) -> HandleId {
-        let id = util::post_inc(&mut self.next_handle_id);
+        let id = inazuma_util::post_inc(&mut self.next_handle_id);
         let handle_id = HandleId { id };
         let handles = self
             .entity_handles

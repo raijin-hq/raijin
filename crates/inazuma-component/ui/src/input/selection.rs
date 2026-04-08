@@ -2,7 +2,7 @@ use std::{char, ops::Range};
 
 use inazuma::{Context, Window};
 use ropey::Rope;
-use sum_tree::Bias;
+use inazuma_sum_tree::Bias;
 
 use crate::{RopeExt as _, input::InputState};
 

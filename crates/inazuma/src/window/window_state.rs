@@ -6,7 +6,7 @@ use crate::{
     point, px,
 };
 use crate::scheduler::Instant;
-use collections::FxHashSet;
+use inazuma_collections::FxHashSet;
 use smallvec::SmallVec;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;

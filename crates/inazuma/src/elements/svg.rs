@@ -5,7 +5,7 @@ use crate::{
     Interactivity, IntoElement, LayoutId, Pixels, Point, Radians, SharedString, Size,
     StyleRefinement, Styled, TransformationMatrix, Window, point, px, radians, size,
 };
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 /// An SVG element.
 pub struct Svg {

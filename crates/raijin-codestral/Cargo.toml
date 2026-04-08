@@ -1,0 +1,27 @@
+[package]
+name = "raijin-codestral"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "GPL-3.0-or-later"
+
+[lib]
+path = "src/codestral.rs"
+
+[dependencies]
+anyhow.workspace = true
+raijin-edit-prediction-types.workspace = true
+raijin-edit-prediction.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-http-client.workspace = true
+inazuma-icons.workspace = true
+raijin-language.workspace = true
+raijin-language-model.workspace = true
+log.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-text.workspace = true
+raijin-zeta-prompt.workspace = true
+
+[dev-dependencies]

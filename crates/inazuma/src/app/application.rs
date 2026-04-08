@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::Result;
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use itertools::Itertools;
 
 use super::{AppCell, NullHttpClient, QuitMode};
@@ -47,7 +47,7 @@ impl Application {
     }
 
     /// Sets the HTTP client for the application.
-    pub fn with_http_client(self, http_client: Arc<dyn http_client::HttpClient>) -> Self {
+    pub fn with_http_client(self, http_client: Arc<dyn raijin_http_client::HttpClient>) -> Self {
         let mut context_lock = self.0.borrow_mut();
         context_lock.http_client = http_client;
         drop(context_lock);

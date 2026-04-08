@@ -1,0 +1,74 @@
+[package]
+name = "raijin-livekit-client"
+version = "0.1.0"
+edition.workspace = true
+description = "Logic for using LiveKit with Inazuma"
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/lib.rs"
+doctest = false
+
+[[example]]
+name = "test_app"
+
+[features]
+test-support = ["inazuma-collections/test-support", "inazuma/test-support"]
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+raijin-audio.workspace = true
+inazuma-collections.workspace = true
+cpal.workspace = true
+futures.workspace = true
+inazuma = { workspace = true, features = ["screen-capture", "x11", "wayland"] }
+inazuma-tokio.workspace = true
+raijin-http-client-tls.workspace = true
+image.workspace = true
+raijin-livekit-api.workspace = true
+log.workspace = true
+nanoid.workspace = true
+parking_lot.workspace = true
+postage.workspace = true
+rodio.workspace = true
+serde.workspace = true
+serde_urlencoded.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+
+[target.'cfg(not(any(all(target_os = "windows", target_env = "gnu"), target_os = "freebsd")))'.dependencies]
+libwebrtc.workspace = true
+livekit.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
+tokio = { workspace = true, features = ["time"] }
+webrtc-sys.workspace = true
+
+[target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "windows"))'.dependencies]
+scap.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2.workspace = true
+objc2-foundation = { workspace = true, features = ["NSProcessInfo", "NSString"] }
+core-video.workspace = true
+coreaudio-rs = "0.12.1"
+
+[dev-dependencies]
+inazuma-collections = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+inazuma-platform.workspace = true
+simplelog.workspace = true
+
+[build-dependencies]
+serde.workspace = true
+serde_json.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["serde_json"]

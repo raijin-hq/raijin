@@ -1,0 +1,46 @@
+[package]
+name = "raijin-extensions-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/extensions_ui.rs"
+
+[dependencies]
+anyhow.workspace = true
+raijin-client.workspace = true
+raijin-cloud-api-types.workspace = true
+inazuma-collections.workspace = true
+raijin-db.workspace = true
+raijin-editor.workspace = true
+raijin-extension.workspace = true
+raijin-extension-host.workspace = true
+raijin-fs.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+num-format.workspace = true
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+raijin-release-channel.workspace = true
+semver.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+strum.workspace = true
+raijin-telemetry.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-vim-mode-setting.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }

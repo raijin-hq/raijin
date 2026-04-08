@@ -1,0 +1,34 @@
+[package]
+name = "raijin-json-schema-store"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/json_schema_store.rs"
+
+[features]
+default = []
+
+[dependencies]
+anyhow.workspace = true
+inazuma-collections.workspace = true
+raijin-dap.workspace = true
+parking_lot.workspace = true
+raijin-extension.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+schemars.workspace = true
+serde_json.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-snippet-provider.workspace = true
+raijin-task.workspace = true
+raijin-theme.workspace = true
+inazuma-util.workspace = true

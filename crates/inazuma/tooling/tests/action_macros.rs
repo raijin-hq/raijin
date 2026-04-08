@@ -1,4 +1,4 @@
-use gpui::{Action, actions};
+use inazuma::{Action, actions};
 use gpui_macros::register_action;
 use schemars::JsonSchema;
 use serde::Deserialize;

@@ -1,0 +1,77 @@
+[package]
+name = "raijin-vim"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/vim.rs"
+doctest = false
+
+[features]
+neovim = ["nvim-rs", "async-compat", "async-trait", "tokio"]
+
+[dependencies]
+anyhow.workspace = true
+async-compat = { workspace = true, "optional" = true }
+async-trait = { workspace = true, "optional" = true }
+inazuma-collections.workspace = true
+raijin-command-palette.workspace = true
+raijin-command-palette-hooks.workspace = true
+raijin-db.workspace = true
+raijin-editor.workspace = true
+env_logger.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+itertools.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-multi-buffer.workspace = true
+nvim-rs = { git = "https://github.com/KillTheMule/nvim-rs", rev = "764dd270c642f77f10f3e19d05cc178a6cbe69f3", features = ["use_tokio"], optional = true }
+inazuma-picker.workspace = true
+raijin-project.workspace = true
+regex.workspace = true
+schemars.workspace = true
+raijin-search.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-task.workspace = true
+inazuma-text.workspace = true
+raijin-theme.workspace = true
+raijin-theme-settings.workspace = true
+inazuma-menu.workspace = true
+tokio = { version = "1.15", features = ["full"], optional = true }
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+inazuma-util-macros.workspace = true
+raijin-vim-mode-setting.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+
+[dev-dependencies]
+raijin-command-palette = { workspace = true, features = ["test-support"] }
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-git-ui = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
+raijin-markdown-preview.workspace = true
+parking_lot.workspace = true
+raijin-project-panel.workspace = true
+raijin-outline-panel.workspace = true
+raijin-release-channel.workspace = true
+semver.workspace = true
+raijin-settings-ui.workspace = true
+inazuma-settings-framework.workspace = true
+inazuma-perf.workspace = true
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }
+raijin-search = { workspace = true, features = ["test-support"] }

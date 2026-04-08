@@ -1,10 +1,10 @@
 [package]
-name = "perf"
+name = "inazuma-perf-tool"
 version = "0.1.0"
 publish = false
 edition.workspace = true
 license = "Apache-2.0"
-description = "A tool for measuring GPUI test performance"
+description = "A tool for measuring Inazuma test performance"
 
 [lib]
 
@@ -27,6 +27,6 @@ missing_safety_doc = "forbid"
 disallowed_methods = { level = "allow", priority = 1}
 
 [dependencies]
-collections.workspace = true
+inazuma-collections.workspace = true
 serde.workspace = true
 serde_json.workspace = true

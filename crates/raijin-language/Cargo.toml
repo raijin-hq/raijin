@@ -1,0 +1,112 @@
+[package]
+name = "raijin-language"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/language.rs"
+doctest = false
+
+[features]
+test-support = [
+    "rand",
+    "inazuma-collections/test-support",
+    "raijin-lsp/test-support",
+    "inazuma-text/test-support",
+    "tree-sitter-rust",
+    "tree-sitter-python",
+    "tree-sitter-typescript",
+    "tree-sitter-md",
+    "inazuma-settings-framework/test-support",
+    "inazuma-util/test-support",
+]
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+inazuma-clock.workspace = true
+inazuma-collections.workspace = true
+ec4rs.workspace = true
+encoding_rs.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+globset.workspace = true
+inazuma.workspace = true
+raijin-http-client.workspace = true
+imara-diff.workspace = true
+raijin-language-core.workspace = true
+itertools.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+parking_lot.workspace = true
+postage.workspace = true
+rand = { workspace = true, optional = true }
+regex.workspace = true
+raijin-rpc.workspace = true
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+shellexpand.workspace = true
+smallvec.workspace = true
+smol.workspace = true
+streaming-iterator.workspace = true
+strsim.workspace = true
+inazuma-sum_tree.workspace = true
+raijin-task.workspace = true
+inazuma-text.workspace = true
+raijin-theme.workspace = true
+toml.workspace = true
+tracing.workspace = true
+tree-sitter-md = { workspace = true, optional = true }
+tree-sitter-python = { workspace = true, optional = true }
+tree-sitter-rust = { workspace = true, optional = true }
+tree-sitter-typescript = { workspace = true, optional = true }
+tree-sitter.workspace = true
+unicase = "2.6"
+inazuma-util.workspace = true
+raijin-watch.workspace = true
+raijin-log.workspace = true
+raijin-tracing.workspace = true
+diffy = "0.4.2"
+
+[dev-dependencies]
+inazuma-collections = { workspace = true, features = ["test-support"] }
+ctor.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-lsp = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+rand.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+inazuma-text = { workspace = true, features = ["test-support"] }
+raijin-http-client = { workspace = true, features = ["test-support"] }
+tree-sitter-elixir.workspace = true
+tree-sitter-embedded-template.workspace = true
+tree-sitter-heex.workspace = true
+tree-sitter-html.workspace = true
+tree-sitter-json.workspace = true
+tree-sitter-md.workspace = true
+tree-sitter-python.workspace = true
+tree-sitter-ruby.workspace = true
+tree-sitter-rust.workspace = true
+tree-sitter-typescript.workspace = true
+toml.workspace = true
+unindent.workspace = true
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true
+criterion.workspace = true
+raijin-theme-settings.workspace = true
+
+[[bench]]
+name = "highlight_map"
+harness = false
+
+[package.metadata.cargo-machete]
+ignored = ["tracing"]

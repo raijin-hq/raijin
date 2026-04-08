@@ -1,0 +1,25 @@
+[package]
+name = "raijin-snippets-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/snippets_ui.rs"
+
+[dependencies]
+raijin-file-icons.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+raijin-open-path-prompt.workspace = true
+raijin-paths.workspace = true
+inazuma-picker.workspace = true
+inazuma-settings-framework.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true

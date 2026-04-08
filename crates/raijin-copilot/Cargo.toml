@@ -1,0 +1,71 @@
+[package]
+name = "raijin-copilot"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/copilot.rs"
+doctest = false
+
+[features]
+default = []
+test-support = [
+    "inazuma-collections/test-support",
+    "inazuma/test-support",
+    "raijin-language/test-support",
+    "raijin-lsp/test-support",
+    "inazuma-settings-framework/test-support",
+    "inazuma-util/test-support",
+]
+
+[dependencies]
+anyhow.workspace = true
+inazuma-collections.workspace = true
+raijin-command-palette-hooks.workspace = true
+raijin-copilot-chat.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-edit-prediction-types.workspace = true
+inazuma-icons.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+raijin-lsp.workspace = true
+raijin-node-runtime.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+inazuma-sum_tree.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+async-std = { version = "1.12.0", features = ["unstable"] }
+
+[dev-dependencies]
+inazuma-collections = { workspace = true, features = ["test-support"] }
+raijin-editor = { workspace = true, features = ["test-support"] }
+raijin-fs = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
+raijin-node-runtime = { workspace = true, features = ["test-support"] }
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-rpc = { workspace = true, features = ["test-support"] }
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+raijin-theme = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true
+raijin-theme-settings.workspace = true

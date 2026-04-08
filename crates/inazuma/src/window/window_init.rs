@@ -4,7 +4,7 @@ use crate::{
     WindowOptions, WindowParams, px,
 };
 use anyhow::{Result};
-use collections::FxHashSet;
+use inazuma_collections::FxHashSet;
 use smallvec::SmallVec;
 use std::cell::{Cell, RefCell};
 use std::fmt::Debug;

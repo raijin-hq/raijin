@@ -262,7 +262,7 @@ impl<'a, T: 'static> Context<'a, T> {
     ) -> Deferred<impl FnOnce()> {
         let this = self.weak_entity();
         let mut cx = self.to_async();
-        util::defer(move || {
+        inazuma_util::defer(move || {
             this.update(&mut cx, f).ok();
         })
     }

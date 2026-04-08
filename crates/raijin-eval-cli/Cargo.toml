@@ -1,0 +1,51 @@
+[package]
+name = "raijin-eval-cli"
+version = "0.1.0"
+publish.workspace = true
+edition.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "eval-cli"
+path = "src/main.rs"
+
+[dependencies]
+raijin-acp-thread.workspace = true
+raijin-agent.workspace = true
+agent-client-protocol.workspace = true
+raijin-agent-ui.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+raijin-client.workspace = true
+ctrlc = { version = "3.5", features = ["termination"] }
+raijin-db.workspace = true
+raijin-debug-adapter-extension.workspace = true
+env_logger.workspace = true
+raijin-extension.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+inazuma-platform.workspace = true
+inazuma-tokio.workspace = true
+raijin-language.workspace = true
+raijin-language-extension.workspace = true
+raijin-language-model.workspace = true
+raijin-language-models.workspace = true
+raijin-languages = { workspace = true, features = ["load-grammars"] }
+raijin-node-runtime.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+raijin-release-channel.workspace = true
+raijin-reqwest-client.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+shellexpand.workspace = true
+# raijin-terminal-view: REMOVED — wird in Phase 20 gebaut
+inazuma-util.workspace = true
+raijin-watch.workspace = true

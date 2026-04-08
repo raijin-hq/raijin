@@ -1,0 +1,38 @@
+[package]
+name = "raijin-prompt-store"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/prompt_store.rs"
+
+[dependencies]
+anyhow.workspace = true
+raijin-assets.workspace = true
+chrono.workspace = true
+inazuma-collections.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma.workspace = true
+handlebars.workspace = true
+heed.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+inazuma-rope.workspace = true
+serde.workspace = true
+strum.workspace = true
+inazuma-text.workspace = true
+inazuma-util.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }
+tempfile.workspace = true

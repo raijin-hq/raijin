@@ -1,0 +1,76 @@
+[package]
+name = "raijin-worktree"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lib]
+path = "src/worktree.rs"
+doctest = false
+test = false
+
+[[test]]
+name = "integration"
+required-features = ["test-support"]
+path = "tests/integration/main.rs"
+
+[lints]
+workspace = true
+
+[features]
+test-support = [
+    "inazuma/test-support",
+
+    "raijin-language/test-support",
+    "pretty_assertions",
+    "inazuma-settings-framework/test-support",
+    "inazuma-text/test-support",
+    "inazuma-util/test-support",
+]
+
+[dependencies]
+anyhow.workspace = true
+async-lock.workspace = true
+chardetng.workspace = true
+inazuma-clock.workspace = true
+inazuma-collections.workspace = true
+encoding_rs.workspace = true
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma-fuzzy.workspace = true
+raijin-git.workspace = true
+inazuma.workspace = true
+ignore.workspace = true
+raijin-language.workspace = true
+log.workspace = true
+parking_lot.workspace = true
+raijin-paths.workspace = true
+postage.workspace = true
+pretty_assertions = { workspace = true, optional = true }
+raijin-rpc = { workspace = true, features = ["inazuma"] }
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+smol.workspace = true
+inazuma-sum_tree.workspace = true
+inazuma-text.workspace = true
+tracing.workspace = true
+inazuma-util.workspace = true
+raijin-tracing.workspace = true
+
+[dev-dependencies]
+inazuma-clock = { workspace = true, features = ["test-support"] }
+inazuma-collections = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+raijin-paths = { workspace = true, features = ["test-support"] }
+rand.workspace = true
+raijin-rpc = { workspace = true, features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }
+raijin-worktree = { workspace = true, features = ["test-support"] }
+raijin-log.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["tracing"]

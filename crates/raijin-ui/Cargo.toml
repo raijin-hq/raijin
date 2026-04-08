@@ -1,0 +1,42 @@
+[package]
+name = "raijin-ui"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+name = "raijin_ui"
+path = "src/ui.rs"
+
+[dependencies]
+chrono.workspace = true
+inazuma-component-registry.workspace = true
+documented.workspace = true
+inazuma.workspace = true
+inazuma-macros.workspace = true
+inazuma-icons.workspace = true
+itertools.workspace = true
+inazuma-menu.workspace = true
+schemars.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+smallvec.workspace = true
+inazuma-story = { workspace = true, optional = true }
+strum.workspace = true
+raijin-theme.workspace = true
+raijin-ui-macros.workspace = true
+inazuma-gpui-util.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows.workspace = true
+
+[dev-dependencies]
+inazuma = { workspace = true, features = ["test-support"] }
+
+[features]
+default = []
+stories = ["dep:inazuma-story"]

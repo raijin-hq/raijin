@@ -23,7 +23,7 @@ use std::{
     time::Duration,
 };
 use thiserror::Error;
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 use super::{Stateful, StatefulInteractiveElement};
 
@@ -758,7 +758,7 @@ pub enum ImageCacheError {
         /// The URI of the image.
         uri: SharedUri,
         /// The HTTP status code.
-        status: http_client::StatusCode,
+        status: raijin_http_client::StatusCode,
         /// The HTTP response body.
         body: String,
     },

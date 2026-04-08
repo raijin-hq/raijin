@@ -1,0 +1,85 @@
+[package]
+name = "raijin-edit-prediction"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/edit_prediction.rs"
+
+[features]
+cli-support = []
+
+[dependencies]
+raijin-ai-onboarding = { workspace = true, package = "raijin-ai-onboarding" }
+anyhow.workspace = true
+heapless.workspace = true
+raijin-buffer-diff = { workspace = true, package = "raijin-buffer-diff" }
+raijin-client = { workspace = true, package = "raijin-client" }
+inazuma-clock = { workspace = true, package = "inazuma-clock" }
+raijin-cloud-api-types = { workspace = true, package = "raijin-cloud-api-types" }
+raijin-cloud-llm-client = { workspace = true, package = "raijin-cloud-llm-client" }
+inazuma-collections = { workspace = true, package = "inazuma-collections" }
+raijin-copilot = { workspace = true, package = "raijin-copilot" }
+raijin-copilot-ui = { workspace = true, package = "raijin-copilot-ui" }
+raijin-db = { workspace = true, package = "raijin-db" }
+raijin-edit-prediction-types = { workspace = true, package = "raijin-edit-prediction-types" }
+raijin-edit-prediction-context = { workspace = true, package = "raijin-edit-prediction-context" }
+raijin-feature-flags = { workspace = true, package = "raijin-feature-flags" }
+raijin-fs = { workspace = true, package = "raijin-fs" }
+futures.workspace = true
+inazuma.workspace = true
+indoc.workspace = true
+itertools.workspace = true
+raijin-language = { workspace = true, package = "raijin-language" }
+raijin-language-model = { workspace = true, package = "raijin-language-model" }
+log.workspace = true
+raijin-lsp = { workspace = true, package = "raijin-lsp" }
+inazuma-menu = { workspace = true, package = "inazuma-menu" }
+raijin-open-ai = { workspace = true, package = "raijin-open-ai" }
+postage.workspace = true
+pretty_assertions.workspace = true
+raijin-project = { workspace = true, package = "raijin-project" }
+pulldown-cmark.workspace = true
+rand.workspace = true
+regex.workspace = true
+raijin-release-channel = { workspace = true, package = "raijin-release-channel" }
+semver.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework = { workspace = true, package = "inazuma-settings-framework" }
+strum.workspace = true
+raijin-telemetry = { workspace = true, package = "raijin-telemetry" }
+raijin-telemetry-events = { workspace = true, package = "raijin-telemetry-events" }
+inazuma-text = { workspace = true, package = "inazuma-text" }
+thiserror.workspace = true
+time.workspace = true
+toml.workspace = true
+raijin-ui = { workspace = true, package = "raijin-ui" }
+inazuma-util = { workspace = true, package = "inazuma-util" }
+uuid.workspace = true
+raijin-workspace = { workspace = true, package = "raijin-workspace" }
+raijin-worktree = { workspace = true, package = "raijin-worktree" }
+raijin-actions = { workspace = true, package = "raijin-actions" }
+raijin-zeta-prompt = { workspace = true, package = "raijin-zeta-prompt" }
+zstd.workspace = true
+
+[dev-dependencies]
+inazuma-clock = { workspace = true, package = "inazuma-clock", features = ["test-support"] }
+raijin-cloud-llm-client = { workspace = true, package = "raijin-cloud-llm-client", features = ["test-support"] }
+ctor.workspace = true
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, package = "raijin-language", features = ["test-support"] }
+raijin-language-model = { workspace = true, package = "raijin-language-model", features = ["test-support"] }
+raijin-lsp = { workspace = true, package = "raijin-lsp" }
+parking_lot.workspace = true
+raijin-project = { workspace = true, package = "raijin-project", features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, package = "inazuma-settings-framework", features = ["test-support"] }
+raijin-workspace = { workspace = true, package = "raijin-workspace", features = ["test-support"] }
+
+raijin-log = { workspace = true, package = "raijin-log" }

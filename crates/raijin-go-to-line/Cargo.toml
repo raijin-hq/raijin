@@ -1,0 +1,38 @@
+[package]
+name = "raijin-go-to-line"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/go_to_line.rs"
+doctest = false
+
+[dependencies]
+raijin-editor.workspace = true
+inazuma.workspace = true
+raijin-language.workspace = true
+inazuma-menu.workspace = true
+raijin-multi-buffer.workspace = true
+serde.workspace = true
+inazuma-settings-framework.workspace = true
+inazuma-text.workspace = true
+raijin-theme.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+
+[dev-dependencies]
+raijin-editor = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+indoc.workspace = true
+raijin-language = { workspace = true, features = ["test-support"] }
+inazuma-menu.workspace = true
+raijin-project = { workspace = true, features = ["test-support"] }
+inazuma-rope.workspace = true
+serde_json.workspace = true
+raijin-workspace = { workspace = true, features = ["test-support"] }

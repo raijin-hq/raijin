@@ -1,5 +1,5 @@
 use anyhow::{Context as _, Result};
-use collections::FxHashMap;
+use inazuma_collections::FxHashMap;
 use derive_more::{Deref, DerefMut};
 use etagere::BucketedAtlasAllocator;
 use inazuma::{

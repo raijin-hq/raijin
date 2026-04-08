@@ -7,7 +7,7 @@ use std::{
     time::Duration,
 };
 
-use collections::{FxHashMap, FxHashSet, VecDeque};
+use inazuma_collections::{FxHashMap, FxHashSet, VecDeque};
 use parking_lot::RwLock;
 use slotmap::SlotMap;
 
@@ -80,7 +80,7 @@ pub struct App {
     pub(crate) loading_assets: FxHashMap<(TypeId, u64), Box<dyn std::any::Any>>,
     pub(super) asset_source: Arc<dyn AssetSource>,
     pub(crate) svg_renderer: SvgRenderer,
-    pub(super) http_client: Arc<dyn http_client::HttpClient>,
+    pub(super) http_client: Arc<dyn raijin_http_client::HttpClient>,
 
     // below is plain data, the drop order is insignificant here
     pub(crate) pending_notifications: FxHashSet<crate::EntityId>,
@@ -118,7 +118,7 @@ impl App {
     pub(crate) fn new_app(
         platform: Rc<dyn Platform>,
         asset_source: Arc<dyn AssetSource>,
-        http_client: Arc<dyn http_client::HttpClient>,
+        http_client: Arc<dyn raijin_http_client::HttpClient>,
     ) -> Rc<AppCell> {
         let background_executor = platform.background_executor();
         let foreground_executor = platform.foreground_executor();

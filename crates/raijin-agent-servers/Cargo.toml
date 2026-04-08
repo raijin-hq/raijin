@@ -1,0 +1,70 @@
+[package]
+name = "raijin-agent-servers"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+
+[features]
+test-support = ["raijin-acp-thread/test-support", "inazuma/test-support", "raijin-project/test-support", "dep:env_logger", "raijin-client/test-support", "dep:inazuma-tokio", "raijin-reqwest-client/test-support"]
+e2e = []
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/agent_servers.rs"
+doctest = false
+
+[dependencies]
+raijin-acp-tools.workspace = true
+raijin-acp-thread.workspace = true
+raijin-action-log.workspace = true
+agent-client-protocol.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+raijin-client.workspace = true
+inazuma-collections.workspace = true
+env_logger = { workspace = true, optional = true }
+raijin-fs.workspace = true
+futures.workspace = true
+inazuma.workspace = true
+raijin-feature-flags.workspace = true
+inazuma-tokio = { workspace = true, optional = true }
+raijin-credentials-provider.workspace = true
+raijin-google-ai.workspace = true
+raijin-http-client.workspace = true
+indoc.workspace = true
+raijin-language-model.workspace = true
+log.workspace = true
+raijin-project.workspace = true
+raijin-release-channel.workspace = true
+raijin-reqwest-client = { workspace = true, optional = true }
+serde.workspace = true
+serde_json.workspace = true
+inazuma-settings-framework.workspace = true
+smol.workspace = true
+raijin-task.workspace = true
+tempfile.workspace = true
+thiserror.workspace = true
+raijin-ui.workspace = true
+raijin-terminal.workspace = true
+uuid.workspace = true
+inazuma-util.workspace = true
+raijin-watch.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+libc.workspace = true
+nix.workspace = true
+
+[dev-dependencies]
+raijin-client = { workspace = true, features = ["test-support"] }
+env_logger.workspace = true
+raijin-fs.workspace = true
+
+indoc.workspace = true
+raijin-acp-thread = { workspace = true, features = ["test-support"] }
+inazuma = { workspace = true, features = ["test-support"] }
+inazuma-tokio.workspace = true
+raijin-reqwest-client = { workspace = true, features = ["test-support"] }

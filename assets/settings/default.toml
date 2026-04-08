@@ -1,0 +1,25 @@
+# Raijin Default Settings
+# These are the built-in defaults shipped with the application.
+# User overrides go in ~/.raijin/settings.toml
+
+[theme]
+ui_font_family = "DankMono Nerd Font Mono"
+ui_font_size = 15
+ui_font_weight = 400
+buffer_font_family = "DankMono Nerd Font Mono"
+buffer_font_size = 15
+buffer_font_weight = 400
+buffer_line_height = "comfortable"
+unnecessary_code_fade = 0.3
+theme = "Raijin Dark"
+
+[general]
+working_directory = "home"
+input_mode = "raijin"
+
+[terminal]
+scrollback_history = 10000
+cursor_style = "beam"
+
+[appearance]
+window_colorspace = "srgb"

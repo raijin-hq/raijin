@@ -253,10 +253,10 @@ impl AsyncApp {
         &self,
         entity: &WeakEntity<T>,
         f: Callback,
-    ) -> util::Deferred<impl FnOnce() + use<T, Callback>> {
+    ) -> inazuma_util::Deferred<impl FnOnce() + use<T, Callback>> {
         let entity = entity.clone();
         let mut cx = self.clone();
-        util::defer(move || {
+        inazuma_util::defer(move || {
             entity.update(&mut cx, f).ok();
         })
     }

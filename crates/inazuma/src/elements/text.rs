@@ -19,7 +19,7 @@ use std::{
     rc::Rc,
     sync::Arc,
 };
-use util::ResultExt;
+use inazuma_util::ResultExt;
 
 pub use interactive_text::*;
 pub use text_element::*;
