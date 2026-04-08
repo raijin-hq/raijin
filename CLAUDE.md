@@ -94,8 +94,57 @@ Inazuma/GPUI ist ein **Editor-Framework**. Terminal-Rendering hat fundamental an
 - **No `mod.rs`** — use `module_name.rs` (modern Rust convention)
 - **No stubs or placeholders** — every feature must be production-complete, no `todo!()`, no `unimplemented!()`, no silent error swallowing
 - **Clippy lints**: `dbg_macro` and `todo` are denied; `style`, `type_complexity`, `too_many_arguments`, `large_enum_variant` are allowed
-- **macOS platform code** uses `cocoa 0.26` + `objc 0.2` (migration to `objc2` is planned, see `plan/10-INAZUMA-OBJC2-MIGRATION.md`)
+- **macOS platform code** uses `objc2` + `objc2-app-kit` + `objc2-foundation` — NOT the old `cocoa`/`objc` crates. Never add `cocoa` or `objc` as dependency.
 - Naming: the framework is called **Inazuma**, not GPUI — all imports use `inazuma::`
+
+## Crate Architecture Rules
+
+**Every piece of logic must live in its own dedicated crate, not in `raijin-app`.** `raijin-app` is ONLY the entry point (`main.rs`) and app bootstrap. It imports and wires up crates — it contains no business logic, no rendering code, no UI components.
+
+This mirrors Zed's architecture where the `zed` crate is thin and everything lives in dedicated crates.
+
+### Where code lives:
+
+| Code Type | Crate | NOT in |
+|---|---|---|
+| Terminal backend (PTY, events, state) | `raijin-terminal` | raijin-app |
+| Terminal rendering (grid, blocks, colors) | `raijin-terminal-view` | raijin-app |
+| Terminal panel (Item trait, Workspace integration) | `raijin-terminal-view` | raijin-app |
+| Shell completions | `raijin-completions` | raijin-app |
+| Command history, session state | `raijin-session` | raijin-app |
+| Settings UI | `raijin-settings-ui` | raijin-app |
+| Theme system | `raijin-theme` + `raijin-theme-settings` | raijin-app |
+| UI components | `inazuma-component` or `raijin-ui` | raijin-app |
+| Workspace layout | `raijin-workspace` | raijin-app |
+| Project model (buffers, LSP, git) | `raijin-project` | raijin-app |
+
+### View crates are thin wrappers:
+
+A `*-view` crate (like `raijin-terminal-view`) does NOT contain business logic. It only:
+1. Imports types from backend crates (`raijin-terminal`, `raijin-completions`, etc.)
+2. Implements Workspace traits (`Item`, `Panel`, `Render`)
+3. Wires up event handling between crates
+
+If you find yourself writing logic in a view crate, it belongs in the backend crate instead.
+
+### Inazuma vs Raijin naming:
+
+- **`inazuma-*`** = Framework-level, reusable without Raijin (collections, text, rope, fuzzy, settings, UI primitives)
+- **`raijin-*`** = Application-level, Raijin-specific (terminal, theme, workspace, editor, agent)
+
+### Dependencies flow downward:
+
+```
+raijin-app (entry point only)
+  → raijin-terminal-view (thin view)
+    → raijin-terminal (backend)
+    → raijin-completions (backend)
+    → raijin-workspace (workspace framework)
+    → raijin-ui (UI components)
+      → inazuma (GPU framework)
+```
+
+Never create circular dependencies. Backend crates must not depend on view crates.
 
 ## Project Phases
 
