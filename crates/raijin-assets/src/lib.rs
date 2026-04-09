@@ -1,49 +1,63 @@
-use std::borrow::Cow;
+use anyhow::Context as _;
+use inazuma::{App, AssetSource, Result, SharedString};
+use rust_embed::RustEmbed;
 
-use inazuma::{AssetSource, Result, SharedString};
-
-/// Raijin-specific bundled assets: themes, fonts, keymaps.
-///
-/// Embedded at compile time from the repository's `assets/` directory via RustEmbed.
-/// Implements `AssetSource` with fallback to `inazuma_component_assets::Assets`
-/// for component icons and UI fonts.
-#[derive(rust_embed::RustEmbed)]
+#[derive(RustEmbed)]
 #[folder = "../../assets"]
-#[include = "themes/**/*"]
 #[include = "fonts/**/*"]
+#[include = "icons/**/*"]
+#[include = "themes/**/*"]
 #[include = "keymaps/**/*"]
-pub struct RaijinAssets;
-
-/// Composite asset source: Raijin assets first, then inazuma-component assets as fallback.
+#[include = "settings/**/*"]
+#[include = "sounds/**/*"]
+#[include = "images/**/*"]
+#[include = "prompts/**/*"]
+#[include = "*.md"]
+#[exclude = "*.DS_Store"]
 pub struct Assets;
 
 impl AssetSource for Assets {
-    fn load(&self, path: &str) -> Result<Option<Cow<'static, [u8]>>> {
-        if path.is_empty() {
-            return Ok(None);
-        }
-
-        // Try Raijin assets first (themes, fonts, keymaps)
-        if let Some(file) = RaijinAssets::get(path) {
-            return Ok(Some(file.data));
-        }
-
-        // Fall back to inazuma-component assets (icons, UI fonts)
-        inazuma_component_assets::Assets.load(path)
+    fn load(&self, path: &str) -> Result<Option<std::borrow::Cow<'static, [u8]>>> {
+        Self::get(path)
+            .map(|f| Some(f.data))
+            .with_context(|| format!("loading asset at path {path:?}"))
     }
 
     fn list(&self, path: &str) -> Result<Vec<SharedString>> {
-        // Collect from both sources, Raijin first
-        let mut results: Vec<SharedString> = RaijinAssets::iter()
-            .filter(|p| p.starts_with(path))
-            .map(|p| p.into())
-            .collect();
+        Ok(Self::iter()
+            .filter_map(|p| {
+                if p.starts_with(path) {
+                    Some(p.into())
+                } else {
+                    None
+                }
+            })
+            .collect())
+    }
+}
 
-        // Add component assets
-        if let Ok(component_assets) = inazuma_component_assets::Assets.list(path) {
-            results.extend(component_assets);
+impl Assets {
+    /// Load all `.ttf` fonts from the `fonts` directory into the text system.
+    pub fn load_fonts(&self, cx: &App) -> anyhow::Result<()> {
+        let font_paths = self.list("fonts")?;
+        let mut embedded_fonts = Vec::new();
+        for font_path in font_paths {
+            if font_path.ends_with(".ttf") {
+                let font_bytes = cx
+                    .asset_source()
+                    .load(&font_path)?
+                    .expect("Assets should never return None");
+                embedded_fonts.push(font_bytes);
+            }
         }
+        cx.text_system().add_fonts(embedded_fonts)
+    }
 
-        Ok(results)
+    pub fn load_test_fonts(&self, cx: &App) {
+        cx.text_system()
+            .add_fonts(vec![
+                self.load("fonts/lilex/Lilex-Regular.ttf").unwrap().unwrap(),
+            ])
+            .unwrap()
     }
 }

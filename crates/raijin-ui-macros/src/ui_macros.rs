@@ -1,5 +1,7 @@
+mod derive_into_plot;
 mod derive_register_component;
 mod dynamic_spacing;
+mod icon_named;
 
 use proc_macro::TokenStream;
 
@@ -34,4 +36,26 @@ pub fn derive_dynamic_spacing(input: TokenStream) -> TokenStream {
 #[proc_macro_derive(RegisterComponent)]
 pub fn derive_register_component(input: TokenStream) -> TokenStream {
     derive_register_component::derive_register_component(input)
+}
+
+/// Derives `IntoElement` and `Element` for plot types that implement the `Plot` trait.
+#[proc_macro_derive(IntoPlot)]
+pub fn derive_into_plot(input: TokenStream) -> TokenStream {
+    derive_into_plot::derive_into_plot(input)
+}
+
+/// Generate a custom icon enum by scanning a directory of SVG files.
+///
+/// Accepts an enum name, a path relative to the calling crate's `CARGO_MANIFEST_DIR`,
+/// and optionally a list of additional derive traits.
+///
+/// # Example
+///
+/// ```ignore
+/// icon_named!(IconName, "../assets/icons");
+/// icon_named!(IconName, "../assets/icons", [Debug, Copy, PartialEq, Eq]);
+/// ```
+#[proc_macro]
+pub fn icon_named(input: TokenStream) -> TokenStream {
+    icon_named::icon_named(input)
 }
