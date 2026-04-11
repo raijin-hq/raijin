@@ -15,7 +15,6 @@ doctest = false
 [dependencies]
 anyhow.workspace = true
 inazuma-collections.workspace = true
-inazuma-component.workspace = true
 ctor.workspace = true
 raijin-editor.workspace = true
 inazuma.workspace = true

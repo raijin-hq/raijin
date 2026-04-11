@@ -10,26 +10,45 @@ path = "src/main.rs"
 
 [dependencies]
 inazuma = { workspace = true }
-inazuma-component = { workspace = true }
-raijin-terminal = { workspace = true }
-raijin-shell = { workspace = true }
+inazuma-clock = { workspace = true }
+inazuma-settings-framework = { workspace = true }
+raijin-actions = { workspace = true }
+raijin-assets = { workspace = true }
+raijin-client = { workspace = true }
+raijin-command-palette = { workspace = true }
+raijin-completions = { path = "../raijin-completions" }
+raijin-credentials-provider = { workspace = true }
+raijin-db = { workspace = true }
+raijin-fs = { workspace = true }
+raijin-http-client = { workspace = true }
+raijin-language = { workspace = true }
+raijin-node-runtime = { workspace = true }
+raijin-platform-title-bar = { workspace = true }
+raijin-project = { workspace = true }
+raijin-release-channel = { workspace = true }
+raijin-session = { workspace = true }
 raijin-settings = { workspace = true }
+raijin-shell = { workspace = true }
+raijin-tab-switcher = { workspace = true }
+raijin-term = { path = "../raijin-term" }
+raijin-terminal = { workspace = true }
+raijin-terminal-view = { workspace = true }
+raijin-ui = { workspace = true }
 raijin-theme = { workspace = true }
 raijin-theme-settings = { workspace = true }
-inazuma-settings-framework = { workspace = true }
-raijin-completions = { path = "../raijin-completions" }
+raijin-title-bar = { workspace = true }
+raijin-workspace = { workspace = true }
 anyhow = { workspace = true }
 log = { workspace = true }
 env_logger = "0.11"
 parking_lot = { workspace = true }
-raijin-term = { path = "../raijin-term" }
-raijin-assets = { workspace = true }
 time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
 serde_json = { workspace = true }
-dirs = "6"
+dirs.workspace = true
 strsim = "0.11"
 lsp-types = { version = "0.97", features = ["proposed"] }
 ropey = "1"
+uuid = { workspace = true }
 
 [lints]
 workspace = true

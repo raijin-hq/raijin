@@ -16,9 +16,9 @@ use lsp_types::{
     InsertTextFormat,
 };
 
-use crate::command_history::CommandHistory;
-use crate::completions::nu_lsp_client::NuLspClient;
-use crate::shell_install;
+use raijin_session::command_history::CommandHistory;
+use crate::nu_lsp_client::NuLspClient;
+use raijin_shell::shell_install;
 
 /// Convert a byte offset into (line, character) for LSP position.
 fn offset_to_position(text: &str, offset: usize) -> (u32, u32) {
@@ -63,13 +63,13 @@ pub struct ShellCompletionProvider {
     /// Cached executables from $PATH.
     pub path_executables: Arc<RwLock<Vec<String>>>,
     /// CLI specs for known commands (Tier 1: embedded at compile time).
-    cli_specs: HashMap<String, raijin_completions::CliSpec>,
+    cli_specs: HashMap<String, crate::CliSpec>,
     /// Shared command history for frecency ghost-text.
     history: Arc<RwLock<CommandHistory>>,
     /// Nushell LSP client for native Nu completions (lazy-started, only when shell == "nu").
     nu_lsp: Option<NuLspClient>,
     /// Cache for external specs loaded from disk (Tier 2). None = tried and not found.
-    external_spec_cache: RwLock<HashMap<String, Option<raijin_completions::CliSpec>>>,
+    external_spec_cache: RwLock<HashMap<String, Option<crate::CliSpec>>>,
 }
 
 impl ShellCompletionProvider {
@@ -86,7 +86,7 @@ impl ShellCompletionProvider {
             shell: shell.to_string(),
             cwd: Arc::new(RwLock::new(cwd)),
             path_executables: Arc::new(RwLock::new(Vec::new())),
-            cli_specs: raijin_completions::load_all_specs(),
+            cli_specs: crate::load_all_specs(),
             history,
             nu_lsp,
             external_spec_cache: RwLock::new(HashMap::new()),
@@ -295,17 +295,17 @@ impl ShellCompletionProvider {
     /// Complete using CLI specs.
     fn complete_from_spec(
         &self,
-        ctx: &raijin_completions::CommandContext,
-        spec: &raijin_completions::CliSpec,
+        ctx: &crate::CommandContext,
+        spec: &crate::CliSpec,
     ) -> Vec<CompletionItem> {
-        let candidates = raijin_completions::complete(ctx, spec);
+        let candidates = crate::complete(ctx, spec);
         candidates
             .into_iter()
             .map(|c| {
                 let kind = match c.kind {
-                    raijin_completions::CompletionKind::Subcommand => CompletionItemKind::MODULE,
-                    raijin_completions::CompletionKind::Option => CompletionItemKind::PROPERTY,
-                    raijin_completions::CompletionKind::Command => CompletionItemKind::FUNCTION,
+                    crate::CompletionKind::Subcommand => CompletionItemKind::MODULE,
+                    crate::CompletionKind::Option => CompletionItemKind::PROPERTY,
+                    crate::CompletionKind::Command => CompletionItemKind::FUNCTION,
                     _ => CompletionItemKind::TEXT,
                 };
                 CompletionItem {
@@ -321,7 +321,7 @@ impl ShellCompletionProvider {
     }
 
     /// Look up a CLI spec by command name, checking embedded (Tier 1) then external (Tier 2).
-    fn get_spec(&self, command: &str) -> Option<raijin_completions::CliSpec> {
+    fn get_spec(&self, command: &str) -> Option<crate::CliSpec> {
         // Tier 1: embedded specs (instant)
         if let Some(spec) = self.cli_specs.get(command) {
             return Some(spec.clone());
@@ -345,7 +345,7 @@ impl ShellCompletionProvider {
     }
 
     /// Try to load an external spec from ~/.config/raijin/specs/ or app bundle.
-    fn load_external_spec(&self, command: &str) -> Option<raijin_completions::CliSpec> {
+    fn load_external_spec(&self, command: &str) -> Option<crate::CliSpec> {
         let spec_dirs = [
             dirs::config_dir().map(|c| c.join("raijin/specs")),
             // macOS .app bundle: Contents/Resources/specs/
@@ -356,7 +356,7 @@ impl ShellCompletionProvider {
         for dir in spec_dirs.iter().flatten() {
             let path = dir.join(format!("{}.json", command));
             if let Ok(content) = std::fs::read_to_string(&path) {
-                if let Ok(spec) = serde_json::from_str::<raijin_completions::CliSpec>(&content) {
+                if let Ok(spec) = serde_json::from_str::<crate::CliSpec>(&content) {
                     return Some(spec);
                 }
             }
@@ -382,7 +382,7 @@ impl ShellCompletionProvider {
             }
         }
 
-        let ctx = raijin_completions::parse_input(text, offset);
+        let ctx = crate::parse_input(text, offset);
 
         // Environment variable completion
         if ctx.current_token.starts_with('$') {
@@ -390,10 +390,10 @@ impl ShellCompletionProvider {
         }
 
         match &ctx.token_position {
-            raijin_completions::TokenPosition::Command => {
+            crate::TokenPosition::Command => {
                 self.complete_command(&ctx.current_token)
             }
-            raijin_completions::TokenPosition::Subcommand => {
+            crate::TokenPosition::Subcommand => {
                 if let Some(spec) = self.get_spec(&ctx.command) {
                     let items = self.complete_from_spec(&ctx, &spec);
                     if !items.is_empty() {
@@ -402,14 +402,14 @@ impl ShellCompletionProvider {
                 }
                 self.complete_file_path(&ctx.current_token)
             }
-            raijin_completions::TokenPosition::OptionName => {
+            crate::TokenPosition::OptionName => {
                 if let Some(spec) = self.get_spec(&ctx.command) {
                     self.complete_from_spec(&ctx, &spec)
                 } else {
                     vec![]
                 }
             }
-            raijin_completions::TokenPosition::OptionValue(opt) => {
+            crate::TokenPosition::OptionValue(opt) => {
                 if let Some(spec) = self.get_spec(&ctx.command) {
                     let resolved = self.resolve_arg_template(&ctx, &spec, opt);
                     if !resolved.is_empty() {
@@ -418,7 +418,7 @@ impl ShellCompletionProvider {
                 }
                 self.complete_file_path(&ctx.current_token)
             }
-            raijin_completions::TokenPosition::Argument(_) => {
+            crate::TokenPosition::Argument(_) => {
                 if let Some(spec) = self.get_spec(&ctx.command) {
                     let spec_items = self.complete_from_spec(&ctx, &spec);
                     if !spec_items.is_empty() {
@@ -439,8 +439,8 @@ impl ShellCompletionProvider {
     /// Resolve argument templates from CLI specs to actual completion items.
     fn resolve_arg_template(
         &self,
-        ctx: &raijin_completions::CommandContext,
-        spec: &raijin_completions::CliSpec,
+        ctx: &crate::CommandContext,
+        spec: &crate::CliSpec,
         _opt_name: &str,
     ) -> Vec<CompletionItem> {
         // For now, fall back to spec-based completions which handle custom values

@@ -46,7 +46,6 @@ raijin-client.workspace = true
 raijin-cloud-api-types.workspace = true
 inazuma-collections.workspace = true
 raijin-command-palette-hooks.workspace = true
-inazuma-component.workspace = true
 raijin-context-server.workspace = true
 raijin-db.workspace = true
 raijin-editor.workspace = true

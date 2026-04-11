@@ -17,9 +17,9 @@ use raijin_term::index::{Column, Line, Point, Side};
 use raijin_term::selection::SelectionType;
 use raijin_terminal::TerminalHandle;
 
-use super::block_element::{render_block, render_fold_line, render_fold_counter};
-use super::constants::*;
-use super::grid_snapshot::{BlockSnapshotCache, extract_all_block_snapshots};
+use crate::block_element::{render_block, render_fold_line, render_fold_counter};
+use crate::constants::*;
+use crate::grid_snapshot::{BlockSnapshotCache, extract_all_block_snapshots};
 
 /// Stateful block list view that owns rendering + mouse interaction.
 pub struct BlockListView {
@@ -55,7 +55,7 @@ struct BlockLayoutEntry {
     grid_history_size: usize,
     /// Shared store: TerminalGridElement writes actual grid origin Y during prepaint,
     /// hit_test reads it for exact pixel→row mapping without sub-pixel drift.
-    grid_origin_store: super::grid_element::GridOriginStore,
+    grid_origin_store: crate::grid_element::GridOriginStore,
 }
 
 impl BlockListView {
@@ -254,7 +254,7 @@ impl Render for BlockListView {
             })
             .collect();
         // Clone the Rc stores for the render_item closure
-        let origin_stores: Vec<super::grid_element::GridOriginStore> = self.block_layout
+        let origin_stores: Vec<crate::grid_element::GridOriginStore> = self.block_layout
             .iter()
             .map(|e| e.grid_origin_store.clone())
             .collect();
@@ -278,7 +278,7 @@ impl Render for BlockListView {
         // When fold_show_all is true, extract ALL folded blocks. Otherwise only last FOLD_MAX_VISIBLE.
         let fold_show_all = self.fold_show_all;
         let visible_fold_start = if fold_show_all { 0 } else { folded_indices.len().saturating_sub(FOLD_MAX_VISIBLE) };
-        let fold_data: Vec<(usize, super::grid_snapshot::BlockHeaderSnapshot, String)> = folded_indices[visible_fold_start..]
+        let fold_data: Vec<(usize, crate::grid_snapshot::BlockHeaderSnapshot, String)> = folded_indices[visible_fold_start..]
             .iter()
             .map(|&ix| (ix, snapshots[ix].header.clone(), snapshots[ix].command.clone()))
             .collect();

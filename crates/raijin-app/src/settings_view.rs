@@ -1,5 +1,5 @@
 use inazuma::{IntoElement, ParentElement, SharedString, div};
-use inazuma_component::setting::{
+use raijin_ui::{
     NumberFieldOptions, SettingField, SettingGroup, SettingItem, SettingPage, Settings,
 };
 use raijin_settings::RaijinSettings;

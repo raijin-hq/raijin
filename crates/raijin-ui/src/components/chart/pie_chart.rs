@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use inazuma::{App, Bounds, Oklch, Pixels, Window};
-use inazuma_component_macros::IntoPlot;
+use raijin_ui_macros::IntoPlot;
 use num_traits::Zero;
 
 use crate::ActiveTheme;

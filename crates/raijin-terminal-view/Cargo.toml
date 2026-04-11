@@ -5,10 +5,6 @@ edition.workspace = true
 publish.workspace = true
 license = "GPL-3.0-or-later"
 
-# Stub crate — provides type definitions so dependent crates compile.
-# Will be replaced with real implementation in Phase 20 (Workspace Integration)
-# that uses our raijin-terminal + raijin-term Block system.
-
 [lints]
 workspace = true
 
@@ -20,11 +16,25 @@ doctest = false
 test-support = ["inazuma/test-support"]
 
 [dependencies]
+anyhow.workspace = true
+dirs.workspace = true
 inazuma.workspace = true
-raijin-terminal.workspace = true
+log.workspace = true
+lsp-types = { version = "0.97", features = ["proposed"] }
+parking_lot.workspace = true
+raijin-completions = { path = "../raijin-completions" }
 raijin-project.workspace = true
-raijin-workspace.workspace = true
+raijin-session.workspace = true
+raijin-settings.workspace = true
+raijin-shell.workspace = true
+raijin-term = { path = "../raijin-term" }
+raijin-terminal.workspace = true
 raijin-theme.workspace = true
+raijin-ui.workspace = true
+raijin-workspace.workspace = true
+serde_json.workspace = true
+strsim = "0.11"
+time.workspace = true
 
 [dev-dependencies]
 inazuma = { workspace = true, features = ["test-support"] }

@@ -7,9 +7,6 @@ members = [
     "crates/inazuma-collections",
     "crates/inazuma-refineable",
     "crates/inazuma-refineable/derive_refineable",
-    "crates/inazuma-component/ui",
-    "crates/inazuma-component/macros",
-    "crates/inazuma-component/assets",
     "crates/inazuma-component-registry",
     "crates/inazuma-fuzzy",
     "crates/inazuma-gpui-util",
@@ -57,6 +54,7 @@ members = [
     "crates/raijin-git",
     "crates/raijin-git-hosting-providers",
     "crates/raijin-grammars",
+    "crates/raijin-i18n",
     "crates/raijin-http-client",
     "crates/raijin-http-client-tls",
     "crates/raijin-json-schema-store",
@@ -84,6 +82,7 @@ members = [
     "crates/raijin-settings-json",
     "crates/raijin-shell",
     "crates/raijin-snippet",
+    "crates/raijin-syntax",
     "crates/raijin-snippet-provider",
     "crates/raijin-sqlez",
     "crates/raijin-sqlez-macros",
@@ -275,9 +274,6 @@ inazuma = { path = "crates/inazuma" }
 inazuma-macros = { path = "crates/inazuma/tooling/macros" }
 inazuma-clock = { path = "crates/inazuma-clock" }
 inazuma-collections = { path = "crates/inazuma-collections" }
-inazuma-component = { path = "crates/inazuma-component/ui" }
-inazuma-component-macros = { path = "crates/inazuma-component/macros" }
-inazuma-component-assets = { path = "crates/inazuma-component/assets" }
 inazuma-component-registry = { path = "crates/inazuma-component-registry" }
 inazuma-fuzzy = { path = "crates/inazuma-fuzzy" }
 inazuma-gpui-util = { path = "crates/inazuma-gpui-util" }
@@ -326,6 +322,7 @@ raijin-fs = { path = "crates/raijin-fs" }
 raijin-git = { path = "crates/raijin-git" }
 raijin-git-hosting-providers = { path = "crates/raijin-git-hosting-providers" }
 raijin-grammars = { path = "crates/raijin-grammars" }
+raijin-i18n = { path = "crates/raijin-i18n" }
 raijin-http-client = { path = "crates/raijin-http-client" }
 raijin-http-client-tls = { path = "crates/raijin-http-client-tls" }
 raijin-json-schema-store = { path = "crates/raijin-json-schema-store" }
@@ -353,6 +350,7 @@ raijin-settings = { path = "crates/raijin-settings" }
 raijin-settings-json = { path = "crates/raijin-settings-json" }
 raijin-shell = { path = "crates/raijin-shell" }
 raijin-snippet = { path = "crates/raijin-snippet" }
+raijin-syntax = { path = "crates/raijin-syntax" }
 raijin-snippet-provider = { path = "crates/raijin-snippet-provider" }
 raijin-sqlez = { path = "crates/raijin-sqlez" }
 raijin-sqlez-macros = { path = "crates/raijin-sqlez-macros" }
@@ -533,6 +531,7 @@ aho-corasick = "1.1"
 any_vec = "0.14"
 ashpd = { version = "0.11", default-features = false, features = ["async-std"] }
 anyhow = "1"
+async-channel = "2.3.1"
 async-compression = { version = "0.4", features = ["bzip2", "gzip", "futures-io"] }
 async-fs = "2"
 async-lock = "2.1"
@@ -594,8 +593,10 @@ markup5ever_rcdom = "0.3"
 mermaid-rs-renderer = { git = "https://github.com/raijin-hq/mermaid-rs-renderer", rev = "374db9ead5426697c6c2111151d9f246899bc638", default-features = false }
 nix = { version = "0.29", features = ["user"] }
 notify = "7"
+once_cell = "1.19.0"
 ordered-float = "4"
 parking_lot = "0.12"
+paste = "1"
 percent-encoding = "2"
 pet = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
 pet-conda = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "9e61a22af989fe54937bf07c9f9cff1bc53d9056" }
@@ -626,6 +627,7 @@ semver = "1"
 serde = { version = "1.0.221", features = ["derive", "rc"] }
 serde_json = "1"
 serde_json_lenient = "0.2"
+serde_repr = "0.1"
 serde_path_to_error = "0.1.17"
 serde_urlencoded = "0.7"
 sha2 = "0.10"
@@ -758,7 +760,7 @@ simplelog = "0.12.2"
 sysinfo = "0.37.0"
 tiktoken-rs = "0.6"
 tower-http = "0.4.4"
-wasmtime = { version = "33", default-features = false, features = ["cranelift", "gc"] }
+wasmtime = { version = "33", default-features = false, features = ["cranelift", "gc", "incremental-cache"] }
 wasmtime-wasi = "33"
 web-time = "1.1.0"
 webrtc-sys = "0.3.23"

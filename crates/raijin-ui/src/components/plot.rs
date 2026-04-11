@@ -5,7 +5,7 @@ pub mod scale;
 pub mod shape;
 pub mod tooltip;
 
-pub use inazuma_component_macros::IntoPlot;
+pub use raijin_ui_macros::IntoPlot;
 
 use std::{fmt::Debug, ops::Add};
 

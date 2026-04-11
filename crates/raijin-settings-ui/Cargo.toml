@@ -20,7 +20,6 @@ raijin-agent.workspace = true
 raijin-agent-settings.workspace = true
 anyhow.workspace = true
 raijin-audio.workspace = true
-inazuma-component.workspace = true
 raijin-codestral.workspace = true
 raijin-copilot.workspace = true
 raijin-copilot-ui.workspace = true

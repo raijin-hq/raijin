@@ -15,7 +15,6 @@ path = "src/keymap_editor.rs"
 anyhow.workspace = true
 inazuma-collections.workspace = true
 raijin-command-palette.workspace = true
-inazuma-component.workspace = true
 raijin-db.workspace = true
 raijin-editor.workspace = true
 raijin-fs.workspace = true

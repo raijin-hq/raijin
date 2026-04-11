@@ -17,7 +17,6 @@ default = []
 [dependencies]
 raijin-client.workspace = true
 raijin-cloud-api-types.workspace = true
-inazuma-component.workspace = true
 inazuma.workspace = true
 raijin-language-model.workspace = true
 serde.workspace = true

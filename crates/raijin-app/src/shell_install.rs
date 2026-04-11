@@ -280,7 +280,7 @@ pub struct ShellInstallModal {
 }
 
 impl inazuma::EventEmitter<inazuma::DismissEvent> for ShellInstallModal {}
-impl inazuma_component::modal_layer::ModalView for ShellInstallModal {
+impl raijin_ui::ModalView for ShellInstallModal {
     fn fade_out_background(&self) -> bool {
         true
     }
@@ -345,11 +345,9 @@ impl inazuma::Render for ShellInstallModal {
             Animation, AnimationExt as _, CursorStyle, ElementId, InteractiveElement as _,
             ParentElement as _, Styled as _, div, rgb,
         };
-        use inazuma_component::{
-            Sizable as _,
-            animation::cubic_bezier,
-            button::{Button, ButtonVariants as _},
-            h_flex, v_flex,
+        use raijin_ui::{
+            Button, ButtonVariants as _, Sizable as _,
+            cubic_bezier, h_flex, v_flex,
         };
 
         let description = if let Some(pm) = self.pm_name {

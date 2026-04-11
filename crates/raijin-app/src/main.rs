@@ -10,8 +10,8 @@ mod workspace;
 
 use std::borrow::Cow;
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, actions, px, size};
-use inazuma_component::Root;
-use inazuma_component::TitleBar;
+use raijin_ui::AppShell;
+use raijin_ui::TitleBar;
 use inazuma_settings_framework::SettingsStore;
 
 // Global actions — available everywhere
@@ -77,12 +77,6 @@ fn main() {
             .collect();
         cx.text_system().add_fonts(bundled_fonts).expect("failed to register bundled fonts");
 
-        inazuma_component::init(cx);
-        inazuma_component::theme::Theme::change(
-            inazuma_component::theme::ThemeMode::Dark,
-            None,
-            cx,
-        );
 
         // 1. Initialize SettingsStore with defaults from assets/settings/default.toml
         //    All #[derive(RegisterSetting)] types are automatically registered via inventory
@@ -200,7 +194,7 @@ fn main() {
                 });
 
                 // Root wraps Workspace (provides Sheets, Dialogs, Notifications)
-                cx.new(|cx| Root::new(workspace, window, cx))
+                cx.new(|cx| AppShell::new(workspace, window, cx))
             },
         )
         .unwrap();

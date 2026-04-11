@@ -26,7 +26,6 @@ inazuma-menu.workspace = true
 inazuma-settings-framework.workspace = true
 inazuma-gpui-util.workspace = true
 inazuma-component-registry.workspace = true
-inazuma-component-macros = { path = "../inazuma-component/macros" }
 inazuma-sum_tree.workspace = true
 
 # Raijin

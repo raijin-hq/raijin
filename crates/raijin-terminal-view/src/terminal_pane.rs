@@ -1,33 +1,25 @@
 use raijin_term::term::TermMode;
 use inazuma::{
     div, Oklch, oklcha, px, rgb, App, Context, Entity, Focusable, FocusHandle, KeyDownEvent,
-    ParentElement, Render, Styled, Window, prelude::*,
+    ParentElement, Render, SharedString, Styled, Window, prelude::*,
 };
 use raijin_ui::{
-    Anchor, Chip, GitBranchChip, GitStatsChip, IconName, ModalLayer, Popover, TitleBar,
+    Anchor, Chip, GitBranchChip, GitStatsChip, IconName, Popover,
     h_flex, v_flex,
     input::{AutoPairConfig, Input, InputEvent, InputState},
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
+use raijin_workspace::{Item, item::ItemEvent, Workspace, WorkspaceId};
 
 use std::rc::Rc;
 use std::sync::{Arc, RwLock};
 
-use crate::command_history::CommandHistory;
-use crate::completions::command_correction;
-use crate::completions::shell_completion::ShellCompletionProvider;
+use raijin_session::command_history::CommandHistory;
+use raijin_completions::command_correction;
+use raijin_completions::shell_completion::ShellCompletionProvider;
 use crate::input::history_panel::HistoryPanel;
-use crate::settings_view;
-use crate::shell_install;
-// Block rendering now uses terminal::block_list::render_block_list
-
-/// Which view is currently active.
-#[derive(Clone, Copy, PartialEq, Eq)]
-enum ViewMode {
-    Terminal,
-    Settings,
-}
+use raijin_shell::shell_install;
 
 /// A detected shell on the system.
 #[derive(Clone)]
@@ -59,7 +51,6 @@ fn detect_available_shells() -> Vec<ShellOption> {
 
     let mut shells = Vec::new();
     for (name, paths) in candidates {
-        // Check standard paths first
         let mut found_path = None;
         for path in *paths {
             if std::path::Path::new(path).exists() {
@@ -67,7 +58,6 @@ fn detect_available_shells() -> Vec<ShellOption> {
                 break;
             }
         }
-        // Also check via command -v for non-standard paths (e.g. ~/.cargo/bin/nu)
         if found_path.is_none() {
             found_path = shell_install::resolve_shell_path(name);
         }
@@ -80,36 +70,59 @@ fn detect_available_shells() -> Vec<ShellOption> {
     shells
 }
 
-/// Top-level workspace view that composes the Warp-style layout:
-/// TabBar (top) → Terminal Output (middle) → Context Chips + Input (bottom)
-pub struct Workspace {
+// ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+
+#[derive(Clone, Debug)]
+pub enum TerminalPaneEvent {
+    TitleChanged,
+    CloseRequested,
+    BellRang,
+}
+
+impl inazuma::EventEmitter<TerminalPaneEvent> for TerminalPane {}
+
+// ---------------------------------------------------------------------------
+// TerminalPane — our Warp-style terminal as a Workspace Item
+// ---------------------------------------------------------------------------
+
+/// Raijin's terminal view — a Warp-style terminal with block system, context
+/// chips, shell integration, input bar, history panel, and command correction.
+/// Implements `Item` so it can live inside a `raijin_workspace::Workspace` pane.
+pub struct TerminalPane {
     terminal: Terminal,
     terminal_title: String,
-    input_state: Entity<InputState>,
     focus_handle: FocusHandle,
-    shell_context: ShellContext,
+
+    // Input system
+    input_state: Entity<InputState>,
+    shell_completion: Rc<ShellCompletionProvider>,
     command_history: Arc<RwLock<CommandHistory>>,
     history_panel: HistoryPanel,
     correction_suggestion: Option<command_correction::CorrectionResult>,
-    shell_completion: Rc<ShellCompletionProvider>,
-    modal_layer: Entity<ModalLayer>,
+
+    // Shell context
+    shell_context: ShellContext,
     shell_name: String,
-    /// Available shells detected on the system.
     available_shells: Vec<ShellOption>,
-    /// If set, the shell was not found at startup and the install modal should be shown.
     pending_shell_install: Option<&'static shell_install::ShellInstallInfo>,
-    block_list: Entity<crate::terminal::block_list::BlockListView>,
-    /// Synchronously pre-loaded background image for instant display.
-    /// Tracks the source path — re-loaded when theme changes the image.
+
+    // Rendering
+    block_list: Entity<crate::block_list::BlockListView>,
     cached_bg_image: Option<(std::path::PathBuf, Arc<inazuma::RenderImage>)>,
+
+    // UI state
     interactive_mode: bool,
     show_terminal: bool,
-    view_mode: ViewMode,
     last_terminal_rows: u16,
     last_terminal_cols: u16,
+
+    // Workspace reference (for modal access via action dispatch)
+    workspace: Option<inazuma::WeakEntity<Workspace>>,
 }
 
-impl Workspace {
+impl TerminalPane {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let config = cx.global::<raijin_settings::RaijinSettings>().clone();
         let cwd = config.resolve_working_directory();
@@ -123,7 +136,7 @@ impl Workspace {
 
         let block_list_view = {
             let handle = terminal.handle();
-            cx.new(|_cx| crate::terminal::block_list::BlockListView::new(handle))
+            cx.new(|_cx| crate::block_list::BlockListView::new(handle))
         };
 
         let focus_handle = cx.focus_handle();
@@ -133,8 +146,8 @@ impl Workspace {
         let shell_name = shell.rsplit('/').next().unwrap_or("zsh");
         let shell_lang = match shell_name {
             "nu" => "nu",
-            "fish" => "bash", // Fallback: fish → bash highlighting (close enough)
-            _ => "bash",      // zsh, bash, sh → bash highlighting
+            "fish" => "bash",
+            _ => "bash",
         };
 
         // Check if the shell binary is actually available
@@ -194,7 +207,6 @@ impl Workspace {
             history_panel: HistoryPanel::new(),
             correction_suggestion: None,
             shell_completion,
-            modal_layer: cx.new(|_cx| ModalLayer::new()),
             shell_name: shell_name.to_string(),
             available_shells: detect_available_shells(),
             pending_shell_install,
@@ -202,30 +214,28 @@ impl Workspace {
             cached_bg_image: None,
             interactive_mode: false,
             show_terminal: false,
-            view_mode: ViewMode::Terminal,
             last_terminal_rows: 0,
             last_terminal_cols: 0,
+            workspace: None,
         }
     }
 
-    /// Get the pre-loaded background image, loading/reloading synchronously if
-    /// the path changed (theme switch) or on first access. Avoids the 2-frame
-    /// async delay from Inazuma's use_asset pipeline for local files.
+    // -----------------------------------------------------------------------
+    // Background image helpers
+    // -----------------------------------------------------------------------
+
     fn bg_render_image(&mut self, path: &std::path::Path) -> Option<Arc<inazuma::RenderImage>> {
-        // Return cached if path matches
         if let Some((cached_path, cached_img)) = &self.cached_bg_image {
             if cached_path == path {
                 return Some(Arc::clone(cached_img));
             }
         }
-        // Synchronously load and decode — instant first-frame display
         let render = inazuma::preload_image(path)?;
         self.cached_bg_image = Some((path.to_path_buf(), Arc::clone(&render)));
         Some(render)
     }
 
     fn bg_render_image_from_bytes(&mut self, bytes: &[u8]) -> Option<Arc<inazuma::RenderImage>> {
-        // Check if we already have a cached bundled bg image (use sentinel path)
         let sentinel = std::path::PathBuf::from("__bundled_bg__");
         if let Some((cached_path, cached_img)) = &self.cached_bg_image {
             if cached_path == &sentinel {
@@ -237,6 +247,10 @@ impl Workspace {
         Some(render)
     }
 
+    // -----------------------------------------------------------------------
+    // Terminal event handling
+    // -----------------------------------------------------------------------
+
     fn handle_terminal_event(&mut self, event: TerminalEvent, window: &mut Window, cx: &mut Context<Self>) {
         match event {
             TerminalEvent::Wakeup => {
@@ -245,10 +259,14 @@ impl Workspace {
             }
             TerminalEvent::Title(title) => {
                 self.terminal_title = title;
+                cx.emit(TerminalPaneEvent::TitleChanged);
                 cx.notify();
             }
-            TerminalEvent::Bell => {}
+            TerminalEvent::Bell => {
+                cx.emit(TerminalPaneEvent::BellRang);
+            }
             TerminalEvent::Exit => {
+                cx.emit(TerminalPaneEvent::CloseRequested);
                 cx.notify();
             }
             TerminalEvent::ShellMarker(marker) => {
@@ -268,9 +286,7 @@ impl Workspace {
             match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
                 Ok(payload) => {
                     self.shell_context.update_from_metadata(&payload);
-                    // Update completion provider CWD for file path completions
                     self.shell_completion.update_cwd(std::path::PathBuf::from(&payload.cwd));
-                    // Apply shell-measured duration to the last finalized block
                     if let Some(duration_ms) = payload.last_duration_ms {
                         let handle = self.terminal.handle();
                         let mut term = handle.lock();
@@ -280,6 +296,8 @@ impl Workspace {
                             }
                         }
                     }
+                    // Title changed because CWD changed
+                    cx.emit(TerminalPaneEvent::TitleChanged);
                     cx.notify();
                 }
                 Err(e) => {
@@ -290,12 +308,10 @@ impl Workspace {
 
         match marker {
             raijin_terminal::ShellMarker::PromptStart => {
-                // In Raijin mode, don't show terminal until first command runs
                 cx.notify();
             }
             raijin_terminal::ShellMarker::InputStart => {}
             raijin_terminal::ShellMarker::CommandStart => {
-                // Pass current shell context metadata to the new block
                 {
                     let handle = self.terminal.handle();
                     let mut term = handle.lock();
@@ -316,7 +332,6 @@ impl Workspace {
             raijin_terminal::ShellMarker::CommandEnd { exit_code } => {
                 log::debug!("Command finished with exit code: {}", exit_code);
 
-                // Auto-focus input so the user can type immediately
                 self.input_state.update(cx, |state, cx| {
                     state.focus(window, cx);
                 });
@@ -364,7 +379,6 @@ impl Workspace {
             }
             raijin_terminal::ShellMarker::PromptKind { kind } => {
                 log::debug!("Prompt kind: {:?}", kind);
-                // Nushell-specific: used for multi-line prompt detection
             }
             raijin_terminal::ShellMarker::Metadata(_) => {
                 // Already handled above
@@ -378,6 +392,10 @@ impl Workspace {
         self.interactive_mode = term.mode().contains(TermMode::ALT_SCREEN);
     }
 
+    // -----------------------------------------------------------------------
+    // Input handling
+    // -----------------------------------------------------------------------
+
     fn on_input_event(
         &mut self,
         _state: &Entity<InputState>,
@@ -387,7 +405,6 @@ impl Workspace {
     ) {
         match event {
             InputEvent::PressEnter { secondary: false } => {
-                // Close history panel if open
                 if self.history_panel.is_visible() {
                     self.history_panel.close();
                 }
@@ -397,7 +414,6 @@ impl Workspace {
                     if let Ok(mut hist) = self.command_history.write() {
                         hist.push(value.to_string());
                     }
-                    // Set pending command on the block router for when CommandStart fires
                     {
                         let handle = self.terminal.handle();
                         let mut term = handle.lock();
@@ -410,9 +426,6 @@ impl Workspace {
                     self.input_state.update(cx, |state, cx| {
                         state.set_value("", window, cx);
                     });
-                    // Move focus to workspace container so key events
-                    // (Ctrl+C etc.) reach on_key_down_interactive while
-                    // the command runs and the input bar is hidden.
                     self.focus_handle.focus(window, cx);
                     cx.notify();
                 }
@@ -437,7 +450,6 @@ impl Workspace {
             InputEvent::HistoryDown => {
                 if self.history_panel.is_visible() {
                     if self.history_panel.is_at_bottom() {
-                        // At the newest entry — close panel, restore saved input
                         let saved = self.history_panel.close();
                         self.input_state.update(cx, |state, cx| {
                             state.set_value(&saved, window, cx);
@@ -455,7 +467,6 @@ impl Workspace {
                 }
             }
             InputEvent::Change => {
-                // Filter history panel when user types while it's open
                 if self.history_panel.is_visible() {
                     let query = self.input_state.read(cx).value().to_string();
                     if let Ok(hist) = self.command_history.read() {
@@ -463,16 +474,12 @@ impl Workspace {
                     }
                     cx.notify();
                 }
-
-                // Command validation: highlight first token green if valid command
                 self.update_input_highlights(cx);
             }
             _ => {}
         }
     }
 
-    /// Compute all input highlights from scratch: command validation + completion coloring.
-    /// Called on every text change. Reads `completion_inserted_range` for completion coloring.
     fn update_input_highlights(&self, cx: &mut Context<Self>) {
         let text = self.input_state.read(cx).value().to_string();
         let completion_range = self.input_state.read(cx).completion_inserted_range.clone();
@@ -485,12 +492,10 @@ impl Workspace {
             return;
         }
 
-        // Extract the first token (command name)
         let cmd_end = trimmed.find(|c: char| c.is_whitespace()).unwrap_or(trimmed.len());
         let cmd = &trimmed[..cmd_end];
         let cmd_start = text.len() - trimmed.len();
 
-        // Check if it's a valid command (in $PATH or builtin)
         let is_valid = if let Ok(executables) = self.shell_completion.path_executables.read() {
             executables.iter().any(|e| e == cmd)
         } else {
@@ -506,7 +511,6 @@ impl Workspace {
         self.input_state.update(cx, |state, _| {
             state.overlay_highlights.clear();
 
-            // 1. Command highlight (full brand color)
             if is_valid {
                 state.overlay_highlights.push((
                     cmd_start..cmd_start + cmd_end,
@@ -517,7 +521,6 @@ impl Workspace {
                 ));
             }
 
-            // 2. Completion-inserted text highlight (dimmed brand color)
             if let Some(range) = completion_range {
                 let clamped_end = range.end.min(text.len());
                 if range.start < clamped_end {
@@ -539,9 +542,7 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        // --- Platform shortcuts (Cmd on macOS) ---
-
-        // Cmd+K: Clear all blocks (terminal clear)
+        // Cmd+K: Clear all blocks
         if event.keystroke.key.as_str() == "k" && event.keystroke.modifiers.platform {
             let handle = self.terminal.handle();
             let mut term = handle.lock();
@@ -563,7 +564,6 @@ impl Workspace {
         }
 
         if event.keystroke.key.as_str() == "escape" {
-            // Dismiss history panel
             if self.history_panel.is_visible() {
                 let saved = self.history_panel.close();
                 self.input_state.update(cx, |state, cx| {
@@ -572,7 +572,6 @@ impl Workspace {
                 cx.notify();
                 return;
             }
-            // Deselect block
             if self.block_list.read(cx).selected_block().is_some() {
                 self.block_list.update(cx, |view, _cx| view.set_selected_block(None));
                 cx.notify();
@@ -586,9 +585,6 @@ impl Workspace {
             term.block_router().has_active_block()
         };
 
-        // Forward keys to PTY when:
-        // 1. ALT_SCREEN is active (interactive TUI: vim, less, htop)
-        // 2. A command is running (Ctrl+C to interrupt, etc.)
         if !self.interactive_mode && !command_running {
             return;
         }
@@ -605,91 +601,133 @@ impl Workspace {
         }
     }
 
-    /// Tab label: shortened CWD (e.g. `~`, `~/Projects/raijin`).
-    fn tab_label(&self) -> String {
-        self.shell_context.cwd_short.clone()
+    // -----------------------------------------------------------------------
+    // Shell management
+    // -----------------------------------------------------------------------
+
+    fn request_shell_change(
+        &mut self,
+        shell: ShellOption,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if shell.installed {
+            self.switch_shell(&shell, window, cx);
+        } else if let Some(info) = shell_install::shell_install_info(&shell.name) {
+            // Use workspace modal layer via action dispatch
+            if let Some(ws) = self.workspace.as_ref().and_then(|w| w.upgrade()) {
+                let terminal_handle = self.terminal.handle();
+                ws.update(cx, |workspace, cx| {
+                    workspace.toggle_modal(window, cx, |window, cx| {
+                        crate::shell_install_modal::ShellInstallModal::new(
+                            info,
+                            terminal_handle,
+                            window,
+                            cx,
+                        )
+                    });
+                });
+            }
+        }
     }
 
-    fn render_title_bar(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        let is_terminal = self.view_mode == ViewMode::Terminal;
-        let is_settings = self.view_mode == ViewMode::Settings;
-        let border_color = Oklch::white().opacity(0.08);
-        let active_bg = rgb(0x222222);
+    fn switch_shell(&mut self, shell: &ShellOption, window: &mut Window, cx: &mut Context<Self>) {
+        cx.global_mut::<PendingShellInstallName>().0 = None;
 
-        TitleBar::new().child(
-            div()
-                .flex()
-                .items_center()
-                .h_full()
-                // Terminal tab
-                .child(
-                    div()
-                        .id("tab-terminal")
-                        .flex()
-                        .items_center()
-                        .justify_center()
-                        .h_full()
-                        .w(px(160.0))
-                        .flex_shrink_0()
-                        .overflow_hidden()
-                        .whitespace_nowrap()
-                        .px_3()
-                        .text_xs()
-                        .cursor_pointer()
-                        .border_r_1()
-                        .border_l_1()
-                        .border_color(border_color)
-                        .when(is_terminal, |this| {
-                            this.text_color(rgb(0xf1f1f1)).bg(active_bg)
-                        })
-                        .when(!is_terminal, |this| {
-                            this.text_color(rgb(0x888888))
-                        })
-                        .on_click(cx.listener(|view, _, _, cx| {
-                            view.view_mode = ViewMode::Terminal;
-                            cx.notify();
-                        }))
-                        .child(self.tab_label()),
-                )
-                // Settings tab
-                .child(
-                    div()
-                        .id("tab-settings")
-                        .flex()
-                        .items_center()
-                        .justify_center()
-                        .h_full()
-                        .w(px(120.0))
-                        .flex_shrink_0()
-                        .px_3()
-                        .text_xs()
-                        .cursor_pointer()
-                        .border_r_1()
-                        .border_color(border_color)
-                        .when(is_settings, |this| {
-                            this.text_color(rgb(0xf1f1f1)).bg(active_bg)
-                        })
-                        .when(!is_settings, |this| {
-                            this.text_color(rgb(0x888888))
-                        })
-                        .on_click(cx.listener(|view, _, _, cx| {
-                            view.view_mode = ViewMode::Settings;
-                            cx.notify();
-                        }))
-                        .child("Settings"),
-                ),
-        )
+        let shell_path = match &shell.path {
+            Some(p) => p.clone(),
+            None => return,
+        };
+        let shell_name = &shell.name;
+        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
+        let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
+        let input_mode = match config.general.input_mode {
+            raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
+            raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
+        };
+        let scrollback = config.terminal.scrollback_history as usize;
+
+        let new_terminal = Terminal::with_shell(
+            self.last_terminal_rows.max(24),
+            self.last_terminal_cols.max(80),
+            &cwd,
+            input_mode,
+            scrollback,
+            Some(&shell_path),
+        );
+        let new_terminal = match new_terminal {
+            Ok(t) => t,
+            Err(e) => {
+                log::error!("Failed to spawn shell {}: {}", shell_path, e);
+                use raijin_ui::WindowExt as _;
+                window.push_notification(
+                    raijin_ui::Notification::error(
+                        format!("Failed to start {}: {}", shell_name, e),
+                    ),
+                    &mut *cx,
+                );
+                return;
+            }
+        };
+
+        let events_rx = new_terminal.event_receiver().clone();
+        cx.spawn_in(window, async move |this, cx| {
+            while let Ok(event) = events_rx.recv_async().await {
+                this.update_in(cx, |view, window, cx| {
+                    view.handle_terminal_event(event, window, cx);
+                })
+                .ok();
+            }
+        })
+        .detach();
+
+        self.terminal = new_terminal;
+        self.shell_name = shell_name.to_string();
+        self.terminal_title = format!("~ {}", shell_name);
+        self.show_terminal = false;
+
+        if self.history_panel.is_visible() {
+            self.history_panel.close();
+        }
+
+        self.available_shells = detect_available_shells();
+
+        let shell_lang = match shell_name.as_str() {
+            "nu" => "nu",
+            "fish" => "bash",
+            _ => "bash",
+        };
+        self.input_state.update(cx, |state, cx| {
+            state.set_shell_language(shell_lang, window, cx);
+        });
+
+        self.command_history = Arc::new(RwLock::new(CommandHistory::detect_and_load(shell_name)));
+
+        self.shell_completion = Rc::new(ShellCompletionProvider::new(
+            shell_name,
+            cwd,
+            self.command_history.clone(),
+        ));
+        self.input_state.update(cx, |state, _cx| {
+            state.lsp.completion_provider = Some(self.shell_completion.clone());
+        });
+
+        self.block_list.update(cx, |view, _cx| view.clear());
+
+        cx.emit(TerminalPaneEvent::TitleChanged);
+        cx.notify();
     }
+
+    // -----------------------------------------------------------------------
+    // Render helpers
+    // -----------------------------------------------------------------------
 
     fn render_shell_selector_chip(&self) -> impl IntoElement {
         let current = self.shell_name.clone();
-
-        // Re-detect shells each time popover opens (catches newly installed shells)
         let shells = detect_available_shells();
 
         Popover::new("shell-selector")
             .anchor(Anchor::BottomLeft)
-            // Override popover chrome to match completion menu design
             .bg(oklcha(0.23, 0.0, 0.0, 1.0))
             .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
             .rounded_lg()
@@ -727,11 +765,9 @@ impl Workspace {
                                 if is_current {
                                     return;
                                 }
-                                // Dismiss popover first
                                 popover.update(cx, |state, cx| {
                                     state.dismiss(window, cx);
                                 });
-                                // Queue shell change for next frame
                                 cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
                                     name: shell_name_for_click.clone(),
                                     path: shell_path_for_click.clone(),
@@ -790,128 +826,6 @@ impl Workspace {
             })
     }
 
-    /// Central entry point for shell changes — handles both installed (switch) and
-    /// not-installed (install dialog) shells. Callable from any trigger (chip click,
-    /// keyboard shortcut, settings, etc.).
-    fn request_shell_change(
-        &mut self,
-        shell: ShellOption,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) {
-        if shell.installed {
-            self.switch_shell(&shell, window, cx);
-        } else if let Some(info) = shell_install::shell_install_info(&shell.name) {
-            let terminal_handle = self.terminal.handle();
-            self.modal_layer.update(cx, |layer, cx| {
-                layer.toggle_modal(window, cx, |window, cx| {
-                    shell_install::ShellInstallModal::new(
-                        info,
-                        terminal_handle,
-                        window,
-                        cx,
-                    )
-                });
-            });
-        }
-    }
-
-    /// Switch to a different shell: terminate old PTY, spawn new one, update completions + history.
-    fn switch_shell(&mut self, shell: &ShellOption, window: &mut Window, cx: &mut Context<Self>) {
-        // Clear any pending install (we're switching now, don't auto-switch again)
-        cx.global_mut::<PendingShellInstallName>().0 = None;
-
-        let shell_path = match &shell.path {
-            Some(p) => p.clone(),
-            None => return, // Not installed — should show install modal instead
-        };
-        let shell_name = &shell.name;
-        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
-        let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
-        let input_mode = match config.general.input_mode {
-            raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
-            raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
-        };
-        let scrollback = config.terminal.scrollback_history as usize;
-
-        // Spawn new terminal with the selected shell (old one drops and PTY closes)
-        let new_terminal = Terminal::with_shell(
-            self.last_terminal_rows.max(24),
-            self.last_terminal_cols.max(80),
-            &cwd,
-            input_mode,
-            scrollback,
-            Some(&shell_path),
-        );
-        let new_terminal = match new_terminal {
-            Ok(t) => t,
-            Err(e) => {
-                log::error!("Failed to spawn shell {}: {}", shell_path, e);
-                use raijin_ui::WindowExt as _;
-                window.push_notification(
-                    raijin_ui::Notification::error(
-                        format!("Failed to start {}: {}", shell_name, e),
-                    ),
-                    &mut *cx,
-                );
-                return;
-            }
-        };
-
-        // Wire up terminal events
-        let events_rx = new_terminal.event_receiver().clone();
-        cx.spawn_in(window, async move |this, cx| {
-            while let Ok(event) = events_rx.recv_async().await {
-                this.update_in(cx, |view, window, cx| {
-                    view.handle_terminal_event(event, window, cx);
-                })
-                .ok();
-            }
-        })
-        .detach();
-
-        self.terminal = new_terminal;
-        self.shell_name = shell_name.to_string();
-        self.terminal_title = format!("~ {}", shell_name);
-        self.show_terminal = false;
-
-        // Close history panel (history is about to be reloaded for new shell)
-        if self.history_panel.is_visible() {
-            self.history_panel.close();
-        }
-
-        // Update available shells list (in case a shell was just installed)
-        self.available_shells = detect_available_shells();
-
-        // Update syntax highlighting language
-        let shell_lang = match shell_name.as_str() {
-            "nu" => "nu",
-            "fish" => "bash",
-            _ => "bash",
-        };
-        self.input_state.update(cx, |state, cx| {
-            state.set_shell_language(shell_lang, window, cx);
-        });
-
-        // Reload command history for the new shell
-        self.command_history = Arc::new(RwLock::new(CommandHistory::detect_and_load(shell_name)));
-
-        // Update completion provider
-        self.shell_completion = Rc::new(ShellCompletionProvider::new(
-            shell_name,
-            cwd,
-            self.command_history.clone(),
-        ));
-        self.input_state.update(cx, |state, _cx| {
-            state.lsp.completion_provider = Some(self.shell_completion.clone());
-        });
-
-        // Clear block list state (old terminal's blocks are invalid)
-        self.block_list.update(cx, |view, _cx| view.clear());
-
-        cx.notify();
-    }
-
     fn render_input_area(&self) -> impl IntoElement {
         let time_str = time::OffsetDateTime::now_local()
             .unwrap_or_else(|_| time::OffsetDateTime::now_utc())
@@ -954,7 +868,6 @@ impl Workspace {
             .border_t_1()
             .child(chips)
             .child(
-                // Input row — px_1 so cursor aligns with chip left edge
                 div()
                     .px_1()
                     .pt_1()
@@ -1003,7 +916,7 @@ impl Workspace {
                     .py(px(2.0))
                     .bg(Oklch::white().opacity(0.08))
                     .rounded(px(4.0))
-                    .text_color(crate::terminal::constants::accent_color(theme))
+                    .text_color(crate::constants::accent_color(theme))
                     .child(format!("{} ({}%)", suggestion, confidence_pct)),
             )
             .child(
@@ -1012,33 +925,36 @@ impl Workspace {
                     .child("? Press ↵ to run"),
             )
     }
-
 }
 
-impl Render for Workspace {
+// ---------------------------------------------------------------------------
+// Render — the Warp-style terminal layout (NO title bar, NO modal layer)
+// ---------------------------------------------------------------------------
+
+impl Render for TerminalPane {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         // Show shell install modal on first render if shell is missing
         if let Some(shell_info) = self.pending_shell_install.take() {
-            let terminal_handle = self.terminal.handle();
-            self.modal_layer.update(cx, |layer, cx| {
-                layer.toggle_modal(window, cx, |window, cx| {
-                    shell_install::ShellInstallModal::new(
-                        shell_info,
-                        terminal_handle,
-                        window,
-                        cx,
-                    )
+            if let Some(ws) = self.workspace.as_ref().and_then(|w| w.upgrade()) {
+                let terminal_handle = self.terminal.handle();
+                ws.update(cx, |workspace, cx| {
+                    workspace.toggle_modal(window, cx, |window, cx| {
+                        crate::shell_install_modal::ShellInstallModal::new(
+                            shell_info,
+                            terminal_handle,
+                            window,
+                            cx,
+                        )
+                    });
                 });
-            });
+            }
         }
 
-        // Process pending shell switch from the shell selector popover.
-        // Uses defer_in to run AFTER this render completes — ensures the popover
-        // has closed before any dialog opens (avoids z-order conflicts).
+        // Process pending shell switch from the shell selector popover
         let pending = cx.global_mut::<PendingShellSwitch>().0.take();
         if let Some(shell) = pending {
-            cx.defer_in(window, move |workspace, window, cx| {
-                workspace.request_shell_change(shell, window, cx);
+            cx.defer_in(window, move |pane, window, cx| {
+                pane.request_shell_change(shell, window, cx);
             });
         }
 
@@ -1054,22 +970,16 @@ impl Render for Workspace {
             .track_focus(&self.focus_handle)
             .on_key_down(cx.listener(Self::on_key_down_interactive));
 
-        // Background image layer from theme — behind all content.
-        // The image is decoded once and cached as a GPU texture — subsequent
-        // frames reuse the cached Arc<RenderImage> without re-decoding or
-        // re-loading from the asset pipeline.
+        // Background image layer from theme
         if let Some(bg_config) = &theme.styles.background_image {
             let opacity = (bg_config.opacity as f32 / 100.0).clamp(0.0, 1.0);
 
-            // Fast path: return cached image if available (no asset loading)
             let render_image = if self.cached_bg_image.is_some() {
                 self.cached_bg_image.as_ref().map(|(_, img)| Arc::clone(img))
             } else if let Some(base_dir) = &theme.base_dir {
-                // User theme: decode from filesystem (first frame only)
                 let image_path = base_dir.join(&bg_config.path);
                 self.bg_render_image(&image_path)
             } else {
-                // Bundled theme: decode from asset pipeline (first frame only)
                 let asset_path = format!("themes/{}/{}", theme.id, bg_config.path);
                 cx.asset_source()
                     .load(&asset_path)
@@ -1091,100 +1001,258 @@ impl Render for Workspace {
             }
         }
 
-        container = container.child(self.render_title_bar(cx));
+        // NO title bar here — the Workspace renders it above us
 
-        match self.view_mode {
-            ViewMode::Terminal => {
-                let handle = self.terminal.handle();
-                let config = cx.global::<raijin_settings::RaijinSettings>();
-                let font_family = config.appearance.font_family.clone();
-                let font_size = config.appearance.font_size as f32;
-                let line_height_multiplier = config.appearance.line_height as f32;
+        // Terminal output + resize logic
+        let handle = self.terminal.handle();
+        let config = cx.global::<raijin_settings::RaijinSettings>();
+        let font_family = config.appearance.font_family.clone();
+        let font_size = config.appearance.font_size as f32;
+        let line_height_multiplier = config.appearance.line_height as f32;
 
-                // Resize PTY based on viewport dimensions (once per frame)
-                {
-                    let font = inazuma::Font {
-                        family: font_family.clone().into(),
-                        weight: inazuma::FontWeight::NORMAL,
-                        ..inazuma::Font::default()
-                    };
-                    let font_id = window.text_system().resolve_font(&font);
-                    let font_px = px(font_size);
-                    let cell_width = window
-                        .text_system()
-                        .advance(font_id, font_px, 'm')
-                        .expect("glyph not found for 'm'")
-                        .width;
-                    let ascent = window.text_system().ascent(font_id, font_px);
-                    let descent = window.text_system().descent(font_id, font_px);
-                    let base_height = ascent + descent.abs();
-                    let cell_height = base_height * line_height_multiplier;
+        {
+            let font = inazuma::Font {
+                family: font_family.clone().into(),
+                weight: inazuma::FontWeight::NORMAL,
+                ..inazuma::Font::default()
+            };
+            let font_id = window.text_system().resolve_font(&font);
+            let font_px = px(font_size);
+            let cell_width = window
+                .text_system()
+                .advance(font_id, font_px, 'm')
+                .expect("glyph not found for 'm'")
+                .width;
+            let ascent = window.text_system().ascent(font_id, font_px);
+            let descent = window.text_system().descent(font_id, font_px);
+            let base_height = ascent + descent.abs();
+            let cell_height = base_height * line_height_multiplier;
 
-                    let viewport = window.viewport_size();
-                    let horizontal_padding = px(crate::terminal::constants::BLOCK_HEADER_PAD_X) * 2.0;
-                    let cols = ((viewport.width - horizontal_padding) / cell_width)
-                        .max(2.0) as u16;
-                    let rows = (viewport.height / cell_height).max(1.0) as u16;
-                    if rows != self.last_terminal_rows || cols != self.last_terminal_cols {
-                        handle.set_size(rows, cols);
-                        self.last_terminal_rows = rows;
-                        self.last_terminal_cols = cols;
-                    }
-                }
-
-                if self.show_terminal || self.interactive_mode {
-                    container = container.child(self.block_list.clone());
-                } else {
-                    container = container.child(
-                        div().flex_1().min_h_0(),
-                    );
-                }
-
-                if !self.interactive_mode {
-                    let command_running = {
-                        let handle = self.terminal.handle();
-                        let term = handle.lock();
-                        term.block_router().has_active_block()
-                    };
-
-                    // Correction banner (e.g. "Did you mean `git status`?")
-                    if let Some(ref correction) = self.correction_suggestion {
-                        container = container.child(self.render_correction_banner(correction, &theme));
-                    }
-
-                    // Input area only visible when no command is running
-                    if !command_running {
-                        // History panel overlay (between terminal output and input area)
-                        if self.history_panel.is_visible() {
-                            container = container.child(self.history_panel.render());
-                        }
-                        container = container.child(self.render_input_area());
-                    }
-                }
-            }
-            ViewMode::Settings => {
-                container = container.child(
-                    div()
-                        .flex_1()
-                        .min_h_0()
-                        .overflow_hidden()
-                        .child(settings_view::build_settings()),
-                );
+            let viewport = window.viewport_size();
+            let horizontal_padding = px(crate::constants::BLOCK_HEADER_PAD_X) * 2.0;
+            let cols = ((viewport.width - horizontal_padding) / cell_width)
+                .max(2.0) as u16;
+            let rows = (viewport.height / cell_height).max(1.0) as u16;
+            if rows != self.last_terminal_rows || cols != self.last_terminal_cols {
+                handle.set_size(rows, cols);
+                self.last_terminal_rows = rows;
+                self.last_terminal_cols = cols;
             }
         }
 
-        // Modal layer renders on top of everything
-        container = container.child(self.modal_layer.clone());
+        if self.show_terminal || self.interactive_mode {
+            container = container.child(self.block_list.clone());
+        } else {
+            container = container.child(
+                div().flex_1().min_h_0(),
+            );
+        }
+
+        if !self.interactive_mode {
+            let command_running = {
+                let handle = self.terminal.handle();
+                let term = handle.lock();
+                term.block_router().has_active_block()
+            };
+
+            if let Some(ref correction) = self.correction_suggestion {
+                container = container.child(self.render_correction_banner(correction, &theme));
+            }
+
+            if !command_running {
+                if self.history_panel.is_visible() {
+                    container = container.child(self.history_panel.render());
+                }
+                container = container.child(self.render_input_area());
+            }
+        }
+
+        // NO modal layer here — the Workspace renders it on top
 
         container
     }
 }
 
-impl Focusable for Workspace {
+// ---------------------------------------------------------------------------
+// Focusable
+// ---------------------------------------------------------------------------
+
+impl Focusable for TerminalPane {
     fn focus_handle(&self, _cx: &App) -> FocusHandle {
         self.focus_handle.clone()
     }
 }
+
+// ---------------------------------------------------------------------------
+// Item trait — makes TerminalPane a Workspace item
+// ---------------------------------------------------------------------------
+
+impl Item for TerminalPane {
+    type Event = TerminalPaneEvent;
+
+    fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
+        format!("{} — {}", self.shell_name, self.shell_context.cwd_short).into()
+    }
+
+    fn tab_tooltip_text(&self, _cx: &App) -> Option<SharedString> {
+        Some(self.shell_context.cwd.clone().into())
+    }
+
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(ItemEvent)) {
+        match event {
+            TerminalPaneEvent::TitleChanged => f(ItemEvent::UpdateTab),
+            TerminalPaneEvent::CloseRequested => f(ItemEvent::CloseItem),
+            TerminalPaneEvent::BellRang => {}
+        }
+    }
+
+    fn can_split(&self) -> bool {
+        true
+    }
+
+    fn clone_on_split(
+        &self,
+        _workspace_id: Option<WorkspaceId>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> inazuma::Task<Option<Entity<Self>>> {
+        let shell_name = self.shell_name.clone();
+        let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
+        let shell_path = self.available_shells
+            .iter()
+            .find(|s| s.name == shell_name)
+            .and_then(|s| s.path.clone());
+        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
+        let input_mode = match config.general.input_mode {
+            raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
+            raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
+        };
+        let scrollback = config.terminal.scrollback_history as usize;
+
+        // Try to spawn the terminal BEFORE creating the entity — if it fails,
+        // we return None without creating anything.
+        let new_terminal = if let Some(ref path) = shell_path {
+            Terminal::with_shell(24, 80, &cwd, input_mode, scrollback, Some(path))
+        } else {
+            Terminal::new(24, 80, &cwd, input_mode, scrollback)
+        };
+
+        let terminal = match new_terminal {
+            Ok(t) => t,
+            Err(e) => {
+                log::error!("Failed to clone terminal on split: {}", e);
+                return inazuma::Task::ready(None);
+            }
+        };
+
+        let ws = self.workspace.clone();
+
+        // Terminal spawned successfully — now create the entity.
+        // We use cx.new() which creates a new Entity<Self> with its own Context.
+        // Event subscriptions and spawn happen inside the Context<Self> closure.
+        let block_list_view = {
+            let handle = terminal.handle();
+            cx.new(|_cx| crate::block_list::BlockListView::new(handle))
+        };
+
+        let shell_lang = match shell_name.as_str() {
+            "nu" => "nu",
+            "fish" => "bash",
+            _ => "bash",
+        };
+
+        let input_state = cx.new(|cx| {
+            InputState::new(window, cx)
+                .shell_editor(shell_lang, 1, 10)
+                .auto_pairs(AutoPairConfig::shell_defaults())
+        });
+
+        let command_history = Arc::new(RwLock::new(
+            CommandHistory::detect_and_load(&shell_name),
+        ));
+        let shell_completion = Rc::new(ShellCompletionProvider::new(
+            &shell_name,
+            cwd.clone(),
+            command_history.clone(),
+        ));
+        input_state.update(cx, |state, _cx| {
+            state.lsp.completion_provider = Some(shell_completion.clone());
+        });
+
+        // Wire up event subscriptions — these will be on the NEW entity once
+        // clone_on_split returns, because the Workspace re-wires them.
+        // For now, subscribe on the current context — the pane system handles
+        // routing events to the correct item.
+        let events_rx = terminal.event_receiver().clone();
+        cx.spawn_in(window, async move |this, cx| {
+            while let Ok(event) = events_rx.recv_async().await {
+                this.update_in(cx, |view, window, cx| {
+                    view.handle_terminal_event(event, window, cx);
+                })
+                .ok();
+            }
+        })
+        .detach();
+
+        cx.subscribe_in(&input_state, window, Self::on_input_event)
+            .detach();
+
+        input_state.update(cx, |state, cx| {
+            state.focus(window, cx);
+        });
+
+        let last_rows = self.last_terminal_rows;
+        let last_cols = self.last_terminal_cols;
+
+        // NOTE: cx.new() in a Context<Self> creates a new Entity<Self>
+        let new_entity = cx.new(|cx| Self {
+            terminal,
+            terminal_title: format!("~ {}", shell_name),
+            input_state,
+            focus_handle: cx.focus_handle(),
+            shell_context: ShellContext::gather_for(&cwd),
+            command_history,
+            history_panel: HistoryPanel::new(),
+            correction_suggestion: None,
+            shell_completion,
+            shell_name,
+            available_shells: detect_available_shells(),
+            pending_shell_install: None,
+            block_list: block_list_view,
+            cached_bg_image: None,
+            interactive_mode: false,
+            show_terminal: false,
+            last_terminal_rows: last_rows,
+            last_terminal_cols: last_cols,
+            workspace: ws,
+        });
+
+        inazuma::Task::ready(Some(new_entity))
+    }
+
+    fn is_dirty(&self, _cx: &App) -> bool {
+        let handle = self.terminal.handle();
+        let term = handle.lock();
+        term.block_router().has_active_block()
+    }
+
+    fn can_save(&self, _cx: &App) -> bool {
+        false
+    }
+
+    fn added_to_workspace(
+        &mut self,
+        workspace: &mut Workspace,
+        _window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        self.workspace = Some(workspace.weak_handle());
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Keystroke → VT bytes conversion
+// ---------------------------------------------------------------------------
 
 fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Vec<u8> {
     let modifiers = &keystroke.modifiers;
