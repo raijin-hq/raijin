@@ -170,7 +170,7 @@ impl PickerDelegate for PickerPromptDelegate {
                     })
                     .collect()
             } else {
-                fuzzy::match_strings(
+                inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     true,
@@ -217,7 +217,7 @@ impl PickerDelegate for PickerPromptDelegate {
         _cx: &mut Context<Picker<Self>>,
     ) -> Option<Self::ListItem> {
         let hit = &self.matches.get(ix)?;
-        let shortened_option = util::truncate_and_trailoff(&hit.string, self.max_match_length);
+        let shortened_option = inazuma_util::truncate_and_trailoff(&hit.string, self.max_match_length);
 
         Some(
             ListItem::new(format!("picker-prompt-menu-{ix}"))

@@ -113,6 +113,7 @@ impl From<IconName> for Icon {
 }
 
 /// The source of an icon.
+#[derive(Clone)]
 enum IconSource {
     /// An SVG embedded in the Zed binary.
     Embedded(SharedString),
@@ -126,12 +127,14 @@ enum IconSource {
     ExternalSvg(SharedString),
 }
 
-#[derive(IntoElement, RegisterComponent)]
+#[derive(Clone, IntoElement, RegisterComponent)]
 pub struct Icon {
     source: IconSource,
     color: Color,
+    oklch_color: Option<Oklch>,
     size: Rems,
     transformation: Transformation,
+    no_flex_shrink: bool,
 }
 
 impl Icon {
@@ -139,8 +142,10 @@ impl Icon {
         Self {
             source: IconSource::Embedded(icon.path().into()),
             color: Color::default(),
+            oklch_color: None,
             size: IconSize::default().rems(),
             transformation: Transformation::default(),
+            no_flex_shrink: false,
         }
     }
 
@@ -157,8 +162,10 @@ impl Icon {
         Self {
             source,
             color: Color::default(),
+            oklch_color: None,
             size: IconSize::default().rems(),
             transformation: Transformation::default(),
+            no_flex_shrink: false,
         }
     }
 
@@ -166,8 +173,10 @@ impl Icon {
         Self {
             source: IconSource::ExternalSvg(svg),
             color: Color::default(),
+            oklch_color: None,
             size: IconSize::default().rems(),
             transformation: Transformation::default(),
+            no_flex_shrink: false,
         }
     }
 
@@ -188,6 +197,74 @@ impl Icon {
         self.size = size;
         self
     }
+
+    /// Rotate the icon by the given angle.
+    pub fn rotate(mut self, radians: impl Into<inazuma::Radians>) -> Self {
+        self.transformation = Transformation::rotate(radians);
+        self
+    }
+
+    /// Sets the icon color directly from an [`Oklch`] value.
+    ///
+    /// This overrides the semantic [`Color`] set via [`Icon::color`].
+    pub fn text_color(mut self, color: Oklch) -> Self {
+        self.oklch_color = Some(color);
+        self
+    }
+
+    /// Sets the icon size to `0.75rem` (12px).
+    /// Sets the icon size to `0.5rem` (8px).
+    pub fn size_2(mut self) -> Self {
+        self.size = rems(0.5);
+        self
+    }
+
+    pub fn size_3(mut self) -> Self {
+        self.size = rems(0.75);
+        self
+    }
+
+    /// Sets the icon size to `0.625rem` (10px).
+    pub fn size_2p5(mut self) -> Self {
+        self.size = rems(0.625);
+        self
+    }
+
+    /// Sets the icon size to `0.875rem` (14px).
+    pub fn size_3p5(mut self) -> Self {
+        self.size = rems(0.875);
+        self
+    }
+
+    /// Sets the icon size to `1.0rem` (16px).
+    pub fn size_4(mut self) -> Self {
+        self.size = rems(1.0);
+        self
+    }
+
+    /// Sets the icon size to `3.0rem` (48px).
+    pub fn size_12(mut self) -> Self {
+        self.size = rems(3.0);
+        self
+    }
+
+    /// Prevents the icon from shrinking in a flex container.
+    pub fn flex_shrink_0(mut self) -> Self {
+        self.no_flex_shrink = true;
+        self
+    }
+
+    /// Creates an empty icon (no path).
+    pub fn empty() -> Self {
+        Self {
+            source: IconSource::Embedded("".into()),
+            color: Color::default(),
+            oklch_color: None,
+            size: IconSize::default().rems(),
+            transformation: Transformation::default(),
+            no_flex_shrink: false,
+        }
+    }
 }
 
 impl Transformable for Icon {
@@ -197,27 +274,47 @@ impl Transformable for Icon {
     }
 }
 
+impl crate::Sizable for Icon {
+    fn with_size(mut self, size: impl Into<crate::Size>) -> Self {
+        let size = size.into();
+        self.size = match size {
+            crate::Size::XSmall => IconSize::XSmall.rems(),
+            crate::Size::Small => IconSize::Small.rems(),
+            crate::Size::Medium => IconSize::Medium.rems(),
+            crate::Size::Large => IconSize::Indicator.rems(),
+            crate::Size::Size(px) => inazuma::rems(px.as_f32() / 16.0),
+        };
+        self
+    }
+}
+
 impl RenderOnce for Icon {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let color = self.oklch_color.unwrap_or_else(|| self.color.color(cx));
+        let no_flex_shrink = self.no_flex_shrink;
+
         match self.source {
             IconSource::Embedded(path) => svg()
                 .with_transformation(self.transformation)
                 .size(self.size)
                 .flex_none()
+                .when(no_flex_shrink, |el| el.flex_shrink_0())
                 .path(path)
-                .text_color(self.color.color(cx))
+                .text_color(color)
                 .into_any_element(),
             IconSource::ExternalSvg(path) => svg()
                 .external_path(path)
                 .with_transformation(self.transformation)
                 .size(self.size)
                 .flex_none()
-                .text_color(self.color.color(cx))
+                .when(no_flex_shrink, |el| el.flex_shrink_0())
+                .text_color(color)
                 .into_any_element(),
             IconSource::External(path) => img(path)
                 .size(self.size)
                 .flex_none()
-                .text_color(self.color.color(cx))
+                .when(no_flex_shrink, |el| el.flex_shrink_0())
+                .text_color(color)
                 .into_any_element(),
         }
     }
@@ -261,7 +358,7 @@ impl RenderOnce for IconWithIndicator {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         let indicator_border_color = self
             .indicator_border_color
-            .unwrap_or_else(|| cx.theme().colors().elevated_surface_background);
+            .unwrap_or_else(|| cx.theme().colors().elevated_surface);
 
         div()
             .relative()

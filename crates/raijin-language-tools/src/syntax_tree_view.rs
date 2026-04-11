@@ -487,7 +487,7 @@ impl SyntaxTreeView {
         editor.highlight_background(
             HighlightKey::SyntaxTreeView(key),
             ranges,
-            |_, theme| theme.colors().editor_document_highlight_write_background,
+            |_, theme| theme.colors().editor.document_highlight_write_background,
             cx,
         );
     }
@@ -504,7 +504,7 @@ impl Render for SyntaxTreeView {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         div()
             .flex_1()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .map(|this| {
                 let editor_state = self.editor.as_ref();
 

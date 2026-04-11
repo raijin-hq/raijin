@@ -519,7 +519,7 @@ impl SplitBufferHeadersElement {
             latest_selection_anchors,
         );
 
-        let editor_bg_color = cx.theme().colors().editor_background;
+        let editor_bg_color = cx.theme().colors().editor.background;
         let selected = selected_buffer_ids.contains(&excerpt.buffer_id);
 
         let mut header = v_flex()

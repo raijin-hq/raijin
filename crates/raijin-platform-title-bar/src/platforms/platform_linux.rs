@@ -1,5 +1,5 @@
 use inazuma::{
-    Action, AnyElement, Hsla, MAX_BUTTONS_PER_SIDE, MouseButton, WindowButton, prelude::*, svg,
+    Action, AnyElement, Oklch, MAX_BUTTONS_PER_SIDE, MouseButton, WindowButton, prelude::*, svg,
 };
 use raijin_ui::prelude::*;
 
@@ -106,10 +106,10 @@ impl WindowControlType {
 
 #[allow(unused)]
 pub struct WindowControlStyle {
-    background: Hsla,
-    background_hover: Hsla,
-    icon: Hsla,
-    icon_hover: Hsla,
+    background: Oklch,
+    background_hover: Oklch,
+    icon: Oklch,
+    icon_hover: Oklch,
 }
 
 impl WindowControlStyle {
@@ -126,28 +126,28 @@ impl WindowControlStyle {
 
     #[allow(unused)]
     /// Sets the background color of the control.
-    pub fn background(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn background(mut self, color: impl Into<Oklch>) -> Self {
         self.background = color.into();
         self
     }
 
     #[allow(unused)]
     /// Sets the background color of the control when hovered.
-    pub fn background_hover(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn background_hover(mut self, color: impl Into<Oklch>) -> Self {
         self.background_hover = color.into();
         self
     }
 
     #[allow(unused)]
     /// Sets the color of the icon.
-    pub fn icon(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn icon(mut self, color: impl Into<Oklch>) -> Self {
         self.icon = color.into();
         self
     }
 
     #[allow(unused)]
     /// Sets the color of the icon when hovered.
-    pub fn icon_hover(mut self, color: impl Into<Hsla>) -> Self {
+    pub fn icon_hover(mut self, color: impl Into<Oklch>) -> Self {
         self.icon_hover = color.into();
         self
     }

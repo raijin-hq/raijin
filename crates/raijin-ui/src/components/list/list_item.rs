@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
 use inazuma_component_registry::{Component, ComponentScope, example_group_with_title, single_example};
-use inazuma::{AnyElement, AnyView, ClickEvent, MouseButton, MouseDownEvent, Pixels, px};
+use inazuma::{AnyElement, AnyView, ClickEvent, MouseButton, MouseDownEvent, Pixels, StyleRefinement, Styled, px};
 use smallvec::SmallVec;
 
-use crate::{Disclosure, prelude::*};
+use crate::{Disclosure, Selectable, prelude::*};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy, Default)]
 pub enum ListItemSpacing {
@@ -20,6 +20,8 @@ pub struct ListItem {
     group_name: Option<SharedString>,
     disabled: bool,
     selected: bool,
+    secondary_selected: bool,
+    confirmed: bool,
     spacing: ListItemSpacing,
     indent_level: usize,
     indent_step_size: Pixels,
@@ -33,8 +35,11 @@ pub struct ListItem {
     end_hover_slot: Option<AnyElement>,
     toggle: Option<bool>,
     inset: bool,
+    check_icon: Option<AnyElement>,
+    suffix: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyElement + 'static>>,
     on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
     on_hover: Option<Box<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
+    on_mouse_enter: Option<Box<dyn Fn(&inazuma::MouseMoveEvent, &mut Window, &mut App) + 'static>>,
     on_toggle: Option<Arc<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
     tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView + 'static>>,
     on_secondary_mouse_down: Option<Box<dyn Fn(&MouseDownEvent, &mut Window, &mut App) + 'static>>,
@@ -47,6 +52,7 @@ pub struct ListItem {
     focused: Option<bool>,
     docked_right: bool,
     height: Option<Pixels>,
+    style_refinement: StyleRefinement,
 }
 
 impl ListItem {
@@ -56,6 +62,8 @@ impl ListItem {
             group_name: None,
             disabled: false,
             selected: false,
+            secondary_selected: false,
+            confirmed: false,
             spacing: ListItemSpacing::Dense,
             indent_level: 0,
             indent_step_size: px(12.),
@@ -64,10 +72,13 @@ impl ListItem {
             end_hover_slot: None,
             toggle: None,
             inset: false,
+            check_icon: None,
+            suffix: None,
             on_click: None,
             on_secondary_mouse_down: None,
             on_toggle: None,
             on_hover: None,
+            on_mouse_enter: None,
             tooltip: None,
             children: SmallVec::new(),
             selectable: true,
@@ -78,6 +89,7 @@ impl ListItem {
             focused: None,
             docked_right: false,
             height: None,
+            style_refinement: StyleRefinement::default(),
         }
     }
 
@@ -198,6 +210,56 @@ impl ListItem {
     pub fn height(mut self, height: Pixels) -> Self {
         self.height = Some(height);
         self
+    }
+
+    /// Set the secondary selected state (e.g. right-click selection).
+    pub fn secondary_selected(mut self, selected: bool) -> Self {
+        self.secondary_selected = selected;
+        self
+    }
+
+    /// Set the confirmed state (e.g. Enter key confirmation).
+    pub fn confirmed(mut self, confirmed: bool) -> Self {
+        self.confirmed = confirmed;
+        self
+    }
+
+    /// Set a custom check icon for the item.
+    pub fn check_icon(mut self, icon: impl IntoElement) -> Self {
+        self.check_icon = Some(icon.into_any_element());
+        self
+    }
+
+    /// Set a suffix element builder (rendered at the end of the item).
+    pub fn suffix(mut self, suffix: impl Fn(&mut Window, &mut App) -> AnyElement + 'static) -> Self {
+        self.suffix = Some(Box::new(suffix));
+        self
+    }
+
+    /// Set a mouse enter handler.
+    pub fn on_mouse_enter(
+        mut self,
+        handler: impl Fn(&inazuma::MouseMoveEvent, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_mouse_enter = Some(Box::new(handler));
+        self
+    }
+}
+
+impl Selectable for ListItem {
+    fn selected(mut self, selected: bool) -> Self {
+        self.selected = selected;
+        self
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
+    }
+}
+
+impl Styled for ListItem {
+    fn style(&mut self) -> &mut inazuma::StyleRefinement {
+        &mut self.style_refinement
     }
 }
 

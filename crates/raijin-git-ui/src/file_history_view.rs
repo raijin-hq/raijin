@@ -183,7 +183,7 @@ impl FileHistoryView {
         task.detach();
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _: &mut Window, cx: &mut Context<Self>) {
         let entry_count = self.history.entries.len();
         let ix = match self.selected_entry {
             _ if entry_count == 0 => None,
@@ -201,7 +201,7 @@ impl FileHistoryView {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -220,13 +220,13 @@ impl FileHistoryView {
         self.select_ix(ix, cx);
     }
 
-    fn select_first(&mut self, _: &menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
+    fn select_first(&mut self, _: &inazuma_menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
         let entry_count = self.history.entries.len();
         let ix = if entry_count != 0 { Some(0) } else { None };
         self.select_ix(ix, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _: &mut Window, cx: &mut Context<Self>) {
         let entry_count = self.history.entries.len();
         let ix = if entry_count != 0 {
             Some(entry_count - 1)
@@ -244,7 +244,7 @@ impl FileHistoryView {
         cx.notify();
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         self.open_commit_view(window, cx);
     }
 
@@ -308,11 +308,11 @@ impl FileHistoryView {
 
         let commit_time = OffsetDateTime::from_unix_timestamp(entry.commit_timestamp)
             .unwrap_or_else(|_| OffsetDateTime::UNIX_EPOCH);
-        let relative_timestamp = time_format::format_localized_timestamp(
+        let relative_timestamp = raijin_time_format::format_localized_timestamp(
             commit_time,
             OffsetDateTime::now_utc(),
             time::UtcOffset::current_local_offset().unwrap_or(time::UtcOffset::UTC),
-            time_format::TimestampFormat::Relative,
+            raijin_time_format::TimestampFormat::Relative,
         );
 
         ListItem::new(("commit", ix))
@@ -401,7 +401,7 @@ impl Render for FileHistoryView {
             .on_action(cx.listener(Self::select_last))
             .on_action(cx.listener(Self::confirm))
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 h_flex()
                     .h(rems_from_px(41.))
@@ -507,7 +507,7 @@ impl Item for FileHistoryView {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         _window: &mut Window,
         _cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>> {
@@ -569,7 +569,7 @@ impl Item for FileHistoryView {
     fn breadcrumbs(
         &self,
         _cx: &App,
-    ) -> Option<(Vec<workspace::item::HighlightedText>, Option<inazuma::Font>)> {
+    ) -> Option<(Vec<raijin_workspace::item::HighlightedText>, Option<inazuma::Font>)> {
         None
     }
 
@@ -592,7 +592,7 @@ impl Item for FileHistoryView {
 
     fn set_nav_history(
         &mut self,
-        _: workspace::ItemNavHistory,
+        _: raijin_workspace::ItemNavHistory,
         _window: &mut Window,
         _: &mut Context<Self>,
     ) {

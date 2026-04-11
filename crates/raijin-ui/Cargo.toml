@@ -11,32 +11,78 @@ workspace = true
 [lib]
 name = "raijin_ui"
 path = "src/ui.rs"
+doctest = false
+
+[features]
+default = []
+stories = ["dep:inazuma-story"]
 
 [dependencies]
-chrono.workspace = true
-inazuma-component-registry.workspace = true
-documented.workspace = true
+# Framework
 inazuma.workspace = true
 inazuma-macros.workspace = true
 inazuma-icons.workspace = true
-itertools.workspace = true
 inazuma-menu.workspace = true
-schemars.workspace = true
-serde.workspace = true
 inazuma-settings-framework.workspace = true
-smallvec.workspace = true
-inazuma-story = { workspace = true, optional = true }
-strum.workspace = true
+inazuma-gpui-util.workspace = true
+inazuma-component-registry.workspace = true
+inazuma-component-macros = { path = "../inazuma-component/macros" }
+inazuma-sum_tree.workspace = true
+
+# Raijin
+raijin-syntax.workspace = true
 raijin-theme.workspace = true
 raijin-ui-macros.workspace = true
-inazuma-gpui-util.workspace = true
+
+# Serialization / Data
+chrono.workspace = true
+documented.workspace = true
+itertools.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_repr.workspace = true
+smallvec.workspace = true
+strum.workspace = true
+tracing.workspace = true
+log.workspace = true
+
+# Async
+async-channel.workspace = true
+futures.workspace = true
+
+# Text / Parsing
+anyhow.workspace = true
+ropey = { version = "2.0.0-beta.1", features = ["metric_lines_lf", "metric_utf16"] }
+markdown = { version = "1.0.0", features = ["serde"] }
+aho-corasick = "1.1.3"
+lsp-types = { version = "0.97", features = ["proposed"] }
+regex.workspace = true
+unicode-segmentation = "1.12.0"
+
+# Misc
+enum-iterator = "2.1.0"
+notify.workspace = true
+num-traits = "0.2"
+once_cell.workspace = true
+paste = "1"
+raijin-i18n.workspace = true
+uuid.workspace = true
+instant = { version = "0.1", features = ["wasm-bindgen"] }
+
+# Optional
+inazuma-story = { workspace = true, optional = true }
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+smol.workspace = true
+tree-sitter = "0.26"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+core-text = "=21.0.0"
 
 [target.'cfg(windows)'.dependencies]
 windows.workspace = true
 
 [dev-dependencies]
 inazuma = { workspace = true, features = ["test-support"] }
-
-[features]
-default = []
-stories = ["dep:inazuma-story"]
+indoc = "2"

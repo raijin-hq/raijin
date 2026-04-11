@@ -85,7 +85,7 @@ impl Render for ApiKeysWithProviders {
                     .border_t_1()
                     .border_x_1()
                     .border_color(cx.theme().colors().border)
-                    .bg(cx.theme().colors().panel_background)
+                    .bg(cx.theme().colors().panel.background)
                     .child(
                         h_flex()
                             .min_w_0()

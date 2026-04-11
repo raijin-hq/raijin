@@ -489,7 +489,7 @@ impl MultiBuffer {
             self.excerpts_by_path.remove(&path);
         } else {
             let snapshot = &*self.snapshot.get_mut();
-            let excerpt_ids = excerpt_ids
+            let excerpt_ids: Vec<ExcerptId> = excerpt_ids
                 .iter()
                 .dedup()
                 .cloned()

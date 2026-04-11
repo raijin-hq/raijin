@@ -66,11 +66,11 @@ fn parse_timestamp(text: &str) -> DateTime<Utc> {
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub(crate) struct SerializedAxis(pub(crate) inazuma::Axis);
-impl sqlez::bindable::StaticColumnCount for SerializedAxis {}
-impl sqlez::bindable::Bind for SerializedAxis {
+impl raijin_sqlez::bindable::StaticColumnCount for SerializedAxis {}
+impl raijin_sqlez::bindable::Bind for SerializedAxis {
     fn bind(
         &self,
-        statement: &sqlez::statement::Statement,
+        statement: &raijin_sqlez::statement::Statement,
         start_index: i32,
     ) -> anyhow::Result<i32> {
         match self.0 {
@@ -81,9 +81,9 @@ impl sqlez::bindable::Bind for SerializedAxis {
     }
 }
 
-impl sqlez::bindable::Column for SerializedAxis {
+impl raijin_sqlez::bindable::Column for SerializedAxis {
     fn column(
-        statement: &mut sqlez::statement::Statement,
+        statement: &mut raijin_sqlez::statement::Statement,
         start_index: i32,
     ) -> anyhow::Result<(Self, i32)> {
         String::column(statement, start_index).and_then(|(axis_text, next_index)| {
@@ -410,17 +410,17 @@ impl Column for BreakpointStateWrapper<'_> {
     }
 }
 
-impl sqlez::bindable::StaticColumnCount for Breakpoint {
+impl raijin_sqlez::bindable::StaticColumnCount for Breakpoint {
     fn column_count() -> usize {
         // Position, log message, condition message, and hit condition message
         4 + BreakpointStateWrapper::column_count()
     }
 }
 
-impl sqlez::bindable::Bind for Breakpoint {
+impl raijin_sqlez::bindable::Bind for Breakpoint {
     fn bind(
         &self,
-        statement: &sqlez::statement::Statement,
+        statement: &raijin_sqlez::statement::Statement,
         start_index: i32,
     ) -> anyhow::Result<i32> {
         let next_index = statement.bind(&self.position, start_index)?;
@@ -460,12 +460,12 @@ impl Column for Breakpoint {
 
 #[derive(Clone, Debug, PartialEq)]
 struct SerializedPixels(inazuma::Pixels);
-impl sqlez::bindable::StaticColumnCount for SerializedPixels {}
+impl raijin_sqlez::bindable::StaticColumnCount for SerializedPixels {}
 
-impl sqlez::bindable::Bind for SerializedPixels {
+impl raijin_sqlez::bindable::Bind for SerializedPixels {
     fn bind(
         &self,
-        statement: &sqlez::statement::Statement,
+        statement: &raijin_sqlez::statement::Statement,
         start_index: i32,
     ) -> anyhow::Result<i32> {
         let this: i32 = u32::from(self.0) as _;

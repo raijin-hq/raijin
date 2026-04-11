@@ -382,10 +382,10 @@ impl From<raijin_anthropic::ApiError> for LanguageModelCompletionError {
     }
 }
 
-impl From<open_ai::RequestError> for LanguageModelCompletionError {
-    fn from(error: open_ai::RequestError) -> Self {
+impl From<raijin_open_ai::RequestError> for LanguageModelCompletionError {
+    fn from(error: raijin_open_ai::RequestError) -> Self {
         match error {
-            open_ai::RequestError::HttpResponseError {
+            raijin_open_ai::RequestError::HttpResponseError {
                 provider,
                 status_code,
                 body,
@@ -398,7 +398,7 @@ impl From<open_ai::RequestError> for LanguageModelCompletionError {
 
                 Self::from_http_status(provider.into(), status_code, body, retry_after)
             }
-            open_ai::RequestError::Other(e) => Self::Other(e),
+            raijin_open_ai::RequestError::Other(e) => Self::Other(e),
         }
     }
 }

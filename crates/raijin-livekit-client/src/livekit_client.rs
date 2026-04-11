@@ -1,9 +1,9 @@
 use anyhow::{Context as _, Result};
-use audio::AudioSettings;
+use raijin_audio::AudioSettings;
 use inazuma_collections::HashMap;
 use futures::{SinkExt, channel::mpsc};
 use inazuma::{App, AsyncApp, ScreenCaptureSource, ScreenCaptureStream, Task};
-use gpui_tokio::Tokio;
+use inazuma_tokio::Tokio;
 
 use playback::capture_local_video_track;
 use inazuma_settings_framework::Settings;
@@ -14,8 +14,16 @@ mod linux;
 mod playback;
 
 use crate::{ConnectionQuality, LocalTrack, Participant, RemoteTrack, RoomEvent, TrackPublication};
-pub use livekit::SessionStats;
 pub use livekit::webrtc::stats::RtcStats;
+
+/// Session-level statistics aggregated from publisher and subscriber WebRTC stats.
+/// Defined here because the crates.io livekit crate does not export this type
+/// (it exists only in Zed's fork).
+#[derive(Clone, Debug, Default)]
+pub struct SessionStats {
+    pub publisher_stats: Vec<RtcStats>,
+    pub subscriber_stats: Vec<RtcStats>,
+}
 pub use playback::AudioStream;
 pub(crate) use playback::{RemoteVideoFrame, play_remote_video_track};
 
@@ -38,7 +46,7 @@ pub struct LocalTrackPublication(livekit::publication::LocalTrackPublication);
 pub struct LocalParticipant(livekit::participant::LocalParticipant);
 
 pub struct Room {
-    room: livekit::Room,
+    room: Arc<livekit::Room>,
     _task: Task<()>,
     playback: playback::AudioStack,
 }
@@ -54,13 +62,13 @@ impl Room {
         token: String,
         cx: &mut AsyncApp,
     ) -> Result<(Self, mpsc::UnboundedReceiver<RoomEvent>)> {
-        let mut config = livekit::RoomOptions::default();
-        config.tls_config = livekit::TlsConfig(Some(http_client_tls::tls_config()));
+        let config = livekit::RoomOptions::default();
         let (room, mut events) = Tokio::spawn(cx, async move {
             livekit::Room::connect(&url, &token, config).await
         })
         .await??;
 
+        let room = Arc::new(room);
         let (mut tx, rx) = mpsc::unbounded();
         let task = cx.background_executor().spawn(async move {
             while let Some(event) = events.recv().await {
@@ -147,18 +155,27 @@ impl Room {
             .play_remote_audio_track(&track.0, output_audio_device))
     }
 
-    pub async fn get_stats(&self) -> Result<livekit::SessionStats> {
-        self.room.get_stats().await.map_err(anyhow::Error::from)
+    pub async fn get_stats(&self) -> Result<SessionStats> {
+        let room = self.room.clone();
+        let stats = room.get_stats().await.map_err(anyhow::Error::from)?;
+        Ok(SessionStats {
+            publisher_stats: stats.publisher_stats,
+            subscriber_stats: stats.subscriber_stats,
+        })
     }
 
     /// Returns a `Task` that fetches room stats on the Tokio runtime.
     ///
     /// LiveKit's SDK is Tokio-based, so the stats fetch must run within
     /// a Tokio context rather than on GPUI's smol-based background executor.
-    pub fn stats_task(&self, cx: &impl inazuma::AppContext) -> Task<Result<livekit::SessionStats>> {
-        let inner = self.room.clone();
+    pub fn stats_task(&self, cx: &impl inazuma::AppContext) -> Task<Result<SessionStats>> {
+        let room = self.room.clone();
         Tokio::spawn_result(cx, async move {
-            inner.get_stats().await.map_err(anyhow::Error::from)
+            let stats = room.get_stats().await.map_err(anyhow::Error::from)?;
+            Ok(SessionStats {
+                publisher_stats: stats.publisher_stats,
+                subscriber_stats: stats.subscriber_stats,
+            })
         })
     }
 }

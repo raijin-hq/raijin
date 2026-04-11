@@ -3,7 +3,7 @@ pub mod participant;
 pub mod room;
 
 use anyhow::{Context as _, Result, anyhow};
-use audio::Audio;
+use raijin_audio::Audio;
 use raijin_client::{ChannelId, Client, TypedEnvelope, User, UserStore, ZED_ALWAYS_ACTIVE, proto};
 use inazuma_collections::HashSet;
 use futures::{Future, FutureExt, channel::oneshot, future::Shared};
@@ -94,7 +94,7 @@ impl AnyActiveCall for ActiveCallEntity {
         &self,
         peer_id: proto::PeerId,
         cx: &App,
-    ) -> Option<workspace::RemoteCollaborator> {
+    ) -> Option<raijin_workspace::RemoteCollaborator> {
         let room = self.0.read(cx).room()?.read(cx);
         let participant = room.remote_participant_for_peer_id(peer_id)?;
         Some(RemoteCollaborator {
@@ -166,8 +166,8 @@ impl AnyActiveCall for ActiveCallEntity {
     fn join_project(
         &self,
         project_id: u64,
-        language_registry: Arc<language::LanguageRegistry>,
-        fs: Arc<dyn fs::Fs>,
+        language_registry: Arc<raijin_language::LanguageRegistry>,
+        fs: Arc<dyn raijin_fs::Fs>,
         cx: &mut App,
     ) -> Task<Result<Entity<Project>>> {
         let Some(room) = self.0.read(cx).room().cloned() else {
@@ -220,11 +220,11 @@ impl AnyActiveCall for ActiveCallEntity {
 
     fn create_shared_screen(
         &self,
-        peer_id: client::proto::PeerId,
+        peer_id: proto::PeerId,
         pane: &Entity<Pane>,
         window: &mut Window,
         cx: &mut App,
-    ) -> Option<Entity<workspace::SharedScreen>> {
+    ) -> Option<Entity<raijin_workspace::SharedScreen>> {
         let room = self.0.read(cx).room()?.clone();
         let participant = room.read(cx).remote_participant_for_peer_id(peer_id)?;
         let track = participant.video_tracks.values().next()?.clone();
@@ -247,7 +247,7 @@ impl AnyActiveCall for ActiveCallEntity {
                     if let room::Event::RemoteVideoTrackUnsubscribed { sid } = ev
                         && *sid == my_sid
                     {
-                        cx.emit(workspace::shared_screen::Event::Close);
+                        cx.emit(raijin_workspace::shared_screen::Event::Close);
                     }
                 },
             )
@@ -256,7 +256,7 @@ impl AnyActiveCall for ActiveCallEntity {
             cx.observe_release(
                 &room,
                 |_: &mut SharedScreen, _: &mut Room, cx: &mut Context<SharedScreen>| {
-                    cx.emit(workspace::shared_screen::Event::Close);
+                    cx.emit(raijin_workspace::shared_screen::Event::Close);
                 },
             )
             .detach();
@@ -269,7 +269,7 @@ impl AnyActiveCall for ActiveCallEntity {
                  ev: &RemoteVideoTrackViewEvent,
                  cx: &mut Context<SharedScreen>| match ev {
                     RemoteVideoTrackViewEvent::Close => {
-                        cx.emit(workspace::shared_screen::Event::Close);
+                        cx.emit(raijin_workspace::shared_screen::Event::Close);
                     }
                 },
             )
@@ -351,7 +351,7 @@ pub struct ActiveCall {
     ),
     client: Arc<Client>,
     user_store: Entity<UserStore>,
-    _subscriptions: Vec<client::Subscription>,
+    _subscriptions: Vec<raijin_client::Subscription>,
 }
 
 impl EventEmitter<Event> for ActiveCall {}
@@ -594,7 +594,7 @@ impl ActiveCall {
             .borrow_mut()
             .take()
             .context("no incoming call")?;
-        telemetry::event!("Incoming Call Declined", room_id = call.room_id);
+        raijin_telemetry::event!("Incoming Call Declined", room_id = call.room_id);
         self.client.send(proto::DeclineCall {
             room_id: call.room_id,
         })?;
@@ -740,7 +740,7 @@ impl ActiveCall {
     pub fn report_call_event(&self, operation: &'static str, cx: &mut App) {
         if let Some(room) = self.room() {
             let room = room.read(cx);
-            telemetry::event!(
+            raijin_telemetry::event!(
                 operation,
                 room_id = room.id(),
                 channel_id = room.channel_id()

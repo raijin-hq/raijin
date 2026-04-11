@@ -1,10 +1,14 @@
-use inazuma::{App, Styled, oklch};
+use inazuma::{
+    App, BoxShadow, Corners, DefiniteLength, Edges, FocusHandle, Pixels, Styled, Window, oklch,
+    point, px,
+};
+use raijin_theme::ActiveTheme;
 
 use crate::ElevationIndex;
 use crate::prelude::*;
 
 fn elevated<E: Styled>(this: E, cx: &App, index: ElevationIndex) -> E {
-    this.bg(cx.theme().colors().elevated_surface_background)
+    this.bg(cx.theme().colors().elevated_surface)
         .rounded_lg()
         .border_1()
         .border_color(cx.theme().colors().border_variant)
@@ -12,7 +16,7 @@ fn elevated<E: Styled>(this: E, cx: &App, index: ElevationIndex) -> E {
 }
 
 fn elevated_borderless<E: Styled>(this: E, cx: &mut App, index: ElevationIndex) -> E {
-    this.bg(cx.theme().colors().elevated_surface_background)
+    this.bg(cx.theme().colors().elevated_surface)
         .rounded_lg()
         .shadow(index.shadow(cx))
 }
@@ -129,6 +133,155 @@ pub trait StyledExt: Styled + Sized {
     fn debug_bg_magenta(self) -> Self {
         self.bg(oklch(0.7016, 0.3225, 328.3525))
     }
+
+    // ── From inazuma-component StyledExt ─────────────────────────────
+
+    /// Refine the style of this element.
+    fn refine_style(mut self, style: &inazuma::StyleRefinement) -> Self {
+        self.style().refine(style);
+        self
+    }
+
+    /// Apply paddings from an Edges value.
+    fn paddings<L>(self, paddings: impl Into<Edges<L>>) -> Self
+    where
+        L: Into<DefiniteLength> + Clone + Default + std::fmt::Debug + PartialEq,
+    {
+        let paddings = paddings.into();
+        self.pt(paddings.top.into())
+            .pb(paddings.bottom.into())
+            .pl(paddings.left.into())
+            .pr(paddings.right.into())
+    }
+
+    /// Apply margins from an Edges value.
+    fn margins<L>(self, margins: impl Into<Edges<L>>) -> Self
+    where
+        L: Into<DefiniteLength> + Clone + Default + std::fmt::Debug + PartialEq,
+    {
+        let margins = margins.into();
+        self.mt(margins.top.into())
+            .mb(margins.bottom.into())
+            .ml(margins.left.into())
+            .mr(margins.right.into())
+    }
+
+    /// Set corner radii for the element.
+    fn corner_radii(self, radius: Corners<Pixels>) -> Self {
+        self.rounded_tl(radius.top_left)
+            .rounded_tr(radius.top_right)
+            .rounded_bl(radius.bottom_left)
+            .rounded_br(radius.bottom_right)
+    }
+
+    /// Render a 1px border for focus indication.
+    fn focused_border(self, cx: &App) -> Self {
+        self.border_1()
+            .border_color(cx.theme().colors().border_focused)
+    }
+
+    // Font weight convenience methods
+
+    fn font_thin(self) -> Self {
+        self.font_weight(inazuma::FontWeight::THIN)
+    }
+    fn font_extralight(self) -> Self {
+        self.font_weight(inazuma::FontWeight::EXTRA_LIGHT)
+    }
+    fn font_light(self) -> Self {
+        self.font_weight(inazuma::FontWeight::LIGHT)
+    }
+    fn font_normal(self) -> Self {
+        self.font_weight(inazuma::FontWeight::NORMAL)
+    }
+    fn font_medium(self) -> Self {
+        self.font_weight(inazuma::FontWeight::MEDIUM)
+    }
+    fn font_semibold(self) -> Self {
+        self.font_weight(inazuma::FontWeight::SEMIBOLD)
+    }
+    fn font_bold(self) -> Self {
+        self.font_weight(inazuma::FontWeight::BOLD)
+    }
+    fn font_extrabold(self) -> Self {
+        self.font_weight(inazuma::FontWeight::EXTRA_BOLD)
+    }
+    fn font_black(self) -> Self {
+        self.font_weight(inazuma::FontWeight::BLACK)
+    }
+
+    // Debug border helpers (from inazuma-component)
+
+    fn debug_red(self) -> Self {
+        if cfg!(debug_assertions) {
+            self.border_1().border_color(inazuma::red())
+        } else {
+            self
+        }
+    }
+
+    fn debug_blue(self) -> Self {
+        if cfg!(debug_assertions) {
+            self.border_1().border_color(inazuma::blue())
+        } else {
+            self
+        }
+    }
+
+    fn debug_green(self) -> Self {
+        if cfg!(debug_assertions) {
+            self.border_1().border_color(inazuma::green())
+        } else {
+            self
+        }
+    }
+
+    fn debug_yellow(self) -> Self {
+        if cfg!(debug_assertions) {
+            self.border_1().border_color(inazuma::yellow())
+        } else {
+            self
+        }
+    }
+
+    fn debug_focused(self, focus_handle: &FocusHandle, window: &Window, cx: &App) -> Self {
+        if cfg!(debug_assertions) {
+            if focus_handle.contains_focused(window, cx) {
+                self.debug_blue()
+            } else {
+                self
+            }
+        } else {
+            self
+        }
+    }
+
+    /// Apply standard popover styling: elevated surface background, border, rounded corners.
+    fn popover_style(self, cx: &App) -> Self {
+        self.bg(cx.theme().colors().elevated_surface)
+            .border_1()
+            .border_color(cx.theme().colors().border)
+            .rounded_lg()
+    }
 }
 
 impl<E: Styled> StyledExt for E {}
+
+/// Create a [`BoxShadow`] like CSS.
+///
+/// e.g: `box_shadow(0., 0., 10., 0., Oklch::black().opacity(0.1))`
+#[inline(always)]
+pub fn box_shadow(
+    x: impl Into<Pixels>,
+    y: impl Into<Pixels>,
+    blur: impl Into<Pixels>,
+    spread: impl Into<Pixels>,
+    color: impl Into<inazuma::Oklch>,
+) -> BoxShadow {
+    BoxShadow {
+        offset: point(x.into(), y.into()),
+        blur_radius: blur.into(),
+        spread_radius: spread.into(),
+        color: color.into(),
+    }
+}

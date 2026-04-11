@@ -559,7 +559,7 @@ impl Render for ProjectSearchView {
                 .items_center()
                 .justify_center()
                 .overflow_hidden()
-                .bg(cx.theme().colors().editor_background)
+                .bg(cx.theme().colors().editor.background)
                 .track_focus(&self.focus_handle(cx))
                 .child(
                     v_flex()
@@ -1641,9 +1641,9 @@ impl ProjectSearchView {
                 match_ranges,
                 move |index, theme| {
                     if active_index == Some(*index) {
-                        theme.colors().search_active_match_background
+                        theme.colors().search.active_match_background
                     } else {
-                        theme.colors().search_match_background
+                        theme.colors().search.match_background
                     }
                 },
                 cx,
@@ -2691,8 +2691,8 @@ pub mod tests {
         ) {
             search_view
                 .update(cx, |search_view, window, cx| {
-                    let match_bg = cx.theme().colors().search_match_background;
-                    let active_match_bg = cx.theme().colors().search_active_match_background;
+                    let match_bg = cx.theme().colors().search.match_background;
+                    let active_match_bg = cx.theme().colors().search.active_match_background;
                     let selection_bg = cx
                         .theme()
                         .colors()

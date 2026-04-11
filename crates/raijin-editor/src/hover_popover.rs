@@ -391,21 +391,21 @@ fn show_hover(
                     let status_colors = cx.theme().status();
                     match local_diagnostic.diagnostic.severity {
                         DiagnosticSeverity::ERROR => {
-                            (status_colors.error_background, status_colors.error_border)
+                            (status_colors.error.background, status_colors.error.border)
                         }
                         DiagnosticSeverity::WARNING => (
-                            status_colors.warning_background,
-                            status_colors.warning_border,
+                            status_colors.warning.background,
+                            status_colors.warning.border,
                         ),
                         DiagnosticSeverity::INFORMATION => {
-                            (status_colors.info_background, status_colors.info_border)
+                            (status_colors.info.background, status_colors.info.border)
                         }
                         DiagnosticSeverity::HINT => {
-                            (status_colors.hint_background, status_colors.hint_border)
+                            (status_colors.hint.background, status_colors.hint.border)
                         }
                         _ => (
-                            status_colors.ignored_background,
-                            status_colors.ignored_border,
+                            status_colors.ignored.background,
+                            status_colors.ignored.border,
                         ),
                     }
                 })?;
@@ -658,7 +658,7 @@ pub fn hover_markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
         font_family: Some(ui_font_family),
         font_features: Some(ui_font_features),
         font_fallbacks: ui_font_fallbacks,
-        color: Some(cx.theme().colors().editor_foreground),
+        color: Some(cx.theme().colors().editor.foreground),
         ..Default::default()
     });
     MarkdownStyle {
@@ -683,16 +683,16 @@ pub fn hover_markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
             ..Default::default()
         },
         link: TextStyleRefinement {
-            color: Some(cx.theme().colors().editor_foreground),
+            color: Some(cx.theme().colors().editor.foreground),
             underline: Some(inazuma::UnderlineStyle {
                 thickness: px(1.),
-                color: Some(cx.theme().colors().editor_foreground),
+                color: Some(cx.theme().colors().editor.foreground),
                 wavy: false,
             }),
             ..Default::default()
         },
         syntax: cx.theme().syntax().clone(),
-        selection_background_color: cx.theme().colors().element_selection_background,
+        selection_background_color: cx.theme().colors().element_selection,
         heading: StyleRefinement::default()
             .font_weight(FontWeight::BOLD)
             .text_base()
@@ -717,14 +717,14 @@ pub fn diagnostics_markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
         font_family: Some(ui_font_family),
         font_features: Some(ui_font_features),
         font_fallbacks: ui_font_fallbacks,
-        color: Some(cx.theme().colors().editor_foreground),
+        color: Some(cx.theme().colors().editor.foreground),
         ..Default::default()
     });
     MarkdownStyle {
         base_text_style,
         code_block: StyleRefinement::default().my(rems(1.)).font_buffer(cx),
         inline_code: TextStyleRefinement {
-            background_color: Some(cx.theme().colors().editor_background.opacity(0.5)),
+            background_color: Some(cx.theme().colors().editor.background.opacity(0.5)),
             font_family: Some(buffer_font_family),
             font_features: Some(buffer_font_features),
             font_fallbacks: buffer_font_fallbacks,
@@ -737,16 +737,16 @@ pub fn diagnostics_markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
             ..Default::default()
         },
         link: TextStyleRefinement {
-            color: Some(cx.theme().colors().editor_foreground),
+            color: Some(cx.theme().colors().editor.foreground),
             underline: Some(inazuma::UnderlineStyle {
                 thickness: px(1.),
-                color: Some(cx.theme().colors().editor_foreground),
+                color: Some(cx.theme().colors().editor.foreground),
                 wavy: false,
             }),
             ..Default::default()
         },
         syntax: cx.theme().syntax().clone(),
-        selection_background_color: cx.theme().colors().element_selection_background,
+        selection_background_color: cx.theme().colors().element_selection,
         height_is_multiple_of_line_height: true,
         heading: StyleRefinement::default()
             .font_weight(FontWeight::BOLD)
@@ -1242,7 +1242,7 @@ mod tests {
     ) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 completion_provider: Some(raijin_lsp::CompletionOptions {
@@ -1409,7 +1409,7 @@ mod tests {
     async fn test_mouse_hover_info_popover(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()
@@ -1499,7 +1499,7 @@ mod tests {
     async fn test_keyboard_hover_info_popover(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()
@@ -1566,7 +1566,7 @@ mod tests {
     async fn test_empty_hovers_filtered(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()
@@ -1627,7 +1627,7 @@ mod tests {
     async fn test_line_ends_trimmed(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()
@@ -1693,7 +1693,7 @@ mod tests {
     async fn test_info_hover_with_hrs(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()
@@ -1760,7 +1760,7 @@ mod tests {
             })
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 inlay_hint_provider: Some(raijin_lsp::OneOf::Right(
                     raijin_lsp::InlayHintServerCapabilities::Options(raijin_lsp::InlayHintOptions {

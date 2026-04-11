@@ -2,19 +2,23 @@
 //! can be used to describe common units, concepts, and the relationships
 //! between them.
 
+mod anchor;
 mod bounds;
 mod bounds_convert;
 mod corners;
 mod edges;
 mod lengths;
+mod placement;
 mod point;
 mod size;
 mod units;
 
+pub use anchor::*;
 pub use bounds::*;
 pub use corners::*;
 pub use edges::*;
 pub use lengths::*;
+pub use placement::*;
 pub use point::*;
 pub use size::*;
 pub use units::*;

@@ -1223,7 +1223,7 @@ mod tests {
             init_test(cx);
         });
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         let editor = cx.editor.clone();
         let window = cx.window;
         _ = cx.update_window(window, |_, window, cx| {

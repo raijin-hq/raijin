@@ -37,7 +37,7 @@ impl RenderOnce for ExtensionCard {
                 .h(rems_from_px(110.))
                 .p_3()
                 .gap_2()
-                .bg(cx.theme().colors().elevated_surface_background.opacity(0.5))
+                .bg(cx.theme().colors().elevated_surface.opacity(0.5))
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
                 .rounded_md()
@@ -52,7 +52,7 @@ impl RenderOnce for ExtensionCard {
                             .cursor_default()
                             .size_full()
                             .justify_center()
-                            .bg(cx.theme().colors().elevated_surface_background.alpha(0.8))
+                            .bg(cx.theme().colors().elevated_surface.alpha(0.8))
                             .child(Label::new("Overridden by dev extension.")),
                     )
                 }),

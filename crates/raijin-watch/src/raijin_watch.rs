@@ -5,6 +5,7 @@ use parking_lot::{RwLock, RwLockReadGuard, RwLockUpgradableReadGuard};
 use std::{
     collections::BTreeMap,
     mem,
+    ops::{Deref, DerefMut},
     pin::Pin,
     sync::Arc,
     task::{Context, Poll, Waker},
@@ -59,6 +60,21 @@ impl<T> Sender<T> {
         }
     }
 
+    /// Returns a guard that allows mutating the current value in-place.
+    /// When the guard is dropped, receivers are notified of the change.
+    /// This provides API compatibility with `postage::watch::Sender::borrow_mut()`.
+    pub fn borrow_mut(&mut self) -> SenderGuard<'_, T> {
+        SenderGuard {
+            state: self.state.write(),
+        }
+    }
+
+    /// Synchronously send a value, blocking the current thread.
+    /// This is equivalent to `send` since the watch channel is always ready.
+    pub fn blocking_send(&mut self, value: T) -> Result<(), NoReceiverError> {
+        self.send(value)
+    }
+
     pub fn send(&mut self, value: T) -> Result<(), NoReceiverError> {
         if let Some(state) = Arc::get_mut(&mut self.state) {
             let state = state.get_mut();
@@ -77,6 +93,36 @@ impl<T> Sender<T> {
             }
 
             Ok(())
+        }
+    }
+}
+
+/// A guard that allows in-place mutation of the watched value.
+/// When dropped, notifies all receivers of the change.
+pub struct SenderGuard<'a, T> {
+    state: parking_lot::RwLockWriteGuard<'a, State<T>>,
+}
+
+impl<T> Deref for SenderGuard<'_, T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.state.value
+    }
+}
+
+impl<T> DerefMut for SenderGuard<'_, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        &mut self.state.value
+    }
+}
+
+impl<T> Drop for SenderGuard<'_, T> {
+    fn drop(&mut self) {
+        self.state.version = self.state.version.wrapping_add(1);
+        let wakers = mem::take(&mut self.state.wakers);
+        for (_, waker) in wakers {
+            waker.wake();
         }
     }
 }
@@ -156,6 +202,14 @@ impl<T> Receiver<T> {
         RwLockReadGuard::map(state, |state| &state.value)
     }
 
+    /// Peek at the current value without marking it as seen.
+    /// Unlike `borrow()`, this does not require `&mut self` and does not
+    /// update the receiver's version, so `changed()` will still fire.
+    pub fn peek(&self) -> parking_lot::MappedRwLockReadGuard<'_, T> {
+        let state = self.state.read();
+        RwLockReadGuard::map(state, |state| &state.value)
+    }
+
     pub fn changed(&mut self) -> impl Future<Output = Result<(), NoSenderError>> {
         Changed {
             receiver: self,
@@ -181,6 +235,28 @@ impl<T: Clone> Receiver<T> {
     pub async fn recv(&mut self) -> Result<T, NoSenderError> {
         self.changed().await?;
         Ok(self.borrow().clone())
+    }
+}
+
+impl<T: Clone> futures::Stream for Receiver<T> {
+    type Item = T;
+
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<Self::Item>> {
+        let state = self.state.upgradable_read();
+        if state.version != self.version {
+            let version = state.version;
+            let value = state.value.clone();
+            drop(state);
+            self.version = version;
+            Poll::Ready(Some(value))
+        } else if state.closed {
+            Poll::Ready(None)
+        } else {
+            let mut state = RwLockUpgradableReadGuard::upgrade(state);
+            let waker_id = state.next_waker_id.post_inc();
+            state.wakers.insert(waker_id, cx.waker().clone());
+            Poll::Pending
+        }
     }
 }
 

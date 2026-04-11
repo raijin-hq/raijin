@@ -1,13 +1,12 @@
 //! Stub terminal panel — will be replaced in Phase 20.
 
 use inazuma::{
-    AnyElement, AnyView, App, Context, Entity, EventEmitter, FocusHandle, Focusable, Render,
-    Window, prelude::*,
+    App, Context, Entity, EventEmitter, FocusHandle, Focusable, Pixels,
+    Render, Window, prelude::*, px,
 };
 use raijin_workspace::{
-    Item, ItemEvent, Workspace,
+    Workspace,
     dock::{DockPosition, Panel, PanelEvent},
-    pane::Pane,
 };
 
 /// Stub terminal panel.
@@ -63,7 +62,11 @@ impl Panel for TerminalPanel {
         "TerminalPanel"
     }
 
-    fn position(&self, _cx: &App) -> DockPosition {
+    fn panel_key() -> &'static str {
+        "TerminalPanel"
+    }
+
+    fn position(&self, _window: &Window, _cx: &App) -> DockPosition {
         DockPosition::Bottom
     }
 
@@ -71,7 +74,27 @@ impl Panel for TerminalPanel {
         true
     }
 
-    fn set_position(&mut self, _position: DockPosition, _cx: &mut Context<Self>) {}
+    fn set_position(&mut self, _position: DockPosition, _window: &mut Window, _cx: &mut Context<Self>) {}
+
+    fn default_size(&self, _window: &Window, _cx: &App) -> Pixels {
+        px(300.0)
+    }
+
+    fn icon(&self, _window: &Window, _cx: &App) -> Option<raijin_ui::IconName> {
+        None
+    }
+
+    fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
+        Some("Terminal")
+    }
+
+    fn toggle_action(&self) -> Box<dyn inazuma::Action> {
+        Box::new(ToggleFocus)
+    }
+
+    fn activation_priority(&self) -> u32 {
+        5
+    }
 }
 
 impl Render for TerminalPanel {

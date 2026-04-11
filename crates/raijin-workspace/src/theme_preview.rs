@@ -118,7 +118,7 @@ const AVATAR_URL: &str = "https://avatars.githubusercontent.com/u/1714999?v=4";
 
 impl ThemePreview {
     fn preview_bg(window: &mut Window, cx: &mut App) -> Oklch {
-        cx.theme().colors().editor_background
+        cx.theme().colors().editor.background
     }
 
     fn render_text(

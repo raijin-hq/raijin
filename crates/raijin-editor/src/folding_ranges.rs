@@ -142,7 +142,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -242,7 +242,7 @@ mod tests {
     async fn test_lsp_folding_ranges_disabled_by_default(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -270,7 +270,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -337,7 +337,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -427,7 +427,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -503,7 +503,7 @@ mod tests {
     async fn test_lsp_folding_ranges_switch_between_treesitter_and_lsp(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -674,7 +674,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -1085,7 +1085,7 @@ mod tests {
             settings.defaults.document_folding_ranges = Some(DocumentFoldingRanges::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 folding_range_provider: Some(raijin_lsp::FoldingRangeProviderCapability::Simple(true)),
                 ..raijin_lsp::ServerCapabilities::default()

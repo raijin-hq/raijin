@@ -213,7 +213,7 @@ struct AutoUpdateSetting(bool);
 ///
 /// Default: true
 impl Settings for AutoUpdateSetting {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_content::SettingsContent) -> Self {
         Self(content.auto_update.unwrap())
     }
 }
@@ -233,7 +233,7 @@ pub fn init(client: Arc<Client>, cx: &mut App) {
     })
     .detach();
 
-    let version = release_channel::AppVersion::global(cx);
+    let version = raijin_release_channel::AppVersion::global(cx);
     let auto_updater = cx.new(|cx| {
         let updater = AutoUpdater::new(version, client, cx);
 
@@ -528,7 +528,7 @@ impl AutoUpdater {
         )
         .await?;
 
-        let servers_dir = paths::remote_servers_dir();
+        let servers_dir = raijin_paths::remote_servers_dir();
         let channel_dir = servers_dir.join(release_channel.dev_name());
         let platform_dir = channel_dir.join(format!("{}-{}", os, arch));
         let version_path = platform_dir.join(format!("{}.gz", release.version));
@@ -1138,7 +1138,7 @@ pub async fn finalize_auto_update_on_quit() {
             .parent()
             .map(|p| p.join("tools").join("auto_update_helper.exe"))
     {
-        let mut command = util::command::new_command(helper);
+        let mut command = inazuma_util::command::new_command(helper);
         command.arg("--launch");
         command.arg("false");
         if let Ok(mut cmd) = command.spawn() {

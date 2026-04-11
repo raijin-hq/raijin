@@ -14,7 +14,7 @@ use inazuma_text::PointUtf16;
 use raijin_workspace::OpenInTerminal;
 use raijin_actions::agent::AddSelectionToThread;
 use raijin_actions::preview::{
-    raijin_markdown::OpenPreview as OpenMarkdownPreview, svg::OpenPreview as OpenSvgPreview,
+    markdown::OpenPreview as OpenMarkdownPreview, svg::OpenPreview as OpenSvgPreview,
 };
 
 #[derive(Debug)]
@@ -354,7 +354,7 @@ mod tests {
     async fn test_mouse_context_menu(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 ..Default::default()

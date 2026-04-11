@@ -149,10 +149,10 @@ impl Disableable for DropdownMenu {
 impl RenderOnce for DropdownMenu {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         let button_style = match self.style {
-            DropdownStyle::Solid => ButtonStyle::Filled,
-            DropdownStyle::Subtle => ButtonStyle::Subtle,
+            DropdownStyle::Solid => ButtonStyle::FILLED,
+            DropdownStyle::Subtle => ButtonStyle::SUBTLE,
             DropdownStyle::Outlined => ButtonStyle::Outlined,
-            DropdownStyle::Ghost => ButtonStyle::Transparent,
+            DropdownStyle::Ghost => ButtonStyle::TRANSPARENT,
         };
 
         let full_width = self.full_width;
@@ -169,9 +169,9 @@ impl RenderOnce for DropdownMenu {
                             )
                         })
                         .when(full_width, |this| this.full_width())
-                        .size(trigger_size)
+                        .map(|b| ButtonCommon::size(b, trigger_size))
                         .disabled(self.disabled)
-                        .when_some(self.tab_index, |this, tab_index| this.tab_index(tab_index)),
+                        .when_some(self.tab_index, |this, tab_index| ButtonCommon::tab_index(this, tab_index)),
                 ),
                 None,
             ),
@@ -189,9 +189,9 @@ impl RenderOnce for DropdownMenu {
                             )
                         })
                         .when(full_width, |this| this.full_width())
-                        .size(trigger_size)
+                        .map(|b| ButtonCommon::size(b, trigger_size))
                         .disabled(self.disabled)
-                        .when_some(self.tab_index, |this, tab_index| this.tab_index(tab_index)),
+                        .when_some(self.tab_index, |this, tab_index| ButtonCommon::tab_index(this, tab_index)),
                 ),
             ),
         };

@@ -392,7 +392,7 @@ impl Element for ImageContentElement {
                             .top_0()
                             .left_0()
                             .child(div().size_full().bg(checkerboard(
-                                cx.theme().colors().panel_background,
+                                cx.theme().colors().panel.background,
                                 BASE_SQUARE_SIZE * zoom_level,
                             )))
                             .border_1()
@@ -683,7 +683,7 @@ impl Render for ImageView {
             .on_action(cx.listener(Self::zoom_to_actual_size))
             .size_full()
             .relative()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child({
                 #[cfg(any(target_os = "linux", target_os = "macos"))]
                 let container = div()

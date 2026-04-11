@@ -41,6 +41,23 @@ impl Window {
         subscription
     }
 
+    /// Registers a callback to be invoked when the window button layout changes.
+    /// On Linux this fires when the user changes button placement (close/minimize left vs right).
+    pub fn observe_button_layout_changed(
+        &self,
+        mut callback: impl FnMut(&mut Window, &mut App) + 'static,
+    ) -> Subscription {
+        let (subscription, activate) = self.button_layout_observers.insert(
+            (),
+            Box::new(move |window, cx| {
+                callback(window, cx);
+                true
+            }),
+        );
+        activate();
+        subscription
+    }
+
     /// Replaces the root entity of the window with a new one.
     pub fn replace_root<E>(
         &mut self,

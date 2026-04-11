@@ -3,12 +3,22 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::{Context, Result, anyhow, bail};
-use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, WindowBackgroundAppearance, oklcha};
+use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, WindowBackgroundAppearance, oklcha, px};
+use inazuma_refineable::Refineable;
 
 use crate::accent::AccentColors;
-use crate::colors::ThemeColors;
+use crate::colors::{
+    BlockColors, BlockColorsRefinement, ChartColors, ChartColorsRefinement, EditorColors,
+    EditorColorsRefinement, MinimapColors, MinimapColorsRefinement, PaneColors,
+    PaneColorsRefinement, PanelColors, PanelColorsRefinement, ScrollbarColors,
+    ScrollbarColorsRefinement, SearchColors, SearchColorsRefinement, StatusBarColors,
+    StatusBarColorsRefinement, TabColors, TabColorsRefinement, TerminalAnsiColors,
+    TerminalAnsiColorsRefinement, TerminalColors, TerminalColorsRefinement, ThemeColors,
+    ThemeColorsRefinement, TitleBarColors, TitleBarColorsRefinement, ToolbarColors,
+    ToolbarColorsRefinement, VersionControlColors, VersionControlColorsRefinement, VimColors,
+    VimColorsRefinement,
+};
 use crate::players::{PlayerColor, PlayerColors};
-use crate::refinement::ThemeColorsRefinement;
 use crate::status::{StatusColors, StatusStyle};
 use crate::syntax::SyntaxTheme;
 use crate::system::SystemColors;
@@ -75,7 +85,7 @@ pub fn load_theme_from_toml_with_base_dir(
     let syntax_value = style.get("syntax");
     let bg_image_value = style.get("background_image");
 
-    // Flatten all remaining keys (dots → underscores) for color parsing
+    // Flatten all remaining keys (dots in quoted keys merge with nested tables)
     let mut flat: HashMap<String, String> = HashMap::new();
     flatten_table(style, "", &mut flat);
 
@@ -244,8 +254,11 @@ fn flatten_table(table: &toml::value::Table, prefix: &str, out: &mut HashMap<Str
                 flatten_table(t, &full_key, out);
             }
             toml::Value::Integer(i) => {
-                // Some keys might be integers (e.g. font_weight in syntax)
+                // Some keys might be integers (e.g. font_weight in syntax, radius)
                 out.insert(full_key, i.to_string());
+            }
+            toml::Value::Float(f) => {
+                out.insert(full_key, f.to_string());
             }
             _ => {
                 // Skip arrays and other types at the flat color level
@@ -255,14 +268,8 @@ fn flatten_table(table: &toml::value::Table, prefix: &str, out: &mut HashMap<Str
 }
 
 // ---------------------------------------------------------------------------
-// ThemeColors parsing
+// ThemeColors parsing — prefix-based routing
 // ---------------------------------------------------------------------------
-
-/// Maps a flattened TOML key to the ThemeColors field name.
-/// Rule: replace all dots with underscores.
-fn toml_key_to_field(key: &str) -> String {
-    key.replace('.', "_")
-}
 
 /// Returns whether a flattened key belongs to StatusColors.
 fn is_status_key(key: &str) -> bool {
@@ -272,7 +279,7 @@ fn is_status_key(key: &str) -> bool {
 
 /// Parses the flattened style table into ThemeColors.
 fn parse_theme_colors(flat: &HashMap<String, String>) -> Result<ThemeColors> {
-    let base = default_theme_colors();
+    let mut colors = default_theme_colors();
     let mut refinement = ThemeColorsRefinement::default();
 
     for (key, value) in flat {
@@ -281,23 +288,63 @@ fn parse_theme_colors(flat: &HashMap<String, String>) -> Result<ThemeColors> {
             continue;
         }
 
-        let field_name = toml_key_to_field(key);
+        // Special case: radius is a number, not a color
+        if key == "radius" {
+            if let Ok(val) = value.parse::<f32>() {
+                refinement.radius = Some(px(val));
+            }
+            continue;
+        }
+
         let color = parse_color(value)
             .with_context(|| format!("invalid color for '{key}': '{value}'"))?;
 
-        set_refinement_field(&mut refinement, &field_name, color);
+        // Route by prefix (first dot-separated segment)
+        if let Some((prefix, rest)) = key.split_once('.') {
+            match prefix {
+                "editor" => set_editor_field(&mut refinement.editor, rest, color),
+                "terminal" => {
+                    if let Some(ansi_rest) = rest.strip_prefix("ansi.") {
+                        set_terminal_ansi_field(&mut refinement.terminal.ansi, ansi_rest, color);
+                    } else {
+                        set_terminal_field(&mut refinement.terminal, rest, color);
+                    }
+                }
+                "panel" => set_panel_field(&mut refinement.panel, rest, color),
+                "pane" => set_pane_field(&mut refinement.pane, rest, color),
+                "tab" => set_tab_field(&mut refinement.tab, rest, color),
+                "scrollbar" => set_scrollbar_field(&mut refinement.scrollbar, rest, color),
+                "minimap" => set_minimap_field(&mut refinement.minimap, rest, color),
+                "status_bar" => set_status_bar_field(&mut refinement.status_bar, rest, color),
+                "title_bar" => set_title_bar_field(&mut refinement.title_bar, rest, color),
+                "toolbar" => set_toolbar_field(&mut refinement.toolbar, rest, color),
+                "search" => set_search_field(&mut refinement.search, rest, color),
+                "vim" => set_vim_field(&mut refinement.vim, rest, color),
+                "version_control" => set_version_control_field(&mut refinement.version_control, rest, color),
+                "block" => set_block_field(&mut refinement.block, rest, color),
+                "chart" => set_chart_field(&mut refinement.chart, rest, color),
+                _ => {
+                    log::trace!("unknown theme color prefix: '{prefix}' (key: '{key}')");
+                }
+            }
+        } else {
+            // No dot — top-level field
+            set_toplevel_field(&mut refinement, key, color);
+        }
     }
 
-    Ok(refinement.apply_to(&base))
+    colors.refine(&refinement);
+    Ok(colors)
 }
 
-/// Sets a field on ThemeColorsRefinement by name.
-///
-/// Uses a macro to match all 126 fields without manual boilerplate.
-macro_rules! match_refinement_fields {
-    ($refinement:expr, $name:expr, $color:expr, $($field:ident),* $(,)?) => {
+// ---------------------------------------------------------------------------
+// Per-sub-struct field setters
+// ---------------------------------------------------------------------------
+
+macro_rules! match_fields {
+    ($target:expr, $name:expr, $color:expr, $($field:ident),* $(,)?) => {
         match $name {
-            $(stringify!($field) => { $refinement.$field = Some($color); })*
+            $(stringify!($field) => { $target.$field = Some($color); })*
             other => {
                 log::trace!("unknown theme color key: '{other}'");
             }
@@ -305,33 +352,49 @@ macro_rules! match_refinement_fields {
     };
 }
 
-fn set_refinement_field(refinement: &mut ThemeColorsRefinement, name: &str, color: Oklch) {
-    match_refinement_fields!(
-        refinement,
-        name,
-        color,
+fn set_toplevel_field(refinement: &mut ThemeColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        // Semantic tokens
+        primary,
+        primary_foreground,
+        secondary,
+        secondary_foreground,
+        muted,
+        muted_foreground,
+        accent,
+        accent_foreground,
+        destructive,
+        destructive_foreground,
+        background,
+        foreground,
+        card,
+        card_foreground,
+        popover,
+        popover_foreground,
         border,
+        input,
+        ring,
+        // Extended base tokens
+        surface,
+        elevated_surface,
         border_variant,
         border_focused,
         border_selected,
         border_transparent,
         border_disabled,
-        elevated_surface_background,
-        surface_background,
-        background,
         element_background,
         element_hover,
         element_active,
         element_selected,
-        element_selection_background,
         element_disabled,
-        drop_target_background,
-        drop_target_border,
+        element_selection,
         ghost_element_background,
         ghost_element_hover,
         ghost_element_active,
         ghost_element_selected,
         ghost_element_disabled,
+        drop_target_background,
+        drop_target_border,
         text,
         text_muted,
         text_placeholder,
@@ -342,114 +405,201 @@ fn set_refinement_field(refinement: &mut ThemeColorsRefinement, name: &str, colo
         icon_disabled,
         icon_placeholder,
         icon_accent,
-        status_bar_background,
-        title_bar_background,
-        title_bar_inactive_background,
-        toolbar_background,
-        tab_bar_background,
-        tab_inactive_background,
-        tab_active_background,
-        search_match_background,
-        search_active_match_background,
-        panel_background,
-        panel_focused_border,
-        panel_indent_guide,
-        panel_indent_guide_hover,
-        panel_indent_guide_active,
-        panel_overlay_background,
-        panel_overlay_hover,
-        pane_focused_border,
-        pane_group_border,
-        scrollbar_thumb_background,
-        scrollbar_thumb_hover_background,
-        scrollbar_thumb_active_background,
-        scrollbar_thumb_border,
-        scrollbar_track_background,
-        scrollbar_track_border,
-        editor_foreground,
-        editor_background,
-        editor_gutter_background,
-        editor_subheader_background,
-        editor_active_line_background,
-        editor_highlighted_line_background,
-        editor_line_number,
-        editor_active_line_number,
-        editor_invisible,
-        editor_wrap_guide,
-        editor_active_wrap_guide,
-        editor_indent_guide,
-        editor_indent_guide_active,
-        editor_document_highlight_read_background,
-        editor_document_highlight_write_background,
-        editor_document_highlight_bracket_background,
-        terminal_background,
-        terminal_foreground,
-        terminal_bright_foreground,
-        terminal_dim_foreground,
-        terminal_accent,
-        terminal_ansi_background,
-        terminal_ansi_black,
-        terminal_ansi_bright_black,
-        terminal_ansi_dim_black,
-        terminal_ansi_red,
-        terminal_ansi_bright_red,
-        terminal_ansi_dim_red,
-        terminal_ansi_green,
-        terminal_ansi_bright_green,
-        terminal_ansi_dim_green,
-        terminal_ansi_yellow,
-        terminal_ansi_bright_yellow,
-        terminal_ansi_dim_yellow,
-        terminal_ansi_blue,
-        terminal_ansi_bright_blue,
-        terminal_ansi_dim_blue,
-        terminal_ansi_magenta,
-        terminal_ansi_bright_magenta,
-        terminal_ansi_dim_magenta,
-        terminal_ansi_cyan,
-        terminal_ansi_bright_cyan,
-        terminal_ansi_dim_cyan,
-        terminal_ansi_white,
-        terminal_ansi_bright_white,
-        terminal_ansi_dim_white,
         link_text_hover,
-        version_control_added,
-        version_control_deleted,
-        version_control_modified,
-        version_control_renamed,
-        version_control_conflict,
-        version_control_ignored,
-        version_control_word_added,
-        version_control_word_deleted,
-        version_control_conflict_marker_ours,
-        version_control_conflict_marker_theirs,
-        minimap_thumb_background,
-        minimap_thumb_hover_background,
-        minimap_thumb_active_background,
-        minimap_thumb_border,
-        vim_normal_background,
-        vim_insert_background,
-        vim_replace_background,
-        vim_visual_background,
-        vim_visual_line_background,
-        vim_visual_block_background,
-        vim_yank_background,
-        vim_helix_normal_background,
-        vim_helix_select_background,
-        vim_normal_foreground,
-        vim_insert_foreground,
-        vim_replace_foreground,
-        vim_visual_foreground,
-        vim_visual_line_foreground,
-        vim_visual_block_foreground,
-        vim_helix_normal_foreground,
-        vim_helix_select_foreground,
         debugger_accent,
-        editor_debugger_active_line_background,
-        editor_hover_line_number,
-        block_success_badge,
-        block_error_badge,
-        block_running_badge,
+    );
+}
+
+fn set_editor_field(refinement: &mut EditorColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        foreground,
+        background,
+        gutter_background,
+        subheader_background,
+        active_line_background,
+        highlighted_line_background,
+        debugger_active_line_background,
+        line_number,
+        active_line_number,
+        hover_line_number,
+        invisible,
+        wrap_guide,
+        active_wrap_guide,
+        indent_guide,
+        indent_guide_active,
+        document_highlight_read_background,
+        document_highlight_write_background,
+        document_highlight_bracket_background,
+    );
+}
+
+fn set_terminal_field(refinement: &mut TerminalColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+        foreground,
+        bright_foreground,
+        dim_foreground,
+        accent,
+    );
+}
+
+fn set_terminal_ansi_field(refinement: &mut TerminalAnsiColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+        black,
+        bright_black,
+        dim_black,
+        red,
+        bright_red,
+        dim_red,
+        green,
+        bright_green,
+        dim_green,
+        yellow,
+        bright_yellow,
+        dim_yellow,
+        blue,
+        bright_blue,
+        dim_blue,
+        magenta,
+        bright_magenta,
+        dim_magenta,
+        cyan,
+        bright_cyan,
+        dim_cyan,
+        white,
+        bright_white,
+        dim_white,
+    );
+}
+
+fn set_panel_field(refinement: &mut PanelColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+        focused_border,
+        indent_guide,
+        indent_guide_hover,
+        indent_guide_active,
+        overlay_background,
+        overlay_hover,
+    );
+}
+
+fn set_pane_field(refinement: &mut PaneColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        focused_border,
+        group_border,
+    );
+}
+
+fn set_tab_field(refinement: &mut TabColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        bar_background,
+        inactive_background,
+        active_background,
+        inactive_foreground,
+        active_foreground,
+    );
+}
+
+fn set_scrollbar_field(refinement: &mut ScrollbarColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        thumb_background,
+        thumb_hover_background,
+        thumb_active_background,
+        thumb_border,
+        track_background,
+        track_border,
+    );
+}
+
+fn set_minimap_field(refinement: &mut MinimapColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        thumb_background,
+        thumb_hover_background,
+        thumb_active_background,
+        thumb_border,
+    );
+}
+
+fn set_status_bar_field(refinement: &mut StatusBarColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+    );
+}
+
+fn set_title_bar_field(refinement: &mut TitleBarColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+        inactive_background,
+    );
+}
+
+fn set_toolbar_field(refinement: &mut ToolbarColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background,
+    );
+}
+
+fn set_search_field(refinement: &mut SearchColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        match_background,
+        active_match_background,
+    );
+}
+
+fn set_vim_field(refinement: &mut VimColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        normal_background,
+        insert_background,
+        replace_background,
+        visual_background,
+        visual_line_background,
+        visual_block_background,
+        yank_background,
+        helix_normal_background,
+        helix_select_background,
+        normal_foreground,
+        insert_foreground,
+        replace_foreground,
+        visual_foreground,
+        visual_line_foreground,
+        visual_block_foreground,
+        helix_normal_foreground,
+        helix_select_foreground,
+    );
+}
+
+fn set_version_control_field(refinement: &mut VersionControlColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        added,
+        deleted,
+        modified,
+        renamed,
+        conflict,
+        ignored,
+        word_added,
+        word_deleted,
+        conflict_marker_ours,
+        conflict_marker_theirs,
+    );
+}
+
+fn set_block_field(refinement: &mut BlockColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        success_badge,
+        error_badge,
+        running_badge,
+    );
+}
+
+fn set_chart_field(refinement: &mut ChartColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        chart_1,
+        chart_2,
+        chart_3,
+        chart_4,
+        chart_5,
     );
 }
 
@@ -479,16 +629,14 @@ fn parse_status_colors(flat: &HashMap<String, String>) -> Result<StatusColors> {
 }
 
 /// Parses a single StatusStyle from flattened keys.
-/// Looks for `{name}`, `{name}.background` / `{name}_background`, `{name}.border` / `{name}_border`.
+/// Looks for `{name}`, `{name}.background`, `{name}.border`.
 fn parse_status_style(flat: &HashMap<String, String>, name: &str) -> Option<StatusStyle> {
     let color_str = flat.get(name)?;
     let color = parse_color(color_str).ok()?;
 
-    let bg_key_dot = format!("{name}.background");
-    let bg_key_us = format!("{name}_background");
+    let bg_key = format!("{name}.background");
     let background = flat
-        .get(&bg_key_dot)
-        .or_else(|| flat.get(&bg_key_us))
+        .get(&bg_key)
         .and_then(|s| parse_color(s).ok())
         .unwrap_or_else(|| {
             let mut c = color;
@@ -496,11 +644,9 @@ fn parse_status_style(flat: &HashMap<String, String>, name: &str) -> Option<Stat
             c
         });
 
-    let border_key_dot = format!("{name}.border");
-    let border_key_us = format!("{name}_border");
+    let border_key = format!("{name}.border");
     let border = flat
-        .get(&border_key_dot)
-        .or_else(|| flat.get(&border_key_us))
+        .get(&border_key)
         .and_then(|s| parse_color(s).ok())
         .unwrap_or_else(|| {
             let mut c = color;
@@ -689,28 +835,48 @@ pub fn default_theme_colors() -> ThemeColors {
     let transparent = oklcha(0.0, 0.0, 0.0, 0.0);
 
     ThemeColors {
+        // Semantic tokens
+        primary: accent,
+        primary_foreground: fg,
+        secondary: surface,
+        secondary_foreground: fg,
+        muted: hex(0x1e1e1e),
+        muted_foreground: muted,
+        accent,
+        accent_foreground: fg,
+        destructive: hex(0xff5555),
+        destructive_foreground: fg,
+        background: bg,
+        foreground: fg,
+        card: surface,
+        card_foreground: fg,
+        popover: elevated,
+        popover_foreground: fg,
         border: border_color,
+        input: hex(0x1e1e1e),
+        ring: accent,
+
+        // Extended base tokens
+        surface,
+        elevated_surface: elevated,
         border_variant: hex(0x2a2a2a),
         border_focused: accent,
         border_selected: accent,
         border_transparent: transparent,
         border_disabled: hex(0x2a2a2a),
-        elevated_surface_background: elevated,
-        surface_background: surface,
-        background: bg,
         element_background: hex(0x1e1e1e),
         element_hover: hex(0x252525),
         element_active: hex(0x2a2a2a),
         element_selected: hex(0x2e2e2e),
-        element_selection_background: hex_a(0x14F195, 0.15),
         element_disabled: hex(0x1a1a1a),
-        drop_target_background: hex_a(0x14F195, 0.1),
-        drop_target_border: accent,
+        element_selection: hex_a(0x14F195, 0.15),
         ghost_element_background: transparent,
         ghost_element_hover: hex_a(0xffffff, 0.05),
         ghost_element_active: hex_a(0xffffff, 0.08),
         ghost_element_selected: hex_a(0xffffff, 0.1),
         ghost_element_disabled: transparent,
+        drop_target_background: hex_a(0x14F195, 0.1),
+        drop_target_border: accent,
         text: fg,
         text_muted: muted,
         text_placeholder: hex(0x666666),
@@ -721,114 +887,156 @@ pub fn default_theme_colors() -> ThemeColors {
         icon_disabled: disabled,
         icon_placeholder: hex(0x666666),
         icon_accent: accent,
-        status_bar_background: bg,
-        title_bar_background: bg,
-        title_bar_inactive_background: hex(0x101010),
-        toolbar_background: bg,
-        tab_bar_background: bg,
-        tab_inactive_background: bg,
-        tab_active_background: surface,
-        search_match_background: hex_a(0x14F195, 0.2),
-        search_active_match_background: hex_a(0x14F195, 0.35),
-        panel_background: bg,
-        panel_focused_border: accent,
-        panel_indent_guide: hex(0x2a2a2a),
-        panel_indent_guide_hover: hex(0x444444),
-        panel_indent_guide_active: hex(0x555555),
-        panel_overlay_background: hex_a(0x000000, 0.5),
-        panel_overlay_hover: hex_a(0x000000, 0.6),
-        pane_focused_border: accent,
-        pane_group_border: border_color,
-        scrollbar_thumb_background: hex_a(0xffffff, 0.1),
-        scrollbar_thumb_hover_background: hex_a(0xffffff, 0.2),
-        scrollbar_thumb_active_background: hex_a(0xffffff, 0.3),
-        scrollbar_thumb_border: transparent,
-        scrollbar_track_background: transparent,
-        scrollbar_track_border: transparent,
-        editor_foreground: fg,
-        editor_background: bg,
-        editor_gutter_background: bg,
-        editor_subheader_background: surface,
-        editor_active_line_background: hex_a(0xffffff, 0.03),
-        editor_highlighted_line_background: hex_a(0xffffff, 0.05),
-        editor_line_number: hex(0x555555),
-        editor_active_line_number: fg,
-        editor_invisible: hex(0x444444),
-        editor_wrap_guide: hex(0x2a2a2a),
-        editor_active_wrap_guide: hex(0x333333),
-        editor_indent_guide: hex(0x2a2a2a),
-        editor_indent_guide_active: hex(0x444444),
-        editor_document_highlight_read_background: hex_a(0x14F195, 0.1),
-        editor_document_highlight_write_background: hex_a(0x14F195, 0.15),
-        editor_document_highlight_bracket_background: hex_a(0x14F195, 0.1),
-        terminal_background: bg,
-        terminal_foreground: fg,
-        terminal_bright_foreground: hex(0xffffff),
-        terminal_dim_foreground: hex(0x999999),
-        terminal_accent: hex(0x00BFFF),
-        terminal_ansi_background: bg,
-        terminal_ansi_black: hex(0x1a1a2e),
-        terminal_ansi_bright_black: hex(0x555555),
-        terminal_ansi_dim_black: hex(0x111111),
-        terminal_ansi_red: hex(0xff5555),
-        terminal_ansi_bright_red: hex(0xff7777),
-        terminal_ansi_dim_red: hex(0xcc4444),
-        terminal_ansi_green: hex(0x14F195),
-        terminal_ansi_bright_green: hex(0x50fa7b),
-        terminal_ansi_dim_green: hex(0x10c070),
-        terminal_ansi_yellow: hex(0xf1fa8c),
-        terminal_ansi_bright_yellow: hex(0xffffb0),
-        terminal_ansi_dim_yellow: hex(0xc0c870),
-        terminal_ansi_blue: hex(0x6272a4),
-        terminal_ansi_bright_blue: hex(0x8be9fd),
-        terminal_ansi_dim_blue: hex(0x4e5a80),
-        terminal_ansi_magenta: hex(0xff79c6),
-        terminal_ansi_bright_magenta: hex(0xff99dd),
-        terminal_ansi_dim_magenta: hex(0xcc60a0),
-        terminal_ansi_cyan: hex(0x8be9fd),
-        terminal_ansi_bright_cyan: hex(0xa4ffff),
-        terminal_ansi_dim_cyan: hex(0x6eb8cc),
-        terminal_ansi_white: hex(0xf8f8f2),
-        terminal_ansi_bright_white: hex(0xffffff),
-        terminal_ansi_dim_white: hex(0xbbbbbb),
         link_text_hover: accent,
-        version_control_added: hex(0x14F195),
-        version_control_deleted: hex(0xff5555),
-        version_control_modified: hex(0x8be9fd),
-        version_control_renamed: hex(0x6272a4),
-        version_control_conflict: hex(0xff79c6),
-        version_control_ignored: hex(0x555555),
-        version_control_word_added: hex_a(0x14F195, 0.25),
-        version_control_word_deleted: hex_a(0xff5555, 0.25),
-        version_control_conflict_marker_ours: hex_a(0x14F195, 0.2),
-        version_control_conflict_marker_theirs: hex_a(0x8be9fd, 0.2),
-        minimap_thumb_background: hex_a(0xffffff, 0.1),
-        minimap_thumb_hover_background: hex_a(0xffffff, 0.15),
-        minimap_thumb_active_background: hex_a(0xffffff, 0.2),
-        minimap_thumb_border: transparent,
-        vim_normal_background: hex(0x6272a4),
-        vim_insert_background: hex(0x14F195),
-        vim_replace_background: hex(0xff5555),
-        vim_visual_background: hex(0xff79c6),
-        vim_visual_line_background: hex(0xff79c6),
-        vim_visual_block_background: hex(0xff79c6),
-        vim_yank_background: hex(0xf1fa8c),
-        vim_helix_normal_background: hex(0x6272a4),
-        vim_helix_select_background: hex(0x8be9fd),
-        vim_normal_foreground: fg,
-        vim_insert_foreground: hex(0x121212),
-        vim_replace_foreground: fg,
-        vim_visual_foreground: hex(0x121212),
-        vim_visual_line_foreground: hex(0x121212),
-        vim_visual_block_foreground: hex(0x121212),
-        vim_helix_normal_foreground: fg,
-        vim_helix_select_foreground: hex(0x121212),
         debugger_accent: hex(0xff9e64),
-        editor_debugger_active_line_background: hex_a(0xff9e64, 0.15),
-        editor_hover_line_number: fg,
-        block_success_badge: hex(0x14F195),
-        block_error_badge: hex(0xff5555),
-        block_running_badge: hex(0xf1fa8c),
+
+        // Contextual sub-structs
+        editor: EditorColors {
+            foreground: fg,
+            background: bg,
+            gutter_background: bg,
+            subheader_background: surface,
+            active_line_background: hex_a(0xffffff, 0.03),
+            highlighted_line_background: hex_a(0xffffff, 0.05),
+            debugger_active_line_background: hex_a(0xff9e64, 0.15),
+            line_number: hex(0x555555),
+            active_line_number: fg,
+            hover_line_number: fg,
+            invisible: hex(0x444444),
+            wrap_guide: hex(0x2a2a2a),
+            active_wrap_guide: hex(0x333333),
+            indent_guide: hex(0x2a2a2a),
+            indent_guide_active: hex(0x444444),
+            document_highlight_read_background: hex_a(0x14F195, 0.1),
+            document_highlight_write_background: hex_a(0x14F195, 0.15),
+            document_highlight_bracket_background: hex_a(0x14F195, 0.1),
+        },
+        terminal: TerminalColors {
+            background: bg,
+            foreground: fg,
+            bright_foreground: hex(0xffffff),
+            dim_foreground: hex(0x999999),
+            accent: hex(0x00BFFF),
+            ansi: TerminalAnsiColors {
+                background: bg,
+                black: hex(0x1a1a2e),
+                bright_black: hex(0x555555),
+                dim_black: hex(0x111111),
+                red: hex(0xff5555),
+                bright_red: hex(0xff7777),
+                dim_red: hex(0xcc4444),
+                green: hex(0x14F195),
+                bright_green: hex(0x50fa7b),
+                dim_green: hex(0x10c070),
+                yellow: hex(0xf1fa8c),
+                bright_yellow: hex(0xffffb0),
+                dim_yellow: hex(0xc0c870),
+                blue: hex(0x6272a4),
+                bright_blue: hex(0x8be9fd),
+                dim_blue: hex(0x4e5a80),
+                magenta: hex(0xff79c6),
+                bright_magenta: hex(0xff99dd),
+                dim_magenta: hex(0xcc60a0),
+                cyan: hex(0x8be9fd),
+                bright_cyan: hex(0xa4ffff),
+                dim_cyan: hex(0x6eb8cc),
+                white: hex(0xf8f8f2),
+                bright_white: hex(0xffffff),
+                dim_white: hex(0xbbbbbb),
+            },
+        },
+        panel: PanelColors {
+            background: bg,
+            focused_border: accent,
+            indent_guide: hex(0x2a2a2a),
+            indent_guide_hover: hex(0x444444),
+            indent_guide_active: hex(0x555555),
+            overlay_background: hex_a(0x000000, 0.5),
+            overlay_hover: hex_a(0x000000, 0.6),
+        },
+        pane: PaneColors {
+            focused_border: accent,
+            group_border: border_color,
+        },
+        tab: TabColors {
+            bar_background: bg,
+            inactive_background: bg,
+            active_background: surface,
+            inactive_foreground: muted,
+            active_foreground: fg,
+        },
+        scrollbar: ScrollbarColors {
+            thumb_background: hex_a(0xffffff, 0.1),
+            thumb_hover_background: hex_a(0xffffff, 0.2),
+            thumb_active_background: hex_a(0xffffff, 0.3),
+            thumb_border: transparent,
+            track_background: transparent,
+            track_border: transparent,
+        },
+        minimap: MinimapColors {
+            thumb_background: hex_a(0xffffff, 0.1),
+            thumb_hover_background: hex_a(0xffffff, 0.15),
+            thumb_active_background: hex_a(0xffffff, 0.2),
+            thumb_border: transparent,
+        },
+        status_bar: StatusBarColors {
+            background: bg,
+        },
+        title_bar: TitleBarColors {
+            background: bg,
+            inactive_background: hex(0x101010),
+        },
+        toolbar: ToolbarColors {
+            background: bg,
+        },
+        search: SearchColors {
+            match_background: hex_a(0x14F195, 0.2),
+            active_match_background: hex_a(0x14F195, 0.35),
+        },
+        vim: VimColors {
+            normal_background: hex(0x6272a4),
+            insert_background: hex(0x14F195),
+            replace_background: hex(0xff5555),
+            visual_background: hex(0xff79c6),
+            visual_line_background: hex(0xff79c6),
+            visual_block_background: hex(0xff79c6),
+            yank_background: hex(0xf1fa8c),
+            helix_normal_background: hex(0x6272a4),
+            helix_select_background: hex(0x8be9fd),
+            normal_foreground: fg,
+            insert_foreground: hex(0x121212),
+            replace_foreground: fg,
+            visual_foreground: hex(0x121212),
+            visual_line_foreground: hex(0x121212),
+            visual_block_foreground: hex(0x121212),
+            helix_normal_foreground: fg,
+            helix_select_foreground: hex(0x121212),
+        },
+        version_control: VersionControlColors {
+            added: hex(0x14F195),
+            deleted: hex(0xff5555),
+            modified: hex(0x8be9fd),
+            renamed: hex(0x6272a4),
+            conflict: hex(0xff79c6),
+            ignored: hex(0x555555),
+            word_added: hex_a(0x14F195, 0.25),
+            word_deleted: hex_a(0xff5555, 0.25),
+            conflict_marker_ours: hex_a(0x14F195, 0.2),
+            conflict_marker_theirs: hex_a(0x8be9fd, 0.2),
+        },
+        radius: px(8.0),
+        block: BlockColors {
+            success_badge: hex(0x14F195),
+            error_badge: hex(0xff5555),
+            running_badge: hex(0xf1fa8c),
+        },
+        chart: ChartColors {
+            chart_1: accent,
+            chart_2: hex(0x14F195),
+            chart_3: hex(0xff79c6),
+            chart_4: hex(0xf1fa8c),
+            chart_5: hex(0x6272a4),
+        },
     }
 }
 
@@ -1011,11 +1219,29 @@ appearance = "dark"
 [style]
 "terminal.ansi.red" = "#ff5555"
 "terminal.ansi.bright_red" = "#ff7777"
-"editor.active_line.background" = "#1a1a1abf"
+"editor.active_line_background" = "#1a1a1abf"
 "##;
         let theme = load_theme_from_toml("dotted-test", toml).unwrap();
-        // Verify the theme loaded without error
         assert_eq!(theme.id, "dotted-test");
+    }
+
+    #[test]
+    fn test_load_theme_with_nested_tables() {
+        let toml = r##"
+[theme]
+name = "Nested Test"
+appearance = "dark"
+
+[style.terminal.ansi]
+red = "#ff5555"
+bright_red = "#ff7777"
+
+[style.editor]
+active_line_background = "#1a1a1abf"
+foreground = "#ffffff"
+"##;
+        let theme = load_theme_from_toml("nested-test", toml).unwrap();
+        assert_eq!(theme.id, "nested-test");
     }
 
     #[test]
@@ -1108,5 +1334,19 @@ opacity = 20
         let bg = theme.styles.background_image.as_ref().unwrap();
         assert_eq!(bg.path, "my-background.png");
         assert_eq!(bg.opacity, 20);
+    }
+
+    #[test]
+    fn test_load_theme_with_radius() {
+        let toml = r##"
+[theme]
+name = "Radius Test"
+appearance = "dark"
+
+[style]
+radius = 12
+"##;
+        let theme = load_theme_from_toml("radius-test", toml).unwrap();
+        assert!((theme.styles.colors.radius.0 - 12.0).abs() < 0.001);
     }
 }

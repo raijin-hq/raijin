@@ -274,7 +274,7 @@ impl Component for KeybindingHint {
     fn preview(_window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         let enter = KeyBinding::for_action(&Confirm, cx);
 
-        let bg_color = cx.theme().colors().surface_background;
+        let bg_color = cx.theme().colors().surface;
 
         Some(
             v_flex()

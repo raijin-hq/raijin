@@ -810,7 +810,7 @@ impl ConfigurationView {
                 .rounded_md()
                 .border_1()
                 .border_color(cx.theme().colors().border)
-                .bg(cx.theme().colors().elevated_surface_background)
+                .bg(cx.theme().colors().elevated_surface)
                 .child(
                     h_flex()
                         .gap_2()

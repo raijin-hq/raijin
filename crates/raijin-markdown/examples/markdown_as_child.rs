@@ -56,7 +56,7 @@ impl Render for HelloWorld {
             code_block: StyleRefinement {
                 text: inazuma::TextStyleRefinement {
                     font_family: Some("Zed Mono".into()),
-                    background_color: Some(cx.theme().colors().editor_background),
+                    background_color: Some(cx.theme().colors().editor.background),
                     ..Default::default()
                 },
                 margin: inazuma::EdgesRefinement {
@@ -69,7 +69,7 @@ impl Render for HelloWorld {
             },
             inline_code: inazuma::TextStyleRefinement {
                 font_family: Some("Zed Mono".into()),
-                background_color: Some(cx.theme().colors().editor_background),
+                background_color: Some(cx.theme().colors().editor.background),
                 ..Default::default()
             },
             rule_color: Color::Muted.color(cx),
@@ -88,7 +88,7 @@ impl Render for HelloWorld {
                 ..Default::default()
             },
             syntax: cx.theme().syntax().clone(),
-            selection_background_color: cx.theme().colors().element_selection_background,
+            selection_background_color: cx.theme().colors().element_selection,
             heading: Default::default(),
             ..Default::default()
         };

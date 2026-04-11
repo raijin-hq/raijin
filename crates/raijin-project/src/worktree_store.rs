@@ -16,7 +16,7 @@ use inazuma::{
     WeakEntity,
 };
 use itertools::Either;
-use postage::{prelude::Stream as _, watch};
+
 use raijin_rpc::{
     AnyProtoClient, ErrorExt, TypedEnvelope,
     proto::{self, REMOTE_SERVER_PROJECT_ID},
@@ -77,7 +77,7 @@ pub struct WorktreeStore {
     #[allow(clippy::type_complexity)]
     loading_worktrees:
         HashMap<Arc<SanitizedPath>, Shared<Task<Result<Entity<Worktree>, Arc<anyhow::Error>>>>>,
-    initial_scan_complete: (watch::Sender<bool>, watch::Receiver<bool>),
+    initial_scan_complete: (raijin_watch::Sender<bool>, raijin_watch::Receiver<bool>),
     state: WorktreeStoreState,
 }
 
@@ -122,7 +122,7 @@ impl WorktreeStore {
             worktrees_reordered: false,
             scanning_enabled: true,
             retain_worktrees,
-            initial_scan_complete: watch::channel_with(true),
+            initial_scan_complete: raijin_watch::channel(true),
             state: WorktreeStoreState::Local { fs },
         }
     }
@@ -143,7 +143,7 @@ impl WorktreeStore {
             worktrees_reordered: false,
             scanning_enabled: true,
             retain_worktrees,
-            initial_scan_complete: watch::channel_with(true),
+            initial_scan_complete: raijin_watch::channel(true),
             state: WorktreeStoreState::Remote {
                 upstream_client,
                 upstream_project_id,
@@ -189,10 +189,9 @@ impl WorktreeStore {
         async move {
             let mut done = *rx.borrow();
             while !done {
-                if let Some(value) = rx.recv().await {
-                    done = value;
-                } else {
-                    break;
+                match rx.recv().await {
+                    Ok(value) => done = value,
+                    Err(_) => break,
                 }
             }
         }
@@ -200,7 +199,7 @@ impl WorktreeStore {
 
     /// Returns whether all visible worktrees have completed their initial scan.
     pub fn initial_scan_completed(&self) -> bool {
-        *self.initial_scan_complete.1.borrow()
+        *self.initial_scan_complete.1.peek()
     }
 
     /// Checks whether all visible worktrees have completed their initial scan
@@ -467,9 +466,9 @@ impl WorktreeStore {
                         fs.rename(
                             &old_path,
                             &new_path,
-                            fs::RenameOptions {
+                            raijin_fs::RenameOptions {
                                 overwrite,
-                                ..fs::RenameOptions::default()
+                                ..raijin_fs::RenameOptions::default()
                             },
                         )
                         .await
@@ -793,19 +792,19 @@ impl WorktreeStore {
         cx.subscribe(worktree, |_, worktree, event, cx| {
             let worktree_id = worktree.read(cx).id();
             match event {
-                worktree::Event::UpdatedEntries(changes) => {
+                raijin_worktree::Event::UpdatedEntries(changes) => {
                     cx.emit(WorktreeStoreEvent::WorktreeUpdatedEntries(
                         worktree_id,
                         changes.clone(),
                     ));
                 }
-                worktree::Event::UpdatedGitRepositories(set) => {
+                raijin_worktree::Event::UpdatedGitRepositories(set) => {
                     cx.emit(WorktreeStoreEvent::WorktreeUpdatedGitRepositories(
                         worktree_id,
                         set.clone(),
                     ));
                 }
-                worktree::Event::DeletedEntry(id) => {
+                raijin_worktree::Event::DeletedEntry(id) => {
                     cx.emit(WorktreeStoreEvent::WorktreeDeletedEntry(worktree_id, *id))
                 }
             }

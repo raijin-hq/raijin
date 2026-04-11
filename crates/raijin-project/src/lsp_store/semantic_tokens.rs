@@ -543,7 +543,7 @@ impl SemanticTokenStylizer {
 
 async fn raw_to_buffer_semantic_tokens(
     raw_tokens: RawSemanticTokens,
-    buffer_snapshot: text::BufferSnapshot,
+    buffer_snapshot: inazuma_text::BufferSnapshot,
 ) -> HashMap<LanguageServerId, Arc<[BufferSemanticToken]>> {
     let mut res = HashMap::default();
     for (&server_id, server_tokens) in &raw_tokens.servers {

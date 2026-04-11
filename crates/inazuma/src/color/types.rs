@@ -709,6 +709,122 @@ impl Oklch {
 
         Oklch { l, c, h, a }
     }
+
+    /// Set the hue of this color (0..360).
+    pub fn hue(&self, hue: f32) -> Self {
+        Oklch {
+            h: hue.clamp(0.0, 360.0),
+            ..*self
+        }
+    }
+
+    /// Set the chroma of this color (0..~0.4).
+    pub fn chroma(&self, chroma: f32) -> Self {
+        Oklch {
+            c: chroma.max(0.0),
+            ..*self
+        }
+    }
+
+    /// Set the lightness of this color (0..1).
+    pub fn lightness(&self, lightness: f32) -> Self {
+        Oklch {
+            l: lightness.clamp(0.0, 1.0),
+            ..*self
+        }
+    }
+
+    /// Mix two colors in Oklch space with linear interpolation.
+    ///
+    /// `factor` is the weight of `self` (0.0 = fully `other`, 1.0 = fully `self`).
+    pub fn mix(&self, other: Self, factor: f32) -> Self {
+        let factor = factor.clamp(0.0, 1.0);
+        let inv = 1.0 - factor;
+
+        fn lerp_hue(a: f32, b: f32, t: f32) -> f32 {
+            let diff = (b - a + 180.0).rem_euclid(360.0) - 180.0;
+            (a + diff * t).rem_euclid(360.0)
+        }
+
+        Oklch {
+            l: self.l * factor + other.l * inv,
+            c: self.c * factor + other.c * inv,
+            h: lerp_hue(self.h, other.h, factor),
+            a: self.a * factor + other.a * inv,
+        }
+    }
+
+    /// Mix two colors in Oklab (cartesian) color space with premultiplied alpha.
+    ///
+    /// Equivalent to CSS `color-mix(in oklab, self factor%, other)`.
+    /// `factor` is the weight of `self` (0.0 = fully `other`, 1.0 = fully `self`).
+    pub fn mix_oklab(&self, other: Self, factor: f32) -> Self {
+        let factor = factor.clamp(0.0, 1.0);
+        let inv = 1.0 - factor;
+
+        let result_alpha = self.a * factor + other.a * inv;
+
+        if result_alpha == 0.0 {
+            return Oklch::transparent_black();
+        }
+
+        // Convert Oklch to Oklab (polar → cartesian)
+        let (a1, b1) = {
+            let h_rad = self.h.to_radians();
+            (self.c * h_rad.cos(), self.c * h_rad.sin())
+        };
+        let (a2, b2) = {
+            let h_rad = other.h.to_radians();
+            (other.c * h_rad.cos(), other.c * h_rad.sin())
+        };
+
+        // Premultiply alpha
+        let l1_pm = self.l * self.a;
+        let a1_pm = a1 * self.a;
+        let b1_pm = b1 * self.a;
+        let l2_pm = other.l * other.a;
+        let a2_pm = a2 * other.a;
+        let b2_pm = b2 * other.a;
+
+        // Interpolate premultiplied values
+        let l_pm = l1_pm * factor + l2_pm * inv;
+        let a_pm = a1_pm * factor + a2_pm * inv;
+        let b_pm = b1_pm * factor + b2_pm * inv;
+
+        // Unpremultiply
+        let l = l_pm / result_alpha;
+        let a_val = a_pm / result_alpha;
+        let b_val = b_pm / result_alpha;
+
+        // Convert back to Oklch (cartesian → polar)
+        let c = (a_val * a_val + b_val * b_val).sqrt();
+        let h = if c < 1e-8 {
+            0.0
+        } else {
+            b_val.atan2(a_val).to_degrees().rem_euclid(360.0)
+        };
+
+        Oklch {
+            l: l.clamp(0.0, 1.0),
+            c: c.max(0.0),
+            h,
+            a: result_alpha,
+        }
+    }
+
+    /// Convert to a hex string (#RRGGBB or #RRGGBBAA).
+    pub fn to_hex(&self) -> String {
+        let rgb = self.to_rgb();
+        let r = (rgb.r.clamp(0., 1.) * 255.).round() as u32;
+        let g = (rgb.g.clamp(0., 1.) * 255.).round() as u32;
+        let b = (rgb.b.clamp(0., 1.) * 255.).round() as u32;
+        if self.a < 1.0 {
+            let a = (self.a.clamp(0., 1.) * 255.).round() as u32;
+            format!("#{r:02X}{g:02X}{b:02X}{a:02X}")
+        } else {
+            format!("#{r:02X}{g:02X}{b:02X}")
+        }
+    }
 }
 
 /// Construct an [`Oklch`] color from HSL values (all in 0..1 range) and alpha.

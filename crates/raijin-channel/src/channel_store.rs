@@ -30,7 +30,7 @@ pub fn init(client: &Arc<Client>, user_store: Entity<UserStore>, cx: &mut App) {
 #[derive(Debug, Clone, Default, PartialEq)]
 struct NotesVersion {
     epoch: u64,
-    version: clock::Global,
+    version: inazuma_clock::Global,
 }
 
 pub struct ChannelStore {
@@ -172,12 +172,12 @@ impl ChannelStore {
             while let Some(status) = connection_status.next().await {
                 let this = this.upgrade()?;
                 match status {
-                    client::Status::Connected { .. } => {
+                    raijin_client::Status::Connected { .. } => {
                         this.update(cx, |this, cx| this.handle_connect(cx))
                             .await
                             .log_err()?;
                     }
-                    client::Status::SignedOut | client::Status::UpgradeRequired => {
+                    raijin_client::Status::SignedOut | raijin_client::Status::UpgradeRequired => {
                         this.update(cx, |this, cx| this.handle_disconnect(false, cx));
                     }
                     _ => {
@@ -369,7 +369,7 @@ impl ChannelStore {
         &mut self,
         channel_id: ChannelId,
         epoch: u64,
-        version: &clock::Global,
+        version: &inazuma_clock::Global,
         cx: &mut Context<Self>,
     ) {
         self.channel_states
@@ -383,7 +383,7 @@ impl ChannelStore {
         &mut self,
         channel_id: ChannelId,
         epoch: u64,
-        version: &clock::Global,
+        version: &inazuma_clock::Global,
         cx: &mut Context<Self>,
     ) {
         self.channel_states
@@ -826,7 +826,7 @@ impl ChannelStore {
     ) -> Result<()> {
         this.update(&mut cx, |this, cx| {
             for buffer_version in message.payload.observed_channel_buffer_version {
-                let version = language::proto::deserialize_version(&buffer_version.version);
+                let version = raijin_language::proto::deserialize_version(&buffer_version.version);
                 this.acknowledge_notes_version(
                     ChannelId(buffer_version.channel_id),
                     buffer_version.epoch,
@@ -869,7 +869,7 @@ impl ChannelStore {
                     buffer_versions.push(proto::ChannelBufferVersion {
                         channel_id: channel_buffer.channel_id.0,
                         epoch: channel_buffer.epoch(),
-                        version: language::proto::serialize_version(&inner_buffer.version()),
+                        version: raijin_language::proto::serialize_version(&inner_buffer.version()),
                     });
                 });
             }
@@ -921,7 +921,7 @@ impl ChannelStore {
                             {
                                 let channel_id = channel_buffer.channel_id;
                                 let remote_version =
-                                    language::proto::deserialize_version(&remote_buffer.version);
+                                    raijin_language::proto::deserialize_version(&remote_buffer.version);
 
                                 channel_buffer.replace_collaborators(
                                     mem::take(&mut remote_buffer.collaborators),
@@ -936,7 +936,7 @@ impl ChannelStore {
                                         let incoming_operations =
                                             mem::take(&mut remote_buffer.operations)
                                                 .into_iter()
-                                                .map(language::proto::deserialize_operation)
+                                                .map(raijin_language::proto::deserialize_operation)
                                                 .collect::<Result<Vec<_>>>()?;
                                         buffer.apply_ops(incoming_operations, cx);
                                         anyhow::Ok(outgoing_operations)
@@ -948,7 +948,7 @@ impl ChannelStore {
                                     let client = this.client.clone();
                                     cx.background_spawn(async move {
                                         let operations = operations.await;
-                                        for chunk in language::proto::split_operations(operations) {
+                                        for chunk in raijin_language::proto::split_operations(operations) {
                                             client
                                                 .send(proto::UpdateChannelBuffer {
                                                     channel_id: channel_id.0,
@@ -1099,7 +1099,7 @@ impl ChannelStore {
             }
 
             for latest_buffer_version in payload.latest_channel_buffer_versions {
-                let version = language::proto::deserialize_version(&latest_buffer_version.version);
+                let version = raijin_language::proto::deserialize_version(&latest_buffer_version.version);
                 self.channel_states
                     .entry(ChannelId(latest_buffer_version.channel_id))
                     .or_default()
@@ -1169,7 +1169,7 @@ impl ChannelState {
                     .changed_since(&self.observed_notes_version.version))
     }
 
-    fn acknowledge_notes_version(&mut self, epoch: u64, version: &clock::Global) {
+    fn acknowledge_notes_version(&mut self, epoch: u64, version: &inazuma_clock::Global) {
         if self.observed_notes_version.epoch == epoch {
             self.observed_notes_version.version.join(version);
         } else {
@@ -1180,7 +1180,7 @@ impl ChannelState {
         }
     }
 
-    fn update_latest_notes_version(&mut self, epoch: u64, version: &clock::Global) {
+    fn update_latest_notes_version(&mut self, epoch: u64, version: &inazuma_clock::Global) {
         if self.latest_notes_version.epoch == epoch {
             self.latest_notes_version.version.join(version);
         } else {

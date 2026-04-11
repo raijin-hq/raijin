@@ -1,8 +1,21 @@
 pub mod animation_ext;
 pub mod clickable;
+pub mod collapsible;
 pub mod disableable;
+pub mod element_ext;
+pub mod event;
 pub mod fixed;
+pub mod focusable_ext;
+pub mod selectable;
+pub mod size;
 pub mod styled_ext;
 pub mod toggleable;
 pub mod transformable;
 pub mod visible_on_hover;
+
+pub use collapsible::*;
+pub use element_ext::*;
+pub use event::*;
+pub use focusable_ext::*;
+pub use selectable::*;
+pub use size::*;

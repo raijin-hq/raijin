@@ -1,9 +1,11 @@
+mod app_bootstrap;
 mod command_history;
 mod completions;
 mod input;
 mod settings_view;
 mod shell_install;
 mod terminal;
+mod terminal_pane;
 mod workspace;
 
 use std::borrow::Cow;
@@ -11,7 +13,6 @@ use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions,
 use inazuma_component::Root;
 use inazuma_component::TitleBar;
 use inazuma_settings_framework::SettingsStore;
-use raijin_workspace::Workspace;
 
 // Global actions — available everywhere
 actions!(
@@ -131,8 +132,22 @@ fn main() {
         // File watchers — hot-reload settings, themes, and keymaps on change
         start_file_watchers(cx);
 
-        cx.set_global(workspace::PendingShellSwitch(None));
-        cx.set_global(workspace::PendingShellInstallName(None));
+        // Set up globals for shell switching (used by terminal_pane)
+        cx.set_global(terminal_pane::PendingShellSwitch(None));
+        cx.set_global(terminal_pane::PendingShellInstallName(None));
+
+        // Initialize ReleaseChannel (required before Client::production)
+        let app_version = semver::Version::new(0, 1, 0);
+        raijin_release_channel::init(app_version, cx);
+
+        // Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
+        let app_state = app_bootstrap::build_app_state(cx);
+
+        // Initialize workspace system + feature crates
+        raijin_workspace::init(app_state.clone(), cx);
+        raijin_title_bar::init(cx);
+        raijin_command_palette::init(cx);
+        raijin_tab_switcher::init(cx);
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
         cx.open_window(
@@ -143,7 +158,48 @@ fn main() {
                 ..Default::default()
             },
             |window, cx| {
-                let workspace = cx.new(|cx| Workspace::new(window, cx));
+                // Create a local Project (no remote connection)
+                let project = raijin_project::Project::local(
+                    app_state.client.clone(),
+                    raijin_node_runtime::NodeRuntime::unavailable(),
+                    app_state.user_store.clone(),
+                    app_state.languages.clone(),
+                    app_state.fs.clone(),
+                    None,
+                    raijin_project::LocalProjectFlags::default(),
+                    cx,
+                );
+
+                // Create the Workspace (Zed's full workspace system)
+                let workspace = cx.new(|cx| {
+                    raijin_workspace::Workspace::new(
+                        None,
+                        project,
+                        app_state.clone(),
+                        window,
+                        cx,
+                    )
+                });
+
+                // Add our terminal as the first item + configure workspace
+                workspace.update(cx, |ws, cx| {
+                    // Create and add terminal pane
+                    let terminal = cx.new(|cx| terminal_pane::TerminalPane::new(window, cx));
+                    ws.add_item_to_active_pane(
+                        Box::new(terminal),
+                        None,
+                        true,
+                        window,
+                        cx,
+                    );
+
+                    // Hide docks (not needed for terminal-first experience)
+                    ws.left_dock().update(cx, |d, cx| d.set_open(false, window, cx));
+                    ws.right_dock().update(cx, |d, cx| d.set_open(false, window, cx));
+                    ws.bottom_dock().update(cx, |d, cx| d.set_open(false, window, cx));
+                });
+
+                // Root wraps Workspace (provides Sheets, Dialogs, Notifications)
                 cx.new(|cx| Root::new(workspace, window, cx))
             },
         )
@@ -217,7 +273,7 @@ fn start_file_watchers(cx: &mut App) {
                         log::info!("Hot-reloaded theme: {theme_name}");
 
                         // If the active theme was the one that changed, refresh it
-                        let active = cx.global::<raijin_theme::GlobalTheme>().0.clone();
+                        let active = raijin_theme::GlobalTheme::theme(cx).clone();
                         if active.name == theme_name {
                             raijin_theme_settings::reload_theme(cx);
                         }

@@ -98,7 +98,7 @@ impl Editor {
             (bracket_matches_by_accent, fetched_tree_sitter_chunks)
         });
 
-        let editor_background = cx.theme().colors().editor_background;
+        let editor_background = cx.theme().colors().editor.background;
         let accents = cx.theme().accents().clone();
 
         self.colorize_brackets_task = cx.spawn(async move |editor, cx| {
@@ -235,7 +235,7 @@ mod tests {
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(rust_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -356,7 +356,7 @@ where
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(markdown_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -408,7 +408,7 @@ where
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(markdown_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -471,7 +471,7 @@ where
         language_registry.add(markdown_lang());
         language_registry.add(rust_lang());
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| {
             buffer.set_language_registry(language_registry.clone());
             buffer.set_language(Some(markdown_lang()), cx);
@@ -521,7 +521,7 @@ where
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(rust_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -661,7 +661,7 @@ fn process_data«1()1» «1{
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(rust_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -873,7 +873,7 @@ mod foo «1{
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(rust_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,
@@ -1470,7 +1470,7 @@ mod foo «1{
         init_test(cx, |language_settings| {
             language_settings.defaults.colorize_brackets = Some(true);
         });
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Arc::into_inner(rust_lang()).unwrap(),
             raijin_lsp::ServerCapabilities::default(),
             cx,

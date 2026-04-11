@@ -96,7 +96,7 @@ impl ExtensionBuilder {
             );
         }
 
-        raijin_fs::create_dir_all(&self.cache_dir).context("failed to create cache dir")?;
+        fs::create_dir_all(&self.cache_dir).context("failed to create cache dir")?;
 
         if extension_manifest.lib.kind == Some(ExtensionLibraryKind::Rust) {
             log::info!("compiling Rust extension {}", extension_dir.display());
@@ -110,7 +110,7 @@ impl ExtensionBuilder {
             let debug_adapter_schema_path =
                 extension_dir.join(build_debug_adapter_schema_path(debug_adapter_name, meta));
 
-            let debug_adapter_schema = raijin_fs::read_to_string(&debug_adapter_schema_path)
+            let debug_adapter_schema = fs::read_to_string(&debug_adapter_schema_path)
                 .with_context(|| {
                     format!("failed to read debug adapter schema for `{debug_adapter_name}` from `{debug_adapter_schema_path:?}`")
                 })?;
@@ -151,7 +151,7 @@ impl ExtensionBuilder {
     ) -> anyhow::Result<()> {
         self.install_rust_wasm_target_if_needed().await?;
 
-        let cargo_toml_content = raijin_fs::read_to_string(extension_dir.join("Cargo.toml"))?;
+        let cargo_toml_content = fs::read_to_string(extension_dir.join("Cargo.toml"))?;
         let cargo_toml: CargoToml = toml::from_str(&cargo_toml_content)?;
 
         log::info!(
@@ -199,7 +199,7 @@ impl ExtensionBuilder {
             extension_dir.display()
         );
 
-        let component_bytes = raijin_fs::read(&wasm_path)
+        let component_bytes = fs::read(&wasm_path)
             .with_context(|| format!("failed to read output module `{}`", wasm_path.display()))?;
 
         let component_bytes = self
@@ -212,7 +212,7 @@ impl ExtensionBuilder {
         manifest.lib.version = Some(wasm_extension_api_version);
 
         let extension_file = extension_dir.join("extension.wasm");
-        raijin_fs::write(extension_file.clone(), &component_bytes)
+        fs::write(extension_file.clone(), &component_bytes)
             .context("failed to write extension.wasm")?;
 
         log::info!(
@@ -314,7 +314,7 @@ impl ExtensionBuilder {
                 );
             }
         } else {
-            raijin_fs::create_dir_all(directory).with_context(|| {
+            fs::create_dir_all(directory).with_context(|| {
                 format!("failed to create grammar directory {}", directory.display(),)
             })?;
             let init_output = inazuma_util::command::new_command("git")
@@ -428,22 +428,22 @@ impl ExtensionBuilder {
 
         log::info!("downloading wasi-sdk to {}", wasi_sdk_dir.display());
 
-        if raijin_fs::metadata(&clang_path).is_ok_and(|metadata| metadata.is_file()) {
+        if fs::metadata(&clang_path).is_ok_and(|metadata| metadata.is_file()) {
             return Ok(clang_path);
         }
 
         let tar_out_dir = self.cache_dir.join("wasi-sdk-temp");
 
-        raijin_fs::remove_dir_all(&wasi_sdk_dir).ok();
-        raijin_fs::remove_dir_all(&tar_out_dir).ok();
-        raijin_fs::create_dir_all(&tar_out_dir).context("failed to create extraction directory")?;
+        fs::remove_dir_all(&wasi_sdk_dir).ok();
+        fs::remove_dir_all(&tar_out_dir).ok();
+        fs::create_dir_all(&tar_out_dir).context("failed to create extraction directory")?;
 
         let mut response = self.http.get(&url, AsyncBody::default(), true).await?;
 
         // Write the response to a temporary file
         let tar_gz_path = self.cache_dir.join("wasi-sdk.tar.gz");
         let tar_gz_file =
-            raijin_fs::File::create(&tar_gz_path).context("failed to create temporary tar.gz file")?;
+            fs::File::create(&tar_gz_path).context("failed to create temporary tar.gz file")?;
         let response_body = response.body_mut();
 
         let mut async_file = io::AllowStdIo::new(tar_gz_file);
@@ -474,15 +474,15 @@ impl ExtensionBuilder {
         log::info!("finished downloading wasi-sdk");
 
         // Clean up the temporary tar.gz file
-        raijin_fs::remove_file(&tar_gz_path).ok();
+        fs::remove_file(&tar_gz_path).ok();
 
-        let inner_dir = raijin_fs::read_dir(&tar_out_dir)?
+        let inner_dir = fs::read_dir(&tar_out_dir)?
             .next()
             .context("no content")?
             .context("failed to read contents of extracted wasi archive directory")?
             .path();
-        raijin_fs::rename(&inner_dir, &wasi_sdk_dir).context("failed to move extracted wasi dir")?;
-        raijin_fs::remove_dir_all(&tar_out_dir).ok();
+        fs::rename(&inner_dir, &wasi_sdk_dir).context("failed to move extracted wasi dir")?;
+        fs::remove_dir_all(&tar_out_dir).ok();
 
         Ok(clang_path)
     }

@@ -1,6 +1,6 @@
 use crate::{Channel, ChannelStore};
 use anyhow::Result;
-use raijin_client::{ChannelId, Client, Collaborator, UserStore, ZED_ALWAYS_ACTIVE};
+use raijin_client::{ChannelId, Client, Collaborator, Subscription as ClientSubscription, UserStore, ZED_ALWAYS_ACTIVE};
 use inazuma_collections::HashMap;
 use inazuma::{App, AppContext as _, AsyncApp, Context, Entity, EventEmitter, Task};
 use raijin_language::proto::serialize_version;
@@ -26,10 +26,10 @@ pub struct ChannelBuffer {
     collaborators: HashMap<PeerId, Collaborator>,
     user_store: Entity<UserStore>,
     channel_store: Entity<ChannelStore>,
-    buffer: Entity<language::Buffer>,
+    buffer: Entity<raijin_language::Buffer>,
     buffer_epoch: u64,
     client: Arc<Client>,
-    subscription: Option<client::Subscription>,
+    subscription: Option<ClientSubscription>,
     acknowledge_task: Option<Task<Result<()>>>,
 }
 
@@ -61,12 +61,12 @@ impl ChannelBuffer {
         let operations = response
             .operations
             .into_iter()
-            .map(language::proto::deserialize_operation)
+            .map(raijin_language::proto::deserialize_operation)
             .collect::<Result<Vec<_>, _>>()?;
 
         let buffer = cx.new(|cx| {
             let capability = channel_store.read(cx).channel_capability(channel.id);
-            language::Buffer::remote(
+            raijin_language::Buffer::remote(
                 buffer_id,
                 ReplicaId::new(response.replica_id as u16),
                 capability,
@@ -168,7 +168,7 @@ impl ChannelBuffer {
             .payload
             .operations
             .into_iter()
-            .map(language::proto::deserialize_operation)
+            .map(raijin_language::proto::deserialize_operation)
             .collect::<Result<Vec<_>, _>>()?;
 
         this.update(&mut cx, |this, cx| {
@@ -195,22 +195,22 @@ impl ChannelBuffer {
 
     fn on_buffer_update(
         &mut self,
-        _: Entity<language::Buffer>,
-        event: &language::BufferEvent,
+        _: Entity<raijin_language::Buffer>,
+        event: &raijin_language::BufferEvent,
         cx: &mut Context<Self>,
     ) {
         match event {
-            language::BufferEvent::Operation {
+            raijin_language::BufferEvent::Operation {
                 operation,
                 is_local: true,
             } => {
                 if *ZED_ALWAYS_ACTIVE
-                    && let language::Operation::UpdateSelections { selections, .. } = operation
+                    && let raijin_language::Operation::UpdateSelections { selections, .. } = operation
                     && selections.is_empty()
                 {
                     return;
                 }
-                let operation = language::proto::serialize_operation(operation);
+                let operation = raijin_language::proto::serialize_operation(operation);
                 if self.rejoining {
                     return;
                 }
@@ -221,7 +221,7 @@ impl ChannelBuffer {
                     })
                     .log_err();
             }
-            language::BufferEvent::Edited { .. } => {
+            raijin_language::BufferEvent::Edited { .. } => {
                 cx.emit(ChannelBufferEvent::BufferEdited);
             }
             _ => {}
@@ -254,7 +254,7 @@ impl ChannelBuffer {
         self.buffer_epoch
     }
 
-    pub fn buffer(&self) -> Entity<language::Buffer> {
+    pub fn buffer(&self) -> Entity<raijin_language::Buffer> {
         self.buffer.clone()
     }
 

@@ -95,7 +95,7 @@ mod tests {
     async fn test_matching_bracket_highlights(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new(
+        let mut cx = EditorLspTestContext::new(
             Language::new(
                 LanguageConfig {
                     name: "Rust".into(),

@@ -689,7 +689,7 @@ impl HighlightsTreeView {
         editor.highlight_background(
             HighlightKey::HighlightsTreeView(key),
             ranges,
-            |_, theme| theme.colors().editor_document_highlight_write_background,
+            |_, theme| theme.colors().editor.document_highlight_write_background,
             cx,
         );
     }
@@ -788,7 +788,7 @@ impl Render for HighlightsTreeView {
             .key_context("HighlightsTreeView")
             .on_action(cx.listener(Self::select_previous))
             .on_action(cx.listener(Self::select_next))
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .map(|this| {
                 if display_count > 0 {
                     this.child(

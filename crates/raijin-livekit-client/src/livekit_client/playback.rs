@@ -1,6 +1,6 @@
 use anyhow::{Context as _, Result};
 
-use audio::{AudioSettings, CHANNEL_COUNT, SAMPLE_RATE};
+use raijin_audio::{AudioSettings, CHANNEL_COUNT, SAMPLE_RATE};
 use cpal::DeviceId;
 use cpal::traits::{DeviceTrait, StreamTrait as _};
 use futures::channel::mpsc::Sender;
@@ -23,8 +23,6 @@ use livekit::webrtc::{
 use log::info;
 use parking_lot::Mutex;
 use rodio::Source;
-use rodio::conversions::SampleTypeConverter;
-use rodio::source::{AutomaticGainControlSettings, LimitSettings};
 use serde::{Deserialize, Serialize};
 use inazuma_settings_framework::Settings;
 use std::cell::RefCell;
@@ -72,8 +70,8 @@ impl AudioStack {
         let next_ssrc = self.next_ssrc.fetch_add(1, Ordering::Relaxed);
         let source = AudioMixerSource {
             ssrc: next_ssrc,
-            sample_rate: SAMPLE_RATE.get(),
-            num_channels: CHANNEL_COUNT.get() as u32,
+            sample_rate: SAMPLE_RATE,
+            num_channels: CHANNEL_COUNT as u32,
             buffer: Arc::default(),
         };
         self.mixer.lock().add_source(source.clone());
@@ -94,7 +92,7 @@ impl AudioStack {
         });
 
         let mixer = self.mixer.clone();
-        let on_drop = util::defer(move || {
+        let on_drop = inazuma_gpui_util::defer(move || {
             mixer.lock().remove_source(source.ssrc);
             drop(receive_task);
             drop(output_task);
@@ -118,8 +116,8 @@ impl AudioStack {
                     executor,
                     apm,
                     mixer,
-                    SAMPLE_RATE.get(),
-                    CHANNEL_COUNT.get().into(),
+                    SAMPLE_RATE,
+                    CHANNEL_COUNT.into(),
                     output_audio_device,
                 )
                 .await
@@ -139,8 +137,8 @@ impl AudioStack {
         let source = NativeAudioSource::new(
             // n.b. this struct's options are always ignored, noise cancellation is provided by apm.
             AudioSourceOptions::default(),
-            SAMPLE_RATE.get(),
-            CHANNEL_COUNT.get().into(),
+            SAMPLE_RATE,
+            CHANNEL_COUNT.into(),
             10,
         );
 
@@ -181,15 +179,15 @@ impl AudioStack {
                     executor,
                     apm,
                     frame_tx,
-                    SAMPLE_RATE.get(), // TODO(audio): was legacy removed for now
-                    CHANNEL_COUNT.get().into(),
+                    SAMPLE_RATE, // TODO(audio): was legacy removed for now
+                    CHANNEL_COUNT.into(),
                     input_audio_device,
                 )
                 .await
             })
         };
 
-        let on_drop = util::defer(|| {
+        let on_drop = inazuma_gpui_util::defer(|| {
             drop(transmit_task);
             drop(capture_task);
         });
@@ -319,13 +317,12 @@ impl AudioStack {
                             (config.channels() as u32 * config.sample_rate() / 100) as usize;
                         let mut buf: Vec<i16> = Vec::with_capacity(ten_ms_buffer_size);
                         let mut rodio_effects = RodioEffectsAdaptor::new(buf.len())
-                            .automatic_gain_control(AutomaticGainControlSettings {
-                                target_level: 0.50,
-                                attack_time: Duration::from_secs(1),
-                                release_time: Duration::from_secs(0),
-                                absolute_max_gain: 5.0,
-                            })
-                            .limit(LimitSettings::live_performance());
+                            .automatic_gain_control(
+                                0.50,
+                                1.0,
+                                0.0,
+                                5.0,
+                            );
 
                         let stream = device
                             .build_input_stream_raw(
@@ -358,18 +355,20 @@ impl AudioStack {
                                                 )
                                                 .to_owned();
 
-                                            if audio::LIVE_SETTINGS
+                                            if raijin_audio::LIVE_SETTINGS
                                                 .auto_microphone_volume
                                                 .load(Ordering::Relaxed)
                                             {
                                                 rodio_effects
                                                     .inner_mut()
-                                                    .inner_mut()
                                                     .fill_buffer_with(&sampled);
                                                 sampled.clear();
-                                                sampled.extend(SampleTypeConverter::<_, i16>::new(
-                                                    rodio_effects.by_ref(),
-                                                ));
+                                                sampled.extend(
+                                                    rodio_effects.by_ref().map(|s| {
+                                                        use cpal::Sample;
+                                                        s.to_sample::<i16>()
+                                                    }),
+                                                );
                                             }
 
                                             apm.lock()
@@ -426,7 +425,7 @@ impl AudioStack {
 ///
 /// There is no latency impact.
 pub struct RodioEffectsAdaptor {
-    input: Vec<rodio::Sample>,
+    input: Vec<f32>,
     pos: usize,
 }
 
@@ -442,16 +441,16 @@ impl RodioEffectsAdaptor {
     }
 
     fn fill_buffer_with(&mut self, integer_samples: &[i16]) {
+        use cpal::Sample;
         self.input.clear();
-        self.input.extend(SampleTypeConverter::<_, f32>::new(
-            integer_samples.iter().copied(),
-        ));
+        self.input
+            .extend(integer_samples.iter().map(|&s| s.to_sample::<f32>()));
         self.pos = 0;
     }
 }
 
 impl Iterator for RodioEffectsAdaptor {
-    type Item = rodio::Sample;
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         let sample = self.input.get(self.pos)?;
@@ -461,16 +460,16 @@ impl Iterator for RodioEffectsAdaptor {
 }
 
 impl rodio::Source for RodioEffectsAdaptor {
-    fn current_span_len(&self) -> Option<usize> {
+    fn current_frame_len(&self) -> Option<usize> {
         None
     }
 
-    fn channels(&self) -> rodio::ChannelCount {
-        rodio::nz!(2)
+    fn channels(&self) -> u16 {
+        2
     }
 
-    fn sample_rate(&self) -> rodio::SampleRate {
-        rodio::nz!(48000)
+    fn sample_rate(&self) -> u32 {
+        48000
     }
 
     fn total_duration(&self) -> Option<Duration> {
@@ -496,7 +495,7 @@ pub(crate) async fn capture_local_video_track(
     cx: &mut inazuma::AsyncApp,
 ) -> Result<(crate::LocalVideoTrack, Box<dyn ScreenCaptureStream>)> {
     let metadata = capture_source.metadata()?;
-    let track_source = gpui_tokio::Tokio::spawn(cx, async move {
+    let track_source = inazuma_tokio::Tokio::spawn(cx, async move {
         NativeVideoSource::new(
             VideoResolution {
                 width: metadata.resolution.width.0 as u32,
@@ -653,7 +652,7 @@ fn create_buffer_pool(
 }
 
 #[cfg(target_os = "macos")]
-pub type RemoteVideoFrame = core_video::pixel_buffer::CVPixelBuffer;
+pub type RemoteVideoFrame = objc2_core_foundation::CFRetained<objc2_core_video::CVBuffer>;
 
 #[cfg(target_os = "macos")]
 fn video_frame_buffer_from_webrtc(
@@ -669,7 +668,9 @@ fn video_frame_buffer_from_webrtc(
         if pixel_buffer.is_null() {
             return None;
         }
-        return unsafe { Some(CVPixelBuffer::wrap_under_get_rule(pixel_buffer as _)) };
+        // Get-rule: retain, since livekit owns the buffer and we need our own reference.
+        let old_buf = unsafe { CVPixelBuffer::wrap_under_get_rule(pixel_buffer as _) };
+        return Some(cv_pixel_buffer_to_retained(&old_buf));
     }
 
     let i420_buffer = buffer.as_i420()?;
@@ -715,7 +716,21 @@ fn video_frame_buffer_from_webrtc(
         pixel_buffer
     };
 
-    Some(image_buffer)
+    Some(cv_pixel_buffer_to_retained(&image_buffer))
+}
+
+/// Converts an old `core-video` CVPixelBuffer (core-foundation-based) to the objc2
+/// `CFRetained<CVBuffer>` type used by the inazuma rendering surface.
+/// This performs a retain (get-rule) so the returned value holds its own reference.
+#[cfg(target_os = "macos")]
+fn cv_pixel_buffer_to_retained(
+    old: &core_video::pixel_buffer::CVPixelBuffer,
+) -> RemoteVideoFrame {
+    use core_foundation::base::TCFType;
+    let raw = old.as_concrete_TypeRef() as *mut objc2_core_video::CVBuffer;
+    unsafe {
+        objc2_core_foundation::CFRetained::retain(std::ptr::NonNull::new_unchecked(raw))
+    }
 }
 
 #[cfg(not(target_os = "macos"))]
@@ -766,10 +781,10 @@ fn video_frame_buffer_from_webrtc(buffer: Box<dyn VideoBuffer>) -> Option<Remote
 fn video_frame_buffer_to_webrtc(frame: ScreenCaptureFrame) -> Option<impl AsRef<dyn VideoBuffer>> {
     use livekit::webrtc;
 
-    let pixel_buffer = frame.0.as_concrete_TypeRef();
+    let pixel_buffer = objc2_core_foundation::CFRetained::as_ptr(&frame.0).as_ptr() as *mut _;
     std::mem::forget(frame.0);
     unsafe {
-        Some(webrtc::video_frame::native::NativeBuffer::from_cv_pixel_buffer(pixel_buffer as _))
+        Some(webrtc::video_frame::native::NativeBuffer::from_cv_pixel_buffer(pixel_buffer))
     }
 }
 

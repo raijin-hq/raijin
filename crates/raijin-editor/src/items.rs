@@ -9,7 +9,7 @@ use crate::{
 };
 use anyhow::{Context as _, Result, anyhow};
 use inazuma_collections::{HashMap, HashSet};
-use raijin_file_inazuma_icons::FileIcons;
+use raijin_file_icons::FileIcons;
 use raijin_fs::MTime;
 use futures::future::try_join_all;
 use raijin_git::status::GitSummary;
@@ -57,7 +57,7 @@ use raijin_workspace::{
     searchable::SearchOptions,
 };
 use raijin_actions::preview::{
-    raijin_markdown::OpenPreview as OpenMarkdownPreview, svg::OpenPreview as OpenSvgPreview,
+    markdown::OpenPreview as OpenMarkdownPreview, svg::OpenPreview as OpenSvgPreview,
 };
 
 pub const MAX_TAB_TITLE_LEN: usize = 24;
@@ -1575,9 +1575,9 @@ impl SearchableItem for Editor {
             matches,
             move |index, theme| {
                 if active_match_index == Some(*index) {
-                    theme.colors().search_active_match_background
+                    theme.colors().search.active_match_background
                 } else {
-                    theme.colors().search_match_background
+                    theme.colors().search.match_background
                 }
             },
             cx,
@@ -1654,7 +1654,7 @@ impl SearchableItem for Editor {
             SeedQuerySetting::Selection => String::new(),
             SeedQuerySetting::Always => {
                 let (range, kind) = buffer_snapshot
-                    .surrounding_word(selection.start, Some(CharScopeConinazuma_text::Completion));
+                    .surrounding_word(selection.start, Some(CharScopeContext::Completion));
                 if kind == Some(CharKind::Word) {
                     let text: String = buffer_snapshot.text_for_range(range).collect();
                     if !text.trim().is_empty() {

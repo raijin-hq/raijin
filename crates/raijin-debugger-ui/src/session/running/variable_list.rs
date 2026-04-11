@@ -1588,7 +1588,7 @@ impl Render for VariableList {
             .custom_scrollbars(
                 ui::Scrollbars::new(ScrollAxes::Both)
                     .tracked_scroll_handle(&self.list_handle)
-                    .with_track_along(ScrollAxes::Both, cx.theme().colors().panel_background)
+                    .with_track_along(ScrollAxes::Both, cx.theme().colors().panel.background)
                     .tracked_entity(cx.entity_id()),
                 window,
                 cx,

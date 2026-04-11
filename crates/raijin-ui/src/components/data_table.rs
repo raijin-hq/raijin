@@ -520,9 +520,9 @@ impl TableWidths {
     }
 }
 
-/// A table component
+/// An interactive data table component with column resize, drag-move, and interaction state.
 #[derive(RegisterComponent, IntoElement)]
-pub struct Table {
+pub struct DataTable {
     striped: bool,
     show_row_borders: bool,
     show_row_hover: bool,
@@ -539,7 +539,7 @@ pub struct Table {
     disable_base_cell_style: bool,
 }
 
-impl Table {
+impl DataTable {
     /// Creates a new table with the specified number of columns.
     pub fn new(cols: usize) -> Self {
         Self {
@@ -570,7 +570,7 @@ impl Table {
 
     /// Enables uniform list rendering.
     /// The provided function will be passed directly to the `uniform_list` element.
-    /// Therefore, if this method is called, any calls to [`Table::row`] before or after
+    /// Therefore, if this method is called, any calls to [`DataTable::row`] before or after
     /// this method is called will be ignored.
     pub fn uniform_list(
         mut self,
@@ -594,7 +594,7 @@ impl Table {
     /// Enables rendering of tables with variable row heights, allowing each row to have its own height.
     ///
     /// This mode is useful for displaying content such as CSV data or multiline cells, where rows may not have uniform heights.
-    /// It is generally slower than [`Table::uniform_list`] due to the need to measure each row individually, but it provides correct layout for non-uniform or multiline content.
+    /// It is generally slower than [`DataTable::uniform_list`] due to the need to measure each row individually, but it provides correct layout for non-uniform or multiline content.
     ///
     /// # Parameters
     /// - `row_count`: The total number of rows in the table.
@@ -895,7 +895,7 @@ pub struct TableRenderContext {
 }
 
 impl TableRenderContext {
-    fn new(table: &Table, cx: &App) -> Self {
+    fn new(table: &DataTable, cx: &App) -> Self {
         Self {
             striped: table.striped,
             show_row_borders: table.show_row_borders,
@@ -909,7 +909,7 @@ impl TableRenderContext {
     }
 }
 
-impl RenderOnce for Table {
+impl RenderOnce for DataTable {
     fn render(mut self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let table_context = TableRenderContext::new(&self, cx);
         let interaction_state = self.interaction_state.and_then(|state| state.upgrade());
@@ -1127,7 +1127,7 @@ impl RenderOnce for Table {
     }
 }
 
-impl Component for Table {
+impl Component for DataTable {
     fn scope() -> ComponentScope {
         ComponentScope::Layout
     }
@@ -1146,7 +1146,7 @@ impl Component for Table {
                         vec![
                             single_example(
                                 "Simple Table",
-                                Table::new(3)
+                                DataTable::new(3)
                                     .width(px(400.))
                                     .header(vec!["Name", "Age", "City"])
                                     .row(vec!["Alice", "28", "New York"])
@@ -1156,7 +1156,7 @@ impl Component for Table {
                             ),
                             single_example(
                                 "Two Column Table",
-                                Table::new(2)
+                                DataTable::new(2)
                                     .header(vec!["Category", "Value"])
                                     .width(px(300.))
                                     .row(vec!["Revenue", "$100,000"])
@@ -1171,7 +1171,7 @@ impl Component for Table {
                         vec![
                             single_example(
                                 "Default",
-                                Table::new(3)
+                                DataTable::new(3)
                                     .width(px(400.))
                                     .header(vec!["Product", "Price", "Stock"])
                                     .row(vec!["Laptop", "$999", "In Stock"])
@@ -1181,7 +1181,7 @@ impl Component for Table {
                             ),
                             single_example(
                                 "Striped",
-                                Table::new(3)
+                                DataTable::new(3)
                                     .width(px(400.))
                                     .striped()
                                     .header(vec!["Product", "Price", "Stock"])
@@ -1197,7 +1197,7 @@ impl Component for Table {
                         "Mixed Content Table",
                         vec![single_example(
                             "Table with Elements",
-                            Table::new(5)
+                            DataTable::new(5)
                                 .width(px(840.))
                                 .header(vec!["Status", "Name", "Priority", "Deadline", "Action"])
                                 .row(vec![
@@ -1206,7 +1206,7 @@ impl Component for Table {
                                     "High".into_any_element(),
                                     "2023-12-31".into_any_element(),
                                     Button::new("view_a", "View")
-                                        .style(ButtonStyle::Filled)
+                                        .style(ButtonStyle::FILLED)
                                         .full_width()
                                         .into_any_element(),
                                 ])
@@ -1216,7 +1216,7 @@ impl Component for Table {
                                     "Medium".into_any_element(),
                                     "2024-03-15".into_any_element(),
                                     Button::new("view_b", "View")
-                                        .style(ButtonStyle::Filled)
+                                        .style(ButtonStyle::FILLED)
                                         .full_width()
                                         .into_any_element(),
                                 ])
@@ -1226,7 +1226,7 @@ impl Component for Table {
                                     "Low".into_any_element(),
                                     "2024-06-30".into_any_element(),
                                     Button::new("view_c", "View")
-                                        .style(ButtonStyle::Filled)
+                                        .style(ButtonStyle::FILLED)
                                         .full_width()
                                         .into_any_element(),
                                 ])

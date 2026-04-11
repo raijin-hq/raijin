@@ -1322,7 +1322,7 @@ impl Render for LspButton {
                     IconButton::new("zed-lsp-tool-button", IconName::BoltOutlined)
                         .when_some(indicator, IconButton::indicator)
                         .icon_size(IconSize::Small)
-                        .indicator_border_color(Some(cx.theme().colors().status_bar_background)),
+                        .indicator_border_color(Some(cx.theme().colors().status_bar.background)),
                     move |_window, cx| {
                         Tooltip::with_meta("Language Servers", Some(&ToggleMenu), description, cx)
                     },

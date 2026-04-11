@@ -395,7 +395,7 @@ impl Render for SubView {
             // Add border unconditionally to prevent layout shifts on focus changes.
             .border_1()
             .when(self.item_focus_handle.contains_focused(window, cx), |el| {
-                el.border_color(cx.theme().colors().pane_focused_border)
+                el.border_color(cx.theme().colors().pane.focused_border)
             })
             .child(self.inner.clone())
     }
@@ -480,7 +480,7 @@ pub(crate) fn new_debugger_pane(
                     .justify_between()
                     .border_b_1()
                     .border_color(cx.theme().colors().border)
-                    .bg(cx.theme().colors().tab_bar_background)
+                    .bg(cx.theme().colors().tab.bar_background)
                     .on_action(|_: &menu::Cancel, window, cx| {
                         if cx.stop_active_drag(window) {
                         } else {
@@ -527,7 +527,7 @@ pub(crate) fn new_debugger_pane(
                                     .map(|this| {
                                         let theme = cx.theme();
                                         if selected {
-                                            let color = theme.colors().tab_active_background;
+                                            let color = theme.colors().tab.active_background;
                                             let color = if deemphasized {
                                                 color.opacity(0.5)
                                             } else {
@@ -657,7 +657,7 @@ impl inazuma::Render for DebugTerminal {
         div()
             .track_focus(&self.focus_handle)
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .children(self.terminal.clone())
     }
 }

@@ -8,7 +8,7 @@ use inazuma::{App, AppContext as _, Context, Entity, Font, LineWrapper, Pixels, 
 use raijin_language::Point;
 use raijin_multi_buffer::{MultiBufferSnapshot, RowInfo};
 use smol::future::yield_now;
-use std::{cmp, inazuma_collections::VecDeque, mem, ops::Range, sync::LazyLock, time::Duration};
+use std::{cmp, collections::VecDeque, mem, ops::Range, sync::LazyLock, time::Duration};
 use inazuma_sum_tree::{Bias, Cursor, Dimensions, SumTree};
 use inazuma_text::Patch;
 

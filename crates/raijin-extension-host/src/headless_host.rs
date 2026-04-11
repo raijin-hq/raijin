@@ -194,7 +194,7 @@ impl HeadlessExtensionStore {
         }
 
         for (debug_adapter, meta) in &manifest.debug_adapters {
-            let schema_path = extension::build_debug_adapter_schema_path(debug_adapter, meta);
+            let schema_path = raijin_extension::build_debug_adapter_schema_path(debug_adapter, meta);
 
             this.update(cx, |this, _cx| {
                 this.proxy.register_debug_adapter(
@@ -317,7 +317,7 @@ impl HeadlessExtensionStore {
                     dev: e.dev,
                 })
                 .collect(),
-            tmp_dir: paths::remote_extensions_uploads_dir()
+            tmp_dir: raijin_paths::remote_extensions_uploads_dir()
                 .to_string_lossy()
                 .to_string(),
         })

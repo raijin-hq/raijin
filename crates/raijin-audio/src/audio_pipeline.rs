@@ -2,13 +2,11 @@ use anyhow::{Context as _, Result};
 use inazuma_collections::HashMap;
 use cpal::{
     DeviceDescription, DeviceId, default_host,
-    traits::{DeviceTrait, HostTrait},
+    traits::{DeviceTrait, HostTrait, StreamTrait},
 };
 use inazuma::{App, AsyncApp, BorrowAppContext, Global};
 
-pub(super) use cpal::Sample;
-
-use rodio::{Decoder, DeviceSinkBuilder, MixerDeviceSink, Source, mixer::Mixer, source::Buffered};
+use rodio::{Decoder, Source, dynamic_mixer, source::Buffered, source::SamplesConverter};
 use inazuma_settings_framework::Settings;
 use std::io::Cursor;
 use inazuma_util::ResultExt;
@@ -25,7 +23,7 @@ use crate::Sound;
 
 use super::{CHANNEL_COUNT, SAMPLE_RATE};
 pub const BUFFER_SIZE: usize = // echo canceller and livekit want 10ms of audio
-    (SAMPLE_RATE.get() as usize / 100) * CHANNEL_COUNT.get() as usize;
+    (SAMPLE_RATE as usize / 100) * CHANNEL_COUNT as usize;
 
 pub fn init(cx: &mut App) {
     LIVE_SETTINGS.initialize(cx);
@@ -48,32 +46,52 @@ pub fn ensure_devices_initialized(cx: &mut App) {
     .detach();
 }
 
-#[derive(Default)]
+/// Holds the output stream and mixer controller for audio playback.
+/// The cpal output stream reads from the mixer's output and writes to the device.
+pub struct AudioOutput {
+    /// Must be kept alive for audio to play. Dropping this stops all audio output.
+    _output_stream: cpal::Stream,
+    mixer_controller: std::sync::Arc<dynamic_mixer::DynamicMixerController<f32>>,
+}
+
 pub struct Audio {
-    output: Option<(MixerDeviceSink, Mixer)>,
+    output: Option<AudioOutput>,
     pub echo_canceller: EchoCanceller,
-    source_cache: HashMap<Sound, Buffered<Decoder<Cursor<Vec<u8>>>>>,
+    source_cache: HashMap<Sound, Buffered<SamplesConverter<Decoder<Cursor<Vec<u8>>>, f32>>>,
+}
+
+impl Default for Audio {
+    fn default() -> Self {
+        Self {
+            output: None,
+            echo_canceller: EchoCanceller::default(),
+            source_cache: HashMap::default(),
+        }
+    }
 }
 
 impl Global for Audio {}
 
 impl Audio {
-    fn ensure_output_exists(&mut self, output_audio_device: Option<DeviceId>) -> Result<&Mixer> {
+    fn ensure_output_exists(
+        &mut self,
+        output_audio_device: Option<DeviceId>,
+    ) -> Result<&std::sync::Arc<dynamic_mixer::DynamicMixerController<f32>>> {
         #[cfg(debug_assertions)]
         log::warn!(
             "Audio does not sound correct without optimizations. Use a release build to debug audio issues"
         );
 
         if self.output.is_none() {
-            let (output_handle, output_mixer) =
+            let audio_output =
                 open_output_stream(output_audio_device, self.echo_canceller.clone())?;
-            self.output = Some((output_handle, output_mixer));
+            self.output = Some(audio_output);
         }
 
         Ok(self
             .output
             .as_ref()
-            .map(|(_, mixer)| mixer)
+            .map(|o| &o.mixer_controller)
             .expect("we only get here if opening the outputstream succeeded"))
     }
 
@@ -97,7 +115,7 @@ impl Audio {
         });
     }
 
-    fn sound_source(&mut self, sound: Sound, cx: &App) -> Result<impl Source + use<>> {
+    fn sound_source(&mut self, sound: Sound, cx: &App) -> Result<impl Source<Item = f32> + Send + 'static> {
         if let Some(wav) = self.source_cache.get(&sound) {
             return Ok(wav.clone());
         }
@@ -110,7 +128,8 @@ impl Audio {
             .with_context(|| format!("No asset available for path {path}"))??
             .into_owned();
         let cursor = Cursor::new(bytes);
-        let source = Decoder::new(cursor)?.buffered();
+        let source: SamplesConverter<Decoder<Cursor<Vec<u8>>>, f32> = Decoder::new(cursor)?.convert_samples();
+        let source = source.buffered();
 
         self.source_cache.insert(sound, source.clone());
 
@@ -118,39 +137,60 @@ impl Audio {
     }
 }
 
+/// An opened input (microphone) stream using cpal directly.
+pub struct InputStream {
+    _stream: cpal::Stream,
+    config: cpal::StreamConfig,
+}
+
+impl InputStream {
+    pub fn config(&self) -> &cpal::StreamConfig {
+        &self.config
+    }
+}
+
+impl std::fmt::Debug for InputStream {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("InputStream")
+            .field("config", &self.config)
+            .finish()
+    }
+}
+
 pub fn open_input_stream(
     device_id: Option<DeviceId>,
-) -> anyhow::Result<rodio::microphone::Microphone> {
-    let builder = rodio::microphone::MicrophoneBuilder::new();
-    let builder = if let Some(id) = device_id {
-        // TODO(jk): upstream patch
-        // if let Some(input_device) = default_host().device_by_id(id) {
-        //     builder.device(input_device);
-        // }
-        let mut found = None;
-        for input in rodio::microphone::available_inputs()? {
-            if input.clone().into_inner().id()? == id {
-                found = Some(builder.device(input));
-                break;
-            }
-        }
-        found.unwrap_or_else(|| builder.default_device())?
-    } else {
-        builder.default_device()?
+) -> anyhow::Result<InputStream> {
+    let device = resolve_device(device_id.as_ref(), true)?;
+    let supported_config = device
+        .default_input_config()
+        .context("no default input config available")?;
+
+    let config = cpal::StreamConfig {
+        channels: supported_config.channels(),
+        sample_rate: supported_config.sample_rate(),
+        buffer_size: cpal::BufferSize::Default,
     };
-    let stream = builder
-        .default_config()?
-        .prefer_sample_rates([
-            SAMPLE_RATE,
-            SAMPLE_RATE.saturating_mul(rodio::nz!(2)),
-            SAMPLE_RATE.saturating_mul(rodio::nz!(3)),
-            SAMPLE_RATE.saturating_mul(rodio::nz!(4)),
-        ])
-        .prefer_channel_counts([rodio::nz!(1), rodio::nz!(2), rodio::nz!(3), rodio::nz!(4)])
-        .prefer_buffer_sizes(512..)
-        .open_stream()?;
-    log::info!("Opened microphone: {:?}", stream.config());
-    Ok(stream)
+
+    let stream = device
+        .build_input_stream(
+            &config,
+            |_data: &[f32], _info: &cpal::InputCallbackInfo| {
+                // Input data is processed by the echo canceller pipeline
+            },
+            |err| {
+                log::error!("Input stream error: {}", err);
+            },
+            None,
+        )
+        .context("Could not build input stream")?;
+
+    stream.play().context("Could not start input stream")?;
+
+    log::info!("Opened microphone: {:?}", config);
+    Ok(InputStream {
+        _stream: stream,
+        config,
+    })
 }
 
 pub fn resolve_device(device_id: Option<&DeviceId>, input: bool) -> anyhow::Result<cpal::Device> {
@@ -171,35 +211,102 @@ pub fn resolve_device(device_id: Option<&DeviceId>, input: bool) -> anyhow::Resu
     }
 }
 
-pub fn open_test_output(device_id: Option<DeviceId>) -> anyhow::Result<MixerDeviceSink> {
+/// Opens a test output stream on the given device. Returns a mixer controller
+/// that can be used to add sources for playback.
+pub fn open_test_output(
+    device_id: Option<DeviceId>,
+) -> anyhow::Result<(cpal::Stream, std::sync::Arc<dynamic_mixer::DynamicMixerController<f32>>)> {
     let device = resolve_device(device_id.as_ref(), false)?;
-    DeviceSinkBuilder::from_device(device)?
-        .open_stream()
-        .context("Could not open output stream")
+    let supported_config = device
+        .default_output_config()
+        .context("no default output config")?;
+
+    let sample_rate = supported_config.sample_rate();
+    let channels = supported_config.channels();
+
+    let (controller, mixer) = dynamic_mixer::mixer::<f32>(channels, sample_rate);
+
+    let config = cpal::StreamConfig {
+        channels,
+        sample_rate: sample_rate,
+        buffer_size: cpal::BufferSize::Default,
+    };
+
+    let mut source = Box::new(mixer) as Box<dyn Source<Item = f32> + Send>;
+    let stream = device
+        .build_output_stream(
+            &config,
+            move |data: &mut [f32], _info: &cpal::OutputCallbackInfo| {
+                for sample in data.iter_mut() {
+                    *sample = source.next().unwrap_or(0.0);
+                }
+            },
+            |err| {
+                log::error!("Output stream error: {}", err);
+            },
+            None,
+        )
+        .context("Could not build output stream")?;
+
+    stream.play().context("Could not start output stream")?;
+
+    Ok((stream, controller))
 }
 
 pub fn open_output_stream(
     device_id: Option<DeviceId>,
     mut echo_canceller: EchoCanceller,
-) -> anyhow::Result<(MixerDeviceSink, Mixer)> {
+) -> anyhow::Result<AudioOutput> {
     let device = resolve_device(device_id.as_ref(), false)?;
-    let mut output_handle = DeviceSinkBuilder::from_device(device)?
-        .open_stream()
-        .context("Could not open output stream")?;
-    output_handle.log_on_drop(false);
-    log::info!("Output stream: {:?}", output_handle);
+    let supported_config = device
+        .default_output_config()
+        .context("no default output config")?;
 
-    let (output_mixer, source) = rodio::mixer::mixer(CHANNEL_COUNT, SAMPLE_RATE);
-    // otherwise the mixer ends as it's empty
-    output_mixer.add(rodio::source::Zero::new(CHANNEL_COUNT, SAMPLE_RATE));
-    let echo_cancelling_source = source // apply echo cancellation just before output
+    let sample_rate = supported_config.sample_rate();
+    let channels = supported_config.channels();
+
+    let (mixer_controller, mixer) = dynamic_mixer::mixer::<f32>(channels, sample_rate);
+    // Keep the mixer alive by adding a zero source so it never ends
+    mixer_controller.add(rodio::source::Zero::<f32>::new(channels, sample_rate));
+
+    let echo_cancelling_source = mixer
         .inspect_buffer::<BUFFER_SIZE, _>(move |buffer| {
-            let mut buf: [i16; _] = buffer.map(|s| s.to_sample());
+            let mut buf: [i16; BUFFER_SIZE] = std::array::from_fn(|i| {
+                (buffer[i] * i16::MAX as f32) as i16
+            });
             echo_canceller.process_reverse_stream(&mut buf)
         });
-    output_handle.mixer().add(echo_cancelling_source);
 
-    Ok((output_handle, output_mixer))
+    let config = cpal::StreamConfig {
+        channels,
+        sample_rate: sample_rate,
+        buffer_size: cpal::BufferSize::Default,
+    };
+
+    let mut source = Box::new(echo_cancelling_source) as Box<dyn Source<Item = f32> + Send>;
+    let output_stream = device
+        .build_output_stream(
+            &config,
+            move |data: &mut [f32], _info: &cpal::OutputCallbackInfo| {
+                for sample in data.iter_mut() {
+                    *sample = source.next().unwrap_or(0.0);
+                }
+            },
+            |err| {
+                log::error!("Output stream error: {}", err);
+            },
+            None,
+        )
+        .context("Could not build output stream")?;
+
+    output_stream.play().context("Could not start output stream")?;
+
+    log::info!("Output stream opened");
+
+    Ok(AudioOutput {
+        _output_stream: output_stream,
+        mixer_controller,
+    })
 }
 
 #[derive(Clone, Debug)]

@@ -114,7 +114,7 @@ impl Render for StatusToast {
                 }
             })
             .flex_none()
-            .bg(cx.theme().colors().surface_background)
+            .bg(cx.theme().colors().surface)
             .shadow_lg()
             .when_some(self.icon.as_ref(), |this, icon| {
                 this.child(Icon::new(icon.icon).color(icon.color))

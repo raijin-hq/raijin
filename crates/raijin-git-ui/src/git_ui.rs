@@ -23,7 +23,7 @@ use raijin_project::git_store::Repository;
 use project_diff::ProjectDiff;
 use raijin_ui::prelude::*;
 use raijin_workspace::{ModalView, Workspace, notifications::DetachAndPromptErr};
-use zed_actions;
+use raijin_actions;
 
 use crate::{git_panel::GitPanel, text_diff_view::TextDiffView};
 
@@ -48,7 +48,7 @@ pub mod text_diff_view;
 pub mod worktree_picker;
 
 pub fn init(cx: &mut App) {
-    editor::set_blame_renderer(blame_ui::GitBlameRenderer, cx);
+    raijin_editor::set_blame_renderer(blame_ui::GitBlameRenderer, cx);
     commit_view::init(cx);
 
     cx.observe_new(|editor: &mut Editor, _, cx| {
@@ -70,7 +70,7 @@ pub fn init(cx: &mut App) {
         }
         if !project.is_via_collab() {
             workspace.register_action(
-                |workspace, _: &zed_actions::git::CreatePullRequest, window, cx| {
+                |workspace, _: &raijin_actions::git::CreatePullRequest, window, cx| {
                     if let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) {
                         panel.update(cx, |panel, cx| {
                             panel.create_pull_request(window, cx);
@@ -78,7 +78,7 @@ pub fn init(cx: &mut App) {
                     }
                 },
             );
-            workspace.register_action(|workspace, _: &git::Fetch, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::Fetch, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -86,7 +86,7 @@ pub fn init(cx: &mut App) {
                     panel.fetch(true, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::FetchFrom, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::FetchFrom, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -94,7 +94,7 @@ pub fn init(cx: &mut App) {
                     panel.fetch(false, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::Push, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::Push, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -102,7 +102,7 @@ pub fn init(cx: &mut App) {
                     panel.push(false, false, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::PushTo, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::PushTo, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -110,7 +110,7 @@ pub fn init(cx: &mut App) {
                     panel.push(false, true, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::ForcePush, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::ForcePush, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -118,7 +118,7 @@ pub fn init(cx: &mut App) {
                     panel.push(true, false, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::Pull, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::Pull, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -126,7 +126,7 @@ pub fn init(cx: &mut App) {
                     panel.pull(false, window, cx);
                 });
             });
-            workspace.register_action(|workspace, _: &git::PullRebase, window, cx| {
+            workspace.register_action(|workspace, _: &raijin_git::PullRebase, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
                 };
@@ -135,7 +135,7 @@ pub fn init(cx: &mut App) {
                 });
             });
         }
-        workspace.register_action(|workspace, action: &git::StashAll, window, cx| {
+        workspace.register_action(|workspace, action: &raijin_git::StashAll, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -143,7 +143,7 @@ pub fn init(cx: &mut App) {
                 panel.stash_all(action, window, cx);
             });
         });
-        workspace.register_action(|workspace, action: &git::StashPop, window, cx| {
+        workspace.register_action(|workspace, action: &raijin_git::StashPop, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -151,7 +151,7 @@ pub fn init(cx: &mut App) {
                 panel.stash_pop(action, window, cx);
             });
         });
-        workspace.register_action(|workspace, action: &git::StashApply, window, cx| {
+        workspace.register_action(|workspace, action: &raijin_git::StashApply, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -159,7 +159,7 @@ pub fn init(cx: &mut App) {
                 panel.stash_apply(action, window, cx);
             });
         });
-        workspace.register_action(|workspace, action: &git::StageAll, window, cx| {
+        workspace.register_action(|workspace, action: &raijin_git::StageAll, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -167,7 +167,7 @@ pub fn init(cx: &mut App) {
                 panel.stage_all(action, window, cx);
             });
         });
-        workspace.register_action(|workspace, action: &git::UnstageAll, window, cx| {
+        workspace.register_action(|workspace, action: &raijin_git::UnstageAll, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -175,7 +175,7 @@ pub fn init(cx: &mut App) {
                 panel.unstage_all(action, window, cx);
             });
         });
-        workspace.register_action(|workspace, _: &git::Uncommit, window, cx| {
+        workspace.register_action(|workspace, _: &raijin_git::Uncommit, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -183,7 +183,7 @@ pub fn init(cx: &mut App) {
                 panel.uncommit(window, cx);
             })
         });
-        workspace.register_action(|workspace, _action: &git::Init, window, cx| {
+        workspace.register_action(|workspace, _action: &raijin_git::Init, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -191,7 +191,7 @@ pub fn init(cx: &mut App) {
                 panel.git_init(window, cx);
             });
         });
-        workspace.register_action(|workspace, _action: &git::Clone, window, cx| {
+        workspace.register_action(|workspace, _action: &raijin_git::Clone, window, cx| {
             let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                 return;
             };
@@ -200,10 +200,10 @@ pub fn init(cx: &mut App) {
                 GitCloneModal::show(panel, window, cx)
             });
         });
-        workspace.register_action(|workspace, _: &git::OpenModifiedFiles, window, cx| {
+        workspace.register_action(|workspace, _: &raijin_git::OpenModifiedFiles, window, cx| {
             open_modified_files(workspace, window, cx);
         });
-        workspace.register_action(|workspace, _: &git::RenameBranch, window, cx| {
+        workspace.register_action(|workspace, _: &raijin_git::RenameBranch, window, cx| {
             rename_current_branch(workspace, window, cx);
         });
         workspace.register_action(
@@ -213,7 +213,7 @@ pub fn init(cx: &mut App) {
                 };
             },
         );
-        workspace.register_action(|workspace, _: &git::FileHistory, window, cx| {
+        workspace.register_action(|workspace, _: &raijin_git::FileHistory, window, cx| {
             let Some(active_item) = workspace.active_item(cx) else {
                 return;
             };
@@ -487,12 +487,12 @@ mod remote_button {
             Some(IconName::ArrowCircle),
             keybinding_target.clone(),
             move |_, window, cx| {
-                window.dispatch_action(Box::new(git::Fetch), cx);
+                window.dispatch_action(Box::new(raijin_git::Fetch), cx);
             },
             move |_window, cx| {
                 git_action_tooltip(
                     "Fetch updates from remote",
-                    &git::Fetch,
+                    &raijin_git::Fetch,
                     "git fetch",
                     keybinding_target.clone(),
                     cx,
@@ -514,12 +514,12 @@ mod remote_button {
             None,
             keybinding_target.clone(),
             move |_, window, cx| {
-                window.dispatch_action(Box::new(git::Push), cx);
+                window.dispatch_action(Box::new(raijin_git::Push), cx);
             },
             move |_window, cx| {
                 git_action_tooltip(
                     "Push committed changes to remote",
-                    &git::Push,
+                    &raijin_git::Push,
                     "git push",
                     keybinding_target.clone(),
                     cx,
@@ -542,12 +542,12 @@ mod remote_button {
             None,
             keybinding_target.clone(),
             move |_, window, cx| {
-                window.dispatch_action(Box::new(git::Pull), cx);
+                window.dispatch_action(Box::new(raijin_git::Pull), cx);
             },
             move |_window, cx| {
                 git_action_tooltip(
                     "Pull",
-                    &git::Pull,
+                    &raijin_git::Pull,
                     "git pull",
                     keybinding_target.clone(),
                     cx,
@@ -568,12 +568,12 @@ mod remote_button {
             Some(IconName::ExpandUp),
             keybinding_target.clone(),
             move |_, window, cx| {
-                window.dispatch_action(Box::new(git::Push), cx);
+                window.dispatch_action(Box::new(raijin_git::Push), cx);
             },
             move |_window, cx| {
                 git_action_tooltip(
                     "Publish branch to remote",
-                    &git::Push,
+                    &raijin_git::Push,
                     "git push --set-upstream",
                     keybinding_target.clone(),
                     cx,
@@ -594,12 +594,12 @@ mod remote_button {
             Some(IconName::ExpandUp),
             keybinding_target.clone(),
             move |_, window, cx| {
-                window.dispatch_action(Box::new(git::Push), cx);
+                window.dispatch_action(Box::new(raijin_git::Push), cx);
             },
             move |_window, cx| {
                 git_action_tooltip(
                     "Re-publish branch to remote",
-                    &git::Push,
+                    &raijin_git::Push,
                     "git push --set-upstream",
                     keybinding_target.clone(),
                     cx,
@@ -631,9 +631,9 @@ mod remote_button {
     ) -> impl IntoElement {
         PopoverMenu::new(id.into())
             .trigger(
-                ui::ButtonLike::new_rounded_right("split-button-right")
-                    .layer(ui::ElevationIndex::ModalSurface)
-                    .size(ui::ButtonSize::None)
+                raijin_ui::ButtonLike::new_rounded_right("split-button-right")
+                    .layer(raijin_ui::ElevationIndex::ModalSurface)
+                    .size(raijin_ui::ButtonSize::None)
                     .child(
                         div()
                             .px_1()
@@ -646,14 +646,14 @@ mod remote_button {
                         .when_some(keybinding_target.clone(), |el, keybinding_target| {
                             el.context(keybinding_target)
                         })
-                        .action("Fetch", git::Fetch.boxed_clone())
-                        .action("Fetch From", git::FetchFrom.boxed_clone())
-                        .action("Pull", git::Pull.boxed_clone())
-                        .action("Pull (Rebase)", git::PullRebase.boxed_clone())
+                        .action("Fetch", raijin_git::Fetch.boxed_clone())
+                        .action("Fetch From", raijin_git::FetchFrom.boxed_clone())
+                        .action("Pull", raijin_git::Pull.boxed_clone())
+                        .action("Pull (Rebase)", raijin_git::PullRebase.boxed_clone())
                         .separator()
-                        .action("Push", git::Push.boxed_clone())
-                        .action("Push To", git::PushTo.boxed_clone())
-                        .action("Force Push", git::ForcePush.boxed_clone())
+                        .action("Push", raijin_git::Push.boxed_clone())
+                        .action("Push To", raijin_git::PushTo.boxed_clone())
+                        .action("Force Push", raijin_git::ForcePush.boxed_clone())
                 }))
             })
             .anchor(Corner::TopRight)
@@ -686,11 +686,11 @@ mod remote_button {
 
         let should_render_counts = left_icon.is_none() && (ahead_count > 0 || behind_count > 0);
 
-        let left = ui::ButtonLike::new_rounded_left(ElementId::Name(
+        let left = raijin_ui::ButtonLike::new_rounded_left(ElementId::Name(
             format!("split-button-left-{}", id).into(),
         ))
-        .layer(ui::ElevationIndex::ModalSurface)
-        .size(ui::ButtonSize::Compact)
+        .layer(raijin_ui::ElevationIndex::ModalSurface)
+        .size(raijin_ui::ButtonSize::Compact)
         .when(should_render_counts, |this| {
             this.child(
                 h_flex()
@@ -743,28 +743,28 @@ impl GitStatusIcon {
 }
 
 impl RenderOnce for GitStatusIcon {
-    fn render(self, _window: &mut ui::Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, _window: &mut raijin_ui::Window, cx: &mut App) -> impl IntoElement {
         let status = self.status;
 
         let (icon_name, color) = if status.is_conflicted() {
             (
                 IconName::Warning,
-                cx.theme().colors().version_control_conflict,
+                cx.theme().colors().version_control.conflict,
             )
         } else if status.is_deleted() {
             (
                 IconName::SquareMinus,
-                cx.theme().colors().version_control_deleted,
+                cx.theme().colors().version_control.deleted,
             )
         } else if status.is_modified() {
             (
                 IconName::SquareDot,
-                cx.theme().colors().version_control_modified,
+                cx.theme().colors().version_control.modified,
             )
         } else {
             (
                 IconName::SquarePlus,
-                cx.theme().colors().version_control_added,
+                cx.theme().colors().version_control.added,
             )
         };
 
@@ -780,7 +780,7 @@ impl Component for GitStatusIcon {
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
         fn tracked_file_status(code: StatusCode) -> FileStatus {
-            FileStatus::Tracked(git::status::TrackedStatus {
+            FileStatus::Tracked(raijin_git::status::TrackedStatus {
                 index_status: code,
                 worktree_status: code,
             })
@@ -864,7 +864,7 @@ impl Render for GitCloneModal {
                     .p_2()
                     .gap_0p5()
                     .rounded_b_sm()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(
                         Label::new("Clone a repository from GitHub or other sources.")
                             .color(Color::Muted)
@@ -879,10 +879,10 @@ impl Render for GitCloneModal {
                             }),
                     ),
             )
-            .on_action(cx.listener(|_, _: &menu::Cancel, _, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::Cancel, _, cx| {
                 cx.emit(DismissEvent);
             }))
-            .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                 let repo = this.repo_input.read(cx).text(cx);
                 this.panel.update(cx, |panel, cx| {
                     panel.git_clone(repo, window, cx);

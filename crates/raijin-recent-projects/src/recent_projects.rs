@@ -89,7 +89,7 @@ enum ProjectPickerStyle {
 pub async fn get_recent_projects(
     current_workspace_id: Option<WorkspaceId>,
     limit: Option<usize>,
-    fs: Arc<dyn fs::Fs>,
+    fs: Arc<dyn raijin_fs::Fs>,
     db: &WorkspaceDb,
 ) -> Vec<RecentProjectEntry> {
     let workspaces = db
@@ -252,9 +252,9 @@ pub fn init(cx: &mut App) {
 
                 let wsl_path = paths
                     .iter()
-                    .find_map(util::paths::WslPath::from_path);
+                    .find_map(inazuma_util::paths::WslPath::from_path);
 
-                if let Some(util::paths::WslPath { distro, path }) = wsl_path {
+                if let Some(inazuma_util::paths::WslPath { distro, path }) = wsl_path {
                     use raijin_remote::WslConnectionOptions;
 
                     let connection_options = RemoteConnectionOptions::Wsl(WslConnectionOptions {
@@ -315,7 +315,7 @@ pub fn init(cx: &mut App) {
     });
 
     #[cfg(target_os = "windows")]
-    cx.on_action(|open_wsl: &remote::OpenWslPath, cx| {
+    cx.on_action(|open_wsl: &raijin_remote::OpenWslPath, cx| {
         let open_wsl = open_wsl.clone();
         with_active_or_new_workspace(cx, move |workspace, window, cx| {
             let fs = workspace.project().read(cx).fs().clone();
@@ -473,7 +473,7 @@ pub fn init(cx: &mut App) {
                 workspace.project(),
                 window,
                 move |_, project, event, window, cx| {
-                    if let project::Event::WorktreeUpdatedEntries(worktree_id, updated_entries) =
+                    if let raijin_project::Event::WorktreeUpdatedEntries(worktree_id, updated_entries) =
                         event
                     {
                         dev_container_suggest::suggest_on_worktree_updated(
@@ -494,8 +494,8 @@ pub fn init(cx: &mut App) {
 
 #[cfg(target_os = "windows")]
 pub fn add_wsl_distro(
-    fs: Arc<dyn project::Fs>,
-    connection_options: &remote::WslConnectionOptions,
+    fs: Arc<dyn raijin_project::Fs>,
+    connection_options: &raijin_remote::WslConnectionOptions,
     cx: &App,
 ) {
     use inazuma::ReadGlobal;
@@ -846,7 +846,7 @@ impl PickerDelegate for RecentProjectsDelegate {
                 .map(|(id, folder)| StringMatchCandidate::new(id, folder.name.as_ref()))
                 .collect();
 
-            smol::block_on(fuzzy::match_strings(
+            smol::block_on(inazuma_fuzzy::match_strings(
                 &candidates,
                 query,
                 smart_case,
@@ -872,7 +872,7 @@ impl PickerDelegate for RecentProjectsDelegate {
             })
             .collect();
 
-        let mut sibling_matches = smol::block_on(fuzzy::match_strings(
+        let mut sibling_matches = smol::block_on(inazuma_fuzzy::match_strings(
             &sibling_candidates,
             query,
             smart_case,
@@ -904,7 +904,7 @@ impl PickerDelegate for RecentProjectsDelegate {
             })
             .collect();
 
-        let mut recent_matches = smol::block_on(fuzzy::match_strings(
+        let mut recent_matches = smol::block_on(inazuma_fuzzy::match_strings(
             &recent_candidates,
             query,
             smart_case,
@@ -1440,7 +1440,7 @@ impl PickerDelegate for RecentProjectsDelegate {
                                     move |_, cx| {
                                         Tooltip::for_action_in(
                                             "Open Project in New Window",
-                                            &menu::SecondaryConfirm,
+                                            &inazuma_menu::SecondaryConfirm,
                                             &focus_handle,
                                             cx,
                                         )
@@ -1569,35 +1569,35 @@ impl PickerDelegate for RecentProjectsDelegate {
                         this.child(
                             Button::new("activate", "Activate")
                                 .key_binding(KeyBinding::for_action_in(
-                                    &menu::Confirm,
+                                    &inazuma_menu::Confirm,
                                     &focus_handle,
                                     cx,
                                 ))
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                                 }),
                         )
                     } else {
                         this.child(
                             Button::new("open_new_window", "New Window")
                                 .key_binding(KeyBinding::for_action_in(
-                                    &menu::SecondaryConfirm,
+                                    &inazuma_menu::SecondaryConfirm,
                                     &focus_handle,
                                     cx,
                                 ))
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                                 }),
                         )
                         .child(
                             Button::new("open_here", "Open")
                                 .key_binding(KeyBinding::for_action_in(
-                                    &menu::Confirm,
+                                    &inazuma_menu::Confirm,
                                     &focus_handle,
                                     cx,
                                 ))
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                                 }),
                         )
                     }
@@ -1992,7 +1992,7 @@ mod tests {
             })
             .unwrap();
 
-        cx.dispatch_action(*multi_workspace, menu::Confirm);
+        cx.dispatch_action(*multi_workspace, inazuma_menu::Confirm);
         cx.run_until_parked();
 
         multi_workspace
@@ -2172,7 +2172,7 @@ mod tests {
         cx.update(|cx| {
             let state = AppState::test(cx);
             crate::init(cx);
-            editor::init(cx);
+            raijin_editor::init(cx);
             state
         })
     }

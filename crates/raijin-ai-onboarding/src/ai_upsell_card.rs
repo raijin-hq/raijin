@@ -101,11 +101,11 @@ impl RenderOnce for AiUpsellCard {
             .bg(inazuma::linear_gradient(
                 180.,
                 inazuma::linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.8),
+                    cx.theme().colors().elevated_surface.opacity(0.8),
                     0.,
                 ),
                 inazuma::linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.),
+                    cx.theme().colors().elevated_surface.opacity(0.),
                     0.8,
                 ),
             ));

@@ -1071,7 +1071,7 @@ impl SettingsObserver {
         match event {
             WorktreeStoreEvent::WorktreeAdded(worktree) => cx
                 .subscribe(worktree, |this, worktree, event, cx| {
-                    if let worktree::Event::UpdatedEntries(changes) = event {
+                    if let raijin_worktree::Event::UpdatedEntries(changes) = event {
                         this.update_local_worktree_settings(&worktree, changes, cx)
                     }
                 })

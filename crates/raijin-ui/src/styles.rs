@@ -1,6 +1,6 @@
 pub mod animation;
 mod appearance;
-mod color;
+pub(crate) mod color;
 mod elevation;
 mod platform;
 mod severity;

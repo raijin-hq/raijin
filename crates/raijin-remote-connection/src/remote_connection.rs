@@ -127,7 +127,7 @@ impl Render for RemoteConnectionPrompt {
             font_family: Some(theme.buffer_font.family.clone()),
             font_features: Some(FontFeatures::disable_ligatures()),
             font_size: Some(theme.buffer_font_size(cx).into()),
-            color: Some(cx.theme().colors().editor_foreground),
+            color: Some(cx.theme().colors().editor.foreground),
             background_color: Some(inazuma::transparent_black()),
             ..Default::default()
         };
@@ -135,7 +135,7 @@ impl Render for RemoteConnectionPrompt {
         text_style.refine(&refinement);
         let markdown_style = MarkdownStyle {
             base_text_style: text_style,
-            selection_background_color: cx.theme().colors().element_selection_background,
+            selection_background_color: cx.theme().colors().element_selection,
             ..Default::default()
         };
 
@@ -356,7 +356,7 @@ impl Render for RemoteConnectionModal {
         let is_devcontainer = self.prompt.read(cx).is_devcontainer;
 
         let theme = cx.theme().clone();
-        let body_color = theme.colors().editor_background;
+        let body_color = theme.colors().editor.background;
 
         v_flex()
             .elevation_3(cx)

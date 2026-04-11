@@ -211,7 +211,7 @@ impl Render for AudioTestWindow {
             .p_4()
             .when(cfg!(target_os = "macos"), |this| this.pt_10())
             .gap_4()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 v_flex()
                     .gap_1()

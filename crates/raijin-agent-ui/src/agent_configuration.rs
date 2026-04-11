@@ -1266,7 +1266,7 @@ impl Render for AgentConfiguration {
             .relative()
             .size_full()
             .pb_8()
-            .bg(cx.theme().colors().panel_background)
+            .bg(cx.theme().colors().panel.background)
             .child(
                 div()
                     .size_full()

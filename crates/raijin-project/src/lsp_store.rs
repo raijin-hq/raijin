@@ -98,7 +98,7 @@ use raijin_lsp::{
 };
 use raijin_node_runtime::read_package_installed_version;
 use parking_lot::Mutex;
-use postage::{mpsc, sink::Sink, stream::Stream, watch};
+use postage::{mpsc, sink::Sink, stream::Stream};
 use rand::prelude::*;
 use raijin_rpc::{
     AnyProtoClient, ErrorCode, ErrorExt as _,
@@ -327,7 +327,7 @@ pub struct LocalLspStore {
         LanguageServerId,
         HashMap<Option<SharedString>, HashMap<PathBuf, Option<SharedString>>>,
     >,
-    restricted_worktrees_tasks: HashMap<WorktreeId, (Subscription, watch::Receiver<bool>)>,
+    restricted_worktrees_tasks: HashMap<WorktreeId, (Subscription, raijin_watch::Receiver<bool>)>,
 
     buffers_to_refresh_hash_set: HashSet<BufferId>,
     buffers_to_refresh_queue: VecDeque<BufferId>,
@@ -433,7 +433,7 @@ impl LocalLspStore {
                     match self.restricted_worktrees_tasks.entry(worktree_id) {
                         hash_map::Entry::Occupied(o) => Some(o.get().1.clone()),
                         hash_map::Entry::Vacant(v) => {
-                            let (mut tx, rx) = watch::channel::<bool>();
+                            let (mut tx, rx) = raijin_watch::channel::<bool>(false);
                             let lsp_store = self.weak.clone();
                             let subscription = cx.subscribe(&trusted_worktrees, move |_, e, cx| {
                                 if let TrustedWorktreesEvent::Trusted(_, trusted_paths) = e {
@@ -680,7 +680,7 @@ impl LocalLspStore {
         toolchain: Option<Toolchain>,
         delegate: Arc<dyn LspAdapterDelegate>,
         allow_binary_download: bool,
-        wait_until_worktree_trust: Option<watch::Receiver<bool>>,
+        wait_until_worktree_trust: Option<raijin_watch::Receiver<bool>>,
         cx: &mut App,
     ) -> Task<Result<LanguageServerBinary>> {
         if let Some(settings) = &settings.binary
@@ -696,7 +696,7 @@ impl LocalLspStore {
                             "Waiting for worktree {worktree_abs_path:?} to be trusted, before starting language server {}",
                             adapter.name(),
                         );
-                        while let Some(worktree_trusted) = wait_until_worktree_trust.recv().await {
+                        while let Ok(worktree_trusted) = wait_until_worktree_trust.recv().await {
                             if worktree_trusted {
                                 break;
                             }
@@ -746,7 +746,7 @@ impl LocalLspStore {
                         "Waiting for worktree {worktree_abs_path:?} to be trusted, before starting language server {}",
                         adapter.name(),
                     );
-                    while let Some(worktree_trusted) = wait_until_worktree_trust.recv().await {
+                    while let Ok(worktree_trusted) = wait_until_worktree_trust.recv().await {
                         if worktree_trusted {
                             break;
                         }
@@ -1578,7 +1578,7 @@ impl LocalLspStore {
     async fn format_buffer_locally(
         lsp_store: WeakEntity<LspStore>,
         buffer: &FormattableBuffer,
-        formatting_transaction_id: clock::Lamport,
+        formatting_transaction_id: inazuma_clock::Lamport,
         trigger: FormatTrigger,
         logger: raijin_log::Logger,
         cx: &mut AsyncApp,
@@ -1693,7 +1693,7 @@ impl LocalLspStore {
         formatter: &Formatter,
         lsp_store: &WeakEntity<LspStore>,
         buffer: &FormattableBuffer,
-        formatting_transaction_id: clock::Lamport,
+        formatting_transaction_id: inazuma_clock::Lamport,
         adapters_and_servers: &[(Arc<CachedLspAdapter>, Arc<LanguageServer>)],
         settings: &LanguageSettings,
         request_timeout: Duration,
@@ -3006,7 +3006,7 @@ impl LocalLspStore {
         let actions = lsp_store
             .update(cx, move |this, cx| {
                 let request = GetCodeActions {
-                    range: text::Anchor::min_max_range_for_buffer(buffer.read(cx).remote_id()),
+                    range: inazuma_text::Anchor::min_max_range_for_buffer(buffer.read(cx).remote_id()),
                     kinds: Some(code_action_kinds),
                 };
                 let server = LanguageServerToQuery::Other(language_server_id);
@@ -3902,7 +3902,7 @@ pub struct LspStore {
     pub languages: Arc<LanguageRegistry>,
     pub language_server_statuses: BTreeMap<LanguageServerId, LanguageServerStatus>,
     active_entry: Option<ProjectEntryId>,
-    _maintain_workspace_config: (Task<Result<()>>, watch::Sender<()>),
+    _maintain_workspace_config: (Task<Result<()>>, raijin_watch::Sender<()>),
     _maintain_buffer_languages: Task<()>,
     diagnostic_summaries:
         HashMap<WorktreeId, HashMap<Arc<RelPath>, HashMap<LanguageServerId, DiagnosticSummary>>>,
@@ -4015,7 +4015,7 @@ pub enum LspStoreEvent {
     SnippetEdit {
         buffer_id: BufferId,
         edits: Vec<(raijin_lsp::Range, Snippet)>,
-        most_recent_edit: clock::Lamport,
+        most_recent_edit: inazuma_clock::Lamport,
     },
     WorkspaceEditApplied(ProjectTransaction),
 }
@@ -4178,7 +4178,7 @@ impl LspStore {
         subscribe_to_binary_statuses(&languages, cx).detach();
 
         let _maintain_workspace_config = {
-            let (sender, receiver) = watch::channel();
+            let (sender, receiver) = raijin_watch::channel(());
             (Self::maintain_workspace_config(receiver, cx), sender)
         };
 
@@ -4280,7 +4280,7 @@ impl LspStore {
             .detach();
         subscribe_to_binary_statuses(&languages, cx).detach();
         let _maintain_workspace_config = {
-            let (sender, receiver) = watch::channel();
+            let (sender, receiver) = raijin_watch::channel(());
             (Self::maintain_workspace_config(receiver, cx), sender)
         };
         Self {
@@ -4354,11 +4354,11 @@ impl LspStore {
                     return;
                 }
                 cx.subscribe(worktree, |this, worktree, event, cx| match event {
-                    worktree::Event::UpdatedEntries(changes) => {
+                    raijin_worktree::Event::UpdatedEntries(changes) => {
                         this.update_local_worktree_language_servers(&worktree, changes, cx);
                     }
-                    worktree::Event::UpdatedGitRepositories(_)
-                    | worktree::Event::DeletedEntry(_) => {}
+                    raijin_worktree::Event::UpdatedGitRepositories(_)
+                    | raijin_worktree::Event::DeletedEntry(_) => {}
                 })
                 .detach()
             }
@@ -6979,7 +6979,7 @@ impl LspStore {
     pub fn applicable_inlay_chunks(
         &mut self,
         buffer: &Entity<Buffer>,
-        ranges: &[Range<text::Anchor>],
+        ranges: &[Range<inazuma_text::Anchor>],
         cx: &mut Context<Self>,
     ) -> Vec<Range<BufferRow>> {
         let buffer_snapshot = buffer.read(cx).snapshot();
@@ -7010,8 +7010,8 @@ impl LspStore {
         &mut self,
         invalidate: InvalidationStrategy,
         buffer: Entity<Buffer>,
-        ranges: Vec<Range<text::Anchor>>,
-        known_chunks: Option<(clock::Global, HashSet<Range<BufferRow>>)>,
+        ranges: Vec<Range<inazuma_text::Anchor>>,
+        known_chunks: Option<(inazuma_clock::Global, HashSet<Range<BufferRow>>)>,
         cx: &mut Context<Self>,
     ) -> HashMap<Range<BufferRow>, Task<Result<CacheInlayHints>>> {
         let next_hint_id = self.next_hint_id.clone();
@@ -8101,11 +8101,11 @@ impl LspStore {
     }
 
     fn maintain_workspace_config(
-        external_refresh_requests: watch::Receiver<()>,
+        external_refresh_requests: raijin_watch::Receiver<()>,
         cx: &mut Context<Self>,
     ) -> Task<Result<()>> {
-        let (mut settings_changed_tx, mut settings_changed_rx) = watch::channel();
-        let _ = postage::stream::Stream::try_recv(&mut settings_changed_rx);
+        let (mut settings_changed_tx, mut settings_changed_rx) = raijin_watch::channel(());
+        let _ = settings_changed_rx.borrow();
 
         let settings_observation = cx.observe_global::<SettingsStore>(move |_, _| {
             *settings_changed_tx.borrow_mut() = ();
@@ -14170,7 +14170,7 @@ pub fn language_server_settings_for<'a>(
 
 pub struct LocalLspAdapterDelegate {
     lsp_store: WeakEntity<LspStore>,
-    worktree: worktree::Snapshot,
+    worktree: raijin_worktree::Snapshot,
     fs: Arc<dyn Fs>,
     http_client: Arc<dyn HttpClient>,
     language_registry: Arc<LanguageRegistry>,
@@ -14580,7 +14580,7 @@ pub fn ensure_uniform_list_compatible_label(label: &mut CodeLabel) {
 /// Fails if the buffer has been edited since the start of that transaction.
 fn extend_formatting_transaction(
     buffer: &FormattableBuffer,
-    formatting_transaction_id: text::TransactionId,
+    formatting_transaction_id: inazuma_text::TransactionId,
     cx: &mut AsyncApp,
     operation: impl FnOnce(&mut Buffer, &mut Context<Buffer>),
 ) -> anyhow::Result<()> {

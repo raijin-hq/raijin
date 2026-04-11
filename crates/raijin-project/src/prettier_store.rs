@@ -563,7 +563,7 @@ impl PrettierStore {
                 not_installed_plugins,
             } => {
                 installation_attempt = *attempts;
-                if installation_attempt > prettier::FAIL_THRESHOLD {
+                if installation_attempt > raijin_prettier::FAIL_THRESHOLD {
                     *installation_task = None;
                     log::warn!(
                         "Default prettier installation had failed {installation_attempt} times, not attempting again",
@@ -628,7 +628,7 @@ impl PrettierStore {
                                     };
                                 })?;
                             };
-                        if installation_attempt > prettier::FAIL_THRESHOLD {
+                        if installation_attempt > raijin_prettier::FAIL_THRESHOLD {
                             prettier_store.update(cx, |prettier_store, _| {
                                 if let PrettierInstallation::NotInstalled { installation_task, .. } = &mut prettier_store.default_prettier.prettier {
                                     *installation_task = None;
@@ -874,7 +874,7 @@ impl PrettierInstance {
         worktree_id: Option<WorktreeId>,
         cx: &mut Context<PrettierStore>,
     ) -> Option<Task<anyhow::Result<PrettierTask>>> {
-        if self.attempt > prettier::FAIL_THRESHOLD {
+        if self.attempt > raijin_prettier::FAIL_THRESHOLD {
             match prettier_dir {
                 Some(prettier_dir) => log::warn!(
                     "Prettier from path {prettier_dir:?} exceeded launch threshold, not starting"
@@ -966,29 +966,29 @@ async fn install_prettier_packages(
 }
 
 async fn save_prettier_server_file(fs: &dyn Fs) -> anyhow::Result<()> {
-    let prettier_wrapper_path = default_prettier_dir().join(prettier::PRETTIER_SERVER_FILE);
+    let prettier_wrapper_path = default_prettier_dir().join(raijin_prettier::PRETTIER_SERVER_FILE);
     fs.save(
         &prettier_wrapper_path,
-        &text::Rope::from(prettier::PRETTIER_SERVER_JS),
-        text::LineEnding::Unix,
+        &inazuma_text::Rope::from(raijin_prettier::PRETTIER_SERVER_JS),
+        inazuma_text::LineEnding::Unix,
     )
     .await
     .with_context(|| {
         format!(
             "writing {} file at {prettier_wrapper_path:?}",
-            prettier::PRETTIER_SERVER_FILE
+            raijin_prettier::PRETTIER_SERVER_FILE
         )
     })?;
     Ok(())
 }
 
 async fn should_write_prettier_server_file(fs: &dyn Fs) -> bool {
-    let prettier_wrapper_path = default_prettier_dir().join(prettier::PRETTIER_SERVER_FILE);
+    let prettier_wrapper_path = default_prettier_dir().join(raijin_prettier::PRETTIER_SERVER_FILE);
     if !fs.is_file(&prettier_wrapper_path).await {
         return true;
     }
     let Ok(prettier_server_file_contents) = fs.load(&prettier_wrapper_path).await else {
         return true;
     };
-    prettier_server_file_contents != prettier::PRETTIER_SERVER_JS
+    prettier_server_file_contents != raijin_prettier::PRETTIER_SERVER_JS
 }

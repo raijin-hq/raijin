@@ -476,7 +476,7 @@ impl Render for ProfilerWindow {
             .font(ui_font)
             .w_full()
             .h_full()
-            .bg(cx.theme().colors().surface_background)
+            .bg(cx.theme().colors().surface)
             .text_color(cx.theme().colors().text)
             .child(
                 h_flex()

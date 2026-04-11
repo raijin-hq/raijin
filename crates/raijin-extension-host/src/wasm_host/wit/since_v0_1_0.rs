@@ -1,6 +1,6 @@
 use crate::wasm_host::{WasmState, wit::ToWasmtimeResult};
-use ::http_client::{AsyncBody, HttpRequestExt};
-use ::settings::{Settings, WorktreeId};
+use ::raijin_http_client::{AsyncBody, HttpRequestExt};
+use ::inazuma_settings_framework::{Settings, WorktreeId};
 use anyhow::{Context as _, Result, bail};
 use async_compression::futures::bufread::GzipDecoder;
 use async_tar::Archive;
@@ -28,7 +28,7 @@ pub const MIN_VERSION: Version = Version::new(0, 1, 0);
 wasmtime::component::bindgen!({
     async: true,
     trappable_imports: true,
-    path: "../extension_api/wit/since_v0.1.0",
+    path: "../raijin-extension-api/wit/since_v0.1.0",
     with: {
          "worktree": ExtensionWorktree,
          "key-value-store": ExtensionKeyValueStore,
@@ -48,7 +48,7 @@ mod settings {
 
 pub type ExtensionWorktree = Arc<dyn WorktreeDelegate>;
 pub type ExtensionKeyValueStore = Arc<dyn KeyValueStoreDelegate>;
-pub type ExtensionHttpResponseStream = Arc<Mutex<::http_client::Response<AsyncBody>>>;
+pub type ExtensionHttpResponseStream = Arc<Mutex<::raijin_http_client::Response<AsyncBody>>>;
 
 pub fn linker(executor: &BackgroundExecutor) -> &'static Linker<WasmState> {
     static LINKER: OnceLock<Linker<WasmState>> = OnceLock::new();
@@ -352,7 +352,7 @@ impl http_client::HostHttpResponseStream for WasmState {
     }
 }
 
-impl From<http_client::HttpMethod> for ::http_client::Method {
+impl From<http_client::HttpMethod> for ::raijin_http_client::Method {
     fn from(value: http_client::HttpMethod) -> Self {
         match value {
             http_client::HttpMethod::Get => Self::GET,
@@ -368,16 +368,16 @@ impl From<http_client::HttpMethod> for ::http_client::Method {
 
 fn convert_request(
     extension_request: &http_client::HttpRequest,
-) -> anyhow::Result<::http_client::Request<AsyncBody>> {
-    let mut request = ::http_client::Request::builder()
-        .method(::http_client::Method::from(extension_request.method))
+) -> anyhow::Result<::raijin_http_client::Request<AsyncBody>> {
+    let mut request = ::raijin_http_client::Request::builder()
+        .method(::raijin_http_client::Method::from(extension_request.method))
         .uri(&extension_request.url)
         .follow_redirects(match extension_request.redirect_policy {
-            http_client::RedirectPolicy::NoFollow => ::http_client::RedirectPolicy::NoFollow,
+            http_client::RedirectPolicy::NoFollow => ::raijin_http_client::RedirectPolicy::NoFollow,
             http_client::RedirectPolicy::FollowLimit(limit) => {
-                ::http_client::RedirectPolicy::FollowLimit(limit)
+                ::raijin_http_client::RedirectPolicy::FollowLimit(limit)
             }
-            http_client::RedirectPolicy::FollowAll => ::http_client::RedirectPolicy::FollowAll,
+            http_client::RedirectPolicy::FollowAll => ::raijin_http_client::RedirectPolicy::FollowAll,
         });
     for (key, value) in &extension_request.headers {
         request = request.header(key, value);
@@ -391,7 +391,7 @@ fn convert_request(
 }
 
 async fn convert_response(
-    response: &mut ::http_client::Response<AsyncBody>,
+    response: &mut ::raijin_http_client::Response<AsyncBody>,
 ) -> anyhow::Result<http_client::HttpResponse> {
     let mut extension_response = http_client::HttpResponse {
         body: Vec::new(),
@@ -429,7 +429,7 @@ impl ExtensionImports for WasmState {
                 let location = path
                     .as_ref()
                     .zip(location.as_ref())
-                    .map(|(path, location)| ::settings::SettingsLocation {
+                    .map(|(path, location)| ::inazuma_settings_framework::SettingsLocation {
                         worktree_id: WorktreeId::from_proto(location.worktree_id),
                         path,
                     });
@@ -451,7 +451,7 @@ impl ExtensionImports for WasmState {
                             .and_then(|key| {
                                 ProjectSettings::get(location, cx)
                                     .lsp
-                                    .get(&::lsp::LanguageServerName(key.into()))
+                                    .get(&::raijin_lsp::LanguageServerName(key.into()))
                             })
                             .cloned()
                             .unwrap_or_default();
@@ -489,7 +489,7 @@ impl ExtensionImports for WasmState {
 
         self.host
             .proxy
-            .update_language_server_status(::lsp::LanguageServerName(server_name.into()), status);
+            .update_language_server_status(::raijin_lsp::LanguageServerName(server_name.into()), status);
 
         Ok(())
     }

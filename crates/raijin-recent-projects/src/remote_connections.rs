@@ -219,14 +219,14 @@ pub async fn open_remote_project(
         options.window_bounds = workspace_position.window_bounds;
 
         let window = cx.open_window(options, |window, cx| {
-            let project = project::Project::local(
+            let project = raijin_project::Project::local(
                 app_state.client.clone(),
                 app_state.node_runtime.clone(),
                 app_state.user_store.clone(),
                 app_state.languages.clone(),
                 app_state.fs.clone(),
                 None,
-                project::LocalProjectFlags {
+                raijin_project::LocalProjectFlags {
                     init_worktree_trust: false,
                     ..Default::default()
                 },
@@ -287,7 +287,7 @@ pub async fn open_remote_project(
 
         let Some(delegate) = delegate else { break };
 
-        let connection = remote::connect(connection_options.clone(), delegate.clone(), cx);
+        let connection = raijin_remote::connect(connection_options.clone(), delegate.clone(), cx);
         let connection = select! {
             _ = cancel_rx => {
                 initial_workspace.update(cx, |workspace, cx| {
@@ -502,7 +502,7 @@ async fn path_exists(connection: &Arc<dyn RemoteConnection>, path: &Path) -> boo
     ) else {
         return false;
     };
-    let Ok(mut child) = util::command::new_command(command.program)
+    let Ok(mut child) = inazuma_util::command::new_command(command.program)
         .args(command.args)
         .envs(command.env)
         .spawn()
@@ -521,7 +521,7 @@ mod tests {
     use raijin_http_client::BlockedHttpClient;
     use raijin_node_runtime::NodeRuntime;
     use raijin_remote::RemoteClient;
-    use remote_server::{HeadlessAppState, HeadlessProject};
+    use raijin_remote_server::{HeadlessAppState, HeadlessProject};
     use serde_json::json;
     use inazuma_util::path;
     use raijin_workspace::find_existing_workspace;
@@ -535,10 +535,10 @@ mod tests {
         let executor = cx.executor();
 
         cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
         server_cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
 
         let (opts, server_session, connect_guard) = RemoteClient::fake_server(cx, server_cx);
@@ -559,7 +559,7 @@ mod tests {
         server_cx.update(HeadlessProject::init);
         let http_client = Arc::new(BlockedHttpClient);
         let node_runtime = NodeRuntime::unavailable();
-        let languages = Arc::new(language::LanguageRegistry::new(server_cx.executor()));
+        let languages = Arc::new(raijin_language::LanguageRegistry::new(server_cx.executor()));
         let proxy = Arc::new(ExtensionHostProxy::new());
 
         let _headless = server_cx.new(|cx| {
@@ -616,10 +616,10 @@ mod tests {
         let executor = cx.executor();
 
         cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
         server_cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
 
         let (opts, server_session, connect_guard) = RemoteClient::fake_server(cx, server_cx);
@@ -641,7 +641,7 @@ mod tests {
         server_cx.update(HeadlessProject::init);
         let http_client = Arc::new(BlockedHttpClient);
         let node_runtime = NodeRuntime::unavailable();
-        let languages = Arc::new(language::LanguageRegistry::new(server_cx.executor()));
+        let languages = Arc::new(raijin_language::LanguageRegistry::new(server_cx.executor()));
         let proxy = Arc::new(ExtensionHostProxy::new());
 
         let _headless = server_cx.new(|cx| {
@@ -742,10 +742,10 @@ mod tests {
         let executor = cx.executor();
 
         cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
         server_cx.update(|cx| {
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
 
         let (opts, server_session, connect_guard) = RemoteClient::fake_server(cx, server_cx);
@@ -765,7 +765,7 @@ mod tests {
         server_cx.update(HeadlessProject::init);
         let http_client = Arc::new(BlockedHttpClient);
         let node_runtime = NodeRuntime::unavailable();
-        let languages = Arc::new(language::LanguageRegistry::new(server_cx.executor()));
+        let languages = Arc::new(raijin_language::LanguageRegistry::new(server_cx.executor()));
         let proxy = Arc::new(ExtensionHostProxy::new());
 
         let _headless = server_cx.new(|cx| {
@@ -889,7 +889,7 @@ mod tests {
         cx.update(|cx| {
             let state = AppState::test(cx);
             crate::init(cx);
-            editor::init(cx);
+            raijin_editor::init(cx);
             state
         })
     }

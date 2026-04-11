@@ -65,7 +65,7 @@ impl RenderOnce for AgentRegistryCard {
                 .w_full()
                 .min_h(rems_from_px(86.))
                 .gap_2()
-                .bg(cx.theme().colors().elevated_surface_background.opacity(0.5))
+                .bg(cx.theme().colors().elevated_surface.opacity(0.5))
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
                 .rounded_md()
@@ -281,7 +281,7 @@ impl AgentRegistryPage {
         EditorElement::new(
             editor,
             EditorStyle {
-                background: cx.theme().colors().editor_background,
+                background: cx.theme().colors().editor.background,
                 local_player: cx.theme().players().local(),
                 text: text_style,
                 ..Default::default()
@@ -542,7 +542,7 @@ impl Render for AgentRegistryPage {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         v_flex()
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 v_flex()
                     .p_4()

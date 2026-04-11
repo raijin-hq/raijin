@@ -597,7 +597,7 @@ impl Render for ComponentPreview {
             .overflow_hidden()
             .size_full()
             .track_focus(&self.focus_handle)
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 v_flex()
                     .h_full()
@@ -936,7 +936,7 @@ impl ComponentPreviewPage {
             .w_full()
             .p_12()
             .gap_6()
-            .bg(cx.theme().colors().surface_background)
+            .bg(cx.theme().colors().surface)
             .border_b_1()
             .border_color(cx.theme().colors().border)
             .child(
@@ -980,7 +980,7 @@ impl ComponentPreviewPage {
             .flex_1()
             .px_12()
             .py_6()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(content)
     }
 }

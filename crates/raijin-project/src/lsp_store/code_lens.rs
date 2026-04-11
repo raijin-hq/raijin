@@ -203,7 +203,7 @@ impl LspStore {
     }
 
     #[cfg(any(test, feature = "test-support"))]
-    pub fn forget_code_lens_task(&mut self, buffer_id: text::BufferId) -> Option<CodeLensTask> {
+    pub fn forget_code_lens_task(&mut self, buffer_id: inazuma_text::BufferId) -> Option<CodeLensTask> {
         Some(
             self.lsp_data
                 .get_mut(&buffer_id)?

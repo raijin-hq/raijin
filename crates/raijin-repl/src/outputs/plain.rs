@@ -74,10 +74,10 @@ pub fn text_style(window: &mut Window, cx: &App) -> TextStyle {
         font_size,
         font_style: FontStyle::Normal,
         line_height: window.line_height().into(),
-        background_color: Some(theme.colors().terminal_ansi_background),
+        background_color: Some(theme.colors().terminal.ansi.background),
         white_space: WhiteSpace::Normal,
         // These are going to be overridden per-cell
-        color: theme.colors().terminal_foreground,
+        color: theme.colors().terminal.foreground,
         ..Default::default()
     }
 }

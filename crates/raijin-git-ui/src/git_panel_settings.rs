@@ -33,7 +33,7 @@ pub struct GitPanelSettings {
 }
 
 impl ScrollbarVisibility for GitPanelSettings {
-    fn visibility(&self, cx: &ui::App) -> ShowScrollbar {
+    fn visibility(&self, cx: &raijin_ui::App) -> ShowScrollbar {
         // TODO: This PR should have defined Editor's `scrollbar.axis`
         // as an Option<ScrollbarAxis>, not a ScrollbarAxes as it would allow you to
         // `.unwrap_or(EditorSettings::get_global(cx).scrollbar.show)`.
@@ -49,7 +49,7 @@ impl ScrollbarVisibility for GitPanelSettings {
 }
 
 impl Settings for GitPanelSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         let git_panel = content.git_panel.clone().unwrap();
         Self {
             button: git_panel.button.unwrap(),

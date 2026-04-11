@@ -470,7 +470,7 @@ impl PickerDelegate for CommandPaletteDelegate {
                     .map(|(ix, command)| StringMatchCandidate::new(ix, &command.name))
                     .collect::<Vec<_>>();
 
-                let matches = fuzzy::match_strings(
+                let matches = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     true,
@@ -647,20 +647,20 @@ impl PickerDelegate for CommandPaletteDelegate {
         let keybinding_buttons = if keybind.has_binding(window) {
             Button::new("change", "Change Keybinding…")
                 .key_binding(
-                    KeyBinding::for_action_in(&menu::SecondaryConfirm, focus_handle, cx)
+                    KeyBinding::for_action_in(&inazuma_menu::SecondaryConfirm, focus_handle, cx)
                         .map(|kb| kb.size(rems_from_px(12.))),
                 )
                 .on_click(move |_, window, cx| {
-                    window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx);
+                    window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx);
                 })
         } else {
             Button::new("add", "Add Keybinding…")
                 .key_binding(
-                    KeyBinding::for_action_in(&menu::SecondaryConfirm, focus_handle, cx)
+                    KeyBinding::for_action_in(&inazuma_menu::SecondaryConfirm, focus_handle, cx)
                         .map(|kb| kb.size(rems_from_px(12.))),
                 )
                 .on_click(move |_, window, cx| {
-                    window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx);
+                    window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx);
                 })
         };
 
@@ -676,11 +676,11 @@ impl PickerDelegate for CommandPaletteDelegate {
                 .child(
                     Button::new("run-action", "Run")
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                 )
                 .into_any(),
@@ -942,7 +942,7 @@ mod tests {
                     {
                         "bindings": {
                             "cmd-n": "workspace::NewFile",
-                            "enter": "menu::Confirm",
+                            "enter": "inazuma_menu::Confirm",
                             "cmd-shift-p": "command_palette::Toggle",
                             "up": "menu::SelectPrevious",
                             "down": "menu::SelectNext"

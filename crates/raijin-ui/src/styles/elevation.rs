@@ -96,19 +96,19 @@ impl ElevationIndex {
     pub fn bg(&self, cx: &mut App) -> Oklch {
         match self {
             ElevationIndex::Background => cx.theme().colors().background,
-            ElevationIndex::Surface => cx.theme().colors().surface_background,
-            ElevationIndex::EditorSurface => cx.theme().colors().editor_background,
-            ElevationIndex::ElevatedSurface => cx.theme().colors().elevated_surface_background,
-            ElevationIndex::ModalSurface => cx.theme().colors().elevated_surface_background,
+            ElevationIndex::Surface => cx.theme().colors().surface,
+            ElevationIndex::EditorSurface => cx.theme().colors().editor.background,
+            ElevationIndex::ElevatedSurface => cx.theme().colors().elevated_surface,
+            ElevationIndex::ModalSurface => cx.theme().colors().elevated_surface,
         }
     }
 
     /// Returns a color that is appropriate a filled element on this elevation
     pub fn on_elevation_bg(&self, cx: &App) -> Oklch {
         match self {
-            ElevationIndex::Background => cx.theme().colors().surface_background,
+            ElevationIndex::Background => cx.theme().colors().surface,
             ElevationIndex::Surface => cx.theme().colors().background,
-            ElevationIndex::EditorSurface => cx.theme().colors().surface_background,
+            ElevationIndex::EditorSurface => cx.theme().colors().surface,
             ElevationIndex::ElevatedSurface => cx.theme().colors().background,
             ElevationIndex::ModalSurface => cx.theme().colors().background,
         }
@@ -119,11 +119,11 @@ impl ElevationIndex {
     /// If the current background color is already dark, it will return a lighter color instead.
     pub fn darker_bg(&self, cx: &App) -> Oklch {
         match self {
-            ElevationIndex::Background => cx.theme().colors().surface_background,
-            ElevationIndex::Surface => cx.theme().colors().editor_background,
-            ElevationIndex::EditorSurface => cx.theme().colors().surface_background,
-            ElevationIndex::ElevatedSurface => cx.theme().colors().editor_background,
-            ElevationIndex::ModalSurface => cx.theme().colors().editor_background,
+            ElevationIndex::Background => cx.theme().colors().surface,
+            ElevationIndex::Surface => cx.theme().colors().editor.background,
+            ElevationIndex::EditorSurface => cx.theme().colors().surface,
+            ElevationIndex::ElevatedSurface => cx.theme().colors().editor.background,
+            ElevationIndex::ModalSurface => cx.theme().colors().editor.background,
         }
     }
 }

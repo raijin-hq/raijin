@@ -284,7 +284,7 @@ impl Render for SvgPreviewView {
             .key_context("SvgPreview")
             .track_focus(&self.focus_handle(cx))
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .flex()
             .justify_center()
             .items_center()

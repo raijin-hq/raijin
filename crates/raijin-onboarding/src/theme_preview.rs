@@ -180,7 +180,7 @@ impl ThemePreviewTile {
             div()
                 .size_full()
                 .overflow_hidden()
-                .bg(theme.colors().editor_background)
+                .bg(theme.colors().editor.background)
                 .p_2()
                 .child(Self::render_pseudo_code_skeleton(
                     seed,
@@ -269,7 +269,7 @@ impl ThemePreviewTile {
                             .size_full()
                             .absolute()
                             .left_1_2()
-                            .bg(other_theme.colors().editor_background)
+                            .bg(other_theme.colors().editor.background)
                             .child(Self::render_editor(
                                 seed,
                                 other_theme,

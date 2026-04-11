@@ -89,7 +89,7 @@ impl Render for AgentNotification {
         let ui_font = theme_settings::setup_ui_font(window, cx);
         let line_height = window.line_height();
 
-        let bg = cx.theme().colors().elevated_surface_background;
+        let bg = cx.theme().colors().elevated_surface;
         let gradient_overflow = || {
             div()
                 .h_full()

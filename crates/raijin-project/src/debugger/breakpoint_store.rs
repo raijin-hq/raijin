@@ -31,7 +31,7 @@ mod breakpoints_in_file {
 
     #[derive(Clone, Debug, PartialEq, Eq)]
     pub struct BreakpointWithPosition {
-        pub position: text::Anchor,
+        pub position: inazuma_text::Anchor,
         pub bp: Breakpoint,
     }
 
@@ -49,7 +49,7 @@ mod breakpoints_in_file {
                 session_state: Default::default(),
             }
         }
-        pub(super) fn position(&self) -> &text::Anchor {
+        pub(super) fn position(&self) -> &inazuma_text::Anchor {
             &self.bp.position
         }
     }
@@ -147,7 +147,7 @@ pub struct ActiveStackFrame {
     pub thread_id: ThreadId,
     pub stack_frame_id: StackFrameId,
     pub path: Arc<Path>,
-    pub position: text::Anchor,
+    pub position: inazuma_text::Anchor,
 }
 
 pub struct BreakpointStore {
@@ -616,7 +616,7 @@ impl BreakpointStore {
     pub fn breakpoints<'a>(
         &'a self,
         buffer: &'a Entity<Buffer>,
-        range: Option<Range<text::Anchor>>,
+        range: Option<Range<inazuma_text::Anchor>>,
         buffer_snapshot: &'a BufferSnapshot,
         cx: &App,
     ) -> impl Iterator<Item = (&'a BreakpointWithPosition, Option<BreakpointSessionState>)> + 'a
@@ -979,7 +979,7 @@ impl Breakpoint {
     fn to_proto(
         &self,
         _path: &Path,
-        position: &text::Anchor,
+        position: &inazuma_text::Anchor,
         session_states: &HashMap<SessionId, BreakpointSessionState>,
     ) -> Option<raijin_client::proto::Breakpoint> {
         Some(raijin_client::proto::Breakpoint {

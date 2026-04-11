@@ -234,11 +234,11 @@ impl Render for CommitTooltip {
             .unwrap_or_else(|| self.commit.sha.clone());
         let full_sha = self.commit.sha.to_string();
         let local_offset = UtcOffset::current_local_offset().unwrap_or(UtcOffset::UTC);
-        let absolute_timestamp = time_format::format_localized_timestamp(
+        let absolute_timestamp = raijin_time_format::format_localized_timestamp(
             self.commit.commit_time,
             OffsetDateTime::now_utc(),
             local_offset,
-            time_format::TimestampFormat::MediumAbsolute,
+            raijin_time_format::TimestampFormat::MediumAbsolute,
         );
         let markdown_style = {
             let style = hover_markdown_style(window, cx);
@@ -385,11 +385,11 @@ impl Render for CommitTooltip {
     }
 }
 
-fn blame_entry_timestamp(blame_entry: &BlameEntry, format: time_format::TimestampFormat) -> String {
+fn blame_entry_timestamp(blame_entry: &BlameEntry, format: raijin_time_format::TimestampFormat) -> String {
     match blame_entry.author_offset_date_time() {
         Ok(timestamp) => {
             let local_offset = UtcOffset::current_local_offset().unwrap_or(UtcOffset::UTC);
-            time_format::format_localized_timestamp(
+            raijin_time_format::format_localized_timestamp(
                 timestamp,
                 time::OffsetDateTime::now_utc(),
                 local_offset,
@@ -401,5 +401,5 @@ fn blame_entry_timestamp(blame_entry: &BlameEntry, format: time_format::Timestam
 }
 
 pub fn blame_entry_relative_timestamp(blame_entry: &BlameEntry) -> String {
-    blame_entry_timestamp(blame_entry, time_format::TimestampFormat::Relative)
+    blame_entry_timestamp(blame_entry, raijin_time_format::TimestampFormat::Relative)
 }

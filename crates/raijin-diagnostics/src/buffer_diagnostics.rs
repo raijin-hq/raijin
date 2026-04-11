@@ -894,7 +894,7 @@ impl Render for BufferDiagnosticsEditor {
                 .justify_center()
                 .items_center()
                 .text_center()
-                .bg(cx.theme().colors().editor_background)
+                .bg(cx.theme().colors().editor.background)
                 .child(
                     div()
                         .h_flex()

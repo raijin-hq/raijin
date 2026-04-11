@@ -67,7 +67,7 @@ impl Component for DiffStat {
                 .justify_center()
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
         };
 
         let diff_stat_example = vec![single_example(

@@ -35,7 +35,7 @@ actions!(
 
 pub fn open(
     workspace: &mut Workspace,
-    _: &zed_actions::git::Worktree,
+    _: &raijin_actions::git::Worktree,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -530,7 +530,7 @@ impl WorktreeListDelegate {
 async fn open_remote_worktree(
     connection_options: RemoteConnectionOptions,
     paths: Vec<PathBuf>,
-    app_state: Arc<workspace::AppState>,
+    app_state: Arc<raijin_workspace::AppState>,
     workspace: WeakEntity<Workspace>,
     replace_current_window: bool,
     cx: &mut AsyncWindowContext,
@@ -576,8 +576,8 @@ async fn open_remote_worktree(
         return Ok(());
     };
 
-    let new_project: Entity<project::Project> = cx.update(|_, cx| {
-        project::Project::remote(
+    let new_project: Entity<raijin_project::Project> = cx.update(|_, cx| {
+        raijin_project::Project::remote(
             session,
             app_state.client.clone(),
             app_state.node_runtime.clone(),
@@ -594,7 +594,7 @@ async fn open_remote_worktree(
     } else {
         let workspace_position = cx
             .update(|_, cx| {
-                workspace::remote_workspace_position_from_db(connection_options.clone(), &paths, cx)
+                raijin_workspace::remote_workspace_position_from_db(connection_options.clone(), &paths, cx)
             })?
             .await
             .context("fetching workspace position from db")?;
@@ -614,7 +614,7 @@ async fn open_remote_worktree(
         })?
     };
 
-    workspace::open_remote_project_with_existing_connection(
+    raijin_workspace::open_remote_project_with_existing_connection(
         connection_options,
         new_project,
         paths,
@@ -681,7 +681,7 @@ impl PickerDelegate for WorktreeListDelegate {
                     .enumerate()
                     .map(|(ix, worktree)| StringMatchCandidate::new(ix, worktree.display_name()))
                     .collect::<Vec<StringMatchCandidate>>();
-                fuzzy::match_strings(
+                inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     true,
@@ -925,11 +925,11 @@ impl PickerDelegate for WorktreeListDelegate {
                             format!("Create from: {current_branch}"),
                         )
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                     )
                     .into_any(),
@@ -952,25 +952,25 @@ impl PickerDelegate for WorktreeListDelegate {
                     .child(
                         Button::new("open-in-new-window", "Open in New Window")
                             .key_binding(
-                                KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                     .map(|kb| kb.size(rems_from_px(12.))),
                             )
                             .on_click(|_, window, cx| {
-                                window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                                window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                             }),
                     )
                     .child(
                         Button::new("open-in-window", "Open")
                             .key_binding(
                                 KeyBinding::for_action_in(
-                                    &menu::SecondaryConfirm,
+                                    &inazuma_menu::SecondaryConfirm,
                                     &focus_handle,
                                     cx,
                                 )
                                 .map(|kb| kb.size(rems_from_px(12.))),
                             )
                             .on_click(|_, window, cx| {
-                                window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                                window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                             }),
                     )
                     .into_any(),

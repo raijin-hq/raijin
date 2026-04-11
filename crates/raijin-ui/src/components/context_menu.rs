@@ -1390,8 +1390,8 @@ impl ContextMenu {
                         Button::new(link_id, label.clone())
                             .color(Color::Muted)
                             .label_size(LabelSize::Small)
-                            .size(ButtonSize::None)
-                            .style(ButtonStyle::Transparent)
+                            .map(|b| ButtonCommon::size(b, ButtonSize::None))
+                            .map(|b| ButtonCommon::style(b, ButtonStyle::TRANSPARENT))
                             .on_click(move |_, _, cx| {
                                 let url = url.clone();
                                 cx.open_url(&url);

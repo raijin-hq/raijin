@@ -208,8 +208,8 @@ impl<M: ManagedView> PopoverMenu<M> {
                     el.on_click(move |_, window, cx| {
                         show_menu(&builder, &menu, on_open.clone(), window, cx)
                     })
-                    .when(!open, |t| {
-                        t.tooltip(move |window, cx| tooltip_builder(window, cx))
+                    .when(!open, |t: T| {
+                        ButtonCommon::button_tooltip(t, move |window, cx| tooltip_builder(window, cx))
                     })
                 })
                 .into_any_element()

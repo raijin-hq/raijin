@@ -6,7 +6,7 @@ use std::sync::{Arc, LazyLock};
 use agent_client_protocol::ModelId;
 use inazuma_collections::{HashSet, IndexMap};
 use inazuma::{App, Pixels, px};
-use language_model::LanguageModel;
+use raijin_language_model::LanguageModel;
 use raijin_project::DisableAiSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};

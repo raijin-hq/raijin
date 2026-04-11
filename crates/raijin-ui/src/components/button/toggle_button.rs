@@ -314,10 +314,10 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> RenderOnce
                         })
                         .when(entry_index == self.selected_index || selected, |this| {
                             this.toggle_state(true)
-                                .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                                .selected_style(ButtonStyle::tinted(TintColor::Accent))
                         })
                         .when(self.style == ToggleButtonGroupStyle::Filled, |button| {
-                            button.style(ButtonStyle::Filled)
+                            button.style(ButtonStyle::FILLED)
                         })
                         .when(self.size == ToggleButtonGroupSize::Medium, |button| {
                             button.size(ButtonSize::Medium)

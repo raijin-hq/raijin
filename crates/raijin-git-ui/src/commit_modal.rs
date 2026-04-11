@@ -79,7 +79,7 @@ impl ModalView for CommitModal {
         &mut self,
         window: &mut Window,
         cx: &mut Context<Self>,
-    ) -> workspace::DismissDecision {
+    ) -> raijin_workspace::DismissDecision {
         self.git_panel.update(cx, |git_panel, cx| {
             git_panel.set_modal_open(false, cx);
         });
@@ -92,7 +92,7 @@ impl ModalView for CommitModal {
                 dock.set_open(self.restore_dock.is_open, window, cx)
             })
             .log_err();
-        workspace::DismissDecision::Dismiss(true)
+        raijin_workspace::DismissDecision::Dismiss(true)
     }
 }
 
@@ -266,9 +266,9 @@ impl CommitModal {
     ) -> impl IntoElement {
         PopoverMenu::new(id.into())
             .trigger(
-                ui::ButtonLike::new_rounded_right("commit-split-button-right")
-                    .layer(ui::ElevationIndex::ModalSurface)
-                    .size(ui::ButtonSize::None)
+                raijin_ui::ButtonLike::new_rounded_right("commit-split-button-right")
+                    .layer(raijin_ui::ElevationIndex::ModalSurface)
+                    .size(raijin_ui::ButtonSize::None)
                     .child(
                         div()
                             .px_1()
@@ -373,7 +373,7 @@ impl CommitModal {
             )
             .color(Color::Muted)
             .on_click(cx.listener(|_, _, window, cx| {
-                window.dispatch_action(zed_actions::git::Branch.boxed_clone(), cx);
+                window.dispatch_action(raijin_actions::git::Branch.boxed_clone(), cx);
             }))
             .style(ButtonStyle::Transparent);
 
@@ -390,7 +390,7 @@ impl CommitModal {
             .with_handle(self.branch_list_handle.clone())
             .trigger_with_tooltip(
                 branch_picker_button,
-                Tooltip::for_action_title("Switch Branch", &zed_actions::git::Branch),
+                Tooltip::for_action_title("Switch Branch", &raijin_actions::git::Branch),
             )
             .anchor(Corner::BottomLeft)
             .offset(inazuma::Point {
@@ -399,8 +399,8 @@ impl CommitModal {
             });
         let focus_handle = self.focus_handle(cx);
 
-        let close_kb_hint = ui::KeyBinding::for_action(&menu::Cancel, cx).map(|close_kb| {
-            KeybindingHint::new(close_kb, cx.theme().colors().editor_background).suffix("Cancel")
+        let close_kb_hint = raijin_ui::KeyBinding::for_action(&inazuma_menu::Cancel, cx).map(|close_kb| {
+            KeybindingHint::new(close_kb, cx.theme().colors().editor.background).suffix("Cancel")
         });
 
         h_flex()
@@ -436,18 +436,18 @@ impl CommitModal {
                     .gap_4()
                     .child(close_kb_hint)
                     .child(SplitButton::new(
-                        ui::ButtonLike::new_rounded_left(ElementId::Name(
+                        raijin_ui::ButtonLike::new_rounded_left(ElementId::Name(
                             format!("split-button-left-{}", commit_label).into(),
                         ))
-                        .layer(ui::ElevationIndex::ModalSurface)
-                        .size(ui::ButtonSize::Compact)
+                        .layer(raijin_ui::ElevationIndex::ModalSurface)
+                        .size(raijin_ui::ButtonSize::Compact)
                         .child(
                             div()
                                 .child(Label::new(commit_label).size(LabelSize::Small))
                                 .mr_0p5(),
                         )
                         .on_click(cx.listener(move |this, _: &ClickEvent, window, cx| {
-                            telemetry::event!("Git Committed", source = "Git Modal");
+                            raijin_telemetry::event!("Git Committed", source = "Git Modal");
                             this.git_panel.update(cx, |git_panel, cx| {
                                 git_panel.commit_changes(
                                     CommitOptions {
@@ -468,9 +468,9 @@ impl CommitModal {
                                     Tooltip::with_meta_in(
                                         tooltip,
                                         Some(if is_amend_pending {
-                                            &git::Amend
+                                            &raijin_git::Amend
                                         } else {
-                                            &git::Commit
+                                            &raijin_git::Commit
                                         }),
                                         format!(
                                             "git commit{}{}",
@@ -494,7 +494,7 @@ impl CommitModal {
             )
     }
 
-    fn dismiss(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn dismiss(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         if self.git_panel.read(cx).amend_pending() {
             self.git_panel
                 .update(cx, |git_panel, cx| git_panel.set_amend_pending(false, cx));
@@ -503,20 +503,20 @@ impl CommitModal {
         }
     }
 
-    fn on_commit(&mut self, _: &git::Commit, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_commit(&mut self, _: &raijin_git::Commit, window: &mut Window, cx: &mut Context<Self>) {
         if self.git_panel.update(cx, |git_panel, cx| {
             git_panel.commit(&self.commit_editor.focus_handle(cx), window, cx)
         }) {
-            telemetry::event!("Git Committed", source = "Git Modal");
+            raijin_telemetry::event!("Git Committed", source = "Git Modal");
             cx.emit(DismissEvent);
         }
     }
 
-    fn on_amend(&mut self, _: &git::Amend, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_amend(&mut self, _: &raijin_git::Amend, window: &mut Window, cx: &mut Context<Self>) {
         if self.git_panel.update(cx, |git_panel, cx| {
             git_panel.amend(&self.commit_editor.focus_handle(cx), window, cx)
         }) {
-            telemetry::event!("Git Amended", source = "Git Modal");
+            raijin_telemetry::event!("Git Amended", source = "Git Modal");
             cx.emit(DismissEvent);
         }
     }
@@ -552,17 +552,17 @@ impl Render for CommitModal {
                 }))
             })
             .on_action(
-                cx.listener(|this, _: &zed_actions::git::Branch, window, cx| {
+                cx.listener(|this, _: &raijin_actions::git::Branch, window, cx| {
                     this.toggle_branch_selector(window, cx);
                 }),
             )
             .on_action(
-                cx.listener(|this, _: &zed_actions::git::CheckoutBranch, window, cx| {
+                cx.listener(|this, _: &raijin_actions::git::CheckoutBranch, window, cx| {
                     this.toggle_branch_selector(window, cx);
                 }),
             )
             .on_action(
-                cx.listener(|this, _: &zed_actions::git::Switch, window, cx| {
+                cx.listener(|this, _: &raijin_actions::git::Switch, window, cx| {
                     this.toggle_branch_selector(window, cx);
                 }),
             )
@@ -570,7 +570,7 @@ impl Render for CommitModal {
             .overflow_hidden()
             .flex_none()
             .relative()
-            .bg(cx.theme().colors().elevated_surface_background)
+            .bg(cx.theme().colors().elevated_surface)
             .rounded(px(border_radius))
             .border_1()
             .border_color(cx.theme().colors().border)
@@ -586,7 +586,7 @@ impl Render for CommitModal {
                     .rounded(properties.editor_border_radius())
                     .overflow_hidden()
                     .cursor_text()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .border_1()
                     .border_color(cx.theme().colors().border_variant)
                     .on_click(cx.listener(move |_, _: &ClickEvent, window, cx| {

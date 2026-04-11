@@ -194,8 +194,8 @@ impl RenderOnce for ThreadItem {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let color = cx.theme().colors();
         let base_bg = color
-            .title_bar_background
-            .blend(color.panel_background.opacity(0.2));
+            .title_bar.background
+            .blend(color.panel.background.opacity(0.2));
 
         let base_bg = if self.selected {
             color.element_active
@@ -454,7 +454,7 @@ impl Component for ThreadItem {
                 .w_72()
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
         };
 
         let thread_item_examples = vec![

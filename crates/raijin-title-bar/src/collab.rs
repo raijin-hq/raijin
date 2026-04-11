@@ -5,7 +5,7 @@ use raijin_call::{ActiveCall, Room};
 use raijin_channel::ChannelStore;
 use raijin_client::{User, proto::PeerId};
 use inazuma::{
-    AnyElement, Hsla, IntoElement, MouseButton, Path, ScreenCaptureSource, Styled, WeakEntity,
+    AnyElement, Oklch, IntoElement, MouseButton, Path, ScreenCaptureSource, Styled, WeakEntity,
     canvas, point,
 };
 use inazuma::{App, Task, Window};
@@ -115,7 +115,7 @@ pub fn toggle_deafen(cx: &mut App) {
     }
 }
 
-fn render_color_ribbon(color: Hsla) -> impl Element {
+fn render_color_ribbon(color: Oklch) -> impl Element {
     canvas(
         move |_, _, _| {},
         move |bounds, _, window, _| {
@@ -255,7 +255,7 @@ impl TitleBar {
         is_present: bool,
         is_speaking: bool,
         is_muted: bool,
-        leader_selection_color: Option<Hsla>,
+        leader_selection_color: Option<Oklch>,
         room: &Room,
         project_id: Option<u64>,
         current_user: &Arc<User>,
@@ -284,7 +284,7 @@ impl TitleBar {
                             Avatar::new(user.avatar_uri.clone())
                                 .grayscale(!is_present)
                                 .border_color(if is_speaking {
-                                    cx.theme().status().info
+                                    cx.theme().status().info.color
                                 } else {
                                     // We draw the border in a transparent color rather to avoid
                                     // the layout shift that would come with adding/removing the border.
@@ -292,7 +292,7 @@ impl TitleBar {
                                 })
                                 .when(is_muted, |avatar| {
                                     avatar.indicator(
-                                        AvatarAudioStatusIndicator::new(ui::AudioStatus::Muted)
+                                        AvatarAudioStatusIndicator::new(raijin_ui::AudioStatus::Muted)
                                             .tooltip({
                                                 let github_login = user.github_login.clone();
                                                 Tooltip::text(format!("{} is muted", github_login))
@@ -632,7 +632,7 @@ impl TitleBar {
         PopoverMenu::new("screen-share-screen-list")
             .with_handle(self.screen_share_popover_handle.clone())
             .trigger(
-                ui::ButtonLike::new_rounded_right("screen-share-screen-list-trigger")
+                raijin_ui::ButtonLike::new_rounded_right("screen-share-screen-list-trigger")
                     .child(
                         h_flex()
                             .mx_neg_0p5()

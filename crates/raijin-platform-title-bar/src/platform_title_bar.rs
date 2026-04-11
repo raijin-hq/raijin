@@ -3,7 +3,7 @@ mod system_window_tabs;
 
 use raijin_feature_flags::{AgentV2FeatureFlag, FeatureFlagAppExt};
 use inazuma::{
-    Action, AnyElement, App, Context, Decorations, Entity, Hsla, InteractiveElement, IntoElement,
+    Action, AnyElement, App, Context, Decorations, Entity, Oklch, InteractiveElement, IntoElement,
     MouseButton, ParentElement, StatefulInteractiveElement, Styled, WeakEntity, Window,
     WindowButtonLayout, WindowControlArea, div, px,
 };
@@ -61,15 +61,15 @@ impl PlatformTitleBar {
         self.multi_workspace = Some(multi_workspace);
     }
 
-    pub fn title_bar_color(&self, window: &mut Window, cx: &mut Context<Self>) -> Hsla {
+    pub fn title_bar_color(&self, window: &mut Window, cx: &mut Context<Self>) -> Oklch {
         if cfg!(any(target_os = "linux", target_os = "freebsd")) {
             if window.is_window_active() && !self.should_move {
-                cx.theme().colors().title_bar_background
+                cx.theme().colors().title_bar.background
             } else {
-                cx.theme().colors().title_bar_inactive_background
+                cx.theme().colors().title_bar.inactive_background
             }
         } else {
-            cx.theme().colors().title_bar_background
+            cx.theme().colors().title_bar.background
         }
     }
 
@@ -92,7 +92,7 @@ impl PlatformTitleBar {
         if self.platform_style == PlatformStyle::Linux
             && matches!(decorations, Decorations::Client { .. })
         {
-            self.button_layout.or_else(|| cx.button_layout())
+            self.button_layout
         } else {
             None
         }

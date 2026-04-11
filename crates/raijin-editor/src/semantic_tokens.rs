@@ -1,4 +1,4 @@
-use std::{inazuma_collections::hash_map, sync::Arc, time::Duration};
+use std::{collections::hash_map, sync::Arc, time::Duration};
 
 use inazuma_collections::{HashMap, HashSet};
 use futures::future::join_all;
@@ -497,7 +497,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -575,7 +575,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -651,7 +651,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -883,7 +883,7 @@ mod tests {
             .fs
             .as_fake()
             .insert_tree(
-                EditorLspTestConinazuma_text::root_path(),
+                EditorLspTestContext::root_path(),
                 json!({
                     ".git": {},
                     "dir": {
@@ -898,7 +898,7 @@ mod tests {
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
         project
             .update(cx, |project, cx| {
-                project.find_or_create_worktree(EditorLspTestConinazuma_text::root_path(), true, cx)
+                project.find_or_create_worktree(EditorLspTestContext::root_path(), true, cx)
             })
             .await
             .unwrap();
@@ -1101,7 +1101,7 @@ mod tests {
             .fs
             .as_fake()
             .insert_tree(
-                EditorLspTestConinazuma_text::root_path(),
+                EditorLspTestContext::root_path(),
                 json!({
                     ".git": {},
                     "dir": {
@@ -1117,7 +1117,7 @@ mod tests {
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
         project
             .update(cx, |project, cx| {
-                project.find_or_create_worktree(EditorLspTestConinazuma_text::root_path(), true, cx)
+                project.find_or_create_worktree(EditorLspTestContext::root_path(), true, cx)
             })
             .await
             .unwrap();
@@ -1275,7 +1275,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -1397,7 +1397,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -1563,7 +1563,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -1671,7 +1671,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(
@@ -1749,7 +1749,7 @@ mod tests {
             );
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 semantic_tokens_provider: Some(
                     raijin_lsp::SemanticTokensServerCapabilities::SemanticTokensOptions(

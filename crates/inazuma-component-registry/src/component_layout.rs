@@ -58,7 +58,7 @@ impl RenderOnce for ComponentExample {
                     .border_1()
                     .border_color(cx.theme().colors().border.opacity(0.5))
                     .bg(pattern_slash(
-                        cx.theme().colors().surface_background.opacity(0.25),
+                        cx.theme().colors().surface.opacity(0.25),
                         12.0,
                         12.0,
                     ))

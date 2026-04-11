@@ -2654,7 +2654,7 @@ impl Render for TextThreadEditor {
             .child(
                 div()
                     .flex_grow()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(self.editor.clone()),
             )
             .children(self.render_last_error(cx))
@@ -2668,7 +2668,7 @@ impl Render for TextThreadEditor {
                     .justify_between()
                     .border_t_1()
                     .border_color(cx.theme().colors().border_variant)
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(
                         h_flex()
                             .gap_0p5()
@@ -3008,7 +3008,7 @@ fn invoked_slash_command_fold_placeholder(
                 .px_1()
                 .ml_6()
                 .gap_2()
-                .bg(cx.theme().colors().surface_background)
+                .bg(cx.theme().colors().surface)
                 .rounded_sm()
                 .child(Label::new(format!("/{}", command.name)))
                 .map(|parent| match &command.status {

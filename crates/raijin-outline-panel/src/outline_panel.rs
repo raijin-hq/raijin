@@ -2730,7 +2730,7 @@ impl OutlinePanel {
             })
             .when(
                 is_active && self.focus_handle.contains_focused(window, cx),
-                |div| div.border_color(cx.theme().colors().panel_focused_border),
+                |div| div.border_color(cx.theme().colors().panel.focused_border),
             )
     }
 
@@ -4802,7 +4802,7 @@ impl OutlinePanel {
                         .tracked_scroll_handle(&self.scroll_handle.clone())
                         .with_track_along(
                             ScrollAxes::Horizontal,
-                            cx.theme().colors().panel_background,
+                            cx.theme().colors().panel.background,
                         )
                         .tracked_entity(cx.entity_id()),
                     window,

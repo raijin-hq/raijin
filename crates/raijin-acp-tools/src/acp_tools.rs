@@ -505,7 +505,7 @@ impl Render for AcpTools {
         v_flex()
             .track_focus(&self.focus_handle)
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(match self.watched_connection.as_ref() {
                 Some(connection) => {
                     if connection.messages.is_empty() {

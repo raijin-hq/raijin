@@ -7043,7 +7043,7 @@ impl Render for ProjectPanel {
                         if horizontal_scroll {
                             scrollbars = scrollbars.with_track_along(
                                 ScrollAxes::Horizontal,
-                                cx.theme().colors().panel_background,
+                                cx.theme().colors().panel.background,
                             );
                         }
                         scrollbars.notify_content()

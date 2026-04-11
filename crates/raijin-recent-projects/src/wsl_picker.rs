@@ -24,7 +24,7 @@ pub struct WslPickerDismissed;
 pub(crate) struct WslPickerDelegate {
     selected_index: usize,
     distro_list: Option<Vec<String>>,
-    matches: Vec<fuzzy::StringMatch>,
+    matches: Vec<inazuma_fuzzy::StringMatch>,
 }
 
 impl WslPickerDelegate {
@@ -72,7 +72,7 @@ impl EventEmitter<WslDistroSelected> for Picker<WslPickerDelegate> {}
 
 impl EventEmitter<WslPickerDismissed> for Picker<WslPickerDelegate> {}
 
-impl picker::PickerDelegate for WslPickerDelegate {
+impl inazuma_picker::PickerDelegate for WslPickerDelegate {
     type ListItem = ListItem;
 
     fn match_count(&self) -> usize {
@@ -103,7 +103,7 @@ impl picker::PickerDelegate for WslPickerDelegate {
         _window: &mut Window,
         cx: &mut Context<Picker<Self>>,
     ) -> Task<()> {
-        use inazuma_fuzzy::StringMatchCandidate;
+        use inazuma_inazuma_fuzzy::StringMatchCandidate;
 
         let needs_fetch = self.distro_list.is_none();
         if needs_fetch {
@@ -122,7 +122,7 @@ impl picker::PickerDelegate for WslPickerDelegate {
 
             let query = query.trim_start();
             let smart_case = query.chars().any(|c| c.is_uppercase());
-            self.matches = smol::block_on(fuzzy::match_strings(
+            self.matches = smol::block_on(inazuma_fuzzy::match_strings(
                 candidates.as_slice(),
                 query,
                 smart_case,
@@ -171,7 +171,7 @@ impl picker::PickerDelegate for WslPickerDelegate {
             ListItem::new(ix)
                 .toggle_state(selected)
                 .inset(true)
-                .spacing(ui::ListItemSpacing::Sparse)
+                .spacing(raijin_ui::ListItemSpacing::Sparse)
                 .child(
                     h_flex()
                         .flex_grow()
@@ -215,7 +215,7 @@ impl WslOpenModal {
             &picker,
             window,
             |this, _, _: &WslPickerDismissed, window, cx| {
-                this.cancel(&menu::Cancel, window, cx);
+                this.cancel(&inazuma_menu::Cancel, window, cx);
             },
         );
 
@@ -234,7 +234,7 @@ impl WslOpenModal {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let app_state = workspace::AppState::global(cx);
+        let app_state = raijin_workspace::AppState::global(cx);
         let Some(app_state) = app_state.upgrade() else {
             return;
         };
@@ -254,7 +254,7 @@ impl WslOpenModal {
         };
 
         let paths = self.paths.clone();
-        let open_options = workspace::OpenOptions {
+        let open_options = raijin_workspace::OpenOptions {
             replace_window,
             ..Default::default()
         };
@@ -266,7 +266,7 @@ impl WslOpenModal {
         .detach();
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 }
@@ -282,7 +282,7 @@ impl Focusable for WslOpenModal {
 impl EventEmitter<DismissEvent> for WslOpenModal {}
 
 impl Render for WslOpenModal {
-    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl raijin_ui::IntoElement {
         div()
             .on_mouse_down_out(cx.listener(|_, _, _, cx| cx.emit(DismissEvent)))
             .on_action(cx.listener(Self::cancel))

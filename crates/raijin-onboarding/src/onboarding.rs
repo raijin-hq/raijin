@@ -275,7 +275,7 @@ impl Render for Onboarding {
             })
             .track_focus(&self.focus_handle)
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .on_action(Self::on_finish)
             .on_action(cx.listener(Self::handle_sign_in))
             .on_action(Self::handle_open_account)

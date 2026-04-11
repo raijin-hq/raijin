@@ -145,7 +145,7 @@ impl HighlightItem {
     }
 }
 
-impl sum_tree::Item for HighlightItem {
+impl inazuma_sum_tree::Item for HighlightItem {
     type Summary = HighlightSummary;
     fn summary(&self, _cx: &()) -> Self::Summary {
         HighlightSummary {
@@ -158,7 +158,7 @@ impl sum_tree::Item for HighlightItem {
     }
 }
 
-impl sum_tree::Summary for HighlightSummary {
+impl inazuma_sum_tree::Summary for HighlightSummary {
     type Context<'a> = &'a ();
     fn zero(_: Self::Context<'_>) -> Self {
         HighlightSummary {
@@ -179,7 +179,7 @@ impl sum_tree::Summary for HighlightSummary {
     }
 }
 
-impl<'a> sum_tree::Dimension<'a, HighlightSummary> for usize {
+impl<'a> inazuma_sum_tree::Dimension<'a, HighlightSummary> for usize {
     fn zero(_: &()) -> Self {
         0
     }
@@ -187,7 +187,7 @@ impl<'a> sum_tree::Dimension<'a, HighlightSummary> for usize {
     fn add_summary(&mut self, _: &'a HighlightSummary, _: &()) {}
 }
 
-impl<'a> sum_tree::Dimension<'a, HighlightSummary> for Range<usize> {
+impl<'a> inazuma_sum_tree::Dimension<'a, HighlightSummary> for Range<usize> {
     fn zero(_: &()) -> Self {
         Default::default()
     }
@@ -415,17 +415,17 @@ impl SyntaxHighlighter {
 
         let mut timed_out = false;
         let start = Instant::now();
-        let mut progress = |_: &tree_sitter::ParseState| -> bool {
+        let mut progress = |_: &tree_sitter::ParseState| -> std::ops::ControlFlow<()> {
             let Some(budget) = timeout else {
-                return false;
+                return std::ops::ControlFlow::Continue(());
             };
 
             if start.elapsed() > budget {
                 timed_out = true;
-                return true; // Cancel execution
+                return std::ops::ControlFlow::Break(());
             }
 
-            false
+            std::ops::ControlFlow::Continue(())
         };
 
         let options = ParseOptions::new().progress_callback(&mut progress);

@@ -199,7 +199,7 @@ pub struct DiagnosticSummary {
     end: usize,
 }
 
-impl sum_tree::Item for DiagnosticEntry {
+impl inazuma_sum_tree::Item for DiagnosticEntry {
     type Summary = DiagnosticSummary;
     fn summary(&self, _cx: &()) -> Self::Summary {
         DiagnosticSummary {
@@ -210,7 +210,7 @@ impl sum_tree::Item for DiagnosticEntry {
     }
 }
 
-impl sum_tree::Summary for DiagnosticSummary {
+impl inazuma_sum_tree::Summary for DiagnosticSummary {
     type Context<'a> = &'a ();
     fn zero(_: Self::Context<'_>) -> Self {
         DiagnosticSummary {

@@ -75,11 +75,11 @@ impl DevContainerCli {
     fn command(&self, use_podman: bool) -> Command {
         let mut command = if let Some(node_runtime_path) = &self.node_runtime_path {
             let mut command =
-                util::command::new_command(node_runtime_path.as_os_str().display().to_string());
+                inazuma_util::command::new_command(node_runtime_path.as_os_str().display().to_string());
             command.arg(self.path.display().to_string());
             command
         } else {
-            util::command::new_command(self.path.display().to_string())
+            inazuma_util::command::new_command(self.path.display().to_string())
         };
 
         if use_podman {
@@ -297,9 +297,9 @@ fn dev_container_script() -> String {
 
 async fn check_for_docker(use_podman: bool) -> Result<(), DevContainerError> {
     let mut command = if use_podman {
-        util::command::new_command("podman")
+        inazuma_util::command::new_command("podman")
     } else {
-        util::command::new_command("docker")
+        inazuma_util::command::new_command("docker")
     };
     command.arg("--version");
 
@@ -315,7 +315,7 @@ async fn check_for_docker(use_podman: bool) -> Result<(), DevContainerError> {
 pub(crate) async fn ensure_devcontainer_cli(
     node_runtime: &NodeRuntime,
 ) -> Result<DevContainerCli, DevContainerError> {
-    let mut command = util::command::new_command(&dev_container_cli());
+    let mut command = inazuma_util::command::new_command(&dev_container_cli());
     command.arg("--version");
 
     if let Err(e) = command.output().await {
@@ -328,7 +328,7 @@ pub(crate) async fn ensure_devcontainer_cli(
             return Err(DevContainerError::NodeRuntimeNotAvailable);
         };
 
-        let datadir_cli_path = paths::devcontainer_dir()
+        let datadir_cli_path = raijin_paths::devcontainer_dir()
             .join("node_modules")
             .join("@devcontainers")
             .join("cli")
@@ -340,7 +340,7 @@ pub(crate) async fn ensure_devcontainer_cli(
         );
 
         let mut command =
-            util::command::new_command(node_runtime_path.as_os_str().display().to_string());
+            inazuma_util::command::new_command(node_runtime_path.as_os_str().display().to_string());
         command.arg(datadir_cli_path.display().to_string());
         command.arg("--version");
 
@@ -365,14 +365,14 @@ pub(crate) async fn ensure_devcontainer_cli(
             }
         }
 
-        if let Err(e) = fs::create_dir_all(paths::devcontainer_dir()).await {
+        if let Err(e) = fs::create_dir_all(raijin_paths::devcontainer_dir()).await {
             log::error!("Unable to create devcontainer directory. Error: {:?}", e);
             return Err(DevContainerError::DevContainerCliNotAvailable);
         }
 
         if let Err(e) = node_runtime
             .npm_install_packages(
-                &paths::devcontainer_dir(),
+                &raijin_paths::devcontainer_dir(),
                 &[("@devcontainers/cli", "latest")],
             )
             .await
@@ -385,7 +385,7 @@ pub(crate) async fn ensure_devcontainer_cli(
         };
 
         let mut command =
-            util::command::new_command(node_runtime_path.as_os_str().display().to_string());
+            inazuma_util::command::new_command(node_runtime_path.as_os_str().display().to_string());
         command.arg(datadir_cli_path.display().to_string());
         command.arg("--version");
         if let Err(e) = command.output().await {

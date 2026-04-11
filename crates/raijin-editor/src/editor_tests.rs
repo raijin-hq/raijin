@@ -1124,7 +1124,7 @@ fn test_cancel(cx: &mut TestAppContext) {
 async fn test_fold_action(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
     cx.set_state(indoc! {"
@@ -1480,7 +1480,7 @@ fn test_fold_action_multiple_line_breaks(cx: &mut TestAppContext) {
 async fn test_fold_with_unindented_multiline_raw_string(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(
         Language::new(
@@ -1532,7 +1532,7 @@ async fn test_fold_with_unindented_multiline_raw_string_includes_closing_bracket
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
     cx.set_state(indoc! {"
@@ -1560,7 +1560,7 @@ async fn test_fold_with_unindented_multiline_raw_string_includes_closing_bracket
 async fn test_fold_with_unindented_multiline_block_comment(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(
         Language::new(
@@ -1611,7 +1611,7 @@ async fn test_fold_with_unindented_multiline_block_comment_includes_closing_brac
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
     cx.set_state(indoc! {"
@@ -2594,7 +2594,7 @@ fn test_prev_next_word_bounds_with_soft_wrap(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_move_start_of_paragraph_end_of_paragraph(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let line_height = cx.update_editor(|editor, window, cx| {
         editor
@@ -2644,7 +2644,7 @@ async fn test_move_start_of_paragraph_end_of_paragraph(cx: &mut TestAppContext) 
 #[inazuma::test]
 async fn test_scroll_page_up_page_down(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let line_height = cx.update_editor(|editor, window, cx| {
         editor
             .style(cx)
@@ -2705,7 +2705,7 @@ async fn test_scroll_page_up_page_down(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_autoscroll(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let line_height = cx.update_editor(|editor, window, cx| {
         editor.set_vertical_scroll_margin(2, cx);
@@ -2787,7 +2787,7 @@ async fn test_autoscroll(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_move_page_up_page_down(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let line_height = cx.update_editor(|editor, window, cx| {
         editor
@@ -2911,7 +2911,7 @@ async fn test_move_page_up_page_down(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_delete_to_beginning_of_line(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state("one «two threeˇ» four");
     cx.update_editor(|editor, window, cx| {
         editor.delete_to_beginning_of_line(
@@ -2929,7 +2929,7 @@ async fn test_delete_to_beginning_of_line(cx: &mut TestAppContext) {
 async fn test_delete_to_word_boundary(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // For an empty selection, the preceding word fragment is deleted.
     // For non-empty selections, only selected characters are deleted.
@@ -2964,7 +2964,7 @@ async fn test_delete_to_word_boundary(cx: &mut TestAppContext) {
 async fn test_delete_whitespaces(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("here is some text    ˇwith a space");
     cx.update_editor(|editor, window, cx| {
@@ -3185,7 +3185,7 @@ async fn test_delete_to_bracket(cx: &mut TestAppContext) {
         .unwrap(),
     );
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
     cx.set_state(r#"macro!("// ˇCOMMENT");"#);
@@ -3501,7 +3501,7 @@ fn test_newline(cx: &mut TestAppContext) {
 async fn test_newline_yaml(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let yaml_language = languages::language("yaml", tree_sitter_yaml::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(yaml_language), cx));
 
@@ -3665,7 +3665,7 @@ async fn test_newline_above(cx: &mut TestAppContext) {
         .unwrap(),
     );
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
     cx.set_state(indoc! {"
         const a: ˇA = (
@@ -3713,7 +3713,7 @@ async fn test_newline_below(cx: &mut TestAppContext) {
         .unwrap(),
     );
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
     cx.set_state(indoc! {"
         const a: ˇA = (
@@ -4075,7 +4075,7 @@ async fn test_newline_comments(cx: &mut TestAppContext) {
         None,
     ));
     {
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
         cx.set_state(indoc! {"
         // Fooˇ
@@ -4122,7 +4122,7 @@ async fn test_newline_comments(cx: &mut TestAppContext) {
     update_test_language_settings(cx, &|settings| {
         settings.defaults.extend_comment_on_newline = Some(false);
     });
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(indoc! {"
         // Fooˇ
     "});
@@ -4147,7 +4147,7 @@ async fn test_newline_comments_with_multiple_delimiters(cx: &mut TestAppContext)
         None,
     ));
     {
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
         cx.set_state(indoc! {"
         //ˇ
@@ -4183,7 +4183,7 @@ async fn test_newline_comments_repl_separators(cx: &mut TestAppContext) {
     ));
 
     {
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
         cx.set_state(indoc! {"
         # %%ˇ
@@ -4239,7 +4239,7 @@ async fn test_newline_documentation_comments(cx: &mut TestAppContext) {
     );
 
     {
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
         cx.set_state(indoc! {"
         /**ˇ
@@ -4417,7 +4417,7 @@ async fn test_newline_documentation_comments(cx: &mut TestAppContext) {
     update_test_language_settings(cx, &|settings| {
         settings.defaults.extend_comment_on_newline = Some(false);
     });
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(indoc! {"
         /**ˇ
     "});
@@ -4448,7 +4448,7 @@ async fn test_newline_comments_with_block_comment(cx: &mut TestAppContext) {
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(lua_language), cx));
 
     // Line with line comment should extend
@@ -4533,7 +4533,7 @@ async fn test_tab(cx: &mut TestAppContext) {
         settings.defaults.tab_size = NonZeroU32::new(3)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(indoc! {"
         ˇabˇc
         ˇ🏀ˇ🏀ˇefg
@@ -4561,7 +4561,7 @@ async fn test_tab(cx: &mut TestAppContext) {
 async fn test_tab_in_leading_whitespace_auto_indents_lines(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = Arc::new(
         Language::new(
             LanguageConfig::default(),
@@ -4759,7 +4759,7 @@ async fn test_tab_with_mixed_whitespace_txt(cx: &mut TestAppContext) {
         settings.defaults.tab_size = NonZeroU32::new(3)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(indoc! {"
          ˇ
         \t ˇ
@@ -4793,7 +4793,7 @@ async fn test_tab_with_mixed_whitespace_rust(cx: &mut TestAppContext) {
         .unwrap(),
     );
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
     cx.set_state(indoc! {"
         fn a() {
@@ -4819,7 +4819,7 @@ async fn test_indent_outdent(cx: &mut TestAppContext) {
         settings.defaults.tab_size = NonZeroU32::new(4);
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
           «oneˇ» «twoˇ»
@@ -4891,7 +4891,7 @@ async fn test_indent_yaml_comments_with_multiple_cursors(cx: &mut TestAppContext
     // This is a regression test for issue #33761
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let yaml_language = languages::language("yaml", tree_sitter_yaml::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(yaml_language), cx));
 
@@ -4926,7 +4926,7 @@ async fn test_indent_yaml_non_comments_with_multiple_cursors(cx: &mut TestAppCon
     // This is a test to make sure our fix for issue #33761 didn't break anything
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let yaml_language = languages::language("yaml", tree_sitter_yaml::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(yaml_language), cx));
 
@@ -4956,7 +4956,7 @@ async fn test_indent_outdent_with_hard_tabs(cx: &mut TestAppContext) {
         settings.defaults.hard_tabs = Some(true);
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // select two ranges on one line
     cx.set_state(indoc! {"
@@ -5161,7 +5161,7 @@ fn test_indent_outdent_with_excerpts(cx: &mut TestAppContext) {
 async fn test_backspace(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Basic backspace
     cx.set_state(indoc! {"
@@ -5198,7 +5198,7 @@ async fn test_backspace(cx: &mut TestAppContext) {
 async fn test_delete(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(indoc! {"
         onˇe two three
         fou«rˇ» five six
@@ -5454,7 +5454,7 @@ fn test_join_lines_with_multi_selection(cx: &mut TestAppContext) {
 async fn test_join_lines_with_git_diff_base(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         Line 0
@@ -5525,7 +5525,7 @@ async fn test_join_lines_strips_comment_prefix(cx: &mut TestAppContext) {
             None,
         ));
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
         // Strips the comment prefix (with trailing space) from the joined-in line.
@@ -5618,7 +5618,7 @@ async fn test_join_lines_strips_comment_prefix(cx: &mut TestAppContext) {
             None,
         ));
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
         // Strips the `- ` list marker from the joined-in line.
@@ -5669,7 +5669,7 @@ async fn test_custom_newlines_cause_no_false_positive_diffs(
     cx: &mut TestAppContext,
 ) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state("Line 0\r\nLine 1\rˇ\nLine 2\r\nLine 3");
     cx.set_head_text("Line 0\r\nLine 1\r\nLine 2\r\nLine 3");
     executor.run_until_parked();
@@ -5691,7 +5691,7 @@ async fn test_custom_newlines_cause_no_false_positive_diffs(
 async fn test_manipulate_immutable_lines_with_single_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Test sort_lines_case_insensitive()
     cx.set_state(indoc! {"
@@ -5865,7 +5865,7 @@ async fn test_manipulate_immutable_lines_with_single_selection(cx: &mut TestAppC
 async fn test_unique_lines_multi_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Consider continuous selection as single selection
     cx.set_state(indoc! {"
@@ -5923,7 +5923,7 @@ async fn test_unique_lines_multi_selection(cx: &mut TestAppContext) {
 async fn test_unique_lines_single_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         «Aaa
@@ -5955,7 +5955,7 @@ async fn test_unique_lines_single_selection(cx: &mut TestAppContext) {
 async fn test_wrap_in_tag_single_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let js_language = Arc::new(Language::new(
         LanguageConfig {
@@ -6004,7 +6004,7 @@ async fn test_wrap_in_tag_single_selection(cx: &mut TestAppContext) {
 async fn test_wrap_in_tag_multi_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let js_language = Arc::new(Language::new(
         LanguageConfig {
@@ -6053,7 +6053,7 @@ async fn test_wrap_in_tag_multi_selection(cx: &mut TestAppContext) {
 async fn test_wrap_in_tag_does_nothing_in_unsupported_languages(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let plaintext_language = Arc::new(Language::new(
         LanguageConfig {
@@ -6078,7 +6078,7 @@ async fn test_wrap_in_tag_does_nothing_in_unsupported_languages(cx: &mut TestApp
 async fn test_manipulate_immutable_lines_with_multi_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Manipulate with multiple selections on a single line
     cx.set_state(indoc! {"
@@ -6173,7 +6173,7 @@ async fn test_convert_indentation_to_spaces(cx: &mut TestAppContext) {
         settings.defaults.tab_size = NonZeroU32::new(3)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // MULTI SELECTION
     // Ln.1 "«" tests empty lines
@@ -6290,7 +6290,7 @@ async fn test_convert_indentation_to_tabs(cx: &mut TestAppContext) {
         settings.defaults.tab_size = NonZeroU32::new(3)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // MULTI SELECTION
     // Ln.1 "«" tests empty lines
@@ -6411,7 +6411,7 @@ async fn test_convert_indentation_to_tabs(cx: &mut TestAppContext) {
 async fn test_toggle_case(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // If all lower case -> upper case
     cx.set_state(indoc! {"
@@ -6446,7 +6446,7 @@ async fn test_toggle_case(cx: &mut TestAppContext) {
 async fn test_convert_to_sentence_case(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         «implement-windows-supportˇ»
@@ -6463,7 +6463,7 @@ async fn test_convert_to_sentence_case(cx: &mut TestAppContext) {
 async fn test_manipulate_text(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Test convert_to_upper_case()
     cx.set_state(indoc! {"
@@ -6793,7 +6793,7 @@ fn test_duplicate_line(cx: &mut TestAppContext) {
 async fn test_rotate_selections(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Rotate text selections (horizontal)
     cx.set_state("x=«1ˇ», y=«2ˇ», z=«3ˇ»");
@@ -7058,7 +7058,7 @@ fn test_move_line_up_down_with_blocks(cx: &mut TestAppContext) {
 async fn test_selections_and_replace_blocks(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         &"
             ˇzero
@@ -7341,7 +7341,7 @@ async fn test_rewrap(cx: &mut TestAppContext) {
         ])
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let cpp_language = Arc::new(Language::new(
         LanguageConfig {
@@ -7752,7 +7752,7 @@ async fn test_rewrap_block_comments(cx: &mut TestAppContext) {
         )])
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let rust_lang = Arc::new(
         Language::new(
@@ -8147,7 +8147,7 @@ async fn test_rewrap_block_comments(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_hard_wrap(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(git_commit_lang()), cx));
     cx.update_editor(|editor, _, cx| {
@@ -8237,7 +8237,7 @@ async fn test_hard_wrap(cx: &mut TestAppContext) {
 async fn test_cut_line_ends(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"The quick brownˇ"});
     cx.update_editor(|e, window, cx| e.cut_to_end_of_line(&CutToEndOfLine::default(), window, cx));
@@ -8297,7 +8297,7 @@ async fn test_cut_line_ends(cx: &mut TestAppContext) {
 async fn test_clipboard(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("«one✅ ˇ»two «three ˇ»four «five ˇ»six ");
     cx.update_editor(|e, window, cx| e.cut(&Cut, window, cx));
@@ -8383,7 +8383,7 @@ async fn test_clipboard(cx: &mut TestAppContext) {
 async fn test_copy_trim(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         r#"            «for selection in selections.iter() {
             let mut start = selection.start;
@@ -8587,7 +8587,7 @@ if is_entire_line {
 async fn test_copy_trim_line_mode(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         «    fn main() {
@@ -8705,7 +8705,7 @@ async fn test_clipboard_line_numbers_from_multibuffer(cx: &mut TestAppContext) {
 async fn test_paste_multiline(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
 
     // Cut an indented block, without the leading whitespace.
@@ -8847,7 +8847,7 @@ async fn test_paste_content_from_other_app(cx: &mut TestAppContext) {
         "    d(\n        e\n    );\n".into(),
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
     cx.run_until_parked();
 
@@ -8898,7 +8898,7 @@ async fn test_paste_multiline_from_other_app_into_matching_cursors(cx: &mut Test
 
     cx.write_to_clipboard(ClipboardItem::new_string("alpha\nbeta\ngamma".into()));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Paste into 3 cursors: each cursor should receive one line.
     cx.set_state("ˇ one ˇ two ˇ three");
@@ -8997,7 +8997,7 @@ fn test_select_line(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_split_selection_into_lines(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     #[track_caller]
     fn test(cx: &mut EditorTestContext, initial_state: &'static str, expected_state: &'static str) {
@@ -9058,7 +9058,7 @@ async fn test_split_selection_into_lines(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_split_selection_into_lines_does_not_scroll(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let large_body = "\nline".repeat(300);
     cx.set_state(&format!("«ˇstart{large_body}\nend»"));
@@ -9117,7 +9117,7 @@ async fn test_split_selection_into_lines_interacting_with_creases(cx: &mut TestA
             "aaaaa\nbbbbb\nccc⋯eeee\nfffff\nggggg\n⋯i"
         );
     });
-    EditorTestConinazuma_text::for_editor(editor, cx)
+    EditorTestContext::for_editor(editor, cx)
         .await
         .assert_editor_state("aˇaˇaaa\nbbbbb\nˇccccc\nddddd\neeeee\nfffff\nggggg\nhhhhh\niiiiiˇ");
 
@@ -9145,7 +9145,7 @@ async fn test_split_selection_into_lines_interacting_with_creases(cx: &mut TestA
             ]
         );
     });
-    EditorTestConinazuma_text::for_editor(editor, cx)
+    EditorTestContext::for_editor(editor, cx)
         .await
         .assert_editor_state(
             "aaaaaˇ\nbbbbbˇ\ncccccˇ\ndddddˇ\neeeeeˇ\nfffffˇ\ngggggˇ\nhhhhh\niiiii",
@@ -9156,7 +9156,7 @@ async fn test_split_selection_into_lines_interacting_with_creases(cx: &mut TestA
 async fn test_add_selection_above_below(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc!(
         r#"abc
@@ -9511,7 +9511,7 @@ async fn test_add_selection_above_below(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_add_selection_above_below_multi_cursor(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc!(
         r#"line onˇe
@@ -9683,7 +9683,7 @@ async fn test_add_selection_above_below_multi_cursor(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_add_selection_above_below_multi_cursor_existing_state(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc!(
         r#"line onˇe
@@ -9801,7 +9801,7 @@ async fn test_add_selection_above_below_multi_cursor_existing_state(cx: &mut Tes
 #[inazuma::test]
 async fn test_add_selection_above_below_multibyte(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Cursor after "Häl" (byte column 4, char column 3) should align to
     // char column 3 on the ASCII line below, not byte column 4.
@@ -9823,7 +9823,7 @@ async fn test_add_selection_above_below_multibyte(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_select_next(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Enable case sensitive search.
     update_test_editor_settings(&mut cx, &|settings| {
@@ -9888,7 +9888,7 @@ async fn test_select_next(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_select_all_matches(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Enable case sensitive search.
     update_test_editor_settings(&mut cx, &|settings| {
@@ -9967,7 +9967,7 @@ async fn test_select_all_matches(cx: &mut TestAppContext) {
 async fn test_select_all_matches_does_not_scroll(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let large_body_1 = "\nd".repeat(200);
     let large_body_2 = "\ne".repeat(200);
 
@@ -10042,7 +10042,7 @@ async fn test_select_all_matches_does_not_scroll(cx: &mut TestAppContext) {
 async fn test_undo_format_scrolls_to_last_edit_pos(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             document_formatting_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..Default::default()
@@ -10119,7 +10119,7 @@ async fn test_undo_format_scrolls_to_last_edit_pos(cx: &mut TestAppContext) {
 async fn test_undo_edit_prediction_scrolls_to_edit_pos(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     cx.update_editor(|editor, window, cx| {
@@ -10212,7 +10212,7 @@ async fn test_undo_edit_prediction_scrolls_to_edit_pos(cx: &mut TestAppContext) 
 async fn test_select_next_with_multiple_carets(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         r#"let foo = 2;
 lˇet foo = 2;
@@ -10267,7 +10267,7 @@ async fn test_select_previous_multibuffer(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
     let mut cx =
-        EditorTestConinazuma_text::new_multibuffer(cx, ["aaa\n«bbb\nccc»\nddd", "aaa\n«bbb\nccc»\nddd"]);
+        EditorTestContext::new_multibuffer(cx, ["aaa\n«bbb\nccc»\nddd", "aaa\n«bbb\nccc»\nddd"]);
 
     cx.assert_editor_state(indoc! {"
         ˇbbb
@@ -10292,7 +10292,7 @@ async fn test_select_previous_multibuffer(cx: &mut TestAppContext) {
 async fn test_select_previous_with_single_caret(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state("abc\nˇabc abc\ndefabc\nabc");
 
     cx.update_editor(|e, window, cx| e.select_previous(&SelectPrevious::default(), window, cx))
@@ -10322,7 +10322,7 @@ async fn test_select_previous_with_single_caret(cx: &mut TestAppContext) {
 async fn test_select_previous_empty_buffer(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state("aˇ");
 
     cx.update_editor(|e, window, cx| e.select_previous(&SelectPrevious::default(), window, cx))
@@ -10337,7 +10337,7 @@ async fn test_select_previous_empty_buffer(cx: &mut TestAppContext) {
 async fn test_select_previous_with_multiple_carets(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         r#"let foo = 2;
 lˇet foo = 2;
@@ -10371,7 +10371,7 @@ let foo = «2ˇ»;"#,
 #[inazuma::test]
 async fn test_select_previous_with_single_selection(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Enable case sensitive search.
     update_test_editor_settings(&mut cx, &|settings| {
@@ -11073,7 +11073,7 @@ async fn test_select_larger_smaller_syntax_node_for_string(cx: &mut TestAppConte
 async fn test_unwrap_syntax_nodes(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(Language::new(
         LanguageConfig::default(),
@@ -11121,7 +11121,7 @@ async fn test_unwrap_syntax_nodes(cx: &mut inazuma::TestAppContext) {
         Editor::new(EditorMode::full(), multi_buffer, None, window, cx)
     });
 
-    let mut cx = EditorTestConinazuma_text::for_editor_in(editor2, &mut cx).await;
+    let mut cx = EditorTestContext::for_editor_in(editor2, &mut cx).await;
     cx.update_editor(|editor, window, cx| {
         editor.change_selections(SelectionEffects::default(), window, cx, |s| {
             s.select_ranges([Point::new(3, 0)..Point::new(3, 0)]);
@@ -11195,7 +11195,7 @@ async fn test_fold_function_bodies(cx: &mut TestAppContext) {
     "#
     .unindent();
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(Default::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(Default::default(), cx).await;
     cx.set_state(&text);
     cx.set_head_text(&base_text);
     cx.update_editor(|editor, window, cx| {
@@ -11410,7 +11410,7 @@ async fn test_autoindent_none_does_not_preserve_indentation_on_newline(cx: &mut 
         settings.defaults.auto_indent = Some(inazuma_settings_framework::AutoIndentMode::None)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         hello
@@ -11438,7 +11438,7 @@ async fn test_autoindent_preserve_indent_maintains_indentation_on_newline(cx: &m
         settings.defaults.auto_indent = Some(inazuma_settings_framework::AutoIndentMode::PreserveIndent)
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         hello
@@ -11568,7 +11568,7 @@ async fn test_autoindent_disabled_with_nested_language(cx: &mut TestAppContext) 
         );
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let injected_language = Arc::new(
         Language::new(
@@ -11694,7 +11694,7 @@ async fn test_autoindent_selections(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
     {
-        let mut cx = EditorLspTestConinazuma_text::new_rust(Default::default(), cx).await;
+        let mut cx = EditorLspTestContext::new_rust(Default::default(), cx).await;
         cx.set_state(indoc! {"
             impl A {
 
@@ -11724,7 +11724,7 @@ async fn test_autoindent_selections(cx: &mut TestAppContext) {
     }
 
     {
-        let mut cx = EditorTestConinazuma_text::new_multibuffer(
+        let mut cx = EditorTestContext::new_multibuffer(
             cx,
             [indoc! { "
                 impl A {
@@ -11777,7 +11777,7 @@ async fn test_autoindent_selections(cx: &mut TestAppContext) {
 async fn test_autoclose_and_auto_surround_pairs(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(Language::new(
         LanguageConfig {
@@ -11987,7 +11987,7 @@ async fn test_always_treat_brackets_as_autoclosed_skip_over(cx: &mut TestAppCont
         settings.defaults.always_treat_brackets_as_autoclosed = Some(true);
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(Language::new(
         LanguageConfig {
@@ -12087,7 +12087,7 @@ async fn test_always_treat_brackets_as_autoclosed_skip_over(cx: &mut TestAppCont
 async fn test_autoclose_with_embedded_language(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let html_language = Arc::new(
         Language::new(
@@ -12328,7 +12328,7 @@ async fn test_autoclose_with_embedded_language(cx: &mut TestAppContext) {
 async fn test_autoclose_with_overrides(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let rust_language = Arc::new(
         Language::new(
@@ -12424,7 +12424,7 @@ async fn test_autoclose_with_overrides(cx: &mut TestAppContext) {
 async fn test_autoclose_quotes_with_scope_awareness(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("python", tree_sitter_python::LANGUAGE.into());
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
@@ -12512,7 +12512,7 @@ async fn test_autoclose_quotes_with_scope_awareness(cx: &mut TestAppContext) {
 async fn test_autoclose_quotes_with_multibyte_characters(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("python", tree_sitter_python::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -12806,7 +12806,7 @@ async fn test_always_treat_brackets_as_autoclosed_delete(cx: &mut TestAppContext
         settings.defaults.always_treat_brackets_as_autoclosed = Some(true);
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(Language::new(
         LanguageConfig {
@@ -13161,7 +13161,7 @@ async fn test_snippet_tabstop_navigation_with_placeholders(cx: &mut TestAppConte
 async fn test_snippets(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc! {"
         a.ˇ b
@@ -13240,7 +13240,7 @@ async fn test_snippets(cx: &mut TestAppContext) {
 async fn test_snippet_indentation(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_editor(|editor, window, cx| {
         let snippet = Snippet::parse(indoc! {"
@@ -13284,7 +13284,7 @@ async fn test_snippet_indentation(cx: &mut TestAppContext) {
 async fn test_snippet_with_multi_word_prefix(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_editor(|editor, _, cx| {
         editor.project().unwrap().update(cx, |project, cx| {
             project.snippets().update(cx, |snippets, _cx| {
@@ -13675,7 +13675,7 @@ async fn test_multibuffer_format_during_save(cx: &mut TestAppContext) {
 
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let language_registry = project.read_with(cx, |project, _| project.languages().clone());
     language_registry.add(rust_lang());
@@ -13950,7 +13950,7 @@ async fn test_autosave_with_dirty_buffers(cx: &mut TestAppContext) {
 
     let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let language_registry = project.read_with(cx, |project, _| project.languages().clone());
     language_registry.add(rust_lang());
@@ -14942,7 +14942,7 @@ async fn test_formatter_failure_does_not_abort_subsequent_formatters(cx: &mut Te
 async fn test_concurrent_format_requests(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             document_formatting_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..Default::default()
@@ -14999,7 +14999,7 @@ async fn test_strip_whitespace_and_format_via_lsp(cx: &mut TestAppContext) {
         settings.defaults.formatter = Some(FormatterList::default())
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             document_formatting_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..Default::default()
@@ -15132,7 +15132,7 @@ async fn test_handle_input_for_show_signature_help_auto_signature_help_true(
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions {
                 ..Default::default()
@@ -15275,7 +15275,7 @@ async fn test_signature_help_delay_only_for_auto(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions::default()),
             ..raijin_lsp::ServerCapabilities::default()
@@ -15373,7 +15373,7 @@ async fn test_signature_help_after_edits_no_delay(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions::default()),
             ..raijin_lsp::ServerCapabilities::default()
@@ -15452,7 +15452,7 @@ async fn test_handle_input_with_different_show_signature_settings(cx: &mut TestA
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions {
                 ..Default::default()
@@ -15664,7 +15664,7 @@ async fn test_signature_help(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions {
                 ..Default::default()
@@ -15922,7 +15922,7 @@ async fn test_signature_help(cx: &mut TestAppContext) {
 async fn test_signature_help_multiple_signatures(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             signature_help_provider: Some(raijin_lsp::SignatureHelpOptions {
                 ..Default::default()
@@ -16047,7 +16047,7 @@ async fn test_signature_help_multiple_signatures(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_completion_mode(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 resolve_provider: Some(true),
@@ -16300,7 +16300,7 @@ async fn test_completion_mode(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_completion_with_mode_specified_by_action(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 resolve_provider: Some(true),
@@ -16392,7 +16392,7 @@ async fn test_completion_with_mode_specified_by_action(cx: &mut TestAppContext) 
 #[inazuma::test]
 async fn test_completion_replacing_surrounding_text_with_multicursors(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 resolve_provider: Some(true),
@@ -16643,7 +16643,7 @@ async fn test_completion_in_multibuffer_with_replace_range(cx: &mut TestAppConte
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let buffer = project
         .update(cx, |project, cx| {
             project.open_local_buffer(path!("/a/main.rs"), cx)
@@ -16752,7 +16752,7 @@ async fn test_completion_in_multibuffer_with_replace_range(cx: &mut TestAppConte
 async fn test_completion(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
@@ -17045,7 +17045,7 @@ async fn test_completion_can_run_commands(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let editor = workspace
         .update_in(cx, |workspace, window, cx| {
             workspace.open_abs_path(
@@ -17146,7 +17146,7 @@ async fn test_completion_can_run_commands(cx: &mut TestAppContext) {
 async fn test_completion_reuse(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -17276,7 +17276,7 @@ async fn test_word_completion(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
@@ -17372,7 +17372,7 @@ async fn test_word_completions_do_not_duplicate_lsp_ones(cx: &mut TestAppContext
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
@@ -17435,7 +17435,7 @@ async fn test_word_completions_continue_on_typing(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
@@ -17508,7 +17508,7 @@ async fn test_word_completions_usually_skip_digits(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
 
     cx.set_state(indoc! {"ˇ
         0_usize
@@ -17570,7 +17570,7 @@ async fn test_word_completions_do_not_show_before_threshold(cx: &mut TestAppCont
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     cx.set_state(indoc! {"ˇ
         wow
         wowen
@@ -17639,7 +17639,7 @@ async fn test_word_completions_disabled(cx: &mut TestAppContext) {
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     cx.update_editor(|editor, _, _| {
         editor.disable_word_completions();
     });
@@ -17682,7 +17682,7 @@ async fn test_word_completions_disabled_with_no_provider(cx: &mut TestAppContext
         });
     });
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     cx.update_editor(|editor, _, _| {
         editor.set_completion_provider(None);
     });
@@ -17775,7 +17775,7 @@ async fn test_multiline_completion(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree_id = workspace.update_in(cx, |workspace, _window, cx| {
         workspace.project().update(cx, |project, cx| {
             project.worktrees(cx).next().unwrap().read(cx).id()
@@ -17895,7 +17895,7 @@ async fn test_multiline_completion(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_completion_page_up_down_keys(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -17962,7 +17962,7 @@ async fn test_completion_page_up_down_keys(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_as_is_completions(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 ..Default::default()
@@ -18014,7 +18014,7 @@ async fn test_panic_during_c_completions(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
     let language =
         Arc::try_unwrap(languages::language("c", tree_sitter_c::LANGUAGE.into())).unwrap();
-    let mut cx = EditorLspTestConinazuma_text::new(
+    let mut cx = EditorLspTestContext::new(
         language,
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
@@ -18185,7 +18185,7 @@ int fn_branch(bool do_branch1, bool do_branch2);
 async fn test_no_duplicated_completion_requests(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -18282,7 +18282,7 @@ async fn test_no_duplicated_completion_requests(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_toggle_comment(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = Arc::new(Language::new(
         LanguageConfig {
             line_comments: vec!["// ".into(), "//! ".into(), "/// ".into()],
@@ -18403,7 +18403,7 @@ async fn test_toggle_comment(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_toggle_comment_ignore_indent(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = Arc::new(Language::new(
         LanguageConfig {
             line_comments: vec!["// ".into(), "//! ".into(), "/// ".into()],
@@ -18537,7 +18537,7 @@ async fn test_advance_downward_on_toggle_comment(cx: &mut TestAppContext) {
         Some(tree_sitter_rust::LANGUAGE.into()),
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.language_registry().add(language.clone());
     cx.update_buffer(|buffer, cx| {
@@ -18661,7 +18661,7 @@ async fn test_advance_downward_on_toggle_comment(cx: &mut TestAppContext) {
 async fn test_toggle_block_comment(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let html_language = Arc::new(
         Language::new(
@@ -19403,7 +19403,7 @@ async fn test_following_with_multiple_excerpts(cx: &mut TestAppContext) {
         .unwrap();
     let pane = workspace.read_with(cx, |workspace, _| workspace.active_pane().clone());
 
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let leader = pane.update_in(cx, |_, window, cx| {
         let multibuffer = cx.new(|_| MultiBuffer::new(ReadWrite));
@@ -19564,7 +19564,7 @@ async fn test_following_with_multiple_excerpts(cx: &mut TestAppContext) {
 async fn go_to_prev_overlapping_diagnostic(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let lsp_store =
         cx.update_editor(|editor, _, cx| editor.project().unwrap().read(cx).lsp_store());
 
@@ -19660,7 +19660,7 @@ async fn go_to_prev_overlapping_diagnostic(executor: BackgroundExecutor, cx: &mu
 async fn test_go_to_hunk(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod;
@@ -19876,7 +19876,7 @@ fn test_split_words_for_snippet_prefix() {
 async fn test_move_to_syntax_node_relative_jumps(tcx: &mut TestAppContext) {
     init_test(tcx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new(
+    let mut cx = EditorLspTestContext::new(
         Arc::into_inner(markdown_lang()).unwrap(),
         Default::default(),
         tcx,
@@ -20045,7 +20045,7 @@ async fn test_move_to_syntax_node_relative_jumps(tcx: &mut TestAppContext) {
 async fn test_move_to_syntax_node_relative_dead_zone(tcx: &mut TestAppContext) {
     init_test(tcx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new(
+    let mut cx = EditorLspTestContext::new(
         Arc::into_inner(rust_lang()).unwrap(),
         Default::default(),
         tcx,
@@ -20130,7 +20130,7 @@ async fn test_move_to_syntax_node_relative_dead_zone(tcx: &mut TestAppContext) {
 async fn test_move_to_enclosing_bracket(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_typescript(Default::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_typescript(Default::default(), cx).await;
 
     #[track_caller]
     fn assert(before: &str, after: &str, cx: &mut EditorLspTestContext) {
@@ -20323,7 +20323,7 @@ async fn test_on_type_formatting_not_triggered(cx: &mut TestAppContext) {
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
 
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let worktree_id = workspace.update_in(cx, |workspace, _, cx| {
         workspace.project().update(cx, |project, cx| {
@@ -20389,7 +20389,7 @@ async fn test_on_type_formatting_not_triggered(cx: &mut TestAppContext) {
 async fn test_on_type_formatting_is_applied_after_autoindent(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             document_on_type_formatting_provider: Some(raijin_lsp::DocumentOnTypeFormattingOptions {
                 first_trigger_character: ".".to_string(),
@@ -20598,7 +20598,7 @@ async fn test_language_server_restart_due_to_settings_change(cx: &mut TestAppCon
 async fn test_completions_with_additional_edits(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -20690,7 +20690,7 @@ async fn test_completions_with_additional_edits(cx: &mut TestAppContext) {
 async fn test_completions_with_additional_edits_and_multiple_cursors(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_typescript(
+    let mut cx = EditorLspTestContext::new_typescript(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 resolve_provider: Some(true),
@@ -20784,7 +20784,7 @@ async fn test_completions_with_additional_edits_and_multiple_cursors(cx: &mut Te
 async fn test_completions_resolve_updates_labels_if_filter_text_matches(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -20919,7 +20919,7 @@ async fn test_completions_resolve_updates_labels_if_filter_text_matches(cx: &mut
 #[inazuma::test]
 async fn test_context_menus_hide_hover_popover(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
             code_action_provider: Some(raijin_lsp::CodeActionProviderCapability::Simple(true)),
@@ -21062,7 +21062,7 @@ async fn test_context_menus_hide_hover_popover(cx: &mut inazuma::TestAppContext)
 async fn test_completions_resolve_happens_once(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -21266,7 +21266,7 @@ async fn test_completions_default_resolve_data_handling(cx: &mut TestAppContext)
         },
     };
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 trigger_characters: Some(vec![".".to_string()]),
@@ -21390,7 +21390,7 @@ async fn test_completions_default_resolve_data_handling(cx: &mut TestAppContext)
 async fn test_completions_in_languages_with_extra_word_characters(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new(
+    let mut cx = EditorLspTestContext::new(
         Language::new(
             LanguageConfig {
                 matcher: LanguageMatcher {
@@ -21685,7 +21685,7 @@ async fn test_document_format_with_prettier_explicit_language(cx: &mut TestAppCo
 #[inazuma::test]
 async fn test_addition_reverts(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     let base_text = indoc! {r#"
         struct Row;
         struct Row1;
@@ -21827,7 +21827,7 @@ async fn test_addition_reverts(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_modification_reverts(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     let base_text = indoc! {r#"
         struct Row;
         struct Row1;
@@ -21936,7 +21936,7 @@ async fn test_modification_reverts(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_deleting_over_diff_hunk(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     let base_text = indoc! {r#"
         one
 
@@ -21969,7 +21969,7 @@ async fn test_deleting_over_diff_hunk(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_deletion_reverts(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
+    let mut cx = EditorLspTestContext::new_rust(raijin_lsp::ServerCapabilities::default(), cx).await;
     let base_text = indoc! {r#"struct Row;
 struct Row1;
 struct Row2;
@@ -22304,7 +22304,7 @@ async fn test_multibuffer_in_navigation_history(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let multi_buffer_editor = cx.new_window_entity(|window, cx| {
         Editor::new(
             EditorMode::full(),
@@ -22507,7 +22507,7 @@ async fn test_multibuffer_in_navigation_history(cx: &mut TestAppContext) {
 async fn test_toggle_selected_diff_hunks(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod;
@@ -22635,7 +22635,7 @@ async fn test_diff_base_change_with_expanded_diff_hunks(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod1;
@@ -22794,7 +22794,7 @@ async fn test_toggle_diff_expand_in_multi_buffer(cx: &mut TestAppContext) {
         })
         .unwrap();
 
-    let mut cx = EditorTestConinazuma_text::for_editor(editor, cx).await;
+    let mut cx = EditorTestContext::for_editor(editor, cx).await;
     cx.run_until_parked();
 
     cx.assert_editor_state(
@@ -22892,7 +22892,7 @@ async fn test_expand_diff_hunk_at_excerpt_boundary(cx: &mut TestAppContext) {
         })
         .unwrap();
 
-    let mut cx = EditorTestConinazuma_text::for_editor(editor, cx).await;
+    let mut cx = EditorTestContext::for_editor(editor, cx).await;
     cx.run_until_parked();
 
     cx.update_editor(|editor, window, cx| {
@@ -22925,7 +22925,7 @@ async fn test_edits_around_expanded_insertion_hunks(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod1;
@@ -23107,7 +23107,7 @@ async fn test_edits_around_expanded_insertion_hunks(
 async fn test_toggling_adjacent_diff_hunks(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_head_text(indoc! { "
         one
         two
@@ -23224,7 +23224,7 @@ async fn test_toggling_adjacent_diff_hunks_2(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         lineA
@@ -23284,7 +23284,7 @@ async fn test_edits_around_expanded_deletion_hunks(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod1;
@@ -23423,7 +23423,7 @@ async fn test_edits_around_expanded_deletion_hunks(
 async fn test_backspace_after_deletion_hunk(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let base_text = r#"
         one
@@ -23488,7 +23488,7 @@ async fn test_edit_after_expanded_modification_hunk(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         use some::mod1;
@@ -23588,7 +23588,7 @@ async fn test_stage_and_unstage_added_file_hunk(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_editor(|editor, _, cx| {
         editor.set_expand_all_diff_hunks(cx);
     });
@@ -23640,7 +23640,7 @@ async fn setup_indent_guides_editor(
 ) -> (BufferId, EditorTestContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let buffer_id = cx.update_editor(|editor, window, cx| {
         editor.set_text(text, window, cx);
@@ -24280,7 +24280,7 @@ async fn test_active_indent_guide_non_matching_indent(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_indent_guide_with_expanded_diff_hunks(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let text = indoc! {
         "
         impl A {
@@ -24373,7 +24373,7 @@ async fn test_indent_guide_with_expanded_diff_hunks(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_adjacent_diff_hunks(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         a
@@ -24531,7 +24531,7 @@ async fn test_toggle_deletion_hunk_at_start_of_file(
     cx: &mut TestAppContext,
 ) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         a
@@ -24603,7 +24603,7 @@ async fn test_select_smaller_syntax_node_after_diff_hunk_collapse(
 ) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(rust_lang()), cx));
 
     cx.set_state(
@@ -24657,7 +24657,7 @@ async fn test_expand_first_line_diff_hunk_keeps_deleted_lines_visible(
     cx: &mut TestAppContext,
 ) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("ˇnew\nsecond\nthird\n");
     cx.set_head_text("old\nsecond\nthird\n");
@@ -24771,7 +24771,7 @@ async fn test_display_diff_hunks(cx: &mut TestAppContext) {
 async fn test_partially_staged_hunk(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_head_text(indoc! { "
         one
         two
@@ -24915,7 +24915,7 @@ fn test_crease_insertion_and_rendering(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_input_text(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(
         &r#"ˇone
@@ -24960,7 +24960,7 @@ async fn test_input_text(cx: &mut TestAppContext) {
 async fn test_scroll_cursor_center_top_bottom(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         r#"let foo = 1;
 let foo = 2;
@@ -25030,7 +25030,7 @@ let foo = 15;"#,
 #[inazuma::test]
 async fn test_goto_definition_with_find_all_references_fallback(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             definition_provider: Some(raijin_lsp::OneOf::Left(true)),
             references_provider: Some(raijin_lsp::OneOf::Left(true)),
@@ -25161,7 +25161,7 @@ async fn test_goto_definition_no_fallback(cx: &mut TestAppContext) {
         editor_settings.go_to_definition_fallback = GoToDefinitionFallback::None;
         EditorSettings::override_global(editor_settings, cx);
     });
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             definition_provider: Some(raijin_lsp::OneOf::Left(true)),
             references_provider: Some(raijin_lsp::OneOf::Left(true)),
@@ -25219,7 +25219,7 @@ async fn test_goto_definition_no_fallback(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_goto_definition_close_ranges_open_singleton(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             definition_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..raijin_lsp::ServerCapabilities::default()
@@ -25293,7 +25293,7 @@ async fn test_goto_definition_close_ranges_open_singleton(cx: &mut TestAppContex
 #[inazuma::test]
 async fn test_goto_definition_far_ranges_open_multibuffer(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             definition_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..raijin_lsp::ServerCapabilities::default()
@@ -25376,7 +25376,7 @@ async fn test_goto_definition_far_ranges_open_multibuffer(cx: &mut TestAppContex
 #[inazuma::test]
 async fn test_find_all_references_editor_reuse(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             references_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..raijin_lsp::ServerCapabilities::default()
@@ -25557,7 +25557,7 @@ async fn test_find_enclosing_node_with_task(cx: &mut TestAppContext) {
 
     let project = Project::test(fs, ["/a".as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let buffer = cx.new(|cx| Buffer::local(text, cx).with_language(language, cx));
     let multi_buffer = cx.new(|cx| MultiBuffer::singleton(buffer.clone(), cx));
 
@@ -25634,7 +25634,7 @@ async fn test_folding_buffers(cx: &mut TestAppContext) {
     .await;
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree = project.update(cx, |project, cx| {
         let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
         assert_eq!(worktrees.len(), 1);
@@ -25804,7 +25804,7 @@ async fn test_folded_buffers_cleared_on_excerpts_removed(cx: &mut TestAppContext
 
     let project = Project::test(fs, [path!("/root").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree = project.update(cx, |project, cx| {
         let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
         assert_eq!(worktrees.len(), 1);
@@ -25879,7 +25879,7 @@ async fn test_folding_buffers_with_one_excerpt(cx: &mut TestAppContext) {
     .await;
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree = project.update(cx, |project, cx| {
         let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
         assert_eq!(worktrees.len(), 1);
@@ -26020,7 +26020,7 @@ async fn test_folding_buffer_when_multibuffer_has_only_one_excerpt(cx: &mut Test
     .await;
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree = project.update(cx, |project, cx| {
         let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
         assert_eq!(worktrees.len(), 1);
@@ -26118,7 +26118,7 @@ async fn test_multi_buffer_navigation_with_folded_buffers(cx: &mut TestAppContex
     });
     cx.simulate_resize(size(px(1000.), px(1000.)));
 
-    let mut cx = EditorTestConinazuma_text::for_editor_in(editor.clone(), cx).await;
+    let mut cx = EditorTestContext::for_editor_in(editor.clone(), cx).await;
     cx.assert_excerpts_with_selections(indoc! {"
         [EXCERPT]
         ˇ[FOLDED]
@@ -26418,7 +26418,7 @@ async fn assert_highlighted_edits(
         let buffer = MultiBuffer::build_simple(text, cx);
         Editor::new(EditorMode::full(), buffer, None, window, cx)
     });
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let (buffer, snapshot) = window
         .update(cx, |editor, _window, cx| {
@@ -26546,7 +26546,7 @@ async fn test_breakpoint_toggling(cx: &mut TestAppContext) {
     .await;
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let fs = FakeFs::new(cx.executor());
     fs.insert_tree(
@@ -26561,7 +26561,7 @@ async fn test_breakpoint_toggling(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree_id = workspace.update_in(cx, |workspace, _window, cx| {
         workspace.project().update(cx, |project, cx| {
             project.worktrees(cx).next().unwrap().read(cx).id()
@@ -26832,7 +26832,7 @@ async fn test_breakpoint_enabling_and_disabling(cx: &mut TestAppContext) {
     .await;
     let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let fs = FakeFs::new(cx.executor());
     fs.insert_tree(
@@ -26847,7 +26847,7 @@ async fn test_breakpoint_enabling_and_disabling(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree_id = workspace.update_in(cx, |workspace, _window, cx| {
         workspace.project().update(cx, |project, cx| {
             project.worktrees(cx).next().unwrap().read(cx).id()
@@ -26993,7 +26993,7 @@ async fn test_breakpoint_phantom_indicator_collision_on_toggle(cx: &mut TestAppC
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let worktree_id = workspace.update_in(cx, |workspace, _window, cx| {
         workspace.project().update(cx, |project, cx| {
             project.worktrees(cx).next().unwrap().read(cx).id()
@@ -27088,7 +27088,7 @@ async fn test_rename_with_duplicate_edits(cx: &mut TestAppContext) {
         })),
         ..Default::default()
     };
-    let mut cx = EditorLspTestConinazuma_text::new_rust(capabilities, cx).await;
+    let mut cx = EditorLspTestContext::new_rust(capabilities, cx).await;
 
     cx.set_state(indoc! {"
         struct Fˇoo {}
@@ -27100,7 +27100,7 @@ async fn test_rename_with_duplicate_edits(cx: &mut TestAppContext) {
         editor.highlight_background(
             HighlightKey::DocumentHighlightRead,
             &[highlight_range],
-            |_, theme| theme.colors().editor_document_highlight_read_background,
+            |_, theme| theme.colors().editor.document_highlight_read_background,
             cx,
         );
     });
@@ -27167,7 +27167,7 @@ async fn test_rename_without_prepare(cx: &mut TestAppContext) {
         rename_provider: Some(raijin_lsp::OneOf::Left(true)),
         ..Default::default()
     };
-    let mut cx = EditorLspTestConinazuma_text::new_rust(capabilities, cx).await;
+    let mut cx = EditorLspTestContext::new_rust(capabilities, cx).await;
 
     cx.set_state(indoc! {"
         struct Fˇoo {}
@@ -27179,7 +27179,7 @@ async fn test_rename_without_prepare(cx: &mut TestAppContext) {
         editor.highlight_background(
             HighlightKey::DocumentHighlightRead,
             &[highlight_range],
-            |_, theme| theme.colors().editor_document_highlight_read_background,
+            |_, theme| theme.colors().editor.document_highlight_read_background,
             cx,
         );
     });
@@ -27224,7 +27224,7 @@ async fn test_rename_without_prepare(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_tree_sitter_brackets_newline_insertion(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let language = Arc::new(
         Language::new(
@@ -27293,7 +27293,7 @@ async fn test_apply_code_lens_actions_with_commands(cx: &mut inazuma::TestAppCon
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let language_registry = project.read_with(cx, |project, _| project.languages().clone());
     language_registry.add(Arc::new(Language::new(
@@ -27925,7 +27925,7 @@ async fn test_hide_mouse_context_menu_on_modal_opened(cx: &mut TestAppContext) {
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
     let buffer = cx.update(|cx| MultiBuffer::build_simple("hello world!", cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
     let editor = cx.new_window_entity(|window, cx| {
         Editor::new(
             EditorMode::full(),
@@ -28024,7 +28024,7 @@ async fn test_html_linked_edits_on_completion(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let worktree_id = workspace.update_in(cx, |workspace, _window, cx| {
         workspace.project().update(cx, |project, cx| {
@@ -28107,7 +28107,7 @@ async fn test_html_linked_edits_on_completion(cx: &mut TestAppContext) {
 async fn test_linked_edits_on_typing_punctuation(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = Arc::new(Language::new(
         LanguageConfig {
             name: "TSX".into(),
@@ -28178,7 +28178,7 @@ async fn test_linked_edits_on_typing_punctuation(cx: &mut TestAppContext) {
 async fn test_linked_edits_on_typing_dot_without_language_override(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = Arc::new(Language::new(
         LanguageConfig {
             name: "HTML".into(),
@@ -28370,7 +28370,7 @@ async fn test_invisible_worktree_servers(cx: &mut TestAppContext) {
 async fn test_tab_in_leading_whitespace_auto_indents_for_python(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("python", tree_sitter_python::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -28484,7 +28484,7 @@ async fn test_tab_in_leading_whitespace_auto_indents_for_python(cx: &mut TestApp
 async fn test_outdent_after_input_for_python(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("python", tree_sitter_python::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -28727,7 +28727,7 @@ async fn test_indent_on_newline_for_python(cx: &mut TestAppContext) {
     update_test_language_settings(cx, &|settings| {
         settings.defaults.extend_comment_on_newline = Some(false);
     });
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("python", tree_sitter_python::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -28794,7 +28794,7 @@ async fn test_python_indent_in_markdown(cx: &mut TestAppContext) {
     language_registry.add(markdown_lang());
     language_registry.add(python_lang);
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| {
         buffer.set_language_registry(language_registry);
         buffer.set_language(Some(markdown_lang()), cx);
@@ -28831,7 +28831,7 @@ async fn test_python_indent_in_markdown(cx: &mut TestAppContext) {
 async fn test_tab_in_leading_whitespace_auto_indents_for_bash(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("bash", tree_sitter_bash::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -28928,7 +28928,7 @@ async fn test_tab_in_leading_whitespace_auto_indents_for_bash(cx: &mut TestAppCo
 async fn test_indent_after_input_for_bash(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("bash", tree_sitter_bash::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -28971,7 +28971,7 @@ async fn test_indent_after_input_for_bash(cx: &mut TestAppContext) {
 async fn test_outdent_after_input_for_bash(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("bash", tree_sitter_bash::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -29132,7 +29132,7 @@ async fn test_indent_on_newline_for_bash(cx: &mut TestAppContext) {
     update_test_language_settings(cx, &|settings| {
         settings.defaults.extend_comment_on_newline = Some(false);
     });
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let language = languages::language("bash", tree_sitter_bash::LANGUAGE.into());
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -29323,7 +29323,7 @@ pub fn check_displayed_completions(expected: Vec<&'static str>, cx: &mut EditorL
 #[inazuma::test]
 async fn test_mixed_completions_with_multi_word_snippet(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             completion_provider: Some(raijin_lsp::CompletionOptions {
                 ..Default::default()
@@ -29779,7 +29779,7 @@ async fn test_pulling_diagnostics(cx: &mut TestAppContext) {
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let language_registry = project.read_with(cx, |project, _| project.languages().clone());
     language_registry.add(rust_lang());
@@ -29919,7 +29919,7 @@ async fn test_add_selection_after_moving_with_multiple_cursors(cx: &mut TestAppC
     // Previously, adding a cursor after moving multiple cursors would reset
     // the cursor count instead of adding to the existing cursors.
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // Create a simple buffer with cursor at start
     cx.set_state(indoc! {"
@@ -29967,7 +29967,7 @@ async fn test_add_selection_after_moving_with_multiple_cursors(cx: &mut TestAppC
 async fn test_add_selection_skip_soft_wrap_option(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state(indoc!(
         r#"ˇThis is a very long line that will be wrapped when soft wrapping is enabled
@@ -30075,7 +30075,7 @@ async fn test_add_selection_skip_soft_wrap_option(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_insert_snippet(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_editor(|editor, _, cx| {
         editor.project().unwrap().update(cx, |project, cx| {
@@ -30477,7 +30477,7 @@ async fn test_select_next_prev_syntax_node(cx: &mut TestAppContext) {
 async fn test_next_prev_document_highlight(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.set_state(
         "let ˇvariable = 42;
 let another = variable + 1;
@@ -30503,7 +30503,7 @@ let result = variable * 2;",
         editor.highlight_background(
             HighlightKey::DocumentHighlightRead,
             &anchor_ranges,
-            |_, theme| theme.colors().editor_document_highlight_read_background,
+            |_, theme| theme.colors().editor.document_highlight_read_background,
             cx,
         );
     });
@@ -30585,7 +30585,7 @@ async fn test_paste_url_from_other_app_creates_markdown_link_over_selected_text(
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
     cx.set_state("Hello, «editorˇ».\nZed is «ˇgreat» (see this link: ˇ)");
 
@@ -30604,7 +30604,7 @@ async fn test_markdown_indents(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
@@ -30743,7 +30743,7 @@ async fn test_paste_url_from_zed_copy_creates_markdown_link_over_selected_text(
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
     cx.set_state(&format!(
         "Hello, editor.\nZed is great (see this link: )\n«{url}ˇ»"
@@ -30782,7 +30782,7 @@ async fn test_paste_url_from_other_app_replaces_existing_url_without_creating_ma
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
     cx.set_state("Please visit zed's homepage: «https://www.apple.comˇ»");
 
@@ -30810,7 +30810,7 @@ async fn test_paste_plain_text_from_other_app_replaces_selection_without_creatin
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
     cx.set_state("Hello, «editorˇ».\nZed is «ˇgreat»");
 
@@ -30838,7 +30838,7 @@ async fn test_paste_url_from_other_app_without_creating_markdown_link_in_non_mar
         None,
     ));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
     cx.set_state("// Hello, «editorˇ».\n// Zed is «ˇgreat» (see this link: ˇ)");
 
@@ -30896,7 +30896,7 @@ async fn test_paste_url_from_other_app_creates_markdown_link_selectively_in_mult
 
         editor
     });
-    let mut cx = EditorTestConinazuma_text::for_editor_in(editor.clone(), cx).await;
+    let mut cx = EditorTestContext::for_editor_in(editor.clone(), cx).await;
 
     cx.update_editor(|editor, window, cx| {
         cx.write_to_clipboard(ClipboardItem::new_string(url.to_string()));
@@ -30924,7 +30924,7 @@ async fn test_race_in_multibuffer_save(cx: &mut TestAppContext) {
 
     let project = Project::test(fs, [path!("/project").as_ref()], cx).await;
     let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let language = rust_lang();
     let language_registry = project.read_with(cx, |project, _| project.languages().clone());
@@ -31060,7 +31060,7 @@ fn test_duplicate_line_up_on_last_line_without_newline(cx: &mut TestAppContext) 
 async fn test_copy_line_without_trailing_newline(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("line1\nline2ˇ");
 
@@ -31087,7 +31087,7 @@ async fn test_copy_line_without_trailing_newline(cx: &mut TestAppContext) {
 async fn test_multi_selection_copy_with_newline_between_copied_lines(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("ˇline1\nˇline2\nˇline3\n");
 
@@ -31114,7 +31114,7 @@ async fn test_multi_selection_copy_with_newline_between_copied_lines(cx: &mut Te
 async fn test_multi_selection_cut_with_newline_between_copied_lines(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("ˇline1\nˇline2\nˇline3\n");
 
@@ -31141,7 +31141,7 @@ async fn test_multi_selection_cut_with_newline_between_copied_lines(cx: &mut Tes
 async fn test_end_of_editor_context(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     cx.set_state("line1\nline2ˇ");
     cx.update_editor(|e, window, cx| {
@@ -31194,7 +31194,7 @@ async fn test_end_of_editor_context(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_sticky_scroll(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let buffer = indoc! {"
             ˇfn foo() {
@@ -31273,7 +31273,7 @@ async fn test_sticky_scroll_with_expanded_deleted_diff_hunks(
     cx: &mut TestAppContext,
 ) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = indoc! {"
         fn foo() {
@@ -31500,7 +31500,7 @@ async fn test_scroll_by_clicking_sticky_header(cx: &mut TestAppContext) {
             });
         });
     });
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let line_height = cx.update_editor(|editor, window, cx| {
         editor
@@ -31693,7 +31693,7 @@ async fn test_next_prev_reference(cx: &mut TestAppContext) {
 
     init_test(cx, |_| {});
 
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             references_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..Default::default()
@@ -31789,7 +31789,7 @@ async fn test_multibuffer_selections_with_folding(cx: &mut TestAppContext) {
         Editor::new(EditorMode::full(), multi_buffer, None, window, cx)
     });
 
-    let mut cx = EditorTestConinazuma_text::for_editor_in(editor.clone(), cx).await;
+    let mut cx = EditorTestContext::for_editor_in(editor.clone(), cx).await;
     let buffer_ids = cx.multibuffer(|mb, _| mb.excerpt_buffer_ids());
 
     cx.assert_excerpts_with_selections(indoc! {"
@@ -31998,7 +31998,7 @@ async fn test_multibuffer_scroll_cursor_top_margin(cx: &mut TestAppContext) {
         Editor::new(EditorMode::full(), multi_buffer, None, window, cx)
     });
 
-    let mut cx = EditorTestConinazuma_text::for_editor_in(editor.clone(), cx).await;
+    let mut cx = EditorTestContext::for_editor_in(editor.clone(), cx).await;
 
     cx.assert_excerpts_with_selections(indoc! {"
         [EXCERPT]
@@ -32070,7 +32070,7 @@ async fn test_multibuffer_scroll_cursor_top_margin(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_find_references_single_case(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorLspTestConinazuma_text::new_rust(
+    let mut cx = EditorLspTestContext::new_rust(
         raijin_lsp::ServerCapabilities {
             references_provider: Some(raijin_lsp::OneOf::Left(true)),
             ..raijin_lsp::ServerCapabilities::default()
@@ -32136,7 +32136,7 @@ async fn test_newline_task_list_continuation(cx: &mut TestAppContext) {
     });
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
     // Case 1: Adding newline after (whitespace + prefix + any non-whitespace) adds marker
@@ -32271,7 +32271,7 @@ async fn test_newline_unordered_list_continuation(cx: &mut TestAppContext) {
     });
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
     // Case 1: Adding newline after (whitespace + marker + any non-whitespace) adds marker
@@ -32404,7 +32404,7 @@ async fn test_newline_ordered_list_continuation(cx: &mut TestAppContext) {
     });
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
     // Case 1: Adding newline after (whitespace + marker + any non-whitespace) increments number
@@ -32527,7 +32527,7 @@ async fn test_newline_should_not_autoindent_ordered_list(cx: &mut TestAppContext
     });
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
     // Case 1: Adding newline after (whitespace + marker + any non-whitespace) increments number
@@ -32554,7 +32554,7 @@ async fn test_tab_list_indent(cx: &mut TestAppContext) {
     });
 
     let markdown_language = languages::language("markdown", tree_sitter_md::LANGUAGE.into());
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(markdown_language), cx));
 
     // Case 1: Unordered list - cursor after prefix, adds indent before prefix
@@ -32844,7 +32844,7 @@ fn test_editor_rendering_when_positioned_above_viewport(cx: &mut TestAppContext)
     init_test(cx, |_| {});
 
     let window = cx.add_window(|_, _| inazuma::Empty);
-    let mut cx = VisualTestConinazuma_text::from_window(*window, cx);
+    let mut cx = VisualTestContext::from_window(*window, cx);
 
     let buffer = cx.update(|_, cx| MultiBuffer::build_simple("a\nb\nc\nd\ne\nf\ng\nh\ni\nj\n", cx));
     let editor = cx.new_window_entity(|window, cx| build_editor(buffer, window, cx));
@@ -32878,7 +32878,7 @@ async fn test_diff_review_indicator_created_on_gutter_hover(cx: &mut TestAppCont
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let editor = workspace
         .update_in(cx, |workspace, window, cx| {
@@ -32930,7 +32930,7 @@ async fn test_diff_review_button_hidden_when_ai_disabled(cx: &mut TestAppContext
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let editor = workspace
         .update_in(cx, |workspace, window, cx| {
@@ -32991,7 +32991,7 @@ async fn test_diff_review_button_shown_when_ai_enabled(cx: &mut TestAppContext) 
     let workspace = window
         .read_with(cx, |mw, _| mw.workspace().clone())
         .unwrap();
-    let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+    let cx = &mut VisualTestContext::from_window(*window, cx);
 
     let editor = workspace
         .update_in(cx, |workspace, window, cx| {
@@ -34802,7 +34802,7 @@ comment */ˇ»;"#},
 #[inazuma::test]
 async fn test_restore_and_next(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     let diff_base = r#"
         one
@@ -34865,7 +34865,7 @@ async fn test_restore_and_next(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_align_selections(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // 1) one cursor, no action
     let before = " abc\n  abc\nabc\n     ˇabc";
@@ -34942,7 +34942,7 @@ async fn test_align_selections(cx: &mut TestAppContext) {
 #[inazuma::test]
 async fn test_align_selections_multicolumn(cx: &mut TestAppContext) {
     init_test(cx, |_| {});
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
 
     // 1) Multicolumn, one non affected editor row
     let before = indoc!(

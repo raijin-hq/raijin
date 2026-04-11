@@ -47,7 +47,7 @@ use raijin_language_model::{
     CompletionIntent, ConfiguredModel, LanguageModelRegistry, LanguageModelRequest,
     LanguageModelRequestMessage, Role,
 };
-use menu;
+use inazuma_menu;
 use raijin_multi_buffer::ExcerptInfo;
 use raijin_notifications::status_toast::{StatusToast, ToastIcon};
 use raijin_panel::{PanelHeader, panel_button, panel_filled_button, panel_icon_button};
@@ -189,7 +189,7 @@ fn git_panel_context_menu(
                 StashAll.boxed_clone(),
             )
             .action_disabled_when(!state.has_stash_items, "Stash Pop", StashPop.boxed_clone())
-            .action("View Stash", zed_actions::git::ViewStash.boxed_clone())
+            .action("View Stash", raijin_actions::git::ViewStash.boxed_clone())
             .separator()
             .action("Open Diff", project_diff::Diff.boxed_clone())
             .separator()
@@ -245,7 +245,7 @@ pub fn register(workspace: &mut Workspace) {
     workspace.register_action(|workspace, _: &ExpandCommitEditor, window, cx| {
         CommitModal::toggle(workspace, None, window, cx)
     });
-    workspace.register_action(|workspace, _: &git::Init, window, cx| {
+    workspace.register_action(|workspace, _: &raijin_git::Init, window, cx| {
         if let Some(panel) = workspace.panel::<GitPanel>(cx) {
             panel.update(cx, |panel, cx| panel.git_init(window, cx));
         }
@@ -1025,12 +1025,12 @@ impl GitPanel {
 
         if let GitListEntry::Directory(dir_entry) = entry {
             if dir_entry.expanded {
-                self.select_next(&menu::SelectNext, window, cx);
+                self.select_next(&inazuma_menu::SelectNext, window, cx);
             } else {
                 self.toggle_directory(&dir_entry.key, window, cx);
             }
         } else {
-            self.select_next(&menu::SelectNext, window, cx);
+            self.select_next(&inazuma_menu::SelectNext, window, cx);
         }
     }
 
@@ -1048,16 +1048,16 @@ impl GitPanel {
             if dir_entry.expanded {
                 self.toggle_directory(&dir_entry.key, window, cx);
             } else {
-                self.select_previous(&menu::SelectPrevious, window, cx);
+                self.select_previous(&inazuma_menu::SelectPrevious, window, cx);
             }
         } else {
-            self.select_previous(&menu::SelectPrevious, window, cx);
+            self.select_previous(&inazuma_menu::SelectPrevious, window, cx);
         }
     }
 
     fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1083,7 +1083,7 @@ impl GitPanel {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1147,7 +1147,7 @@ impl GitPanel {
         self.scroll_to_selected_entry(cx);
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
         let item_count = self.entries.len();
         if item_count == 0 {
             return;
@@ -1195,7 +1195,7 @@ impl GitPanel {
         self.scroll_to_selected_entry(cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         if self.entries.last().is_some() {
             self.selected_entry = Some(self.entries.len() - 1);
             self.scroll_to_selected_entry(cx);
@@ -1220,22 +1220,22 @@ impl GitPanel {
     }
 
     fn first_entry(&mut self, _: &FirstEntry, window: &mut Window, cx: &mut Context<Self>) {
-        self.select_first(&menu::SelectFirst, window, cx);
+        self.select_first(&inazuma_menu::SelectFirst, window, cx);
         self.move_diff_to_entry(window, cx);
     }
 
     fn last_entry(&mut self, _: &LastEntry, window: &mut Window, cx: &mut Context<Self>) {
-        self.select_last(&menu::SelectLast, window, cx);
+        self.select_last(&inazuma_menu::SelectLast, window, cx);
         self.move_diff_to_entry(window, cx);
     }
 
     fn next_entry(&mut self, _: &NextEntry, window: &mut Window, cx: &mut Context<Self>) {
-        self.select_next(&menu::SelectNext, window, cx);
+        self.select_next(&inazuma_menu::SelectNext, window, cx);
         self.move_diff_to_entry(window, cx);
     }
 
     fn previous_entry(&mut self, _: &PreviousEntry, window: &mut Window, cx: &mut Context<Self>) {
-        self.select_previous(&menu::SelectPrevious, window, cx);
+        self.select_previous(&inazuma_menu::SelectPrevious, window, cx);
         self.move_diff_to_entry(window, cx);
     }
 
@@ -1252,7 +1252,7 @@ impl GitPanel {
             .as_ref()
             .is_some_and(|active_repository| active_repository.read(cx).status_summary().count > 0);
         if have_entries && self.selected_entry.is_none() {
-            self.select_first(&menu::SelectFirst, window, cx);
+            self.select_first(&inazuma_menu::SelectFirst, window, cx);
         }
     }
 
@@ -1270,7 +1270,7 @@ impl GitPanel {
         self.selected_entry.and_then(|i| self.entries.get(i))
     }
 
-    fn open_diff(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn open_diff(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         maybe!({
             let entry = self.entries.get(self.selected_entry?)?.status_entry()?;
             let workspace = self.workspace.upgrade()?;
@@ -1300,7 +1300,7 @@ impl GitPanel {
         });
     }
 
-    fn file_history(&mut self, _: &git::FileHistory, window: &mut Window, cx: &mut Context<Self>) {
+    fn file_history(&mut self, _: &raijin_git::FileHistory, window: &mut Window, cx: &mut Context<Self>) {
         maybe!({
             let entry = self.entries.get(self.selected_entry?)?.status_entry()?;
             let active_repo = self.active_repository.as_ref()?;
@@ -1322,7 +1322,7 @@ impl GitPanel {
 
     fn open_file(
         &mut self,
-        _: &menu::SecondaryConfirm,
+        _: &inazuma_menu::SecondaryConfirm,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1363,7 +1363,7 @@ impl GitPanel {
                             let snapshot = editor.snapshot(window, cx);
                             editor.go_to_hunk_before_or_after_position(
                                 &snapshot,
-                                language::Point::new(0, 0),
+                                raijin_language::Point::new(0, 0),
                                 Direction::Next,
                                 true,
                                 window,
@@ -1384,7 +1384,7 @@ impl GitPanel {
 
     fn revert_selected(
         &mut self,
-        action: &git::RestoreFile,
+        action: &raijin_git::RestoreFile,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1433,7 +1433,7 @@ impl GitPanel {
 
     fn add_to_gitignore(
         &mut self,
-        _: &git::AddToGitignore,
+        _: &raijin_git::AddToGitignore,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1808,7 +1808,7 @@ impl GitPanel {
         repo: &Repository,
     ) -> StageStatus {
         let GitPanelViewMode::Tree(tree_state) = &self.view_mode else {
-            util::debug_panic!("We should never render a directory entry while in flat view mode");
+            inazuma_util::debug_panic!("We should never render a directory entry while in flat view mode");
             return StageStatus::Unstaged;
         };
 
@@ -2086,7 +2086,7 @@ impl GitPanel {
 
     fn toggle_staged_for_selected(
         &mut self,
-        _: &git::ToggleStaged,
+        _: &raijin_git::ToggleStaged,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2095,14 +2095,14 @@ impl GitPanel {
         }
     }
 
-    fn stage_range(&mut self, _: &git::StageRange, _window: &mut Window, cx: &mut Context<Self>) {
+    fn stage_range(&mut self, _: &raijin_git::StageRange, _window: &mut Window, cx: &mut Context<Self>) {
         let Some(index) = self.selected_entry else {
             return;
         };
         self.stage_bulk(index, cx);
     }
 
-    fn stage_selected(&mut self, _: &git::StageFile, _window: &mut Window, cx: &mut Context<Self>) {
+    fn stage_selected(&mut self, _: &raijin_git::StageFile, _window: &mut Window, cx: &mut Context<Self>) {
         let Some(selected_entry) = self.get_selected_entry() else {
             return;
         };
@@ -2116,7 +2116,7 @@ impl GitPanel {
 
     fn unstage_selected(
         &mut self,
-        _: &git::UnstageFile,
+        _: &raijin_git::UnstageFile,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2131,9 +2131,9 @@ impl GitPanel {
         }
     }
 
-    fn on_commit(&mut self, _: &git::Commit, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_commit(&mut self, _: &raijin_git::Commit, window: &mut Window, cx: &mut Context<Self>) {
         if self.commit(&self.commit_editor.focus_handle(cx), window, cx) {
-            telemetry::event!("Git Committed", source = "Git Panel");
+            raijin_telemetry::event!("Git Committed", source = "Git Panel");
         }
     }
 
@@ -2166,9 +2166,9 @@ impl GitPanel {
         }
     }
 
-    fn on_amend(&mut self, _: &git::Amend, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_amend(&mut self, _: &raijin_git::Amend, window: &mut Window, cx: &mut Context<Self>) {
         if self.amend(&self.commit_editor.focus_handle(cx), window, cx) {
-            telemetry::event!("Git Amended", source = "Git Panel");
+            raijin_telemetry::event!("Git Amended", source = "Git Panel");
         }
     }
 
@@ -2390,7 +2390,7 @@ impl GitPanel {
         let Some(repo) = self.active_repository.clone() else {
             return;
         };
-        telemetry::event!("Git Uncommitted");
+        raijin_telemetry::event!("Git Uncommitted");
 
         let confirmation = self.check_for_pushed_commits(window, cx);
         let prior_head = self.load_commit_details("HEAD".to_string(), cx);
@@ -2511,7 +2511,7 @@ impl GitPanel {
 
     fn generate_commit_message_action(
         &mut self,
-        _: &git::GenerateCommitMessage,
+        _: &raijin_git::GenerateCommitMessage,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2684,7 +2684,7 @@ impl GitPanel {
             return;
         };
 
-        telemetry::event!("Git Commit Message Generated");
+        raijin_telemetry::event!("Git Commit Message Generated");
 
         let diff = repo.update(cx, |repo, cx| {
             if self.has_staged_changes() {
@@ -2867,7 +2867,7 @@ impl GitPanel {
         let Some(repo) = self.active_repository.clone() else {
             return;
         };
-        telemetry::event!("Git Fetched");
+        raijin_telemetry::event!("Git Fetched");
         let askpass = self.askpass_delegate("git fetch", window, cx);
         let this = cx.weak_entity();
 
@@ -2916,7 +2916,7 @@ impl GitPanel {
             workspace,
             window,
             cx,
-            Arc::new(|_workspace: &mut workspace::Workspace, _window, _cx| {}),
+            Arc::new(|_workspace: &mut raijin_workspace::Workspace, _window, _cx| {}),
         );
     }
 
@@ -2948,7 +2948,7 @@ impl GitPanel {
                 .iter()
                 .map(|worktree| worktree.read(cx).abs_path())
                 .map(|worktree_abs_path| {
-                    if let Ok(path) = worktree_abs_path.strip_prefix(util::paths::home_dir()) {
+                    if let Ok(path) = worktree_abs_path.strip_prefix(inazuma_util::paths::home_dir()) {
                         Path::new("~")
                             .join(path)
                             .to_string_lossy()
@@ -3012,7 +3012,7 @@ impl GitPanel {
         let Some(branch) = repo.read(cx).branch.as_ref() else {
             return;
         };
-        telemetry::event!("Git Pulled");
+        raijin_telemetry::event!("Git Pulled");
         let branch = branch.clone();
         let remote = self.get_remote(false, false, window, cx);
         cx.spawn_in(window, async move |this, cx| {
@@ -3075,7 +3075,7 @@ impl GitPanel {
         let Some(branch) = repo.read(cx).branch.as_ref() else {
             return;
         };
-        telemetry::event!("Git Pushed");
+        raijin_telemetry::event!("Git Pushed");
         let branch = branch.clone();
 
         let options = if force_push {
@@ -3184,7 +3184,7 @@ impl GitPanel {
 
             let provider_registry = GitHostingProviderRegistry::global(cx);
             let Some((provider, parsed_remote)) =
-                git::parse_git_remote_url(provider_registry, &remote_url)
+                raijin_git::parse_git_remote_url(provider_registry, &remote_url)
             else {
                 return Err(anyhow::anyhow!("Unsupported remote URL: {}", remote_url));
             };
@@ -3297,7 +3297,7 @@ impl GitPanel {
         let project = self.project.read(cx);
 
         let Some(room) =
-            call::ActiveCall::try_global(cx).and_then(|call| call.read(cx).room().cloned())
+            raijin_call::ActiveCall::try_global(cx).and_then(|call| call.read(cx).room().cloned())
         else {
             return Vec::default();
         };
@@ -3333,7 +3333,7 @@ impl GitPanel {
         new_co_authors
     }
 
-    fn local_committer(&self, room: &call::Room, cx: &App) -> Option<(String, String)> {
+    fn local_committer(&self, room: &raijin_call::Room, cx: &App) -> Option<(String, String)> {
         let user = room.local_participant_user(cx)?;
         let committer = self.local_committer.as_ref()?;
         let email = committer.email.clone()?;
@@ -3393,7 +3393,7 @@ impl GitPanel {
             *expanded = !*expanded;
             self.update_visible_entries(window, cx);
         } else {
-            util::debug_panic!("Attempted to toggle directory in flat Git Panel state");
+            inazuma_util::debug_panic!("Attempted to toggle directory in flat Git Panel state");
         }
     }
 
@@ -3987,7 +3987,7 @@ impl GitPanel {
         &self,
         cx: &Context<Self>,
     ) -> Option<AnyElement> {
-        if !agent_settings::AgentSettings::get_global(cx).enabled(cx) {
+        if !raijin_agent_settings::AgentSettings::get_global(cx).enabled(cx) {
             return None;
         }
 
@@ -4020,7 +4020,7 @@ impl GitPanel {
 
         Some(
             IconButton::new("generate-commit-message", IconName::AiEdit)
-                .shape(ui::IconButtonShape::Square)
+                .shape(raijin_ui::IconButtonShape::Square)
                 .icon_color(if has_commit_model_configuration_error {
                     Color::Disabled
                 } else {
@@ -4034,7 +4034,7 @@ impl GitPanel {
                     } else {
                         Tooltip::for_action_in(
                             "Generate Commit Message",
-                            &git::GenerateCommitMessage,
+                            &raijin_git::GenerateCommitMessage,
                             &editor_focus_handle,
                             cx,
                         )
@@ -4062,7 +4062,7 @@ impl GitPanel {
         } else {
             Some(
                 IconButton::new("co-authors", icon)
-                    .shape(ui::IconButtonShape::Square)
+                    .shape(raijin_ui::IconButtonShape::Square)
                     .icon_color(Color::Disabled)
                     .selected_icon_color(Color::Selected)
                     .toggle_state(self.add_coauthors)
@@ -4099,8 +4099,8 @@ impl GitPanel {
     ) -> impl IntoElement {
         PopoverMenu::new(id.into())
             .trigger(
-                ui::ButtonLike::new_rounded_right("commit-split-button-right")
-                    .layer(ui::ElevationIndex::ModalSurface)
+                raijin_ui::ButtonLike::new_rounded_right("commit-split-button-right")
+                    .layer(raijin_ui::ElevationIndex::ModalSurface)
                     .size(ButtonSize::None)
                     .child(
                         h_flex()
@@ -4189,7 +4189,7 @@ impl GitPanel {
 
     fn expand_commit_editor(
         &mut self,
-        _: &git::ExpandCommitEditor,
+        _: &raijin_git::ExpandCommitEditor,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -4373,10 +4373,10 @@ impl GitPanel {
                     .child(
                         div()
                             .pr_2p5()
-                            .on_action(|&zed_actions::editor::MoveUp, _, cx| {
+                            .on_action(|&raijin_actions::editor::MoveUp, _, cx| {
                                 cx.stop_propagation();
                             })
-                            .on_action(|&zed_actions::editor::MoveDown, _, cx| {
+                            .on_action(|&raijin_actions::editor::MoveDown, _, cx| {
                                 cx.stop_propagation();
                             })
                             .child(EditorElement::new(&self.commit_editor, panel_editor_style)),
@@ -4391,11 +4391,11 @@ impl GitPanel {
                             .child(
                                 panel_icon_button("expand-commit-editor", IconName::Maximize)
                                     .icon_size(IconSize::Small)
-                                    .size(ui::ButtonSize::Default)
+                                    .size(raijin_ui::ButtonSize::Default)
                                     .tooltip(move |_window, cx| {
                                         Tooltip::for_action_in(
                                             "Open Commit Modal",
-                                            &git::ExpandCommitEditor,
+                                            &raijin_git::ExpandCommitEditor,
                                             &expand_tooltip_focus_handle,
                                             cx,
                                         )
@@ -4403,7 +4403,7 @@ impl GitPanel {
                                     .on_click(cx.listener({
                                         move |_, _, window, cx| {
                                             window.dispatch_action(
-                                                git::ExpandCommitEditor.boxed_clone(),
+                                                raijin_git::ExpandCommitEditor.boxed_clone(),
                                                 cx,
                                             )
                                         }
@@ -4450,7 +4450,7 @@ impl GitPanel {
                 .on_click({
                     let git_panel = cx.weak_entity();
                     move |_, window, cx| {
-                        telemetry::event!("Git Committed", source = "Git Panel");
+                        raijin_telemetry::event!("Git Committed", source = "Git Panel");
                         git_panel
                             .update(cx, |git_panel, cx| {
                                 git_panel.commit_changes(
@@ -4469,7 +4469,7 @@ impl GitPanel {
                         if can_commit {
                             Tooltip::with_meta_in(
                                 tooltip,
-                                Some(if amend { &git::Amend } else { &git::Commit }),
+                                Some(if amend { &raijin_git::Amend } else { &raijin_git::Commit }),
                                 format!(
                                     "git commit{}{}",
                                     if amend { " --amend" } else { "" },
@@ -4590,7 +4590,7 @@ impl GitPanel {
                                     .tooltip(move |_window, cx| {
                                         Tooltip::with_meta(
                                             "Uncommit",
-                                            Some(&git::Uncommit),
+                                            Some(&raijin_git::Uncommit),
                                             if has_unstaged {
                                                 "git reset HEAD^ --soft"
                                             } else {
@@ -4647,12 +4647,12 @@ impl GitPanel {
                     panel_filled_button("Initialize Repository")
                         .tooltip(Tooltip::for_action_title_in(
                             "git init",
-                            &git::Init,
+                            &raijin_git::Init,
                             &self.focus_handle,
                         ))
                         .on_click(move |_, _, cx| {
                             cx.defer(move |cx| {
-                                cx.dispatch_action(&git::Init);
+                                cx.dispatch_action(&raijin_git::Init);
                             })
                         }),
                 )
@@ -4836,7 +4836,7 @@ impl GitPanel {
                         .when(is_tree_view, |list| {
                             let indent_size = px(TREE_INDENT);
                             list.with_decoration(
-                                ui::indent_guides(indent_size, IndentGuideColors::panel(cx))
+                                raijin_ui::indent_guides(indent_size, IndentGuideColors::panel(cx))
                                     .with_compute_indents_fn(
                                         cx.entity(),
                                         |this, range, _window, _cx| {
@@ -4889,7 +4889,7 @@ impl GitPanel {
                             .tracked_scroll_handle(&self.scroll_handle)
                             .with_track_along(
                                 ScrollAxes::Horizontal,
-                                cx.theme().colors().panel_background,
+                                cx.theme().colors().panel.background,
                             ),
                         window,
                         cx,
@@ -4971,17 +4971,17 @@ impl GitPanel {
             context_menu
                 .context(self.focus_handle.clone())
                 .action(stage_title, ToggleStaged.boxed_clone())
-                .action(restore_title, git::RestoreFile::default().boxed_clone())
+                .action(restore_title, raijin_git::RestoreFile::default().boxed_clone())
                 .action_disabled_when(
                     !is_created,
                     "Add to .gitignore",
-                    git::AddToGitignore.boxed_clone(),
+                    raijin_git::AddToGitignore.boxed_clone(),
                 )
                 .separator()
-                .action("Open Diff", menu::Confirm.boxed_clone())
-                .action("Open File", menu::SecondaryConfirm.boxed_clone())
+                .action("Open Diff", inazuma_menu::Confirm.boxed_clone())
+                .action("Open File", inazuma_menu::SecondaryConfirm.boxed_clone())
                 .separator()
-                .action_disabled_when(is_created, "View File History", Box::new(git::FileHistory))
+                .action_disabled_when(is_created, "View File History", Box::new(raijin_git::FileHistory))
         });
         self.selected_entry = Some(ix);
         self.set_context_menu(context_menu, position, window, cx);
@@ -5110,7 +5110,7 @@ impl GitPanel {
         let marked_bg_alpha = 0.12;
         let state_opacity_step = 0.04;
 
-        let info_color = cx.theme().status().info;
+        let info_color = cx.theme().status().info.color;
 
         let base_bg = match (selected, marked) {
             (true, true) => info_color.alpha(selected_bg_alpha + marked_bg_alpha),
@@ -5185,7 +5185,7 @@ impl GitPanel {
             .border_1()
             .border_r_2()
             .when(selected && self.focus_handle.is_focused(window), |el| {
-                el.border_color(cx.theme().colors().panel_focused_border)
+                el.border_color(cx.theme().colors().panel.focused_border)
             })
             .bg(base_bg)
             .hover(|s| s.bg(hover_bg))
@@ -5194,7 +5194,7 @@ impl GitPanel {
             .when(GitPanelSettings::get_global(cx).diff_stats, |el| {
                 el.when_some(entry.diff_stat, move |this, stat| {
                     let id = format!("diff-stat-{}", id_for_diff_stat);
-                    this.child(ui::DiffStat::new(
+                    this.child(raijin_ui::DiffStat::new(
                         id,
                         stat.added as usize,
                         stat.deleted as usize,
@@ -5303,7 +5303,7 @@ impl GitPanel {
         let selected_bg_alpha = 0.08;
         let state_opacity_step = 0.04;
 
-        let info_color = cx.theme().status().info;
+        let info_color = cx.theme().status().info.color;
         let colors = cx.theme().colors();
 
         let (base_bg, hover_bg, active_bg) = if selected {
@@ -5343,7 +5343,7 @@ impl GitPanel {
         let stage_status = if let Some(repo) = &self.active_repository {
             self.stage_status_for_directory(entry, repo.read(cx))
         } else {
-            util::debug_panic!(
+            inazuma_util::debug_panic!(
                 "Won't have entries to render without an active repository in Git Panel"
             );
             StageStatus::PartiallyStaged
@@ -5386,7 +5386,7 @@ impl GitPanel {
             .border_1()
             .border_r_2()
             .when(selected && self.focus_handle.is_focused(window), |el| {
-                el.border_color(cx.theme().colors().panel_focused_border)
+                el.border_color(cx.theme().colors().panel.focused_border)
             })
             .bg(base_bg)
             .hover(|s| s.bg(hover_bg))
@@ -5634,7 +5634,7 @@ impl Render for GitPanel {
         let project = self.project.read(cx);
         let has_entries = !self.entries.is_empty();
         let room = self.workspace.upgrade().and_then(|_workspace| {
-            call::ActiveCall::try_global(cx).and_then(|call| call.read(cx).room().cloned())
+            raijin_call::ActiveCall::try_global(cx).and_then(|call| call.read(cx).room().cloned())
         });
 
         let has_write_access = self.has_write_access(cx);
@@ -5693,7 +5693,7 @@ impl Render for GitPanel {
             .on_action(cx.listener(Self::toggle_tree_view))
             .size_full()
             .overflow_hidden()
-            .bg(cx.theme().colors().panel_background)
+            .bg(cx.theme().colors().panel.background)
             .child(
                 v_flex()
                     .size_full()
@@ -5746,7 +5746,7 @@ pub(crate) struct GitPanelAddon {
     pub(crate) workspace: WeakEntity<Workspace>,
 }
 
-impl editor::Addon for GitPanelAddon {
+impl raijin_editor::Addon for GitPanelAddon {
     fn to_any(&self) -> &dyn std::any::Any {
         self
     }
@@ -5784,7 +5784,7 @@ impl Panel for GitPanel {
     }
 
     fn set_position(&mut self, position: DockPosition, _: &mut Window, cx: &mut Context<Self>) {
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             settings.git_panel.get_or_insert_default().dock = Some(position.into())
         });
     }
@@ -5793,8 +5793,8 @@ impl Panel for GitPanel {
         GitPanelSettings::get_global(cx).default_width
     }
 
-    fn icon(&self, _: &Window, cx: &App) -> Option<ui::IconName> {
-        Some(ui::IconName::GitBranchAlt).filter(|_| GitPanelSettings::get_global(cx).button)
+    fn icon(&self, _: &Window, cx: &App) -> Option<raijin_ui::IconName> {
+        Some(raijin_ui::IconName::GitBranchAlt).filter(|_| GitPanelSettings::get_global(cx).button)
     }
 
     fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
@@ -5829,7 +5829,7 @@ pub fn panel_editor_container(_window: &mut Window, cx: &mut App) -> Div {
         .size_full()
         .gap(px(8.))
         .p_2()
-        .bg(cx.theme().colors().editor_background)
+        .bg(cx.theme().colors().editor.background)
 }
 
 pub(crate) fn panel_editor_style(monospace: bool, window: &Window, cx: &App) -> EditorStyle {
@@ -5856,7 +5856,7 @@ pub(crate) fn panel_editor_style(monospace: bool, window: &Window, cx: &App) -> 
     };
 
     EditorStyle {
-        background: cx.theme().colors().editor_background,
+        background: cx.theme().colors().editor.background,
         local_player: cx.theme().players().local(),
         text: TextStyle {
             color: cx.theme().colors().text,
@@ -6039,13 +6039,13 @@ impl RenderOnce for PanelRepoFooter {
         let truncated_repo_name = if repo_actual_len <= repo_display_len {
             active_repo_name.to_string()
         } else {
-            util::truncate_and_trailoff(active_repo_name.trim_ascii(), repo_display_len)
+            inazuma_util::truncate_and_trailoff(active_repo_name.trim_ascii(), repo_display_len)
         };
 
         let truncated_branch_name = if branch_actual_len <= branch_display_len {
             branch_name
         } else {
-            util::truncate_and_trailoff(branch_name.trim_ascii(), branch_display_len)
+            inazuma_util::truncate_and_trailoff(branch_name.trim_ascii(), branch_display_len)
         };
 
         let repo_selector_trigger = Button::new("repo-selector", truncated_repo_name)
@@ -6084,7 +6084,7 @@ impl RenderOnce for PanelRepoFooter {
             .label_size(LabelSize::Small)
             .truncate(true)
             .on_click(|_, window, cx| {
-                window.dispatch_action(zed_actions::git::Switch.boxed_clone(), cx);
+                window.dispatch_action(raijin_actions::git::Switch.boxed_clone(), cx);
             });
 
         let branch_selector = PopoverMenu::new("popover-button")
@@ -6095,7 +6095,7 @@ impl RenderOnce for PanelRepoFooter {
             })
             .trigger_with_tooltip(
                 branch_selector_button,
-                Tooltip::for_action_title("Switch Branch", &zed_actions::git::Switch),
+                Tooltip::for_action_title("Switch Branch", &raijin_actions::git::Switch),
             )
             .anchor(Corner::BottomLeft)
             .offset(inazuma::Point {
@@ -6405,7 +6405,7 @@ fn open_output(
     let operation = operation.into();
     let buffer = cx.new(|cx| Buffer::local(output, cx));
     buffer.update(cx, |buffer, cx| {
-        buffer.set_capability(language::Capability::ReadOnly, cx);
+        buffer.set_capability(raijin_language::Capability::ReadOnly, cx);
     });
     let editor = cx.new(|cx| {
         let mut editor = Editor::for_buffer(buffer, None, window, cx);
@@ -6428,7 +6428,7 @@ pub(crate) fn show_error_toast(
     let action = action.into();
     let message = format_git_error_toast_message(&e);
     if message
-        .matches(git::repository::REMOTE_CANCELLED_BY_USER)
+        .matches(raijin_git::repository::REMOTE_CANCELLED_BY_USER)
         .next()
         .is_some()
     { // Hide the cancelled by user message
@@ -6492,7 +6492,7 @@ mod tests {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
             theme_settings::init(LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_editor::init(cx);
             crate::init(cx);
         });
     }
@@ -6765,7 +6765,7 @@ mod tests {
 
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(7);
-            panel.stage_range(&git::StageRange, window, cx);
+            panel.stage_range(&raijin_git::StageRange, window, cx);
         });
 
         cx.read(|cx| {
@@ -6814,7 +6814,7 @@ mod tests {
 
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(9);
-            panel.stage_range(&git::StageRange, window, cx);
+            panel.stage_range(&raijin_git::StageRange, window, cx);
         });
 
         cx.read(|cx| {
@@ -6984,7 +6984,7 @@ mod tests {
 
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(7);
-            panel.stage_range(&git::StageRange, window, cx);
+            panel.stage_range(&raijin_git::StageRange, window, cx);
         });
 
         cx.read(|cx| {
@@ -7043,7 +7043,7 @@ mod tests {
 
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(9);
-            panel.stage_range(&git::StageRange, window, cx);
+            panel.stage_range(&raijin_git::StageRange, window, cx);
         });
 
         cx.read(|cx| {
@@ -7308,7 +7308,7 @@ mod tests {
         // the Project Diff's active path.
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(1);
-            panel.open_diff(&menu::Confirm, window, cx);
+            panel.open_diff(&inazuma_menu::Confirm, window, cx);
         });
         cx.run_until_parked();
 
@@ -7574,7 +7574,7 @@ mod tests {
 
         panel.update_in(cx, |panel, window, cx| {
             panel.selected_entry = Some(foo_idx);
-            panel.select_next(&menu::SelectNext, window, cx);
+            panel.select_next(&inazuma_menu::SelectNext, window, cx);
         });
 
         panel.read_with(cx, |panel, _| {

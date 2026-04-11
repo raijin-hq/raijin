@@ -1,5 +1,4 @@
 use std::{
-    num::NonZero,
     sync::{
         Arc, Mutex,
         atomic::{AtomicBool, Ordering},
@@ -8,10 +7,10 @@ use std::{
 };
 
 use crossbeam::queue::ArrayQueue;
-use denoise::{Denoiser, DenoiserError};
+use raijin_denoise::{Denoiser, DenoiserError};
 use log::warn;
 use rodio::{
-    ChannelCount, Sample, SampleRate, Source, conversions::SampleRateConverter, nz,
+    Source,
     source::UniformSourceIterator,
 };
 
@@ -24,13 +23,13 @@ pub struct ReplayDurationTooShort;
 // These all require constant sources (so the span is infinitely long)
 // this is not guaranteed by rodio however we know it to be true in all our
 // applications. Rodio desperately needs a constant source concept.
-pub trait RodioExt: Source + Sized {
+pub trait RodioExt: Source<Item = f32> + Sized {
     fn process_buffer<const N: usize, F>(self, callback: F) -> ProcessBuffer<N, Self, F>
     where
-        F: FnMut(&mut [Sample; N]);
+        F: FnMut(&mut [f32; N]);
     fn inspect_buffer<const N: usize, F>(self, callback: F) -> InspectBuffer<N, Self, F>
     where
-        F: FnMut(&[Sample; N]);
+        F: FnMut(&[f32; N]);
     fn replayable(
         self,
         duration: Duration,
@@ -39,17 +38,17 @@ pub trait RodioExt: Source + Sized {
     fn denoise(self) -> Result<Denoiser<Self>, DenoiserError>;
     fn constant_params(
         self,
-        channel_count: ChannelCount,
-        sample_rate: SampleRate,
-    ) -> UniformSourceIterator<Self>;
-    fn constant_samplerate(self, sample_rate: SampleRate) -> ConstantSampleRate<Self>;
+        channel_count: u16,
+        sample_rate: u32,
+    ) -> UniformSourceIterator<Self, f32>;
+    fn constant_samplerate(self, sample_rate: u32) -> ConstantSampleRate<Self>;
     fn possibly_disconnected_channels_to_mono(self) -> ToMono<Self>;
 }
 
-impl<S: Source> RodioExt for S {
+impl<S: Source<Item = f32>> RodioExt for S {
     fn process_buffer<const N: usize, F>(self, callback: F) -> ProcessBuffer<N, Self, F>
     where
-        F: FnMut(&mut [Sample; N]),
+        F: FnMut(&mut [f32; N]),
     {
         ProcessBuffer {
             inner: self,
@@ -60,7 +59,7 @@ impl<S: Source> RodioExt for S {
     }
     fn inspect_buffer<const N: usize, F>(self, callback: F) -> InspectBuffer<N, Self, F>
     where
-        F: FnMut(&[Sample; N]),
+        F: FnMut(&[f32; N]),
     {
         InspectBuffer {
             inner: self,
@@ -85,13 +84,13 @@ impl<S: Source> RodioExt for S {
             return Err(ReplayDurationTooShort);
         }
 
-        let samples_per_second = self.sample_rate().get() as usize * self.channels().get() as usize;
+        let samples_per_second = self.sample_rate() as usize * self.channels() as usize;
         let samples_to_queue = duration.as_secs_f64() * samples_per_second as f64;
         let samples_to_queue =
-            (samples_to_queue as usize).next_multiple_of(self.channels().get().into());
+            (samples_to_queue as usize).next_multiple_of(self.channels() as usize);
 
         let chunk_size =
-            (samples_per_second.div_ceil(10)).next_multiple_of(self.channels().get() as usize);
+            (samples_per_second.div_ceil(10)).next_multiple_of(self.channels() as usize);
         let chunks_to_queue = samples_to_queue.div_ceil(chunk_size);
 
         let is_active = Arc::new(AtomicBool::new(true));
@@ -121,17 +120,16 @@ impl<S: Source> RodioExt for S {
         }
     }
     fn denoise(self) -> Result<Denoiser<Self>, DenoiserError> {
-        let res = Denoiser::try_new(self);
-        res
+        Denoiser::try_new(self)
     }
     fn constant_params(
         self,
-        channel_count: ChannelCount,
-        sample_rate: SampleRate,
-    ) -> UniformSourceIterator<Self> {
+        channel_count: u16,
+        sample_rate: u32,
+    ) -> UniformSourceIterator<Self, f32> {
         UniformSourceIterator::new(self, channel_count, sample_rate)
     }
-    fn constant_samplerate(self, sample_rate: SampleRate) -> ConstantSampleRate<Self> {
+    fn constant_samplerate(self, sample_rate: u32) -> ConstantSampleRate<Self> {
         ConstantSampleRate::new(self, sample_rate)
     }
     fn possibly_disconnected_channels_to_mono(self) -> ToMono<Self> {
@@ -139,17 +137,17 @@ impl<S: Source> RodioExt for S {
     }
 }
 
-pub struct ConstantSampleRate<S: Source> {
-    inner: SampleRateConverter<S>,
-    channels: ChannelCount,
-    sample_rate: SampleRate,
+/// Adapts a source to a target sample rate by using `UniformSourceIterator`.
+pub struct ConstantSampleRate<S: Source<Item = f32>> {
+    inner: UniformSourceIterator<S, f32>,
+    channels: u16,
+    sample_rate: u32,
 }
 
-impl<S: Source> ConstantSampleRate<S> {
-    fn new(source: S, target_rate: SampleRate) -> Self {
-        let input_sample_rate = source.sample_rate();
+impl<S: Source<Item = f32>> ConstantSampleRate<S> {
+    fn new(source: S, target_rate: u32) -> Self {
         let channels = source.channels();
-        let inner = SampleRateConverter::new(source, input_sample_rate, target_rate, channels);
+        let inner = UniformSourceIterator::new(source, channels, target_rate);
         Self {
             inner,
             channels,
@@ -158,8 +156,8 @@ impl<S: Source> ConstantSampleRate<S> {
     }
 }
 
-impl<S: Source> Iterator for ConstantSampleRate<S> {
-    type Item = rodio::Sample;
+impl<S: Source<Item = f32>> Iterator for ConstantSampleRate<S> {
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
@@ -170,16 +168,16 @@ impl<S: Source> Iterator for ConstantSampleRate<S> {
     }
 }
 
-impl<S: Source> Source for ConstantSampleRate<S> {
-    fn current_span_len(&self) -> Option<usize> {
+impl<S: Source<Item = f32>> Source for ConstantSampleRate<S> {
+    fn current_frame_len(&self) -> Option<usize> {
         None
     }
 
-    fn channels(&self) -> ChannelCount {
+    fn channels(&self) -> u16 {
         self.channels
     }
 
-    fn sample_rate(&self) -> SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.sample_rate
     }
 
@@ -188,23 +186,21 @@ impl<S: Source> Source for ConstantSampleRate<S> {
     }
 }
 
-const TYPICAL_NOISE_FLOOR: Sample = 1e-3;
+const TYPICAL_NOISE_FLOOR: f32 = 1e-3;
 
 /// constant source, only works on a single span
 pub struct ToMono<S> {
     inner: S,
-    input_channel_count: ChannelCount,
-    connected_channels: ChannelCount,
+    input_channel_count: u16,
+    connected_channels: u16,
     /// running mean of second channel 'volume'
     means: [f32; MAX_CHANNELS],
 }
-impl<S: Source> ToMono<S> {
+impl<S: Source<Item = f32>> ToMono<S> {
     fn new(input: S) -> Self {
-        let channels = input
-            .channels()
-            .min(const { NonZero::<u16>::new(MAX_CHANNELS as u16).unwrap() });
+        let channels = input.channels().min(MAX_CHANNELS as u16);
         if channels < input.channels() {
-            warn!("Ignoring input channels {}..", channels.get());
+            warn!("Ignoring input channels {}..", channels);
         }
 
         Self {
@@ -216,16 +212,16 @@ impl<S: Source> ToMono<S> {
     }
 }
 
-impl<S: Source> Source for ToMono<S> {
-    fn current_span_len(&self) -> Option<usize> {
+impl<S: Source<Item = f32>> Source for ToMono<S> {
+    fn current_frame_len(&self) -> Option<usize> {
         None
     }
 
-    fn channels(&self) -> ChannelCount {
-        rodio::nz!(1)
+    fn channels(&self) -> u16 {
+        1
     }
 
-    fn sample_rate(&self) -> SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
@@ -234,19 +230,19 @@ impl<S: Source> Source for ToMono<S> {
     }
 }
 
-fn update_mean(mean: &mut f32, sample: Sample) {
+fn update_mean(mean: &mut f32, sample: f32) {
     const HISTORY: f32 = 500.0;
     *mean *= (HISTORY - 1.0) / HISTORY;
     *mean += sample.abs() / HISTORY;
 }
 
-impl<S: Source> Iterator for ToMono<S> {
-    type Item = Sample;
+impl<S: Source<Item = f32>> Iterator for ToMono<S> {
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         let mut mono_sample = 0f32;
-        let mut active_channels = 0;
-        for channel in 0..self.input_channel_count.get() as usize {
+        let mut active_channels = 0u16;
+        for channel in 0..self.input_channel_count as usize {
             let sample = self.inner.next()?;
             mono_sample += sample;
 
@@ -255,8 +251,8 @@ impl<S: Source> Iterator for ToMono<S> {
                 active_channels += 1;
             }
         }
-        mono_sample /= self.connected_channels.get() as f32;
-        self.connected_channels = NonZero::new(active_channels).unwrap_or(nz!(1));
+        mono_sample /= self.connected_channels.max(1) as f32;
+        self.connected_channels = if active_channels > 0 { active_channels } else { 1 };
 
         Some(mono_sample)
     }
@@ -268,8 +264,8 @@ pub struct TakeSamples<S> {
     left_to_take: usize,
 }
 
-impl<S: Source> Iterator for TakeSamples<S> {
-    type Item = Sample;
+impl<S: Source<Item = f32>> Iterator for TakeSamples<S> {
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.left_to_take == 0 {
@@ -285,24 +281,24 @@ impl<S: Source> Iterator for TakeSamples<S> {
     }
 }
 
-impl<S: Source> Source for TakeSamples<S> {
-    fn current_span_len(&self) -> Option<usize> {
+impl<S: Source<Item = f32>> Source for TakeSamples<S> {
+    fn current_frame_len(&self) -> Option<usize> {
         None // does not support spans
     }
 
-    fn channels(&self) -> ChannelCount {
+    fn channels(&self) -> u16 {
         self.inner.channels()
     }
 
-    fn sample_rate(&self) -> SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
     fn total_duration(&self) -> Option<Duration> {
         Some(Duration::from_secs_f64(
             self.left_to_take as f64
-                / self.sample_rate().get() as f64
-                / self.channels().get() as f64,
+                / self.sample_rate() as f64
+                / self.channels() as f64,
         ))
     }
 }
@@ -310,13 +306,13 @@ impl<S: Source> Source for TakeSamples<S> {
 /// constant source, only works on a single span
 #[derive(Debug)]
 struct ReplayQueue {
-    inner: ArrayQueue<Vec<Sample>>,
+    inner: ArrayQueue<Vec<f32>>,
     normal_chunk_len: usize,
     /// The last chunk in the queue may be smaller than
     /// the normal chunk size. This is always equal to the
     /// size of the last element in the queue.
     /// (so normally chunk_size)
-    last_chunk: Mutex<Vec<Sample>>,
+    last_chunk: Mutex<Vec<f32>>,
 }
 
 impl ReplayQueue {
@@ -337,11 +333,11 @@ impl ReplayQueue {
                 .len()
     }
 
-    fn pop(&self) -> Option<Vec<Sample>> {
+    fn pop(&self) -> Option<Vec<f32>> {
         self.inner.pop() // removes element that was inserted first
     }
 
-    fn push_last(&self, mut samples: Vec<Sample>) {
+    fn push_last(&self, mut samples: Vec<f32>) {
         let mut last_chunk = self
             .last_chunk
             .lock()
@@ -349,7 +345,7 @@ impl ReplayQueue {
         std::mem::swap(&mut *last_chunk, &mut samples);
     }
 
-    fn push_normal(&self, samples: Vec<Sample>) {
+    fn push_normal(&self, samples: Vec<f32>) {
         let _pushed_out_of_ringbuf = self.inner.force_push(samples);
     }
 }
@@ -357,13 +353,13 @@ impl ReplayQueue {
 /// constant source, only works on a single span
 pub struct ProcessBuffer<const N: usize, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&mut [Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&mut [f32; N]),
 {
     inner: S,
     callback: F,
     /// Buffer used for both input and output.
-    buffer: [Sample; N],
+    buffer: [f32; N],
     /// Next already processed sample is at this index
     /// in buffer.
     ///
@@ -374,10 +370,10 @@ where
 
 impl<const N: usize, S, F> Iterator for ProcessBuffer<N, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&mut [Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&mut [f32; N]),
 {
-    type Item = Sample;
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.next += 1;
@@ -402,18 +398,18 @@ where
 
 impl<const N: usize, S, F> Source for ProcessBuffer<N, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&mut [Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&mut [f32; N]),
 {
-    fn current_span_len(&self) -> Option<usize> {
+    fn current_frame_len(&self) -> Option<usize> {
         None
     }
 
-    fn channels(&self) -> rodio::ChannelCount {
+    fn channels(&self) -> u16 {
         self.inner.channels()
     }
 
-    fn sample_rate(&self) -> rodio::SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
@@ -425,13 +421,13 @@ where
 /// constant source, only works on a single span
 pub struct InspectBuffer<const N: usize, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&[Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&[f32; N]),
 {
     inner: S,
     callback: F,
     /// Stores already emitted samples, once its full we call the callback.
-    buffer: [Sample; N],
+    buffer: [f32; N],
     /// Next free element in buffer. If this is equal to the buffer length
     /// we have no more free elements.
     free: usize,
@@ -439,10 +435,10 @@ where
 
 impl<const N: usize, S, F> Iterator for InspectBuffer<N, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&[Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&[f32; N]),
 {
-    type Item = Sample;
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         let Some(sample) = self.inner.next() else {
@@ -467,18 +463,18 @@ where
 
 impl<const N: usize, S, F> Source for InspectBuffer<N, S, F>
 where
-    S: Source + Sized,
-    F: FnMut(&[Sample; N]),
+    S: Source<Item = f32> + Sized,
+    F: FnMut(&[f32; N]),
 {
-    fn current_span_len(&self) -> Option<usize> {
+    fn current_frame_len(&self) -> Option<usize> {
         None
     }
 
-    fn channels(&self) -> rodio::ChannelCount {
+    fn channels(&self) -> u16 {
         self.inner.channels()
     }
 
-    fn sample_rate(&self) -> rodio::SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
@@ -489,16 +485,16 @@ where
 
 /// constant source, only works on a single span
 #[derive(Debug)]
-pub struct Replayable<S: Source> {
+pub struct Replayable<S: Source<Item = f32>> {
     inner: S,
-    buffer: Vec<Sample>,
+    buffer: Vec<f32>,
     chunk_size: usize,
     tx: Arc<ReplayQueue>,
     is_active: Arc<AtomicBool>,
 }
 
-impl<S: Source> Iterator for Replayable<S> {
-    type Item = Sample;
+impl<S: Source<Item = f32>> Iterator for Replayable<S> {
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(sample) = self.inner.next() {
@@ -521,16 +517,16 @@ impl<S: Source> Iterator for Replayable<S> {
     }
 }
 
-impl<S: Source> Source for Replayable<S> {
-    fn current_span_len(&self) -> Option<usize> {
-        self.inner.current_span_len()
+impl<S: Source<Item = f32>> Source for Replayable<S> {
+    fn current_frame_len(&self) -> Option<usize> {
+        self.inner.current_frame_len()
     }
 
-    fn channels(&self) -> ChannelCount {
+    fn channels(&self) -> u16 {
         self.inner.channels()
     }
 
-    fn sample_rate(&self) -> SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
@@ -543,10 +539,10 @@ impl<S: Source> Source for Replayable<S> {
 #[derive(Debug)]
 pub struct Replay {
     rx: Arc<ReplayQueue>,
-    buffer: std::vec::IntoIter<Sample>,
+    buffer: std::vec::IntoIter<f32>,
     sleep_duration: Duration,
-    sample_rate: SampleRate,
-    channel_count: ChannelCount,
+    sample_rate: u32,
+    channel_count: u16,
     source_is_active: Arc<AtomicBool>,
 }
 
@@ -559,7 +555,7 @@ impl Replay {
 
     /// Duration of what is in the buffer and can be returned without blocking.
     pub fn duration_ready(&self) -> Duration {
-        let samples_per_second = self.channels().get() as u32 * self.sample_rate().get();
+        let samples_per_second = self.channels() as u32 * self.sample_rate();
 
         let seconds_queued = self.samples_ready() as f64 / samples_per_second as f64;
         Duration::from_secs_f64(seconds_queued)
@@ -572,7 +568,7 @@ impl Replay {
 }
 
 impl Iterator for Replay {
-    type Item = Sample;
+    type Item = f32;
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(sample) = self.buffer.next() {
@@ -602,15 +598,15 @@ impl Iterator for Replay {
 }
 
 impl Source for Replay {
-    fn current_span_len(&self) -> Option<usize> {
+    fn current_frame_len(&self) -> Option<usize> {
         None // source is not compatible with spans
     }
 
-    fn channels(&self) -> ChannelCount {
+    fn channels(&self) -> u16 {
         self.channel_count
     }
 
-    fn sample_rate(&self) -> SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.sample_rate
     }
 
@@ -621,14 +617,14 @@ impl Source for Replay {
 
 #[cfg(test)]
 mod tests {
-    use rodio::{nz, static_buffer::StaticSamplesBuffer};
+    use rodio::buffer::SamplesBuffer;
 
     use super::*;
 
-    const SAMPLES: [Sample; 5] = [0.0, 1.0, 2.0, 3.0, 4.0];
+    const SAMPLES: [f32; 5] = [0.0, 1.0, 2.0, 3.0, 4.0];
 
-    fn test_source() -> StaticSamplesBuffer {
-        StaticSamplesBuffer::new(nz!(1), nz!(1), &SAMPLES)
+    fn test_source() -> SamplesBuffer<f32> {
+        SamplesBuffer::new(1, 1, SAMPLES.to_vec())
     }
 
     mod process_buffer {
@@ -703,11 +699,11 @@ mod tests {
                 .expect("longer than 100ms");
 
             source.by_ref().take(3).count();
-            let yielded: Vec<Sample> = replay.by_ref().take(3).collect();
+            let yielded: Vec<f32> = replay.by_ref().take(3).collect();
             assert_eq!(&yielded, &SAMPLES[0..3],);
 
             source.count();
-            let yielded: Vec<Sample> = replay.collect();
+            let yielded: Vec<f32> = replay.collect();
             assert_eq!(&yielded, &SAMPLES[3..5],);
         }
 
@@ -720,7 +716,7 @@ mod tests {
                 .expect("longer than 100ms");
 
             source.by_ref().take(5).count(); // get all items but do not end the source
-            let yielded: Vec<Sample> = replay.by_ref().take(2).collect();
+            let yielded: Vec<f32> = replay.by_ref().take(2).collect();
             assert_eq!(&yielded, &SAMPLES[3..5]);
             source.count(); // exhaust source
             assert_eq!(replay.next(), None);
@@ -728,7 +724,7 @@ mod tests {
 
         #[test]
         fn keeps_correct_amount_of_seconds() {
-            let input = StaticSamplesBuffer::new(nz!(1), nz!(16_000), &[0.0; 40_000]);
+            let input = SamplesBuffer::new(1, 16_000, vec![0.0f32; 40_000]);
 
             let (replay, mut source) = input
                 .replayable(Duration::from_secs(2))
@@ -741,14 +737,14 @@ mod tests {
             let ready = replay.samples_ready();
             let n_yielded = replay.take_samples(ready).count();
 
-            let max = source.sample_rate().get() * source.channels().get() as u32 * 2;
+            let max = source.sample_rate() * source.channels() as u32 * 2;
             let margin = 16_000 / 10; // 100ms
             assert!(n_yielded as u32 >= max - margin);
         }
 
         #[test]
         fn samples_ready() {
-            let input = StaticSamplesBuffer::new(nz!(1), nz!(16_000), &[0.0; 40_000]);
+            let input = SamplesBuffer::new(1, 16_000, vec![0.0f32; 40_000]);
             let (mut replay, source) = input
                 .replayable(Duration::from_secs(2))
                 .expect("longer than 100ms");

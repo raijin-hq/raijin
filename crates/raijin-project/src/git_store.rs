@@ -241,10 +241,10 @@ impl TryFrom<proto::StatusEntry> for StatusEntry {
     }
 }
 
-impl sum_tree::Item for StatusEntry {
+impl inazuma_sum_tree::Item for StatusEntry {
     type Summary = PathSummary<GitSummary>;
 
-    fn summary(&self, _: <Self::Summary as sum_tree::Summary>::Context<'_>) -> Self::Summary {
+    fn summary(&self, _: <Self::Summary as inazuma_sum_tree::Summary>::Context<'_>) -> Self::Summary {
         PathSummary {
             max_path: self.repo_path.as_ref().clone(),
             item_summary: self.status.summary(),
@@ -252,7 +252,7 @@ impl sum_tree::Item for StatusEntry {
     }
 }
 
-impl sum_tree::KeyedItem for StatusEntry {
+impl inazuma_sum_tree::KeyedItem for StatusEntry {
     type Key = PathKey;
 
     fn key(&self) -> Self::Key {
@@ -1162,7 +1162,7 @@ impl GitStore {
     pub fn blame_buffer(
         &self,
         buffer: &Entity<Buffer>,
-        version: Option<clock::Global>,
+        version: Option<inazuma_clock::Global>,
         cx: &mut Context<Self>,
     ) -> Task<Result<Option<Blame>>> {
         let buffer = buffer.read(cx);
@@ -1731,7 +1731,7 @@ impl GitStore {
 
     fn on_buffer_diff_event(
         &mut self,
-        diff: Entity<buffer_diff::BufferDiff>,
+        diff: Entity<raijin_buffer_diff::BufferDiff>,
         event: &BufferDiffEvent,
         cx: &mut Context<Self>,
     ) {
@@ -3171,7 +3171,7 @@ impl BufferGitState {
 
     fn reparse_conflict_markers(
         &mut self,
-        buffer: text::BufferSnapshot,
+        buffer: inazuma_text::BufferSnapshot,
         cx: &mut Context<Self>,
     ) -> oneshot::Receiver<()> {
         let (tx, rx) = oneshot::channel();
@@ -3235,7 +3235,7 @@ impl BufferGitState {
 
     fn handle_base_texts_updated(
         &mut self,
-        buffer: text::BufferSnapshot,
+        buffer: inazuma_text::BufferSnapshot,
         message: proto::UpdateDiffBases,
         cx: &mut Context<Self>,
     ) {
@@ -3276,28 +3276,28 @@ impl BufferGitState {
 
     fn diff_bases_changed(
         &mut self,
-        buffer: text::BufferSnapshot,
+        buffer: inazuma_text::BufferSnapshot,
         diff_bases_change: Option<DiffBasesChange>,
         cx: &mut Context<Self>,
     ) {
         match diff_bases_change {
             Some(DiffBasesChange::SetIndex(index)) => {
                 self.index_text = index.map(|mut index| {
-                    text::LineEnding::normalize(&mut index);
+                    inazuma_text::LineEnding::normalize(&mut index);
                     Arc::from(index.as_str())
                 });
                 self.index_changed = true;
             }
             Some(DiffBasesChange::SetHead(head)) => {
                 self.head_text = head.map(|mut head| {
-                    text::LineEnding::normalize(&mut head);
+                    inazuma_text::LineEnding::normalize(&mut head);
                     Arc::from(head.as_str())
                 });
                 self.head_changed = true;
             }
             Some(DiffBasesChange::SetBoth(text)) => {
                 let text = text.map(|mut text| {
-                    text::LineEnding::normalize(&mut text);
+                    inazuma_text::LineEnding::normalize(&mut text);
                     Arc::from(text.as_str())
                 });
                 self.head_text = text.clone();
@@ -3307,12 +3307,12 @@ impl BufferGitState {
             }
             Some(DiffBasesChange::SetEach { index, head }) => {
                 self.index_text = index.map(|mut index| {
-                    text::LineEnding::normalize(&mut index);
+                    inazuma_text::LineEnding::normalize(&mut index);
                     Arc::from(index.as_str())
                 });
                 self.index_changed = true;
                 self.head_text = head.map(|mut head| {
-                    text::LineEnding::normalize(&mut head);
+                    inazuma_text::LineEnding::normalize(&mut head);
                     Arc::from(head.as_str())
                 });
                 self.head_changed = true;
@@ -3324,7 +3324,7 @@ impl BufferGitState {
     }
 
     #[raijin_tracing::instrument(skip_all)]
-    fn recalculate_diffs(&mut self, buffer: text::BufferSnapshot, cx: &mut Context<Self>) {
+    fn recalculate_diffs(&mut self, buffer: inazuma_text::BufferSnapshot, cx: &mut Context<Self>) {
         *self.recalculating_tx.borrow_mut() = true;
 
         let language = self.language.clone();
@@ -6287,7 +6287,7 @@ impl Repository {
             .removed_statuses
             .into_iter()
             .filter_map(|path| {
-                Some(sum_tree::Edit::Remove(PathKey(
+                Some(inazuma_sum_tree::Edit::Remove(PathKey(
                     RelPath::from_proto(&path).log_err()?,
                 )))
             })
@@ -6296,7 +6296,7 @@ impl Repository {
                     .updated_statuses
                     .into_iter()
                     .filter_map(|updated_status| {
-                        Some(sum_tree::Edit::Insert(updated_status.try_into().log_err()?))
+                        Some(inazuma_sum_tree::Edit::Insert(updated_status.try_into().log_err()?))
                     }),
             )
             .collect::<Vec<_>>();
@@ -6729,7 +6729,7 @@ impl Repository {
                         if let Some(op) = ops.op_by_id_mut(id) {
                             op.job_status = job_status;
                         }
-                        edits.push(sum_tree::Edit::Insert(ops));
+                        edits.push(inazuma_sum_tree::Edit::Insert(ops));
                     }
                 }
                 this.pending_ops.edit(edits, ());
@@ -6758,7 +6758,7 @@ impl Repository {
                 git_status,
                 job_status: pending_op::JobStatus::Running,
             });
-            edits.push(sum_tree::Edit::Insert(ops));
+            edits.push(inazuma_sum_tree::Edit::Insert(ops));
             ids.push((id, path));
         }
         self.pending_ops.edit(edits, ());

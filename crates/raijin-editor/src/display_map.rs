@@ -1537,9 +1537,9 @@ impl<'a> HighlightedChunk<'a> {
                 text = suffix;
                 if let Some(replacement) = replacement(ch) {
                     let invisible_highlight = HighlightStyle {
-                        background_color: Some(editor_style.status.hint_background),
+                        background_color: Some(editor_style.status.hint.background),
                         underline: Some(UnderlineStyle {
-                            color: Some(editor_style.status.hint),
+                            color: Some(editor_style.status.hint.color),
                             thickness: px(1.),
                             wavy: false,
                         }),
@@ -1559,9 +1559,9 @@ impl<'a> HighlightedChunk<'a> {
                     });
                 } else {
                     let invisible_highlight = HighlightStyle {
-                        background_color: Some(editor_style.status.hint_background),
+                        background_color: Some(editor_style.status.hint.background),
                         underline: Some(UnderlineStyle {
-                            color: Some(editor_style.status.hint),
+                            color: Some(editor_style.status.hint.color),
                             thickness: px(1.),
                             wavy: false,
                         }),
@@ -2924,7 +2924,7 @@ pub mod tests {
             init_test(cx, &|_| {});
         });
 
-        let mut cx = crate::test::editor_test_coninazuma_text::EditorTestConinazuma_text::new(cx).await;
+        let mut cx = crate::test::editor_test_coninazuma_text::EditorTestContext::new(cx).await;
         let editor = cx.editor.clone();
         let window = cx.window;
 

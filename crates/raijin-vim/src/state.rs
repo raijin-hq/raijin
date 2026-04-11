@@ -1297,7 +1297,7 @@ impl PickerDelegate for RegistersViewDelegate {
 
         let theme = ThemeSettings::get_global(cx);
         let text_style = TextStyle {
-            color: cx.theme().colors().editor_foreground,
+            color: cx.theme().colors().editor.foreground,
             font_family: theme.buffer_font.family.clone(),
             font_features: theme.buffer_font.features.clone(),
             font_fallbacks: theme.buffer_font.fallbacks.clone(),
@@ -1684,7 +1684,7 @@ impl PickerDelegate for MarksViewDelegate {
 
         let theme = ThemeSettings::get_global(cx);
         let text_style = TextStyle {
-            color: cx.theme().colors().editor_foreground,
+            color: cx.theme().colors().editor.foreground,
             font_family: theme.buffer_font.family.clone(),
             font_features: theme.buffer_font.features.clone(),
             font_fallbacks: theme.buffer_font.fallbacks.clone(),

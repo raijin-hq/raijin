@@ -134,7 +134,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
             div()
                 .id("source-location")
                 .text_ui(cx)
-                .bg(cx.theme().colors().editor_foreground.opacity(0.025))
+                .bg(cx.theme().colors().editor.foreground.opacity(0.025))
                 .underline()
                 .font_buffer(cx)
                 .text_xs()

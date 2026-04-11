@@ -1,7 +1,25 @@
+use std::{collections::HashMap, fmt::Display};
+
 use crate::{Label, LabelCommon, component_prelude::*, v_flex};
 use documented::{DocumentedFields, DocumentedVariants};
-use inazuma::{App, Oklch, IntoElement, ParentElement, Styled};
-use raijin_theme::ActiveTheme;
+use inazuma::{App, Oklch, IntoElement, ParentElement, SharedString, Styled, hsla, oklch};
+use raijin_theme::{ActiveTheme, Appearance};
+use serde::{Deserialize, Deserializer, de::Error as _};
+
+/// Returns whether the current theme is light.
+pub fn is_light(cx: &App) -> bool {
+    cx.theme().appearance() == Appearance::Light
+}
+
+/// Returns pure white in Oklch.
+pub fn white() -> Oklch {
+    oklch(1.0, 0.0, 0.0)
+}
+
+/// Returns pure black in Oklch.
+pub fn black() -> Oklch {
+    oklch(0.0, 0.0, 0.0)
+}
 
 /// Sets a color that has a consistent meaning across all themes.
 #[derive(
@@ -107,11 +125,11 @@ impl Color {
             Color::Error => cx.theme().status().error.color,
             Color::Selected => cx.theme().colors().text_accent,
             Color::Success => cx.theme().status().success.color,
-            Color::VersionControlAdded => cx.theme().colors().version_control_added,
-            Color::VersionControlConflict => cx.theme().colors().version_control_conflict,
-            Color::VersionControlDeleted => cx.theme().colors().version_control_deleted,
-            Color::VersionControlIgnored => cx.theme().colors().version_control_ignored,
-            Color::VersionControlModified => cx.theme().colors().version_control_modified,
+            Color::VersionControlAdded => cx.theme().colors().version_control.added,
+            Color::VersionControlConflict => cx.theme().colors().version_control.conflict,
+            Color::VersionControlDeleted => cx.theme().colors().version_control.deleted,
+            Color::VersionControlIgnored => cx.theme().colors().version_control.ignored,
+            Color::VersionControlModified => cx.theme().colors().version_control.modified,
             Color::Warning => cx.theme().status().warning.color,
             Color::Custom(color) => *color,
         }
@@ -241,4 +259,275 @@ impl Component for Color {
                 .into_any_element(),
         )
     }
+}
+
+// ── Color Name System (Tailwind/Shadcn color scales) ─────────────────────────
+
+/// Create an [`Oklch`] color from HSL parameters.
+///
+/// - h: 0..360.0
+/// - s: 0.0..100.0
+/// - l: 0.0..100.0
+#[inline]
+fn color_hsl(h: f32, s: f32, l: f32) -> Oklch {
+    hsla(h / 360., s / 100.0, l / 100.0, 1.0)
+}
+
+pub(crate) static DEFAULT_COLORS: once_cell::sync::Lazy<ShadcnColors> =
+    once_cell::sync::Lazy::new(|| {
+        serde_json::from_str(include_str!("./default-colors.json"))
+            .expect("failed to parse default-colors.json")
+    });
+
+type ColorScales = HashMap<usize, ShadcnColor>;
+
+mod color_scales {
+    use std::collections::HashMap;
+
+    use super::{ColorScales, ShadcnColor};
+
+    use serde::de::{Deserialize, Deserializer};
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<ColorScales, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let mut map = HashMap::new();
+        for color in Vec::<ShadcnColor>::deserialize(deserializer)? {
+            map.insert(color.scale, color);
+        }
+        Ok(map)
+    }
+}
+
+/// Enum representing the available color names (Tailwind/Shadcn palette).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum ColorName {
+    White,
+    Black,
+    Neutral,
+    Gray,
+    Red,
+    Orange,
+    Amber,
+    Yellow,
+    Lime,
+    Green,
+    Emerald,
+    Teal,
+    Cyan,
+    Sky,
+    Blue,
+    Indigo,
+    Violet,
+    Purple,
+    Fuchsia,
+    Pink,
+    Rose,
+}
+
+impl Display for ColorName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl TryFrom<&str> for ColorName {
+    type Error = anyhow::Error;
+    fn try_from(value: &str) -> std::result::Result<Self, Self::Error> {
+        match value.to_lowercase().as_str() {
+            "white" => Ok(ColorName::White),
+            "black" => Ok(ColorName::Black),
+            "neutral" => Ok(ColorName::Neutral),
+            "gray" => Ok(ColorName::Gray),
+            "red" => Ok(ColorName::Red),
+            "orange" => Ok(ColorName::Orange),
+            "amber" => Ok(ColorName::Amber),
+            "yellow" => Ok(ColorName::Yellow),
+            "lime" => Ok(ColorName::Lime),
+            "green" => Ok(ColorName::Green),
+            "emerald" => Ok(ColorName::Emerald),
+            "teal" => Ok(ColorName::Teal),
+            "cyan" => Ok(ColorName::Cyan),
+            "sky" => Ok(ColorName::Sky),
+            "blue" => Ok(ColorName::Blue),
+            "indigo" => Ok(ColorName::Indigo),
+            "violet" => Ok(ColorName::Violet),
+            "purple" => Ok(ColorName::Purple),
+            "fuchsia" => Ok(ColorName::Fuchsia),
+            "pink" => Ok(ColorName::Pink),
+            "rose" => Ok(ColorName::Rose),
+            _ => Err(anyhow::anyhow!("Invalid color name")),
+        }
+    }
+}
+
+impl TryFrom<SharedString> for ColorName {
+    type Error = anyhow::Error;
+    fn try_from(value: SharedString) -> std::result::Result<Self, Self::Error> {
+        value.as_ref().try_into()
+    }
+}
+
+impl ColorName {
+    /// Returns all available color names.
+    pub fn all() -> [Self; 19] {
+        [
+            ColorName::Neutral,
+            ColorName::Gray,
+            ColorName::Red,
+            ColorName::Orange,
+            ColorName::Amber,
+            ColorName::Yellow,
+            ColorName::Lime,
+            ColorName::Green,
+            ColorName::Emerald,
+            ColorName::Teal,
+            ColorName::Cyan,
+            ColorName::Sky,
+            ColorName::Blue,
+            ColorName::Indigo,
+            ColorName::Violet,
+            ColorName::Purple,
+            ColorName::Fuchsia,
+            ColorName::Pink,
+            ColorName::Rose,
+        ]
+    }
+
+    /// Returns the color for the given scale.
+    ///
+    /// The `scale` is any of `[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]`
+    /// falls back to 500 if out of range.
+    pub fn scale(&self, scale: usize) -> Oklch {
+        if self == &ColorName::White {
+            return DEFAULT_COLORS.white.color;
+        }
+        if self == &ColorName::Black {
+            return DEFAULT_COLORS.black.color;
+        }
+
+        let colors = match self {
+            ColorName::Neutral => &DEFAULT_COLORS.neutral,
+            ColorName::Gray => &DEFAULT_COLORS.gray,
+            ColorName::Red => &DEFAULT_COLORS.red,
+            ColorName::Orange => &DEFAULT_COLORS.orange,
+            ColorName::Amber => &DEFAULT_COLORS.amber,
+            ColorName::Yellow => &DEFAULT_COLORS.yellow,
+            ColorName::Lime => &DEFAULT_COLORS.lime,
+            ColorName::Green => &DEFAULT_COLORS.green,
+            ColorName::Emerald => &DEFAULT_COLORS.emerald,
+            ColorName::Teal => &DEFAULT_COLORS.teal,
+            ColorName::Cyan => &DEFAULT_COLORS.cyan,
+            ColorName::Sky => &DEFAULT_COLORS.sky,
+            ColorName::Blue => &DEFAULT_COLORS.blue,
+            ColorName::Indigo => &DEFAULT_COLORS.indigo,
+            ColorName::Violet => &DEFAULT_COLORS.violet,
+            ColorName::Purple => &DEFAULT_COLORS.purple,
+            ColorName::Fuchsia => &DEFAULT_COLORS.fuchsia,
+            ColorName::Pink => &DEFAULT_COLORS.pink,
+            ColorName::Rose => &DEFAULT_COLORS.rose,
+            _ => unreachable!(),
+        };
+
+        if let Some(color) = colors.get(&scale) {
+            color.color
+        } else {
+            colors.get(&500).unwrap().color
+        }
+    }
+
+    /// Returns a new color with the given opacity.
+    pub fn opacity(&self, opacity: f32) -> Oklch {
+        let mut color = self.scale(500);
+        color.a = opacity;
+        color
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize)]
+pub(crate) struct ShadcnColors {
+    pub(crate) black: ShadcnColor,
+    pub(crate) white: ShadcnColor,
+    #[serde(with = "color_scales")]
+    pub(crate) slate: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) gray: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) zinc: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) neutral: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) stone: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) red: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) orange: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) amber: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) yellow: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) lime: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) green: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) emerald: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) teal: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) cyan: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) sky: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) blue: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) indigo: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) violet: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) purple: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) fuchsia: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) pink: ColorScales,
+    #[serde(with = "color_scales")]
+    pub(crate) rose: ColorScales,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
+pub(crate) struct ShadcnColor {
+    #[serde(default)]
+    pub(crate) scale: usize,
+    #[serde(deserialize_with = "from_hsl_channel", rename = "hslChannel")]
+    pub(crate) color: Oklch,
+}
+
+/// Deserialize an Oklch color from a string in the format "210 40% 98%" (HSL channel format).
+fn from_hsl_channel<'de, D>(deserializer: D) -> Result<Oklch, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s: String = Deserialize::deserialize(deserializer).unwrap();
+
+    let mut parts = s.split_whitespace();
+    if parts.clone().count() != 3 {
+        return Err(D::Error::custom(
+            "expected hslChannel has 3 parts, e.g: '210 40% 98%'",
+        ));
+    }
+
+    fn parse_number(s: &str) -> f32 {
+        s.trim_end_matches('%')
+            .parse()
+            .expect("failed to parse number")
+    }
+
+    let (h, s, l) = (
+        parse_number(parts.next().unwrap()),
+        parse_number(parts.next().unwrap()),
+        parse_number(parts.next().unwrap()),
+    );
+
+    Ok(color_hsl(h, s, l))
 }

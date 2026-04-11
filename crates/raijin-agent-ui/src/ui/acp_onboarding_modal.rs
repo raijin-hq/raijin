@@ -115,7 +115,7 @@ impl Render for AcpOnboardingModal {
         let illustration = h_flex()
             .relative()
             .h(rems_from_px(126.))
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .border_b_1()
             .border_color(cx.theme().colors().border_variant)
             .justify_center()
@@ -131,11 +131,11 @@ impl Render for AcpOnboardingModal {
             .child(div().absolute().inset_0().size_full().bg(linear_gradient(
                 0.,
                 linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.1),
+                    cx.theme().colors().elevated_surface.opacity(0.1),
                     0.9,
                 ),
                 linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.),
+                    cx.theme().colors().elevated_surface.opacity(0.),
                     0.,
                 ),
             )))

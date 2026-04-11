@@ -3,13 +3,18 @@ use std::rc::Rc;
 
 use crate::prelude::*;
 use crate::{Color, KeyBinding, Label, LabelSize, StyledExt, h_flex, v_flex};
-use inazuma::{Action, AnyElement, AnyView, AppContext, FocusHandle, IntoElement, Render};
+use inazuma::{
+    Action, AnyElement, AnyView, AppContext, FocusHandle, IntoElement, Render, StyleRefinement,
+    Styled, prelude::FluentBuilder,
+};
 
 #[derive(RegisterComponent)]
 pub struct Tooltip {
     title: Title,
+    style: StyleRefinement,
     meta: Option<SharedString>,
     key_binding: Option<KeyBinding>,
+    action: Option<(Box<dyn Action>, Option<SharedString>)>,
 }
 
 #[derive(Clone, IntoElement)]
@@ -37,8 +42,10 @@ impl Tooltip {
     pub fn simple(title: impl Into<SharedString>, cx: &mut App) -> AnyView {
         cx.new(|_| Self {
             title: Title::Str(title.into()),
+            style: StyleRefinement::default(),
             meta: None,
             key_binding: None,
+            action: None,
         })
         .into()
     }
@@ -48,8 +55,10 @@ impl Tooltip {
         move |_, cx| {
             cx.new(|_| Self {
                 title: title.clone().into(),
+                style: StyleRefinement::default(),
                 meta: None,
                 key_binding: None,
+                action: None,
             })
             .into()
         }
@@ -64,8 +73,10 @@ impl Tooltip {
         move |_, cx| {
             cx.new(|cx| Self {
                 title: Title::Str(title.clone()),
+                style: StyleRefinement::default(),
                 meta: None,
                 key_binding: Some(KeyBinding::for_action(action.as_ref(), cx)),
+                action: None,
             })
             .into()
         }
@@ -82,12 +93,14 @@ impl Tooltip {
         move |_, cx| {
             cx.new(|cx| Self {
                 title: Title::Str(title.clone()),
+                style: StyleRefinement::default(),
                 meta: None,
                 key_binding: Some(KeyBinding::for_action_in(
                     action.as_ref(),
                     &focus_handle,
                     cx,
                 )),
+                action: None,
             })
             .into()
         }
@@ -100,8 +113,10 @@ impl Tooltip {
     ) -> AnyView {
         cx.new(|cx| Self {
             title: Title::Str(title.into()),
+            style: StyleRefinement::default(),
             meta: None,
             key_binding: Some(KeyBinding::for_action(action, cx)),
+            action: None,
         })
         .into()
     }
@@ -114,8 +129,10 @@ impl Tooltip {
     ) -> AnyView {
         cx.new(|cx| Self {
             title: title.into().into(),
+            style: StyleRefinement::default(),
             meta: None,
             key_binding: Some(KeyBinding::for_action_in(action, focus_handle, cx)),
+            action: None,
         })
         .into()
     }
@@ -128,8 +145,10 @@ impl Tooltip {
     ) -> AnyView {
         cx.new(|cx| Self {
             title: title.into().into(),
+            style: StyleRefinement::default(),
             meta: Some(meta.into()),
             key_binding: action.map(|action| KeyBinding::for_action(action, cx)),
+            action: None,
         })
         .into()
     }
@@ -143,8 +162,10 @@ impl Tooltip {
     ) -> AnyView {
         cx.new(|cx| Self {
             title: title.into().into(),
+            style: StyleRefinement::default(),
             meta: Some(meta.into()),
             key_binding: action.map(|action| KeyBinding::for_action_in(action, focus_handle, cx)),
+            action: None,
         })
         .into()
     }
@@ -152,16 +173,20 @@ impl Tooltip {
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into().into(),
+            style: StyleRefinement::default(),
             meta: None,
             key_binding: None,
+            action: None,
         }
     }
 
     pub fn new_element(title: impl Fn(&mut Window, &mut App) -> AnyElement + 'static) -> Self {
         Self {
             title: Title::Callback(Rc::new(title)),
+            style: StyleRefinement::default(),
             meta: None,
             key_binding: None,
+            action: None,
         }
     }
 
@@ -173,8 +198,10 @@ impl Tooltip {
             let title = title.clone();
             cx.new(|_| Self {
                 title,
+                style: StyleRefinement::default(),
                 meta: None,
                 key_binding: None,
+                action: None,
             })
             .into()
         }
@@ -188,6 +215,25 @@ impl Tooltip {
     pub fn key_binding(mut self, key_binding: impl Into<Option<KeyBinding>>) -> Self {
         self.key_binding = key_binding.into();
         self
+    }
+
+    /// Set an Action to auto-resolve key binding display in the tooltip.
+    pub fn action(mut self, action: &dyn Action, context: Option<&str>) -> Self {
+        self.action = Some((action.boxed_clone(), context.map(SharedString::new)));
+        self
+    }
+
+    /// Build the tooltip and return it as an `AnyView`.
+    pub fn build(self, _: &mut Window, cx: &mut App) -> AnyView {
+        cx.new(|_| self).into()
+    }
+}
+
+impl FluentBuilder for Tooltip {}
+
+impl Styled for Tooltip {
+    fn style(&mut self) -> &mut StyleRefinement {
+        &mut self.style
     }
 }
 

@@ -191,7 +191,7 @@ fn markdown_style(main_message: bool, window: &Window, cx: &App) -> MarkdownStyl
 
     MarkdownStyle {
         base_text_style,
-        selection_background_color: cx.theme().colors().element_selection_background,
+        selection_background_color: cx.theme().colors().element_selection,
         ..Default::default()
     }
 }

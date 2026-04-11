@@ -8,11 +8,11 @@ mod types;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use ::raijin_lsp::LanguageServerName;
 use anyhow::{Context as _, Result, bail};
 use async_trait::async_trait;
 use inazuma::{App, Task};
 use raijin_language::LanguageName;
+use raijin_lsp::LanguageServerName;
 use semver::Version;
 use raijin_task::{SpawnInTerminal, ZedDebugConfig};
 use inazuma_util::rel_path::RelPath;

@@ -458,7 +458,7 @@ impl PickerDelegate for RulePickerDelegate {
             .mx_1()
             .gap_1p5()
             .rounded_sm()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .border_1()
             .border_color(cx.theme().colors().border)
             .child(Icon::new(IconName::MagnifyingGlass).color(Color::Muted))
@@ -1133,7 +1133,7 @@ impl RulesLibrary {
             .h_full()
             .w_64()
             .overflow_x_hidden()
-            .bg(cx.theme().colors().panel_background)
+            .bg(cx.theme().colors().panel.background)
             .map(|this| {
                 if cfg!(target_os = "macos") {
                     this.child(
@@ -1292,7 +1292,7 @@ impl RulesLibrary {
             .flex_grow()
             .border_l_1()
             .border_color(cx.theme().colors().border)
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .children(self.active_rule_id.and_then(|prompt_id| {
                 let rule_metadata = self.store.read(cx).metadata(prompt_id)?;
                 let rule_editor = &self.rule_editors[&prompt_id];

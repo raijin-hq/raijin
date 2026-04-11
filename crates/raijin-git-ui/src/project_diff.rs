@@ -98,7 +98,7 @@ impl ProjectDiff {
         workspace.register_action(|workspace, _: &Add, window, cx| {
             Self::deploy(workspace, &Diff, window, cx);
         });
-        workspace::register_serializable_item::<ProjectDiff>(cx);
+        raijin_workspace::register_serializable_item::<ProjectDiff>(cx);
     }
 
     fn deploy(
@@ -116,7 +116,7 @@ impl ProjectDiff {
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {
-        telemetry::event!("Git Branch Diff Opened");
+        raijin_telemetry::event!("Git Branch Diff Opened");
         let project = workspace.project().clone();
 
         let existing = workspace
@@ -197,7 +197,7 @@ impl ProjectDiff {
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Git Diff Opened",
             source = if entry.is_some() {
                 "Git Panel"
@@ -260,7 +260,7 @@ impl ProjectDiff {
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {
-        telemetry::event!("Git Diff Opened", source = "Agent Panel");
+        raijin_telemetry::event!("Git Diff Opened", source = "Agent Panel");
         let existing = workspace
             .items_of_type::<Self>(cx)
             .find(|item| matches!(item.read(cx).diff_base(cx), DiffBase::Head));
@@ -517,7 +517,7 @@ impl ProjectDiff {
             editor.rhs_editor().update(cx, |editor, cx| {
                 editor.change_selections(Default::default(), window, cx, |s| {
                     s.select_ranges(vec![
-                        multi_buffer::Anchor::min()..multi_buffer::Anchor::min(),
+                        raijin_multi_buffer::Anchor::min()..raijin_multi_buffer::Anchor::min(),
                     ]);
                 });
             });
@@ -607,7 +607,7 @@ impl ProjectDiff {
                 .read(cx)
                 .active_excerpt(cx)
             {
-                ranges = vec![multi_buffer::Anchor::range_in_buffer(excerpt_id, range)];
+                ranges = vec![raijin_multi_buffer::Anchor::range_in_buffer(excerpt_id, range)];
             } else {
                 ranges = Vec::default();
             }
@@ -766,7 +766,7 @@ impl ProjectDiff {
                         cx,
                         |selections| {
                             selections.select_ranges([
-                                multi_buffer::Anchor::min()..multi_buffer::Anchor::min()
+                                raijin_multi_buffer::Anchor::min()..raijin_multi_buffer::Anchor::min()
                             ])
                         },
                     );
@@ -907,7 +907,7 @@ impl ProjectDiff {
     }
 
     #[cfg(any(test, feature = "test-support"))]
-    pub fn excerpt_paths(&self, cx: &App) -> Vec<std::sync::Arc<util::rel_path::RelPath>> {
+    pub fn excerpt_paths(&self, cx: &App) -> Vec<std::sync::Arc<inazuma_util::rel_path::RelPath>> {
         self.multibuffer
             .read(cx)
             .paths()
@@ -1009,7 +1009,7 @@ impl Item for ProjectDiff {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.editor
             .read(cx)
@@ -1037,7 +1037,7 @@ impl Item for ProjectDiff {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>>
@@ -1141,7 +1141,7 @@ impl Render for ProjectDiff {
             .when(is_branch_diff_view, |this| {
                 this.on_action(cx.listener(Self::review_diff))
             })
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .flex()
             .items_center()
             .justify_center()
@@ -1203,8 +1203,8 @@ impl SerializableItem for ProjectDiff {
     }
 
     fn cleanup(
-        _: workspace::WorkspaceId,
-        _: Vec<workspace::ItemId>,
+        _: raijin_workspace::WorkspaceId,
+        _: Vec<raijin_workspace::ItemId>,
         _: &mut Window,
         _: &mut App,
     ) -> Task<Result<()>> {
@@ -1214,8 +1214,8 @@ impl SerializableItem for ProjectDiff {
     fn deserialize(
         project: Entity<Project>,
         workspace: WeakEntity<Workspace>,
-        workspace_id: workspace::WorkspaceId,
-        item_id: workspace::ItemId,
+        workspace_id: raijin_workspace::WorkspaceId,
+        item_id: raijin_workspace::ItemId,
         window: &mut Window,
         cx: &mut App,
     ) -> Task<Result<Entity<Self>>> {
@@ -1239,7 +1239,7 @@ impl SerializableItem for ProjectDiff {
     fn serialize(
         &mut self,
         workspace: &mut Workspace,
-        item_id: workspace::ItemId,
+        item_id: raijin_workspace::ItemId,
         _closing: bool,
         _window: &mut Window,
         cx: &mut Context<Self>,
@@ -1290,7 +1290,7 @@ mod persistence {
         )];
     }
 
-    db::static_connection!(ProjectDiffDb, [WorkspaceDb]);
+    raijin_db::static_connection!(ProjectDiffDb, [WorkspaceDb]);
 
     impl ProjectDiffDb {
         pub async fn save_diff_base(
@@ -1498,7 +1498,7 @@ impl Render for ProjectDiffToolbar {
                 h_group_sm()
                     .child(
                         IconButton::new("up", IconName::ArrowUp)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
                                 "Go to previous hunk",
                                 &GoToPreviousHunk,
@@ -1511,7 +1511,7 @@ impl Render for ProjectDiffToolbar {
                     )
                     .child(
                         IconButton::new("down", IconName::ArrowDown)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
                                 "Go to next hunk",
                                 &GoToHunk,
@@ -1733,7 +1733,7 @@ impl Addon for BranchDiffAddon {
 
     fn override_status_for_buffer_id(
         &self,
-        buffer_id: language::BufferId,
+        buffer_id: raijin_language::BufferId,
         cx: &App,
     ) -> Option<FileStatus> {
         self.branch_diff
@@ -1778,7 +1778,7 @@ mod tests {
                 });
             });
             theme_settings::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_editor::init(cx);
             crate::init(cx);
         });
     }
@@ -1968,7 +1968,7 @@ mod tests {
                 let snapshot = buffer_editor.snapshot(window, cx);
                 let snapshot = &snapshot.buffer_snapshot();
                 let prev_buffer_hunks = buffer_editor
-                    .diff_hunks_in_ranges(&[editor::Anchor::min()..editor::Anchor::max()], snapshot)
+                    .diff_hunks_in_ranges(&[raijin_editor::Anchor::min()..raijin_editor::Anchor::max()], snapshot)
                     .collect::<Vec<_>>();
                 buffer_editor.git_restore(&Default::default(), window, cx);
                 prev_buffer_hunks
@@ -1981,7 +1981,7 @@ mod tests {
                 let snapshot = buffer_editor.snapshot(window, cx);
                 let snapshot = &snapshot.buffer_snapshot();
                 buffer_editor
-                    .diff_hunks_in_ranges(&[editor::Anchor::min()..editor::Anchor::max()], snapshot)
+                    .diff_hunks_in_ranges(&[raijin_editor::Anchor::min()..raijin_editor::Anchor::max()], snapshot)
                     .collect::<Vec<_>>()
             });
         assert_eq!(new_buffer_hunks.as_slice(), &[]);
@@ -2092,7 +2092,7 @@ mod tests {
         "
         ));
 
-        cx.dispatch_action(editor::actions::GoToPreviousHunk);
+        cx.dispatch_action(raijin_editor::actions::GoToPreviousHunk);
 
         cx.assert_excerpts_with_selections(indoc!(
             "
@@ -2106,7 +2106,7 @@ mod tests {
         "
         ));
 
-        cx.dispatch_action(editor::actions::GoToPreviousHunk);
+        cx.dispatch_action(raijin_editor::actions::GoToPreviousHunk);
 
         cx.assert_excerpts_with_selections(indoc!(
             "
@@ -2197,10 +2197,10 @@ mod tests {
 
         cx.assert_excerpts_with_selections(&format!("[EXCERPT]\nˇ{git_contents}"));
 
-        cx.dispatch_action(editor::actions::GoToHunk);
-        cx.dispatch_action(editor::actions::GoToHunk);
-        cx.dispatch_action(git::Restore);
-        cx.dispatch_action(editor::actions::MoveToBeginning);
+        cx.dispatch_action(raijin_editor::actions::GoToHunk);
+        cx.dispatch_action(raijin_editor::actions::GoToHunk);
+        cx.dispatch_action(raijin_git::Restore);
+        cx.dispatch_action(raijin_editor::actions::MoveToBeginning);
 
         cx.assert_excerpts_with_selections(&format!("[EXCERPT]\nˇ{git_contents}"));
     }
@@ -2380,15 +2380,15 @@ mod tests {
                             (
                                 "conflict.txt",
                                 FileStatus::Tracked(TrackedStatus {
-                                    index_status: git::status::StatusCode::Modified,
-                                    worktree_status: git::status::StatusCode::Modified,
+                                    index_status: raijin_git::status::StatusCode::Modified,
+                                    worktree_status: raijin_git::status::StatusCode::Modified,
                                 }),
                             ),
                             (
                                 "helper.txt",
                                 FileStatus::Tracked(TrackedStatus {
-                                    index_status: git::status::StatusCode::Modified,
-                                    worktree_status: git::status::StatusCode::Modified,
+                                    index_status: raijin_git::status::StatusCode::Modified,
+                                    worktree_status: raijin_git::status::StatusCode::Modified,
                                 }),
                             ),
                         ],
@@ -2644,16 +2644,16 @@ mod tests {
                 (
                     rel_path("a.txt").into_arc(),
                     Some(FileStatus::Tracked(TrackedStatus {
-                        index_status: git::status::StatusCode::Modified,
-                        worktree_status: git::status::StatusCode::Modified
+                        index_status: raijin_git::status::StatusCode::Modified,
+                        worktree_status: raijin_git::status::StatusCode::Modified
                     }))
                 ),
                 (rel_path("b.txt").into_arc(), Some(FileStatus::Untracked)),
                 (
                     rel_path("d.txt").into_arc(),
                     Some(FileStatus::Tracked(TrackedStatus {
-                        index_status: git::status::StatusCode::Added,
-                        worktree_status: git::status::StatusCode::Added
+                        index_status: raijin_git::status::StatusCode::Added,
+                        worktree_status: raijin_git::status::StatusCode::Added
                     }))
                 )
             ])

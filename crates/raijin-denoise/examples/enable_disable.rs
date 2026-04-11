@@ -2,15 +2,15 @@ use std::time::Duration;
 
 use rodio::Source;
 use rodio::wav_to_file;
-use rodio::{nz, source::UniformSourceIterator};
+use rodio::source::UniformSourceIterator;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::File::open("clips_airconditioning.wav")?;
     let decoder = rodio::Decoder::try_from(file)?;
-    let resampled = UniformSourceIterator::new(decoder, nz!(1), nz!(16_000));
+    let resampled = UniformSourceIterator::new(decoder, 1, 16_000);
 
     let mut enabled = true;
-    let denoised = denoise::Denoiser::try_new(resampled)?.periodic_access(
+    let denoised = raijin_denoise::Denoiser::try_new(resampled)?.periodic_access(
         Duration::from_secs(2),
         |denoised| {
             enabled = !enabled;

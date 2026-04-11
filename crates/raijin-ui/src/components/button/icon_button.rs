@@ -1,6 +1,7 @@
 use inazuma::{AnyView, DefiniteLength, Oklch};
 
-use super::button_like::{ButtonCommon, ButtonLike, ButtonSize, ButtonStyle};
+use super::button_like::ButtonLike;
+use super::button_variant::{ButtonCommon, ButtonSize, ButtonStyle};
 use crate::{
     ElevationIndex, Icon, IconWithIndicator, Indicator, SelectableButton, TintColor, prelude::*,
 };
@@ -96,6 +97,12 @@ impl IconButton {
 
         self
     }
+
+    /// Set the tooltip shown on hover.
+    pub fn tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
+        self.base = self.base.tooltip(tooltip);
+        self
+    }
 }
 
 impl Disableable for IconButton {
@@ -162,7 +169,7 @@ impl ButtonCommon for IconButton {
         self
     }
 
-    fn tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
+    fn button_tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
         self.base = self.base.tooltip(tooltip);
         self
     }
@@ -258,28 +265,28 @@ impl Component for IconButton {
                                 "Filled",
                                 IconButton::new("filled", IconName::Check)
                                     .layer(ElevationIndex::Background)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .into_any_element(),
                             ),
                             single_example(
                                 "Subtle",
                                 IconButton::new("subtle", IconName::Check)
                                     .layer(ElevationIndex::Background)
-                                    .style(ButtonStyle::Subtle)
+                                    .style(ButtonStyle::SUBTLE)
                                     .into_any_element(),
                             ),
                             single_example(
                                 "Tinted",
                                 IconButton::new("tinted", IconName::Check)
                                     .layer(ElevationIndex::Background)
-                                    .style(ButtonStyle::Tinted(TintColor::Accent))
+                                    .style(ButtonStyle::tinted(TintColor::Accent))
                                     .into_any_element(),
                             ),
                             single_example(
                                 "Transparent",
                                 IconButton::new("transparent", IconName::Check)
                                     .layer(ElevationIndex::Background)
-                                    .style(ButtonStyle::Transparent)
+                                    .style(ButtonStyle::TRANSPARENT)
                                     .into_any_element(),
                             ),
                         ],
@@ -291,7 +298,7 @@ impl Component for IconButton {
                                 "Square",
                                 IconButton::new("square", IconName::Check)
                                     .shape(IconButtonShape::Square)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -299,7 +306,7 @@ impl Component for IconButton {
                                 "Wide",
                                 IconButton::new("wide", IconName::Check)
                                     .shape(IconButtonShape::Wide)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -312,7 +319,7 @@ impl Component for IconButton {
                                 "XSmall",
                                 IconButton::new("xsmall", IconName::Check)
                                     .icon_size(IconSize::XSmall)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -320,7 +327,7 @@ impl Component for IconButton {
                                 "Small",
                                 IconButton::new("small", IconName::Check)
                                     .icon_size(IconSize::Small)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -328,7 +335,7 @@ impl Component for IconButton {
                                 "Medium",
                                 IconButton::new("medium", IconName::Check)
                                     .icon_size(IconSize::Medium)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -336,7 +343,7 @@ impl Component for IconButton {
                                 "XLarge",
                                 IconButton::new("xlarge", IconName::Check)
                                     .icon_size(IconSize::XLarge)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -349,7 +356,7 @@ impl Component for IconButton {
                                 "Disabled",
                                 IconButton::new("disabled", IconName::Check)
                                     .disabled(true)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -357,7 +364,7 @@ impl Component for IconButton {
                                 "Selected",
                                 IconButton::new("selected", IconName::Check)
                                     .toggle_state(true)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -365,7 +372,7 @@ impl Component for IconButton {
                                 "With Indicator",
                                 IconButton::new("indicator", IconName::Check)
                                     .indicator(Indicator::dot().color(Color::Success))
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -378,7 +385,7 @@ impl Component for IconButton {
                                 "Custom Icon Color",
                                 IconButton::new("custom_color", IconName::Check)
                                     .icon_color(Color::Accent)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
@@ -386,7 +393,7 @@ impl Component for IconButton {
                                 "With Alpha",
                                 IconButton::new("alpha", IconName::Check)
                                     .alpha(0.5)
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),

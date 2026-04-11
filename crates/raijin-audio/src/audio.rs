@@ -1,10 +1,8 @@
 use std::time::Duration;
 
-use rodio::{ChannelCount, SampleRate, nz};
-
 pub const REPLAY_DURATION: Duration = Duration::from_secs(30);
-pub const SAMPLE_RATE: SampleRate = nz!(48000);
-pub const CHANNEL_COUNT: ChannelCount = nz!(2);
+pub const SAMPLE_RATE: u32 = 48000;
+pub const CHANNEL_COUNT: u16 = 2;
 
 mod audio_settings;
 pub use audio_settings::AudioSettings;

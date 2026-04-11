@@ -5,7 +5,7 @@ use crate::{
 use raijin_editor::{BlameRenderer, Editor, hover_markdown_style};
 use raijin_git::{blame::BlameEntry, commit::ParsedCommitMessage, repository::CommitSummary};
 use inazuma::{
-    ClipboardItem, Entity, Hsla, MouseButton, ScrollHandle, Subscription, TextStyle,
+    ClipboardItem, Entity, MouseButton, Oklch, ScrollHandle, Subscription, TextStyle,
     TextStyleRefinement, UnderlineStyle, WeakEntity, prelude::*,
 };
 use raijin_markdown::{Markdown, MarkdownElement};
@@ -34,14 +34,14 @@ impl BlameRenderer for GitBlameRenderer {
         workspace: WeakEntity<Workspace>,
         editor: Entity<Editor>,
         ix: usize,
-        sha_color: Hsla,
+        sha_color: Oklch,
         window: &mut Window,
         cx: &mut App,
     ) -> Option<AnyElement> {
         let relative_timestamp = blame_entry_relative_timestamp(&blame_entry);
         let short_commit_id = blame_entry.sha.display_short();
         let author_name = blame_entry.author.as_deref().unwrap_or("<no name>");
-        let name = util::truncate_and_trailoff(author_name, GIT_BLAME_MAX_AUTHOR_CHARS_DISPLAYED);
+        let name = inazuma_util::truncate_and_trailoff(author_name, GIT_BLAME_MAX_AUTHOR_CHARS_DISPLAYED);
 
         let avatar = if ProjectSettings::get_global(cx).git.blame.show_avatar {
             let author_email = blame_entry.author_mail.as_ref().map(|email| {
@@ -75,7 +75,7 @@ impl BlameRenderer for GitBlameRenderer {
                         .justify_between()
                         .font(style.font())
                         .line_height(style.line_height)
-                        .text_color(cx.theme().status().hint)
+                        .text_color(cx.theme().status().hint.color)
                         .child(
                             h_flex()
                                 .gap_2()
@@ -163,7 +163,7 @@ impl BlameRenderer for GitBlameRenderer {
                 .id("inline-blame")
                 .w_full()
                 .font(style.font())
-                .text_color(cx.theme().status().hint)
+                .text_color(cx.theme().status().hint.color)
                 .line_height(style.line_height)
                 .child(Icon::new(IconName::FileGit).color(Color::Hint))
                 .child(text)
@@ -215,11 +215,11 @@ impl BlameRenderer for GitBlameRenderer {
             .map(|sha| sha.to_string().into())
             .unwrap_or_else(|| sha.clone());
         let local_offset = time::UtcOffset::current_local_offset().unwrap_or(time::UtcOffset::UTC);
-        let absolute_timestamp = time_format::format_localized_timestamp(
+        let absolute_timestamp = raijin_time_format::format_localized_timestamp(
             commit_time,
             OffsetDateTime::now_utc(),
             local_offset,
-            time_format::TimestampFormat::MediumAbsolute,
+            raijin_time_format::TimestampFormat::MediumAbsolute,
         );
         let link_color = cx.theme().colors().text_accent;
         let markdown_style = {
@@ -427,11 +427,11 @@ fn blame_entry_relative_timestamp(blame_entry: &BlameEntry) -> String {
         Ok(timestamp) => {
             let local_offset =
                 time::UtcOffset::current_local_offset().unwrap_or(time::UtcOffset::UTC);
-            time_format::format_localized_timestamp(
+            raijin_time_format::format_localized_timestamp(
                 timestamp,
                 time::OffsetDateTime::now_utc(),
                 local_offset,
-                time_format::TimestampFormat::Relative,
+                raijin_time_format::TimestampFormat::Relative,
             )
         }
         Err(_) => "Error parsing date".to_string(),

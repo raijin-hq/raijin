@@ -1,6 +1,6 @@
 #![allow(missing_docs)]
 
-use inazuma::{App, Oklch, SharedString, WindowBackgroundAppearance};
+use inazuma::{App, Oklch, Pixels, SharedString, WindowBackgroundAppearance, px};
 use inazuma_refineable::Refineable;
 use std::sync::Arc;
 use strum::{AsRefStr, EnumIter, IntoEnumIterator};
@@ -10,358 +10,476 @@ use crate::{
     SystemColors,
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Sub-Structs
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Editor area colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct EditorColors {
+    pub foreground: Oklch,
+    pub background: Oklch,
+    pub gutter_background: Oklch,
+    pub subheader_background: Oklch,
+    pub active_line_background: Oklch,
+    pub highlighted_line_background: Oklch,
+    pub debugger_active_line_background: Oklch,
+    pub line_number: Oklch,
+    pub active_line_number: Oklch,
+    pub hover_line_number: Oklch,
+    pub invisible: Oklch,
+    pub wrap_guide: Oklch,
+    pub active_wrap_guide: Oklch,
+    pub indent_guide: Oklch,
+    pub indent_guide_active: Oklch,
+    pub document_highlight_read_background: Oklch,
+    pub document_highlight_write_background: Oklch,
+    pub document_highlight_bracket_background: Oklch,
+}
+
+/// Terminal ANSI color palette (standard, bright, dim).
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct TerminalAnsiColors {
+    pub background: Oklch,
+    pub black: Oklch,
+    pub bright_black: Oklch,
+    pub dim_black: Oklch,
+    pub red: Oklch,
+    pub bright_red: Oklch,
+    pub dim_red: Oklch,
+    pub green: Oklch,
+    pub bright_green: Oklch,
+    pub dim_green: Oklch,
+    pub yellow: Oklch,
+    pub bright_yellow: Oklch,
+    pub dim_yellow: Oklch,
+    pub blue: Oklch,
+    pub bright_blue: Oklch,
+    pub dim_blue: Oklch,
+    pub magenta: Oklch,
+    pub bright_magenta: Oklch,
+    pub dim_magenta: Oklch,
+    pub cyan: Oklch,
+    pub bright_cyan: Oklch,
+    pub dim_cyan: Oklch,
+    pub white: Oklch,
+    pub bright_white: Oklch,
+    pub dim_white: Oklch,
+}
+
+/// Terminal colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct TerminalColors {
+    pub background: Oklch,
+    pub foreground: Oklch,
+    pub bright_foreground: Oklch,
+    pub dim_foreground: Oklch,
+    pub accent: Oklch,
+    #[refineable]
+    pub ansi: TerminalAnsiColors,
+}
+
+/// Panel colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct PanelColors {
+    pub background: Oklch,
+    pub focused_border: Oklch,
+    pub indent_guide: Oklch,
+    pub indent_guide_hover: Oklch,
+    pub indent_guide_active: Oklch,
+    pub overlay_background: Oklch,
+    pub overlay_hover: Oklch,
+}
+
+/// Pane colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct PaneColors {
+    pub focused_border: Oklch,
+    pub group_border: Oklch,
+}
+
+/// Tab bar colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct TabColors {
+    pub bar_background: Oklch,
+    pub inactive_background: Oklch,
+    pub active_background: Oklch,
+    pub inactive_foreground: Oklch,
+    pub active_foreground: Oklch,
+}
+
+/// Scrollbar colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct ScrollbarColors {
+    pub thumb_background: Oklch,
+    pub thumb_hover_background: Oklch,
+    pub thumb_active_background: Oklch,
+    pub thumb_border: Oklch,
+    pub track_background: Oklch,
+    pub track_border: Oklch,
+}
+
+/// Minimap colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct MinimapColors {
+    pub thumb_background: Oklch,
+    pub thumb_hover_background: Oklch,
+    pub thumb_active_background: Oklch,
+    pub thumb_border: Oklch,
+}
+
+/// Status bar colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct StatusBarColors {
+    pub background: Oklch,
+}
+
+/// Title bar colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct TitleBarColors {
+    pub background: Oklch,
+    pub inactive_background: Oklch,
+}
+
+/// Toolbar colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct ToolbarColors {
+    pub background: Oklch,
+}
+
+/// Search highlight colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct SearchColors {
+    pub match_background: Oklch,
+    pub active_match_background: Oklch,
+}
+
+/// Vim mode indicator colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct VimColors {
+    pub normal_background: Oklch,
+    pub insert_background: Oklch,
+    pub replace_background: Oklch,
+    pub visual_background: Oklch,
+    pub visual_line_background: Oklch,
+    pub visual_block_background: Oklch,
+    pub yank_background: Oklch,
+    pub helix_normal_background: Oklch,
+    pub helix_select_background: Oklch,
+    pub normal_foreground: Oklch,
+    pub insert_foreground: Oklch,
+    pub replace_foreground: Oklch,
+    pub visual_foreground: Oklch,
+    pub visual_line_foreground: Oklch,
+    pub visual_block_foreground: Oklch,
+    pub helix_normal_foreground: Oklch,
+    pub helix_select_foreground: Oklch,
+}
+
+/// Version control status colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct VersionControlColors {
+    pub added: Oklch,
+    pub deleted: Oklch,
+    pub modified: Oklch,
+    pub renamed: Oklch,
+    pub conflict: Oklch,
+    pub ignored: Oklch,
+    pub word_added: Oklch,
+    pub word_deleted: Oklch,
+    pub conflict_marker_ours: Oklch,
+    pub conflict_marker_theirs: Oklch,
+}
+
+/// Raijin command block badge colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct BlockColors {
+    pub success_badge: Oklch,
+    pub error_badge: Oklch,
+    pub running_badge: Oklch,
+}
+
+/// Chart series colors.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct ChartColors {
+    pub chart_1: Oklch,
+    pub chart_2: Oklch,
+    pub chart_3: Oklch,
+    pub chart_4: Oklch,
+    pub chart_5: Oklch,
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ThemeColors
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// The complete set of design tokens for a theme.
+///
+/// Follows W3C Design Tokens / shadcn conventions:
+/// - **Semantic tokens** (`primary`, `secondary`, `destructive`, etc.) at the top level
+/// - **Contextual groups** (`editor`, `terminal`, `panel`, etc.) as sub-structs
+/// - **Extended base tokens** (element states, text variants, icons) stay flat
 #[derive(Refineable, Clone, Debug, PartialEq)]
 #[refineable(Debug, serde::Deserialize)]
 pub struct ThemeColors {
-    /// Border color. Used for most borders, is usually a high contrast color.
-    pub border: Oklch,
-    /// Border color. Used for deemphasized borders, like a visual divider between two sections
-    pub border_variant: Oklch,
-    /// Border color. Used for focused elements, like keyboard focused list item.
-    pub border_focused: Oklch,
-    /// Border color. Used for selected elements, like an active search filter or selected checkbox.
-    pub border_selected: Oklch,
-    /// Border color. Used for transparent borders. Used for placeholder borders when an element gains a border on state change.
-    pub border_transparent: Oklch,
-    /// Border color. Used for disabled elements, like a disabled input or button.
-    pub border_disabled: Oklch,
-    /// Border color. Used for elevated surfaces, like a context menu, popup, or dialog.
-    pub elevated_surface_background: Oklch,
-    /// Background Color. Used for grounded surfaces like a panel or tab.
-    pub surface_background: Oklch,
-    /// Background Color. Used for the app background and blank panels or windows.
+    // ─── Semantic Tokens (shadcn/W3C standard) ───
+
+    /// Primary action color (buttons, links, active indicators).
+    pub primary: Oklch,
+    /// Foreground on primary backgrounds.
+    pub primary_foreground: Oklch,
+    /// Secondary action color (less prominent buttons, badges).
+    pub secondary: Oklch,
+    /// Foreground on secondary backgrounds.
+    pub secondary_foreground: Oklch,
+    /// Muted background for subdued elements.
+    pub muted: Oklch,
+    /// Muted/subdued foreground color.
+    pub muted_foreground: Oklch,
+    /// Accent color for highlights and emphasis.
+    pub accent: Oklch,
+    /// Foreground on accent backgrounds.
+    pub accent_foreground: Oklch,
+    /// Destructive/error action color.
+    pub destructive: Oklch,
+    /// Foreground on destructive backgrounds.
+    pub destructive_foreground: Oklch,
+    /// App background color.
     pub background: Oklch,
-    /// Background Color. Used for the background of an element that should have a different background than the surface it's on.
-    ///
-    /// Elements might include: Buttons, Inputs, Checkboxes, Radio Buttons...
-    ///
-    /// For an element that should have the same background as the surface it's on, use `ghost_element_background`.
+    /// Default foreground/text color.
+    pub foreground: Oklch,
+    /// Card/surface background.
+    pub card: Oklch,
+    /// Foreground on card backgrounds.
+    pub card_foreground: Oklch,
+    /// Popover/elevated surface background.
+    pub popover: Oklch,
+    /// Foreground on popover backgrounds.
+    pub popover_foreground: Oklch,
+    /// Default border color.
+    pub border: Oklch,
+    /// Input element background.
+    pub input: Oklch,
+    /// Focus ring color.
+    pub ring: Oklch,
+
+    // ─── Extended base tokens (cross-cutting, flat) ───
+
+    /// Grounded surface background (panels, tabs).
+    pub surface: Oklch,
+    /// Elevated surface background (context menus, popups, dialogs).
+    pub elevated_surface: Oklch,
+
+    /// Deemphasized border (divider between sections).
+    pub border_variant: Oklch,
+    /// Border for focused elements.
+    pub border_focused: Oklch,
+    /// Border for selected elements.
+    pub border_selected: Oklch,
+    /// Transparent border placeholder.
+    pub border_transparent: Oklch,
+    /// Border for disabled elements.
+    pub border_disabled: Oklch,
+
+    /// Element background (buttons, inputs, checkboxes).
     pub element_background: Oklch,
-    /// Background Color. Used for the hover state of an element that should have a different background than the surface it's on.
-    ///
-    /// Hover states are triggered by the mouse entering an element, or a finger touching an element on a touch screen.
+    /// Element hover state.
     pub element_hover: Oklch,
-    /// Background Color. Used for the active state of an element that should have a different background than the surface it's on.
-    ///
-    /// Active states are triggered by the mouse button being pressed down on an element, or the Return button or other activator being pressed.
+    /// Element active/pressed state.
     pub element_active: Oklch,
-    /// Background Color. Used for the selected state of an element that should have a different background than the surface it's on.
-    ///
-    /// Selected states are triggered by the element being selected (or "activated") by the user.
-    ///
-    /// This could include a selected checkbox, a toggleable button that is toggled on, etc.
+    /// Element selected state.
     pub element_selected: Oklch,
-    /// Background Color. Used for the background of selections in a UI element.
-    pub element_selection_background: Oklch,
-    /// Background Color. Used for the disabled state of an element that should have a different background than the surface it's on.
-    ///
-    /// Disabled states are shown when a user cannot interact with an element, like a disabled button or input.
+    /// Element disabled state.
     pub element_disabled: Oklch,
-    /// Background Color. Used for the area that shows where a dragged element will be dropped.
-    pub drop_target_background: Oklch,
-    /// Border Color. Used for the border that shows where a dragged element will be dropped.
-    pub drop_target_border: Oklch,
-    /// Used for the background of a ghost element that should have the same background as the surface it's on.
-    ///
-    /// Elements might include: Buttons, Inputs, Checkboxes, Radio Buttons...
-    ///
-    /// For an element that should have a different background than the surface it's on, use `element_background`.
+    /// Selection background in UI elements.
+    pub element_selection: Oklch,
+
+    /// Ghost element background (same bg as container surface).
     pub ghost_element_background: Oklch,
-    /// Background Color. Used for the hover state of a ghost element that should have the same background as the surface it's on.
-    ///
-    /// Hover states are triggered by the mouse entering an element, or a finger touching an element on a touch screen.
+    /// Ghost element hover state.
     pub ghost_element_hover: Oklch,
-    /// Background Color. Used for the active state of a ghost element that should have the same background as the surface it's on.
-    ///
-    /// Active states are triggered by the mouse button being pressed down on an element, or the Return button or other activator being pressed.
+    /// Ghost element active state.
     pub ghost_element_active: Oklch,
-    /// Background Color. Used for the selected state of a ghost element that should have the same background as the surface it's on.
-    ///
-    /// Selected states are triggered by the element being selected (or "activated") by the user.
-    ///
-    /// This could include a selected checkbox, a toggleable button that is toggled on, etc.
+    /// Ghost element selected state.
     pub ghost_element_selected: Oklch,
-    /// Background Color. Used for the disabled state of a ghost element that should have the same background as the surface it's on.
-    ///
-    /// Disabled states are shown when a user cannot interact with an element, like a disabled button or input.
+    /// Ghost element disabled state.
     pub ghost_element_disabled: Oklch,
-    /// Text Color. Default text color used for most text.
+
+    /// Drop target background.
+    pub drop_target_background: Oklch,
+    /// Drop target border.
+    pub drop_target_border: Oklch,
+
+    /// Default text color.
     pub text: Oklch,
-    /// Text Color. Color of muted or deemphasized text. It is a subdued version of the standard text color.
+    /// Muted text color.
     pub text_muted: Oklch,
-    /// Text Color. Color of the placeholder text typically shown in input fields to guide the user to enter valid data.
+    /// Placeholder text color.
     pub text_placeholder: Oklch,
-    /// Text Color. Color used for text denoting disabled elements. Typically, the color is faded or grayed out to emphasize the disabled state.
+    /// Disabled text color.
     pub text_disabled: Oklch,
-    /// Text Color. Color used for emphasis or highlighting certain text, like an active filter or a matched character in a search.
+    /// Accent text color (emphasis, highlighting).
     pub text_accent: Oklch,
-    /// Fill Color. Used for the default fill color of an icon.
+
+    /// Default icon fill.
     pub icon: Oklch,
-    /// Fill Color. Used for the muted or deemphasized fill color of an icon.
-    ///
-    /// This might be used to show an icon in an inactive pane, or to deemphasize a series of icons to give them less visual weight.
+    /// Muted icon fill.
     pub icon_muted: Oklch,
-    /// Fill Color. Used for the disabled fill color of an icon.
-    ///
-    /// Disabled states are shown when a user cannot interact with an element, like a icon button.
+    /// Disabled icon fill.
     pub icon_disabled: Oklch,
-    /// Fill Color. Used for the placeholder fill color of an icon.
-    ///
-    /// This might be used to show an icon in an input that disappears when the user enters text.
+    /// Placeholder icon fill.
     pub icon_placeholder: Oklch,
-    /// Fill Color. Used for the accent fill color of an icon.
-    ///
-    /// This might be used to show when a toggleable icon button is selected.
+    /// Accent icon fill.
     pub icon_accent: Oklch,
-    /// Color used to accent some debugger elements
-    /// Is used by breakpoints
+
+    /// Link text hover color.
+    pub link_text_hover: Oklch,
+    /// Debugger accent (breakpoints).
     pub debugger_accent: Oklch,
 
-    // ===
-    // UI Elements
-    // ===
-    pub status_bar_background: Oklch,
-    pub title_bar_background: Oklch,
-    pub title_bar_inactive_background: Oklch,
-    pub toolbar_background: Oklch,
-    pub tab_bar_background: Oklch,
-    pub tab_inactive_background: Oklch,
-    pub tab_active_background: Oklch,
-    pub search_match_background: Oklch,
-    pub search_active_match_background: Oklch,
-    pub panel_background: Oklch,
-    pub panel_focused_border: Oklch,
-    pub panel_indent_guide: Oklch,
-    pub panel_indent_guide_hover: Oklch,
-    pub panel_indent_guide_active: Oklch,
+    // ─── Contextual (sub-structs) ───
 
-    /// The color of the overlay surface on top of panel.
-    pub panel_overlay_background: Oklch,
-    /// The color of the overlay surface on top of panel when hovered over.
-    pub panel_overlay_hover: Oklch,
+    /// Editor colors.
+    #[refineable]
+    pub editor: EditorColors,
+    /// Terminal colors.
+    #[refineable]
+    pub terminal: TerminalColors,
+    /// Panel colors.
+    #[refineable]
+    pub panel: PanelColors,
+    /// Pane colors.
+    #[refineable]
+    pub pane: PaneColors,
+    /// Tab bar colors.
+    #[refineable]
+    pub tab: TabColors,
+    /// Scrollbar colors.
+    #[refineable]
+    pub scrollbar: ScrollbarColors,
+    /// Minimap colors.
+    #[refineable]
+    pub minimap: MinimapColors,
+    /// Status bar colors.
+    #[refineable]
+    pub status_bar: StatusBarColors,
+    /// Title bar colors.
+    #[refineable]
+    pub title_bar: TitleBarColors,
+    /// Toolbar colors.
+    #[refineable]
+    pub toolbar: ToolbarColors,
+    /// Search highlight colors.
+    #[refineable]
+    pub search: SearchColors,
+    /// Vim mode indicator colors.
+    #[refineable]
+    pub vim: VimColors,
+    /// Version control status colors.
+    #[refineable]
+    pub version_control: VersionControlColors,
 
-    pub pane_focused_border: Oklch,
-    pub pane_group_border: Oklch,
-    /// The color of the scrollbar thumb.
-    pub scrollbar_thumb_background: Oklch,
-    /// The color of the scrollbar thumb when hovered over.
-    pub scrollbar_thumb_hover_background: Oklch,
-    /// The color of the scrollbar thumb whilst being actively dragged.
-    pub scrollbar_thumb_active_background: Oklch,
-    /// The border color of the scrollbar thumb.
-    pub scrollbar_thumb_border: Oklch,
-    /// The background color of the scrollbar track.
-    pub scrollbar_track_background: Oklch,
-    /// The border color of the scrollbar track.
-    pub scrollbar_track_border: Oklch,
-    /// The color of the minimap thumb.
-    pub minimap_thumb_background: Oklch,
-    /// The color of the minimap thumb when hovered over.
-    pub minimap_thumb_hover_background: Oklch,
-    /// The color of the minimap thumb whilst being actively dragged.
-    pub minimap_thumb_active_background: Oklch,
-    /// The border color of the minimap thumb.
-    pub minimap_thumb_border: Oklch,
+    // ─── Layout tokens ───
 
-    /// Background color for Vim Normal mode indicator.
-    pub vim_normal_background: Oklch,
-    /// Background color for Vim Insert mode indicator.
-    pub vim_insert_background: Oklch,
-    /// Background color for Vim Replace mode indicator.
-    pub vim_replace_background: Oklch,
-    /// Background color for Vim Visual mode indicator.
-    pub vim_visual_background: Oklch,
-    /// Background color for Vim Visual Line mode indicator.
-    pub vim_visual_line_background: Oklch,
-    /// Background color for Vim Visual Block mode indicator.
-    pub vim_visual_block_background: Oklch,
-    /// Background color for Vim yank highlight.
-    pub vim_yank_background: Oklch,
-    /// Background color for Vim Helix Normal mode indicator.
-    pub vim_helix_normal_background: Oklch,
-    /// Background color for Vim Helix Select mode indicator.
-    pub vim_helix_select_background: Oklch,
-    /// Foreground color for Vim Normal mode indicator.
-    pub vim_normal_foreground: Oklch,
-    /// Foreground color for Vim Insert mode indicator.
-    pub vim_insert_foreground: Oklch,
-    /// Foreground color for Vim Replace mode indicator.
-    pub vim_replace_foreground: Oklch,
-    /// Foreground color for Vim Visual mode indicator.
-    pub vim_visual_foreground: Oklch,
-    /// Foreground color for Vim Visual Line mode indicator.
-    pub vim_visual_line_foreground: Oklch,
-    /// Foreground color for Vim Visual Block mode indicator.
-    pub vim_visual_block_foreground: Oklch,
-    /// Foreground color for Vim Helix Normal mode indicator.
-    pub vim_helix_normal_foreground: Oklch,
-    /// Foreground color for Vim Helix Select mode indicator.
-    pub vim_helix_select_foreground: Oklch,
+    /// Default border radius. All variants (sm, md, lg, xl) scale from this value.
+    pub radius: Pixels,
 
-    // ===
-    // Editor
-    // ===
-    pub editor_foreground: Oklch,
-    pub editor_background: Oklch,
-    pub editor_gutter_background: Oklch,
-    pub editor_subheader_background: Oklch,
-    pub editor_active_line_background: Oklch,
-    pub editor_highlighted_line_background: Oklch,
-    /// Line color of the line a debugger is currently stopped at
-    pub editor_debugger_active_line_background: Oklch,
-    /// Text Color. Used for the text of the line number in the editor gutter.
-    pub editor_line_number: Oklch,
-    /// Text Color. Used for the text of the line number in the editor gutter when the line is highlighted.
-    pub editor_active_line_number: Oklch,
-    /// Text Color. Used for the text of the line number in the editor gutter when the line is hovered over.
-    pub editor_hover_line_number: Oklch,
-    /// Text Color. Used to mark invisible characters in the editor.
-    ///
-    /// Example: spaces, tabs, carriage returns, etc.
-    pub editor_invisible: Oklch,
-    pub editor_wrap_guide: Oklch,
-    pub editor_active_wrap_guide: Oklch,
-    pub editor_indent_guide: Oklch,
-    pub editor_indent_guide_active: Oklch,
-    /// Read-access of a symbol, like reading a variable.
-    ///
-    /// A document highlight is a range inside a text document which deserves
-    /// special attention. Usually a document highlight is visualized by changing
-    /// the background color of its range.
-    pub editor_document_highlight_read_background: Oklch,
-    /// Read-access of a symbol, like reading a variable.
-    ///
-    /// A document highlight is a range inside a text document which deserves
-    /// special attention. Usually a document highlight is visualized by changing
-    /// the background color of its range.
-    pub editor_document_highlight_write_background: Oklch,
-    /// Highlighted brackets background color.
-    ///
-    /// Matching brackets in the cursor scope are highlighted with this background color.
-    pub editor_document_highlight_bracket_background: Oklch,
+    // ─── Raijin-specific ───
 
-    // ===
-    // Terminal
-    // ===
-    /// Terminal layout background color.
-    pub terminal_background: Oklch,
-    /// Terminal foreground color.
-    pub terminal_foreground: Oklch,
-    /// Bright terminal foreground color.
-    pub terminal_bright_foreground: Oklch,
-    /// Dim terminal foreground color.
-    pub terminal_dim_foreground: Oklch,
-    /// Terminal accent color (e.g. cursor, selection highlight).
-    pub terminal_accent: Oklch,
-    /// Terminal ANSI background color.
-    pub terminal_ansi_background: Oklch,
-    /// Black ANSI terminal color.
-    pub terminal_ansi_black: Oklch,
-    /// Bright black ANSI terminal color.
-    pub terminal_ansi_bright_black: Oklch,
-    /// Dim black ANSI terminal color.
-    pub terminal_ansi_dim_black: Oklch,
-    /// Red ANSI terminal color.
-    pub terminal_ansi_red: Oklch,
-    /// Bright red ANSI terminal color.
-    pub terminal_ansi_bright_red: Oklch,
-    /// Dim red ANSI terminal color.
-    pub terminal_ansi_dim_red: Oklch,
-    /// Green ANSI terminal color.
-    pub terminal_ansi_green: Oklch,
-    /// Bright green ANSI terminal color.
-    pub terminal_ansi_bright_green: Oklch,
-    /// Dim green ANSI terminal color.
-    pub terminal_ansi_dim_green: Oklch,
-    /// Yellow ANSI terminal color.
-    pub terminal_ansi_yellow: Oklch,
-    /// Bright yellow ANSI terminal color.
-    pub terminal_ansi_bright_yellow: Oklch,
-    /// Dim yellow ANSI terminal color.
-    pub terminal_ansi_dim_yellow: Oklch,
-    /// Blue ANSI terminal color.
-    pub terminal_ansi_blue: Oklch,
-    /// Bright blue ANSI terminal color.
-    pub terminal_ansi_bright_blue: Oklch,
-    /// Dim blue ANSI terminal color.
-    pub terminal_ansi_dim_blue: Oklch,
-    /// Magenta ANSI terminal color.
-    pub terminal_ansi_magenta: Oklch,
-    /// Bright magenta ANSI terminal color.
-    pub terminal_ansi_bright_magenta: Oklch,
-    /// Dim magenta ANSI terminal color.
-    pub terminal_ansi_dim_magenta: Oklch,
-    /// Cyan ANSI terminal color.
-    pub terminal_ansi_cyan: Oklch,
-    /// Bright cyan ANSI terminal color.
-    pub terminal_ansi_bright_cyan: Oklch,
-    /// Dim cyan ANSI terminal color.
-    pub terminal_ansi_dim_cyan: Oklch,
-    /// White ANSI terminal color.
-    pub terminal_ansi_white: Oklch,
-    /// Bright white ANSI terminal color.
-    pub terminal_ansi_bright_white: Oklch,
-    /// Dim white ANSI terminal color.
-    pub terminal_ansi_dim_white: Oklch,
-
-    /// Represents a link text hover color.
-    pub link_text_hover: Oklch,
-
-    /// Represents an added entry or hunk in vcs, like git.
-    pub version_control_added: Oklch,
-    /// Represents a deleted entry in version control systems.
-    pub version_control_deleted: Oklch,
-    /// Represents a modified entry in version control systems.
-    pub version_control_modified: Oklch,
-    /// Represents a renamed entry in version control systems.
-    pub version_control_renamed: Oklch,
-    /// Represents a conflicting entry in version control systems.
-    pub version_control_conflict: Oklch,
-    /// Represents an ignored entry in version control systems.
-    pub version_control_ignored: Oklch,
-    /// Represents an added word in a word diff.
-    pub version_control_word_added: Oklch,
-    /// Represents a deleted word in a word diff.
-    pub version_control_word_deleted: Oklch,
-    /// Represents the "ours" region of a merge conflict.
-    pub version_control_conflict_marker_ours: Oklch,
-    /// Represents the "theirs" region of a merge conflict.
-    pub version_control_conflict_marker_theirs: Oklch,
-
-    // === Raijin-specific ===
-
-    /// Block success badge color (exit code 0).
-    pub block_success_badge: Oklch,
-    /// Block error badge color (non-zero exit code).
-    pub block_error_badge: Oklch,
-    /// Block running badge color (command in progress).
-    pub block_running_badge: Oklch,
+    /// Command block badge colors.
+    #[refineable]
+    pub block: BlockColors,
+    /// Chart series colors.
+    #[refineable]
+    pub chart: ChartColors,
 }
+
+impl ThemeColors {
+    /// Small border radius (0.6× base).
+    pub fn radius_sm(&self) -> Pixels {
+        px(f32::from(self.radius) * 0.6)
+    }
+
+    /// Medium border radius (0.8× base).
+    pub fn radius_md(&self) -> Pixels {
+        px(f32::from(self.radius) * 0.8)
+    }
+
+    /// Large border radius (1.333× base).
+    pub fn radius_lg(&self) -> Pixels {
+        px(f32::from(self.radius) * 1.333)
+    }
+
+    /// Extra-large border radius (1.667× base).
+    pub fn radius_xl(&self) -> Pixels {
+        px(f32::from(self.radius) * 1.667)
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ThemeColorField — programmatic access to individual color fields
+// ─────────────────────────────────────────────────────────────────────────────
 
 #[derive(EnumIter, Debug, Clone, Copy, AsRefStr)]
 #[strum(serialize_all = "snake_case")]
 pub enum ThemeColorField {
+    // Semantic
+    Primary,
+    PrimaryForeground,
+    Secondary,
+    SecondaryForeground,
+    Muted,
+    MutedForeground,
+    Accent,
+    AccentForeground,
+    Destructive,
+    DestructiveForeground,
+    Background,
+    Foreground,
+    Card,
+    CardForeground,
+    Popover,
+    PopoverForeground,
     Border,
+    Input,
+    Ring,
+    // Extended base
+    Surface,
+    ElevatedSurface,
     BorderVariant,
     BorderFocused,
     BorderSelected,
     BorderTransparent,
     BorderDisabled,
-    ElevatedSurfaceBackground,
-    SurfaceBackground,
-    Background,
     ElementBackground,
     ElementHover,
     ElementActive,
     ElementSelected,
     ElementDisabled,
-    DropTargetBackground,
-    DropTargetBorder,
+    ElementSelection,
     GhostElementBackground,
     GhostElementHover,
     GhostElementActive,
     GhostElementSelected,
     GhostElementDisabled,
+    DropTargetBackground,
+    DropTargetBorder,
     Text,
     TextMuted,
     TextPlaceholder,
@@ -372,42 +490,19 @@ pub enum ThemeColorField {
     IconDisabled,
     IconPlaceholder,
     IconAccent,
-    StatusBarBackground,
-    TitleBarBackground,
-    TitleBarInactiveBackground,
-    ToolbarBackground,
-    TabBarBackground,
-    TabInactiveBackground,
-    TabActiveBackground,
-    SearchMatchBackground,
-    SearchActiveMatchBackground,
-    PanelBackground,
-    PanelFocusedBorder,
-    PanelIndentGuide,
-    PanelIndentGuideHover,
-    PanelIndentGuideActive,
-    PanelOverlayBackground,
-    PanelOverlayHover,
-    PaneFocusedBorder,
-    PaneGroupBorder,
-    ScrollbarThumbBackground,
-    ScrollbarThumbHoverBackground,
-    ScrollbarThumbActiveBackground,
-    ScrollbarThumbBorder,
-    ScrollbarTrackBackground,
-    ScrollbarTrackBorder,
-    MinimapThumbBackground,
-    MinimapThumbHoverBackground,
-    MinimapThumbActiveBackground,
-    MinimapThumbBorder,
+    LinkTextHover,
+    DebuggerAccent,
+    // Editor
     EditorForeground,
     EditorBackground,
     EditorGutterBackground,
     EditorSubheaderBackground,
     EditorActiveLineBackground,
     EditorHighlightedLineBackground,
+    EditorDebuggerActiveLineBackground,
     EditorLineNumber,
     EditorActiveLineNumber,
+    EditorHoverLineNumber,
     EditorInvisible,
     EditorWrapGuide,
     EditorActiveWrapGuide,
@@ -416,6 +511,7 @@ pub enum ThemeColorField {
     EditorDocumentHighlightReadBackground,
     EditorDocumentHighlightWriteBackground,
     EditorDocumentHighlightBracketBackground,
+    // Terminal
     TerminalBackground,
     TerminalForeground,
     TerminalBrightForeground,
@@ -446,39 +542,130 @@ pub enum ThemeColorField {
     TerminalAnsiWhite,
     TerminalAnsiBrightWhite,
     TerminalAnsiDimWhite,
-    LinkTextHover,
+    // Panel
+    PanelBackground,
+    PanelFocusedBorder,
+    PanelIndentGuide,
+    PanelIndentGuideHover,
+    PanelIndentGuideActive,
+    PanelOverlayBackground,
+    PanelOverlayHover,
+    // Pane
+    PaneFocusedBorder,
+    PaneGroupBorder,
+    // Tab
+    TabBarBackground,
+    TabInactiveBackground,
+    TabActiveBackground,
+    TabInactiveForeground,
+    TabActiveForeground,
+    // Scrollbar
+    ScrollbarThumbBackground,
+    ScrollbarThumbHoverBackground,
+    ScrollbarThumbActiveBackground,
+    ScrollbarThumbBorder,
+    ScrollbarTrackBackground,
+    ScrollbarTrackBorder,
+    // Minimap
+    MinimapThumbBackground,
+    MinimapThumbHoverBackground,
+    MinimapThumbActiveBackground,
+    MinimapThumbBorder,
+    // Status bar
+    StatusBarBackground,
+    // Title bar
+    TitleBarBackground,
+    TitleBarInactiveBackground,
+    // Toolbar
+    ToolbarBackground,
+    // Search
+    SearchMatchBackground,
+    SearchActiveMatchBackground,
+    // Vim
+    VimNormalBackground,
+    VimInsertBackground,
+    VimReplaceBackground,
+    VimVisualBackground,
+    VimVisualLineBackground,
+    VimVisualBlockBackground,
+    VimYankBackground,
+    VimHelixNormalBackground,
+    VimHelixSelectBackground,
+    VimNormalForeground,
+    VimInsertForeground,
+    VimReplaceForeground,
+    VimVisualForeground,
+    VimVisualLineForeground,
+    VimVisualBlockForeground,
+    VimHelixNormalForeground,
+    VimHelixSelectForeground,
+    // Version control
     VersionControlAdded,
     VersionControlDeleted,
     VersionControlModified,
     VersionControlRenamed,
     VersionControlConflict,
     VersionControlIgnored,
+    VersionControlWordAdded,
+    VersionControlWordDeleted,
+    VersionControlConflictMarkerOurs,
+    VersionControlConflictMarkerTheirs,
+    // Block
+    BlockSuccessBadge,
+    BlockErrorBadge,
+    BlockRunningBadge,
+    // Chart
+    Chart1,
+    Chart2,
+    Chart3,
+    Chart4,
+    Chart5,
 }
 
 impl ThemeColors {
     pub fn color(&self, field: ThemeColorField) -> Oklch {
         match field {
+            // Semantic
+            ThemeColorField::Primary => self.primary,
+            ThemeColorField::PrimaryForeground => self.primary_foreground,
+            ThemeColorField::Secondary => self.secondary,
+            ThemeColorField::SecondaryForeground => self.secondary_foreground,
+            ThemeColorField::Muted => self.muted,
+            ThemeColorField::MutedForeground => self.muted_foreground,
+            ThemeColorField::Accent => self.accent,
+            ThemeColorField::AccentForeground => self.accent_foreground,
+            ThemeColorField::Destructive => self.destructive,
+            ThemeColorField::DestructiveForeground => self.destructive_foreground,
+            ThemeColorField::Background => self.background,
+            ThemeColorField::Foreground => self.foreground,
+            ThemeColorField::Card => self.card,
+            ThemeColorField::CardForeground => self.card_foreground,
+            ThemeColorField::Popover => self.popover,
+            ThemeColorField::PopoverForeground => self.popover_foreground,
             ThemeColorField::Border => self.border,
+            ThemeColorField::Input => self.input,
+            ThemeColorField::Ring => self.ring,
+            // Extended base
+            ThemeColorField::Surface => self.surface,
+            ThemeColorField::ElevatedSurface => self.elevated_surface,
             ThemeColorField::BorderVariant => self.border_variant,
             ThemeColorField::BorderFocused => self.border_focused,
             ThemeColorField::BorderSelected => self.border_selected,
             ThemeColorField::BorderTransparent => self.border_transparent,
             ThemeColorField::BorderDisabled => self.border_disabled,
-            ThemeColorField::ElevatedSurfaceBackground => self.elevated_surface_background,
-            ThemeColorField::SurfaceBackground => self.surface_background,
-            ThemeColorField::Background => self.background,
             ThemeColorField::ElementBackground => self.element_background,
             ThemeColorField::ElementHover => self.element_hover,
             ThemeColorField::ElementActive => self.element_active,
             ThemeColorField::ElementSelected => self.element_selected,
             ThemeColorField::ElementDisabled => self.element_disabled,
-            ThemeColorField::DropTargetBackground => self.drop_target_background,
-            ThemeColorField::DropTargetBorder => self.drop_target_border,
+            ThemeColorField::ElementSelection => self.element_selection,
             ThemeColorField::GhostElementBackground => self.ghost_element_background,
             ThemeColorField::GhostElementHover => self.ghost_element_hover,
             ThemeColorField::GhostElementActive => self.ghost_element_active,
             ThemeColorField::GhostElementSelected => self.ghost_element_selected,
             ThemeColorField::GhostElementDisabled => self.ghost_element_disabled,
+            ThemeColorField::DropTargetBackground => self.drop_target_background,
+            ThemeColorField::DropTargetBorder => self.drop_target_border,
             ThemeColorField::Text => self.text,
             ThemeColorField::TextMuted => self.text_muted,
             ThemeColorField::TextPlaceholder => self.text_placeholder,
@@ -489,97 +676,136 @@ impl ThemeColors {
             ThemeColorField::IconDisabled => self.icon_disabled,
             ThemeColorField::IconPlaceholder => self.icon_placeholder,
             ThemeColorField::IconAccent => self.icon_accent,
-            ThemeColorField::StatusBarBackground => self.status_bar_background,
-            ThemeColorField::TitleBarBackground => self.title_bar_background,
-            ThemeColorField::TitleBarInactiveBackground => self.title_bar_inactive_background,
-            ThemeColorField::ToolbarBackground => self.toolbar_background,
-            ThemeColorField::TabBarBackground => self.tab_bar_background,
-            ThemeColorField::TabInactiveBackground => self.tab_inactive_background,
-            ThemeColorField::TabActiveBackground => self.tab_active_background,
-            ThemeColorField::SearchMatchBackground => self.search_match_background,
-            ThemeColorField::SearchActiveMatchBackground => self.search_active_match_background,
-            ThemeColorField::PanelBackground => self.panel_background,
-            ThemeColorField::PanelFocusedBorder => self.panel_focused_border,
-            ThemeColorField::PanelIndentGuide => self.panel_indent_guide,
-            ThemeColorField::PanelIndentGuideHover => self.panel_indent_guide_hover,
-            ThemeColorField::PanelIndentGuideActive => self.panel_indent_guide_active,
-            ThemeColorField::PanelOverlayBackground => self.panel_overlay_background,
-            ThemeColorField::PanelOverlayHover => self.panel_overlay_hover,
-            ThemeColorField::PaneFocusedBorder => self.pane_focused_border,
-            ThemeColorField::PaneGroupBorder => self.pane_group_border,
-            ThemeColorField::ScrollbarThumbBackground => self.scrollbar_thumb_background,
-            ThemeColorField::ScrollbarThumbHoverBackground => self.scrollbar_thumb_hover_background,
-            ThemeColorField::ScrollbarThumbActiveBackground => {
-                self.scrollbar_thumb_active_background
-            }
-            ThemeColorField::ScrollbarThumbBorder => self.scrollbar_thumb_border,
-            ThemeColorField::ScrollbarTrackBackground => self.scrollbar_track_background,
-            ThemeColorField::ScrollbarTrackBorder => self.scrollbar_track_border,
-            ThemeColorField::MinimapThumbBackground => self.minimap_thumb_background,
-            ThemeColorField::MinimapThumbHoverBackground => self.minimap_thumb_hover_background,
-            ThemeColorField::MinimapThumbActiveBackground => self.minimap_thumb_active_background,
-            ThemeColorField::MinimapThumbBorder => self.minimap_thumb_border,
-            ThemeColorField::EditorForeground => self.editor_foreground,
-            ThemeColorField::EditorBackground => self.editor_background,
-            ThemeColorField::EditorGutterBackground => self.editor_gutter_background,
-            ThemeColorField::EditorSubheaderBackground => self.editor_subheader_background,
-            ThemeColorField::EditorActiveLineBackground => self.editor_active_line_background,
-            ThemeColorField::EditorHighlightedLineBackground => {
-                self.editor_highlighted_line_background
-            }
-            ThemeColorField::EditorLineNumber => self.editor_line_number,
-            ThemeColorField::EditorActiveLineNumber => self.editor_active_line_number,
-            ThemeColorField::EditorInvisible => self.editor_invisible,
-            ThemeColorField::EditorWrapGuide => self.editor_wrap_guide,
-            ThemeColorField::EditorActiveWrapGuide => self.editor_active_wrap_guide,
-            ThemeColorField::EditorIndentGuide => self.editor_indent_guide,
-            ThemeColorField::EditorIndentGuideActive => self.editor_indent_guide_active,
-            ThemeColorField::EditorDocumentHighlightReadBackground => {
-                self.editor_document_highlight_read_background
-            }
-            ThemeColorField::EditorDocumentHighlightWriteBackground => {
-                self.editor_document_highlight_write_background
-            }
-            ThemeColorField::EditorDocumentHighlightBracketBackground => {
-                self.editor_document_highlight_bracket_background
-            }
-            ThemeColorField::TerminalBackground => self.terminal_background,
-            ThemeColorField::TerminalForeground => self.terminal_foreground,
-            ThemeColorField::TerminalBrightForeground => self.terminal_bright_foreground,
-            ThemeColorField::TerminalDimForeground => self.terminal_dim_foreground,
-            ThemeColorField::TerminalAccent => self.terminal_accent,
-            ThemeColorField::TerminalAnsiBackground => self.terminal_ansi_background,
-            ThemeColorField::TerminalAnsiBlack => self.terminal_ansi_black,
-            ThemeColorField::TerminalAnsiBrightBlack => self.terminal_ansi_bright_black,
-            ThemeColorField::TerminalAnsiDimBlack => self.terminal_ansi_dim_black,
-            ThemeColorField::TerminalAnsiRed => self.terminal_ansi_red,
-            ThemeColorField::TerminalAnsiBrightRed => self.terminal_ansi_bright_red,
-            ThemeColorField::TerminalAnsiDimRed => self.terminal_ansi_dim_red,
-            ThemeColorField::TerminalAnsiGreen => self.terminal_ansi_green,
-            ThemeColorField::TerminalAnsiBrightGreen => self.terminal_ansi_bright_green,
-            ThemeColorField::TerminalAnsiDimGreen => self.terminal_ansi_dim_green,
-            ThemeColorField::TerminalAnsiYellow => self.terminal_ansi_yellow,
-            ThemeColorField::TerminalAnsiBrightYellow => self.terminal_ansi_bright_yellow,
-            ThemeColorField::TerminalAnsiDimYellow => self.terminal_ansi_dim_yellow,
-            ThemeColorField::TerminalAnsiBlue => self.terminal_ansi_blue,
-            ThemeColorField::TerminalAnsiBrightBlue => self.terminal_ansi_bright_blue,
-            ThemeColorField::TerminalAnsiDimBlue => self.terminal_ansi_dim_blue,
-            ThemeColorField::TerminalAnsiMagenta => self.terminal_ansi_magenta,
-            ThemeColorField::TerminalAnsiBrightMagenta => self.terminal_ansi_bright_magenta,
-            ThemeColorField::TerminalAnsiDimMagenta => self.terminal_ansi_dim_magenta,
-            ThemeColorField::TerminalAnsiCyan => self.terminal_ansi_cyan,
-            ThemeColorField::TerminalAnsiBrightCyan => self.terminal_ansi_bright_cyan,
-            ThemeColorField::TerminalAnsiDimCyan => self.terminal_ansi_dim_cyan,
-            ThemeColorField::TerminalAnsiWhite => self.terminal_ansi_white,
-            ThemeColorField::TerminalAnsiBrightWhite => self.terminal_ansi_bright_white,
-            ThemeColorField::TerminalAnsiDimWhite => self.terminal_ansi_dim_white,
             ThemeColorField::LinkTextHover => self.link_text_hover,
-            ThemeColorField::VersionControlAdded => self.version_control_added,
-            ThemeColorField::VersionControlDeleted => self.version_control_deleted,
-            ThemeColorField::VersionControlModified => self.version_control_modified,
-            ThemeColorField::VersionControlRenamed => self.version_control_renamed,
-            ThemeColorField::VersionControlConflict => self.version_control_conflict,
-            ThemeColorField::VersionControlIgnored => self.version_control_ignored,
+            ThemeColorField::DebuggerAccent => self.debugger_accent,
+            // Editor
+            ThemeColorField::EditorForeground => self.editor.foreground,
+            ThemeColorField::EditorBackground => self.editor.background,
+            ThemeColorField::EditorGutterBackground => self.editor.gutter_background,
+            ThemeColorField::EditorSubheaderBackground => self.editor.subheader_background,
+            ThemeColorField::EditorActiveLineBackground => self.editor.active_line_background,
+            ThemeColorField::EditorHighlightedLineBackground => self.editor.highlighted_line_background,
+            ThemeColorField::EditorDebuggerActiveLineBackground => self.editor.debugger_active_line_background,
+            ThemeColorField::EditorLineNumber => self.editor.line_number,
+            ThemeColorField::EditorActiveLineNumber => self.editor.active_line_number,
+            ThemeColorField::EditorHoverLineNumber => self.editor.hover_line_number,
+            ThemeColorField::EditorInvisible => self.editor.invisible,
+            ThemeColorField::EditorWrapGuide => self.editor.wrap_guide,
+            ThemeColorField::EditorActiveWrapGuide => self.editor.active_wrap_guide,
+            ThemeColorField::EditorIndentGuide => self.editor.indent_guide,
+            ThemeColorField::EditorIndentGuideActive => self.editor.indent_guide_active,
+            ThemeColorField::EditorDocumentHighlightReadBackground => self.editor.document_highlight_read_background,
+            ThemeColorField::EditorDocumentHighlightWriteBackground => self.editor.document_highlight_write_background,
+            ThemeColorField::EditorDocumentHighlightBracketBackground => self.editor.document_highlight_bracket_background,
+            // Terminal
+            ThemeColorField::TerminalBackground => self.terminal.background,
+            ThemeColorField::TerminalForeground => self.terminal.foreground,
+            ThemeColorField::TerminalBrightForeground => self.terminal.bright_foreground,
+            ThemeColorField::TerminalDimForeground => self.terminal.dim_foreground,
+            ThemeColorField::TerminalAccent => self.terminal.accent,
+            ThemeColorField::TerminalAnsiBackground => self.terminal.ansi.background,
+            ThemeColorField::TerminalAnsiBlack => self.terminal.ansi.black,
+            ThemeColorField::TerminalAnsiBrightBlack => self.terminal.ansi.bright_black,
+            ThemeColorField::TerminalAnsiDimBlack => self.terminal.ansi.dim_black,
+            ThemeColorField::TerminalAnsiRed => self.terminal.ansi.red,
+            ThemeColorField::TerminalAnsiBrightRed => self.terminal.ansi.bright_red,
+            ThemeColorField::TerminalAnsiDimRed => self.terminal.ansi.dim_red,
+            ThemeColorField::TerminalAnsiGreen => self.terminal.ansi.green,
+            ThemeColorField::TerminalAnsiBrightGreen => self.terminal.ansi.bright_green,
+            ThemeColorField::TerminalAnsiDimGreen => self.terminal.ansi.dim_green,
+            ThemeColorField::TerminalAnsiYellow => self.terminal.ansi.yellow,
+            ThemeColorField::TerminalAnsiBrightYellow => self.terminal.ansi.bright_yellow,
+            ThemeColorField::TerminalAnsiDimYellow => self.terminal.ansi.dim_yellow,
+            ThemeColorField::TerminalAnsiBlue => self.terminal.ansi.blue,
+            ThemeColorField::TerminalAnsiBrightBlue => self.terminal.ansi.bright_blue,
+            ThemeColorField::TerminalAnsiDimBlue => self.terminal.ansi.dim_blue,
+            ThemeColorField::TerminalAnsiMagenta => self.terminal.ansi.magenta,
+            ThemeColorField::TerminalAnsiBrightMagenta => self.terminal.ansi.bright_magenta,
+            ThemeColorField::TerminalAnsiDimMagenta => self.terminal.ansi.dim_magenta,
+            ThemeColorField::TerminalAnsiCyan => self.terminal.ansi.cyan,
+            ThemeColorField::TerminalAnsiBrightCyan => self.terminal.ansi.bright_cyan,
+            ThemeColorField::TerminalAnsiDimCyan => self.terminal.ansi.dim_cyan,
+            ThemeColorField::TerminalAnsiWhite => self.terminal.ansi.white,
+            ThemeColorField::TerminalAnsiBrightWhite => self.terminal.ansi.bright_white,
+            ThemeColorField::TerminalAnsiDimWhite => self.terminal.ansi.dim_white,
+            // Panel
+            ThemeColorField::PanelBackground => self.panel.background,
+            ThemeColorField::PanelFocusedBorder => self.panel.focused_border,
+            ThemeColorField::PanelIndentGuide => self.panel.indent_guide,
+            ThemeColorField::PanelIndentGuideHover => self.panel.indent_guide_hover,
+            ThemeColorField::PanelIndentGuideActive => self.panel.indent_guide_active,
+            ThemeColorField::PanelOverlayBackground => self.panel.overlay_background,
+            ThemeColorField::PanelOverlayHover => self.panel.overlay_hover,
+            // Pane
+            ThemeColorField::PaneFocusedBorder => self.pane.focused_border,
+            ThemeColorField::PaneGroupBorder => self.pane.group_border,
+            // Tab
+            ThemeColorField::TabBarBackground => self.tab.bar_background,
+            ThemeColorField::TabInactiveBackground => self.tab.inactive_background,
+            ThemeColorField::TabActiveBackground => self.tab.active_background,
+            ThemeColorField::TabInactiveForeground => self.tab.inactive_foreground,
+            ThemeColorField::TabActiveForeground => self.tab.active_foreground,
+            // Scrollbar
+            ThemeColorField::ScrollbarThumbBackground => self.scrollbar.thumb_background,
+            ThemeColorField::ScrollbarThumbHoverBackground => self.scrollbar.thumb_hover_background,
+            ThemeColorField::ScrollbarThumbActiveBackground => self.scrollbar.thumb_active_background,
+            ThemeColorField::ScrollbarThumbBorder => self.scrollbar.thumb_border,
+            ThemeColorField::ScrollbarTrackBackground => self.scrollbar.track_background,
+            ThemeColorField::ScrollbarTrackBorder => self.scrollbar.track_border,
+            // Minimap
+            ThemeColorField::MinimapThumbBackground => self.minimap.thumb_background,
+            ThemeColorField::MinimapThumbHoverBackground => self.minimap.thumb_hover_background,
+            ThemeColorField::MinimapThumbActiveBackground => self.minimap.thumb_active_background,
+            ThemeColorField::MinimapThumbBorder => self.minimap.thumb_border,
+            // Status bar
+            ThemeColorField::StatusBarBackground => self.status_bar.background,
+            // Title bar
+            ThemeColorField::TitleBarBackground => self.title_bar.background,
+            ThemeColorField::TitleBarInactiveBackground => self.title_bar.inactive_background,
+            // Toolbar
+            ThemeColorField::ToolbarBackground => self.toolbar.background,
+            // Search
+            ThemeColorField::SearchMatchBackground => self.search.match_background,
+            ThemeColorField::SearchActiveMatchBackground => self.search.active_match_background,
+            // Vim
+            ThemeColorField::VimNormalBackground => self.vim.normal_background,
+            ThemeColorField::VimInsertBackground => self.vim.insert_background,
+            ThemeColorField::VimReplaceBackground => self.vim.replace_background,
+            ThemeColorField::VimVisualBackground => self.vim.visual_background,
+            ThemeColorField::VimVisualLineBackground => self.vim.visual_line_background,
+            ThemeColorField::VimVisualBlockBackground => self.vim.visual_block_background,
+            ThemeColorField::VimYankBackground => self.vim.yank_background,
+            ThemeColorField::VimHelixNormalBackground => self.vim.helix_normal_background,
+            ThemeColorField::VimHelixSelectBackground => self.vim.helix_select_background,
+            ThemeColorField::VimNormalForeground => self.vim.normal_foreground,
+            ThemeColorField::VimInsertForeground => self.vim.insert_foreground,
+            ThemeColorField::VimReplaceForeground => self.vim.replace_foreground,
+            ThemeColorField::VimVisualForeground => self.vim.visual_foreground,
+            ThemeColorField::VimVisualLineForeground => self.vim.visual_line_foreground,
+            ThemeColorField::VimVisualBlockForeground => self.vim.visual_block_foreground,
+            ThemeColorField::VimHelixNormalForeground => self.vim.helix_normal_foreground,
+            ThemeColorField::VimHelixSelectForeground => self.vim.helix_select_foreground,
+            // Version control
+            ThemeColorField::VersionControlAdded => self.version_control.added,
+            ThemeColorField::VersionControlDeleted => self.version_control.deleted,
+            ThemeColorField::VersionControlModified => self.version_control.modified,
+            ThemeColorField::VersionControlRenamed => self.version_control.renamed,
+            ThemeColorField::VersionControlConflict => self.version_control.conflict,
+            ThemeColorField::VersionControlIgnored => self.version_control.ignored,
+            ThemeColorField::VersionControlWordAdded => self.version_control.word_added,
+            ThemeColorField::VersionControlWordDeleted => self.version_control.word_deleted,
+            ThemeColorField::VersionControlConflictMarkerOurs => self.version_control.conflict_marker_ours,
+            ThemeColorField::VersionControlConflictMarkerTheirs => self.version_control.conflict_marker_theirs,
+            // Block
+            ThemeColorField::BlockSuccessBadge => self.block.success_badge,
+            ThemeColorField::BlockErrorBadge => self.block.error_badge,
+            ThemeColorField::BlockRunningBadge => self.block.running_badge,
+            // Chart
+            ThemeColorField::Chart1 => self.chart.chart_1,
+            ThemeColorField::Chart2 => self.chart.chart_2,
+            ThemeColorField::Chart3 => self.chart.chart_3,
+            ThemeColorField::Chart4 => self.chart.chart_4,
+            ThemeColorField::Chart5 => self.chart.chart_5,
         }
     }
 
@@ -603,14 +829,16 @@ pub fn all_theme_colors(cx: &mut App) -> Vec<(Oklch, SharedString)> {
         .collect()
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ThemeStyles (kept here alongside ThemeColors for derive macro proximity)
+// ─────────────────────────────────────────────────────────────────────────────
+
 #[derive(Refineable, Clone, Debug, PartialEq)]
 pub struct ThemeStyles {
     /// The background appearance of the window.
     pub window_background_appearance: WindowBackgroundAppearance,
     pub system: SystemColors,
     /// An array of colors used for theme elements that iterate through a series of colors.
-    ///
-    /// Example: Player colors, rainbow brackets and indent guides, etc.
     pub accents: AccentColors,
 
     #[refineable]

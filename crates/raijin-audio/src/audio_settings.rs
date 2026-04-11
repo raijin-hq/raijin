@@ -5,7 +5,7 @@ use std::{
 
 use cpal::DeviceId;
 use inazuma::App;
-use inazuma_settings_framework::{RegisterSetting, Settings, SettingsStore};
+use inazuma_settings_framework::{RegisterSetting, Settings, SettingsContent, SettingsStore};
 
 #[derive(Clone, Debug, RegisterSetting)]
 pub struct AudioSettings {
@@ -23,20 +23,20 @@ pub struct AudioSettings {
     pub input_audio_device: Option<DeviceId>,
 }
 
-/// Configuration of audio in Zed
+/// Configuration of audio in Raijin
 impl Settings for AudioSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &SettingsContent) -> Self {
         let audio = &content.audio.as_ref().unwrap();
         AudioSettings {
             auto_microphone_volume: audio.auto_microphone_volume.unwrap(),
             output_audio_device: audio
                 .output_audio_device
                 .as_ref()
-                .and_then(|x| x.0.as_ref().and_then(|id| DeviceId::from_str(&id).ok())),
+                .and_then(|x| x.0.as_ref().and_then(|id| DeviceId::from_str(id).ok())),
             input_audio_device: audio
                 .input_audio_device
                 .as_ref()
-                .and_then(|x| x.0.as_ref().and_then(|id| DeviceId::from_str(&id).ok())),
+                .and_then(|x| x.0.as_ref().and_then(|id| DeviceId::from_str(id).ok())),
         }
     }
 }

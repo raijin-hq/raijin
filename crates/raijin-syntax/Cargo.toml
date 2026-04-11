@@ -1,0 +1,104 @@
+[package]
+name = "raijin-syntax"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license = "GPL-3.0-or-later"
+description = "Standalone syntax highlighting for UI components (Input, Markdown code blocks)"
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/syntax.rs"
+doctest = false
+
+[features]
+tree-sitter-languages = [
+    "dep:tree-sitter-astro-next",
+    "dep:tree-sitter-bash",
+    "dep:tree-sitter-c",
+    "dep:tree-sitter-c-sharp",
+    "dep:tree-sitter-cmake",
+    "dep:tree-sitter-cpp",
+    "dep:tree-sitter-css",
+    "dep:tree-sitter-diff",
+    "dep:tree-sitter-elixir",
+    "dep:tree-sitter-embedded-template",
+    "dep:tree-sitter-go",
+    "dep:tree-sitter-graphql",
+    "dep:tree-sitter-html",
+    "dep:tree-sitter-java",
+    "dep:tree-sitter-javascript",
+    "dep:tree-sitter-jsdoc",
+    "dep:tree-sitter-kotlin-sg",
+    "dep:tree-sitter-lua",
+    "dep:tree-sitter-make",
+    "dep:tree-sitter-md",
+    "dep:tree-sitter-php",
+    "dep:tree-sitter-proto",
+    "dep:tree-sitter-python",
+    "dep:tree-sitter-ruby",
+    "dep:tree-sitter-rust",
+    "dep:tree-sitter-scala",
+    "dep:tree-sitter-sequel",
+    "dep:tree-sitter-swift",
+    "dep:tree-sitter-toml-ng",
+    "dep:tree-sitter-typescript",
+    "dep:tree-sitter-svelte-next",
+    "dep:tree-sitter-yaml",
+    "dep:tree-sitter-zig",
+]
+
+[dependencies]
+inazuma.workspace = true
+inazuma-sum_tree.workspace = true
+raijin-theme.workspace = true
+ropey = { version = "2.0.0-beta.1", features = ["metric_lines_lf", "metric_utf16"] }
+lsp-types = { version = "0.97", features = ["proposed"] }
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_repr.workspace = true
+anyhow.workspace = true
+log.workspace = true
+tracing.workspace = true
+enum-iterator = "2.1.0"
+once_cell.workspace = true
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+tree-sitter = "0.26"
+tree-sitter-json = "0.24.8"
+tree-sitter-astro-next = { version = "0.1.1", optional = true }
+tree-sitter-bash = { version = "0.23.3", optional = true }
+tree-sitter-c = { version = "0.24.1", optional = true }
+tree-sitter-c-sharp = { version = "0.23.1", optional = true }
+tree-sitter-cmake = { version = "0.7.1", optional = true }
+tree-sitter-cpp = { version = "0.23.4", optional = true }
+tree-sitter-css = { version = "0.23.2", optional = true }
+tree-sitter-diff = { version = "0.1.0", optional = true }
+tree-sitter-elixir = { version = "0.3", optional = true }
+tree-sitter-embedded-template = { version = "0.23.0", optional = true }
+tree-sitter-go = { version = "0.23.4", optional = true }
+tree-sitter-graphql = { version = "0.1.0", optional = true }
+tree-sitter-html = { version = "0.23.2", optional = true }
+tree-sitter-java = { version = "0.23.5", optional = true }
+tree-sitter-javascript = { version = "0.23.1", optional = true }
+tree-sitter-jsdoc = { version = "0.23.2", optional = true }
+tree-sitter-kotlin-sg = { version = "0.4.0", optional = true }
+tree-sitter-lua = { version = "0.4.1", optional = true }
+tree-sitter-make = { version = "1.1.1", optional = true }
+tree-sitter-md = { version = "0.5.1", optional = true }
+tree-sitter-php = { version = "0.24.2", optional = true }
+tree-sitter-proto = { version = "0.2.0", optional = true }
+tree-sitter-python = { version = "0.23.6", optional = true }
+tree-sitter-ruby = { version = "0.23.1", optional = true }
+tree-sitter-rust = { version = "0.24.0", optional = true }
+tree-sitter-scala = { version = "0.23.4", optional = true }
+tree-sitter-sequel = { version = "0.3.8", optional = true }
+tree-sitter-svelte-next = { version = "0.1.1", optional = true }
+tree-sitter-swift = { version = "0.7.0", optional = true }
+tree-sitter-toml-ng = { version = "0.7.0", optional = true }
+tree-sitter-typescript = { version = "0.23.2", optional = true }
+tree-sitter-yaml = { version = "0.7.1", optional = true }
+tree-sitter-zig = { version = "1.1.2", optional = true }

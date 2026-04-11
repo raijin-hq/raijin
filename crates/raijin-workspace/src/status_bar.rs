@@ -76,7 +76,7 @@ impl Render for StatusBar {
             .justify_between()
             .gap(DynamicSpacing::Base08.rems(cx))
             .p(DynamicSpacing::Base04.rems(cx))
-            .bg(cx.theme().colors().status_bar_background)
+            .bg(cx.theme().colors().status_bar.background)
             .map(|el| match window.window_decorations() {
                 Decorations::Server => el,
                 Decorations::Client { tiling, .. } => el
@@ -93,7 +93,7 @@ impl Render for StatusBar {
                     // This border is to avoid a transparent gap in the rounded corners
                     .mb(px(-1.))
                     .border_b(px(1.0))
-                    .border_color(cx.theme().colors().status_bar_background),
+                    .border_color(cx.theme().colors().status_bar.background),
             })
             .child(self.render_left_tools(&sidebar, cx))
             .child(self.render_right_tools(&sidebar, cx))
@@ -140,7 +140,7 @@ impl StatusBar {
     ) -> impl IntoElement {
         let on_right = sidebar.side == SidebarSide::Right;
         let has_notifications = sidebar.has_notifications;
-        let indicator_border = cx.theme().colors().status_bar_background;
+        let indicator_border = cx.theme().colors().status_bar.background;
 
         let toggle = sidebar_side_context_menu("sidebar-status-toggle-menu", cx)
             .anchor(if on_right {

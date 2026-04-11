@@ -34,7 +34,7 @@ use raijin_workspace::CollaboratorId;
 async fn test_edit_prediction_insert(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let absolute_zero_celsius = ˇ;");
@@ -58,7 +58,7 @@ async fn test_edit_prediction_cursor_position_inside_insertion(cx: &mut inazuma:
         eprintln!("");
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
 
     assign_editor_completion_provider(provider.clone(), &mut cx);
@@ -91,7 +91,7 @@ async fn test_edit_prediction_cursor_position_inside_insertion(cx: &mut inazuma:
 async fn test_edit_prediction_cursor_position_outside_edit(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     // Buffer: "let x = ;" with cursor before semicolon - we'll insert "42" and position cursor elsewhere
@@ -122,7 +122,7 @@ async fn test_edit_prediction_cursor_position_outside_edit(cx: &mut inazuma::Tes
 async fn test_edit_prediction_cursor_position_fallback(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");
@@ -141,7 +141,7 @@ async fn test_edit_prediction_cursor_position_fallback(cx: &mut inazuma::TestApp
 async fn test_edit_prediction_modification(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let pi = ˇ\"foo\";");
@@ -163,7 +163,7 @@ async fn test_edit_prediction_modification(cx: &mut inazuma::TestAppContext) {
 async fn test_edit_prediction_jump_button(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
 
@@ -232,7 +232,7 @@ async fn test_edit_prediction_jump_button(cx: &mut inazuma::TestAppContext) {
 async fn test_edit_prediction_invalidation_range(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
 
@@ -337,7 +337,7 @@ async fn test_edit_prediction_invalidation_range(cx: &mut inazuma::TestAppContex
 async fn test_edit_prediction_jump_disabled_for_non_zed_providers(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeNonZedEditPredictionDelegate::default());
     assign_editor_completion_provider_non_zed(provider.clone(), &mut cx);
 
@@ -380,7 +380,7 @@ async fn test_edit_prediction_jump_disabled_for_non_zed_providers(cx: &mut inazu
 async fn test_edit_prediction_refresh_suppressed_while_following(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");
@@ -439,7 +439,7 @@ async fn test_edit_prediction_preview_cleanup_on_toggle_off(cx: &mut inazuma::Te
     // binding's modifiers triggers the edit prediction preview.
     cx.update(|cx| cx.bind_keys([KeyBinding::new("ctrl-shift-a", AcceptEditPrediction, None)]));
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");
@@ -497,7 +497,7 @@ async fn test_edit_prediction_preview_activates_when_prediction_arrives_with_mod
         settings.edit_predictions.get_or_insert_default().mode = Some(EditPredictionsMode::Subtle);
     });
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");
@@ -577,7 +577,7 @@ async fn test_inline_edit_prediction_keybind_selection_cases(cx: &mut inazuma::T
 
     init_test(cx, |_| {});
     load_default_keymap(cx);
-    let mut default_cx = EditorTestConinazuma_text::new(cx).await;
+    let mut default_cx = EditorTestContext::new(cx).await;
     let provider = default_cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut default_cx);
     default_cx.set_state("let x = ˇ;");
@@ -711,7 +711,7 @@ async fn test_inline_edit_prediction_keybind_selection_cases(cx: &mut inazuma::T
             cx.update(|cx| cx.bind_keys(case.extra_bindings.clone()));
         }
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         let provider = cx.new(|_| FakeEditPredictionDelegate::default());
         assign_editor_completion_provider(provider.clone(), &mut cx);
 
@@ -823,7 +823,7 @@ async fn test_tab_accepts_edit_prediction_over_completion(cx: &mut inazuma::Test
     init_test(cx, |_| {});
     load_default_keymap(cx);
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");
@@ -896,7 +896,7 @@ async fn test_cursor_popover_edit_prediction_keybind_cases(cx: &mut inazuma::Tes
         init_test(cx, |_| {});
         load_default_keymap(cx);
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         let provider = cx.new(|_| FakeEditPredictionDelegate::default());
         assign_editor_completion_provider(provider.clone(), &mut cx);
 
@@ -1059,7 +1059,7 @@ async fn test_cancel_clears_stale_edit_prediction_in_menu(cx: &mut inazuma::Test
     init_test(cx, |_| {});
     load_default_keymap(cx);
 
-    let mut cx = EditorTestConinazuma_text::new(cx).await;
+    let mut cx = EditorTestContext::new(cx).await;
     let provider = cx.new(|_| FakeEditPredictionDelegate::default());
     assign_editor_completion_provider(provider.clone(), &mut cx);
     cx.set_state("let x = ˇ;");

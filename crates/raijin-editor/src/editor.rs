@@ -68,7 +68,7 @@ pub use element::{
     CursorLayout, EditorElement, HighlightedRange, HighlightedRangeLine, PointForPosition,
     render_breadcrumb_text,
 };
-pub use raijin_git::blame::BlameRenderer;
+pub use crate::git::blame::BlameRenderer;
 pub use hover_popover::hover_markdown_style;
 pub use inlays::Inlay;
 pub use items::MAX_TAB_TITLE_LEN;
@@ -111,7 +111,7 @@ use futures::{
     future::{self, Shared, join},
 };
 use inazuma_fuzzy::{StringMatch, StringMatchCandidate};
-use raijin_git::blame::{GitBlame, GlobalBlameRenderer};
+use crate::git::blame::{GitBlame, GlobalBlameRenderer};
 use inazuma::{
     Action, Animation, AnimationExt, AnyElement, App, AppContext, AsyncWindowContext,
     AvailableSpace, Background, Bounds, ClickEvent, ClipboardEntry, ClipboardItem, Context,
@@ -147,7 +147,7 @@ use raijin_lsp::{
     LanguageServerId,
 };
 use raijin_markdown::Markdown;
-use mouse_context_inazuma_menu::MouseContextMenu;
+use mouse_context_menu::MouseContextMenu;
 use movement::TextLayoutDetails;
 use raijin_multi_buffer::{
     ExcerptInfo, ExpandExcerptDirection, MultiBufferDiffHunk, MultiBufferPoint, MultiBufferRow,
@@ -190,7 +190,7 @@ use std::{
     borrow::Cow,
     cell::{OnceCell, RefCell},
     cmp::{self, Ordering, Reverse},
-    inazuma_collections::hash_map,
+    collections::hash_map,
     iter::{self, Peekable},
     mem,
     num::NonZeroU32,
@@ -2762,7 +2762,7 @@ impl Editor {
     ) {
         self.mouse_context_menu = Some(MouseContextMenu::new(
             self,
-            crate::mouse_context_inazuma_menu::MenuPosition::PinnedToScreen(position),
+            crate::mouse_context_menu::MenuPosition::PinnedToScreen(position),
             context_menu,
             window,
             cx,
@@ -2809,7 +2809,7 @@ impl Editor {
         window: &mut Window,
         cx: &mut App,
     ) -> KeyContext {
-        let mut key_context = KeyConinazuma_text::new_with_defaults();
+        let mut key_context = KeyContext::new_with_defaults();
         key_context.add("Editor");
         let mode = match self.mode {
             EditorMode::SingleLine => "single_line",
@@ -3729,7 +3729,7 @@ impl Editor {
                     false
                 } else if position_matches {
                     if self.snippet_stack.is_empty() {
-                        buffer.char_kind_before(start_offset, Some(CharScopeConinazuma_text::Completion))
+                        buffer.char_kind_before(start_offset, Some(CharScopeContext::Completion))
                             == Some(CharKind::Word)
                     } else {
                         // Snippet choices can be shown even when the cursor is in whitespace.
@@ -5025,7 +5025,7 @@ impl Editor {
                 let is_word_char = text.chars().next().is_none_or(|char| {
                     let classifier = snapshot
                         .char_classifier_at(start_anchor.to_offset(&snapshot))
-                        .scope_context(Some(CharScopeConinazuma_text::LinkedEdit));
+                        .scope_context(Some(CharScopeContext::LinkedEdit));
                     classifier.is_word(char)
                 });
                 let is_dot = text.as_ref() == ".";
@@ -5892,7 +5892,7 @@ impl Editor {
     fn completion_query(buffer: &MultiBufferSnapshot, position: impl ToOffset) -> Option<String> {
         let offset = position.to_offset(buffer);
         let (word_range, kind) =
-            buffer.surrounding_word(offset, Some(CharScopeConinazuma_text::Completion));
+            buffer.surrounding_word(offset, Some(CharScopeContext::Completion));
         if offset > word_range.start && kind == Some(CharKind::Word) {
             Some(
                 buffer
@@ -6304,7 +6304,7 @@ impl Editor {
         {
             let char_classifier = buffer_snapshot
                 .char_classifier_at(buffer_position)
-                .scope_context(Some(CharScopeConinazuma_text::Completion));
+                .scope_context(Some(CharScopeContext::Completion));
             project.update(cx, |project, cx| {
                 snippet_completions(project, &buffer, buffer_position, char_classifier, cx)
             })
@@ -7224,7 +7224,7 @@ impl Editor {
                 editor.highlight_background(
                     HighlightKey::Editor,
                     &ranges_to_highlight,
-                    |_, theme| theme.colors().editor_highlighted_line_background,
+                    |_, theme| theme.colors().editor.highlighted_line_background,
                     cx,
                 );
             });
@@ -7638,13 +7638,13 @@ impl Editor {
                     this.highlight_background(
                         HighlightKey::DocumentHighlightRead,
                         &read_ranges,
-                        |_, theme| theme.colors().editor_document_highlight_read_background,
+                        |_, theme| theme.colors().editor.document_highlight_read_background,
                         cx,
                     );
                     this.highlight_background(
                         HighlightKey::DocumentHighlightWrite,
                         &write_ranges,
-                        |_, theme| theme.colors().editor_document_highlight_write_background,
+                        |_, theme| theme.colors().editor.document_highlight_write_background,
                         cx,
                     );
                     cx.notify();
@@ -7760,7 +7760,7 @@ impl Editor {
                         editor.highlight_background(
                             HighlightKey::SelectedTextHighlight,
                             &match_ranges,
-                            |_, theme| theme.colors().editor_document_highlight_bracket_background,
+                            |_, theme| theme.colors().editor.document_highlight_bracket_background,
                             cx,
                         )
                     }
@@ -8222,7 +8222,7 @@ impl Editor {
                                 ));
                             self.highlight_rows::<EditPredictionPreview>(
                                 target..target,
-                                cx.theme().colors().editor_highlighted_line_background,
+                                cx.theme().colors().editor.highlighted_line_background,
                                 RowHighlightOptions {
                                     autoscroll: true,
                                     ..Default::default()
@@ -9776,7 +9776,7 @@ impl Editor {
             .items_start()
             .child(
                 h_flex()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .border(BORDER_WIDTH)
                     .shadow_xs()
                     .border_color(cx.theme().colors().border)
@@ -9806,8 +9806,8 @@ impl Editor {
                     .when(!has_keybind, |el| {
                         let status_colors = cx.theme().status();
 
-                        el.bg(status_colors.error_background)
-                            .border_color(status_colors.error.opacity(0.6))
+                        el.bg(status_colors.error.background)
+                            .border_color(status_colors.error.color.opacity(0.6))
                             .child(Icon::new(IconName::Info).color(Color::Error))
                             .cursor_default()
                             .hoverable_tooltip(move |_window, cx| {
@@ -10037,8 +10037,8 @@ impl Editor {
             .when(!has_keybind, |el| {
                 let status_colors = cx.theme().status();
 
-                el.bg(status_colors.error_background)
-                    .border_color(status_colors.error.opacity(0.6))
+                el.bg(status_colors.error.background)
+                    .border_color(status_colors.error.color.opacity(0.6))
                     .pl_2()
                     .child(Icon::new(icons.error).color(Color::Error))
                     .cursor_default()
@@ -10051,7 +10051,7 @@ impl Editor {
                 Label::new(label)
                     .size(LabelSize::Small)
                     .when(!has_keybind, |el| {
-                        el.color(cx.theme().status().error.into()).strikethrough()
+                        el.color(cx.theme().status().error.color.into()).strikethrough()
                     }),
             )
             .when(!has_keybind, |el| {
@@ -10059,7 +10059,7 @@ impl Editor {
                     h_flex().ml_1().child(
                         Icon::new(IconName::Info)
                             .size(IconSize::Small)
-                            .color(cx.theme().status().error.into()),
+                            .color(cx.theme().status().error.color.into()),
                     ),
                 )
             })
@@ -10100,8 +10100,8 @@ impl Editor {
             .when(!has_keybind, |el| {
                 let status_colors = cx.theme().status();
 
-                el.bg(status_colors.error_background)
-                    .border_color(status_colors.error.opacity(0.6))
+                el.bg(status_colors.error.background)
+                    .border_color(status_colors.error.color.opacity(0.6))
                     .pl_2()
                     .child(Icon::new(icons.error).color(Color::Error))
                     .cursor_default()
@@ -10115,7 +10115,7 @@ impl Editor {
                     .size(LabelSize::Small)
                     .buffer_font(cx)
                     .when(!has_keybind, |el| {
-                        el.color(cx.theme().status().error.into()).strikethrough()
+                        el.color(cx.theme().status().error.color.into()).strikethrough()
                     }),
             )
             .when(!has_keybind, |el| {
@@ -10123,7 +10123,7 @@ impl Editor {
                     h_flex().ml_1().child(
                         Icon::new(IconName::Info)
                             .size(IconSize::Small)
-                            .color(cx.theme().status().error.into()),
+                            .color(cx.theme().status().error.color.into()),
                     ),
                 )
             })
@@ -10136,13 +10136,13 @@ impl Editor {
 
     fn edit_prediction_line_popover_bg_color(cx: &App) -> Oklch {
         let accent_color = cx.theme().colors().text_accent;
-        let editor_bg_color = cx.theme().colors().editor_background;
+        let editor_bg_color = cx.theme().colors().editor.background;
         editor_bg_color.blend(accent_color.opacity(0.1))
     }
 
     fn edit_prediction_callout_popover_border_color(cx: &App) -> Oklch {
         let accent_color = cx.theme().colors().text_accent;
-        let editor_bg_color = cx.theme().colors().editor_background;
+        let editor_bg_color = cx.theme().colors().editor.background;
         editor_bg_color.blend(accent_color.opacity(0.6))
     }
     fn get_prediction_provider_icons(
@@ -10235,8 +10235,8 @@ impl Editor {
                                     .when(keybind_display.missing_accept_keystroke, |el| {
                                         let status_colors = cx.theme().status();
 
-                                        el.bg(status_colors.error_background)
-                                            .border_color(status_colors.error.opacity(0.6))
+                                        el.bg(status_colors.error.background)
+                                            .border_color(status_colors.error.color.opacity(0.6))
                                             .child(Icon::new(IconName::Info).color(Color::Error))
                                             .cursor_default()
                                             .hoverable_tooltip(move |_window, cx| {
@@ -12833,7 +12833,7 @@ impl Editor {
         cx: &mut Context<Self>,
     ) {
         self.manipulate_text(window, cx, |text| {
-            Self::convert_text_case(text, Case::Sentence)
+            Self::convert_to_sentence_case_impl(text)
         })
     }
 
@@ -12873,6 +12873,31 @@ impl Editor {
                 let trimmed = trimmed_start.trim_end();
                 let trailing = &trimmed_start[trimmed.len()..];
                 format!("{}{}{}", leading, trimmed.to_case(case), trailing)
+            })
+            .join("\n")
+    }
+
+    fn convert_to_sentence_case_impl(text: &str) -> String {
+        text.lines()
+            .map(|line| {
+                let trimmed_start = line.trim_start();
+                let leading = &line[..line.len() - trimmed_start.len()];
+                let trimmed = trimmed_start.trim_end();
+                let trailing = &trimmed_start[trimmed.len()..];
+                let mut result = String::with_capacity(trimmed.len());
+                let mut capitalize_next = true;
+                for ch in trimmed.chars() {
+                    if capitalize_next && ch.is_alphabetic() {
+                        result.extend(ch.to_uppercase());
+                        capitalize_next = false;
+                    } else {
+                        result.extend(ch.to_lowercase());
+                        if ch == '.' || ch == '!' || ch == '?' {
+                            capitalize_next = true;
+                        }
+                    }
+                }
+                format!("{}{}{}", leading, result, trailing)
             })
             .join("\n")
     }
@@ -17941,7 +17966,7 @@ impl Editor {
         self.highlight_rows::<T>(
             start..end,
             highlight_color
-                .unwrap_or_else(|| cx.theme().colors().editor_highlighted_line_background),
+                .unwrap_or_else(|| cx.theme().colors().editor.highlighted_line_background),
             Default::default(),
             cx,
         );
@@ -18992,7 +19017,7 @@ impl Editor {
                 editor.highlight_background(
                     HighlightKey::Editor,
                     &ranges,
-                    |_, theme| theme.colors().editor_highlighted_line_background,
+                    |_, theme| theme.colors().editor.highlighted_line_background,
                     cx,
                 );
             }
@@ -22951,7 +22976,7 @@ impl Editor {
 
     pub fn copy_path(
         &mut self,
-        _: &raijin_actions::raijin_workspace::CopyPath,
+        _: &raijin_actions::workspace::CopyPath,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -22966,7 +22991,7 @@ impl Editor {
 
     pub fn copy_relative_path(
         &mut self,
-        _: &raijin_actions::raijin_workspace::CopyRelativePath,
+        _: &raijin_actions::workspace::CopyRelativePath,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -23054,7 +23079,7 @@ impl Editor {
 
                 self.go_to_line::<ActiveDebugLine>(
                     multibuffer_anchor,
-                    Some(cx.theme().colors().editor_debugger_active_line_background),
+                    Some(cx.theme().colors().editor.debugger_active_line_background),
                     window,
                     cx,
                 );
@@ -23714,7 +23739,7 @@ impl Editor {
         self.highlight_background(
             HighlightKey::SearchWithinRange,
             ranges,
-            |_, colors| colors.colors().editor_document_highlight_read_background,
+            |_, colors| colors.colors().editor.document_highlight_read_background,
             cx,
         )
     }
@@ -25109,7 +25134,7 @@ impl Editor {
             .selections
             .newest_display(&self.display_snapshot(cx))
             .start;
-        mouse_context_inazuma_menu::deploy_context_menu(self, None, position, window, cx);
+        mouse_context_menu::deploy_context_menu(self, None, position, window, cx);
     }
 
     pub fn replay_insert_event(
@@ -25807,7 +25832,7 @@ impl Editor {
 
         let mut text_style = match self.mode {
             EditorMode::SingleLine | EditorMode::AutoHeight { .. } => TextStyle {
-                color: cx.theme().colors().editor_foreground,
+                color: cx.theme().colors().editor.foreground,
                 font_family: settings.ui_font.family.clone(),
                 font_features: settings.ui_font.features.clone(),
                 font_fallbacks: settings.ui_font.fallbacks.clone(),
@@ -25817,7 +25842,7 @@ impl Editor {
                 ..Default::default()
             },
             EditorMode::Full { .. } | EditorMode::Minimap { .. } => TextStyle {
-                color: cx.theme().colors().editor_foreground,
+                color: cx.theme().colors().editor.foreground,
                 font_family: settings.buffer_font.family.clone(),
                 font_features: settings.buffer_font.features.clone(),
                 font_fallbacks: settings.buffer_font.fallbacks.clone(),
@@ -25834,8 +25859,8 @@ impl Editor {
         let background = match self.mode {
             EditorMode::SingleLine => cx.theme().system().transparent,
             EditorMode::AutoHeight { .. } => cx.theme().system().transparent,
-            EditorMode::Full { .. } => cx.theme().colors().editor_background,
-            EditorMode::Minimap { .. } => cx.theme().colors().editor_background.opacity(0.7),
+            EditorMode::Full { .. } => cx.theme().colors().editor.background,
+            EditorMode::Minimap { .. } => cx.theme().colors().editor.background.opacity(0.7),
         };
 
         EditorStyle {
@@ -27508,7 +27533,7 @@ impl CompletionProvider for Entity<Project> {
         let snapshot = buffer.snapshot();
         let classifier = snapshot
             .char_classifier_at(position)
-            .scope_context(Some(CharScopeConinazuma_text::Completion));
+            .scope_context(Some(CharScopeContext::Completion));
         if trigger_in_words && classifier.is_word(char) {
             return true;
         }
@@ -28851,11 +28876,11 @@ fn edit_prediction_fallback_text(edits: &[(Range<Anchor>, Arc<str>)], cx: &App) 
 
 pub fn diagnostic_style(severity: raijin_lsp::DiagnosticSeverity, colors: &StatusColors) -> Oklch {
     match severity {
-        raijin_lsp::DiagnosticSeverity::ERROR => colors.error,
-        raijin_lsp::DiagnosticSeverity::WARNING => colors.warning,
-        raijin_lsp::DiagnosticSeverity::INFORMATION => colors.info,
-        raijin_lsp::DiagnosticSeverity::HINT => colors.info,
-        _ => colors.ignored,
+        raijin_lsp::DiagnosticSeverity::ERROR => colors.error.color,
+        raijin_lsp::DiagnosticSeverity::WARNING => colors.warning.color,
+        raijin_lsp::DiagnosticSeverity::INFORMATION => colors.info.color,
+        raijin_lsp::DiagnosticSeverity::HINT => colors.info.color,
+        _ => colors.ignored.color,
     }
 }
 
@@ -29228,7 +29253,7 @@ impl BreakpointPromptEditor {
         EditorElement::new(
             &self.prompt,
             EditorStyle {
-                background: cx.theme().colors().editor_background,
+                background: cx.theme().colors().editor.background,
                 local_player: cx.theme().players().local(),
                 text: text_style,
                 ..Default::default()
@@ -29272,7 +29297,7 @@ impl Render for BreakpointPromptEditor {
         let right_padding = editor_margins.right + px(9.);
         h_flex()
             .key_context("Editor")
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .border_y_1()
             .border_color(cx.theme().status().info.border)
             .size_full()
@@ -29410,7 +29435,7 @@ fn render_diff_hunk_controls(
         .border_b_1()
         .border_color(cx.theme().colors().border_variant)
         .rounded_b_lg()
-        .bg(cx.theme().colors().editor_background)
+        .bg(cx.theme().colors().editor.background)
         .gap_1()
         .block_mouse_except_scroll()
         .shadow_md()

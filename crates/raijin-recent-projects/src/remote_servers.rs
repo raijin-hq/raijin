@@ -136,7 +136,7 @@ impl AddWslDistro {
             &picker,
             window,
             |this, _, _: &WslDistroSelected, window, cx| {
-                this.confirm(&menu::Confirm, window, cx);
+                this.confirm(&inazuma_menu::Confirm, window, cx);
             },
         )
         .detach();
@@ -145,7 +145,7 @@ impl AddWslDistro {
             &picker,
             window,
             |this, _, _: &WslPickerDismissed, window, cx| {
-                this.cancel(&menu::Cancel, window, cx);
+                this.cancel(&inazuma_menu::Cancel, window, cx);
             },
         )
         .detach();
@@ -279,7 +279,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
     fn dismissed(&mut self, window: &mut Window, cx: &mut Context<Picker<Self>>) {
         self.parent_modal
             .update(cx, |modal, cx| {
-                modal.cancel(&menu::Cancel, window, cx);
+                modal.cancel(&inazuma_menu::Cancel, window, cx);
             })
             .ok();
     }
@@ -296,13 +296,13 @@ impl PickerDelegate for DevContainerPickerDelegate {
         Some(
             ListItem::new(SharedString::from(format!("li-devcontainer-config-{}", ix)))
                 .inset(true)
-                .spacing(ui::ListItemSpacing::Sparse)
+                .spacing(raijin_ui::ListItemSpacing::Sparse)
                 .toggle_state(selected)
                 .start_slot(Icon::new(IconName::FileToml).color(Color::Muted))
                 .child(
                     v_flex().child(Label::new(candidate.name.clone())).child(
                         Label::new(config_path)
-                            .size(ui::LabelSize::Small)
+                            .size(raijin_ui::LabelSize::Small)
                             .color(Color::Muted),
                     ),
                 )
@@ -326,21 +326,21 @@ impl PickerDelegate for DevContainerPickerDelegate {
                 .child(
                     Button::new("run-action", "Start Dev Container")
                         .key_binding(
-                            KeyBinding::for_action(&menu::Confirm, cx)
+                            KeyBinding::for_action(&inazuma_menu::Confirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                 )
                 .child(
                     Button::new("run-action-secondary", "Open devcontainer.json")
                         .key_binding(
-                            KeyBinding::for_action(&menu::SecondaryConfirm, cx)
+                            KeyBinding::for_action(&inazuma_menu::SecondaryConfirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                         }),
                 )
                 .into_any_element(),
@@ -388,8 +388,8 @@ impl ProjectPicker {
         cx: &mut Context<RemoteServerProjects>,
     ) -> Entity<Self> {
         let (tx, rx) = oneshot::channel();
-        let lister = project::DirectoryLister::Project(project.clone());
-        let delegate = open_path_prompt::OpenPathDelegate::new(tx, lister, false, cx).show_hidden();
+        let lister = raijin_project::DirectoryLister::Project(project.clone());
+        let delegate = raijin_open_path_prompt::OpenPathDelegate::new(tx, lister, false, cx).show_hidden();
 
         let picker = cx.new(|cx| {
             let picker = Picker::uniform_list(delegate, window, cx)
@@ -491,7 +491,7 @@ impl ProjectPicker {
                     let window = cx
                         .open_window(options, |window, cx| {
                             let workspace = cx.new(|cx| {
-                                telemetry::event!("SSH Project Created");
+                                raijin_telemetry::event!("SSH Project Created");
                                 Workspace::new(None, project.clone(), app_state.clone(), window, cx)
                             });
                             cx.new(|cx| MultiWorkspace::new(workspace, window, cx))
@@ -890,7 +890,7 @@ impl RemoteServerProjects {
 
         let mut base_style = window.text_style();
         base_style.refine(&inazuma::TextStyleRefinement {
-            color: Some(cx.theme().colors().editor_foreground),
+            color: Some(cx.theme().colors().editor.foreground),
             ..Default::default()
         });
 
@@ -924,7 +924,7 @@ impl RemoteServerProjects {
     fn project_picker(
         create_new_window: bool,
         index: ServerIndex,
-        connection_options: remote::RemoteConnectionOptions,
+        connection_options: raijin_remote::RemoteConnectionOptions,
         project: Entity<Project>,
         home_dir: RemotePathBuf,
         window: &mut Window,
@@ -997,7 +997,7 @@ impl RemoteServerProjects {
                 Some(Some(client)) => this
                     .update_in(cx, |this, window, cx| {
                         info!("ssh server created");
-                        telemetry::event!("SSH Server Created");
+                        raijin_telemetry::event!("SSH Server Created");
                         this.retained_connections.push(client);
                         this.add_ssh_server(connection_options, cx);
                         this.mode = Mode::default_mode(&this.ssh_config_servers, cx);
@@ -1070,7 +1070,7 @@ impl RemoteServerProjects {
         let creating = cx.spawn_in(window, async move |this, cx| {
             match connection.await {
                 Some(Some(client)) => this.update_in(cx, |this, window, cx| {
-                    telemetry::event!("WSL Distro Added");
+                    raijin_telemetry::event!("WSL Distro Added");
                     this.retained_connections.push(client);
                     let Some(fs) = this
                         .workspace
@@ -1201,7 +1201,7 @@ impl RemoteServerProjects {
                     let (path_style, project) = cx.update(|_, cx| {
                         (
                             session.read(cx).path_style(),
-                            project::Project::remote(
+                            raijin_project::Project::remote(
                                 session,
                                 app_state.client.clone(),
                                 app_state.node_runtime.clone(),
@@ -1250,7 +1250,7 @@ impl RemoteServerProjects {
         })
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         match &self.mode {
             Mode::Default(_) | Mode::ViewServerOptions(_) => {}
             Mode::ProjectPicker(_) => {}
@@ -1287,7 +1287,7 @@ impl RemoteServerProjects {
         }
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
         match &self.mode {
             Mode::Default(_) => cx.emit(DismissEvent),
             Mode::CreateRemoteServer(state) if state.ssh_prompt.is_some() => {
@@ -1403,7 +1403,7 @@ impl RemoteServerProjects {
                                 .anchor_scroll(open_folder.scroll_anchor.clone())
                                 .on_action(cx.listener({
                                     let connection = connection.clone();
-                                    move |this, _: &menu::Confirm, window, cx| {
+                                    move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.create_remote_project(
                                             index,
                                             connection.clone().into(),
@@ -1418,7 +1418,7 @@ impl RemoteServerProjects {
                                             open_folder.focus_handle.contains_focused(window, cx),
                                         )
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(Icon::new(IconName::Plus).color(Color::Muted))
                                         .child(Label::new("Open Folder"))
                                         .on_click(cx.listener({
@@ -1441,7 +1441,7 @@ impl RemoteServerProjects {
                                 .anchor_scroll(configure.scroll_anchor.clone())
                                 .on_action(cx.listener({
                                     let connection = connection.clone();
-                                    move |this, _: &menu::Confirm, window, cx| {
+                                    move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.view_server_options(
                                             (index, connection.clone().into()),
                                             window,
@@ -1455,7 +1455,7 @@ impl RemoteServerProjects {
                                             configure.focus_handle.contains_focused(window, cx),
                                         )
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(
                                             Icon::new(IconName::Settings).color(Color::Muted),
                                         )
@@ -1481,7 +1481,7 @@ impl RemoteServerProjects {
                         .on_action(cx.listener({
                             let connection = connection.clone();
                             let host = host.clone();
-                            move |this, _: &menu::Confirm, window, cx| {
+                            move |this, _: &inazuma_menu::Confirm, window, cx| {
                                 let new_ix = this.create_host_from_ssh_config(&host, cx);
                                 this.create_remote_project(
                                     new_ix.into(),
@@ -1495,7 +1495,7 @@ impl RemoteServerProjects {
                             ListItem::new(("new-remote-project", ix))
                                 .toggle_state(open_folder.focus_handle.contains_focused(window, cx))
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(raijin_ui::ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::Plus).color(Color::Muted))
                                 .child(Label::new("Open Folder"))
                                 .on_click(cx.listener({
@@ -1594,13 +1594,13 @@ impl RemoteServerProjects {
             .anchor_scroll(navigation.scroll_anchor.clone())
             .on_action(cx.listener({
                 let callback = callback.clone();
-                move |this, _: &menu::Confirm, window, cx| {
+                move |this, _: &inazuma_menu::Confirm, window, cx| {
                     callback(this, false, window, cx);
                 }
             }))
             .on_action(cx.listener({
                 let callback = callback.clone();
-                move |this, _: &menu::SecondaryConfirm, window, cx| {
+                move |this, _: &inazuma_menu::SecondaryConfirm, window, cx| {
                     callback(this, true, window, cx);
                 }
             }))
@@ -1608,7 +1608,7 @@ impl RemoteServerProjects {
                 ListItem::new((element_id_base, ix))
                     .toggle_state(navigation.focus_handle.contains_focused(window, cx))
                     .inset(true)
-                    .spacing(ui::ListItemSpacing::Sparse)
+                    .spacing(raijin_ui::ListItemSpacing::Sparse)
                     .start_slot(
                         Icon::new(IconName::Folder)
                             .color(Color::Muted)
@@ -1729,7 +1729,7 @@ impl RemoteServerProjects {
 
     fn add_ssh_server(
         &mut self,
-        connection_options: remote::SshConnectionOptions,
+        connection_options: raijin_remote::SshConnectionOptions,
         cx: &mut Context<Self>,
     ) {
         self.update_settings_file(cx, move |setting, _| {
@@ -1777,7 +1777,7 @@ impl RemoteServerProjects {
             if let Some(worktree) = worktree {
                 let tree_id = worktree.read(cx).id();
                 let devcontainer_path =
-                    match RelPath::new(&config_path, util::paths::PathStyle::Posix) {
+                    match RelPath::new(&config_path, inazuma_util::paths::PathStyle::Posix) {
                         Ok(path) => path.into_owned(),
                         Err(error) => {
                             log::error!(
@@ -1932,7 +1932,7 @@ impl RemoteServerProjects {
                                     ListItem::new("Error")
                                         .inset(true)
                                         .selectable(false)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(
                                             Icon::new(IconName::XCircle).color(Color::Error),
                                         )
@@ -1946,7 +1946,7 @@ impl RemoteServerProjects {
                             div()
                                 .id("devcontainer-see-log")
                                 .track_focus(&state.view_logs_entry.focus_handle)
-                                .on_action(cx.listener(|_, _: &menu::Confirm, window, cx| {
+                                .on_action(cx.listener(|_, _: &inazuma_menu::Confirm, window, cx| {
                                     window.dispatch_action(Box::new(OpenLog), cx);
                                     cx.emit(DismissEvent);
                                     cx.notify();
@@ -1960,7 +1960,7 @@ impl RemoteServerProjects {
                                                 .contains_focused(window, cx),
                                         )
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(Icon::new(IconName::File).color(Color::Muted))
                                         .child(Label::new("Open Zed Log"))
                                         .on_click(cx.listener(|_, _, window, cx| {
@@ -1974,8 +1974,8 @@ impl RemoteServerProjects {
                             div()
                                 .id("devcontainer-go-back")
                                 .track_focus(&state.back_entry.focus_handle)
-                                .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
-                                    this.cancel(&menu::Cancel, window, cx);
+                                .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
+                                    this.cancel(&inazuma_menu::Cancel, window, cx);
                                     cx.notify();
                                 }))
                                 .child(
@@ -1987,11 +1987,11 @@ impl RemoteServerProjects {
                                                 .contains_focused(window, cx),
                                         )
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(Icon::new(IconName::Exit).color(Color::Muted))
                                         .child(Label::new("Exit"))
                                         .on_click(cx.listener(|this, _, window, cx| {
-                                            this.cancel(&menu::Cancel, window, cx);
+                                            this.cancel(&inazuma_menu::Cancel, window, cx);
                                             cx.notify();
                                         })),
                                 ),
@@ -2022,7 +2022,7 @@ impl RemoteServerProjects {
                             .child(
                                 ListItem::new("creating")
                                     .inset(true)
-                                    .spacing(ui::ListItemSpacing::Sparse)
+                                    .spacing(raijin_ui::ListItemSpacing::Sparse)
                                     .disabled(true)
                                     .start_slot(
                                         Icon::new(IconName::ArrowCircle)
@@ -2090,7 +2090,7 @@ impl RemoteServerProjects {
             )
             .child(
                 h_flex()
-                    .bg(theme.colors().editor_background)
+                    .bg(theme.colors().editor.background)
                     .rounded_b_sm()
                     .w_full()
                     .map(|this| {
@@ -2228,7 +2228,7 @@ impl RemoteServerProjects {
                             div()
                                 .id("ssh-options-copy-server-address")
                                 .track_focus(&last_entry.focus_handle)
-                                .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                                .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                                     this.mode = Mode::default_mode(&this.ssh_config_servers, cx);
                                     cx.focus_self(window);
                                     cx.notify();
@@ -2239,7 +2239,7 @@ impl RemoteServerProjects {
                                             last_entry.focus_handle.contains_focused(window, cx),
                                         )
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(
                                             Icon::new(IconName::ArrowLeft).color(Color::Muted),
                                         )
@@ -2310,7 +2310,7 @@ impl RemoteServerProjects {
                 .track_focus(&entries[0].focus_handle)
                 .on_action(cx.listener({
                     let distro_name = distro_name.clone();
-                    move |_, _: &menu::Confirm, window, cx| {
+                    move |_, _: &inazuma_menu::Confirm, window, cx| {
                         remove_wsl_distro(cx.entity(), index, distro_name.clone(), window, cx);
                         cx.focus_self(window);
                     }
@@ -2319,7 +2319,7 @@ impl RemoteServerProjects {
                     ListItem::new("remove-distro")
                         .toggle_state(entries[0].focus_handle.contains_focused(window, cx))
                         .inset(true)
-                        .spacing(ui::ListItemSpacing::Sparse)
+                        .spacing(raijin_ui::ListItemSpacing::Sparse)
                         .start_slot(Icon::new(IconName::Trash).color(Color::Error))
                         .child(Label::new("Remove Distro").color(Color::Error))
                         .on_click(cx.listener(move |_, _, window, cx| {
@@ -2350,7 +2350,7 @@ impl RemoteServerProjects {
                 div()
                     .id("ssh-options-add-nickname")
                     .track_focus(&entries[0].focus_handle)
-                    .on_action(cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                    .on_action(cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                         this.mode = Mode::EditNickname(EditNicknameState::new(index, window, cx));
                         cx.notify();
                     }))
@@ -2358,7 +2358,7 @@ impl RemoteServerProjects {
                         ListItem::new("add-nickname")
                             .toggle_state(entries[0].focus_handle.contains_focused(window, cx))
                             .inset(true)
-                            .spacing(ui::ListItemSpacing::Sparse)
+                            .spacing(raijin_ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Pencil).color(Color::Muted))
                             .child(Label::new(label))
                             .on_click(cx.listener(move |this, _, window, cx| {
@@ -2403,7 +2403,7 @@ impl RemoteServerProjects {
                     .on_action({
                         let connection_string = connection_string.clone();
                         let workspace = self.workspace.clone();
-                        move |_: &menu::Confirm, _, cx| {
+                        move |_: &inazuma_menu::Confirm, _, cx| {
                             callback(workspace.clone(), connection_string.clone(), cx);
                         }
                     })
@@ -2411,7 +2411,7 @@ impl RemoteServerProjects {
                         ListItem::new("copy-server-address")
                             .toggle_state(entries[1].focus_handle.contains_focused(window, cx))
                             .inset(true)
-                            .spacing(ui::ListItemSpacing::Sparse)
+                            .spacing(raijin_ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Copy).color(Color::Muted))
                             .child(Label::new("Copy Server Address"))
                             .end_hover_slot(
@@ -2462,7 +2462,7 @@ impl RemoteServerProjects {
                     .track_focus(&entries[2].focus_handle)
                     .on_action(cx.listener({
                         let connection_string = connection_string.clone();
-                        move |_, _: &menu::Confirm, window, cx| {
+                        move |_, _: &inazuma_menu::Confirm, window, cx| {
                             remove_ssh_server(
                                 cx.entity(),
                                 index,
@@ -2477,7 +2477,7 @@ impl RemoteServerProjects {
                         ListItem::new("remove-server")
                             .toggle_state(entries[2].focus_handle.contains_focused(window, cx))
                             .inset(true)
-                            .spacing(ui::ListItemSpacing::Sparse)
+                            .spacing(raijin_ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Trash).color(Color::Error))
                             .child(Label::new("Remove Server").color(Color::Error))
                             .on_click(cx.listener(move |_, _, window, cx| {
@@ -2611,7 +2611,7 @@ impl RemoteServerProjects {
                             .contains_focused(window, cx),
                     )
                     .inset(true)
-                    .spacing(ui::ListItemSpacing::Sparse)
+                    .spacing(raijin_ui::ListItemSpacing::Sparse)
                     .start_slot(Icon::new(IconName::Plus).color(Color::Muted))
                     .child(Label::new("Connect SSH Server"))
                     .on_click(cx.listener(|this, _, window, cx| {
@@ -2621,7 +2621,7 @@ impl RemoteServerProjects {
                         cx.notify();
                     })),
             )
-            .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                 let state = CreateRemoteServer::new(window, cx);
                 this.mode = Mode::CreateRemoteServer(state);
 
@@ -2641,14 +2641,14 @@ impl RemoteServerProjects {
                             .contains_focused(window, cx),
                     )
                     .inset(true)
-                    .spacing(ui::ListItemSpacing::Sparse)
+                    .spacing(raijin_ui::ListItemSpacing::Sparse)
                     .start_slot(Icon::new(IconName::Plus).color(Color::Muted))
                     .child(Label::new("Connect Dev Container"))
                     .on_click(cx.listener(|this, _, window, cx| {
                         this.init_dev_container_mode(window, cx);
                     })),
             )
-            .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                 this.init_dev_container_mode(window, cx);
             }));
 
@@ -2661,7 +2661,7 @@ impl RemoteServerProjects {
                 ListItem::new("wsl-add-new-server")
                     .toggle_state(state.add_new_wsl.focus_handle.contains_focused(window, cx))
                     .inset(true)
-                    .spacing(ui::ListItemSpacing::Sparse)
+                    .spacing(raijin_ui::ListItemSpacing::Sparse)
                     .start_slot(Icon::new(IconName::Plus).color(Color::Muted))
                     .child(Label::new("Add WSL Distro"))
                     .on_click(cx.listener(|this, _, window, cx| {
@@ -2671,7 +2671,7 @@ impl RemoteServerProjects {
                         cx.notify();
                     })),
             )
-            .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                 let state = AddWslDistro::new(window, cx);
                 this.mode = Mode::AddWslDistro(state);
 
@@ -2810,9 +2810,9 @@ impl RemoteServerProjects {
             .footer(ModalFooter::new().end_slot({
                 let confirm_button = |label: SharedString| {
                     Button::new("select", label)
-                        .key_binding(KeyBinding::for_action(&menu::Confirm, cx))
+                        .key_binding(KeyBinding::for_action(&inazuma_menu::Confirm, cx))
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         })
                 };
 
@@ -2821,9 +2821,9 @@ impl RemoteServerProjects {
                         .gap_1()
                         .child(
                             Button::new("open_new_window", "New Window")
-                                .key_binding(KeyBinding::for_action(&menu::SecondaryConfirm, cx))
+                                .key_binding(KeyBinding::for_action(&inazuma_menu::SecondaryConfirm, cx))
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                                 }),
                         )
                         .child(confirm_button("Open".into()))

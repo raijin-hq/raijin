@@ -2735,9 +2735,9 @@ impl Pane {
             };
 
             let knockout_item_color = if is_active {
-                cx.theme().colors().tab_active_background
+                cx.theme().colors().tab.active_background
             } else {
-                cx.theme().colors().tab_bar_background
+                cx.theme().colors().tab.bar_background
             };
 
             let (icon_decoration, icon_color) = if matches!(diagnostic, &DiagnosticSeverity::ERROR)

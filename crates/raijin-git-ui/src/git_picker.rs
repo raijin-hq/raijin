@@ -500,7 +500,7 @@ impl Render for GitPicker {
             .on_mouse_down(MouseButton::Left, |_, _, cx| {
                 cx.stop_propagation();
             })
-            .on_action(cx.listener(|_, _: &menu::Cancel, _, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::Cancel, _, cx| {
                 cx.emit(DismissEvent);
             }))
             .on_action(cx.listener(|this, _: &pane::ActivateNextItem, window, cx| {
@@ -550,7 +550,7 @@ impl Render for GitPicker {
 
 pub fn open_branches(
     workspace: &mut Workspace,
-    _: &zed_actions::git::Branch,
+    _: &raijin_actions::git::Branch,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -559,7 +559,7 @@ pub fn open_branches(
 
 pub fn open_worktrees(
     workspace: &mut Workspace,
-    _: &zed_actions::git::Worktree,
+    _: &raijin_actions::git::Worktree,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -568,7 +568,7 @@ pub fn open_worktrees(
 
 pub fn open_stash(
     workspace: &mut Workspace,
-    _: &zed_actions::git::ViewStash,
+    _: &raijin_actions::git::ViewStash,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -606,21 +606,21 @@ pub fn popover(
 }
 
 pub fn register(workspace: &mut Workspace) {
-    workspace.register_action(|workspace, _: &zed_actions::git::Branch, window, cx| {
+    workspace.register_action(|workspace, _: &raijin_actions::git::Branch, window, cx| {
         open_with_tab(workspace, GitPickerTab::Branches, window, cx);
     });
-    workspace.register_action(|workspace, _: &zed_actions::git::Switch, window, cx| {
+    workspace.register_action(|workspace, _: &raijin_actions::git::Switch, window, cx| {
         open_with_tab(workspace, GitPickerTab::Branches, window, cx);
     });
     workspace.register_action(
-        |workspace, _: &zed_actions::git::CheckoutBranch, window, cx| {
+        |workspace, _: &raijin_actions::git::CheckoutBranch, window, cx| {
             open_with_tab(workspace, GitPickerTab::Branches, window, cx);
         },
     );
-    workspace.register_action(|workspace, _: &zed_actions::git::Worktree, window, cx| {
+    workspace.register_action(|workspace, _: &raijin_actions::git::Worktree, window, cx| {
         open_with_tab(workspace, GitPickerTab::Worktrees, window, cx);
     });
-    workspace.register_action(|workspace, _: &zed_actions::git::ViewStash, window, cx| {
+    workspace.register_action(|workspace, _: &raijin_actions::git::ViewStash, window, cx| {
         open_with_tab(workspace, GitPickerTab::Stash, window, cx);
     });
 }

@@ -489,11 +489,11 @@ impl Speed {
     }
 }
 
-impl From<Speed> for anthropic::Speed {
+impl From<Speed> for raijin_anthropic::Speed {
     fn from(speed: Speed) -> Self {
         match speed {
-            Speed::Standard => anthropic::Speed::Standard,
-            Speed::Fast => anthropic::Speed::Fast,
+            Speed::Standard => raijin_anthropic::Speed::Standard,
+            Speed::Fast => raijin_anthropic::Speed::Fast,
         }
     }
 }

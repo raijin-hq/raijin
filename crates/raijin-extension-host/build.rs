@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// Copy them to the OUT_DIR, so we can include them from there, which is supported.
 fn copy_extension_api_rust_files() -> Result<(), Box<dyn std::error::Error>> {
     let out_dir = env::var("OUT_DIR")?;
-    let input_dir = PathBuf::from("../extension_api/wit");
+    let input_dir = PathBuf::from("../raijin-extension-api/wit");
     let output_dir = PathBuf::from(out_dir);
 
     println!("cargo:rerun-if-changed={}", input_dir.display());

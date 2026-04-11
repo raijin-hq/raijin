@@ -253,7 +253,7 @@ mod tests {
     #[inazuma::test]
     async fn test_linked_edits_push_and_apply(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
 
         cx.set_state("<diˇv></div>");
         cx.update_editor(|editor, _window, cx| {
@@ -275,7 +275,7 @@ mod tests {
     #[inazuma::test]
     async fn test_linked_edits_backspace(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
 
         cx.set_state("<divˇ></div>");
         cx.update_editor(|editor, _window, cx| {
@@ -299,7 +299,7 @@ mod tests {
     #[inazuma::test]
     async fn test_linked_edits_delete(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
 
         cx.set_state("<ˇdiv></div>");
         cx.update_editor(|editor, _window, cx| {
@@ -323,7 +323,7 @@ mod tests {
     #[inazuma::test]
     async fn test_linked_edits_selection(cx: &mut TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
 
         cx.set_state("<«divˇ»></div>");
         cx.update_editor(|editor, _window, cx| {

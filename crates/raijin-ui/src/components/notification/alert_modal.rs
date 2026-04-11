@@ -107,7 +107,7 @@ impl RenderOnce for AlertModal {
             .id(self.id)
             .elevation_3(cx)
             .w(width)
-            .bg(cx.theme().colors().elevated_surface_background)
+            .bg(cx.theme().colors().elevated_surface)
             .overflow_hidden();
 
         for handler in self.action_handlers {
@@ -232,14 +232,14 @@ Review .zed/settings.json for any extensions or commands configured by this proj
                                     .p_3()
                                     .justify_between()
                                     .child(
-                                        Checkbox::new("trust-parent", ToggleState::Unselected)
+                                        Checkbox::new("trust-parent")
                                             .label("Trust all projects in parent directory")
                                     )
                                     .child(
                                         h_flex()
                                             .gap_1()
                                             .child(Button::new("restricted", "Stay in Restricted Mode").color(Color::Muted))
-                                            .child(Button::new("trust", "Trust and Continue").style(ButtonStyle::Filled))
+                                            .child(Button::new("trust", "Trust and Continue").style(ButtonStyle::FILLED))
                                     )
                             )
                             .width(rems(40.))

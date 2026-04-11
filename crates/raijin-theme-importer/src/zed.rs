@@ -6,8 +6,8 @@ use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, SharedString};
 use serde::Deserialize;
 
 use raijin_theme::{
-    AccentColors, Appearance, PlayerColor, PlayerColors, StatusColors, StatusStyle, SyntaxTheme,
-    SystemColors, Theme, ThemeColors, ThemeFamily, ThemeStyles,
+    AccentColors, Appearance, PlayerColor, PlayerColors, StatusColors, StatusStyle,
+    SyntaxTheme, SystemColors, Theme, ThemeColors, ThemeFamily, ThemeStyles,
 };
 
 // === Zed Theme JSON Schema ===

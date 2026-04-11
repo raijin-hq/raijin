@@ -122,7 +122,7 @@ const fn tool_index(id: &str) -> usize {
 /// Parses a string containing backtick-delimited code spans into a `StyledText`
 /// with code background highlights applied to each span.
 fn render_inline_code_markdown(text: &str, cx: &App) -> StyledText {
-    let code_background = cx.theme().colors().surface_background;
+    let code_background = cx.theme().colors().surface;
     let mut plain = String::new();
     let mut highlights: Vec<(std::ops::Range<usize>, HighlightStyle)> = Vec::new();
     let mut in_code = false;

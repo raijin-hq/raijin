@@ -803,7 +803,7 @@ mod tests {
     async fn test_hover_type_links(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 type_definition_provider: Some(raijin_lsp::TypeDefinitionProviderCapability::Simple(true)),
@@ -884,7 +884,7 @@ mod tests {
     async fn test_hover_links(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 definition_provider: Some(raijin_lsp::OneOf::Left(true)),
@@ -1195,7 +1195,7 @@ mod tests {
             })
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 inlay_hint_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..Default::default()
@@ -1333,7 +1333,7 @@ mod tests {
     #[inazuma::test]
     async fn test_urls(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1367,7 +1367,7 @@ mod tests {
     #[inazuma::test]
     async fn test_hover_preconditions(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1443,7 +1443,7 @@ mod tests {
     #[inazuma::test]
     async fn test_urls_at_beginning_of_buffer(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1469,7 +1469,7 @@ mod tests {
     #[inazuma::test]
     async fn test_urls_at_end_of_buffer(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1559,7 +1559,7 @@ mod tests {
     #[inazuma::test]
     async fn test_surrounding_filename(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1633,7 +1633,7 @@ mod tests {
     #[inazuma::test]
     async fn test_hover_filenames(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1892,7 +1892,7 @@ mod tests {
     #[inazuma::test]
     async fn test_hover_directories(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1936,7 +1936,7 @@ mod tests {
     #[inazuma::test]
     async fn test_hover_unicode(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 ..Default::default()
             },
@@ -1975,7 +1975,7 @@ mod tests {
     async fn test_pressure_links(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 hover_provider: Some(raijin_lsp::HoverProviderCapability::Simple(true)),
                 definition_provider: Some(raijin_lsp::OneOf::Left(true)),

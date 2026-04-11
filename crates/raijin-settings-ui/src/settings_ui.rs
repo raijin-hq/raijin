@@ -2473,7 +2473,7 @@ impl SettingsWindow {
             .mb_3()
             .gap_1p5()
             .rounded_sm()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .border_1()
             .border_color(cx.theme().colors().border)
             .child(Icon::new(IconName::MagnifyingGlass).color(Color::Muted))
@@ -2633,7 +2633,7 @@ impl SettingsWindow {
             .flex_none()
             .border_r_1()
             .border_color(cx.theme().colors().border)
-            .bg(cx.theme().colors().panel_background)
+            .bg(cx.theme().colors().panel.background)
             .child(self.render_search(window, cx))
             .child(
                 v_flex()
@@ -2718,7 +2718,7 @@ impl SettingsWindow {
                                 &self.navbar_focus_handle.focus_handle(cx),
                                 cx,
                             ),
-                            cx.theme().colors().surface_background.opacity(0.5),
+                            cx.theme().colors().surface.opacity(0.5),
                         )
                         .suffix(focus_keybind_label),
                     ),
@@ -3313,7 +3313,7 @@ impl SettingsWindow {
             .gap_4()
             .flex_1()
             .min_w_0()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 v_flex()
                     .px_8()

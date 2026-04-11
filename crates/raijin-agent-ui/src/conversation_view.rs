@@ -2057,7 +2057,7 @@ impl ConversationView {
             .border_color(cx.theme().colors().border)
             .bg(linear_gradient(
                 180.,
-                linear_color_stop(cx.theme().colors().editor_background.opacity(0.4), 4.),
+                linear_color_stop(cx.theme().colors().editor.background.opacity(0.4), 4.),
                 linear_color_stop(cx.theme().status().info_background.opacity(0.), 0.),
             ))
             .child(
@@ -2638,7 +2638,7 @@ impl Render for ConversationView {
         v_flex()
             .track_focus(&self.focus_handle)
             .size_full()
-            .bg(cx.theme().colors().panel_background)
+            .bg(cx.theme().colors().panel.background)
             .child(match &self.server_state {
                 ServerState::Loading { .. } => v_flex()
                     .flex_1()

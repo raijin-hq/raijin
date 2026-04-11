@@ -163,8 +163,8 @@ impl Render for ZedPredictModal {
                     .overflow_hidden()
                     .bg(linear_gradient(
                         75.,
-                        linear_color_stop(cx.theme().colors().panel_background.alpha(0.01), 1.0),
-                        linear_color_stop(cx.theme().colors().panel_background, 0.45),
+                        linear_color_stop(cx.theme().colors().panel.background.alpha(0.01), 1.0),
+                        linear_color_stop(cx.theme().colors().panel.background, 0.45),
                     )),
             )
             .child(h_flex().absolute().top_2().right_2().child(

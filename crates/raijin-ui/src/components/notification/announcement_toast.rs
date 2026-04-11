@@ -1,8 +1,8 @@
 use crate::{ListBulletItem, Vector, VectorName, prelude::*};
 use inazuma_component_registry::{Component, ComponentScope, example_group, single_example};
 use inazuma::{
-    AnyElement, ClickEvent, IntoElement, ParentElement, SharedString, linear_color_stop,
-    linear_gradient,
+    AnyElement, ClickEvent, IntoElement, ParentElement, SharedString, StatefulInteractiveElement as _,
+    linear_color_stop, linear_gradient,
 };
 use smallvec::SmallVec;
 
@@ -168,7 +168,7 @@ impl Component for AnnouncementToast {
         let illustration = h_flex()
             .relative()
             .h(rems_from_px(126.))
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .justify_center()
             .gap_8()
             .rounded_t_md()
@@ -182,11 +182,11 @@ impl Component for AnnouncementToast {
             .child(div().absolute().inset_0().size_full().bg(linear_gradient(
                 0.,
                 linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.1),
+                    cx.theme().colors().elevated_surface.opacity(0.1),
                     0.9,
                 ),
                 linear_color_stop(
-                    cx.theme().colors().elevated_surface_background.opacity(0.),
+                    cx.theme().colors().elevated_surface.opacity(0.),
                     0.,
                 ),
             )))

@@ -10,7 +10,7 @@ use inazuma_picker::{Picker, PickerDelegate};
 use raijin_project::git_store::{Repository, RepositoryEvent};
 use std::sync::Arc;
 use time::{OffsetDateTime, UtcOffset};
-use time_format;
+use raijin_time_format;
 use raijin_ui::{HighlightedLabel, KeyBinding, ListItem, ListItemSpacing, Tooltip, prelude::*};
 use inazuma_util::ResultExt;
 use raijin_workspace::notifications::DetachAndPromptErr;
@@ -31,7 +31,7 @@ actions!(
 
 pub fn open(
     workspace: &mut Workspace,
-    _: &zed_actions::git::ViewStash,
+    _: &raijin_actions::git::ViewStash,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -266,11 +266,11 @@ impl StashListDelegate {
     fn format_timestamp(timestamp: i64, timezone: UtcOffset) -> String {
         let timestamp =
             OffsetDateTime::from_unix_timestamp(timestamp).unwrap_or(OffsetDateTime::now_utc());
-        time_format::format_localized_timestamp(
+        raijin_time_format::format_localized_timestamp(
             timestamp,
             OffsetDateTime::now_utc(),
             timezone,
-            time_format::TimestampFormat::EnhancedAbsolute,
+            raijin_time_format::TimestampFormat::EnhancedAbsolute,
         )
     }
 
@@ -407,7 +407,7 @@ impl PickerDelegate for StashListDelegate {
                         )
                     })
                     .collect::<Vec<StringMatchCandidate>>();
-                fuzzy::match_strings(
+                inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     false,
@@ -593,21 +593,21 @@ impl PickerDelegate for StashListDelegate {
                 .child(
                     Button::new("pop-stash", "Pop")
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::SecondaryConfirm, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::SecondaryConfirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                         }),
                 )
                 .child(
                     Button::new("apply-stash", "Apply")
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                 )
                 .into_any(),
@@ -632,8 +632,8 @@ mod tests {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
 
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_editor::init(cx);
         })
     }
 

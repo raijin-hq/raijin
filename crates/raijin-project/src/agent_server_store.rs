@@ -119,7 +119,7 @@ pub trait ExternalAgentServer {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>>;
 
@@ -724,7 +724,7 @@ impl AgentServerStore {
                         .clone()
                         .map(|(project_id, downstream_client)| {
                             let (new_version_available_tx, mut new_version_available_rx) =
-                                watch::channel(None);
+                                raijin_watch::channel(None);
                             cx.spawn({
                                 let name = envelope.payload.name.clone();
                                 async move |_, _| {
@@ -924,14 +924,14 @@ struct RemoteExternalAgentServer {
     upstream_client: Entity<RemoteClient>,
     worktree_store: Entity<WorktreeStore>,
     name: AgentId,
-    new_version_available_tx: Option<watch::Sender<Option<String>>>,
+    new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
 }
 
 impl ExternalAgentServer for RemoteExternalAgentServer {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>> {
         let project_id = self.project_id;
@@ -1050,7 +1050,7 @@ impl ExternalAgentServer for LocalExtensionArchiveAgent {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        _new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        _new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>> {
         let fs = self.fs.clone();
@@ -1228,7 +1228,7 @@ impl ExternalAgentServer for LocalRegistryArchiveAgent {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        _new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        _new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>> {
         let fs = self.fs.clone();
@@ -1391,7 +1391,7 @@ impl ExternalAgentServer for LocalRegistryNpxAgent {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        _new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        _new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>> {
         let node_runtime = self.node_runtime.clone();
@@ -1452,7 +1452,7 @@ impl ExternalAgentServer for LocalCustomAgent {
     fn get_command(
         &mut self,
         extra_env: HashMap<String, String>,
-        _new_version_available_tx: Option<watch::Sender<Option<String>>>,
+        _new_version_available_tx: Option<raijin_watch::Sender<Option<String>>>,
         cx: &mut AsyncApp,
     ) -> Task<Result<AgentServerCommand>> {
         let mut command = self.command.clone();

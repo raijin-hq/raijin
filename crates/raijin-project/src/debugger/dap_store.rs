@@ -939,7 +939,7 @@ impl DapStore {
 pub struct DapAdapterDelegate {
     fs: Arc<dyn Fs>,
     console: mpsc::UnboundedSender<String>,
-    worktree: worktree::Snapshot,
+    worktree: raijin_worktree::Snapshot,
     node_runtime: NodeRuntime,
     http_client: Arc<dyn HttpClient>,
     toolchain_store: Arc<dyn LanguageToolchainStore>,
@@ -950,7 +950,7 @@ pub struct DapAdapterDelegate {
 impl DapAdapterDelegate {
     pub fn new(
         fs: Arc<dyn Fs>,
-        worktree: worktree::Snapshot,
+        worktree: raijin_worktree::Snapshot,
         status: mpsc::UnboundedSender<String>,
         node_runtime: NodeRuntime,
         http_client: Arc<dyn HttpClient>,

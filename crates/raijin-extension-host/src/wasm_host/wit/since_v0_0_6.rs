@@ -12,7 +12,7 @@ pub const MIN_VERSION: Version = Version::new(0, 0, 6);
 wasmtime::component::bindgen!({
     async: true,
     trappable_imports: true,
-    path: "../extension_api/wit/since_v0.0.6",
+    path: "../raijin-extension-api/wit/since_v0.0.6",
     with: {
          "worktree": ExtensionWorktree,
          "zed:extension/github": since_v0_6_0::zed::extension::github,

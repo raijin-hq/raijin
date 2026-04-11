@@ -228,7 +228,7 @@ impl Render for BlockListView {
         // Read current config every frame (respects live config changes)
         let (font, font_size, line_height_multiplier, symbol_maps) = Self::read_config(cx);
 
-        let theme = cx.global::<raijin_theme::GlobalTheme>().0.clone();
+        let theme = raijin_theme::GlobalTheme::theme(cx).clone();
 
         // Extract snapshots with single lock
         let snapshots = extract_all_block_snapshots(

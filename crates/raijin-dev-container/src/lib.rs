@@ -30,7 +30,7 @@ use inazuma::{Action, DismissEvent, EventEmitter, FocusHandle, Focusable, Render
 use serde::Deserialize;
 use raijin_ui::{
     AnyElement, App, Color, CommonAnimationExt, Context, Headline, HeadlineSize, Icon, IconName,
-    InteractiveElement, IntoElement, Label, ListItem, ListSeparator, ModalHeader, Navigable,
+    InteractiveElement, IntoElement, Label, ListItem, ListItemSpacing, ListSeparator, ModalHeader, Navigable,
     NavigableEntry, ParentElement, Render, Styled, StyledExt, Toggleable, Window, div, rems,
 };
 use inazuma_util::ResultExt;
@@ -83,7 +83,7 @@ pub fn use_podman(cx: &App) -> bool {
 }
 
 impl Settings for DevContainerSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         Self {
             use_podman: content.remote.use_podman.unwrap_or(false),
         }
@@ -251,7 +251,7 @@ impl PickerDelegate for TemplatePickerDelegate {
         &mut self,
         ix: usize,
         _window: &mut Window,
-        _cx: &mut Context<picker::Picker<Self>>,
+        _cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         self.selected_index = ix;
     }
@@ -264,7 +264,7 @@ impl PickerDelegate for TemplatePickerDelegate {
         &mut self,
         query: String,
         _window: &mut Window,
-        _cx: &mut Context<picker::Picker<Self>>,
+        _cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> inazuma::Task<()> {
         self.matching_indices = self
             .candidate_templates
@@ -296,7 +296,7 @@ impl PickerDelegate for TemplatePickerDelegate {
         &mut self,
         _secondary: bool,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         let fun = &mut self.on_confirm;
 
@@ -318,10 +318,10 @@ impl PickerDelegate for TemplatePickerDelegate {
             .ok();
     }
 
-    fn dismissed(&mut self, window: &mut Window, cx: &mut Context<picker::Picker<Self>>) {
+    fn dismissed(&mut self, window: &mut Window, cx: &mut Context<inazuma_picker::Picker<Self>>) {
         self.stateful_modal
             .update(cx, |modal, cx| {
-                modal.dismiss(&menu::Cancel, window, cx);
+                modal.dismiss(&inazuma_menu::Cancel, window, cx);
             })
             .ok();
     }
@@ -331,7 +331,7 @@ impl PickerDelegate for TemplatePickerDelegate {
         ix: usize,
         selected: bool,
         _window: &mut Window,
-        _cx: &mut Context<picker::Picker<Self>>,
+        _cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> Option<Self::ListItem> {
         let Some(template_entry) = self.candidate_templates.get(self.matching_indices[ix]) else {
             return None;
@@ -339,7 +339,7 @@ impl PickerDelegate for TemplatePickerDelegate {
         Some(
             ListItem::new("li-template-match")
                 .inset(true)
-                .spacing(ui::ListItemSpacing::Sparse)
+                .spacing(ListItemSpacing::Sparse)
                 .start_slot(Icon::new(IconName::Box))
                 .toggle_state(selected)
                 .child(Label::new(template_entry.template.name.clone()))
@@ -363,11 +363,11 @@ impl PickerDelegate for TemplatePickerDelegate {
                 .child(
                     Button::new("run-action", "Continue")
                         .key_binding(
-                            KeyBinding::for_action(&menu::Confirm, cx)
+                            KeyBinding::for_action(&inazuma_menu::Confirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                 )
                 .into_any_element(),
@@ -513,7 +513,7 @@ impl PickerDelegate for FeaturePickerDelegate {
     fn dismissed(&mut self, window: &mut Window, cx: &mut Context<Picker<Self>>) {
         self.stateful_modal
             .update(cx, |modal, cx| {
-                modal.dismiss(&menu::Cancel, window, cx);
+                modal.dismiss(&inazuma_menu::Cancel, window, cx);
             })
             .ok();
     }
@@ -556,21 +556,21 @@ impl PickerDelegate for FeaturePickerDelegate {
                 .child(
                     Button::new("run-action", "Select Feature")
                         .key_binding(
-                            KeyBinding::for_action(&menu::Confirm, cx)
+                            KeyBinding::for_action(&inazuma_menu::Confirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                         }),
                 )
                 .child(
                     Button::new("run-action-secondary", "Confirm Selections")
                         .key_binding(
-                            KeyBinding::for_action(&menu::SecondaryConfirm, cx)
+                            KeyBinding::for_action(&inazuma_menu::SecondaryConfirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                            window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                         }),
                 )
                 .into_any_element(),
@@ -606,13 +606,13 @@ impl DevContainerModal {
                 .child(
                     div()
                         .track_focus(&self.confirm_entry.focus_handle)
-                        .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                        .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                             this.accept_message(DevContainerMessage::SearchTemplates, window, cx);
                         }))
                         .child(
                             ListItem::new("li-search-containers")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(
                                     Icon::new(IconName::MagnifyingGlass).color(Color::Muted),
                                 )
@@ -716,7 +716,7 @@ impl DevContainerModal {
                                         next_option_entries.option_name.clone(),
                                         option.clone(),
                                     );
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.accept_message(
                                             DevContainerMessage::TemplateOptionsSpecified(
                                                 template.clone(),
@@ -729,7 +729,7 @@ impl DevContainerModal {
                                 .child(
                                     ListItem::new(format!("li-option-{}", option))
                                         .inset(true)
-                                        .spacing(ui::ListItemSpacing::Sparse)
+                                        .spacing(ListItemSpacing::Sparse)
                                         .toggle_state(
                                             entry.focus_handle.contains_focused(window, cx),
                                         )
@@ -758,13 +758,13 @@ impl DevContainerModal {
                 .child(
                     div()
                         .track_focus(&self.back_entry.focus_handle)
-                        .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                        .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                             this.accept_message(DevContainerMessage::GoBack, window, cx);
                         }))
                         .child(
                             ListItem::new("li-goback")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::Return).color(Color::Muted))
                                 .toggle_state(
                                     self.back_entry.focus_handle.contains_focused(window, cx),
@@ -825,7 +825,7 @@ impl DevContainerModal {
                         .track_focus(&self.confirm_entry.focus_handle)
                         .on_action({
                             let template = template_entry.clone();
-                            cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                            cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                 this.accept_message(
                                     DevContainerMessage::ConfirmWriteDevContainer(template.clone()),
                                     window,
@@ -836,7 +836,7 @@ impl DevContainerModal {
                         .child(
                             ListItem::new("li-search-containers")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::Check).color(Color::Muted))
                                 .toggle_state(
                                     self.confirm_entry.focus_handle.contains_focused(window, cx),
@@ -857,19 +857,19 @@ impl DevContainerModal {
                 .child(
                     div()
                         .track_focus(&self.back_entry.focus_handle)
-                        .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
-                            this.dismiss(&menu::Cancel, window, cx);
+                        .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
+                            this.dismiss(&inazuma_menu::Cancel, window, cx);
                         }))
                         .child(
                             ListItem::new("li-goback")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::XCircle).color(Color::Muted))
                                 .toggle_state(
                                     self.back_entry.focus_handle.contains_focused(window, cx),
                                 )
                                 .on_click(cx.listener(|this, _, window, cx| {
-                                    this.dismiss(&menu::Cancel, window, cx);
+                                    this.dismiss(&inazuma_menu::Cancel, window, cx);
                                     cx.notify();
                                 }))
                                 .child(Label::new("Cancel")),
@@ -898,7 +898,7 @@ impl DevContainerModal {
                     div().child(
                         ListItem::new("li-querying")
                             .inset(true)
-                            .spacing(ui::ListItemSpacing::Sparse)
+                            .spacing(ListItemSpacing::Sparse)
                             .start_slot(
                                 Icon::new(IconName::ArrowCircle)
                                     .color(Color::Muted)
@@ -911,13 +911,13 @@ impl DevContainerModal {
                 .child(
                     div()
                         .track_focus(&self.back_entry.focus_handle)
-                        .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                        .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                             this.accept_message(DevContainerMessage::GoBack, window, cx);
                         }))
                         .child(
                             ListItem::new("li-goback")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::Pencil).color(Color::Muted))
                                 .toggle_state(
                                     self.back_entry.focus_handle.contains_focused(window, cx),
@@ -950,7 +950,7 @@ impl DevContainerModal {
                     div().child(
                         ListItem::new("li-querying")
                             .inset(true)
-                            .spacing(ui::ListItemSpacing::Sparse)
+                            .spacing(ListItemSpacing::Sparse)
                             .start_slot(
                                 Icon::new(IconName::ArrowCircle)
                                     .color(Color::Muted)
@@ -963,13 +963,13 @@ impl DevContainerModal {
                 .child(
                     div()
                         .track_focus(&self.back_entry.focus_handle)
-                        .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                        .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                             this.accept_message(DevContainerMessage::GoBack, window, cx);
                         }))
                         .child(
                             ListItem::new("li-goback")
                                 .inset(true)
-                                .spacing(ui::ListItemSpacing::Sparse)
+                                .spacing(ListItemSpacing::Sparse)
                                 .start_slot(Icon::new(IconName::Pencil).color(Color::Muted))
                                 .toggle_state(
                                     self.back_entry.focus_handle.contains_focused(window, cx),
@@ -1313,7 +1313,7 @@ trait StatefulModal: ModalView + EventEmitter<DismissEvent> + Render {
         cx: &mut Context<Self>,
     );
 
-    fn dismiss(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn dismiss(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
@@ -1555,7 +1555,7 @@ fn dispatch_apply_templates(
                 workspace_task.await.log_err();
             }
             this.update_in(cx, |this, window, cx| {
-                this.dismiss(&menu::Cancel, window, cx);
+                this.dismiss(&inazuma_menu::Cancel, window, cx);
             })
             .ok();
         }

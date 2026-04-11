@@ -535,7 +535,7 @@ pub struct Completion {
     /// Text starting here and ending at the cursor will be used as the query for filtering this completion.
     ///
     /// If None, the start of the surrounding word is used.
-    pub match_start: Option<text::Anchor>,
+    pub match_start: Option<inazuma_text::Anchor>,
     /// Key used for de-duplicating snippets. If None, always considered unique.
     pub snippet_deduplication_key: Option<(usize, usize)>,
     /// Whether to adjust indentation (the default) or not.
@@ -4372,7 +4372,7 @@ impl Project {
         session: Entity<Session>,
         active_stack_frame: ActiveStackFrame,
         buffer_handle: Entity<Buffer>,
-        range: Range<text::Anchor>,
+        range: Range<inazuma_text::Anchor>,
         cx: &mut Context<Self>,
     ) -> Task<anyhow::Result<Vec<InlayHint>>> {
         let snapshot = buffer_handle.read(cx).snapshot();
@@ -4381,7 +4381,7 @@ impl Project {
             snapshot.debug_variables_query(Anchor::min_for_buffer(snapshot.remote_id())..range.end);
 
         let row = snapshot
-            .summary_for_anchor::<text::PointUtf16>(&range.end)
+            .summary_for_anchor::<inazuma_text::PointUtf16>(&range.end)
             .row as usize;
 
         let inline_value_locations = provide_inline_values(captures, &snapshot, row);
@@ -4917,7 +4917,7 @@ impl Project {
     pub fn blame_buffer(
         &self,
         buffer: &Entity<Buffer>,
-        version: Option<clock::Global>,
+        version: Option<inazuma_clock::Global>,
         cx: &mut App,
     ) -> Task<Result<Option<Blame>>> {
         self.git_store.update(cx, |git_store, cx| {
@@ -6023,7 +6023,7 @@ pub enum Candidates {
     Entries,
 }
 
-impl<'a> fuzzy::PathMatchCandidateSet<'a> for PathMatchCandidateSet {
+impl<'a> inazuma_fuzzy::PathMatchCandidateSet<'a> for PathMatchCandidateSet {
     type Candidates = PathMatchCandidateSetIter<'a>;
 
     fn id(&self) -> usize {
@@ -6090,12 +6090,12 @@ pub struct PathMatchCandidateSetIter<'a> {
 }
 
 impl<'a> Iterator for PathMatchCandidateSetIter<'a> {
-    type Item = fuzzy::PathMatchCandidate<'a>;
+    type Item = inazuma_fuzzy::PathMatchCandidate<'a>;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.traversal
             .next()
-            .map(|entry| fuzzy::PathMatchCandidate {
+            .map(|entry| inazuma_fuzzy::PathMatchCandidate {
                 is_dir: entry.kind.is_dir(),
                 path: &entry.path,
                 char_bag: entry.char_bag,

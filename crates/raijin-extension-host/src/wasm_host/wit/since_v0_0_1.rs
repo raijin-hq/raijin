@@ -14,7 +14,7 @@ pub const MIN_VERSION: Version = Version::new(0, 0, 1);
 wasmtime::component::bindgen!({
     async: true,
     trappable_imports: true,
-    path: "../extension_api/wit/since_v0.0.1",
+    path: "../raijin-extension-api/wit/since_v0.0.1",
     with: {
          "worktree": ExtensionWorktree,
          "zed:extension/github": since_v0_6_0::zed::extension::github,
@@ -142,7 +142,7 @@ impl ExtensionImports for WasmState {
 
         self.host
             .proxy
-            .update_language_server_status(lsp::LanguageServerName(server_name.into()), status);
+            .update_language_server_status(raijin_lsp::LanguageServerName(server_name.into()), status);
 
         Ok(())
     }

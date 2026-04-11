@@ -5,7 +5,7 @@ use raijin_remote::RemoteClient;
 use raijin_rpc::proto::{self, REMOTE_SERVER_PROJECT_ID};
 use std::{collections::VecDeque, path::Path, sync::Arc};
 use raijin_task::{Shell, shell_to_proto};
-use terminal::terminal_settings::TerminalSettings;
+use raijin_terminal::terminal_settings::TerminalSettings;
 use inazuma_util::{ResultExt, command::new_command, rel_path::RelPath};
 use raijin_worktree::Worktree;
 
@@ -176,7 +176,7 @@ impl ProjectEnvironment {
                 })
                 .ok()
                 .map(|worktree| {
-                    let shell = terminal::terminal_settings::TerminalSettings::get(
+                    let shell = raijin_terminal::terminal_settings::TerminalSettings::get(
                         worktree
                             .as_ref()
                             .map(|(worktree, path)| inazuma_settings_framework::SettingsLocation {

@@ -1,6 +1,6 @@
 mod context_server;
 mod dap;
-mod lsp;
+pub mod lsp;
 mod slash_command;
 
 use std::{ops::Range, path::PathBuf};
@@ -8,8 +8,8 @@ use std::{ops::Range, path::PathBuf};
 use inazuma_util::redact::should_redact;
 
 pub use context_server::*;
-pub use raijin_dap::*;
-pub use raijin_lsp::*;
+pub use dap::*;
+pub use lsp::*;
 pub use slash_command::*;
 
 /// A list of environment variables.

@@ -115,7 +115,7 @@ impl Render for ProjectDiagnosticsEditor {
                     .justify_center()
                     .items_center()
                     .text_center()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(Label::new(label).color(Color::Muted))
                     .when(self.summary.warning_count > 0, |this| {
                         let plural_suffix = if self.summary.warning_count > 1 {

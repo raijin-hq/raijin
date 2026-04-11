@@ -1,7 +1,10 @@
 use crate::prelude::*;
-use inazuma::{AnyElement, AnyView, Oklch, IntoElement, ParentElement, Styled};
+use inazuma::{AnyElement, AnyView, CursorStyle, Oklch, IntoElement, ParentElement, Styled, rgb};
 
-/// Chips provide a container for an informative label.
+/// Chips provide a container for an informative label with optional icon.
+///
+/// Supports both general-purpose info chips and interactive context chips
+/// with icon prefixes, selection state, and hover effects.
 ///
 /// # Usage Example
 ///
@@ -18,6 +21,10 @@ pub struct Chip {
     bg_color: Option<Oklch>,
     border_color: Option<Oklch>,
     height: Option<Pixels>,
+    icon: Option<IconName>,
+    icon_color: Option<Oklch>,
+    selected: bool,
+    interactive: bool,
     tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView + 'static>>,
 }
 
@@ -31,6 +38,10 @@ impl Chip {
             bg_color: None,
             border_color: None,
             height: None,
+            icon: None,
+            icon_color: None,
+            selected: false,
+            interactive: false,
             tooltip: None,
         }
     }
@@ -47,7 +58,7 @@ impl Chip {
         self
     }
 
-    /// Sets a custom background color for the callout content.
+    /// Sets a custom background color for the chip.
     pub fn bg_color(mut self, color: Oklch) -> Self {
         self.bg_color = Some(color);
         self
@@ -65,6 +76,32 @@ impl Chip {
         self
     }
 
+    /// Adds an icon prefix to the chip.
+    pub fn icon(mut self, icon: IconName) -> Self {
+        self.icon = Some(icon);
+        self
+    }
+
+    /// Adds an icon prefix with a custom color.
+    pub fn icon_colored(mut self, icon: IconName, color: Oklch) -> Self {
+        self.icon = Some(icon);
+        self.icon_color = Some(color);
+        self
+    }
+
+    /// Marks this chip as selected.
+    pub fn selected(mut self, selected: bool) -> Self {
+        self.selected = selected;
+        self
+    }
+
+    /// Marks this chip as interactive (shows pointer cursor on hover).
+    pub fn interactive(mut self) -> Self {
+        self.interactive = true;
+        self
+    }
+
+    /// Sets the tooltip for the chip.
     pub fn tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
         self.tooltip = Some(Box::new(tooltip));
         self
@@ -82,12 +119,29 @@ impl RenderOnce for Chip {
         h_flex()
             .when_some(self.height, |this, h| this.h(h))
             .flex_none()
+            .gap(px(4.))
+            .items_center()
             .px_1()
             .border_1()
             .rounded_sm()
             .border_color(border_color)
             .bg(bg_color)
             .overflow_hidden()
+            .when(self.interactive, |this| {
+                this.cursor(CursorStyle::PointingHand)
+                    .hover(|this| this.bg(cx.theme().colors().element_hover))
+            })
+            .when(self.selected, |this| {
+                this.bg(cx.theme().colors().element_active)
+            })
+            .when_some(self.icon, |this, icon| {
+                let icon_color = self.icon_color;
+                this.child(
+                    Icon::new(icon)
+                        .size(IconSize::XSmall)
+                        .when_some(icon_color, |this, c| this.color(Color::Custom(c))),
+                )
+            })
             .child(
                 Label::new(self.label.clone())
                     .size(self.label_size)
@@ -97,6 +151,114 @@ impl RenderOnce for Chip {
             )
             .id(self.label.clone())
             .when_some(self.tooltip, |this, tooltip| this.tooltip(tooltip))
+    }
+}
+
+/// Git branch chip: icon and branch name with distinct colors.
+#[derive(IntoElement)]
+pub struct GitBranchChip {
+    branch: SharedString,
+    icon_color: Oklch,
+    text_color: Oklch,
+}
+
+impl GitBranchChip {
+    pub fn new(branch: impl Into<SharedString>) -> Self {
+        Self {
+            branch: branch.into(),
+            icon_color: rgb(0x6ee7b7).into(),
+            text_color: rgb(0x7dd3fc).into(),
+        }
+    }
+
+    pub fn icon_color(mut self, color: Oklch) -> Self {
+        self.icon_color = color;
+        self
+    }
+
+    pub fn text_color(mut self, color: Oklch) -> Self {
+        self.text_color = color;
+        self
+    }
+}
+
+impl RenderOnce for GitBranchChip {
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        h_flex()
+            .gap(px(4.0))
+            .items_center()
+            .px(px(6.0))
+            .py(px(2.0))
+            .rounded(px(4.0))
+            .border_1()
+            .border_color(cx.theme().colors().border)
+            .bg(cx.theme().colors().element_background)
+            .text_xs()
+            .child(
+                Icon::new(IconName::GitBranch)
+                    .size(IconSize::XSmall)
+                    .color(Color::Custom(self.icon_color)),
+            )
+            .child(div().text_color(self.text_color).child(self.branch.to_string()))
+    }
+}
+
+/// Git stats chip showing file count, insertions, and deletions in different colors.
+#[derive(IntoElement)]
+pub struct GitStatsChip {
+    files_changed: u32,
+    insertions: u32,
+    deletions: u32,
+    neutral_color: Oklch,
+    insert_color: Oklch,
+    delete_color: Oklch,
+}
+
+impl GitStatsChip {
+    pub fn new(files_changed: u32, insertions: u32, deletions: u32) -> Self {
+        Self {
+            files_changed,
+            insertions,
+            deletions,
+            neutral_color: rgb(0xc8c8c8).into(),
+            insert_color: rgb(0x00BFFF).into(),
+            delete_color: rgb(0xff5f5f).into(),
+        }
+    }
+}
+
+impl RenderOnce for GitStatsChip {
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        h_flex()
+            .gap(px(4.0))
+            .items_center()
+            .px(px(6.0))
+            .py(px(2.0))
+            .rounded(px(4.0))
+            .border_1()
+            .border_color(cx.theme().colors().border)
+            .bg(cx.theme().colors().element_background)
+            .text_xs()
+            .child(
+                Icon::new(IconName::FileDiff)
+                    .size(IconSize::XSmall)
+                    .color(Color::Custom(self.neutral_color)),
+            )
+            .child(
+                div()
+                    .text_color(self.neutral_color)
+                    .child(format!("{} \u{00b7} ", self.files_changed)),
+            )
+            .child(
+                div()
+                    .text_color(self.insert_color)
+                    .child(format!("+{}", self.insertions)),
+            )
+            .child(
+                div()
+                    .text_color(self.delete_color)
+                    .child(format!("-{}", self.deletions)),
+            )
     }
 }
 
@@ -115,17 +277,26 @@ impl Component for Chip {
                     .into_any_element(),
             ),
             single_example(
-                "Customized Label Size",
-                Chip::new("Chip Example")
-                    .label_size(LabelSize::Large)
+                "With Icon",
+                Chip::new("Feature")
+                    .icon(IconName::Sparkle)
                     .label_color(Color::Accent)
                     .into_any_element(),
             ),
             single_example(
-                "Customized Background Color",
-                Chip::new("Chip Example")
-                    .bg_color(cx.theme().colors().text_accent.opacity(0.1))
+                "Interactive",
+                Chip::new("Clickable")
+                    .icon(IconName::Settings)
+                    .interactive()
                     .into_any_element(),
+            ),
+            single_example(
+                "Git Branch",
+                GitBranchChip::new("main").into_any_element(),
+            ),
+            single_example(
+                "Git Stats",
+                GitStatsChip::new(5, 42, 13).into_any_element(),
             ),
         ];
 

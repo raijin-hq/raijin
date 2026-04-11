@@ -44,7 +44,7 @@ impl WorktreeRoots {
                 match event {
                     WorktreeEvent::UpdatedEntries(changes) => {
                         for (path, _, kind) in changes.iter() {
-                            if kind == &worktree::PathChange::Removed {
+                            if kind == &raijin_worktree::PathChange::Removed {
                                 let path = TriePath::from(path.as_ref());
                                 this.roots.remove(&path);
                             }

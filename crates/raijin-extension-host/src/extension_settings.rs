@@ -36,7 +36,7 @@ impl ExtensionSettings {
 }
 
 impl Settings for ExtensionSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         Self {
             auto_install_extensions: content.extension.auto_install_extensions.clone(),
             auto_update_extensions: content.extension.auto_update_extensions.clone(),
@@ -47,13 +47,13 @@ impl Settings for ExtensionSettings {
                 .unwrap_or_default()
                 .into_iter()
                 .map(|capability| match capability {
-                    settings::ExtensionCapabilityContent::ProcessExec { command, args } => {
+                    inazuma_settings_framework::ExtensionCapabilityContent::ProcessExec { command, args } => {
                         ExtensionCapability::ProcessExec(ProcessExecCapability { command, args })
                     }
-                    settings::ExtensionCapabilityContent::DownloadFile { host, path } => {
+                    inazuma_settings_framework::ExtensionCapabilityContent::DownloadFile { host, path } => {
                         ExtensionCapability::DownloadFile(DownloadFileCapability { host, path })
                     }
-                    settings::ExtensionCapabilityContent::NpmInstallPackage { package } => {
+                    inazuma_settings_framework::ExtensionCapabilityContent::NpmInstallPackage { package } => {
                         ExtensionCapability::NpmInstallPackage(NpmInstallPackageCapability {
                             package,
                         })

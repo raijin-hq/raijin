@@ -1,23 +1,13 @@
-use inazuma::{Oklch, IntoElement, PathBuilder, canvas, point};
+use inazuma::{Oklch, IntoElement, ParentElement, PathBuilder, canvas, point};
 
 use crate::prelude::*;
 
 pub fn divider() -> Divider {
-    Divider {
-        style: DividerStyle::Solid,
-        direction: DividerDirection::Horizontal,
-        color: DividerColor::default(),
-        inset: false,
-    }
+    Divider::horizontal()
 }
 
 pub fn vertical_divider() -> Divider {
-    Divider {
-        style: DividerStyle::Solid,
-        direction: DividerDirection::Vertical,
-        color: DividerColor::default(),
-        inset: false,
-    }
+    Divider::vertical()
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -39,6 +29,7 @@ pub enum DividerColor {
     BorderFaded,
     #[default]
     BorderVariant,
+    Custom(Oklch),
 }
 
 impl DividerColor {
@@ -47,7 +38,14 @@ impl DividerColor {
             DividerColor::Border => cx.theme().colors().border,
             DividerColor::BorderFaded => cx.theme().colors().border.opacity(0.6),
             DividerColor::BorderVariant => cx.theme().colors().border_variant,
+            DividerColor::Custom(color) => color,
         }
+    }
+}
+
+impl From<Oklch> for DividerColor {
+    fn from(color: Oklch) -> Self {
+        DividerColor::Custom(color)
     }
 }
 
@@ -57,6 +55,7 @@ pub struct Divider {
     direction: DividerDirection,
     color: DividerColor,
     inset: bool,
+    label: Option<SharedString>,
 }
 
 impl Divider {
@@ -66,6 +65,7 @@ impl Divider {
             direction: DividerDirection::Horizontal,
             color: DividerColor::default(),
             inset: false,
+            label: None,
         }
     }
 
@@ -75,6 +75,7 @@ impl Divider {
             direction: DividerDirection::Vertical,
             color: DividerColor::default(),
             inset: false,
+            label: None,
         }
     }
 
@@ -84,6 +85,7 @@ impl Divider {
             direction: DividerDirection::Horizontal,
             color: DividerColor::default(),
             inset: false,
+            label: None,
         }
     }
 
@@ -93,6 +95,7 @@ impl Divider {
             direction: DividerDirection::Vertical,
             color: DividerColor::default(),
             inset: false,
+            label: None,
         }
     }
 
@@ -106,44 +109,72 @@ impl Divider {
         self
     }
 
-    pub fn render_solid(self, base: Div, cx: &mut App) -> impl IntoElement {
-        base.bg(self.color.hsla(cx))
+    /// Sets a custom Oklch color for the divider line.
+    pub fn custom_color(mut self, color: impl Into<Oklch>) -> Self {
+        self.color = DividerColor::Custom(color.into());
+        self
     }
 
-    pub fn render_dashed(self, base: Div) -> impl IntoElement {
-        base.relative().child(
-            canvas(
-                |_, _, _| {},
-                move |bounds, _, window, cx| {
-                    let mut builder = PathBuilder::stroke(px(1.)).dash_array(&[px(4.), px(2.)]);
-                    let (start, end) = match self.direction {
-                        DividerDirection::Horizontal => {
-                            let x = bounds.origin.x;
-                            let y = bounds.origin.y + px(0.5);
-                            (point(x, y), point(x + bounds.size.width, y))
-                        }
-                        DividerDirection::Vertical => {
-                            let x = bounds.origin.x + px(0.5);
-                            let y = bounds.origin.y;
-                            (point(x, y), point(x, y + bounds.size.height))
-                        }
-                    };
-                    builder.move_to(start);
-                    builder.line_to(end);
-                    if let Ok(line) = builder.build() {
-                        window.paint_path(line, self.color.hsla(cx));
-                    }
-                },
-            )
+    /// Sets a label displayed centered on the divider (horizontal only).
+    pub fn label(mut self, label: impl Into<SharedString>) -> Self {
+        self.label = Some(label.into());
+        self
+    }
+
+    fn render_solid_line(direction: DividerDirection, color: Oklch) -> Div {
+        div()
             .absolute()
-            .size_full(),
-        )
+            .map(|this| match direction {
+                DividerDirection::Horizontal => this.h(px(1.)).w_full(),
+                DividerDirection::Vertical => this.w(px(1.)).h_full(),
+            })
+            .bg(color)
+    }
+
+    fn render_dashed_line(direction: DividerDirection, color: Oklch) -> impl IntoElement {
+        div()
+            .absolute()
+            .map(|this| match direction {
+                DividerDirection::Horizontal => this.h(px(1.)).w_full(),
+                DividerDirection::Vertical => this.w(px(1.)).h_full(),
+            })
+            .child(
+                canvas(
+                    move |_, _, _| {},
+                    move |bounds, _, window, _| {
+                        let mut builder =
+                            PathBuilder::stroke(px(1.)).dash_array(&[px(4.), px(2.)]);
+                        let (start, end) = match direction {
+                            DividerDirection::Horizontal => {
+                                let x = bounds.origin.x;
+                                let y = bounds.origin.y + px(0.5);
+                                (point(x, y), point(x + bounds.size.width, y))
+                            }
+                            DividerDirection::Vertical => {
+                                let x = bounds.origin.x + px(0.5);
+                                let y = bounds.origin.y;
+                                (point(x, y), point(x, y + bounds.size.height))
+                            }
+                        };
+                        builder.move_to(start);
+                        builder.line_to(end);
+                        if let Ok(line) = builder.build() {
+                            window.paint_path(line, color);
+                        }
+                    },
+                )
+                .size_full(),
+            )
     }
 }
 
 impl RenderOnce for Divider {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let base = match self.direction {
+        let color = self.color.hsla(cx);
+        let direction = self.direction;
+        let style = self.style;
+
+        let base = match direction {
             DividerDirection::Horizontal => div()
                 .min_w_0()
                 .h_px()
@@ -156,10 +187,28 @@ impl RenderOnce for Divider {
                 .when(self.inset, |this| this.my_1p5()),
         };
 
-        match self.style {
-            DividerStyle::Solid => self.render_solid(base, cx).into_any_element(),
-            DividerStyle::Dashed => self.render_dashed(base).into_any_element(),
-        }
+        base.flex()
+            .flex_shrink_0()
+            .items_center()
+            .justify_center()
+            .child(match style {
+                DividerStyle::Solid => Self::render_solid_line(direction, color).into_any_element(),
+                DividerStyle::Dashed => {
+                    Self::render_dashed_line(direction, color).into_any_element()
+                }
+            })
+            .when_some(self.label, |this, label| {
+                this.child(
+                    div()
+                        .px_2()
+                        .py_1()
+                        .mx_auto()
+                        .text_xs()
+                        .bg(cx.theme().colors().background)
+                        .text_color(cx.theme().colors().text_muted)
+                        .child(label),
+                )
+            })
     }
 }
 

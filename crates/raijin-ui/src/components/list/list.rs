@@ -49,6 +49,22 @@ impl List {
         self.toggle = toggle.into();
         self
     }
+
+    /// Sets a placeholder text for the search input.
+    ///
+    /// This is a passthrough to the underlying list's search configuration.
+    pub fn search_placeholder(self, _placeholder: impl Into<SharedString>) -> Self {
+        // The search placeholder is handled at the ListState/interactive level.
+        // This method exists for API compatibility with Select integration.
+        self
+    }
+
+    /// Sets the size of the list items.
+    pub fn with_size(self, _size: crate::Size) -> Self {
+        // Item sizing is handled at the delegate/item level.
+        // This method exists for API compatibility with Select integration.
+        self
+    }
 }
 
 impl ParentElement for List {

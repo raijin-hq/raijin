@@ -181,7 +181,7 @@ impl RenderOnce for AiSettingItem {
                 this.child(
                     IconDecoration::new(
                         IconDecorationKind::Dot,
-                        cx.theme().colors().panel_background,
+                        cx.theme().colors().panel.background,
                         cx,
                     )
                     .size(px(12.))
@@ -250,7 +250,7 @@ impl Component for AiSettingItem {
                 .gap_2()
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
         };
 
         let details_row = |icon_name: IconName, icon_color: Color, message: &str| {

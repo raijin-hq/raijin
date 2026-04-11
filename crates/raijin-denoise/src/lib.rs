@@ -4,18 +4,18 @@ use core::fmt;
 use std::{collections::VecDeque, sync::mpsc, thread};
 
 pub use engine::Engine;
-use rodio::{ChannelCount, Sample, SampleRate, Source, nz};
+use rodio::Source;
 
 use crate::engine::BLOCK_SHIFT;
 
-const SUPPORTED_SAMPLE_RATE: SampleRate = nz!(16_000);
-const SUPPORTED_CHANNEL_COUNT: ChannelCount = nz!(1);
+const SUPPORTED_SAMPLE_RATE: u32 = 16_000;
+const SUPPORTED_CHANNEL_COUNT: u16 = 1;
 
-pub struct Denoiser<S: Source> {
+pub struct Denoiser<S: Source<Item = f32>> {
     inner: S,
-    input_tx: mpsc::Sender<[Sample; BLOCK_SHIFT]>,
-    denoised_rx: mpsc::Receiver<[Sample; BLOCK_SHIFT]>,
-    ready: [Sample; BLOCK_SHIFT],
+    input_tx: mpsc::Sender<[f32; BLOCK_SHIFT]>,
+    denoised_rx: mpsc::Receiver<[f32; BLOCK_SHIFT]>,
+    ready: [f32; BLOCK_SHIFT],
     next: usize,
     state: IterState,
     // When disabled instead of reading denoised sub-blocks from the engine through
@@ -24,7 +24,7 @@ pub struct Denoiser<S: Source> {
     queued: Queue,
 }
 
-impl<S: Source> fmt::Debug for Denoiser<S> {
+impl<S: Source<Item = f32>> fmt::Debug for Denoiser<S> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Denoiser")
             .field("state", &self.state)
@@ -32,17 +32,17 @@ impl<S: Source> fmt::Debug for Denoiser<S> {
     }
 }
 
-struct Queue(VecDeque<[Sample; BLOCK_SHIFT]>);
+struct Queue(VecDeque<[f32; BLOCK_SHIFT]>);
 
 impl Queue {
     fn new() -> Self {
         Self(VecDeque::new())
     }
-    fn push(&mut self, block: [Sample; BLOCK_SHIFT]) {
+    fn push(&mut self, block: [f32; BLOCK_SHIFT]) {
         self.0.push_back(block);
         self.0.resize(4, [0f32; BLOCK_SHIFT]);
     }
-    fn pop(&mut self) -> [Sample; BLOCK_SHIFT] {
+    fn pop(&mut self) -> [f32; BLOCK_SHIFT] {
         debug_assert!(self.0.len() == 4);
         self.0.pop_front().expect(
             "There is no State where the queue is popped while there are less then 4 entries",
@@ -66,8 +66,7 @@ pub enum DenoiserError {
     UnsupportedChannelCount,
 }
 
-// todo dvdsk needs constant source upstream in rodio
-impl<S: Source> Denoiser<S> {
+impl<S: Source<Item = f32>> Denoiser<S> {
     pub fn try_new(source: S) -> Result<Self, DenoiserError> {
         if source.sample_rate() != SUPPORTED_SAMPLE_RATE {
             return Err(DenoiserError::UnsupportedSampleRate);
@@ -131,16 +130,16 @@ fn run_neural_denoiser(
     }
 }
 
-impl<S: Source> Source for Denoiser<S> {
-    fn current_span_len(&self) -> Option<usize> {
-        self.inner.current_span_len()
+impl<S: Source<Item = f32>> Source for Denoiser<S> {
+    fn current_frame_len(&self) -> Option<usize> {
+        self.inner.current_frame_len()
     }
 
-    fn channels(&self) -> rodio::ChannelCount {
+    fn channels(&self) -> u16 {
         self.inner.channels()
     }
 
-    fn sample_rate(&self) -> rodio::SampleRate {
+    fn sample_rate(&self) -> u32 {
         self.inner.sample_rate()
     }
 
@@ -149,8 +148,8 @@ impl<S: Source> Source for Denoiser<S> {
     }
 }
 
-impl<S: Source> Iterator for Denoiser<S> {
-    type Item = Sample;
+impl<S: Source<Item = f32>> Iterator for Denoiser<S> {
+    type Item = f32;
 
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
@@ -175,7 +174,7 @@ impl<S: Source> Iterator for Denoiser<S> {
 #[error("Could not send or receive from denoise thread. It must have crashed")]
 struct DenoiseEngineCrashed;
 
-impl<S: Source> Denoiser<S> {
+impl<S: Source<Item = f32>> Denoiser<S> {
     #[cold]
     fn prepare_next_ready(&mut self) -> Result<Option<f32>, DenoiseEngineCrashed> {
         self.state = match self.state {
@@ -264,7 +263,7 @@ impl<S: Source> Denoiser<S> {
     }
 }
 
-fn read_sub_block(s: &mut impl Source) -> Option<[f32; BLOCK_SHIFT]> {
+fn read_sub_block(s: &mut impl Source<Item = f32>) -> Option<[f32; BLOCK_SHIFT]> {
     let mut res = [0f32; BLOCK_SHIFT];
     for sample in &mut res {
         *sample = s.next()?;

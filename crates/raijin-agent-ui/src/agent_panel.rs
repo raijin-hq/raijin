@@ -4002,7 +4002,7 @@ impl AgentPanel {
             .flex_none()
             .justify_between()
             .gap_2()
-            .bg(cx.theme().colors().tab_bar_background)
+            .bg(cx.theme().colors().tab.bar_background)
             .border_b_1()
             .border_color(cx.theme().colors().border);
 
@@ -4177,7 +4177,7 @@ impl AgentPanel {
                     .p_2()
                     .gap_1()
                     .justify_center()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(
                         Icon::new(IconName::LoadCircle)
                             .size(IconSize::Small)
@@ -4292,7 +4292,7 @@ impl AgentPanel {
         Some(
             div()
                 .when(text_thread_view, |this| {
-                    this.bg(cx.theme().colors().editor_background)
+                    this.bg(cx.theme().colors().editor.background)
                 })
                 .child(self.onboarding.clone()),
         )
@@ -4312,7 +4312,7 @@ impl AgentPanel {
                 .absolute()
                 .inset_0()
                 .size_full()
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
                 .opacity(0.85)
                 .block_mouse_except_scroll()
                 .child(EndTrialUpsell::new(Arc::new({
@@ -4454,7 +4454,7 @@ impl AgentPanel {
                             .p(DynamicSpacing::Base08.rems(cx))
                             .border_b_1()
                             .border_color(cx.theme().colors().border_variant)
-                            .bg(cx.theme().colors().editor_background)
+                            .bg(cx.theme().colors().editor.background)
                             .child(buffer_search_bar.render(window, cx)),
                     )
                 })

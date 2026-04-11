@@ -41,7 +41,7 @@ struct BufferConflicts {
     _subscription: Subscription,
 }
 
-impl editor::Addon for ConflictAddon {
+impl raijin_editor::Addon for ConflictAddon {
     fn to_any(&self) -> &dyn std::any::Any {
         self
     }
@@ -121,7 +121,7 @@ fn excerpt_for_buffer_updated(
     );
 }
 
-#[ztracing::instrument(skip_all)]
+#[raijin_tracing::instrument(skip_all)]
 fn buffer_added(editor: &mut Editor, buffer: Entity<Buffer>, cx: &mut Context<Editor>) {
     let Some(project) = editor.project() else {
         return;
@@ -177,7 +177,7 @@ fn buffers_removed(editor: &mut Editor, removed_buffer_ids: &[BufferId], cx: &mu
     editor.remove_blocks(removed_block_ids, None, cx);
 }
 
-#[ztracing::instrument(skip_all)]
+#[raijin_tracing::instrument(skip_all)]
 fn conflicts_updated(
     editor: &mut Editor,
     conflict_set: Entity<ConflictSet>,
@@ -323,12 +323,12 @@ fn conflicts_updated(
     }
 }
 
-#[ztracing::instrument(skip_all)]
+#[raijin_tracing::instrument(skip_all)]
 fn update_conflict_highlighting(
     editor: &mut Editor,
     conflict: &ConflictRegion,
-    buffer: &editor::MultiBufferSnapshot,
-    excerpt_id: editor::ExcerptId,
+    buffer: &raijin_editor::MultiBufferSnapshot,
+    excerpt_id: raijin_editor::ExcerptId,
     cx: &mut Context<Editor>,
 ) -> Option<()> {
     log::debug!("update conflict highlighting for {conflict:?}");
@@ -337,8 +337,8 @@ fn update_conflict_highlighting(
     let ours = buffer.anchor_range_in_excerpt(excerpt_id, conflict.ours.clone())?;
     let theirs = buffer.anchor_range_in_excerpt(excerpt_id, conflict.theirs.clone())?;
 
-    let ours_background = cx.theme().colors().version_control_conflict_marker_ours;
-    let theirs_background = cx.theme().colors().version_control_conflict_marker_theirs;
+    let ours_background = cx.theme().colors().version_control.conflict_marker_ours;
+    let theirs_background = cx.theme().colors().version_control.conflict_marker_theirs;
 
     let options = RowHighlightOptions {
         include_gutter: true,
@@ -347,7 +347,7 @@ fn update_conflict_highlighting(
 
     editor.insert_gutter_highlight::<ConflictsOuter>(
         outer.start..theirs.end,
-        |cx| cx.theme().colors().editor_background,
+        |cx| cx.theme().colors().editor.background,
         cx,
     );
 
@@ -384,7 +384,7 @@ fn render_conflict_buttons(
         .h(cx.line_height)
         .ml(cx.margins.gutter.width)
         .gap_1()
-        .bg(cx.theme().colors().editor_background)
+        .bg(cx.theme().colors().editor.background)
         .child(
             Button::new("head", format!("Use {}", conflict.ours_branch_name))
                 .label_size(LabelSize::Small)
@@ -541,12 +541,12 @@ pub(crate) fn register_conflict_notification(
             return;
         }
 
-        if workspace.is_notification_suppressed(workspace::merge_conflict_notification_id()) {
+        if workspace.is_notification_suppressed(raijin_workspace::merge_conflict_notification_id()) {
             return;
         }
 
         let paths = collect_conflicted_file_paths(project, cx);
-        let notification_id = workspace::merge_conflict_notification_id();
+        let notification_id = raijin_workspace::merge_conflict_notification_id();
         let current_paths_set: HashSet<String> = paths.iter().cloned().collect();
 
         if paths.is_empty() {

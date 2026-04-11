@@ -10,7 +10,7 @@ use anyhow::{Context as _, Result, anyhow, bail};
 use async_compression::futures::bufread::GzipDecoder;
 use async_tar::Archive;
 use raijin_client::{Client, proto, telemetry::Telemetry};
-use cloud_api_types::{ExtensionMetadata, ExtensionProvides, GetExtensionsResponse};
+use raijin_cloud_api_types::{ExtensionMetadata, ExtensionProvides, GetExtensionsResponse};
 use inazuma_collections::{BTreeMap, BTreeSet, HashSet, btree_map};
 pub use raijin_extension::ExtensionManifest;
 use raijin_extension::extension_builder::{CompileExtensionOptions, ExtensionBuilder};
@@ -202,7 +202,7 @@ pub fn init(
 ) {
     let store = cx.new(move |cx| {
         ExtensionStore::new(
-            paths::extensions_dir().clone(),
+            raijin_paths::extensions_dir().clone(),
             None,
             extension_host_proxy,
             fs,
@@ -742,7 +742,7 @@ impl ExtensionStore {
 
             let content_length = response
                 .headers()
-                .get(http_client::http::header::CONTENT_LENGTH)
+                .get(raijin_http_client::http::header::CONTENT_LENGTH)
                 .and_then(|value| value.to_str().ok()?.parse::<usize>().ok());
 
             let mut body = BufReader::new(response.body_mut());
@@ -771,7 +771,7 @@ impl ExtensionStore {
                         && let Some(manifest) = this.extension_manifest_for_id(&extension_id)
                     {
                         events.update(cx, |this, cx| {
-                            this.emit(extension::Event::ExtensionInstalled(manifest.clone()), cx)
+                            this.emit(raijin_extension::Event::ExtensionInstalled(manifest.clone()), cx)
                         });
                     }
                 })
@@ -917,7 +917,7 @@ impl ExtensionStore {
                     && let Some(manifest) = extension_manifest
                 {
                     events.update(cx, |this, cx| {
-                        this.emit(extension::Event::ExtensionUninstalled(manifest.clone()), cx)
+                        this.emit(raijin_extension::Event::ExtensionUninstalled(manifest.clone()), cx)
                     });
                 }
             })?;
@@ -989,7 +989,7 @@ impl ExtensionStore {
             })
             .await
             .inspect_err(|error| {
-                util::log_err(error);
+                inazuma_util::log_err(error);
             })?;
 
             let output_path = &extensions_dir.join(extension_id.as_ref());
@@ -1018,7 +1018,7 @@ impl ExtensionStore {
                     && let Some(manifest) = this.extension_manifest_for_id(&extension_id)
                 {
                     events.update(cx, |this, cx| {
-                        this.emit(extension::Event::ExtensionInstalled(manifest.clone()), cx)
+                        this.emit(raijin_extension::Event::ExtensionInstalled(manifest.clone()), cx)
                     });
                 }
             })?;
@@ -1069,7 +1069,7 @@ impl ExtensionStore {
     /// no longer in the manifest, or whose files have changed on disk.
     /// Then it loads any themes, languages, or grammars that are newly
     /// added to the manifest, or whose files have changed on disk.
-    #[ztracing::instrument(skip_all)]
+    #[raijin_tracing::instrument(skip_all)]
     fn extensions_updated(
         &mut self,
         mut new_index: ExtensionIndex,
@@ -1147,7 +1147,7 @@ impl ExtensionStore {
             })
             .collect::<Vec<_>>();
 
-        telemetry::event!("Extensions Loaded", id_and_versions = extension_ids);
+        raijin_telemetry::event!("Extensions Loaded", id_and_versions = extension_ids);
 
         let themes_to_remove = old_index
             .themes
@@ -1432,7 +1432,7 @@ impl ExtensionStore {
                     for (slash_command_name, slash_command) in &manifest.slash_commands {
                         this.proxy.register_slash_command(
                             extension.clone(),
-                            extension::SlashCommand {
+                            raijin_extension::SlashCommand {
                                 name: slash_command_name.to_string(),
                                 description: slash_command.description.to_string(),
                                 // We don't currently expose this as a configurable option, as it currently drives
@@ -1479,7 +1479,7 @@ impl ExtensionStore {
 
                 if let Some(events) = ExtensionEvents::try_global(cx) {
                     events.update(cx, |this, cx| {
-                        this.emit(extension::Event::ExtensionsInstalledChanged, cx)
+                        this.emit(raijin_extension::Event::ExtensionsInstalledChanged, cx)
                     });
                 }
             })
@@ -1702,14 +1702,14 @@ impl ExtensionStore {
                 fs.save(
                     &tmp_dir.join(EXTENSION_TOML),
                     &Rope::from(manifest_toml),
-                    language::LineEnding::Unix,
+                    raijin_language::LineEnding::Unix,
                 )
                 .await?;
             } else {
                 fs.copy_file(
                     &src_dir.join(EXTENSION_TOML),
                     &tmp_dir.join(EXTENSION_TOML),
-                    fs::CopyOptions::default(),
+                    raijin_fs::CopyOptions::default(),
                 )
                 .await?
             }
@@ -1718,7 +1718,7 @@ impl ExtensionStore {
                 fs.copy_file(
                     &src_dir.join(EXTENSION_WASM),
                     &tmp_dir.join(EXTENSION_WASM),
-                    fs::CopyOptions::default(),
+                    raijin_fs::CopyOptions::default(),
                 )
                 .await?
             }
@@ -1732,14 +1732,14 @@ impl ExtensionStore {
                     fs.copy_file(
                         &src_dir.join(language_path).join(CONFIG_TOML),
                         &tmp_dir.join(language_path).join(CONFIG_TOML),
-                        fs::CopyOptions::default(),
+                        raijin_fs::CopyOptions::default(),
                     )
                     .await?
                 }
             }
 
             for (adapter_name, meta) in loaded_extension.manifest.debug_adapters.iter() {
-                let schema_path = &extension::build_debug_adapter_schema_path(adapter_name, meta);
+                let schema_path = &raijin_extension::build_debug_adapter_schema_path(adapter_name, meta);
 
                 if fs.is_file(&src_dir.join(schema_path)).await {
                     if let Some(parent) = schema_path.parent() {
@@ -1748,7 +1748,7 @@ impl ExtensionStore {
                     fs.copy_file(
                         &src_dir.join(schema_path),
                         &tmp_dir.join(schema_path),
-                        fs::CopyOptions::default(),
+                        raijin_fs::CopyOptions::default(),
                     )
                     .await?
                 }

@@ -437,7 +437,7 @@ impl<T: NumberFieldType> RenderOnce for NumberField<T> {
             })
         };
 
-        let bg_color = cx.theme().colors().surface_background;
+        let bg_color = cx.theme().colors().surface;
         let hover_bg_color = cx.theme().colors().element_hover;
 
         let border_color = cx.theme().colors().border_variant;

@@ -105,6 +105,7 @@ impl TerminalHandle {
 pub struct Terminal {
     handle: TerminalHandle,
     events_rx: flume::Receiver<TerminalEvent>,
+    pub(crate) task: Option<crate::task_state::TaskState>,
 }
 
 impl Terminal {
@@ -165,6 +166,7 @@ impl Terminal {
         Ok(Self {
             handle,
             events_rx: event_rx,
+            task: None,
         })
     }
 
@@ -264,5 +266,25 @@ impl Terminal {
     /// Get the event receiver for async polling.
     pub fn event_receiver(&self) -> &flume::Receiver<TerminalEvent> {
         &self.events_rx
+    }
+
+    /// Returns the task state if this terminal is running a task.
+    pub fn task(&self) -> Option<&crate::task_state::TaskState> {
+        self.task.as_ref()
+    }
+
+    /// Clone the builder configuration from this terminal for creating a copy.
+    pub fn clone_builder(
+        &self,
+        _cx: &inazuma::App,
+        cwd: Option<std::path::PathBuf>,
+    ) -> inazuma::Task<anyhow::Result<crate::TerminalBuilder>> {
+        let cwd = cwd.unwrap_or_else(|| std::env::current_dir().unwrap_or_default());
+        inazuma::Task::ready(Ok(crate::TerminalBuilder {
+            working_directory: Some(cwd),
+            task: None,
+            shell: raijin_task::Shell::System,
+            env: Default::default(),
+        }))
     }
 }

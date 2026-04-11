@@ -260,6 +260,13 @@ pub fn adjust_buffer_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
     cx.refresh_windows();
 }
 
+pub fn observe_buffer_font_size_adjustment<V: 'static>(
+    cx: &mut inazuma::Context<V>,
+    f: impl 'static + Fn(&mut V, &mut inazuma::Context<V>),
+) -> inazuma::Subscription {
+    cx.observe_global::<BufferFontSize>(f)
+}
+
 pub fn reset_buffer_font_size(cx: &mut App) {
     if cx.has_global::<BufferFontSize>() {
         cx.remove_global::<BufferFontSize>();
@@ -290,6 +297,37 @@ pub fn reset_ui_font_size(cx: &mut App) {
 
 pub fn clamp_font_size(size: Pixels) -> Pixels {
     size.clamp(MIN_FONT_SIZE, MAX_FONT_SIZE)
+}
+
+/// Sets the appearance mode on the theme selection in the settings content.
+///
+/// If the current selection is static, it converts to a dynamic selection
+/// with the system defaults for light/dark. If already dynamic, it updates
+/// the mode field.
+pub fn set_mode(content: &mut SettingsContent, mode: ThemeAppearanceMode) {
+    let theme = content.theme.as_mut();
+
+    if let Some(selection) = theme.theme.as_mut() {
+        match selection {
+            inazuma_settings_content::ThemeSelection::Static(_) => {
+                *selection = inazuma_settings_content::ThemeSelection::Dynamic {
+                    mode: ThemeAppearanceMode::System,
+                    light: ThemeName(inazuma_settings_content::DEFAULT_LIGHT_THEME.into()),
+                    dark: ThemeName(inazuma_settings_content::DEFAULT_DARK_THEME.into()),
+                };
+            }
+            inazuma_settings_content::ThemeSelection::Dynamic {
+                mode: mode_to_update,
+                ..
+            } => *mode_to_update = mode,
+        }
+    } else {
+        theme.theme = Some(inazuma_settings_content::ThemeSelection::Dynamic {
+            mode,
+            light: ThemeName(inazuma_settings_content::DEFAULT_LIGHT_THEME.into()),
+            dark: ThemeName(inazuma_settings_content::DEFAULT_DARK_THEME.into()),
+        });
+    }
 }
 
 fn font_fallbacks_from_settings(

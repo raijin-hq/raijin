@@ -881,7 +881,7 @@ impl NotebookEditor {
             .w(px(CONTROL_SIZE + 4.0))
             .overflow_hidden()
             .rounded(px(5.))
-            .bg(cx.theme().colors().title_bar_background)
+            .bg(cx.theme().colors().title_bar.background)
             .p_px()
             .border_1()
             .border_color(cx.theme().colors().border)
@@ -1104,7 +1104,7 @@ impl NotebookEditor {
             .gap_2()
             .items_center()
             .justify_between()
-            .bg(cx.theme().colors().status_bar_background)
+            .bg(cx.theme().colors().status_bar.background)
             .child(
                 KernelSelector::new(
                     Box::new(move |spec: KernelSpecification, window, cx| {

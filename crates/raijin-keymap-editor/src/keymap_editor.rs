@@ -1983,7 +1983,7 @@ impl Render for KeymapEditor {
             .size_full()
             .p_2()
             .gap_1()
-            .bg(theme.colors().editor_background)
+            .bg(theme.colors().editor.background)
             .child(
                 v_flex()
                     .gap_2()
@@ -2335,7 +2335,7 @@ impl Render for KeymapEditor {
                                     |row| row.bg(cx.theme().status().error_background),
                                 )
                                 .when(is_selected, |row| {
-                                    row.border_color(cx.theme().colors().panel_focused_border)
+                                    row.border_color(cx.theme().colors().panel.focused_border)
                                 })
                                 .into_any_element()
                         }),
@@ -3461,7 +3461,7 @@ impl Render for ActionArgumentsEditor {
             .px_2()
             .flex_grow()
             .rounded_md()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .border_1()
             .border_color(border_color)
             .track_focus(&self.focus_handle)

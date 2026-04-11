@@ -450,9 +450,9 @@ fn markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
 
     MarkdownStyle {
         base_text_style,
-        selection_background_color: cx.theme().colors().element_selection_background,
+        selection_background_color: cx.theme().colors().element_selection,
         inline_code: TextStyleRefinement {
-            background_color: Some(cx.theme().colors().editor_background.opacity(0.5)),
+            background_color: Some(cx.theme().colors().editor.background.opacity(0.5)),
             font_family: Some(buffer_font_family),
             font_fallbacks: buffer_font_fallbacks,
             ..Default::default()

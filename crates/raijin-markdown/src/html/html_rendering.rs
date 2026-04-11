@@ -237,10 +237,10 @@ impl MarkdownElement {
                     .px_2()
                     .py_1()
                     .when(cell.is_header, |this| {
-                        this.bg(cx.theme().colors().title_bar_background)
+                        this.bg(cx.theme().colors().title_bar.background)
                     })
                     .when(!cell.is_header && row_index % 2 == 1, |this| {
-                        this.bg(cx.theme().colors().panel_background)
+                        this.bg(cx.theme().colors().panel.background)
                     });
 
                 cell_div = match cell.alignment {
@@ -285,7 +285,7 @@ impl MarkdownElement {
                         .when(row_index > 0, |this| this.border_t_1())
                         .border_color(cx.theme().colors().border)
                         .when(row_index % 2 == 1, |this| {
-                            this.bg(cx.theme().colors().panel_background)
+                            this.bg(cx.theme().colors().panel.background)
                         }),
                     &table.source_range,
                     markdown_end,

@@ -21,13 +21,13 @@ use crate::{
         MinimapThumb, MinimapThumbBorder, ScrollBeyondLastLine, ScrollbarAxes,
         ScrollbarDiagnostics, ShowMinimap,
     },
-    raijin_git::blame::{BlameRenderer, GitBlame, GlobalBlameRenderer},
+    git::blame::{BlameRenderer, GitBlame, GlobalBlameRenderer},
     hover_popover::{
         self, HOVER_POPOVER_GAP, MIN_POPOVER_CHARACTER_WIDTH, MIN_POPOVER_LINE_HEIGHT,
         POPOVER_RIGHT_OFFSET, hover_at,
     },
     inlay_hint_settings,
-    mouse_context_inazuma_menu::{self, MenuPosition},
+    mouse_context_menu::{self, MenuPosition},
     scroll::{
         ActiveScrollbarState, Autoscroll, ScrollOffset, ScrollPixelOffset, ScrollbarThumbState,
         scroll_amount::ScrollAmount,
@@ -36,7 +36,7 @@ use crate::{
 use raijin_buffer_diff::{DiffHunkStatus, DiffHunkStatusKind};
 use inazuma_collections::{BTreeMap, HashMap};
 use raijin_feature_flags::{DiffReviewFeatureFlag, FeatureFlagAppExt as _};
-use raijin_file_inazuma_icons::FileIcons;
+use raijin_file_icons::FileIcons;
 use raijin_git::{Oid, blame::BlameEntry, commit::ParsedCommitMessage, status::FileStatus};
 use inazuma::{
     Action, Along, AnyElement, App, AppContext, AvailableSpace, Axis as ScrollbarAxis, BorderStyle,
@@ -902,7 +902,7 @@ impl EditorElement {
         }
 
         let point_for_position = position_map.point_for_position(event.position);
-        mouse_context_inazuma_menu::deploy_context_menu(
+        mouse_context_menu::deploy_context_menu(
             editor,
             Some(event.position),
             point_for_position.previous_valid,
@@ -1869,13 +1869,13 @@ impl EditorElement {
                             // opaque enough to use as a text color.
                             //
                             // TODO: In the future we should ensure themes have a `text_inverse` color.
-                            let color = if cx.theme().colors().editor_background.a < 0.75 {
+                            let color = if cx.theme().colors().editor.background.a < 0.75 {
                                 match cx.theme().appearance {
                                     Appearance::Dark => Oklch::black(),
                                     Appearance::Light => Oklch::white(),
                                 }
                             } else {
-                                cx.theme().colors().editor_background
+                                cx.theme().colors().editor.background
                             };
 
                             let shaped = window.text_system().shape_line(
@@ -3412,7 +3412,7 @@ impl EditorElement {
                 };
 
                 let toggle = IconButton::new(("expand", ix), icon_name)
-                    .icon_color(Color::Custom(cx.theme().colors().editor_line_number))
+                    .icon_color(Color::Custom(cx.theme().colors().editor.line_number))
                     .icon_size(IconSize::Custom(rems(editor_font_size / window.rem_size())))
                     .width(width)
                     .on_click(move |_, window, cx| {
@@ -3503,10 +3503,10 @@ impl EditorElement {
                     if spec.breakpoint {
                         cx.theme().colors().debugger_accent
                     } else {
-                        cx.theme().colors().editor_active_line_number
+                        cx.theme().colors().editor.active_line_number
                     }
                 })
-                .unwrap_or_else(|| cx.theme().colors().editor_line_number);
+                .unwrap_or_else(|| cx.theme().colors().editor.line_number);
             let shaped_line =
                 self.shape_line_number(SharedString::from(&line_number), color, window);
             let scroll_top = scroll_position.y * ScrollPixelOffset::from(line_height);
@@ -4156,7 +4156,7 @@ impl EditorElement {
         let scale = window.scale_factor();
         let pattern_size =
             Self::spacer_pattern_period(f32::from(line_height) * scale, target_size * scale);
-        let color = cx.theme().colors().panel_background;
+        let color = cx.theme().colors().panel.background;
         let background = pattern_slash(color, 2.0, pattern_size - 2.0);
 
         div()
@@ -4516,7 +4516,7 @@ impl EditorElement {
             latest_selection_anchors,
         );
 
-        let editor_bg_color = cx.theme().colors().editor_background;
+        let editor_bg_color = cx.theme().colors().editor.background;
 
         let selected = selected_buffer_ids.contains(&excerpt.buffer_id);
 
@@ -4628,7 +4628,7 @@ impl EditorElement {
                     .filter(|&delta| delta != 0)
                     .map(|delta| delta.unsigned_abs() as u32)
                     .unwrap_or(start_point.row + 1);
-                let color = cx.theme().colors().editor_line_number;
+                let color = cx.theme().colors().editor.line_number;
                 self.shape_line_number(SharedString::from(number.to_string()), color, window)
             });
 
@@ -4654,7 +4654,7 @@ impl EditorElement {
 
         Some(StickyHeaders {
             lines,
-            gutter_background: cx.theme().colors().editor_gutter_background,
+            gutter_background: cx.theme().colors().editor.gutter_background,
             content_background: self.style.background,
             gutter_right_padding: gutter_dimensions.right_padding,
         })
@@ -5895,7 +5895,7 @@ impl EditorElement {
     fn paint_background(&self, layout: &EditorLayout, window: &mut Window, cx: &mut App) {
         window.paint_layer(layout.hitbox.bounds, |window| {
             let scroll_top = layout.position_map.snapshot.scroll_position().y;
-            let gutter_bg = cx.theme().colors().editor_gutter_background;
+            let gutter_bg = cx.theme().colors().editor.gutter_background;
             window.paint_quad(fill(layout.gutter_hitbox.bounds, gutter_bg));
             window.paint_quad(fill(
                 layout.position_map.text_hitbox.bounds,
@@ -5946,7 +5946,7 @@ impl EditorElement {
                                 CurrentLineHighlight::None => None,
                             };
                         if let Some(range) = highlight_h_range {
-                            let active_line_bg = cx.theme().colors().editor_active_line_background;
+                            let active_line_bg = cx.theme().colors().editor.active_line_background;
                             let bounds = Bounds {
                                 origin: point(
                                     range.start,
@@ -5995,8 +5995,8 @@ impl EditorElement {
                     );
                     let mut quad = fill(Bounds { origin, size }, highlight.background);
                     if let Some(border_color) = highlight.border {
-                        quad.border_color = border_color;
-                        quad.border_widths = edges
+                        quad = quad.border_color(border_color);
+                        quad.border_widths = edges;
                     }
                     window.paint_quad(quad);
                 };
@@ -6049,9 +6049,9 @@ impl EditorElement {
 
                 for (guide_x, active) in layout.wrap_guides.iter() {
                     let color = if *active {
-                        cx.theme().colors().editor_active_wrap_guide
+                        cx.theme().colors().editor.active_wrap_guide
                     } else {
-                        cx.theme().colors().editor_wrap_guide
+                        cx.theme().colors().editor.wrap_guide
                     };
                     window.paint_quad(fill(
                         Bounds {
@@ -6094,10 +6094,10 @@ impl EditorElement {
             let line_color = match (settings.coloring, indent_guide.active) {
                 (IndentGuideColoring::Disabled, _) => None,
                 (IndentGuideColoring::Fixed, false) => {
-                    Some(cx.theme().colors().editor_indent_guide)
+                    Some(cx.theme().colors().editor.indent_guide)
                 }
                 (IndentGuideColoring::Fixed, true) => {
-                    Some(cx.theme().colors().editor_indent_guide_active)
+                    Some(cx.theme().colors().editor.indent_guide_active)
                 }
                 (IndentGuideColoring::IndentAware, false) => {
                     Some(faded_color(indent_accent_colors, INDENT_AWARE_ALPHA))
@@ -6166,7 +6166,7 @@ impl EditorElement {
                 };
 
                 let Some(()) = (if !is_singleton && hitbox.is_hovered(window) {
-                    let color = cx.theme().colors().editor_hover_line_number;
+                    let color = cx.theme().colors().editor.hover_line_number;
 
                     let line = self.shape_line_number(shaped_line.text.clone(), color, window);
                     line.paint(
@@ -6227,7 +6227,7 @@ impl EditorElement {
                         );
                         Some((
                             hunk_bounds,
-                            cx.theme().colors().version_control_modified,
+                            cx.theme().colors().version_control.modified,
                             Corners::all(px(0.)),
                             DiffHunkStatus::modified_none(),
                         ))
@@ -6238,17 +6238,17 @@ impl EditorElement {
                         ..
                     } => hitbox.as_ref().map(|hunk_hitbox| {
                         let color = match split_side {
-                            Some(SplitSide::Left) => cx.theme().colors().version_control_deleted,
-                            Some(SplitSide::Right) => cx.theme().colors().version_control_added,
+                            Some(SplitSide::Left) => cx.theme().colors().version_control.deleted,
+                            Some(SplitSide::Right) => cx.theme().colors().version_control.added,
                             None => match status.kind {
                                 DiffHunkStatusKind::Added => {
-                                    cx.theme().colors().version_control_added
+                                    cx.theme().colors().version_control.added
                                 }
                                 DiffHunkStatusKind::Modified => {
-                                    cx.theme().colors().version_control_modified
+                                    cx.theme().colors().version_control.modified
                                 }
                                 DiffHunkStatusKind::Deleted => {
-                                    cx.theme().colors().version_control_deleted
+                                    cx.theme().colors().version_control.deleted
                                 }
                             },
                         };
@@ -6860,9 +6860,9 @@ impl EditorElement {
                     window.paint_quad(quad(
                         hitbox.bounds,
                         Corners::default(),
-                        cx.theme().colors().scrollbar_track_background,
+                        cx.theme().colors().scrollbar.track_background,
                         scrollbar_edges,
-                        cx.theme().colors().scrollbar_track_border,
+                        cx.theme().colors().scrollbar.track_border,
                         BorderStyle::Solid,
                     ));
 
@@ -6884,13 +6884,13 @@ impl EditorElement {
                     if let Some(thumb_bounds) = scrollbar_layout.thumb_bounds {
                         let scrollbar_thumb_color = match scrollbar_layout.thumb_state {
                             ScrollbarThumbState::Dragging => {
-                                cx.theme().colors().scrollbar_thumb_active_background
+                                cx.theme().colors().scrollbar.thumb_active_background
                             }
                             ScrollbarThumbState::Hovered => {
-                                cx.theme().colors().scrollbar_thumb_hover_background
+                                cx.theme().colors().scrollbar.thumb_hover_background
                             }
                             ScrollbarThumbState::Idle => {
-                                cx.theme().colors().scrollbar_thumb_background
+                                cx.theme().colors().scrollbar.thumb_background
                             }
                         };
                         window.paint_quad(quad(
@@ -6898,7 +6898,7 @@ impl EditorElement {
                             Corners::default(),
                             scrollbar_thumb_color,
                             scrollbar_edges,
-                            cx.theme().colors().scrollbar_thumb_border,
+                            cx.theme().colors().scrollbar.thumb_border,
                             BorderStyle::Solid,
                         ));
 
@@ -7123,13 +7123,13 @@ impl EditorElement {
                                         }
                                         let color = match &hunk.status().kind {
                                             DiffHunkStatusKind::Added => {
-                                                theme.colors().version_control_added
+                                                theme.colors().version_control.added
                                             }
                                             DiffHunkStatusKind::Modified => {
-                                                theme.colors().version_control_modified
+                                                theme.colors().version_control.modified
                                             }
                                             DiffHunkStatusKind::Deleted => {
-                                                theme.colors().version_control_deleted
+                                                theme.colors().version_control.deleted
                                             }
                                         };
                                         ColoredRange {
@@ -7390,13 +7390,13 @@ impl EditorElement {
                     if let Some(thumb_bounds) = layout.thumb_layout.thumb_bounds {
                         let minimap_thumb_color = match layout.thumb_layout.thumb_state {
                             ScrollbarThumbState::Idle => {
-                                cx.theme().colors().minimap_thumb_background
+                                cx.theme().colors().minimap.thumb_background
                             }
                             ScrollbarThumbState::Hovered => {
-                                cx.theme().colors().minimap_thumb_hover_background
+                                cx.theme().colors().minimap.thumb_hover_background
                             }
                             ScrollbarThumbState::Dragging => {
-                                cx.theme().colors().minimap_thumb_active_background
+                                cx.theme().colors().minimap.thumb_active_background
                             }
                         };
                         let minimap_thumb_border = match layout.thumb_border_style {
@@ -7426,7 +7426,7 @@ impl EditorElement {
                                 Corners::default(),
                                 minimap_thumb_color,
                                 minimap_thumb_border,
-                                cx.theme().colors().minimap_thumb_border,
+                                cx.theme().colors().minimap.thumb_border,
                                 BorderStyle::Solid,
                             ));
                         });
@@ -8559,7 +8559,7 @@ pub(crate) fn render_buffer_header(
                         .when_some(abs_path, |menu, abs_path| {
                             menu.entry(
                                 "Copy Path",
-                                Some(Box::new(raijin_actions::raijin_workspace::CopyPath)),
+                                Some(Box::new(raijin_actions::workspace::CopyPath)),
                                 window.handler_for(&editor, move |_, _, cx| {
                                     cx.write_to_clipboard(ClipboardItem::new_string(
                                         abs_path.to_string_lossy().into_owned(),
@@ -8570,7 +8570,7 @@ pub(crate) fn render_buffer_header(
                         .when_some(relative_path, |menu, relative_path| {
                             menu.entry(
                                 "Copy Relative Path",
-                                Some(Box::new(raijin_actions::raijin_workspace::CopyRelativePath)),
+                                Some(Box::new(raijin_actions::workspace::CopyRelativePath)),
                                 window.handler_for(&editor, move |_, _, cx| {
                                     cx.write_to_clipboard(ClipboardItem::new_string(
                                         relative_path.display(path_style).to_string(),
@@ -9917,9 +9917,9 @@ impl Element for EditorElement {
                         };
 
                         let background_color = match diff_status.kind {
-                            DiffHunkStatusKind::Added => cx.theme().colors().version_control_added,
+                            DiffHunkStatusKind::Added => cx.theme().colors().version_control.added,
                             DiffHunkStatusKind::Deleted => {
-                                cx.theme().colors().version_control_deleted
+                                cx.theme().colors().version_control.deleted
                             }
                             DiffHunkStatusKind::Modified => {
                                 debug_panic!("modified diff status for row info");
@@ -9972,7 +9972,7 @@ impl Element for EditorElement {
                         let start_row = range.start().0;
                         let end_row = range.end().0;
                         let drag_highlight_color =
-                            cx.theme().colors().editor_active_line_background;
+                            cx.theme().colors().editor.active_line_background;
                         let drag_highlight = LineHighlight {
                             background: solid_background(drag_highlight_color),
                             border: Some(cx.theme().colors().border_focused),
@@ -10920,7 +10920,7 @@ impl Element for EditorElement {
                         &[TextRun {
                             len: tab_len,
                             font: self.style.text.font(),
-                            color: cx.theme().colors().editor_invisible,
+                            color: cx.theme().colors().editor.invisible,
                             ..Default::default()
                         }],
                         None,
@@ -10934,7 +10934,7 @@ impl Element for EditorElement {
                         &[TextRun {
                             len: space_len,
                             font: self.style.text.font(),
-                            color: cx.theme().colors().editor_invisible,
+                            color: cx.theme().colors().editor.invisible,
                             ..Default::default()
                         }],
                         None,
@@ -11313,7 +11313,7 @@ impl StickyHeaders {
                     window.paint_quad(fill(text_bounds, self.content_background));
 
                     if line.hitbox.is_hovered(window) {
-                        let hover_overlay = cx.theme().colors().panel_overlay_hover;
+                        let hover_overlay = cx.theme().colors().panel.overlay_hover;
                         window.paint_quad(fill(gutter_bounds, hover_overlay));
                         window.paint_quad(fill(text_bounds, hover_overlay));
                     }
@@ -12466,7 +12466,7 @@ mod tests {
             editor.set_soft_wrap_mode(language_settings::SoftWrap::EditorWidth, cx);
             editor
         });
-        let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+        let cx = &mut VisualTestContext::from_window(*window, cx);
         let editor = window.root(cx).unwrap();
         let style = cx.update(|_, cx| editor.update(cx, |editor, cx| editor.style(cx).clone()));
 
@@ -12493,7 +12493,7 @@ mod tests {
             editor.set_soft_wrap_mode(language_settings::SoftWrap::EditorWidth, cx);
             editor
         });
-        let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+        let cx = &mut VisualTestContext::from_window(*window, cx);
         let editor = window.root(cx).unwrap();
         let style = cx.update(|_, cx| editor.update(cx, |editor, cx| editor.style(cx).clone()));
 
@@ -12883,7 +12883,7 @@ mod tests {
             let buffer = MultiBuffer::build_simple(&(sample_text(6, 6, 'a') + "\n"), cx);
             Editor::new(EditorMode::full(), buffer, None, window, cx)
         });
-        let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+        let cx = &mut VisualTestContext::from_window(*window, cx);
         let editor = window.root(cx).unwrap();
         let style = cx.update(|_, cx| editor.update(cx, |editor, cx| editor.style(cx).clone()));
 
@@ -12954,7 +12954,7 @@ mod tests {
             let buffer = MultiBuffer::build_simple("", cx);
             Editor::new(EditorMode::full(), buffer, None, window, cx)
         });
-        let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+        let cx = &mut VisualTestContext::from_window(*window, cx);
         let editor = window.root(cx).unwrap();
         let style = cx.update(|_, cx| editor.update(cx, |editor, cx| editor.style(cx).clone()));
         window
@@ -13193,7 +13193,7 @@ mod tests {
             let buffer = MultiBuffer::build_simple(input_text, cx);
             Editor::new(editor_mode, buffer, None, window, cx)
         });
-        let cx = &mut VisualTestConinazuma_text::from_window(*window, cx);
+        let cx = &mut VisualTestContext::from_window(*window, cx);
         let editor = window.root(cx).unwrap();
 
         let style = editor.update(cx, |editor, cx| editor.style(cx).clone());

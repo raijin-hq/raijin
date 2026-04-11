@@ -78,7 +78,7 @@ fn register_entry(
     let snapshot = entry.new_buffer.read(cx).snapshot();
     let diff_snapshot = entry.diff.read(cx).snapshot(cx);
 
-    let ranges: Vec<std::ops::Range<language::Point>> = diff_snapshot
+    let ranges: Vec<std::ops::Range<raijin_language::Point>> = diff_snapshot
         .hunks(&snapshot)
         .map(|hunk| hunk.buffer_range.to_point(&snapshot))
         .collect();
@@ -273,7 +273,7 @@ impl Item for MultiDiffView {
             .into_any_element()
     }
 
-    fn tab_tooltip_text(&self, _cx: &App) -> Option<ui::SharedString> {
+    fn tab_tooltip_text(&self, _cx: &App) -> Option<raijin_ui::SharedString> {
         Some(self.title())
     }
 

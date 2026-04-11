@@ -84,7 +84,7 @@ impl EditorTestContext {
 
         cx.run_until_parked();
         Self {
-            cx: VisualTestConinazuma_text::from_window(*editor.deref(), cx),
+            cx: VisualTestContext::from_window(*editor.deref(), cx),
             window: editor.into(),
             editor: editor_view,
             assertion_cx: AssertionContextManager::new(),
@@ -114,7 +114,7 @@ impl EditorTestContext {
     pub async fn for_editor(editor: WindowHandle<Editor>, cx: &mut inazuma::TestAppContext) -> Self {
         let editor_view = editor.root(cx).unwrap();
         Self {
-            cx: VisualTestConinazuma_text::from_window(*editor.deref(), cx),
+            cx: VisualTestContext::from_window(*editor.deref(), cx),
             window: editor.into(),
             editor: editor_view,
             assertion_cx: AssertionContextManager::new(),
@@ -161,7 +161,7 @@ impl EditorTestContext {
 
         let editor_view = editor.root(cx).unwrap();
         Self {
-            cx: VisualTestConinazuma_text::from_window(*editor.deref(), cx),
+            cx: VisualTestContext::from_window(*editor.deref(), cx),
             window: editor.into(),
             editor: editor_view,
             assertion_cx: AssertionContextManager::new(),

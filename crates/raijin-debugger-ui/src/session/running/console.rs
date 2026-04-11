@@ -407,7 +407,7 @@ impl Console {
             ..Default::default()
         };
         EditorStyle {
-            background: theme.colors().editor_background,
+            background: theme.colors().editor.background,
             local_player: theme.players().local(),
             text: text_style,
             ..Default::default()
@@ -470,7 +470,7 @@ impl Render for Console {
             .on_action(cx.listener(Self::watch_expression))
             .size_full()
             .border_2()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(self.render_console(cx))
             .when(self.is_running(cx), |this| {
                 this.child(Divider::horizontal()).child(
@@ -479,7 +479,7 @@ impl Render for Console {
                         .on_action(cx.listener(Self::next_query))
                         .p_1()
                         .gap_1()
-                        .bg(cx.theme().colors().editor_background)
+                        .bg(cx.theme().colors().editor.background)
                         .child(self.render_query_bar(cx))
                         .child(SplitButton::new(
                             ui::ButtonLike::new_rounded_all(ElementId::Name(
@@ -867,58 +867,58 @@ fn color_fetcher(color: ansi::Color) -> fn(&Theme) -> Hsla {
     let color_fetcher: fn(&Theme) -> Hsla = match color {
         // Named and theme defined colors
         ansi::Color::Named(n) => match n {
-            ansi::NamedColor::Black => |theme| theme.colors().terminal_ansi_black,
-            ansi::NamedColor::Red => |theme| theme.colors().terminal_ansi_red,
-            ansi::NamedColor::Green => |theme| theme.colors().terminal_ansi_green,
-            ansi::NamedColor::Yellow => |theme| theme.colors().terminal_ansi_yellow,
-            ansi::NamedColor::Blue => |theme| theme.colors().terminal_ansi_blue,
-            ansi::NamedColor::Magenta => |theme| theme.colors().terminal_ansi_magenta,
-            ansi::NamedColor::Cyan => |theme| theme.colors().terminal_ansi_cyan,
-            ansi::NamedColor::White => |theme| theme.colors().terminal_ansi_white,
-            ansi::NamedColor::BrightBlack => |theme| theme.colors().terminal_ansi_bright_black,
-            ansi::NamedColor::BrightRed => |theme| theme.colors().terminal_ansi_bright_red,
-            ansi::NamedColor::BrightGreen => |theme| theme.colors().terminal_ansi_bright_green,
-            ansi::NamedColor::BrightYellow => |theme| theme.colors().terminal_ansi_bright_yellow,
-            ansi::NamedColor::BrightBlue => |theme| theme.colors().terminal_ansi_bright_blue,
-            ansi::NamedColor::BrightMagenta => |theme| theme.colors().terminal_ansi_bright_magenta,
-            ansi::NamedColor::BrightCyan => |theme| theme.colors().terminal_ansi_bright_cyan,
-            ansi::NamedColor::BrightWhite => |theme| theme.colors().terminal_ansi_bright_white,
-            ansi::NamedColor::Foreground => |theme| theme.colors().terminal_foreground,
-            ansi::NamedColor::Background => |theme| theme.colors().terminal_background,
+            ansi::NamedColor::Black => |theme| theme.colors().terminal.ansi.black,
+            ansi::NamedColor::Red => |theme| theme.colors().terminal.ansi.red,
+            ansi::NamedColor::Green => |theme| theme.colors().terminal.ansi.green,
+            ansi::NamedColor::Yellow => |theme| theme.colors().terminal.ansi.yellow,
+            ansi::NamedColor::Blue => |theme| theme.colors().terminal.ansi.blue,
+            ansi::NamedColor::Magenta => |theme| theme.colors().terminal.ansi.magenta,
+            ansi::NamedColor::Cyan => |theme| theme.colors().terminal.ansi.cyan,
+            ansi::NamedColor::White => |theme| theme.colors().terminal.ansi.white,
+            ansi::NamedColor::BrightBlack => |theme| theme.colors().terminal.ansi.bright_black,
+            ansi::NamedColor::BrightRed => |theme| theme.colors().terminal.ansi.bright_red,
+            ansi::NamedColor::BrightGreen => |theme| theme.colors().terminal.ansi.bright_green,
+            ansi::NamedColor::BrightYellow => |theme| theme.colors().terminal.ansi.bright_yellow,
+            ansi::NamedColor::BrightBlue => |theme| theme.colors().terminal.ansi.bright_blue,
+            ansi::NamedColor::BrightMagenta => |theme| theme.colors().terminal.ansi.bright_magenta,
+            ansi::NamedColor::BrightCyan => |theme| theme.colors().terminal.ansi.bright_cyan,
+            ansi::NamedColor::BrightWhite => |theme| theme.colors().terminal.ansi.bright_white,
+            ansi::NamedColor::Foreground => |theme| theme.colors().terminal.foreground,
+            ansi::NamedColor::Background => |theme| theme.colors().terminal.background,
             ansi::NamedColor::Cursor => |theme| theme.players().local().cursor,
-            ansi::NamedColor::DimBlack => |theme| theme.colors().terminal_ansi_dim_black,
-            ansi::NamedColor::DimRed => |theme| theme.colors().terminal_ansi_dim_red,
-            ansi::NamedColor::DimGreen => |theme| theme.colors().terminal_ansi_dim_green,
-            ansi::NamedColor::DimYellow => |theme| theme.colors().terminal_ansi_dim_yellow,
-            ansi::NamedColor::DimBlue => |theme| theme.colors().terminal_ansi_dim_blue,
-            ansi::NamedColor::DimMagenta => |theme| theme.colors().terminal_ansi_dim_magenta,
-            ansi::NamedColor::DimCyan => |theme| theme.colors().terminal_ansi_dim_cyan,
-            ansi::NamedColor::DimWhite => |theme| theme.colors().terminal_ansi_dim_white,
-            ansi::NamedColor::BrightForeground => |theme| theme.colors().terminal_bright_foreground,
-            ansi::NamedColor::DimForeground => |theme| theme.colors().terminal_dim_foreground,
+            ansi::NamedColor::DimBlack => |theme| theme.colors().terminal.ansi.dim_black,
+            ansi::NamedColor::DimRed => |theme| theme.colors().terminal.ansi.dim_red,
+            ansi::NamedColor::DimGreen => |theme| theme.colors().terminal.ansi.dim_green,
+            ansi::NamedColor::DimYellow => |theme| theme.colors().terminal.ansi.dim_yellow,
+            ansi::NamedColor::DimBlue => |theme| theme.colors().terminal.ansi.dim_blue,
+            ansi::NamedColor::DimMagenta => |theme| theme.colors().terminal.ansi.dim_magenta,
+            ansi::NamedColor::DimCyan => |theme| theme.colors().terminal.ansi.dim_cyan,
+            ansi::NamedColor::DimWhite => |theme| theme.colors().terminal.ansi.dim_white,
+            ansi::NamedColor::BrightForeground => |theme| theme.colors().terminal.bright_foreground,
+            ansi::NamedColor::DimForeground => |theme| theme.colors().terminal.dim_foreground,
         },
         // 'True' colors
-        ansi::Color::Spec(_) => |theme| theme.colors().editor_background,
+        ansi::Color::Spec(_) => |theme| theme.colors().editor.background,
         // 8 bit, indexed colors
         ansi::Color::Indexed(i) => {
             match i {
                 // 0-15 are the same as the named colors above
-                0 => |theme| theme.colors().terminal_ansi_black,
-                1 => |theme| theme.colors().terminal_ansi_red,
-                2 => |theme| theme.colors().terminal_ansi_green,
-                3 => |theme| theme.colors().terminal_ansi_yellow,
-                4 => |theme| theme.colors().terminal_ansi_blue,
-                5 => |theme| theme.colors().terminal_ansi_magenta,
-                6 => |theme| theme.colors().terminal_ansi_cyan,
-                7 => |theme| theme.colors().terminal_ansi_white,
-                8 => |theme| theme.colors().terminal_ansi_bright_black,
-                9 => |theme| theme.colors().terminal_ansi_bright_red,
-                10 => |theme| theme.colors().terminal_ansi_bright_green,
-                11 => |theme| theme.colors().terminal_ansi_bright_yellow,
-                12 => |theme| theme.colors().terminal_ansi_bright_blue,
-                13 => |theme| theme.colors().terminal_ansi_bright_magenta,
-                14 => |theme| theme.colors().terminal_ansi_bright_cyan,
-                15 => |theme| theme.colors().terminal_ansi_bright_white,
+                0 => |theme| theme.colors().terminal.ansi.black,
+                1 => |theme| theme.colors().terminal.ansi.red,
+                2 => |theme| theme.colors().terminal.ansi.green,
+                3 => |theme| theme.colors().terminal.ansi.yellow,
+                4 => |theme| theme.colors().terminal.ansi.blue,
+                5 => |theme| theme.colors().terminal.ansi.magenta,
+                6 => |theme| theme.colors().terminal.ansi.cyan,
+                7 => |theme| theme.colors().terminal.ansi.white,
+                8 => |theme| theme.colors().terminal.ansi.bright_black,
+                9 => |theme| theme.colors().terminal.ansi.bright_red,
+                10 => |theme| theme.colors().terminal.ansi.bright_green,
+                11 => |theme| theme.colors().terminal.ansi.bright_yellow,
+                12 => |theme| theme.colors().terminal.ansi.bright_blue,
+                13 => |theme| theme.colors().terminal.ansi.bright_magenta,
+                14 => |theme| theme.colors().terminal.ansi.bright_cyan,
+                15 => |theme| theme.colors().terminal.ansi.bright_white,
                 // 16-231 are a 6x6x6 RGB color cube, mapped to 0-255 using steps defined by XTerm.
                 // See: https://github.com/xterm-x11/xterm-snapshots/blob/master/256colres.pl
                 // 16..=231 => {

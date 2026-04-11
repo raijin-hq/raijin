@@ -1,5 +1,5 @@
 use std::{
-    inazuma_collections::hash_map,
+    collections::hash_map,
     ops::{ControlFlow, Range},
     time::Duration,
 };

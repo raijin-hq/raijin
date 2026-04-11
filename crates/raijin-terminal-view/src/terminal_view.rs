@@ -1,25 +1,37 @@
-//! Stub crate for raijin-terminal-view.
+//! Raijin Terminal View — Feature Crate for terminal UI.
 //!
-//! Provides minimal type definitions so that crates depending on terminal_view
-//! (agent_ui, debugger_ui, repl, etc.) can compile.
-//!
-//! Phase 20 (Workspace Integration) will replace this with a real implementation
-//! built on our raijin-terminal + raijin-term Block system.
+//! Contains terminal rendering (grid, blocks, colors, built-in font),
+//! the TerminalPane (Workspace Item), shell install modal, and history panel.
+//! Imports backend logic from raijin-terminal, raijin-completions, raijin-session, raijin-shell.
 
+// Terminal rendering modules
+pub mod block_element;
+pub mod block_list;
+pub mod builtin_font;
+pub mod colors;
+pub mod constants;
+pub mod grid_element;
+pub mod grid_snapshot;
+pub mod live_block;
+
+// Terminal UI modules
+pub mod input;
+pub mod shell_install_modal;
+pub mod terminal_pane;
 pub mod terminal_panel;
-pub mod terminal_element;
 
 use std::rc::Rc;
 
 use inazuma::{
-    AnyElement, App, Context, Entity, EventEmitter, FocusHandle, Focusable, Pixels, Render,
+    AnyElement, App, Context, Entity, EventEmitter, FocusHandle, Focusable, Render,
     Window, prelude::*,
 };
 use raijin_project::Project;
 use raijin_terminal::Terminal;
-use raijin_workspace::{Item, ItemEvent, Workspace, WorkspaceId, pane::Pane};
+use raijin_workspace::{Workspace, item::ItemEvent};
 
 /// Properties for a block rendered below the terminal cursor.
+/// Used by raijin-agent-ui, raijin-debugger-ui, raijin-repl.
 pub struct BlockProperties {
     pub height: u8,
     pub render: Box<dyn Send + Fn(&mut BlockContext) -> AnyElement>,
@@ -31,7 +43,9 @@ pub struct BlockContext<'a, 'b> {
     pub context: &'b mut App,
 }
 
-/// A terminal view — stub that will be replaced in Phase 20.
+/// A terminal view — backward-compatible API for external crates.
+/// The real terminal UI lives in `terminal_pane::TerminalPane` which implements
+/// the Workspace `Item` trait with our full Warp-style Block system.
 pub struct TerminalView {
     terminal: Entity<Terminal>,
     focus_handle: FocusHandle,
@@ -58,7 +72,7 @@ impl TerminalView {
 
     pub fn deploy(
         _workspace: &mut Workspace,
-        _action: &workspace::OpenTerminal,
+        _action: &workspace_actions::OpenTerminal,
         _window: &mut Window,
         _cx: &mut Context<Workspace>,
     ) {
@@ -87,11 +101,11 @@ impl Render for TerminalView {
     }
 }
 
-/// Initialize the terminal view system — stub, no-op for now.
+/// Initialize the terminal view system.
 pub fn init(_cx: &mut App) {}
 
-/// Workspace action for opening a terminal.
-mod workspace {
+/// Workspace actions for terminal.
+mod workspace_actions {
     use inazuma::actions;
     actions!(terminal, [OpenTerminal]);
 }

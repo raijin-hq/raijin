@@ -153,7 +153,7 @@ pub trait LspCommand: 'static + Sized + Send + std::fmt::Debug {
         response: Self::Response,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         cx: &mut App,
     ) -> <Self::ProtoRequest as proto::RequestMessage>::Response;
 
@@ -454,7 +454,7 @@ impl LspCommand for PrepareRename {
         response: PrepareRenameResponse,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::PrepareRenameResponse {
         match response {
@@ -613,7 +613,7 @@ impl LspCommand for PerformRename {
         response: ProjectTransaction,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::PerformRenameResponse {
         let transaction = lsp_store.buffer_store().update(cx, |buffer_store, cx| {
@@ -726,7 +726,7 @@ impl LspCommand for GetDefinitions {
         response: Vec<LocationLink>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::GetDefinitionResponse {
         let links = location_links_to_proto(response, lsp_store, peer_id, cx);
@@ -829,7 +829,7 @@ impl LspCommand for GetDeclarations {
         response: Vec<LocationLink>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::GetDeclarationResponse {
         let links = location_links_to_proto(response, lsp_store, peer_id, cx);
@@ -931,7 +931,7 @@ impl LspCommand for GetImplementations {
         response: Vec<LocationLink>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::GetImplementationResponse {
         let links = location_links_to_proto(response, lsp_store, peer_id, cx);
@@ -1030,7 +1030,7 @@ impl LspCommand for GetTypeDefinitions {
         response: Vec<LocationLink>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::GetTypeDefinitionResponse {
         let links = location_links_to_proto(response, lsp_store, peer_id, cx);
@@ -1442,7 +1442,7 @@ impl LspCommand for GetReferences {
         response: Vec<Location>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::GetReferencesResponse {
         let locations = response
@@ -1602,7 +1602,7 @@ impl LspCommand for GetDocumentHighlights {
         response: Vec<DocumentHighlight>,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetDocumentHighlightsResponse {
         let highlights = response
@@ -1764,7 +1764,7 @@ impl LspCommand for GetDocumentSymbols {
         response: Vec<DocumentSymbol>,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetDocumentSymbolsResponse {
         let symbols = response
@@ -2119,7 +2119,7 @@ impl LspCommand for GetHover {
         response: Self::Response,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetHoverResponse {
         if let Some(response) = response {
@@ -2491,7 +2491,7 @@ impl LspCommand for GetCompletions {
         response: CoreCompletionResponse,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetCompletionsResponse {
         proto::GetCompletionsResponse {
@@ -2775,7 +2775,7 @@ impl LspCommand for GetCodeActions {
         code_actions: Vec<CodeAction>,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetCodeActionsResponse {
         proto::GetCodeActionsResponse {
@@ -2951,7 +2951,7 @@ impl LspCommand for OnTypeFormatting {
         response: Option<Transaction>,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::OnTypeFormattingResponse {
         proto::OnTypeFormattingResponse {
@@ -3473,7 +3473,7 @@ impl LspCommand for InlayHints {
         response: Vec<InlayHint>,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::InlayHintsResponse {
         proto::InlayHintsResponse {
@@ -3612,7 +3612,7 @@ impl LspCommand for SemanticTokensFull {
         response: SemanticTokensResponse,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::SemanticTokensResponse {
         match response {
@@ -3765,7 +3765,7 @@ impl LspCommand for SemanticTokensDelta {
         response: SemanticTokensResponse,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::SemanticTokensResponse {
         match response {
@@ -3921,7 +3921,7 @@ impl LspCommand for GetCodeLens {
         response: Vec<CodeAction>,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetCodeLensResponse {
         proto::GetCodeLensResponse {
@@ -4057,7 +4057,7 @@ impl LspCommand for LinkedEditingRange {
         response: Vec<Range<Anchor>>,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::LinkedEditingRangeResponse {
         proto::LinkedEditingRangeResponse {
@@ -4529,7 +4529,7 @@ impl LspCommand for GetDocumentDiagnostics {
         response: Self::Response,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetDocumentDiagnosticsResponse {
         let pulled_diagnostics = response
@@ -4666,7 +4666,7 @@ impl LspCommand for GetDocumentColor {
         response: Self::Response,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetDocumentColorResponse {
         proto::GetDocumentColorResponse {
@@ -4830,7 +4830,7 @@ impl LspCommand for GetFoldingRanges {
         response: Self::Response,
         _: &mut LspStore,
         _: PeerId,
-        buffer_version: &clock::Global,
+        buffer_version: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::GetFoldingRangesResponse {
         let mut ranges = Vec::with_capacity(response.len());

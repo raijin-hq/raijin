@@ -1,4 +1,4 @@
-use inazuma::{Hsla, Rgba, WindowControlArea, prelude::*};
+use inazuma::{Oklch, Rgba, WindowControlArea, prelude::*};
 
 use raijin_ui::prelude::*;
 
@@ -98,7 +98,7 @@ impl RenderOnce for WindowsCaptionButton {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let (hover_bg, hover_fg, active_bg, active_fg) = match self {
             Self::Close => {
-                let color: Hsla = Rgba {
+                let color: Oklch = Rgba {
                     r: 232.0 / 255.0,
                     g: 17.0 / 255.0,
                     b: 32.0 / 255.0,

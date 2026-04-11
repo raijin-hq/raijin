@@ -40,7 +40,7 @@ impl RenderOnce for AgentPanelOnboardingCard {
                     .rounded(px(5.))
                     .border_color(cx.theme().colors().text.alpha(0.1))
                     .overflow_hidden()
-                    .bg(cx.theme().colors().panel_background)
+                    .bg(cx.theme().colors().panel.background)
                     .child(
                         div()
                             .opacity(0.5)
@@ -71,10 +71,10 @@ impl RenderOnce for AgentPanelOnboardingCard {
                             .bg(linear_gradient(
                                 75.,
                                 linear_color_stop(
-                                    cx.theme().colors().panel_background.alpha(0.01),
+                                    cx.theme().colors().panel.background.alpha(0.01),
                                     1.0,
                                 ),
-                                linear_color_stop(cx.theme().colors().panel_background, 0.45),
+                                linear_color_stop(cx.theme().colors().panel.background, 0.45),
                             )),
                     )
                     .children(self.children),

@@ -234,7 +234,7 @@ impl Component for TreeViewItem {
                 .w_64()
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
         };
 
         Some(

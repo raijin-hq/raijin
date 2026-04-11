@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use inazuma::{Oklch, SharedString, WindowAppearance, WindowBackgroundAppearance};
+use inazuma::{App, Global, Oklch, Pixels, SharedString, WindowAppearance, WindowBackgroundAppearance, px};
 use serde::{Deserialize, Serialize};
 
 use crate::accent::AccentColors;
@@ -12,11 +12,12 @@ use crate::syntax::SyntaxTheme;
 use crate::system::SystemColors;
 
 /// Whether a theme is light or dark.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Serialize, Deserialize, schemars::JsonSchema)]
 pub enum Appearance {
     /// A light theme with dark text on light backgrounds.
     Light,
     /// A dark theme with light text on dark backgrounds.
+    #[default]
     Dark,
 }
 
@@ -33,6 +34,39 @@ impl From<WindowAppearance> for Appearance {
             WindowAppearance::Dark | WindowAppearance::VibrantDark => Self::Dark,
             WindowAppearance::Light | WindowAppearance::VibrantLight => Self::Light,
         }
+    }
+}
+
+/// The rounding radius for client-side window decorations.
+pub const CLIENT_SIDE_DECORATION_ROUNDING: Pixels = px(10.0);
+
+/// The shadow/inset size for client-side window decorations.
+pub const CLIENT_SIDE_DECORATION_SHADOW: Pixels = px(10.0);
+
+/// Tracks the system's current appearance (light or dark).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct SystemAppearance(pub Appearance);
+
+#[derive(derive_more::Deref, derive_more::DerefMut, Default)]
+struct GlobalSystemAppearance(SystemAppearance);
+
+impl Global for GlobalSystemAppearance {}
+
+impl SystemAppearance {
+    /// Initializes the [`SystemAppearance`] for the application.
+    pub fn init(cx: &mut App) {
+        *cx.default_global::<GlobalSystemAppearance>() =
+            GlobalSystemAppearance(SystemAppearance(cx.window_appearance().into()));
+    }
+
+    /// Returns the global [`SystemAppearance`].
+    pub fn global(cx: &App) -> Self {
+        cx.global::<GlobalSystemAppearance>().0
+    }
+
+    /// Returns a mutable reference to the global [`SystemAppearance`].
+    pub fn global_mut(cx: &mut App) -> &mut Self {
+        cx.global_mut::<GlobalSystemAppearance>()
     }
 }
 
@@ -166,6 +200,12 @@ impl Theme {
     #[inline(always)]
     pub fn window_background_appearance(&self) -> WindowBackgroundAppearance {
         self.styles.window_background_appearance
+    }
+
+    /// Whether this theme is dark.
+    #[inline(always)]
+    pub fn is_dark(&self) -> bool {
+        matches!(self.appearance, Appearance::Dark)
     }
 
     /// Darkens a color based on the current appearance.

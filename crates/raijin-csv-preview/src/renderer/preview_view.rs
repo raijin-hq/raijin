@@ -13,7 +13,7 @@ impl Render for CsvPreviewView {
         let table_with_settings = v_flex()
             .size_full()
             .p_4()
-            .bg(theme.colors().editor_background)
+            .bg(theme.colors().editor.background)
             .track_focus(&self.focus_handle)
             .child({
                 if self.engine.contents.number_of_cols == 0 {

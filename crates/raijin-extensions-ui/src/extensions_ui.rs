@@ -1258,7 +1258,7 @@ impl ExtensionsPage {
         EditorElement::new(
             editor,
             EditorStyle {
-                background: cx.theme().colors().editor_background,
+                background: cx.theme().colors().editor.background,
                 local_player: cx.theme().players().local(),
                 text: text_style,
                 ..Default::default()
@@ -1714,13 +1714,13 @@ impl Render for ExtensionsPage {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         v_flex()
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 v_flex()
                     .gap_4()
                     .pt_4()
                     .px_4()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .child(
                         h_flex()
                             .w_full()

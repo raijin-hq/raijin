@@ -629,7 +629,7 @@ mod jsx_tag_autoclose_tests {
                 .enabled = Some(true);
         });
 
-        let mut cx = EditorTestConinazuma_text::new(cx).await;
+        let mut cx = EditorTestContext::new(cx).await;
         cx.update_buffer(|buffer, cx| {
             let language = language("tsx", tree_sitter_typescript::LANGUAGE_TSX.into());
 
@@ -824,7 +824,7 @@ mod jsx_tag_autoclose_tests {
         });
         let editor = cx.add_window(|window, cx| build_editor(buffer.clone(), window, cx));
 
-        let mut cx = EditorTestConinazuma_text::for_editor(editor, cx).await;
+        let mut cx = EditorTestContext::for_editor(editor, cx).await;
 
         cx.update_editor(|editor, window, cx| {
             editor.change_selections(SelectionEffects::no_scroll(), window, cx, |selections| {

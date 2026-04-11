@@ -1,3 +1,5 @@
+pub mod command_history;
+
 use raijin_db::kvp::KeyValueStore;
 use inazuma::{App, AppContext as _, Context, Subscription, Task, WindowId};
 use inazuma_util::ResultExt;

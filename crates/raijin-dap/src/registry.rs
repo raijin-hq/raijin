@@ -9,7 +9,7 @@ use raijin_task::{
 };
 
 use crate::adapters::{DebugAdapter, DebugAdapterName};
-use std::{inazuma_collections::BTreeMap, sync::Arc};
+use std::{collections::BTreeMap, sync::Arc};
 
 /// Given a user build configuration, locator creates a fill-in debug target ([DebugScenario]) on behalf of the user.
 #[async_trait]

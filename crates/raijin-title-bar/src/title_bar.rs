@@ -582,7 +582,7 @@ impl TitleBar {
                                         Some(Indicator::dot().color(indicator_color)),
                                     )
                                     .indicator_border_color(Some(
-                                        cx.theme().colors().title_bar_background,
+                                        cx.theme().colors().title_bar.background,
                                     ))
                                     .into_any_element(),
                                 )

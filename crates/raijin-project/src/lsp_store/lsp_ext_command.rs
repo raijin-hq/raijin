@@ -130,7 +130,7 @@ impl LspCommand for ExpandMacro {
         response: ExpandedMacro,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::LspExtExpandMacroResponse {
         proto::LspExtExpandMacroResponse {
@@ -264,7 +264,7 @@ impl LspCommand for OpenDocs {
         response: DocsUrls,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::LspExtOpenDocsResponse {
         proto::LspExtOpenDocsResponse {
@@ -383,7 +383,7 @@ impl LspCommand for SwitchSourceHeader {
         response: SwitchSourceHeaderResult,
         _: &mut LspStore,
         _: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         _: &mut App,
     ) -> proto::LspExtSwitchSourceHeaderResponse {
         proto::LspExtSwitchSourceHeaderResponse {
@@ -477,7 +477,7 @@ impl LspCommand for GoToParentModule {
         links: Vec<LocationLink>,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::LspExtGoToParentModuleResponse {
         proto::LspExtGoToParentModuleResponse {
@@ -576,7 +576,7 @@ pub struct ShellRunnableArgs {
 #[derive(Debug)]
 pub struct GetLspRunnables {
     pub buffer_id: BufferId,
-    pub position: Option<text::Anchor>,
+    pub position: Option<inazuma_text::Anchor>,
 }
 
 #[derive(Debug, Default)]
@@ -728,7 +728,7 @@ impl LspCommand for GetLspRunnables {
         response: LspRunnables,
         lsp_store: &mut LspStore,
         peer_id: PeerId,
-        _: &clock::Global,
+        _: &inazuma_clock::Global,
         cx: &mut App,
     ) -> proto::LspExtRunnablesResponse {
         proto::LspExtRunnablesResponse {

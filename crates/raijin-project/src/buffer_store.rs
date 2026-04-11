@@ -649,7 +649,7 @@ impl LocalBufferStore {
                     let buffer_id = BufferId::from(reservation.entity_id().as_non_zero_u64());
                     let text_buffer = cx
                         .background_spawn(async move {
-                            text::Buffer::new(ReplicaId::LOCAL, buffer_id, loaded.text)
+                            inazuma_text::Buffer::new(ReplicaId::LOCAL, buffer_id, loaded.text)
                         })
                         .await;
                     cx.insert_entity(reservation, |_| {
@@ -662,7 +662,7 @@ impl LocalBufferStore {
                 }
                 Err(error) if is_not_found_error(&error) => cx.new(|cx| {
                     let buffer_id = BufferId::from(cx.entity_id().as_non_zero_u64());
-                    let text_buffer = text::Buffer::new(ReplicaId::LOCAL, buffer_id, "");
+                    let text_buffer = inazuma_text::Buffer::new(ReplicaId::LOCAL, buffer_id, "");
                     Buffer::build(
                         text_buffer,
                         Some(Arc::new(File {

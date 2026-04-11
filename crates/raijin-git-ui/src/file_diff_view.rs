@@ -29,14 +29,14 @@ pub struct FileDiffView {
     editor: Entity<Editor>,
     old_buffer: Entity<Buffer>,
     new_buffer: Entity<Buffer>,
-    buffer_changes_tx: watch::Sender<()>,
+    buffer_changes_tx: raijin_watch::Sender<()>,
     _recalculate_diff_task: Task<Result<()>>,
 }
 
 const RECALCULATE_DIFF_DEBOUNCE: Duration = Duration::from_millis(250);
 
 impl FileDiffView {
-    #[ztracing::instrument(skip_all)]
+    #[raijin_tracing::instrument(skip_all)]
     pub fn open(
         old_path: PathBuf,
         new_path: PathBuf,
@@ -104,13 +104,13 @@ impl FileDiffView {
             editor
         });
 
-        let (buffer_changes_tx, mut buffer_changes_rx) = watch::channel(());
+        let (buffer_changes_tx, mut buffer_changes_rx) = raijin_watch::channel(());
 
         for buffer in [&old_buffer, &new_buffer] {
             cx.subscribe(buffer, move |this, _, event, _| match event {
-                language::BufferEvent::Edited { .. }
-                | language::BufferEvent::LanguageChanged(_)
-                | language::BufferEvent::Reparsed => {
+                raijin_language::BufferEvent::Edited { .. }
+                | raijin_language::BufferEvent::LanguageChanged(_)
+                | raijin_language::BufferEvent::Reparsed => {
                     this.buffer_changes_tx.send(()).ok();
                 }
                 _ => {}
@@ -162,7 +162,7 @@ impl FileDiffView {
     }
 }
 
-#[ztracing::instrument(skip_all)]
+#[raijin_tracing::instrument(skip_all)]
 async fn build_buffer_diff(
     old_buffer: &Entity<Buffer>,
     new_buffer: &Entity<Buffer>,
@@ -245,7 +245,7 @@ impl Item for FileDiffView {
         format!("{old_filename} ↔ {new_filename}").into()
     }
 
-    fn tab_tooltip_text(&self, cx: &App) -> Option<ui::SharedString> {
+    fn tab_tooltip_text(&self, cx: &App) -> Option<raijin_ui::SharedString> {
         let path = |buffer: &Entity<Buffer>| {
             buffer
                 .read(cx)
@@ -294,7 +294,7 @@ impl Item for FileDiffView {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.editor.for_each_project_item(cx, f)
     }
@@ -563,9 +563,9 @@ mod tests {
         });
 
         let save_task = diff_view.update_in(cx, |diff_view, window, cx| {
-            workspace::Item::save(
+            raijin_workspace::Item::save(
                 diff_view,
-                workspace::item::SaveOptions::default(),
+                raijin_workspace::item::SaveOptions::default(),
                 project.clone(),
                 window,
                 cx,

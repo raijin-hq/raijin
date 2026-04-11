@@ -79,7 +79,7 @@ impl BuiltInPrompt {
     /// Returns the default content for this built-in prompt.
     pub fn default_content(&self) -> &'static str {
         match self {
-            Self::CommitMessage => include_str!("../../git_ui/src/commit_message_prompt.txt"),
+            Self::CommitMessage => include_str!("../../raijin-git-ui/src/commit_message_prompt.txt"),
         }
     }
 }
@@ -456,7 +456,7 @@ impl PromptStore {
                         Some(StringMatchCandidate::new(ix, metadata.title.as_ref()?))
                     })
                     .collect::<Vec<_>>();
-                let matches = fuzzy::match_strings(
+                let matches = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     false,

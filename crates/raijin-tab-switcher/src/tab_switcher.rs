@@ -441,7 +441,7 @@ impl TabSwitcherDelegate {
                     ))
                 })
                 .collect::<Vec<_>>();
-            smol::block_on(fuzzy::match_strings(
+            smol::block_on(inazuma_fuzzy::match_strings(
                 &candidates,
                 &query,
                 true,

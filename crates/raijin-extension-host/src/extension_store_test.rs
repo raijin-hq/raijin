@@ -11,13 +11,13 @@ use futures::{AsyncReadExt, FutureExt, StreamExt, io::BufReader};
 use inazuma::{AppContext as _, BackgroundExecutor, TestAppContext};
 use raijin_http_client::{FakeHttpClient, Response};
 use raijin_language::{BinaryStatus, LanguageMatcher, LanguageName, LanguageRegistry};
-use language_extension::LspAccess;
+use raijin_language_extension::LspAccess;
 use raijin_lsp::LanguageServerName;
 use raijin_node_runtime::NodeRuntime;
 use parking_lot::Mutex;
 use raijin_project::{DEFAULT_COMPLETION_CONTEXT, Project};
 use raijin_release_channel::AppVersion;
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use serde_json::json;
 use inazuma_settings_framework::SettingsStore;
 use std::{
@@ -31,7 +31,7 @@ use inazuma_util::test::TempTree;
 #[cfg(test)]
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    raijin_log::init_test();
 }
 
 #[inazuma::test]
@@ -735,7 +735,7 @@ async fn test_extension_store_with_test_extension(cx: &mut TestAppContext) {
 
     let mut fake_servers = language_registry.register_fake_lsp_server(
         LanguageServerName("gleam".into()),
-        lsp::ServerCapabilities {
+        raijin_lsp::ServerCapabilities {
             completion_provider: Some(Default::default()),
             ..Default::default()
         },
@@ -841,29 +841,29 @@ async fn test_extension_store_with_test_extension(cx: &mut TestAppContext) {
     );
 
     // The extension creates custom labels for completion items.
-    fake_server.set_request_handler::<lsp::request::Completion, _, _>(|_, _| async move {
-        Ok(Some(lsp::CompletionResponse::Array(vec![
-            lsp::CompletionItem {
+    fake_server.set_request_handler::<raijin_lsp::request::Completion, _, _>(|_, _| async move {
+        Ok(Some(raijin_lsp::CompletionResponse::Array(vec![
+            raijin_lsp::CompletionItem {
                 label: "foo".into(),
-                kind: Some(lsp::CompletionItemKind::FUNCTION),
+                kind: Some(raijin_raijin_lsp::CompletionItemKind::FUNCTION),
                 detail: Some("fn() -> Result(Nil, Error)".into()),
                 ..Default::default()
             },
-            lsp::CompletionItem {
+            raijin_lsp::CompletionItem {
                 label: "bar.baz".into(),
-                kind: Some(lsp::CompletionItemKind::FUNCTION),
+                kind: Some(raijin_raijin_lsp::CompletionItemKind::FUNCTION),
                 detail: Some("fn(List(a)) -> a".into()),
                 ..Default::default()
             },
-            lsp::CompletionItem {
+            raijin_lsp::CompletionItem {
                 label: "Quux".into(),
-                kind: Some(lsp::CompletionItemKind::CONSTRUCTOR),
+                kind: Some(raijin_raijin_lsp::CompletionItemKind::CONSTRUCTOR),
                 detail: Some("fn(String) -> T".into()),
                 ..Default::default()
             },
-            lsp::CompletionItem {
+            raijin_lsp::CompletionItem {
                 label: "my_string".into(),
-                kind: Some(lsp::CompletionItemKind::CONSTANT),
+                kind: Some(raijin_raijin_lsp::CompletionItemKind::CONSTANT),
                 detail: Some("String".into()),
                 ..Default::default()
             },
@@ -880,7 +880,7 @@ async fn test_extension_store_with_test_extension(cx: &mut TestAppContext) {
         async {
             fake_server
                 .clone()
-                .try_receive_notification::<lsp::notification::Initialized>()
+                .try_receive_notification::<raijin_lsp::notification::Initialized>()
                 .await;
         },
     )
@@ -1005,9 +1005,9 @@ fn init_test(cx: &mut TestAppContext) {
     cx.update(|cx| {
         let store = SettingsStore::test(cx);
         cx.set_global(store);
-        release_channel::init(semver::Version::new(0, 0, 0), cx);
-        extension::init(cx);
-        theme_settings::init(theme::LoadThemes::JustBase, cx);
-        gpui_tokio::init(cx);
+        raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
+        raijin_extension::init(cx);
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+        inazuma_tokio::init(cx);
     });
 }

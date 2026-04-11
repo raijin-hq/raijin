@@ -78,7 +78,7 @@ struct GitBlob {
 }
 
 struct CommitDiffAddon {
-    file_statuses: HashMap<language::BufferId, FileStatus>,
+    file_statuses: HashMap<raijin_language::BufferId, FileStatus>,
 }
 
 impl Addon for CommitDiffAddon {
@@ -88,7 +88,7 @@ impl Addon for CommitDiffAddon {
 
     fn override_status_for_buffer_id(
         &self,
-        buffer_id: language::BufferId,
+        buffer_id: raijin_language::BufferId,
         _cx: &App,
     ) -> Option<FileStatus> {
         self.file_statuses.get(&buffer_id).copied()
@@ -212,7 +212,7 @@ impl CommitView {
 
             editor.insert_blocks(
                 [BlockProperties {
-                    placement: BlockPlacement::Above(editor::Anchor::min()),
+                    placement: BlockPlacement::Above(raijin_editor::Anchor::min()),
                     height: Some(1),
                     style: BlockStyle::Sticky,
                     render: Arc::new(|_| inazuma::Empty.into_any_element()),
@@ -250,8 +250,8 @@ impl CommitView {
         let repository_clone = repository.clone();
 
         cx.spawn(async move |this, cx| {
-            let mut binary_buffer_ids: HashSet<language::BufferId> = HashSet::default();
-            let mut file_statuses: HashMap<language::BufferId, FileStatus> = HashMap::default();
+            let mut binary_buffer_ids: HashSet<raijin_language::BufferId> = HashSet::default();
+            let mut file_statuses: HashMap<raijin_language::BufferId, FileStatus> = HashMap::default();
 
             for file in commit_diff.files {
                 let is_created = file.old_text.is_none();
@@ -293,7 +293,7 @@ impl CommitView {
                     is_binary,
                     worktree_id,
                     display_name,
-                }) as Arc<dyn language::File>;
+                }) as Arc<dyn raijin_language::File>;
 
                 let buffer = build_buffer(new_text, file, &language_registry, cx).await?;
                 let buffer_id = cx.update(|cx| buffer.read(cx).remote_id());
@@ -328,19 +328,19 @@ impl CommitView {
                         let snapshot = buffer.read(cx).snapshot();
                         let path = snapshot.file().unwrap().path().clone();
                         let excerpt_ranges = if is_binary {
-                            vec![language::Point::zero()..snapshot.max_point()]
+                            vec![raijin_language::Point::zero()..snapshot.max_point()]
                         } else if let Some(buffer_diff) = &buffer_diff {
                             let diff_snapshot = buffer_diff.read(cx).snapshot(cx);
                             let mut hunks = diff_snapshot.hunks(&snapshot).peekable();
                             if hunks.peek().is_none() {
-                                vec![language::Point::zero()..snapshot.max_point()]
+                                vec![raijin_language::Point::zero()..snapshot.max_point()]
                             } else {
                                 hunks
                                     .map(|hunk| hunk.buffer_range.to_point(&snapshot))
                                     .collect::<Vec<_>>()
                             }
                         } else {
-                            vec![language::Point::zero()..snapshot.max_point()]
+                            vec![raijin_language::Point::zero()..snapshot.max_point()]
                         };
 
                         let _is_newly_added = multibuffer.set_excerpts_for_path(
@@ -456,11 +456,11 @@ impl CommitView {
         let commit_date = time::OffsetDateTime::from_unix_timestamp(commit.commit_timestamp)
             .unwrap_or_else(|_| time::OffsetDateTime::now_utc());
         let local_offset = time::UtcOffset::current_local_offset().unwrap_or(time::UtcOffset::UTC);
-        let date_string = time_format::format_localized_timestamp(
+        let date_string = raijin_time_format::format_localized_timestamp(
             commit_date,
             time::OffsetDateTime::now_utc(),
             local_offset,
-            time_format::TimestampFormat::MediumAbsolute,
+            raijin_time_format::TimestampFormat::MediumAbsolute,
         );
 
         let gutter_width = self.editor.update(cx, |editor, cx| {
@@ -705,8 +705,8 @@ impl CommitView {
     }
 }
 
-impl language::File for GitBlob {
-    fn as_local(&self) -> Option<&dyn language::LocalFile> {
+impl raijin_language::File for GitBlob {
+    fn as_local(&self) -> Option<&dyn raijin_language::LocalFile> {
         None
     }
 
@@ -736,7 +736,7 @@ impl language::File for GitBlob {
         self.worktree_id
     }
 
-    fn to_proto(&self, _cx: &App) -> language::proto::File {
+    fn to_proto(&self, _cx: &App) -> raijin_language::proto::File {
         unimplemented!()
     }
 
@@ -752,7 +752,7 @@ impl language::File for GitBlob {
 async fn build_buffer(
     mut text: String,
     blob: Arc<dyn File>,
-    language_registry: &Arc<language::LanguageRegistry>,
+    language_registry: &Arc<raijin_language::LanguageRegistry>,
     cx: &mut AsyncApp,
 ) -> Result<Entity<Buffer>> {
     let line_ending = LineEnding::detect(&text);
@@ -905,7 +905,7 @@ impl Item for CommitView {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.editor.for_each_project_item(cx, f)
     }
@@ -948,7 +948,7 @@ impl Item for CommitView {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>>
@@ -992,7 +992,7 @@ impl Render for CommitView {
         v_flex()
             .key_context(if is_stash { "StashDiff" } else { "CommitDiff" })
             .size_full()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(self.render_header(window, cx))
             .when(!self.editor.read(cx).is_empty(cx), |this| {
                 this.child(div().flex_grow().child(self.editor.clone()))
@@ -1061,13 +1061,13 @@ impl Render for CommitViewToolbar {
                     .tooltip(move |_, cx| {
                         Tooltip::for_action(
                             "Buffer Search",
-                            &zed_actions::buffer_search::Deploy::find(),
+                            &raijin_actions::buffer_search::Deploy::find(),
                             cx,
                         )
                     })
                     .on_click(|_, window, cx| {
                         window.dispatch_action(
-                            Box::new(zed_actions::buffer_search::Deploy::find()),
+                            Box::new(raijin_actions::buffer_search::Deploy::find()),
                             cx,
                         );
                     }),

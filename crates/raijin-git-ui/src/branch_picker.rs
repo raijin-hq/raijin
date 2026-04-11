@@ -36,25 +36,25 @@ actions!(
 
 pub fn checkout_branch(
     workspace: &mut Workspace,
-    _: &zed_actions::git::CheckoutBranch,
+    _: &raijin_actions::git::CheckoutBranch,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
-    open(workspace, &zed_actions::git::Branch, window, cx);
+    open(workspace, &raijin_actions::git::Branch, window, cx);
 }
 
 pub fn switch(
     workspace: &mut Workspace,
-    _: &zed_actions::git::Switch,
+    _: &raijin_actions::git::Switch,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
-    open(workspace, &zed_actions::git::Branch, window, cx);
+    open(workspace, &raijin_actions::git::Branch, window, cx);
 }
 
 pub fn open(
     workspace: &mut Workspace,
-    _: &zed_actions::git::Branch,
+    _: &raijin_actions::git::Branch,
     window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
@@ -701,7 +701,7 @@ impl PickerDelegate for BranchListDelegate {
                     .enumerate()
                     .map(|(ix, branch)| StringMatchCandidate::new(ix, branch.name()))
                     .collect::<Vec<StringMatchCandidate>>();
-                let mut matches: Vec<Entry> = fuzzy::match_strings(
+                let mut matches: Vec<Entry> = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     true,
@@ -873,11 +873,11 @@ impl PickerDelegate for BranchListDelegate {
                         .unwrap_or_else(|_| OffsetDateTime::now_utc());
                     let local_offset =
                         time::UtcOffset::current_local_offset().unwrap_or(time::UtcOffset::UTC);
-                    let formatted_time = time_format::format_localized_timestamp(
+                    let formatted_time = raijin_time_format::format_localized_timestamp(
                         commit_time,
                         OffsetDateTime::now_utc(),
                         local_offset,
-                        time_format::TimestampFormat::Relative,
+                        raijin_time_format::TimestampFormat::Relative,
                     );
                     let author = commit.author_name.clone();
                     (Some(formatted_time), Some(author), Some(subject))
@@ -952,7 +952,7 @@ impl PickerDelegate for BranchListDelegate {
                 .tooltip(move |_, cx| {
                     Tooltip::for_action_in(
                         tooltip_label.clone(),
-                        &menu::SecondaryConfirm,
+                        &inazuma_menu::SecondaryConfirm,
                         &focus_handle,
                         cx,
                     )
@@ -1142,7 +1142,7 @@ impl PickerDelegate for BranchListDelegate {
                         Button::new("branch-from-default", button_label)
                             .key_binding(
                                 KeyBinding::for_action_in(
-                                    &menu::SecondaryConfirm,
+                                    &inazuma_menu::SecondaryConfirm,
                                     &focus_handle,
                                     cx,
                                 )
@@ -1182,7 +1182,7 @@ impl PickerDelegate for BranchListDelegate {
                     .child(
                         Button::new("select_branch", "Select")
                             .key_binding(
-                                KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                     .map(|kb| kb.size(rems_from_px(12.))),
                             )
                             .on_click(cx.listener(|this, _, window, cx| {
@@ -1201,7 +1201,7 @@ impl PickerDelegate for BranchListDelegate {
                                             Button::new("create", "Create")
                                                 .key_binding(
                                                     KeyBinding::for_action_in(
-                                                        &menu::Confirm,
+                                                        &inazuma_menu::Confirm,
                                                         &focus_handle,
                                                         cx,
                                                     )
@@ -1255,7 +1255,7 @@ impl PickerDelegate for BranchListDelegate {
                         Button::new("branch-from-default", button_label)
                             .key_binding(
                                 KeyBinding::for_action_in(
-                                    &menu::SecondaryConfirm,
+                                    &inazuma_menu::SecondaryConfirm,
                                     &focus_handle,
                                     cx,
                                 )
@@ -1276,7 +1276,7 @@ impl PickerDelegate for BranchListDelegate {
                         .child(
                             Button::new("branch-from-default", "Create")
                                 .key_binding(
-                                    KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                    KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                         .map(|kb| kb.size(rems_from_px(12.))),
                                 )
                                 .on_click(cx.listener(|this, _, window, cx| {
@@ -1292,7 +1292,7 @@ impl PickerDelegate for BranchListDelegate {
                     .child(
                         Button::new("branch-from-default", "Confirm")
                             .key_binding(
-                                KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                     .map(|kb| kb.size(rems_from_px(12.))),
                             )
                             .on_click(cx.listener(|this, _, window, cx| {
@@ -1326,7 +1326,7 @@ mod tests {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
             theme_settings::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_editor::init(cx);
         });
     }
 

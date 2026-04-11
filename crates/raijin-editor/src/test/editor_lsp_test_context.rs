@@ -100,7 +100,7 @@ impl EditorLspTestContext {
 
         let workspace = window.root(cx).unwrap();
 
-        let mut cx = VisualTestConinazuma_text::from_window(*window.deref(), cx);
+        let mut cx = VisualTestContext::from_window(*window.deref(), cx);
         project
             .update(&mut cx, |project, cx| {
                 project.find_or_create_worktree(root, true, cx)

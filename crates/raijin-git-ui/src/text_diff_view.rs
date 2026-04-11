@@ -35,7 +35,7 @@ pub struct TextDiffView {
     diff_editor: Entity<SplittableEditor>,
     title: SharedString,
     path: Option<SharedString>,
-    buffer_changes_tx: watch::Sender<()>,
+    buffer_changes_tx: raijin_watch::Sender<()>,
     _recalculate_diff_task: Task<Result<()>>,
 }
 
@@ -172,7 +172,7 @@ impl TextDiffView {
         cx: &mut Context<Self>,
     ) -> Self {
         let multibuffer = cx.new(|cx| {
-            let mut multibuffer = MultiBuffer::new(language::Capability::ReadWrite);
+            let mut multibuffer = MultiBuffer::new(raijin_language::Capability::ReadWrite);
 
             multibuffer.set_excerpts_for_buffer(source_buffer.clone(), [source_range], 0, cx);
 
@@ -200,12 +200,12 @@ impl TextDiffView {
             splittable
         });
 
-        let (buffer_changes_tx, mut buffer_changes_rx) = watch::channel(());
+        let (buffer_changes_tx, mut buffer_changes_rx) = raijin_watch::channel(());
 
         cx.subscribe(&source_buffer, move |this, _, event, _| match event {
-            language::BufferEvent::Edited { .. }
-            | language::BufferEvent::LanguageChanged(_)
-            | language::BufferEvent::Reparsed => {
+            raijin_language::BufferEvent::Edited { .. }
+            | raijin_language::BufferEvent::LanguageChanged(_)
+            | raijin_language::BufferEvent::Reparsed => {
                 this.buffer_changes_tx.send(()).ok();
             }
             _ => {}
@@ -272,7 +272,7 @@ fn build_clipboard_buffer(
 ) -> Entity<Buffer> {
     let source_buffer_snapshot = source_buffer.read(cx).snapshot();
     cx.new(|cx| {
-        let mut buffer = language::Buffer::local(source_buffer_snapshot.text(), cx);
+        let mut buffer = raijin_language::Buffer::local(source_buffer_snapshot.text(), cx);
         let language = source_buffer.read(cx).language().cloned();
         buffer.set_language(language, cx);
 
@@ -387,7 +387,7 @@ impl Item for TextDiffView {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.diff_editor.read(cx).for_each_project_item(cx, f)
     }
@@ -725,7 +725,7 @@ mod tests {
 
         let editor = cx.new_window_entity(|window, cx| {
             let multibuffer = cx.new(|cx| {
-                let mut mb = MultiBuffer::new(language::Capability::ReadWrite);
+                let mut mb = MultiBuffer::new(raijin_language::Capability::ReadWrite);
                 mb.set_excerpts_for_path(
                     PathKey::sorted(0),
                     buffer_a.clone(),
@@ -814,7 +814,7 @@ mod tests {
 
         let editor = cx.new_window_entity(|window, cx| {
             let multibuffer = cx.new(|cx| {
-                let mut mb = MultiBuffer::new(language::Capability::ReadWrite);
+                let mut mb = MultiBuffer::new(raijin_language::Capability::ReadWrite);
                 mb.set_excerpts_for_path(
                     PathKey::sorted(0),
                     buffer_a.clone(),

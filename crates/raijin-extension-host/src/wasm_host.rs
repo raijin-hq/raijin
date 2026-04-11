@@ -66,7 +66,7 @@ pub struct WasmExtension {
     pub work_dir: Arc<Path>,
     #[allow(unused)]
     pub zed_api_version: Version,
-    _task: Arc<Task<Result<(), gpui_tokio::JoinError>>>,
+    _task: Arc<Task<Result<(), inazuma_tokio::JoinError>>>,
 }
 
 impl Drop for WasmExtension {
@@ -76,7 +76,7 @@ impl Drop for WasmExtension {
 }
 
 #[async_trait]
-impl extension::Extension for WasmExtension {
+impl raijin_extension::Extension for WasmExtension {
     fn manifest(&self) -> Arc<ExtensionManifest> {
         self.manifest.clone()
     }
@@ -710,11 +710,11 @@ impl WasmHost {
             // Run wasi-dependent operations on tokio.
             // wasmtime_wasi internally uses tokio for I/O operations.
             let (extension_task, manifest, work_dir, tx, zed_api_version) =
-                gpui_tokio::Tokio::spawn(cx, load_extension(zed_api_version, component)).await??;
+                inazuma_tokio::Tokio::spawn(cx, load_extension(zed_api_version, component)).await??;
 
             // Run the extension message loop on tokio since extension
             // calls may invoke wasi functions that require a tokio runtime.
-            let task = Arc::new(gpui_tokio::Tokio::spawn(cx, extension_task));
+            let task = Arc::new(inazuma_tokio::Tokio::spawn(cx, extension_task));
 
             Ok(WasmExtension {
                 manifest,
@@ -768,7 +768,7 @@ impl WasmHost {
             path.to_path_buf()
         };
 
-        let normalized = util::paths::normalize_lexically(&absolute)
+        let normalized = inazuma_util::paths::normalize_lexically(&absolute)
             .map_err(|_| anyhow!("path {path:?} escapes its parent"))?;
 
         // Canonicalize the nearest existing ancestor to resolve any symlinks
@@ -1007,9 +1007,9 @@ mod tests {
         cx.update(|cx| {
             let store = SettingsStore::test(cx);
             cx.set_global(store);
-            release_channel::init(semver::Version::new(0, 0, 0), cx);
-            extension::init(cx);
-            gpui_tokio::init(cx);
+            raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
+            raijin_extension::init(cx);
+            inazuma_tokio::init(cx);
         });
     }
 

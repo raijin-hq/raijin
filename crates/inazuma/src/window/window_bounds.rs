@@ -54,6 +54,12 @@ impl Window {
             .retain(&(), |callback| callback(self, cx));
     }
 
+    pub(crate) fn button_layout_changed(&mut self, cx: &mut App) {
+        self.button_layout_observers
+            .clone()
+            .retain(&(), |callback| callback(self, cx));
+    }
+
     /// Returns the appearance of the current window.
     pub fn appearance(&self) -> WindowAppearance {
         self.appearance

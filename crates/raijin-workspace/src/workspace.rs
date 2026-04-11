@@ -96,8 +96,7 @@ use raijin_project::{
     trusted_worktrees::{RemoteHostLocation, TrustedWorktrees, TrustedWorktreesEvent},
 };
 use raijin_remote::{
-    RemoteClientDelegate, RemoteConnection, RemoteConnectionOptions,
-    remote_raijin_client::ConnectionIdentifier,
+    ConnectionIdentifier, RemoteClientDelegate, RemoteConnection, RemoteConnectionOptions,
 };
 use schemars::JsonSchema;
 use serde::Deserialize;
@@ -148,7 +147,7 @@ pub use workspace_settings::{
     AutosaveSetting, BottomDockLayout, RestoreOnStartupBehavior, StatusBarSettings, TabBarSettings,
     WorkspaceSettings,
 };
-use raijin_actions::{Spawn, feedback::FileBugReport, raijin_theme::ToggleMode};
+use raijin_actions::{Spawn, feedback::FileBugReport, theme::ToggleMode};
 
 use crate::{item::ItemBufferKind, notifications::NotificationId};
 use crate::{
@@ -7902,8 +7901,8 @@ impl Render for Workspace {
                 div()
                     .h_full()
                     .w(relative(size))
-                    .bg(cx.theme().colors().editor_background)
-                    .border_color(cx.theme().colors().pane_group_border)
+                    .bg(cx.theme().colors().editor.background)
+                    .border_color(cx.theme().colors().pane.group_border)
             })
         };
         let paddings = if centered_layout {
@@ -7919,7 +7918,7 @@ impl Render for Workspace {
         } else {
             (None, None)
         };
-        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(cx);
 
         let theme = cx.theme().clone();
         let colors = theme.colors();

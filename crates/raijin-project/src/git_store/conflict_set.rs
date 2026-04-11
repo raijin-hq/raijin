@@ -24,7 +24,7 @@ impl ConflictSetSnapshot {
     pub fn conflicts_in_range(
         &self,
         range: Range<Anchor>,
-        buffer: &text::BufferSnapshot,
+        buffer: &inazuma_text::BufferSnapshot,
     ) -> &[ConflictRegion] {
         let start_ix = self
             .conflicts
@@ -49,7 +49,7 @@ impl ConflictSetSnapshot {
         &self.conflicts[start_ix..end_ix]
     }
 
-    pub fn compare(&self, other: &Self, buffer: &text::BufferSnapshot) -> ConflictSetUpdate {
+    pub fn compare(&self, other: &Self, buffer: &inazuma_text::BufferSnapshot) -> ConflictSetUpdate {
         let common_prefix_len = self
             .conflicts
             .iter()
@@ -171,7 +171,7 @@ impl ConflictSet {
         cx.emit(update);
     }
 
-    pub fn parse(buffer: &text::BufferSnapshot) -> ConflictSetSnapshot {
+    pub fn parse(buffer: &inazuma_text::BufferSnapshot) -> ConflictSetSnapshot {
         let mut conflicts = Vec::new();
 
         let mut line_pos = 0;

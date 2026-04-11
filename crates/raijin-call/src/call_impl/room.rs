@@ -3,7 +3,7 @@ use crate::{
     participant::{LocalParticipant, RemoteParticipant},
 };
 use anyhow::{Context as _, Result, anyhow};
-use audio::{Audio, Sound};
+use raijin_audio::{Audio, Sound};
 use raijin_client::{
     ChannelId, Client, ParticipantIndex, TypedEnvelope, User, UserStore,
     proto::{self, PeerId},
@@ -16,7 +16,7 @@ use inazuma::{
     App, AppContext as _, AsyncApp, Context, Entity, EventEmitter, FutureExt as _,
     ScreenCaptureSource, ScreenCaptureStream, Task, Timeout, WeakEntity,
 };
-use gpui_tokio::Tokio;
+use inazuma_tokio::Tokio;
 use raijin_language::LanguageRegistry;
 use livekit::{LocalTrackPublication, ParticipantIdentity, RoomEvent};
 use raijin_livekit_client::{self as livekit, AudioStream, TrackSid};
@@ -85,7 +85,7 @@ pub struct Room {
     client: Arc<Client>,
     user_store: Entity<UserStore>,
     follows_by_leader_id_project_id: HashMap<(PeerId, u64), Vec<PeerId>>,
-    client_subscriptions: Vec<client::Subscription>,
+    client_subscriptions: Vec<raijin_client::Subscription>,
     _subscriptions: Vec<inazuma::Subscription>,
     room_update_completed_tx: watch::Sender<Option<()>>,
     room_update_completed_rx: watch::Receiver<Option<()>>,
@@ -273,7 +273,7 @@ impl Room {
     }
 
     pub fn mute_on_join(cx: &App) -> bool {
-        CallSettings::get_global(cx).mute_on_join || client::IMPERSONATE_LOGIN.is_some()
+        CallSettings::get_global(cx).mute_on_join || raijin_client::IMPERSONATE_LOGIN.is_some()
     }
 
     fn from_join_response(
@@ -1017,7 +1017,7 @@ impl Room {
                     publication.set_enabled(false, cx);
                 }
                 match track {
-                    livekit_client::RemoteTrack::Audio(track) => {
+                    livekit::RemoteTrack::Audio(track) => {
                         cx.emit(Event::RemoteAudioTracksChanged {
                             participant_id: participant.peer_id,
                         });
@@ -1027,7 +1027,7 @@ impl Room {
                             participant.muted = publication.is_muted();
                         }
                     }
-                    livekit_client::RemoteTrack::Video(track) => {
+                    livekit::RemoteTrack::Video(track) => {
                         cx.emit(Event::RemoteVideoTracksChanged {
                             participant_id: participant.peer_id,
                         });
@@ -1050,14 +1050,14 @@ impl Room {
                             )
                         })?;
                 match track {
-                    livekit_client::RemoteTrack::Audio(track) => {
+                    livekit::RemoteTrack::Audio(track) => {
                         participant.audio_tracks.remove(&track.sid());
                         participant.muted = true;
                         cx.emit(Event::RemoteAudioTracksChanged {
                             participant_id: participant.peer_id,
                         });
                     }
-                    livekit_client::RemoteTrack::Video(track) => {
+                    livekit::RemoteTrack::Video(track) => {
                         participant.video_tracks.remove(&track.sid());
                         cx.emit(Event::RemoteVideoTracksChanged {
                             participant_id: participant.peer_id,
@@ -1366,7 +1366,7 @@ impl Room {
     }
 
     pub fn can_use_microphone(&self) -> bool {
-        use raijin_proto::ChannelRole::*;
+        use proto::ChannelRole::*;
 
         match self.local_participant.role {
             Admin | Member | Talker => true,
@@ -1375,7 +1375,7 @@ impl Room {
     }
 
     pub fn can_share_projects(&self) -> bool {
-        use raijin_proto::ChannelRole::*;
+        use proto::ChannelRole::*;
         match self.local_participant.role {
             Admin | Member => true,
             Guest | Banned | Talker => false,

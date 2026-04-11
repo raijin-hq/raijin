@@ -29,7 +29,7 @@ pub struct RemoteParticipant {
     pub peer_id: proto::PeerId,
     pub role: proto::ChannelRole,
     pub projects: Vec<proto::ParticipantProject>,
-    pub location: workspace::ParticipantLocation,
+    pub location: raijin_workspace::ParticipantLocation,
     pub participant_index: ParticipantIndex,
     pub muted: bool,
     pub speaking: bool,

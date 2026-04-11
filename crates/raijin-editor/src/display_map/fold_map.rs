@@ -58,7 +58,7 @@ impl FoldPlaceholder {
         use inazuma::{InteractiveElement as _, StatefulInteractiveElement as _, Styled as _};
         use inazuma_settings_framework::Settings as _;
         use raijin_theme::ActiveTheme as _;
-        use theme_settings::ThemeSettings;
+        use raijin_theme_settings::ThemeSettings;
         let settings = ThemeSettings::get_global(cx);
         inazuma::div()
             .id(fold_id)

@@ -7,8 +7,8 @@ use crate::wasm_host::wit::since_v0_6_0::{
 };
 use crate::wasm_host::wit::{CompletionKind, CompletionLabelDetails, InsertTextFormat, SymbolKind};
 use crate::wasm_host::{WasmState, wit::ToWasmtimeResult};
-use ::http_client::{AsyncBody, HttpRequestExt};
-use ::settings::{Settings, WorktreeId};
+use ::raijin_http_client::{AsyncBody, HttpRequestExt};
+use ::inazuma_settings_framework::{Settings, WorktreeId};
 use anyhow::{Context as _, Result, bail};
 use async_compression::futures::bufread::GzipDecoder;
 use async_tar::Archive;
@@ -42,7 +42,7 @@ pub const MAX_VERSION: Version = Version::new(0, 8, 0);
 wasmtime::component::bindgen!({
     async: true,
     trappable_imports: true,
-    path: "../extension_api/wit/since_v0.8.0",
+    path: "../raijin-extension-api/wit/since_v0.8.0",
     with: {
          "worktree": ExtensionWorktree,
          "project": ExtensionProject,
@@ -61,7 +61,7 @@ mod settings {
 pub type ExtensionWorktree = Arc<dyn WorktreeDelegate>;
 pub type ExtensionProject = Arc<dyn ProjectDelegate>;
 pub type ExtensionKeyValueStore = Arc<dyn KeyValueStoreDelegate>;
-pub type ExtensionHttpResponseStream = Arc<Mutex<::http_client::Response<AsyncBody>>>;
+pub type ExtensionHttpResponseStream = Arc<Mutex<::raijin_http_client::Response<AsyncBody>>>;
 
 pub fn linker(executor: &BackgroundExecutor) -> &'static Linker<WasmState> {
     static LINKER: OnceLock<Linker<WasmState>> = OnceLock::new();
@@ -76,7 +76,7 @@ impl From<Range> for std::ops::Range<usize> {
     }
 }
 
-impl From<Command> for extension::Command {
+impl From<Command> for raijin_extension::Command {
     fn from(value: Command) -> Self {
         Self {
             command: value.command.into(),
@@ -87,7 +87,7 @@ impl From<Command> for extension::Command {
 }
 
 impl From<StartDebuggingRequestArgumentsRequest>
-    for extension::StartDebuggingRequestArgumentsRequest
+    for raijin_extension::StartDebuggingRequestArgumentsRequest
 {
     fn from(value: StartDebuggingRequestArgumentsRequest) -> Self {
         match value {
@@ -96,7 +96,7 @@ impl From<StartDebuggingRequestArgumentsRequest>
         }
     }
 }
-impl TryFrom<StartDebuggingRequestArguments> for extension::StartDebuggingRequestArguments {
+impl TryFrom<StartDebuggingRequestArguments> for raijin_extension::StartDebuggingRequestArguments {
     type Error = anyhow::Error;
 
     fn try_from(value: StartDebuggingRequestArguments) -> Result<Self, Self::Error> {
@@ -106,7 +106,7 @@ impl TryFrom<StartDebuggingRequestArguments> for extension::StartDebuggingReques
         })
     }
 }
-impl From<TcpArguments> for extension::TcpArguments {
+impl From<TcpArguments> for raijin_extension::TcpArguments {
     fn from(value: TcpArguments) -> Self {
         Self {
             host: value.host.into(),
@@ -116,8 +116,8 @@ impl From<TcpArguments> for extension::TcpArguments {
     }
 }
 
-impl From<extension::TcpArgumentsTemplate> for TcpArgumentsTemplate {
-    fn from(value: extension::TcpArgumentsTemplate) -> Self {
+impl From<raijin_extension::TcpArgumentsTemplate> for TcpArgumentsTemplate {
+    fn from(value: raijin_extension::TcpArgumentsTemplate) -> Self {
         Self {
             host: value.host.map(Ipv4Addr::to_bits),
             port: value.port,
@@ -126,7 +126,7 @@ impl From<extension::TcpArgumentsTemplate> for TcpArgumentsTemplate {
     }
 }
 
-impl From<TcpArgumentsTemplate> for extension::TcpArgumentsTemplate {
+impl From<TcpArgumentsTemplate> for raijin_extension::TcpArgumentsTemplate {
     fn from(value: TcpArgumentsTemplate) -> Self {
         Self {
             host: value.host.map(Ipv4Addr::from_bits),
@@ -136,9 +136,9 @@ impl From<TcpArgumentsTemplate> for extension::TcpArgumentsTemplate {
     }
 }
 
-impl TryFrom<extension::DebugTaskDefinition> for DebugTaskDefinition {
+impl TryFrom<raijin_extension::DebugTaskDefinition> for DebugTaskDefinition {
     type Error = anyhow::Error;
-    fn try_from(value: extension::DebugTaskDefinition) -> Result<Self, Self::Error> {
+    fn try_from(value: raijin_extension::DebugTaskDefinition) -> Result<Self, Self::Error> {
         Ok(Self {
             label: value.label.to_string(),
             adapter: value.adapter.to_string(),
@@ -148,16 +148,16 @@ impl TryFrom<extension::DebugTaskDefinition> for DebugTaskDefinition {
     }
 }
 
-impl From<task::DebugRequest> for DebugRequest {
-    fn from(value: task::DebugRequest) -> Self {
+impl From<raijin_task::DebugRequest> for DebugRequest {
+    fn from(value: raijin_task::DebugRequest) -> Self {
         match value {
-            task::DebugRequest::Launch(launch_request) => Self::Launch(launch_request.into()),
-            task::DebugRequest::Attach(attach_request) => Self::Attach(attach_request.into()),
+            raijin_task::DebugRequest::Launch(launch_request) => Self::Launch(launch_request.into()),
+            raijin_task::DebugRequest::Attach(attach_request) => Self::Attach(attach_request.into()),
         }
     }
 }
 
-impl From<DebugRequest> for task::DebugRequest {
+impl From<DebugRequest> for raijin_task::DebugRequest {
     fn from(value: DebugRequest) -> Self {
         match value {
             DebugRequest::Launch(launch_request) => Self::Launch(launch_request.into()),
@@ -166,8 +166,8 @@ impl From<DebugRequest> for task::DebugRequest {
     }
 }
 
-impl From<task::LaunchRequest> for LaunchRequest {
-    fn from(value: task::LaunchRequest) -> Self {
+impl From<raijin_task::LaunchRequest> for LaunchRequest {
+    fn from(value: raijin_task::LaunchRequest) -> Self {
         Self {
             program: value.program,
             cwd: value.cwd.map(|p| p.to_string_lossy().into_owned()),
@@ -177,15 +177,15 @@ impl From<task::LaunchRequest> for LaunchRequest {
     }
 }
 
-impl From<task::AttachRequest> for AttachRequest {
-    fn from(value: task::AttachRequest) -> Self {
+impl From<raijin_task::AttachRequest> for AttachRequest {
+    fn from(value: raijin_task::AttachRequest) -> Self {
         Self {
             process_id: value.process_id,
         }
     }
 }
 
-impl From<LaunchRequest> for task::LaunchRequest {
+impl From<LaunchRequest> for raijin_task::LaunchRequest {
     fn from(value: LaunchRequest) -> Self {
         Self {
             program: value.program,
@@ -195,7 +195,7 @@ impl From<LaunchRequest> for task::LaunchRequest {
         }
     }
 }
-impl From<AttachRequest> for task::AttachRequest {
+impl From<AttachRequest> for raijin_task::AttachRequest {
     fn from(value: AttachRequest) -> Self {
         Self {
             process_id: value.process_id,
@@ -213,7 +213,7 @@ impl From<ZedDebugConfig> for DebugConfig {
         }
     }
 }
-impl TryFrom<DebugAdapterBinary> for extension::DebugAdapterBinary {
+impl TryFrom<DebugAdapterBinary> for raijin_extension::DebugAdapterBinary {
     type Error = anyhow::Error;
     fn try_from(value: DebugAdapterBinary) -> Result<Self, Self::Error> {
         Ok(Self {
@@ -227,7 +227,7 @@ impl TryFrom<DebugAdapterBinary> for extension::DebugAdapterBinary {
     }
 }
 
-impl From<BuildTaskDefinition> for extension::BuildTaskDefinition {
+impl From<BuildTaskDefinition> for raijin_extension::BuildTaskDefinition {
     fn from(value: BuildTaskDefinition) -> Self {
         match value {
             BuildTaskDefinition::ByName(name) => Self::ByName(name.into()),
@@ -239,11 +239,11 @@ impl From<BuildTaskDefinition> for extension::BuildTaskDefinition {
     }
 }
 
-impl From<extension::BuildTaskDefinition> for BuildTaskDefinition {
-    fn from(value: extension::BuildTaskDefinition) -> Self {
+impl From<raijin_extension::BuildTaskDefinition> for BuildTaskDefinition {
+    fn from(value: raijin_extension::BuildTaskDefinition) -> Self {
         match value {
-            extension::BuildTaskDefinition::ByName(name) => Self::ByName(name.into()),
-            extension::BuildTaskDefinition::Template {
+            raijin_extension::BuildTaskDefinition::ByName(name) => Self::ByName(name.into()),
+            raijin_extension::BuildTaskDefinition::Template {
                 task_template,
                 locator_name,
             } => Self::Template(BuildTaskDefinitionTemplatePayload {
@@ -253,7 +253,7 @@ impl From<extension::BuildTaskDefinition> for BuildTaskDefinition {
         }
     }
 }
-impl From<BuildTaskTemplate> for extension::BuildTaskTemplate {
+impl From<BuildTaskTemplate> for raijin_extension::BuildTaskTemplate {
     fn from(value: BuildTaskTemplate) -> Self {
         Self {
             label: value.label,
@@ -265,8 +265,8 @@ impl From<BuildTaskTemplate> for extension::BuildTaskTemplate {
         }
     }
 }
-impl From<extension::BuildTaskTemplate> for BuildTaskTemplate {
-    fn from(value: extension::BuildTaskTemplate) -> Self {
+impl From<raijin_extension::BuildTaskTemplate> for BuildTaskTemplate {
+    fn from(value: raijin_extension::BuildTaskTemplate) -> Self {
         Self {
             label: value.label,
             command: value.command,
@@ -277,7 +277,7 @@ impl From<extension::BuildTaskTemplate> for BuildTaskTemplate {
     }
 }
 
-impl TryFrom<DebugScenario> for extension::DebugScenario {
+impl TryFrom<DebugScenario> for raijin_extension::DebugScenario {
     type Error = anyhow::Error;
 
     fn try_from(value: DebugScenario) -> std::result::Result<Self, Self::Error> {
@@ -291,8 +291,8 @@ impl TryFrom<DebugScenario> for extension::DebugScenario {
     }
 }
 
-impl From<extension::DebugScenario> for DebugScenario {
-    fn from(value: extension::DebugScenario) -> Self {
+impl From<raijin_extension::DebugScenario> for DebugScenario {
+    fn from(value: raijin_extension::DebugScenario) -> Self {
         Self {
             adapter: value.adapter.into(),
             label: value.label.into(),
@@ -324,7 +324,7 @@ impl TryFrom<SpawnInTerminal> for ResolvedTask {
     }
 }
 
-impl From<CodeLabel> for extension::CodeLabel {
+impl From<CodeLabel> for raijin_extension::CodeLabel {
     fn from(value: CodeLabel) -> Self {
         Self {
             code: value.code,
@@ -334,7 +334,7 @@ impl From<CodeLabel> for extension::CodeLabel {
     }
 }
 
-impl From<CodeLabelSpan> for extension::CodeLabelSpan {
+impl From<CodeLabelSpan> for raijin_extension::CodeLabelSpan {
     fn from(value: CodeLabelSpan) -> Self {
         match value {
             CodeLabelSpan::CodeRange(range) => Self::CodeRange(range.into()),
@@ -343,7 +343,7 @@ impl From<CodeLabelSpan> for extension::CodeLabelSpan {
     }
 }
 
-impl From<CodeLabelSpanLiteral> for extension::CodeLabelSpanLiteral {
+impl From<CodeLabelSpanLiteral> for raijin_extension::CodeLabelSpanLiteral {
     fn from(value: CodeLabelSpanLiteral) -> Self {
         Self {
             text: value.text,
@@ -352,8 +352,8 @@ impl From<CodeLabelSpanLiteral> for extension::CodeLabelSpanLiteral {
     }
 }
 
-impl From<extension::Completion> for Completion {
-    fn from(value: extension::Completion) -> Self {
+impl From<raijin_extension::Completion> for Completion {
+    fn from(value: raijin_extension::Completion) -> Self {
         Self {
             label: value.label,
             label_details: value.label_details.map(Into::into),
@@ -364,8 +364,8 @@ impl From<extension::Completion> for Completion {
     }
 }
 
-impl From<extension::CompletionLabelDetails> for CompletionLabelDetails {
-    fn from(value: extension::CompletionLabelDetails) -> Self {
+impl From<raijin_extension::CompletionLabelDetails> for CompletionLabelDetails {
+    fn from(value: raijin_extension::CompletionLabelDetails) -> Self {
         Self {
             detail: value.detail,
             description: value.description,
@@ -373,51 +373,51 @@ impl From<extension::CompletionLabelDetails> for CompletionLabelDetails {
     }
 }
 
-impl From<extension::CompletionKind> for CompletionKind {
-    fn from(value: extension::CompletionKind) -> Self {
+impl From<raijin_extension::CompletionKind> for CompletionKind {
+    fn from(value: raijin_extension::CompletionKind) -> Self {
         match value {
-            extension::CompletionKind::Text => Self::Text,
-            extension::CompletionKind::Method => Self::Method,
-            extension::CompletionKind::Function => Self::Function,
-            extension::CompletionKind::Constructor => Self::Constructor,
-            extension::CompletionKind::Field => Self::Field,
-            extension::CompletionKind::Variable => Self::Variable,
-            extension::CompletionKind::Class => Self::Class,
-            extension::CompletionKind::Interface => Self::Interface,
-            extension::CompletionKind::Module => Self::Module,
-            extension::CompletionKind::Property => Self::Property,
-            extension::CompletionKind::Unit => Self::Unit,
-            extension::CompletionKind::Value => Self::Value,
-            extension::CompletionKind::Enum => Self::Enum,
-            extension::CompletionKind::Keyword => Self::Keyword,
-            extension::CompletionKind::Snippet => Self::Snippet,
-            extension::CompletionKind::Color => Self::Color,
-            extension::CompletionKind::File => Self::File,
-            extension::CompletionKind::Reference => Self::Reference,
-            extension::CompletionKind::Folder => Self::Folder,
-            extension::CompletionKind::EnumMember => Self::EnumMember,
-            extension::CompletionKind::Constant => Self::Constant,
-            extension::CompletionKind::Struct => Self::Struct,
-            extension::CompletionKind::Event => Self::Event,
-            extension::CompletionKind::Operator => Self::Operator,
-            extension::CompletionKind::TypeParameter => Self::TypeParameter,
-            extension::CompletionKind::Other(value) => Self::Other(value),
+            raijin_extension::CompletionKind::Text => Self::Text,
+            raijin_extension::CompletionKind::Method => Self::Method,
+            raijin_extension::CompletionKind::Function => Self::Function,
+            raijin_extension::CompletionKind::Constructor => Self::Constructor,
+            raijin_extension::CompletionKind::Field => Self::Field,
+            raijin_extension::CompletionKind::Variable => Self::Variable,
+            raijin_extension::CompletionKind::Class => Self::Class,
+            raijin_extension::CompletionKind::Interface => Self::Interface,
+            raijin_extension::CompletionKind::Module => Self::Module,
+            raijin_extension::CompletionKind::Property => Self::Property,
+            raijin_extension::CompletionKind::Unit => Self::Unit,
+            raijin_extension::CompletionKind::Value => Self::Value,
+            raijin_extension::CompletionKind::Enum => Self::Enum,
+            raijin_extension::CompletionKind::Keyword => Self::Keyword,
+            raijin_extension::CompletionKind::Snippet => Self::Snippet,
+            raijin_extension::CompletionKind::Color => Self::Color,
+            raijin_extension::CompletionKind::File => Self::File,
+            raijin_extension::CompletionKind::Reference => Self::Reference,
+            raijin_extension::CompletionKind::Folder => Self::Folder,
+            raijin_extension::CompletionKind::EnumMember => Self::EnumMember,
+            raijin_extension::CompletionKind::Constant => Self::Constant,
+            raijin_extension::CompletionKind::Struct => Self::Struct,
+            raijin_extension::CompletionKind::Event => Self::Event,
+            raijin_extension::CompletionKind::Operator => Self::Operator,
+            raijin_extension::CompletionKind::TypeParameter => Self::TypeParameter,
+            raijin_extension::CompletionKind::Other(value) => Self::Other(value),
         }
     }
 }
 
-impl From<extension::InsertTextFormat> for InsertTextFormat {
-    fn from(value: extension::InsertTextFormat) -> Self {
+impl From<raijin_extension::InsertTextFormat> for InsertTextFormat {
+    fn from(value: raijin_extension::InsertTextFormat) -> Self {
         match value {
-            extension::InsertTextFormat::PlainText => Self::PlainText,
-            extension::InsertTextFormat::Snippet => Self::Snippet,
-            extension::InsertTextFormat::Other(value) => Self::Other(value),
+            raijin_extension::InsertTextFormat::PlainText => Self::PlainText,
+            raijin_extension::InsertTextFormat::Snippet => Self::Snippet,
+            raijin_extension::InsertTextFormat::Other(value) => Self::Other(value),
         }
     }
 }
 
-impl From<extension::Symbol> for Symbol {
-    fn from(value: extension::Symbol) -> Self {
+impl From<raijin_extension::Symbol> for Symbol {
+    fn from(value: raijin_extension::Symbol) -> Self {
         Self {
             kind: value.kind.into(),
             name: value.name,
@@ -426,42 +426,42 @@ impl From<extension::Symbol> for Symbol {
     }
 }
 
-impl From<extension::SymbolKind> for SymbolKind {
-    fn from(value: extension::SymbolKind) -> Self {
+impl From<raijin_extension::SymbolKind> for SymbolKind {
+    fn from(value: raijin_extension::SymbolKind) -> Self {
         match value {
-            extension::SymbolKind::File => Self::File,
-            extension::SymbolKind::Module => Self::Module,
-            extension::SymbolKind::Namespace => Self::Namespace,
-            extension::SymbolKind::Package => Self::Package,
-            extension::SymbolKind::Class => Self::Class,
-            extension::SymbolKind::Method => Self::Method,
-            extension::SymbolKind::Property => Self::Property,
-            extension::SymbolKind::Field => Self::Field,
-            extension::SymbolKind::Constructor => Self::Constructor,
-            extension::SymbolKind::Enum => Self::Enum,
-            extension::SymbolKind::Interface => Self::Interface,
-            extension::SymbolKind::Function => Self::Function,
-            extension::SymbolKind::Variable => Self::Variable,
-            extension::SymbolKind::Constant => Self::Constant,
-            extension::SymbolKind::String => Self::String,
-            extension::SymbolKind::Number => Self::Number,
-            extension::SymbolKind::Boolean => Self::Boolean,
-            extension::SymbolKind::Array => Self::Array,
-            extension::SymbolKind::Object => Self::Object,
-            extension::SymbolKind::Key => Self::Key,
-            extension::SymbolKind::Null => Self::Null,
-            extension::SymbolKind::EnumMember => Self::EnumMember,
-            extension::SymbolKind::Struct => Self::Struct,
-            extension::SymbolKind::Event => Self::Event,
-            extension::SymbolKind::Operator => Self::Operator,
-            extension::SymbolKind::TypeParameter => Self::TypeParameter,
-            extension::SymbolKind::Other(value) => Self::Other(value),
+            raijin_extension::SymbolKind::File => Self::File,
+            raijin_extension::SymbolKind::Module => Self::Module,
+            raijin_extension::SymbolKind::Namespace => Self::Namespace,
+            raijin_extension::SymbolKind::Package => Self::Package,
+            raijin_extension::SymbolKind::Class => Self::Class,
+            raijin_extension::SymbolKind::Method => Self::Method,
+            raijin_extension::SymbolKind::Property => Self::Property,
+            raijin_extension::SymbolKind::Field => Self::Field,
+            raijin_extension::SymbolKind::Constructor => Self::Constructor,
+            raijin_extension::SymbolKind::Enum => Self::Enum,
+            raijin_extension::SymbolKind::Interface => Self::Interface,
+            raijin_extension::SymbolKind::Function => Self::Function,
+            raijin_extension::SymbolKind::Variable => Self::Variable,
+            raijin_extension::SymbolKind::Constant => Self::Constant,
+            raijin_extension::SymbolKind::String => Self::String,
+            raijin_extension::SymbolKind::Number => Self::Number,
+            raijin_extension::SymbolKind::Boolean => Self::Boolean,
+            raijin_extension::SymbolKind::Array => Self::Array,
+            raijin_extension::SymbolKind::Object => Self::Object,
+            raijin_extension::SymbolKind::Key => Self::Key,
+            raijin_extension::SymbolKind::Null => Self::Null,
+            raijin_extension::SymbolKind::EnumMember => Self::EnumMember,
+            raijin_extension::SymbolKind::Struct => Self::Struct,
+            raijin_extension::SymbolKind::Event => Self::Event,
+            raijin_extension::SymbolKind::Operator => Self::Operator,
+            raijin_extension::SymbolKind::TypeParameter => Self::TypeParameter,
+            raijin_extension::SymbolKind::Other(value) => Self::Other(value),
         }
     }
 }
 
-impl From<extension::SlashCommand> for SlashCommand {
-    fn from(value: extension::SlashCommand) -> Self {
+impl From<raijin_extension::SlashCommand> for SlashCommand {
+    fn from(value: raijin_extension::SlashCommand) -> Self {
         Self {
             name: value.name,
             description: value.description,
@@ -471,7 +471,7 @@ impl From<extension::SlashCommand> for SlashCommand {
     }
 }
 
-impl From<SlashCommandOutput> for extension::SlashCommandOutput {
+impl From<SlashCommandOutput> for raijin_extension::SlashCommandOutput {
     fn from(value: SlashCommandOutput) -> Self {
         Self {
             text: value.text,
@@ -480,7 +480,7 @@ impl From<SlashCommandOutput> for extension::SlashCommandOutput {
     }
 }
 
-impl From<SlashCommandOutputSection> for extension::SlashCommandOutputSection {
+impl From<SlashCommandOutputSection> for raijin_extension::SlashCommandOutputSection {
     fn from(value: SlashCommandOutputSection) -> Self {
         Self {
             range: value.range.start as usize..value.range.end as usize,
@@ -489,7 +489,7 @@ impl From<SlashCommandOutputSection> for extension::SlashCommandOutputSection {
     }
 }
 
-impl From<SlashCommandArgumentCompletion> for extension::SlashCommandArgumentCompletion {
+impl From<SlashCommandArgumentCompletion> for raijin_extension::SlashCommandArgumentCompletion {
     fn from(value: SlashCommandArgumentCompletion) -> Self {
         Self {
             label: value.label,
@@ -499,7 +499,7 @@ impl From<SlashCommandArgumentCompletion> for extension::SlashCommandArgumentCom
     }
 }
 
-impl TryFrom<ContextServerConfiguration> for extension::ContextServerConfiguration {
+impl TryFrom<ContextServerConfiguration> for raijin_extension::ContextServerConfiguration {
     type Error = anyhow::Error;
 
     fn try_from(value: ContextServerConfiguration) -> Result<Self, Self::Error> {
@@ -659,7 +659,7 @@ impl http_client::HostHttpResponseStream for WasmState {
     }
 }
 
-impl From<http_client::HttpMethod> for ::http_client::Method {
+impl From<http_client::HttpMethod> for ::raijin_http_client::Method {
     fn from(value: http_client::HttpMethod) -> Self {
         match value {
             http_client::HttpMethod::Get => Self::GET,
@@ -675,16 +675,16 @@ impl From<http_client::HttpMethod> for ::http_client::Method {
 
 fn convert_request(
     extension_request: &http_client::HttpRequest,
-) -> anyhow::Result<::http_client::Request<AsyncBody>> {
-    let mut request = ::http_client::Request::builder()
-        .method(::http_client::Method::from(extension_request.method))
+) -> anyhow::Result<::raijin_http_client::Request<AsyncBody>> {
+    let mut request = ::raijin_http_client::Request::builder()
+        .method(::raijin_http_client::Method::from(extension_request.method))
         .uri(&extension_request.url)
         .follow_redirects(match extension_request.redirect_policy {
-            http_client::RedirectPolicy::NoFollow => ::http_client::RedirectPolicy::NoFollow,
+            http_client::RedirectPolicy::NoFollow => ::raijin_http_client::RedirectPolicy::NoFollow,
             http_client::RedirectPolicy::FollowLimit(limit) => {
-                ::http_client::RedirectPolicy::FollowLimit(limit)
+                ::raijin_http_client::RedirectPolicy::FollowLimit(limit)
             }
-            http_client::RedirectPolicy::FollowAll => ::http_client::RedirectPolicy::FollowAll,
+            http_client::RedirectPolicy::FollowAll => ::raijin_http_client::RedirectPolicy::FollowAll,
         });
     for (key, value) in &extension_request.headers {
         request = request.header(key, value);
@@ -698,7 +698,7 @@ fn convert_request(
 }
 
 async fn convert_response(
-    response: &mut ::http_client::Response<AsyncBody>,
+    response: &mut ::raijin_http_client::Response<AsyncBody>,
 ) -> anyhow::Result<http_client::HttpResponse> {
     let mut extension_response = http_client::HttpResponse {
         body: Vec::new(),
@@ -772,8 +772,8 @@ impl nodejs::Host for WasmState {
 #[async_trait]
 impl lsp::Host for WasmState {}
 
-impl From<::http_client::github::GithubRelease> for github::GithubRelease {
-    fn from(value: ::http_client::github::GithubRelease) -> Self {
+impl From<::raijin_http_client::github::GithubRelease> for github::GithubRelease {
+    fn from(value: ::raijin_http_client::github::GithubRelease) -> Self {
         Self {
             version: value.tag_name,
             assets: value.assets.into_iter().map(Into::into).collect(),
@@ -781,8 +781,8 @@ impl From<::http_client::github::GithubRelease> for github::GithubRelease {
     }
 }
 
-impl From<::http_client::github::GithubReleaseAsset> for github::GithubReleaseAsset {
-    fn from(value: ::http_client::github::GithubReleaseAsset) -> Self {
+impl From<::raijin_http_client::github::GithubReleaseAsset> for github::GithubReleaseAsset {
+    fn from(value: ::raijin_http_client::github::GithubReleaseAsset) -> Self {
         Self {
             name: value.name,
             download_url: value.browser_download_url,
@@ -798,7 +798,7 @@ impl github::Host for WasmState {
         options: github::GithubReleaseOptions,
     ) -> wasmtime::Result<Result<github::GithubRelease, String>> {
         maybe!(async {
-            let release = ::http_client::github::latest_github_release(
+            let release = ::raijin_http_client::github::latest_github_release(
                 &repo,
                 options.require_assets,
                 options.pre_release,
@@ -817,7 +817,7 @@ impl github::Host for WasmState {
         tag: String,
     ) -> wasmtime::Result<Result<github::GithubRelease, String>> {
         maybe!(async {
-            let release = ::http_client::github::get_release_by_tag_name(
+            let release = ::raijin_http_client::github::get_release_by_tag_name(
                 &repo,
                 &tag,
                 self.host.http_client.clone(),
@@ -868,7 +868,7 @@ impl process::Host for WasmState {
             self.capability_granter
                 .grant_exec(&command.command, &command.args)?;
 
-            let output = util::command::new_command(command.command.as_str())
+            let output = inazuma_util::command::new_command(command.command.as_str())
                 .args(&command.args)
                 .envs(command.env)
                 .output()
@@ -894,7 +894,7 @@ impl dap::Host for WasmState {
     ) -> wasmtime::Result<Result<TcpArguments, String>> {
         maybe!(async {
             let (host, port, timeout) =
-                ::dap::configure_tcp_connection(task::TcpArgumentsTemplate {
+                ::raijin_dap::configure_tcp_connection(raijin_task::TcpArgumentsTemplate {
                     port: template.port,
                     host: template.host.map(Ipv4Addr::from_bits),
                     timeout: template.timeout,
@@ -926,7 +926,7 @@ impl ExtensionImports for WasmState {
                 let location = path
                     .as_ref()
                     .zip(location.as_ref())
-                    .map(|(path, location)| ::settings::SettingsLocation {
+                    .map(|(path, location)| ::inazuma_settings_framework::SettingsLocation {
                         worktree_id: WorktreeId::from_proto(location.worktree_id),
                         path,
                     });
@@ -949,7 +949,7 @@ impl ExtensionImports for WasmState {
                             .and_then(|key| {
                                 ProjectSettings::get(location, cx)
                                     .lsp
-                                    .get(&::lsp::LanguageServerName::from_proto(key))
+                                    .get(&::raijin_lsp::LanguageServerName::from_proto(key))
                             })
                             .cloned()
                             .unwrap_or_default();
@@ -972,12 +972,12 @@ impl ExtensionImports for WasmState {
                             })
                             .cloned()
                             .unwrap_or_else(|| {
-                                project::project_settings::ContextServerSettings::default_extension(
+                                raijin_project::project_settings::ContextServerSettings::default_extension(
                                 )
                             });
 
                         match settings {
-                            project::project_settings::ContextServerSettings::Stdio {
+                            raijin_project::project_settings::ContextServerSettings::Stdio {
                                 enabled: _,
                                 command,
                                 ..
@@ -989,7 +989,7 @@ impl ExtensionImports for WasmState {
                                 }),
                                 settings: None,
                             })?),
-                            project::project_settings::ContextServerSettings::Extension {
+                            raijin_project::project_settings::ContextServerSettings::Extension {
                                 enabled: _,
                                 settings,
                                 ..
@@ -997,7 +997,7 @@ impl ExtensionImports for WasmState {
                                 command: None,
                                 settings: Some(settings),
                             })?),
-                            project::project_settings::ContextServerSettings::Http { .. } => {
+                            raijin_project::project_settings::ContextServerSettings::Http { .. } => {
                                 bail!("remote context server settings not supported in 0.6.0")
                             }
                         }
@@ -1027,7 +1027,7 @@ impl ExtensionImports for WasmState {
 
         self.host
             .proxy
-            .update_language_server_status(::lsp::LanguageServerName(server_name.into()), status);
+            .update_language_server_status(::raijin_lsp::LanguageServerName(server_name.into()), status);
 
         Ok(())
     }

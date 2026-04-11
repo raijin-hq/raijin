@@ -81,7 +81,7 @@ async fn lsp_task_context(
     Some(TaskContext {
         cwd: worktree_abs_path.map(|p| p.to_path_buf()),
         project_env: project_env.unwrap_or_default(),
-        ..TaskConinazuma_text::default()
+        ..TaskContext::default()
     })
 }
 

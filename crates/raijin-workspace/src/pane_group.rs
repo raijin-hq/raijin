@@ -1424,7 +1424,7 @@ mod element {
                 .map(|val| val.0.clamp(0.0, 1.0))
                 .and_then(|val| (val <= 1.).then_some(val));
 
-            let mut overlay_background = cx.theme().colors().editor_background;
+            let mut overlay_background = cx.theme().colors().editor.background;
             if let Some(opacity) = overlay_opacity {
                 overlay_background.fade_out(opacity);
             }
@@ -1489,7 +1489,7 @@ mod element {
 
                     window.paint_quad(inazuma::fill(
                         handle.divider_bounds,
-                        cx.theme().colors().pane_group_border,
+                        cx.theme().colors().pane.group_border,
                     ));
 
                     window.on_mouse_event({

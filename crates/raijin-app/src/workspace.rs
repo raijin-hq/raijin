@@ -1046,7 +1046,7 @@ impl Render for Workspace {
             });
         }
 
-        let theme = cx.global::<raijin_theme::GlobalTheme>().0.clone();
+        let theme = raijin_theme::GlobalTheme::theme(cx).clone();
         let bg_color = theme.styles.colors.background;
 
         let mut container = div()

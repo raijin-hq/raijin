@@ -13,7 +13,7 @@ use std::{
     sync::Arc,
 };
 use raijin_task::{Shell, ShellBuilder, ShellKind, SpawnInTerminal};
-use terminal::{
+use raijin_terminal::{
     TaskState, TaskStatus, Terminal, TerminalBuilder, insert_zed_terminal_env,
     terminal_settings::TerminalSettings,
 };
@@ -22,7 +22,7 @@ use inazuma_util::{command::new_std_command, get_default_system_shell, maybe, re
 use crate::{Project, ProjectPath};
 
 pub struct Terminals {
-    pub(crate) local_handles: Vec<WeakEntity<terminal::Terminal>>,
+    pub(crate) local_handles: Vec<WeakEntity<raijin_terminal::Terminal>>,
 }
 
 impl Project {
@@ -575,7 +575,7 @@ impl Project {
         })
     }
 
-    pub fn local_terminal_handles(&self) -> &Vec<WeakEntity<terminal::Terminal>> {
+    pub fn local_terminal_handles(&self) -> &Vec<WeakEntity<raijin_terminal::Terminal>> {
         &self.terminals.local_handles
     }
 

@@ -781,7 +781,7 @@ impl ConfigureContextServerModal {
             .rounded_md()
             .border_1()
             .border_color(cx.theme().colors().border_variant)
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child({
                 let settings = ThemeSettings::get_global(cx);
                 let text_style = TextStyle {
@@ -796,7 +796,7 @@ impl ConfigureContextServerModal {
                 EditorElement::new(
                     editor,
                     EditorStyle {
-                        background: cx.theme().colors().editor_background,
+                        background: cx.theme().colors().editor.background,
                         local_player: cx.theme().players().local(),
                         text: text_style,
                         syntax: cx.theme().syntax().clone(),

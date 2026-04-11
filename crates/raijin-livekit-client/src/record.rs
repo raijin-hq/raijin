@@ -1,6 +1,5 @@
 use std::{
     env,
-    num::NonZero,
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
     time::Duration,
@@ -9,7 +8,6 @@ use std::{
 use anyhow::{Context, Result};
 use cpal::DeviceId;
 use cpal::traits::{DeviceTrait, StreamTrait};
-use rodio::{buffer::SamplesBuffer, conversions::SampleTypeConverter};
 use inazuma_util::ResultExt;
 
 pub struct CaptureInput {
@@ -89,14 +87,44 @@ fn write_out(
             .try_lock()
             .expect("Stream has ended, callback cant hold the lock"),
     );
-    let samples: Vec<f32> = SampleTypeConverter::<_, f32>::new(samples.into_iter()).collect();
-    let mut samples = SamplesBuffer::new(
-        NonZero::new(config.channels()).expect("config channel is never zero"),
-        NonZero::new(config.sample_rate()).expect("config sample_rate is never zero"),
-        samples,
-    );
-    match rodio::wav_to_file(&mut samples, path) {
-        Ok(_) => Ok(()),
-        Err(e) => Err(anyhow::anyhow!("Failed to write wav file: {}", e)),
+    let channels = config.channels();
+    let sample_rate = config.sample_rate();
+    write_wav(path, &samples, channels, sample_rate)
+}
+
+/// Writes raw i16 PCM samples to a WAV file.
+fn write_wav(path: &Path, samples: &[i16], channels: u16, sample_rate: u32) -> Result<()> {
+    use std::io::Write;
+
+    let bits_per_sample: u16 = 16;
+    let byte_rate = sample_rate * channels as u32 * (bits_per_sample as u32 / 8);
+    let block_align = channels * (bits_per_sample / 8);
+    let data_size = (samples.len() * 2) as u32;
+    let file_size = 36 + data_size;
+
+    let mut file = std::fs::File::create(path).context("failed to create WAV file")?;
+
+    // RIFF header
+    file.write_all(b"RIFF")?;
+    file.write_all(&file_size.to_le_bytes())?;
+    file.write_all(b"WAVE")?;
+
+    // fmt sub-chunk
+    file.write_all(b"fmt ")?;
+    file.write_all(&16u32.to_le_bytes())?; // sub-chunk size
+    file.write_all(&1u16.to_le_bytes())?; // PCM format
+    file.write_all(&channels.to_le_bytes())?;
+    file.write_all(&sample_rate.to_le_bytes())?;
+    file.write_all(&byte_rate.to_le_bytes())?;
+    file.write_all(&block_align.to_le_bytes())?;
+    file.write_all(&bits_per_sample.to_le_bytes())?;
+
+    // data sub-chunk
+    file.write_all(b"data")?;
+    file.write_all(&data_size.to_le_bytes())?;
+    for &sample in samples {
+        file.write_all(&sample.to_le_bytes())?;
     }
+
+    Ok(())
 }

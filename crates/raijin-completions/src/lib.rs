@@ -3,8 +3,11 @@
 /// Provides context-aware command completions using static spec definitions
 /// for 400+ popular CLI tools. Specs define subcommands, options, and argument
 /// templates (filepaths, git branches, env vars, etc.).
+pub mod command_correction;
 mod matcher;
+pub mod nu_lsp_client;
 mod parser;
+pub mod shell_completion;
 mod spec;
 mod specs;
 

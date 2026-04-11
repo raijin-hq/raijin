@@ -32,8 +32,8 @@ impl ModalView for DisconnectedOverlay {
         &mut self,
         _window: &mut Window,
         _: &mut Context<Self>,
-    ) -> workspace::DismissDecision {
-        workspace::DismissDecision::Dismiss(self.finished)
+    ) -> raijin_workspace::DismissDecision {
+        raijin_workspace::DismissDecision::Dismiss(self.finished)
     }
     fn fade_out_background(&self) -> bool {
         true
@@ -55,8 +55,8 @@ impl DisconnectedOverlay {
             |workspace, project, event, window, cx| {
                 if !matches!(
                     event,
-                    project::Event::DisconnectedFromHost
-                        | project::Event::DisconnectedFromRemote { .. }
+                    raijin_project::Event::DisconnectedFromHost
+                        | raijin_project::Event::DisconnectedFromRemote { .. }
                 ) {
                     return;
                 }
@@ -68,7 +68,7 @@ impl DisconnectedOverlay {
                         remote_connection_options,
                         matches!(
                             event,
-                            project::Event::DisconnectedFromRemote {
+                            raijin_project::Event::DisconnectedFromRemote {
                                 server_not_running: true
                             }
                         ),
@@ -136,7 +136,7 @@ impl DisconnectedOverlay {
         .detach_and_prompt_err("Failed to reconnect", window, cx, |_, _, _| None);
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         self.finished = true;
         cx.emit(DismissEvent)
     }

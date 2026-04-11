@@ -223,13 +223,13 @@ impl Render for EditPredictionButton {
                                 .when(!has_api_key, |this| {
                                     this.indicator(Indicator::dot().color(Color::Error))
                                         .indicator_border_color(Some(
-                                            cx.theme().colors().status_bar_background,
+                                            cx.theme().colors().status_bar.background,
                                         ))
                                 })
                                 .when(has_api_key && !enabled, |this| {
                                     this.indicator(Indicator::dot().color(Color::Ignored))
                                         .indicator_border_color(Some(
-                                            cx.theme().colors().status_bar_background,
+                                            cx.theme().colors().status_bar.background,
                                         ))
                                 }),
                             move |_window, cx| {
@@ -267,7 +267,7 @@ impl Render for EditPredictionButton {
                                 .when(!enabled, |this| {
                                     this.indicator(Indicator::dot().color(Color::Ignored))
                                         .indicator_border_color(Some(
-                                            cx.theme().colors().status_bar_background,
+                                            cx.theme().colors().status_bar.background,
                                         ))
                                 }),
                         )
@@ -297,7 +297,7 @@ impl Render for EditPredictionButton {
                                 .when(!enabled, |this| {
                                     this.indicator(Indicator::dot().color(Color::Ignored))
                                         .indicator_border_color(Some(
-                                            cx.theme().colors().status_bar_background,
+                                            cx.theme().colors().status_bar.background,
                                         ))
                                 }),
                             move |_window, cx| {
@@ -381,7 +381,7 @@ impl Render for EditPredictionButton {
                         IconButton::new("zed-predict-pending-button", ep_icon)
                             .shape(IconButtonShape::Square)
                             .indicator(Indicator::dot().color(Color::Muted))
-                            .indicator_border_color(Some(cx.theme().colors().status_bar_background))
+                            .indicator_border_color(Some(cx.theme().colors().status_bar.background))
                             .tooltip(move |_window, cx| {
                                 Tooltip::with_meta("Edit Predictions", None, tooltip_meta, cx)
                             })
@@ -432,7 +432,7 @@ impl Render for EditPredictionButton {
                     .shape(IconButtonShape::Square)
                     .when_some(indicator_color, |this, color| {
                         this.indicator(Indicator::dot().color(color))
-                            .indicator_border_color(Some(cx.theme().colors().status_bar_background))
+                            .indicator_border_color(Some(cx.theme().colors().status_bar.background))
                     })
                     .when(!self.popover_menu_handle.is_deployed(), |element| {
                         let user = user.clone();

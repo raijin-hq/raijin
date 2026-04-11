@@ -423,7 +423,7 @@ impl Render for WelcomePage {
             .size_full()
             .justify_center()
             .overflow_hidden()
-            .bg(cx.theme().colors().editor_background)
+            .bg(cx.theme().colors().editor.background)
             .child(
                 h_flex()
                     .relative()

@@ -1,4 +1,4 @@
-use super::RemoteVideoTrack;
+use crate::livekit_client::RemoteVideoTrack;
 use futures::StreamExt as _;
 use inazuma::{
     AppContext as _, Context, Empty, Entity, EventEmitter, IntoElement, Render, Task, Window,

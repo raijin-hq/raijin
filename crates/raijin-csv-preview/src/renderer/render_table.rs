@@ -83,7 +83,7 @@ impl CsvPreviewView {
             .header(headers)
             .disable_base_style()
             .map(|table| {
-                let row_identifier_text_color = cx.theme().colors().editor_line_number;
+                let row_identifier_text_color = cx.theme().colors().editor.line_number;
                 match self.settings.rendering_with {
                     RowRenderMechanism::VariableList => {
                         table.variable_row_height_list(row_count, self.list_state.clone(), {

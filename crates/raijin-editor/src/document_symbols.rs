@@ -395,7 +395,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -435,7 +435,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -491,7 +491,7 @@ mod tests {
         init_test(cx, |_| {});
 
         // Start with tree-sitter (default)
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -573,7 +573,7 @@ mod tests {
         let request_count = Arc::new(atomic::AtomicUsize::new(0));
         let request_count_clone = request_count.clone();
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -628,7 +628,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -673,7 +673,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -722,7 +722,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -802,7 +802,7 @@ mod tests {
             settings.defaults.document_symbols = Some(DocumentSymbols::On);
         });
 
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()
@@ -836,7 +836,7 @@ mod tests {
 
         let request_count = Arc::new(atomic::AtomicUsize::new(0));
         // Do NOT enable document_symbols — defaults to Off
-        let mut cx = EditorLspTestConinazuma_text::new_rust(
+        let mut cx = EditorLspTestContext::new_rust(
             raijin_lsp::ServerCapabilities {
                 document_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                 ..raijin_lsp::ServerCapabilities::default()

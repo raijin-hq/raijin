@@ -22,14 +22,14 @@ mod real_implementation {
         pub fn process_reverse_stream(&mut self, buf: &mut [i16]) {
             self.0
                 .lock()
-                .process_reverse_stream(buf, SAMPLE_RATE.get() as i32, CHANNEL_COUNT.get().into())
+                .process_reverse_stream(buf, SAMPLE_RATE as i32, CHANNEL_COUNT.into())
                 .expect("Audio input and output threads should not panic");
         }
 
         pub fn process_stream(&mut self, buf: &mut [i16]) -> anyhow::Result<()> {
             self.0
                 .lock()
-                .process_stream(buf, SAMPLE_RATE.get() as i32, CHANNEL_COUNT.get() as i32)
+                .process_stream(buf, SAMPLE_RATE as i32, CHANNEL_COUNT as i32)
                 .context("livekit audio processor error")
         }
     }

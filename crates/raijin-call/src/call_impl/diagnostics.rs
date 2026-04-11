@@ -91,7 +91,7 @@ struct ComputedNetworkStats {
     packet_loss_pct: Option<f64>,
 }
 
-fn compute_network_stats(stats: &livekit_client::SessionStats) -> ComputedNetworkStats {
+fn compute_network_stats(stats: &raijin_livekit_client::SessionStats) -> ComputedNetworkStats {
     let mut min_rtt: Option<f64> = None;
     let mut max_jitter: Option<f64> = None;
     let mut total_packets_received: u64 = 0;
@@ -136,7 +136,7 @@ fn compute_network_stats(stats: &livekit_client::SessionStats) -> ComputedNetwor
     )
 ))]
 fn extract_metrics(
-    _stat: &livekit_client::RtcStats,
+    _stat: &raijin_livekit_client::RtcStats,
     _min_rtt: &mut Option<f64>,
     _max_jitter: &mut Option<f64>,
     _total_packets_received: &mut u64,
@@ -154,7 +154,7 @@ fn extract_metrics(
     ))
 ))]
 fn extract_metrics(
-    stat: &livekit_client::RtcStats,
+    stat: &raijin_livekit_client::RtcStats,
     min_rtt: &mut Option<f64>,
     max_jitter: &mut Option<f64>,
     total_packets_received: &mut u64,

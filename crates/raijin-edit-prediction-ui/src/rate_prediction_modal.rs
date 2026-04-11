@@ -481,7 +481,7 @@ impl RatePredictionsModal {
             .px_1()
             .border_b_1()
             .border_color(cx.theme().colors().border)
-            .bg(cx.theme().colors().elevated_surface_background)
+            .bg(cx.theme().colors().elevated_surface)
             .gap_1()
             .child(
                 Button::new(
@@ -510,7 +510,7 @@ impl RatePredictionsModal {
     }
 
     fn render_suggested_edits(&self, cx: &mut Context<Self>) -> Option<inazuma::Stateful<Div>> {
-        let bg_color = cx.theme().colors().editor_background;
+        let bg_color = cx.theme().colors().editor.background;
         Some(
             div()
                 .id("diff")
@@ -542,7 +542,7 @@ impl RatePredictionsModal {
                         .py_4()
                         .px_6()
                         .size_full()
-                        .bg(cx.theme().colors().editor_background)
+                        .bg(cx.theme().colors().editor.background)
                         .overflow_scroll()
                         .child(if let Some(active_prediction) = &self.active_prediction {
                             markdown::MarkdownElement::new(
@@ -587,7 +587,7 @@ impl RatePredictionsModal {
                                         },
                                         border_color: Some(cx.theme().colors().border_variant),
                                         background: Some(
-                                            cx.theme().colors().editor_background.into(),
+                                            cx.theme().colors().editor.background.into(),
                                         ),
                                         ..Default::default()
                                     },
@@ -615,7 +615,7 @@ impl RatePredictionsModal {
         let focus_handle = &self.focus_handle(cx);
 
         let border_color = cx.theme().colors().border;
-        let bg_color = cx.theme().colors().editor_background;
+        let bg_color = cx.theme().colors().editor.background;
 
         let rated = self.ep_store.read(cx).is_prediction_rated(&completion_id);
         let feedback_empty = active_prediction
@@ -891,7 +891,7 @@ impl Render for RatePredictionsModal {
             .on_action(cx.listener(Self::thumbs_down_active))
             .on_action(cx.listener(Self::focus_completions))
             .on_action(cx.listener(Self::preview_completion))
-            .bg(cx.theme().colors().elevated_surface_background)
+            .bg(cx.theme().colors().elevated_surface)
             .border_1()
             .border_color(border_color)
             .w(window.viewport_size().width - px(320.))

@@ -75,7 +75,7 @@ impl Render for MarkdownExample {
         let markdown_style = MarkdownStyle {
             base_text_style: inazuma::TextStyle {
                 font_family: ".ZedSans".into(),
-                color: cx.theme().colors().terminal_ansi_black,
+                color: cx.theme().colors().terminal.ansi.black,
                 ..Default::default()
             },
             code_block: StyleRefinement::default()
@@ -84,8 +84,8 @@ impl Render for MarkdownExample {
                 .bg(rgb(0xAAAAAAA)),
             inline_code: inazuma::TextStyleRefinement {
                 font_family: Some(".ZedMono".into()),
-                color: Some(cx.theme().colors().editor_foreground),
-                background_color: Some(cx.theme().colors().editor_background),
+                color: Some(cx.theme().colors().editor.foreground),
+                background_color: Some(cx.theme().colors().editor.background),
                 ..Default::default()
             },
             rule_color: Color::Muted.color(cx),
@@ -104,7 +104,7 @@ impl Render for MarkdownExample {
                 ..Default::default()
             },
             syntax: cx.theme().syntax().clone(),
-            selection_background_color: cx.theme().colors().element_selection_background,
+            selection_background_color: cx.theme().colors().element_selection,
             ..Default::default()
         };
 

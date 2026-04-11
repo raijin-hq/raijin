@@ -4,7 +4,7 @@ use cpal::DeviceId;
 
 mod remote_video_track_view;
 pub use remote_video_track_view::{RemoteVideoTrackView, RemoteVideoTrackViewEvent};
-use rodio::DeviceTrait as _;
+use cpal::traits::DeviceTrait as _;
 
 mod record;
 pub use record::CaptureInput;
@@ -28,7 +28,7 @@ mod livekit_client;
         target_os = "freebsd"
     ))
 ))]
-pub use raijin_livekit_client::*;
+pub use livekit_client::*;
 
 #[cfg(all(
     not(rust_analyzer),
@@ -206,7 +206,7 @@ pub(crate) fn default_device(
     input: bool,
     device_id: Option<&DeviceId>,
 ) -> anyhow::Result<(cpal::Device, cpal::SupportedStreamConfig)> {
-    let device = audio::resolve_device(device_id, input)?;
+    let device = raijin_audio::resolve_device(device_id, input)?;
     let config = if input {
         device
             .default_input_config()

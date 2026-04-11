@@ -300,7 +300,7 @@ pub trait RenderableCell: Render {
                         .h(px(GUTTER_WIDTH + 12.0))
                         .items_center()
                         .justify_center()
-                        .bg(cx.theme().colors().tab_bar_background)
+                        .bg(cx.theme().colors().tab.bar_background)
                         .child(control.button),
                 )
             })
@@ -370,7 +370,7 @@ impl MarkdownCell {
             let refinement = TextStyleRefinement {
                 font_family: Some(theme.buffer_font.family.clone()),
                 font_size: Some(theme.buffer_font_size(cx).into()),
-                color: Some(cx.theme().colors().editor_foreground),
+                color: Some(cx.theme().colors().editor.foreground),
                 background_color: Some(inazuma::transparent_black()),
                 ..Default::default()
             };
@@ -535,7 +535,7 @@ impl Render for MarkdownCell {
                             div()
                                 .flex_1()
                                 .p_3()
-                                .bg(cx.theme().colors().editor_background)
+                                .bg(cx.theme().colors().editor.background)
                                 .rounded_sm()
                                 .child(self.editor.clone())
                                 .on_mouse_down(
@@ -636,7 +636,7 @@ impl CodeCell {
             let refinement = TextStyleRefinement {
                 font_family: Some(theme.buffer_font.family.clone()),
                 font_size: Some(theme.buffer_font_size(cx).into()),
-                color: Some(cx.theme().colors().editor_foreground),
+                color: Some(cx.theme().colors().editor.foreground),
                 background_color: Some(inazuma::transparent_black()),
                 ..Default::default()
             };
@@ -713,7 +713,7 @@ impl CodeCell {
             let refinement = TextStyleRefinement {
                 font_family: Some(theme.buffer_font.family.clone()),
                 font_size: Some(theme.buffer_font_size(cx).into()),
-                color: Some(cx.theme().colors().editor_foreground),
+                color: Some(cx.theme().colors().editor.foreground),
                 background_color: Some(inazuma::transparent_black()),
                 ..Default::default()
             };
@@ -907,7 +907,7 @@ impl CodeCell {
                         .h(px(GUTTER_WIDTH + 12.0))
                         .items_center()
                         .justify_center()
-                        .bg(cx.theme().colors().tab_bar_background)
+                        .bg(cx.theme().colors().tab.bar_background)
                         .child(IconButton::new("control", IconName::Ellipsis)),
                 )
             })
@@ -1006,7 +1006,7 @@ impl RenderableCell for CodeCell {
                         .w(px(GUTTER_WIDTH))
                         .items_center()
                         .justify_center()
-                        .bg(cx.theme().colors().tab_bar_background)
+                        .bg(cx.theme().colors().tab.bar_background)
                         .child(control.button)
                         .when_some(execution_count, |this, count| {
                             this.child(
@@ -1084,7 +1084,7 @@ impl Render for CodeCell {
                                 .rounded_lg()
                                 .border_1()
                                 .border_color(cx.theme().colors().border)
-                                .bg(cx.theme().colors().editor_background)
+                                .bg(cx.theme().colors().editor.background)
                                 .child(div().w_full().child(self.editor.clone()))
                                 // lang badge in top-right corner
                                 .when_some(language_name, |this, name| {

@@ -126,8 +126,8 @@ impl MarkdownStyle {
         let buffer_font_weight = theme_settings.buffer_font.weight;
         let (buffer_font_size, ui_font_size) = match font {
             MarkdownFont::Agent => (
-                theme_settings.agent_buffer_font_size(cx),
-                theme_settings.agent_ui_font_size(cx),
+                theme_settings.buffer_font_size(cx),
+                theme_settings.ui_font_size(cx),
             ),
             MarkdownFont::Editor => (
                 theme_settings.buffer_font_size(cx),
@@ -153,7 +153,7 @@ impl MarkdownStyle {
         MarkdownStyle {
             base_text_style: text_style.clone(),
             syntax: cx.theme().syntax().clone(),
-            selection_background_color: colors.element_selection_background,
+            selection_background_color: colors.element_selection,
             code_block_overflow_x_scroll: true,
             heading_level_styles: Some(HeadingLevelStyles {
                 h1: Some(TextStyleRefinement {
@@ -201,8 +201,8 @@ impl MarkdownStyle {
                     right: Some(AbsoluteLength::Pixels(px(1.))),
                     bottom: Some(AbsoluteLength::Pixels(px(1.))),
                 },
-                border_colors: Edges::all(Some(colors.border_variant)),
-                background: Some(colors.editor_background.into()),
+                border_colors: Some(Edges::all(Some(colors.border_variant))),
+                background: Some(colors.editor.background.into()),
                 text: TextStyleRefinement {
                     font_family: Some(theme_settings.buffer_font.family.clone()),
                     font_fallbacks: theme_settings.buffer_font.fallbacks.clone(),
@@ -219,11 +219,11 @@ impl MarkdownStyle {
                 font_features: Some(theme_settings.buffer_font.features.clone()),
                 font_size: Some(buffer_font_size.into()),
                 font_weight: Some(buffer_font_weight),
-                background_color: Some(colors.editor_foreground.opacity(0.08)),
+                background_color: Some(colors.editor.foreground.opacity(0.08)),
                 ..Default::default()
             },
             link: TextStyleRefinement {
-                background_color: Some(colors.editor_foreground.opacity(0.025)),
+                background_color: Some(colors.editor.foreground.opacity(0.025)),
                 color: Some(colors.text_accent),
                 underline: Some(UnderlineStyle {
                     color: Some(colors.text_accent.opacity(0.5)),
@@ -1476,7 +1476,7 @@ impl Element for MarkdownElement {
                                             .tracked_scroll_handle(scroll_handle)
                                             .with_track_along(
                                                 ScrollAxes::Horizontal,
-                                                cx.theme().colors().editor_background,
+                                                cx.theme().colors().editor.background,
                                             )
                                             .notify_content();
 
@@ -1549,8 +1549,8 @@ impl Element for MarkdownElement {
 
                                     let checkbox = Checkbox::new(
                                         ElementId::Name(source.to_string().into()),
-                                        toggle_state,
                                     )
+                                    .toggle_state(toggle_state)
                                     .fill();
 
                                     if let Some(on_toggle) = self.on_checkbox_toggle.clone() {
@@ -1658,10 +1658,10 @@ impl Element for MarkdownElement {
                                     .px_1()
                                     .py_0p5()
                                     .when(is_header, |this| {
-                                        this.bg(cx.theme().colors().title_bar_background)
+                                        this.bg(cx.theme().colors().title_bar.background)
                                     })
                                     .when(!is_header && row_index % 2 == 1, |this| {
-                                        this.bg(cx.theme().colors().panel_background)
+                                        this.bg(cx.theme().colors().panel.background)
                                     }),
                                 range,
                                 markdown_end,
@@ -2328,12 +2328,12 @@ impl MarkdownElementBuilder {
                 ElementId::Name(
                     format!("table_checkbox_{}_{}", source_range.start, source_range.end).into(),
                 ),
-                if checked {
-                    ToggleState::Selected
-                } else {
-                    ToggleState::Unselected
-                },
             )
+            .toggle_state(if checked {
+                ToggleState::Selected
+            } else {
+                ToggleState::Unselected
+            })
             .fill()
             .visualization_only(true)
             .into_any_element();

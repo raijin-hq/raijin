@@ -316,7 +316,7 @@ impl MemoryView {
             ..Default::default()
         };
         EditorStyle {
-            background: theme.colors().editor_background,
+            background: theme.colors().editor.background,
             local_player: theme.players().local(),
             text: text_style,
             ..Default::default()
@@ -884,7 +884,7 @@ impl Render for MemoryView {
                             .px_2()
                             .py_0p5()
                             .mb_0p5()
-                            .bg(cx.theme().colors().editor_background)
+                            .bg(cx.theme().colors().editor.background)
                             .when_else(
                                 self.query_editor
                                     .focus_handle(cx)
@@ -924,7 +924,7 @@ impl Render for MemoryView {
                             .tracked_scroll_handle(&self.view_state_handle)
                             .with_track_along(
                                 ui::ScrollAxes::Both,
-                                cx.theme().colors().panel_background,
+                                cx.theme().colors().panel.background,
                             )
                             .tracked_entity(cx.entity_id()),
                         window,

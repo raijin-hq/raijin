@@ -27,7 +27,7 @@ impl RenderOnce for CountBadge {
         let bg = cx
             .theme()
             .colors()
-            .editor_background
+            .editor.background
             .blend(cx.theme().status().error.color.opacity(0.4));
 
         h_flex()

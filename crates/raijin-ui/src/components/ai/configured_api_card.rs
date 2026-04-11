@@ -65,7 +65,7 @@ impl Component for ConfiguredApiCard {
                 .gap_2()
                 .border_1()
                 .border_color(cx.theme().colors().border_variant)
-                .bg(cx.theme().colors().panel_background)
+                .bg(cx.theme().colors().panel.background)
         };
 
         let examples = vec![
@@ -130,7 +130,7 @@ impl RenderOnce for ConfiguredApiCard {
             .child(
                 Button::new(button_id, button_label)
                     .when_some(self.button_tab_index, |elem, tab_index| {
-                        elem.tab_index(tab_index)
+                        ButtonCommon::tab_index(elem, tab_index)
                     })
                     .label_size(LabelSize::Small)
                     .start_icon(

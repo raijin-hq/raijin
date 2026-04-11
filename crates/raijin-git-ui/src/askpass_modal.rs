@@ -52,11 +52,11 @@ impl AskPassModal {
         }
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _window: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _window: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         maybe!({
             let tx = self.tx.take()?;
             let mut text = self.editor.update(cx, |this, cx| {
@@ -64,7 +64,7 @@ impl AskPassModal {
                 this.clear(window, cx);
                 text
             });
-            let pw = askpass::EncryptedPassword::try_from(text.as_ref()).ok()?;
+            let pw = raijin_askpass::EncryptedPassword::try_from(text.as_ref()).ok()?;
             text.zeroize();
             tx.send(pw).ok();
             Some(())
@@ -74,7 +74,7 @@ impl AskPassModal {
     }
 
     fn render_hint(&mut self, cx: &mut Context<Self>) -> Option<AnyElement> {
-        let color = cx.theme().status().info_background;
+        let color = cx.theme().status().info.background;
         if (self.prompt.contains("Password") || self.prompt.contains("Username"))
             && self.prompt.contains("github.com")
         {
@@ -83,7 +83,7 @@ impl AskPassModal {
                 .p_2()
                 .bg(color)
                 .border_t_1()
-                .border_color(cx.theme().status().info_border)
+                .border_color(cx.theme().status().info.border)
                 .child(
                     h_flex().gap_2()
                         .child(
@@ -134,7 +134,7 @@ impl Render for AskPassModal {
                     .text_buffer(cx)
                     .py_2()
                     .px_3()
-                    .bg(cx.theme().colors().editor_background)
+                    .bg(cx.theme().colors().editor.background)
                     .border_t_1()
                     .border_color(cx.theme().colors().border_variant)
                     .size_full()
