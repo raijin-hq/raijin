@@ -18,7 +18,7 @@ cargo test --workspace                # All tests
 cargo clippy --workspace              # Lint (dbg! and todo! are denied)
 ```
 
-Requires **Rust nightly** (edition 2024, resolver 3). No `rust-toolchain.toml` — install nightly manually. macOS is the primary platform (Metal rendering).
+Requires **Rust stable 1.94+** (edition 2024, resolver 3). Pinned via `rust-toolchain.toml`. macOS is the primary platform (Metal rendering).
 
 `.cargo/config.toml` sets: `symbol-mangling-version=v0` rustflag, `MACOSX_DEPLOYMENT_TARGET=10.15.7`, and the `cargo raijin` alias.
 
@@ -90,7 +90,7 @@ Inazuma ist ein **Editor-Framework**. Terminal-Rendering hat fundamental andere 
 
 ## Conventions
 
-- **Rust edition 2024** (nightly) with `resolver = "3"`
+- **Rust edition 2024** (stable 1.94+) with `resolver = "3"`
 - **No `mod.rs`** — use `module_name.rs` (modern Rust convention)
 - **No stubs or placeholders** — every feature must be production-complete, no `todo!()`, no `unimplemented!()`, no silent error swallowing
 - **Clippy lints**: `dbg_macro` and `todo` are denied; `style`, `type_complexity`, `too_many_arguments`, `large_enum_variant` are allowed
