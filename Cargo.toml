@@ -168,7 +168,7 @@ members = [
     "crates/raijin-project-panel",
     "crates/raijin-project-symbols",
     "crates/raijin-vim",
-    "crates/raijin-repl",
+    # "crates/raijin-repl",  # see plan/29-HYBRID-TERMINAL-REPL.md — needs terminal type rework for Raijin's block architecture
     "crates/raijin-snippets-ui",
     "crates/raijin-csv-preview",
     "crates/raijin-svg-preview",
