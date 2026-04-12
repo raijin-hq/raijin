@@ -41,7 +41,7 @@ fn selection_cursor(map: &DisplaySnapshot, selection: &Selection<DisplayPoint>) 
     if selection.reversed || selection.is_empty() {
         selection.head()
     } else {
-        editor::movement::left(map, selection.head())
+        raijin_editor::movement::left(map, selection.head())
     }
 }
 

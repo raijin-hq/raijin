@@ -6,7 +6,7 @@ use inazuma::actions;
 use inazuma::{Context, Window};
 use raijin_language::SelectionGoal;
 use inazuma_settings_framework::Settings;
-use vim_mode_setting::HelixModeSetting;
+use raijin_vim_mode_setting::HelixModeSetting;
 
 #[derive(PartialEq, Eq)]
 pub(crate) enum IndentDirection {

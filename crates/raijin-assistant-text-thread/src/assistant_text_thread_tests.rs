@@ -7,7 +7,7 @@ use raijin_assistant_slash_command::{
     ArgumentCompletion, SlashCommand, SlashCommandContent, SlashCommandEvent, SlashCommandOutput,
     SlashCommandOutputSection, SlashCommandRegistry, SlashCommandResult, SlashCommandWorkingSet,
 };
-use assistant_slash_commands::FileSlashCommand;
+use raijin_assistant_slash_commands::FileSlashCommand;
 use inazuma_collections::{HashMap, HashSet};
 use raijin_fs::FakeFs;
 use futures::{
@@ -406,9 +406,9 @@ async fn test_slash_commands(cx: &mut TestAppContext) {
 
     #[derive(Default)]
     struct ContextRanges {
-        parsed_commands: HashSet<Range<language::Anchor>>,
-        command_outputs: HashMap<InvokedSlashCommandId, Range<language::Anchor>>,
-        output_sections: HashSet<Range<language::Anchor>>,
+        parsed_commands: HashSet<Range<raijin_language::Anchor>>,
+        command_outputs: HashMap<InvokedSlashCommandId, Range<raijin_language::Anchor>>,
+        output_sections: HashSet<Range<raijin_language::Anchor>>,
     }
 
     let context_ranges = Rc::new(RefCell::new(ContextRanges::default()));
@@ -763,7 +763,7 @@ async fn test_random_context_collaboration(cx: &mut TestAppContext, mut rng: Std
             TextThread::new(
                 context_id.clone(),
                 ReplicaId::new(i as u16),
-                language::Capability::ReadWrite,
+                raijin_language::Capability::ReadWrite,
                 registry.clone(),
                 prompt_builder.clone(),
                 Arc::new(SlashCommandWorkingSet::default()),
@@ -1427,7 +1427,7 @@ impl SlashCommand for FakeSlashCommand {
     fn run(
         self: Arc<Self>,
         _arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         _workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,

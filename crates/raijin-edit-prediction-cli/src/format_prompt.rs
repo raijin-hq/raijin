@@ -11,7 +11,7 @@ use inazuma::AsyncApp;
 use similar::DiffableStr;
 use std::ops::Range;
 use std::sync::Arc;
-use zeta_prompt::{
+use raijin_zeta_prompt::{
     ZetaFormat, encode_patch_as_output_for_format, excerpt_range_for_format, format_zeta_prompt,
     multi_region, output_end_marker_for_format, resolve_cursor_region,
 };
@@ -71,7 +71,7 @@ pub async fn run_format_prompt(
             step_progress.set_substatus("formatting zeta2 prompt");
 
             let prompt = format_zeta_prompt(prompt_inputs, zeta_format);
-            let prefill = zeta_prompt::get_prefill(prompt_inputs, zeta_format);
+            let prefill = raijin_zeta_prompt::get_prefill(prompt_inputs, zeta_format);
             let expected_output = example
                 .spec
                 .expected_patches_with_cursor_positions()
@@ -108,7 +108,7 @@ pub async fn run_format_prompt(
 }
 
 pub fn zeta2_output_for_patch(
-    input: &zeta_prompt::ZetaPromptInput,
+    input: &raijin_zeta_prompt::ZetaPromptInput,
     patch: &str,
     cursor_offset: Option<usize>,
     version: ZetaFormat,
@@ -145,7 +145,7 @@ pub fn zeta2_output_for_patch(
             &old_editable_region,
             &result,
             cursor_in_new,
-            zeta_prompt::CURSOR_MARKER,
+            raijin_zeta_prompt::CURSOR_MARKER,
             multi_region::V0317_END_MARKER,
         );
     }
@@ -159,7 +159,7 @@ pub fn zeta2_output_for_patch(
             &old_editable_region,
             &result,
             cursor_in_new,
-            zeta_prompt::CURSOR_MARKER,
+            raijin_zeta_prompt::CURSOR_MARKER,
             multi_region::V0318_END_MARKER,
         );
     }
@@ -173,7 +173,7 @@ pub fn zeta2_output_for_patch(
             &old_editable_region,
             &result,
             cursor_in_new,
-            zeta_prompt::CURSOR_MARKER,
+            raijin_zeta_prompt::CURSOR_MARKER,
             multi_region::V0316_END_MARKER,
         );
     }
@@ -187,9 +187,9 @@ pub fn zeta2_output_for_patch(
             &old_editable_region,
             &result,
             cursor_in_new,
-            zeta_prompt::CURSOR_MARKER,
-            zeta_prompt::seed_coder::END_MARKER,
-            zeta_prompt::seed_coder::NO_EDITS,
+            raijin_zeta_prompt::CURSOR_MARKER,
+            raijin_zeta_prompt::seed_coder::END_MARKER,
+            raijin_zeta_prompt::seed_coder::NO_EDITS,
         );
     }
 
@@ -200,7 +200,7 @@ pub fn zeta2_output_for_patch(
         // the actual cursor position in the result.
         let hunk_start = first_hunk_offset.unwrap_or(0);
         let offset = result.floor_char_boundary((hunk_start + cursor_offset).min(result.len()));
-        result.insert_str(offset, zeta_prompt::CURSOR_MARKER);
+        result.insert_str(offset, raijin_zeta_prompt::CURSOR_MARKER);
     }
 
     if let Some(end_marker) = output_end_marker_for_format(version) {
@@ -291,7 +291,7 @@ impl TeacherPrompt {
         let editable_region_start_line = excerpt[..editable_region_offset].matches('\n').count();
 
         let editable_region_lines = old_editable_region.lines().count() as u32;
-        let diff = language::unified_diff_with_context(
+        let diff = raijin_language::unified_diff_with_context(
             &old_editable_region,
             &new_editable_region,
             editable_region_start_line as u32,
@@ -353,7 +353,7 @@ impl TeacherPrompt {
         let prefix = "`````";
         let suffix = "`````\n\n";
         let max_tokens = 1024;
-        zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
+        raijin_zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
     }
 
     fn format_cursor_excerpt(
@@ -495,7 +495,7 @@ impl TeacherMultiRegionPrompt {
         let editable_region_start_line = excerpt[..editable_region_offset].matches('\n').count();
 
         let editable_region_lines = old_editable_region.lines().count() as u32;
-        let diff = language::unified_diff_with_context(
+        let diff = raijin_language::unified_diff_with_context(
             old_editable_region,
             &new_editable_region,
             editable_region_start_line as u32,
@@ -556,7 +556,7 @@ impl TeacherMultiRegionPrompt {
         let prefix = "`````";
         let suffix = "`````\n\n";
         let max_tokens = 1024;
-        zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
+        raijin_zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
     }
 
     fn format_cursor_excerpt(
@@ -896,7 +896,7 @@ mod tests {
 
         let parsed = TeacherPrompt::parse(
             &Example {
-                spec: edit_prediction::example_spec::ExampleSpec {
+                spec: raijin_edit_prediction::example_spec::ExampleSpec {
                     name: "test".to_string(),
                     repository_url: "https://github.com/zed-industries/zed.git".to_string(),
                     revision: "HEAD".to_string(),

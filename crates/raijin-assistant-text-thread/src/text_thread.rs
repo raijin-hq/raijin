@@ -61,7 +61,7 @@ impl TextThreadId {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct MessageId(pub clock::Lamport);
+pub struct MessageId(pub inazuma_clock::Lamport);
 
 impl MessageId {
     pub fn as_u64(self) -> u64 {
@@ -123,40 +123,40 @@ pub enum TextThreadOperation {
     InsertMessage {
         anchor: MessageAnchor,
         metadata: MessageMetadata,
-        version: clock::Global,
+        version: inazuma_clock::Global,
     },
     UpdateMessage {
         message_id: MessageId,
         metadata: MessageMetadata,
-        version: clock::Global,
+        version: inazuma_clock::Global,
     },
     UpdateSummary {
         summary: TextThreadSummaryContent,
-        version: clock::Global,
+        version: inazuma_clock::Global,
     },
     SlashCommandStarted {
         id: InvokedSlashCommandId,
-        output_range: Range<language::Anchor>,
+        output_range: Range<raijin_language::Anchor>,
         name: String,
-        version: clock::Global,
+        version: inazuma_clock::Global,
     },
     SlashCommandFinished {
         id: InvokedSlashCommandId,
-        timestamp: clock::Lamport,
+        timestamp: inazuma_clock::Lamport,
         error_message: Option<String>,
-        version: clock::Global,
+        version: inazuma_clock::Global,
     },
     SlashCommandOutputSectionAdded {
-        timestamp: clock::Lamport,
-        section: SlashCommandOutputSection<language::Anchor>,
-        version: clock::Global,
+        timestamp: inazuma_clock::Lamport,
+        section: SlashCommandOutputSection<raijin_language::Anchor>,
+        version: inazuma_clock::Global,
     },
     ThoughtProcessOutputSectionAdded {
-        timestamp: clock::Lamport,
-        section: ThoughtProcessOutputSection<language::Anchor>,
-        version: clock::Global,
+        timestamp: inazuma_clock::Lamport,
+        section: ThoughtProcessOutputSection<raijin_language::Anchor>,
+        version: inazuma_clock::Global,
     },
-    BufferOperation(language::Operation),
+    BufferOperation(raijin_language::Operation),
 }
 
 impl TextThreadOperation {
@@ -164,13 +164,13 @@ impl TextThreadOperation {
         match op.variant.context("invalid variant")? {
             proto::context_operation::Variant::InsertMessage(insert) => {
                 let message = insert.message.context("invalid message")?;
-                let id = MessageId(language::proto::deserialize_timestamp(
+                let id = MessageId(raijin_language::proto::deserialize_timestamp(
                     message.id.context("invalid id")?,
                 ));
                 Ok(Self::InsertMessage {
                     anchor: MessageAnchor {
                         id,
-                        start: language::proto::deserialize_anchor(
+                        start: raijin_language::proto::deserialize_anchor(
                             message.start.context("invalid anchor")?,
                         )
                         .context("invalid anchor")?,
@@ -183,53 +183,53 @@ impl TextThreadOperation {
                         timestamp: id.0,
                         cache: None,
                     },
-                    version: language::proto::deserialize_version(&insert.version),
+                    version: raijin_language::proto::deserialize_version(&insert.version),
                 })
             }
             proto::context_operation::Variant::UpdateMessage(update) => Ok(Self::UpdateMessage {
-                message_id: MessageId(language::proto::deserialize_timestamp(
+                message_id: MessageId(raijin_language::proto::deserialize_timestamp(
                     update.message_id.context("invalid message id")?,
                 )),
                 metadata: MessageMetadata {
                     role: Role::from_proto(update.role),
                     status: MessageStatus::from_proto(update.status.context("invalid status")?),
-                    timestamp: language::proto::deserialize_timestamp(
+                    timestamp: raijin_language::proto::deserialize_timestamp(
                         update.timestamp.context("invalid timestamp")?,
                     ),
                     cache: None,
                 },
-                version: language::proto::deserialize_version(&update.version),
+                version: raijin_language::proto::deserialize_version(&update.version),
             }),
             proto::context_operation::Variant::UpdateSummary(update) => Ok(Self::UpdateSummary {
                 summary: TextThreadSummaryContent {
                     text: update.summary,
                     done: update.done,
-                    timestamp: language::proto::deserialize_timestamp(
+                    timestamp: raijin_language::proto::deserialize_timestamp(
                         update.timestamp.context("invalid timestamp")?,
                     ),
                 },
-                version: language::proto::deserialize_version(&update.version),
+                version: raijin_language::proto::deserialize_version(&update.version),
             }),
             proto::context_operation::Variant::SlashCommandStarted(message) => {
                 Ok(Self::SlashCommandStarted {
-                    id: InvokedSlashCommandId(language::proto::deserialize_timestamp(
+                    id: InvokedSlashCommandId(raijin_language::proto::deserialize_timestamp(
                         message.id.context("invalid id")?,
                     )),
-                    output_range: language::proto::deserialize_anchor_range(
+                    output_range: raijin_language::proto::deserialize_anchor_range(
                         message.output_range.context("invalid range")?,
                     )?,
                     name: message.name,
-                    version: language::proto::deserialize_version(&message.version),
+                    version: raijin_language::proto::deserialize_version(&message.version),
                 })
             }
             proto::context_operation::Variant::SlashCommandOutputSectionAdded(message) => {
                 let section = message.section.context("missing section")?;
                 Ok(Self::SlashCommandOutputSectionAdded {
-                    timestamp: language::proto::deserialize_timestamp(
+                    timestamp: raijin_language::proto::deserialize_timestamp(
                         message.timestamp.context("missing timestamp")?,
                     ),
                     section: SlashCommandOutputSection {
-                        range: language::proto::deserialize_anchor_range(
+                        range: raijin_language::proto::deserialize_anchor_range(
                             section.range.context("invalid range")?,
                         )?,
                         icon: section.icon_name.parse()?,
@@ -238,37 +238,37 @@ impl TextThreadOperation {
                             .metadata
                             .and_then(|metadata| serde_json::from_str(&metadata).log_err()),
                     },
-                    version: language::proto::deserialize_version(&message.version),
+                    version: raijin_language::proto::deserialize_version(&message.version),
                 })
             }
             proto::context_operation::Variant::SlashCommandCompleted(message) => {
                 Ok(Self::SlashCommandFinished {
-                    id: InvokedSlashCommandId(language::proto::deserialize_timestamp(
+                    id: InvokedSlashCommandId(raijin_language::proto::deserialize_timestamp(
                         message.id.context("invalid id")?,
                     )),
-                    timestamp: language::proto::deserialize_timestamp(
+                    timestamp: raijin_language::proto::deserialize_timestamp(
                         message.timestamp.context("missing timestamp")?,
                     ),
                     error_message: message.error_message,
-                    version: language::proto::deserialize_version(&message.version),
+                    version: raijin_language::proto::deserialize_version(&message.version),
                 })
             }
             proto::context_operation::Variant::ThoughtProcessOutputSectionAdded(message) => {
                 let section = message.section.context("missing section")?;
                 Ok(Self::ThoughtProcessOutputSectionAdded {
-                    timestamp: language::proto::deserialize_timestamp(
+                    timestamp: raijin_language::proto::deserialize_timestamp(
                         message.timestamp.context("missing timestamp")?,
                     ),
                     section: ThoughtProcessOutputSection {
-                        range: language::proto::deserialize_anchor_range(
+                        range: raijin_language::proto::deserialize_anchor_range(
                             section.range.context("invalid range")?,
                         )?,
                     },
-                    version: language::proto::deserialize_version(&message.version),
+                    version: raijin_language::proto::deserialize_version(&message.version),
                 })
             }
             proto::context_operation::Variant::BufferOperation(op) => Ok(Self::BufferOperation(
-                language::proto::deserialize_operation(
+                raijin_language::proto::deserialize_operation(
                     op.operation.context("invalid buffer operation")?,
                 )?,
             )),
@@ -285,12 +285,12 @@ impl TextThreadOperation {
                 variant: Some(proto::context_operation::Variant::InsertMessage(
                     proto::context_operation::InsertMessage {
                         message: Some(proto::ContextMessage {
-                            id: Some(language::proto::serialize_timestamp(anchor.id.0)),
-                            start: Some(language::proto::serialize_anchor(&anchor.start)),
+                            id: Some(raijin_language::proto::serialize_timestamp(anchor.id.0)),
+                            start: Some(raijin_language::proto::serialize_anchor(&anchor.start)),
                             role: metadata.role.to_proto() as i32,
                             status: Some(metadata.status.to_proto()),
                         }),
-                        version: language::proto::serialize_version(version),
+                        version: raijin_language::proto::serialize_version(version),
                     },
                 )),
             },
@@ -301,11 +301,11 @@ impl TextThreadOperation {
             } => proto::ContextOperation {
                 variant: Some(proto::context_operation::Variant::UpdateMessage(
                     proto::context_operation::UpdateMessage {
-                        message_id: Some(language::proto::serialize_timestamp(message_id.0)),
+                        message_id: Some(raijin_language::proto::serialize_timestamp(message_id.0)),
                         role: metadata.role.to_proto() as i32,
                         status: Some(metadata.status.to_proto()),
-                        timestamp: Some(language::proto::serialize_timestamp(metadata.timestamp)),
-                        version: language::proto::serialize_version(version),
+                        timestamp: Some(raijin_language::proto::serialize_timestamp(metadata.timestamp)),
+                        version: raijin_language::proto::serialize_version(version),
                     },
                 )),
             },
@@ -314,8 +314,8 @@ impl TextThreadOperation {
                     proto::context_operation::UpdateSummary {
                         summary: summary.text.clone(),
                         done: summary.done,
-                        timestamp: Some(language::proto::serialize_timestamp(summary.timestamp)),
-                        version: language::proto::serialize_version(version),
+                        timestamp: Some(raijin_language::proto::serialize_timestamp(summary.timestamp)),
+                        version: raijin_language::proto::serialize_version(version),
                     },
                 )),
             },
@@ -327,12 +327,12 @@ impl TextThreadOperation {
             } => proto::ContextOperation {
                 variant: Some(proto::context_operation::Variant::SlashCommandStarted(
                     proto::context_operation::SlashCommandStarted {
-                        id: Some(language::proto::serialize_timestamp(id.0)),
-                        output_range: Some(language::proto::serialize_anchor_range(
+                        id: Some(raijin_language::proto::serialize_timestamp(id.0)),
+                        output_range: Some(raijin_language::proto::serialize_anchor_range(
                             output_range.clone(),
                         )),
                         name: name.clone(),
-                        version: language::proto::serialize_version(version),
+                        version: raijin_language::proto::serialize_version(version),
                     },
                 )),
             },
@@ -344,11 +344,11 @@ impl TextThreadOperation {
                 variant: Some(
                     proto::context_operation::Variant::SlashCommandOutputSectionAdded(
                         proto::context_operation::SlashCommandOutputSectionAdded {
-                            timestamp: Some(language::proto::serialize_timestamp(*timestamp)),
+                            timestamp: Some(raijin_language::proto::serialize_timestamp(*timestamp)),
                             section: Some({
                                 let icon_name: &'static str = section.icon.into();
                                 proto::SlashCommandOutputSection {
-                                    range: Some(language::proto::serialize_anchor_range(
+                                    range: Some(raijin_language::proto::serialize_anchor_range(
                                         section.range.clone(),
                                     )),
                                     icon_name: icon_name.to_string(),
@@ -358,7 +358,7 @@ impl TextThreadOperation {
                                     }),
                                 }
                             }),
-                            version: language::proto::serialize_version(version),
+                            version: raijin_language::proto::serialize_version(version),
                         },
                     ),
                 ),
@@ -371,10 +371,10 @@ impl TextThreadOperation {
             } => proto::ContextOperation {
                 variant: Some(proto::context_operation::Variant::SlashCommandCompleted(
                     proto::context_operation::SlashCommandCompleted {
-                        id: Some(language::proto::serialize_timestamp(id.0)),
-                        timestamp: Some(language::proto::serialize_timestamp(*timestamp)),
+                        id: Some(raijin_language::proto::serialize_timestamp(id.0)),
+                        timestamp: Some(raijin_language::proto::serialize_timestamp(*timestamp)),
                         error_message: error_message.clone(),
-                        version: language::proto::serialize_version(version),
+                        version: raijin_language::proto::serialize_version(version),
                     },
                 )),
             },
@@ -386,15 +386,15 @@ impl TextThreadOperation {
                 variant: Some(
                     proto::context_operation::Variant::ThoughtProcessOutputSectionAdded(
                         proto::context_operation::ThoughtProcessOutputSectionAdded {
-                            timestamp: Some(language::proto::serialize_timestamp(*timestamp)),
+                            timestamp: Some(raijin_language::proto::serialize_timestamp(*timestamp)),
                             section: Some({
                                 proto::ThoughtProcessOutputSection {
-                                    range: Some(language::proto::serialize_anchor_range(
+                                    range: Some(raijin_language::proto::serialize_anchor_range(
                                         section.range.clone(),
                                     )),
                                 }
                             }),
-                            version: language::proto::serialize_version(version),
+                            version: raijin_language::proto::serialize_version(version),
                         },
                     ),
                 ),
@@ -402,14 +402,14 @@ impl TextThreadOperation {
             Self::BufferOperation(operation) => proto::ContextOperation {
                 variant: Some(proto::context_operation::Variant::BufferOperation(
                     proto::context_operation::BufferOperation {
-                        operation: Some(language::proto::serialize_operation(operation)),
+                        operation: Some(raijin_language::proto::serialize_operation(operation)),
                     },
                 )),
             },
         }
     }
 
-    fn timestamp(&self) -> clock::Lamport {
+    fn timestamp(&self) -> inazuma_clock::Lamport {
         match self {
             Self::InsertMessage { anchor, .. } => anchor.id.0,
             Self::UpdateMessage { metadata, .. } => metadata.timestamp,
@@ -425,7 +425,7 @@ impl TextThreadOperation {
     }
 
     /// Returns the current version of the context operation.
-    pub fn version(&self) -> &clock::Global {
+    pub fn version(&self) -> &inazuma_clock::Global {
         match self {
             Self::InsertMessage { version, .. }
             | Self::UpdateMessage { version, .. }
@@ -453,17 +453,17 @@ pub enum TextThreadEvent {
         new_path: Arc<Path>,
     },
     StreamedCompletion,
-    StartedThoughtProcess(Range<language::Anchor>),
-    EndedThoughtProcess(language::Anchor),
+    StartedThoughtProcess(Range<raijin_language::Anchor>),
+    EndedThoughtProcess(raijin_language::Anchor),
     InvokedSlashCommandChanged {
         command_id: InvokedSlashCommandId,
     },
     ParsedSlashCommandsUpdated {
-        removed: Vec<Range<language::Anchor>>,
+        removed: Vec<Range<raijin_language::Anchor>>,
         updated: Vec<ParsedSlashCommand>,
     },
     SlashCommandOutputSectionAdded {
-        section: SlashCommandOutputSection<language::Anchor>,
+        section: SlashCommandOutputSection<raijin_language::Anchor>,
     },
     Operation(TextThreadOperation),
 }
@@ -479,7 +479,7 @@ pub enum TextThreadSummary {
 pub struct TextThreadSummaryContent {
     pub text: String,
     pub done: bool,
-    pub timestamp: clock::Lamport,
+    pub timestamp: inazuma_clock::Lamport,
 }
 
 impl TextThreadSummary {
@@ -515,7 +515,7 @@ impl TextThreadSummary {
                 let content = TextThreadSummaryContent {
                     text: "".to_string(),
                     done: false,
-                    timestamp: clock::Lamport::MIN,
+                    timestamp: inazuma_clock::Lamport::MIN,
                 };
                 *self = TextThreadSummary::Content(content);
                 self.content_as_mut().unwrap()
@@ -527,7 +527,7 @@ impl TextThreadSummary {
         matches!(self, TextThreadSummary::Pending)
     }
 
-    fn timestamp(&self) -> Option<clock::Lamport> {
+    fn timestamp(&self) -> Option<inazuma_clock::Lamport> {
         match self {
             TextThreadSummary::Content(content) => Some(content.timestamp),
             TextThreadSummary::Pending | TextThreadSummary::Error => None,
@@ -544,7 +544,7 @@ impl PartialOrd for TextThreadSummary {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MessageAnchor {
     pub id: MessageId,
-    pub start: language::Anchor,
+    pub start: raijin_language::Anchor,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -558,14 +558,14 @@ pub struct MessageCacheMetadata {
     pub is_anchor: bool,
     pub is_final_anchor: bool,
     pub status: CacheStatus,
-    pub cached_at: clock::Global,
+    pub cached_at: inazuma_clock::Global,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 pub struct MessageMetadata {
     pub role: Role,
     pub status: MessageStatus,
-    pub timestamp: clock::Lamport,
+    pub timestamp: inazuma_clock::Lamport,
     #[serde(skip)]
     pub cache: Option<MessageCacheMetadata>,
 }
@@ -601,8 +601,8 @@ pub struct ThoughtProcessOutputSection<T> {
     pub range: Range<T>,
 }
 
-impl ThoughtProcessOutputSection<language::Anchor> {
-    pub fn is_valid(&self, buffer: &language::TextBuffer) -> bool {
+impl ThoughtProcessOutputSection<raijin_language::Anchor> {
+    pub fn is_valid(&self, buffer: &raijin_language::TextBuffer) -> bool {
         self.range.start.is_valid(buffer) && !self.range.to_offset(buffer).is_empty()
     }
 }
@@ -611,7 +611,7 @@ impl ThoughtProcessOutputSection<language::Anchor> {
 pub struct Message {
     pub offset_range: Range<usize>,
     pub index_range: Range<usize>,
-    pub anchor_range: Range<language::Anchor>,
+    pub anchor_range: Range<raijin_language::Anchor>,
     pub id: MessageId,
     pub role: Role,
     pub status: MessageStatus,
@@ -621,7 +621,7 @@ pub struct Message {
 #[derive(Debug, Clone)]
 pub enum Content {
     Image {
-        anchor: language::Anchor,
+        anchor: raijin_language::Anchor,
         image_id: u64,
         render_image: Arc<RenderImage>,
         image: Shared<Task<Option<LanguageModelImage>>>,
@@ -629,7 +629,7 @@ pub enum Content {
 }
 
 impl Content {
-    fn range(&self) -> Range<language::Anchor> {
+    fn range(&self) -> Range<raijin_language::Anchor> {
         match self {
             Self::Image { anchor, .. } => *anchor..*anchor,
         }
@@ -655,21 +655,21 @@ struct PendingCompletion {
 }
 
 #[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
-pub struct InvokedSlashCommandId(clock::Lamport);
+pub struct InvokedSlashCommandId(inazuma_clock::Lamport);
 
 pub struct TextThread {
     id: TextThreadId,
-    timestamp: clock::Lamport,
-    version: clock::Global,
+    timestamp: inazuma_clock::Lamport,
+    version: inazuma_clock::Global,
     pub(crate) pending_ops: Vec<TextThreadOperation>,
     operations: Vec<TextThreadOperation>,
     buffer: Entity<Buffer>,
     pub(crate) parsed_slash_commands: Vec<ParsedSlashCommand>,
     invoked_slash_commands: HashMap<InvokedSlashCommandId, InvokedSlashCommand>,
-    edits_since_last_parse: language::Subscription<usize>,
+    edits_since_last_parse: raijin_language::Subscription<usize>,
     slash_commands: Arc<SlashCommandWorkingSet>,
-    pub(crate) slash_command_output_sections: Vec<SlashCommandOutputSection<language::Anchor>>,
-    thought_process_output_sections: Vec<ThoughtProcessOutputSection<language::Anchor>>,
+    pub(crate) slash_command_output_sections: Vec<SlashCommandOutputSection<raijin_language::Anchor>>,
+    thought_process_output_sections: Vec<ThoughtProcessOutputSection<raijin_language::Anchor>>,
     pub(crate) message_anchors: Vec<MessageAnchor>,
     contents: Vec<Content>,
     pub(crate) messages_metadata: HashMap<MessageId, MessageMetadata>,
@@ -688,11 +688,11 @@ pub struct TextThread {
 }
 
 trait ContextAnnotation {
-    fn range(&self) -> &Range<language::Anchor>;
+    fn range(&self) -> &Range<raijin_language::Anchor>;
 }
 
 impl ContextAnnotation for ParsedSlashCommand {
-    fn range(&self) -> &Range<language::Anchor> {
+    fn range(&self) -> &Range<raijin_language::Anchor> {
         &self.source_range
     }
 }
@@ -709,7 +709,7 @@ impl TextThread {
         Self::new(
             TextThreadId::new(),
             ReplicaId::default(),
-            language::Capability::ReadWrite,
+            raijin_language::Capability::ReadWrite,
             language_registry,
             prompt_builder,
             slash_commands,
@@ -720,7 +720,7 @@ impl TextThread {
     pub fn new(
         id: TextThreadId,
         replica_id: ReplicaId,
-        capability: language::Capability,
+        capability: raijin_language::Capability,
         language_registry: Arc<LanguageRegistry>,
         prompt_builder: Arc<PromptBuilder>,
         slash_commands: Arc<SlashCommandWorkingSet>,
@@ -728,7 +728,7 @@ impl TextThread {
     ) -> Self {
         let buffer = cx.new(|_cx| {
             let buffer = Buffer::remote(
-                language::BufferId::new(1).unwrap(),
+                raijin_language::BufferId::new(1).unwrap(),
                 replica_id,
                 capability,
                 "",
@@ -740,8 +740,8 @@ impl TextThread {
             buffer.update(cx, |buffer, _| buffer.subscribe());
         let mut this = Self {
             id,
-            timestamp: clock::Lamport::new(replica_id),
-            version: clock::Global::new(),
+            timestamp: inazuma_clock::Lamport::new(replica_id),
+            version: inazuma_clock::Global::new(),
             pending_ops: Vec::new(),
             operations: Vec::new(),
             message_anchors: Default::default(),
@@ -768,13 +768,13 @@ impl TextThread {
             prompt_builder,
         };
 
-        let first_message_id = MessageId(clock::Lamport {
+        let first_message_id = MessageId(inazuma_clock::Lamport {
             replica_id: ReplicaId::LOCAL,
             value: 0,
         });
         let message = MessageAnchor {
             id: first_message_id,
-            start: language::Anchor::min_for_buffer(this.buffer.read(cx).remote_id()),
+            start: raijin_language::Anchor::min_for_buffer(this.buffer.read(cx).remote_id()),
         };
         this.messages_metadata.insert(
             first_message_id,
@@ -818,7 +818,7 @@ impl TextThread {
                 .filter_map(|section| {
                     if section.is_valid(buffer) {
                         let range = section.range.to_offset(buffer);
-                        Some(assistant_slash_command::SlashCommandOutputSection {
+                        Some(raijin_assistant_slash_command::SlashCommandOutputSection {
                             range,
                             icon: section.icon,
                             label: section.label.clone(),
@@ -856,7 +856,7 @@ impl TextThread {
         let mut this = Self::new(
             id,
             ReplicaId::default(),
-            language::Capability::ReadWrite,
+            raijin_language::Capability::ReadWrite,
             language_registry,
             prompt_builder,
             slash_commands,
@@ -890,12 +890,12 @@ impl TextThread {
         &self.slash_commands
     }
 
-    pub fn set_capability(&mut self, capability: language::Capability, cx: &mut Context<Self>) {
+    pub fn set_capability(&mut self, capability: raijin_language::Capability, cx: &mut Context<Self>) {
         self.buffer
             .update(cx, |buffer, cx| buffer.set_capability(capability, cx));
     }
 
-    fn next_timestamp(&mut self) -> clock::Lamport {
+    fn next_timestamp(&mut self) -> inazuma_clock::Lamport {
         let timestamp = self.timestamp.tick();
         self.version.observe(timestamp);
         timestamp
@@ -1116,7 +1116,7 @@ impl TextThread {
 
     fn has_received_operations_for_anchor_range(
         &self,
-        range: Range<text::Anchor>,
+        range: Range<inazuma_text::Anchor>,
         cx: &App,
     ) -> bool {
         let version = &self.buffer.read(cx).version;
@@ -1164,13 +1164,13 @@ impl TextThread {
         self.invoked_slash_commands.get(command_id)
     }
 
-    pub fn slash_command_output_sections(&self) -> &[SlashCommandOutputSection<language::Anchor>] {
+    pub fn slash_command_output_sections(&self) -> &[SlashCommandOutputSection<raijin_language::Anchor>] {
         &self.slash_command_output_sections
     }
 
     pub fn thought_process_output_sections(
         &self,
-    ) -> &[ThoughtProcessOutputSection<language::Anchor>] {
+    ) -> &[ThoughtProcessOutputSection<raijin_language::Anchor>] {
         &self.thought_process_output_sections
     }
 
@@ -1208,17 +1208,17 @@ impl TextThread {
     fn handle_buffer_event(
         &mut self,
         _: Entity<Buffer>,
-        event: &language::BufferEvent,
+        event: &raijin_language::BufferEvent,
         cx: &mut Context<Self>,
     ) {
         match event {
-            language::BufferEvent::Operation {
+            raijin_language::BufferEvent::Operation {
                 operation,
                 is_local: true,
             } => cx.emit(TextThreadEvent::Operation(
                 TextThreadOperation::BufferOperation(operation.clone()),
             )),
-            language::BufferEvent::Edited { .. } => {
+            raijin_language::BufferEvent::Edited { .. } => {
                 self.count_remaining_tokens(cx);
                 self.reparse(cx);
                 cx.emit(TextThreadEvent::MessagesEdited);
@@ -1497,10 +1497,10 @@ impl TextThread {
 
     fn reparse_slash_commands_in_range(
         &mut self,
-        range: Range<text::Anchor>,
+        range: Range<inazuma_text::Anchor>,
         buffer: &BufferSnapshot,
         updated: &mut Vec<ParsedSlashCommand>,
-        removed: &mut Vec<Range<text::Anchor>>,
+        removed: &mut Vec<Range<inazuma_text::Anchor>>,
         cx: &App,
     ) {
         let old_range = self.pending_command_indices_for_range(range.clone(), cx);
@@ -1584,7 +1584,7 @@ impl TextThread {
 
     pub fn pending_command_for_position(
         &mut self,
-        position: language::Anchor,
+        position: raijin_language::Anchor,
         cx: &mut Context<Self>,
     ) -> Option<&mut ParsedSlashCommand> {
         let buffer = self.buffer.read(cx);
@@ -1608,7 +1608,7 @@ impl TextThread {
 
     pub fn pending_commands_for_range(
         &self,
-        range: Range<language::Anchor>,
+        range: Range<raijin_language::Anchor>,
         cx: &App,
     ) -> &[ParsedSlashCommand] {
         let range = self.pending_command_indices_for_range(range, cx);
@@ -1617,7 +1617,7 @@ impl TextThread {
 
     fn pending_command_indices_for_range(
         &self,
-        range: Range<language::Anchor>,
+        range: Range<raijin_language::Anchor>,
         cx: &App,
     ) -> Range<usize> {
         self.indices_intersecting_buffer_range(&self.parsed_slash_commands, range, cx)
@@ -1626,7 +1626,7 @@ impl TextThread {
     fn indices_intersecting_buffer_range<T: ContextAnnotation>(
         &self,
         all_annotations: &[T],
-        range: Range<language::Anchor>,
+        range: Range<raijin_language::Anchor>,
         cx: &App,
     ) -> Range<usize> {
         let buffer = self.buffer.read(cx);
@@ -1646,7 +1646,7 @@ impl TextThread {
 
     pub fn insert_command_output(
         &mut self,
-        command_source_range: Range<language::Anchor>,
+        command_source_range: Range<raijin_language::Anchor>,
         name: &str,
         output: Task<SlashCommandResult>,
         ensure_trailing_newline: bool,
@@ -1699,7 +1699,7 @@ impl TextThread {
                 let mut stream = output.await?;
 
                 struct PendingSection {
-                    start: language::Anchor,
+                    start: raijin_language::Anchor,
                     icon: IconName,
                     label: SharedString,
                     metadata: Option<serde_json::Value>,
@@ -1918,7 +1918,7 @@ impl TextThread {
 
     fn insert_slash_command_output_section(
         &mut self,
-        section: SlashCommandOutputSection<language::Anchor>,
+        section: SlashCommandOutputSection<raijin_language::Anchor>,
         cx: &mut Context<Self>,
     ) {
         let buffer = self.buffer.read(cx);
@@ -1947,7 +1947,7 @@ impl TextThread {
 
     fn insert_thought_process_output_section(
         &mut self,
-        section: ThoughtProcessOutputSection<language::Anchor>,
+        section: ThoughtProcessOutputSection<raijin_language::Anchor>,
         cx: &mut Context<Self>,
     ) {
         let buffer = self.buffer.read(cx);
@@ -2184,7 +2184,7 @@ impl TextThread {
                         .language()
                         .map(|language| language.name());
 
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Assistant Responded",
                         conversation_id = this.id.0.clone(),
                         kind = "panel",
@@ -2307,7 +2307,7 @@ impl TextThread {
                             if let Some(image) = image.clone().now_or_never().flatten() {
                                 request_message
                                     .content
-                                    .push(language_model::MessageContent::Image(image));
+                                    .push(raijin_language_model::MessageContent::Image(image));
                             }
                         }
                     }
@@ -2660,7 +2660,7 @@ impl TextThread {
                     self.summary = TextThreadSummary::Content(TextThreadSummaryContent {
                         text: "".to_string(),
                         done: false,
-                        timestamp: clock::Lamport::MIN,
+                        timestamp: inazuma_clock::Lamport::MIN,
                     });
                     replace_old = true;
                 }
@@ -2819,7 +2819,7 @@ impl TextThread {
                     }
                 }
                 let message_end_anchor =
-                    message_end.unwrap_or(language::Anchor::max_for_buffer(buffer.remote_id()));
+                    message_end.unwrap_or(raijin_language::Anchor::max_for_buffer(buffer.remote_id()));
                 let message_end = message_end_anchor.to_offset(buffer);
 
                 return Some(Message {
@@ -2931,23 +2931,23 @@ impl TextThread {
 
 #[derive(Debug, Default)]
 pub struct TextThreadVersion {
-    text_thread: clock::Global,
-    buffer: clock::Global,
+    text_thread: inazuma_clock::Global,
+    buffer: inazuma_clock::Global,
 }
 
 impl TextThreadVersion {
     pub fn from_proto(proto: &proto::ContextVersion) -> Self {
         Self {
-            text_thread: language::proto::deserialize_version(&proto.context_version),
-            buffer: language::proto::deserialize_version(&proto.buffer_version),
+            text_thread: raijin_language::proto::deserialize_version(&proto.context_version),
+            buffer: raijin_language::proto::deserialize_version(&proto.buffer_version),
         }
     }
 
     pub fn to_proto(&self, context_id: TextThreadId) -> proto::ContextVersion {
         proto::ContextVersion {
             context_id: context_id.to_proto(),
-            context_version: language::proto::serialize_version(&self.text_thread),
-            buffer_version: language::proto::serialize_version(&self.buffer),
+            context_version: raijin_language::proto::serialize_version(&self.text_thread),
+            buffer_version: raijin_language::proto::serialize_version(&self.buffer),
         }
     }
 }
@@ -2957,17 +2957,17 @@ pub struct ParsedSlashCommand {
     pub name: String,
     pub arguments: SmallVec<[String; 3]>,
     pub status: PendingSlashCommandStatus,
-    pub source_range: Range<language::Anchor>,
+    pub source_range: Range<raijin_language::Anchor>,
 }
 
 #[derive(Debug)]
 pub struct InvokedSlashCommand {
     pub name: SharedString,
-    pub range: Range<language::Anchor>,
-    pub run_commands_in_ranges: Vec<Range<language::Anchor>>,
+    pub range: Range<raijin_language::Anchor>,
+    pub run_commands_in_ranges: Vec<Range<raijin_language::Anchor>>,
     pub status: InvokedSlashCommandStatus,
-    pub transaction: Option<language::TransactionId>,
-    timestamp: clock::Lamport,
+    pub transaction: Option<raijin_language::TransactionId>,
+    timestamp: inazuma_clock::Lamport,
 }
 
 #[derive(Debug)]
@@ -2990,7 +2990,7 @@ pub struct PendingToolUse {
     pub name: String,
     pub input: serde_json::Value,
     pub status: PendingToolUseStatus,
-    pub source_range: Range<language::Anchor>,
+    pub source_range: Range<raijin_language::Anchor>,
 }
 
 #[derive(Debug, Clone)]
@@ -3022,7 +3022,7 @@ pub struct SavedTextThread {
     pub messages: Vec<SavedMessage>,
     pub summary: String,
     pub slash_command_output_sections:
-        Vec<assistant_slash_command::SlashCommandOutputSection<usize>>,
+        Vec<raijin_assistant_slash_command::SlashCommandOutputSection<usize>>,
     #[serde(default)]
     pub thought_process_output_sections: Vec<ThoughtProcessOutputSection<usize>>,
 }
@@ -3067,12 +3067,12 @@ impl SavedTextThread {
         cx: &mut Context<TextThread>,
     ) -> Vec<TextThreadOperation> {
         let mut operations = Vec::new();
-        let mut version = clock::Global::new();
-        let mut next_timestamp = clock::Lamport::new(ReplicaId::default());
+        let mut version = inazuma_clock::Global::new();
+        let mut next_timestamp = inazuma_clock::Lamport::new(ReplicaId::default());
 
         let mut first_message_metadata = None;
         for message in self.messages {
-            if message.id == MessageId(clock::Lamport::MIN) {
+            if message.id == MessageId(inazuma_clock::Lamport::MIN) {
                 first_message_metadata = Some(message.metadata);
             } else {
                 operations.push(TextThreadOperation::InsertMessage {
@@ -3096,7 +3096,7 @@ impl SavedTextThread {
         if let Some(metadata) = first_message_metadata {
             let timestamp = next_timestamp.tick();
             operations.push(TextThreadOperation::UpdateMessage {
-                message_id: MessageId(clock::Lamport::MIN),
+                message_id: MessageId(inazuma_clock::Lamport::MIN),
                 metadata: MessageMetadata {
                     role: metadata.role,
                     status: metadata.status,
@@ -3179,7 +3179,7 @@ struct SavedContextV0_3_0 {
     messages: Vec<SavedMessagePreV0_4_0>,
     message_metadata: HashMap<SavedMessageIdPreV0_4_0, SavedMessageMetadataPreV0_4_0>,
     summary: String,
-    slash_command_output_sections: Vec<assistant_slash_command::SlashCommandOutputSection<usize>>,
+    slash_command_output_sections: Vec<raijin_assistant_slash_command::SlashCommandOutputSection<usize>>,
 }
 
 impl SavedContextV0_3_0 {
@@ -3196,7 +3196,7 @@ impl SavedContextV0_3_0 {
                 .into_iter()
                 .filter_map(|message| {
                     let metadata = self.message_metadata.get(&message.id)?;
-                    let timestamp = clock::Lamport {
+                    let timestamp = inazuma_clock::Lamport {
                         replica_id: ReplicaId::default(),
                         value: message.id.0 as u32,
                     };

@@ -73,7 +73,7 @@ impl Vim {
                     let end = if row == selection.end.row {
                         selection.end
                     } else {
-                        Point::new(row, snapshot.line_len(multi_buffer::MultiBufferRow(row)))
+                        Point::new(row, snapshot.line_len(raijin_multi_buffer::MultiBufferRow(row)))
                     };
 
                     let find_result = if !selection.is_empty() {

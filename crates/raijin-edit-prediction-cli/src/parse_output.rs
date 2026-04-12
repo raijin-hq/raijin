@@ -6,7 +6,7 @@ use crate::{
 };
 use anyhow::{Context as _, Result};
 use raijin_edit_prediction::example_spec::encode_cursor_in_patch;
-use zeta_prompt::{CURSOR_MARKER, ZetaFormat, parse_zeta2_model_output};
+use raijin_zeta_prompt::{CURSOR_MARKER, ZetaFormat, parse_zeta2_model_output};
 
 pub fn run_parse_output(example: &mut Example) -> Result<()> {
     example
@@ -91,7 +91,7 @@ fn parse_zeta2_output(
     let editable_region_start_line = excerpt[..editable_region_offset].matches('\n').count();
     let editable_region_lines = old_text_normalized.lines().count() as u32;
 
-    let diff = language::unified_diff_with_context(
+    let diff = raijin_language::unified_diff_with_context(
         &old_text_normalized,
         &new_text,
         editable_region_start_line as u32,

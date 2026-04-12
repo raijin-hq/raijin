@@ -5,13 +5,14 @@ use inazuma::{
 };
 use itertools::Itertools;
 use serde_json::json;
-use raijin_ui::{Button, ButtonStyle};
+use raijin_ui::{Button, ButtonStyle, Color, KeyBinding};
 use raijin_ui::{
-    ButtonCommon, Clickable, Context, FluentBuilder, InteractiveElement, Label, LabelCommon,
-    LabelSize, ParentElement, SharedString, StatefulInteractiveElement, Styled, Window, div,
-    h_flex, px, v_flex,
+    ButtonCommon, Clickable, Context, FluentBuilder, InteractiveElement, IntoElement, Label,
+    LabelCommon, LabelSize, ParentElement, SharedString, StatefulInteractiveElement, Styled, Window,
+    div, h_flex, px, v_flex,
 };
 use raijin_workspace::{Item, SplitDirection, Workspace};
+use raijin_actions;
 
 actions!(
     dev,
@@ -171,7 +172,7 @@ impl Item for KeyContextView {
 }
 
 impl Render for KeyContextView {
-    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         use itertools::Itertools;
 
         let key_equivalents = cx.keyboard_mapper().get_key_equivalents();
@@ -208,26 +209,26 @@ impl Render for KeyContextView {
                     .gap_4()
                     .child(
                         Button::new("open_documentation", "Open Documentation")
-                            .style(ButtonStyle::Filled)
+                            .style(ButtonStyle::FILLED)
                             .on_click(|_, _, cx| cx.open_url("https://zed.dev/docs/key-bindings")),
                     )
                     .child(
                         Button::new("view_default_keymap", "View Default Keymap")
-                            .style(ButtonStyle::Filled)
-                            .key_binding(ui::KeyBinding::for_action(
-                                &zed_actions::OpenDefaultKeymap,
+                            .style(ButtonStyle::FILLED)
+                            .key_binding(KeyBinding::for_action(
+                                &raijin_actions::OpenDefaultKeymap,
                                 cx
                             ))
                             .on_click(|_, window, cx| {
-                                window.dispatch_action(zed_actions::OpenDefaultKeymap.boxed_clone(), cx);
+                                window.dispatch_action(raijin_actions::OpenDefaultKeymap.boxed_clone(), cx);
                             }),
                     )
                     .child(
                         Button::new("edit_your_keymap", "Edit Keymap File")
-                            .style(ButtonStyle::Filled)
-                            .key_binding(ui::KeyBinding::for_action(&zed_actions::OpenKeymapFile, cx))
+                            .style(ButtonStyle::FILLED)
+                            .key_binding(KeyBinding::for_action(&raijin_actions::OpenKeymapFile, cx))
                             .on_click(|_, window, cx| {
-                                window.dispatch_action(zed_actions::OpenKeymapFile.boxed_clone(), cx);
+                                window.dispatch_action(raijin_actions::OpenKeymapFile.boxed_clone(), cx);
                             }),
                     ),
             )
@@ -269,9 +270,9 @@ impl Render for KeyContextView {
                             .iter()
                             .map(|(name, predicate, state)| {
                                 let (text, color) = match state {
-                                    Some(true) => ("(match)", ui::Color::Success),
-                                    Some(false) => ("(low precedence)", ui::Color::Hint),
-                                    None => ("(no match)", ui::Color::Error),
+                                    Some(true) => ("(match)", Color::Success),
+                                    Some(false) => ("(low precedence)", Color::Hint),
+                                    None => ("(no match)", Color::Error),
                                 };
                                 h_flex()
                                     .gap_2()

@@ -6,7 +6,7 @@ use super::*;
 use futures::StreamExt;
 use inazuma::{AppContext as _, TestAppContext, VisualTestContext};
 use raijin_language::{FakeLspAdapter, Language, LanguageConfig, LanguageMatcher, tree_sitter_rust};
-use raijin_lsp::LanguageServerName;
+use raijin_raijin_lsp::LanguageServerName;
 use raijin_project::{
     FakeFs, Project,
     lsp_store::log_store::{LanguageServerKind, LogKind, LogStore},
@@ -65,7 +65,7 @@ async fn test_lsp_log_view(cx: &mut TestAppContext) {
 
     let mut language_server = fake_rust_servers.next().await.unwrap();
     language_server
-        .receive_notification::<lsp::notification::DidOpenTextDocument>()
+        .receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
         .await;
 
     let window =
@@ -73,9 +73,9 @@ async fn test_lsp_log_view(cx: &mut TestAppContext) {
     let log_view = window.root(cx).unwrap();
     let mut cx = VisualTestContext::from_window(*window, cx);
 
-    language_server.notify::<lsp::notification::LogMessage>(lsp::LogMessageParams {
+    language_server.notify::<raijin_lsp::notification::LogMessage>(raijin_lsp::LogMessageParams {
         message: "hello from the server".into(),
-        typ: lsp::MessageType::INFO,
+        typ: raijin_lsp::MessageType::INFO,
     });
     cx.executor().run_until_parked();
 
@@ -95,7 +95,7 @@ async fn test_lsp_log_view(cx: &mut TestAppContext) {
                     .to_string(),
                 rpc_trace_enabled: false,
                 selected_entry: LogKind::Logs,
-                trace_level: lsp::TraceValue::Off,
+                trace_level: raijin_lsp::TraceValue::Off,
                 server_kind: LanguageServerKind::Local {
                     project: project.downgrade()
                 }

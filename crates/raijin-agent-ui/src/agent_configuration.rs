@@ -548,7 +548,7 @@ impl AgentConfiguration {
                         .entry("Install from Extensions", None, {
                             |window, cx| {
                                 window.dispatch_action(
-                                    zed_actions::Extensions {
+                                    raijin_actions::Extensions {
                                         category_filter: Some(
                                             ExtensionCategoryFilter::ContextServers,
                                         ),
@@ -1020,7 +1020,7 @@ impl AgentConfiguration {
                     Some(ContextMenu::build(window, cx, |menu, _window, _cx| {
                         menu.entry("Install from Registry", None, {
                             |window, cx| {
-                                window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                                window.dispatch_action(Box::new(raijin_actions::AcpRegistry), cx)
                             }
                         })
                         .entry("Add Custom Agent", None, {

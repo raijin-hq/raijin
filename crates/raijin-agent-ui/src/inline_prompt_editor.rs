@@ -404,7 +404,7 @@ impl<T: 'static> PromptEditor<T> {
         };
 
         let agent_panel_keybinding =
-            ui::text_for_action(&zed_actions::assistant::ToggleFocus, window, cx)
+            raijin_ui::text_for_action(&raijin_actions::assistant::ToggleFocus, window, cx)
                 .map(|keybinding| format!("{keybinding} to chat"))
                 .unwrap_or_default();
 

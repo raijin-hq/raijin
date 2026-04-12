@@ -4,13 +4,13 @@ use raijin_extension::ExtensionHostProxy;
 use raijin_fs::RealFs;
 use inazuma::http_client::read_proxy_from_env;
 use inazuma::{App, AppContext, Entity};
-use gpui_tokio::Tokio;
+use inazuma_tokio::Tokio;
 use raijin_language::LanguageRegistry;
-use language_extension::LspAccess;
+use raijin_language_extension::LspAccess;
 use raijin_node_runtime::{NodeBinaryOptions, NodeRuntime};
 use raijin_project::project_settings::ProjectSettings;
 use raijin_release_channel::{AppCommitSha, AppVersion};
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use inazuma_settings_framework::{Settings, SettingsStore};
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -21,7 +21,7 @@ pub struct EpAppState {
     pub languages: Arc<LanguageRegistry>,
     pub client: Arc<Client>,
     pub user_store: Entity<UserStore>,
-    pub fs: Arc<dyn fs::Fs>,
+    pub fs: Arc<dyn raijin_fs::Fs>,
     pub node_runtime: NodeRuntime,
 }
 
@@ -33,10 +33,10 @@ pub fn init(cx: &mut App) -> EpAppState {
         option_env!("RAIJIN_BUILD_ID"),
         app_commit_sha,
     );
-    release_channel::init(app_version.clone(), cx);
-    gpui_tokio::init(cx);
+    raijin_release_channel::init(app_version.clone(), cx);
+    inazuma_tokio::init(cx);
 
-    let settings_store = SettingsStore::new(cx, &settings::default_settings());
+    let settings_store = SettingsStore::new(cx, &inazuma_settings_framework::default_settings());
     cx.set_global(settings_store);
 
     // Set User-Agent so we can download language servers from GitHub
@@ -72,14 +72,14 @@ pub fn init(cx: &mut App) -> EpAppState {
     ));
 
     let mut languages = LanguageRegistry::new(cx.background_executor().clone());
-    languages.set_language_server_download_dir(paths::languages_dir().clone());
+    languages.set_language_server_download_dir(raijin_paths::languages_dir().clone());
     let languages = Arc::new(languages);
 
     let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
 
-    extension::init(cx);
+    raijin_extension::init(cx);
 
-    let (mut tx, rx) = watch::channel(None);
+    let (mut tx, rx) = raijin_watch::channel(None);
     cx.observe_global::<SettingsStore>(move |cx| {
         let settings = &ProjectSettings::get_global(cx).node;
         let options = NodeBinaryOptions {
@@ -107,13 +107,12 @@ pub fn init(cx: &mut App) -> EpAppState {
 
     let extension_host_proxy = ExtensionHostProxy::global(cx);
 
-    debug_adapter_extension::init(extension_host_proxy.clone(), cx);
-    language_extension::init(LspAccess::Noop, extension_host_proxy, languages.clone());
-    language_model::init(user_store.clone(), client.clone(), cx);
-    language_models::init(user_store.clone(), client.clone(), cx);
-    languages::init(languages.clone(), fs.clone(), node_runtime.clone(), cx);
-    prompt_store::init(cx);
-    raijin_terminal_view::init(cx);
+    raijin_debug_adapter_extension::init(extension_host_proxy.clone(), cx);
+    raijin_language_extension::init(LspAccess::Noop, extension_host_proxy, languages.clone());
+    raijin_language_model::init(user_store.clone(), client.clone(), cx);
+    raijin_language_models::init(user_store.clone(), client.clone(), cx);
+    raijin_languages::init(languages.clone(), fs.clone(), node_runtime.clone(), cx);
+    raijin_prompt_store::init(cx);
 
     EpAppState {
         languages,

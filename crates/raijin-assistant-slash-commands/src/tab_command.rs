@@ -141,7 +141,7 @@ impl SlashCommand for TabSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,
@@ -251,12 +251,12 @@ fn tab_items_for_queries(
                     .iter()
                     .enumerate()
                     .filter_map(|(id, (full_path, ..))| {
-                        Some(fuzzy::StringMatchCandidate::new(id, full_path.as_ref()?))
+                        Some(inazuma_fuzzy::StringMatchCandidate::new(id, full_path.as_ref()?))
                     })
                     .collect::<Vec<_>>();
                 let mut processed_matches = HashSet::default();
                 let file_queries = queries.iter().map(|query| {
-                    fuzzy::match_strings(
+                    inazuma_fuzzy::match_strings(
                         &match_candidates,
                         query,
                         true,

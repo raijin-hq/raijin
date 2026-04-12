@@ -63,14 +63,14 @@ impl DiagnosticsSlashCommand {
                             .root_entry()
                             .is_some_and(|entry| entry.is_ignored),
                         include_root_name: true,
-                        candidates: project::Candidates::Entries,
+                        candidates: raijin_project::Candidates::Entries,
                     }
                 })
                 .collect::<Vec<_>>();
 
             let executor = cx.background_executor().clone();
             cx.foreground_executor().spawn(async move {
-                fuzzy::match_path_sets(
+                inazuma_fuzzy::match_path_sets(
                     candidate_sets.as_slice(),
                     query.as_str(),
                     &None,
@@ -90,7 +90,7 @@ impl SlashCommand for DiagnosticsSlashCommand {
         "diagnostics".into()
     }
 
-    fn label(&self, cx: &App) -> language::CodeLabel {
+    fn label(&self, cx: &App) -> raijin_language::CodeLabel {
         create_label_for_command("diagnostics", &[INCLUDE_WARNINGS_ARGUMENT], cx)
     }
 
@@ -144,7 +144,7 @@ impl SlashCommand for DiagnosticsSlashCommand {
                 .collect();
 
             matches.extend(
-                fuzzy::match_strings(
+                inazuma_fuzzy::match_strings(
                     &Options::match_candidates_for_args(),
                     &query,
                     false,
@@ -163,7 +163,7 @@ impl SlashCommand for DiagnosticsSlashCommand {
                 .map(|completion| ArgumentCompletion {
                     label: completion.clone().into(),
                     new_text: completion,
-                    after_completion: assistant_slash_command::AfterCompletion::Run,
+                    after_completion: raijin_assistant_slash_command::AfterCompletion::Run,
                     replace_previous_arguments: false,
                 })
                 .collect())
@@ -173,7 +173,7 @@ impl SlashCommand for DiagnosticsSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,

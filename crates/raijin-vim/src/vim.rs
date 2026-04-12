@@ -53,8 +53,8 @@ use std::{mem, ops::Range, sync::Arc};
 use surrounds::SurroundsType;
 use raijin_theme_settings::ThemeSettings;
 use raijin_ui::{IntoElement, SharedString, px};
-use vim_mode_setting::HelixModeSetting;
-use vim_mode_setting::VimModeSetting;
+use raijin_vim_mode_setting::HelixModeSetting;
+use raijin_vim_mode_setting::VimModeSetting;
 use raijin_workspace::{self, Pane, Workspace};
 
 use crate::{
@@ -308,7 +308,7 @@ pub fn init(cx: &mut App) {
             let count = Vim::take_count(cx).unwrap_or(1);
 
             for _ in 0..count {
-                window.dispatch_action(menu::SelectNext.boxed_clone(), cx);
+                window.dispatch_action(inazuma_menu::SelectNext.boxed_clone(), cx);
             }
         });
 
@@ -316,13 +316,13 @@ pub fn init(cx: &mut App) {
             let count = Vim::take_count(cx).unwrap_or(1);
 
             for _ in 0..count {
-                window.dispatch_action(menu::SelectPrevious.boxed_clone(), cx);
+                window.dispatch_action(inazuma_menu::SelectPrevious.boxed_clone(), cx);
             }
         });
 
         workspace.register_action(|_, _: &ToggleProjectPanelFocus, window, cx| {
             if Vim::take_count(cx).is_none() {
-                window.dispatch_action(zed_actions::project_panel::ToggleFocus.boxed_clone(), cx);
+                window.dispatch_action(raijin_actions::project_panel::ToggleFocus.boxed_clone(), cx);
             }
         });
 
@@ -351,9 +351,9 @@ pub fn init(cx: &mut App) {
             };
         });
 
-        workspace.register_action(|_, _: &zed_actions::vim::OpenDefaultKeymap, _, cx| {
-            cx.emit(workspace::Event::OpenBundledFile {
-                text: settings::vim_keymap(),
+        workspace.register_action(|_, _: &raijin_actions::vim::OpenDefaultKeymap, _, cx| {
+            cx.emit(raijin_workspace::Event::OpenBundledFile {
+                text: inazuma_settings_framework::vim_keymap(),
                 title: "Default Vim Bindings",
                 language: "JSON",
             });
@@ -444,12 +444,12 @@ pub fn init(cx: &mut App) {
                 // <count>gt goes to tab <count> (1-based).
                 let zero_based_index = tab_index.saturating_sub(1);
                 window.dispatch_action(
-                    workspace::pane::ActivateItem(zero_based_index).boxed_clone(),
+                    raijin_workspace::pane::ActivateItem(zero_based_index).boxed_clone(),
                     cx,
                 );
             } else {
                 // If no count is provided, go to the next tab.
-                window.dispatch_action(workspace::pane::ActivateNextItem.boxed_clone(), cx);
+                window.dispatch_action(raijin_workspace::pane::ActivateNextItem.boxed_clone(), cx);
             }
         });
 
@@ -467,13 +467,13 @@ pub fn init(cx: &mut App) {
                         .rem_euclid(item_count as isize)
                         as usize;
                     window.dispatch_action(
-                        workspace::pane::ActivateItem(target_index).boxed_clone(),
+                        raijin_workspace::pane::ActivateItem(target_index).boxed_clone(),
                         cx,
                     );
                 }
             } else {
                 // No count provided, go to the previous tab.
-                window.dispatch_action(workspace::pane::ActivatePreviousItem.boxed_clone(), cx);
+                window.dispatch_action(raijin_workspace::pane::ActivatePreviousItem.boxed_clone(), cx);
             }
         });
     })
@@ -485,7 +485,7 @@ pub(crate) struct VimAddon {
     pub(crate) entity: Entity<Vim>,
 }
 
-impl editor::Addon for VimAddon {
+impl raijin_editor::Addon for VimAddon {
     fn extend_key_context(&self, key_context: &mut KeyContext, cx: &App) {
         self.entity.read(cx).extend_key_context(key_context, cx)
     }
@@ -2129,7 +2129,7 @@ struct VimEditorSettingsState {
 struct VimSettings {
     pub default_mode: Mode,
     pub toggle_relative_line_numbers: bool,
-    pub use_system_clipboard: settings::UseSystemClipboard,
+    pub use_system_clipboard: inazuma_settings_framework::UseSystemClipboard,
     pub use_smartcase_find: bool,
     pub gdefault: bool,
     pub custom_digraphs: HashMap<String, Arc<str>>,
@@ -2169,28 +2169,28 @@ pub struct CursorShapeSettings {
     pub insert: InsertModeCursorShape,
 }
 
-impl From<settings::VimInsertModeCursorShape> for InsertModeCursorShape {
-    fn from(shape: settings::VimInsertModeCursorShape) -> Self {
+impl From<inazuma_settings_framework::VimInsertModeCursorShape> for InsertModeCursorShape {
+    fn from(shape: inazuma_settings_framework::VimInsertModeCursorShape) -> Self {
         match shape {
-            settings::VimInsertModeCursorShape::Inherit => InsertModeCursorShape::Inherit,
-            settings::VimInsertModeCursorShape::Bar => {
+            inazuma_settings_framework::VimInsertModeCursorShape::Inherit => InsertModeCursorShape::Inherit,
+            inazuma_settings_framework::VimInsertModeCursorShape::Bar => {
                 InsertModeCursorShape::Explicit(CursorShape::Bar)
             }
-            settings::VimInsertModeCursorShape::Block => {
+            inazuma_settings_framework::VimInsertModeCursorShape::Block => {
                 InsertModeCursorShape::Explicit(CursorShape::Block)
             }
-            settings::VimInsertModeCursorShape::Underline => {
+            inazuma_settings_framework::VimInsertModeCursorShape::Underline => {
                 InsertModeCursorShape::Explicit(CursorShape::Underline)
             }
-            settings::VimInsertModeCursorShape::Hollow => {
+            inazuma_settings_framework::VimInsertModeCursorShape::Hollow => {
                 InsertModeCursorShape::Explicit(CursorShape::Hollow)
             }
         }
     }
 }
 
-impl From<settings::CursorShapeSettings> for CursorShapeSettings {
-    fn from(settings: settings::CursorShapeSettings) -> Self {
+impl From<inazuma_settings_framework::CursorShapeSettings> for CursorShapeSettings {
+    fn from(settings: inazuma_settings_framework::CursorShapeSettings) -> Self {
         Self {
             normal: settings.normal.unwrap().into(),
             replace: settings.replace.unwrap().into(),

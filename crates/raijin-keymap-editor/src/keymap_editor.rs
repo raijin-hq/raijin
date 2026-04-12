@@ -459,7 +459,7 @@ struct KeymapEditor {
     /// temporary directory for these backing files in the keymap editor struct
     /// instead of here. This has the added benefit of only having to create a
     /// worktree and directory once, although the perf improvement is negligible.
-    action_args_temp_dir_worktree: Option<Entity<project::Worktree>>,
+    action_args_temp_dir_worktree: Option<Entity<raijin_project::Worktree>>,
     action_args_temp_dir: Option<tempfile::TempDir>,
 }
 
@@ -543,7 +543,7 @@ impl KeymapEditor {
             cx.observe_global_in::<KeymapEventChannel>(window, Self::on_keymap_changed);
         let table_interaction_state = cx.new(|cx| {
             TableInteractionState::new(cx)
-                .with_custom_scrollbar(ui::Scrollbars::for_settings::<editor::EditorSettings>())
+                .with_custom_scrollbar(raijin_ui::Scrollbars::for_settings::<raijin_editor::EditorSettings>())
         });
 
         let keystroke_editor = cx.new(|cx| {
@@ -692,7 +692,7 @@ impl KeymapEditor {
             (this.string_match_candidates.clone(), this.keybindings.len())
         })?;
         let executor = cx.background_executor().clone();
-        let mut matches = fuzzy::match_strings(
+        let mut matches = inazuma_fuzzy::match_strings(
             &string_match_candidates,
             &action_query,
             true,
@@ -827,7 +827,7 @@ impl KeymapEditor {
                 .map(KeybindSource::from_meta)
                 .unwrap_or(KeybindSource::Unknown);
 
-            let keystroke_text = ui::text_for_keybinding_keystrokes(key_binding.keystrokes(), cx);
+            let keystroke_text = raijin_ui::text_for_keybinding_keystrokes(key_binding.keystrokes(), cx);
             let is_no_action = inazuma::is_no_action(key_binding.action());
             let is_unbound_by_unbind =
                 binding_is_unbound_by_unbind(key_binding, binding_index, &key_bindings);
@@ -1229,7 +1229,7 @@ impl KeymapEditor {
         Label::new(hint).color(Color::Muted).into_any_element()
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         self.show_hover_menus = false;
         if let Some(selected) = self.selected_index {
             let selected = selected + 1;
@@ -1245,7 +1245,7 @@ impl KeymapEditor {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1267,14 +1267,14 @@ impl KeymapEditor {
         }
     }
 
-    fn select_first(&mut self, _: &menu::SelectFirst, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_first(&mut self, _: &inazuma_menu::SelectFirst, window: &mut Window, cx: &mut Context<Self>) {
         self.show_hover_menus = false;
         if self.matches.get(0).is_some() {
             self.select_index(0, Some(ScrollStrategy::Center), window, cx);
         }
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, window: &mut Window, cx: &mut Context<Self>) {
         self.show_hover_menus = false;
         if self.matches.last().is_some() {
             let index = self.matches.len() - 1;
@@ -1921,13 +1921,13 @@ fn muted_styled_text(text: SharedString, cx: &App) -> StyledText {
 impl Item for KeymapEditor {
     type Event = ();
 
-    fn tab_content_text(&self, _detail: usize, _cx: &App) -> ui::SharedString {
+    fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
         "Keymap Editor".into()
     }
 }
 
 impl Render for KeymapEditor {
-    fn render(&mut self, _window: &mut Window, cx: &mut ui::Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         if let SearchMode::KeyStroke { exact_match } = self.search_mode {
             let button = IconButton::new("keystrokes-exact-match", IconName::CaseSensitive)
                 .tooltip(move |_window, cx| {
@@ -2046,14 +2046,14 @@ impl Render for KeymapEditor {
                                     )
                                     .child(
                                         Button::new("edit-in-json", "Edit in JSON")
-                                            .style(ButtonStyle::Subtle)
+                                            .style(ButtonStyle::SUBTLE)
                                             .key_binding(
-                                                ui::KeyBinding::for_action_in(&zed_actions::OpenKeymapFile, &focus_handle, cx)
+                                                raijin_ui::KeyBinding::for_action_in(&raijin_actions::OpenKeymapFile, &focus_handle, cx)
                                                     .map(|kb| kb.size(rems_from_px(10.))),
                                             )
                                             .on_click(|_, window, cx| {
                                                 window.dispatch_action(
-                                                    zed_actions::OpenKeymapFile.boxed_clone(),
+                                                    raijin_actions::OpenKeymapFile.boxed_clone(),
                                                     cx,
                                                 );
                                             })
@@ -2062,7 +2062,7 @@ impl Render for KeymapEditor {
                                         Button::new("create", "Create Keybinding")
                                             .style(ButtonStyle::Outlined)
                                             .key_binding(
-                                                ui::KeyBinding::for_action_in(&OpenCreateKeybindingModal, &focus_handle, cx)
+                                                raijin_ui::KeyBinding::for_action_in(&OpenCreateKeybindingModal, &focus_handle, cx)
                                                     .map(|kb| kb.size(rems_from_px(10.))),
                                             )
                                             .on_click(|_, window, cx| {
@@ -2184,7 +2184,7 @@ impl Render for KeymapEditor {
                                             .cloned()
                                             .unwrap_or_default()
                                             .into_any_element(),
-                                        |binding| ui::KeyBinding::from_keystrokes(binding.keystrokes.clone(), binding.source).into_any_element()
+                                        |binding| raijin_ui::KeyBinding::from_keystrokes(binding.keystrokes.clone(), binding.source).into_any_element()
                                     );
 
                                     let action_arguments = match binding.action().arguments.clone()
@@ -2963,7 +2963,7 @@ impl KeybindingEditorModal {
         key_context
     }
 
-    fn focus_next(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn focus_next(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         if self.is_any_editor_showing_completions(window, cx) {
             return;
         }
@@ -2972,7 +2972,7 @@ impl KeybindingEditorModal {
 
     fn focus_prev(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2982,11 +2982,11 @@ impl KeybindingEditorModal {
         self.focus_state.focus_previous(window, cx);
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         self.save_or_display_error(cx);
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
@@ -3302,7 +3302,7 @@ impl ActionArgumentsEditor {
                         ))?;
 
                 let editor = cx.new_window_entity(|window, cx| {
-                    let multi_buffer = cx.new(|cx| editor::MultiBuffer::singleton(buffer, cx));
+                    let multi_buffer = cx.new(|cx| raijin_editor::MultiBuffer::singleton(buffer, cx));
                     let mut editor = Editor::new(
                         EditorMode::Full {
                             scale_ui_elements_with_buffer_font_size: true,
@@ -3383,7 +3383,7 @@ impl ActionArgumentsEditor {
         project: WeakEntity<Project>,
         fs: Arc<dyn Fs>,
         cx: &mut AsyncApp,
-    ) -> anyhow::Result<(Entity<language::Buffer>, Option<tempfile::TempDir>)> {
+    ) -> anyhow::Result<(Entity<raijin_language::Buffer>, Option<tempfile::TempDir>)> {
         let (temp_file_path, temp_dir) = {
             let file_name = file_name.clone();
             async move {
@@ -3431,7 +3431,7 @@ impl ActionArgumentsEditor {
 
 impl Render for ActionArgumentsEditor {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let settings = theme_settings::ThemeSettings::get_global(cx);
+        let settings = raijin_theme_settings::ThemeSettings::get_global(cx);
         let colors = cx.theme().colors();
 
         let border_color = if self.is_loading {
@@ -3476,13 +3476,13 @@ struct KeyContextCompletionProvider {
 impl CompletionProvider for KeyContextCompletionProvider {
     fn completions(
         &self,
-        _excerpt_id: editor::ExcerptId,
-        buffer: &Entity<language::Buffer>,
-        buffer_position: language::Anchor,
-        _trigger: editor::CompletionContext,
+        _excerpt_id: raijin_editor::ExcerptId,
+        buffer: &Entity<raijin_language::Buffer>,
+        buffer_position: raijin_language::Anchor,
+        _trigger: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
-    ) -> inazuma::Task<anyhow::Result<Vec<raijin_project::CompletionResponse>>> {
+    ) -> inazuma::Task<anyhow::Result<Vec<raijin_raijin_project::CompletionResponse>>> {
         let buffer = buffer.read(cx);
         let mut count_back = 0;
         for char in buffer.reversed_chars_at(buffer_position) {
@@ -3495,16 +3495,16 @@ impl CompletionProvider for KeyContextCompletionProvider {
         let start_anchor =
             buffer.anchor_before(buffer_position.to_offset(buffer).saturating_sub(count_back));
         let replace_range = start_anchor..buffer_position;
-        inazuma::Task::ready(Ok(vec![raijin_project::CompletionResponse {
+        inazuma::Task::ready(Ok(vec![raijin_raijin_project::CompletionResponse {
             completions: self
                 .contexts
                 .iter()
-                .map(|context| project::Completion {
+                .map(|context| raijin_project::Completion {
                     replace_range: replace_range.clone(),
-                    label: language::CodeLabel::plain(context.to_string(), None),
+                    label: raijin_language::CodeLabel::plain(context.to_string(), None),
                     new_text: context.to_string(),
                     documentation: None,
-                    source: project::CompletionSource::Custom,
+                    source: raijin_raijin_project::CompletionSource::Custom,
                     icon_path: None,
                     match_start: None,
                     snippet_deduplication_key: None,
@@ -3519,8 +3519,8 @@ impl CompletionProvider for KeyContextCompletionProvider {
 
     fn is_completion_trigger(
         &self,
-        _buffer: &Entity<language::Buffer>,
-        _position: language::Anchor,
+        _buffer: &Entity<raijin_language::Buffer>,
+        _position: raijin_language::Anchor,
         text: &str,
         _trigger_in_words: bool,
         _cx: &mut Context<Editor>,
@@ -3917,7 +3917,7 @@ impl SerializableItem for KeymapEditor {
     }
 
     fn deserialize(
-        _project: Entity<project::Project>,
+        _project: Entity<raijin_project::Project>,
         workspace: WeakEntity<Workspace>,
         workspace_id: raijin_workspace::WorkspaceId,
         item_id: raijin_workspace::ItemId,
@@ -3940,7 +3940,7 @@ impl SerializableItem for KeymapEditor {
         item_id: raijin_workspace::ItemId,
         _closing: bool,
         _window: &mut Window,
-        cx: &mut ui::Context<Self>,
+        cx: &mut Context<Self>,
     ) -> Option<inazuma::Task<inazuma::Result<()>>> {
         let workspace_id = workspace.database_id()?;
         let db = KeybindingEditorDb::global(cx);
@@ -4151,7 +4151,7 @@ mod tests {
 
     #[test]
     fn binding_is_unbound_by_unbind_respects_precedence() {
-        let binding = inazuma::KeyBinding::new("tab", zed_actions::OpenKeymap, None);
+        let binding = inazuma::KeyBinding::new("tab", raijin_actions::OpenKeymap, None);
         let unbind =
             inazuma::KeyBinding::new("tab", inazuma::Unbind(binding.action().name().into()), None);
 

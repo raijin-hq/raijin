@@ -2941,7 +2941,7 @@ pub fn should_show_upsell_modal(cx: &App) -> bool {
 pub fn init(cx: &mut App) {
     cx.observe_new(move |workspace: &mut Workspace, _, _cx| {
         workspace.register_action(
-            move |workspace, _: &raijin_actions::OpenZedPredictOnboarding, window, cx| {
+            move |workspace, _: &raijin_actions::OpenRaijinPredictOnboarding, window, cx| {
                 ZedPredictModal::toggle(
                     workspace,
                     workspace.user_store().clone(),

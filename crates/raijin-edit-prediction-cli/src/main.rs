@@ -36,9 +36,9 @@ use gaoya::minhash::{
     MinHashIndex, MinHasher, MinHasher32, calculate_minhash_params, compute_minhash_similarity,
 };
 use inazuma::{AppContext as _, BackgroundExecutor, Task};
-use zeta_prompt::ZetaFormat;
+use raijin_zeta_prompt::ZetaFormat;
 
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::env;
 use std::fmt::Display;
@@ -701,7 +701,7 @@ fn code_token_ngrams(code: &str, ngram_size: usize) -> Vec<String> {
 }
 
 async fn load_examples(
-    http_client: Arc<dyn http_client::HttpClient>,
+    http_client: Arc<dyn raijin_http_client::HttpClient>,
     args: &EpArgs,
     output_path: Option<&PathBuf>,
     background_executor: BackgroundExecutor,
@@ -710,7 +710,7 @@ async fn load_examples(
     let mut rejected_after_timestamps = Vec::new();
     let mut requested_after_timestamps = Vec::new();
     let mut settled_after_timestamps = Vec::new();
-    let mut rated_after_inputs: Vec<(String, Option<telemetry_events::EditPredictionRating>)> =
+    let mut rated_after_inputs: Vec<(String, Option<raijin_telemetry_events::EditPredictionRating>)> =
         Vec::new();
     let mut file_inputs = Vec::new();
 
@@ -875,8 +875,8 @@ async fn load_examples(
     Ok(examples)
 }
 
-fn spec_hash(spec: &edit_prediction::example_spec::ExampleSpec) -> u64 {
-    let mut hasher = collections::FxHasher::default();
+fn spec_hash(spec: &raijin_edit_prediction::example_spec::ExampleSpec) -> u64 {
+    let mut hasher = inazuma_collections::FxHasher::default();
     spec.hash(&mut hasher);
     hasher.finish()
 }
@@ -948,7 +948,7 @@ fn main() {
     let args = EpArgs::parse();
 
     if args.printenv {
-        ::util::shell_env::print_env();
+        ::inazuma_util::shell_env::print_env();
         return;
     }
 
@@ -1078,7 +1078,7 @@ fn main() {
     }
 
     let http_client = Arc::new(ReqwestClient::new());
-    let app = gpui_platform::headless().with_http_client(http_client);
+    let app = inazuma_platform::headless().with_http_client(http_client);
 
     app.run(move |cx| {
         let app_state = Arc::new(headless::init(cx));

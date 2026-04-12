@@ -1013,7 +1013,7 @@ fn assert_pending_input(cx: &mut VimTestContext, expected: &str) {
     cx.update_editor(|editor, window, cx| {
         let snapshot = editor.snapshot(window, cx);
         let highlights = editor
-            .text_highlights(editor::HighlightKey::PendingInput, cx)
+            .text_highlights(raijin_editor::HighlightKey::PendingInput, cx)
             .unwrap()
             .1;
         let (_, ranges) = marked_text_ranges(expected, false);
@@ -1077,7 +1077,7 @@ async fn test_jk_delay(cx: &mut inazuma::TestAppContext) {
     cx.update_editor(|editor, window, cx| {
         let snapshot = editor.snapshot(window, cx);
         let highlights = editor
-            .text_highlights(editor::HighlightKey::PendingInput, cx)
+            .text_highlights(raijin_editor::HighlightKey::PendingInput, cx)
             .unwrap()
             .1;
 
@@ -1287,7 +1287,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g z",
-            workspace::SendKeystrokes("l l l l".to_string()),
+            raijin_workspace::SendKeystrokes("l l l l".to_string()),
             None,
         )])
     });
@@ -1299,7 +1299,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g y",
-            workspace::SendKeystrokes("i f o o escape l".to_string()),
+            raijin_workspace::SendKeystrokes("i f o o escape l".to_string()),
             None,
         )])
     });
@@ -1311,7 +1311,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g x",
-            workspace::SendKeystrokes("g z g y".to_string()),
+            raijin_workspace::SendKeystrokes("g z g y".to_string()),
             None,
         )])
     });
@@ -1323,7 +1323,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g w",
-            workspace::SendKeystrokes(": j enter".to_string()),
+            raijin_workspace::SendKeystrokes(": j enter".to_string()),
             None,
         )])
     });
@@ -1335,7 +1335,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g u",
-            workspace::SendKeystrokes("g w g z".to_string()),
+            raijin_workspace::SendKeystrokes("g w g z".to_string()),
             None,
         )])
     });
@@ -1347,7 +1347,7 @@ async fn test_remap(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g t",
-            workspace::SendKeystrokes("i space escape".to_string()),
+            raijin_workspace::SendKeystrokes("i space escape".to_string()),
             None,
         )])
     });
@@ -1620,12 +1620,12 @@ async fn test_dw_eol(cx: &mut inazuma::TestAppContext) {
 async fn test_toggle_comments(cx: &mut inazuma::TestAppContext) {
     let mut cx = VimTestContext::new(cx, true).await;
 
-    let language = std::sync::Arc::new(language::Language::new(
-        language::LanguageConfig {
+    let language = std::sync::Arc::new(raijin_language::Language::new(
+        raijin_language::LanguageConfig {
             line_comments: vec!["// ".into(), "//! ".into(), "/// ".into()],
             ..Default::default()
         },
-        Some(language::tree_sitter_rust::LANGUAGE.into()),
+        Some(raijin_language::tree_sitter_rust::LANGUAGE.into()),
     ));
     cx.update_buffer(|buffer, cx| buffer.set_language(Some(language), cx));
 
@@ -1816,12 +1816,12 @@ async fn test_remap_adjacent_dog_cat(cx: &mut inazuma::TestAppContext) {
         cx.bind_keys([
             KeyBinding::new(
                 "d o g",
-                workspace::SendKeystrokes("🐶".to_string()),
+                raijin_workspace::SendKeystrokes("🐶".to_string()),
                 Some("vim_mode == insert"),
             ),
             KeyBinding::new(
                 "c a t",
-                workspace::SendKeystrokes("🐱".to_string()),
+                raijin_workspace::SendKeystrokes("🐱".to_string()),
                 Some("vim_mode == insert"),
             ),
         ])
@@ -1850,17 +1850,17 @@ async fn test_remap_nested_pineapple(cx: &mut inazuma::TestAppContext) {
         cx.bind_keys([
             KeyBinding::new(
                 "p i n",
-                workspace::SendKeystrokes("📌".to_string()),
+                raijin_workspace::SendKeystrokes("📌".to_string()),
                 Some("vim_mode == insert"),
             ),
             KeyBinding::new(
                 "p i n e",
-                workspace::SendKeystrokes("🌲".to_string()),
+                raijin_workspace::SendKeystrokes("🌲".to_string()),
                 Some("vim_mode == insert"),
             ),
             KeyBinding::new(
                 "p i n e a p p l e",
-                workspace::SendKeystrokes("🍍".to_string()),
+                raijin_workspace::SendKeystrokes("🍍".to_string()),
                 Some("vim_mode == insert"),
             ),
         ])
@@ -1893,12 +1893,12 @@ async fn test_remap_recursion(cx: &mut inazuma::TestAppContext) {
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "x",
-            workspace::SendKeystrokes("\" _ x".to_string()),
+            raijin_workspace::SendKeystrokes("\" _ x".to_string()),
             Some("VimControl"),
         )]);
         cx.bind_keys([KeyBinding::new(
             "y",
-            workspace::SendKeystrokes("2 x".to_string()),
+            raijin_workspace::SendKeystrokes("2 x".to_string()),
             Some("VimControl"),
         )])
     });
@@ -2574,7 +2574,7 @@ async fn test_wrap_selections_in_tag_line_mode(cx: &mut inazuma::TestAppContext)
     let js_language = Arc::new(Language::new(
         LanguageConfig {
             name: "JavaScript".into(),
-            wrap_characters: Some(language::WrapCharactersConfig {
+            wrap_characters: Some(raijin_language::WrapCharactersConfig {
                 start_prefix: "<".into(),
                 start_suffix: ">".into(),
                 end_prefix: "</".into(),
@@ -2633,7 +2633,7 @@ async fn test_deactivate(cx: &mut inazuma::TestAppContext) {
 
     cx.update_global(|store: &mut SettingsStore, cx| {
         store.update_user_settings(cx, |settings| {
-            settings.editor.cursor_shape = Some(settings::CursorShape::Underline);
+            settings.editor.cursor_shape = Some(inazuma_settings_framework::CursorShape::Underline);
         });
     });
 
@@ -2651,7 +2651,7 @@ async fn test_deactivate(cx: &mut inazuma::TestAppContext) {
     });
 }
 
-// workspace::SendKeystrokes should pass literal keystrokes without triggering vim motions.
+// raijin_workspace::SendKeystrokes should pass literal keystrokes without triggering vim motions.
 // When sending `" _ x`, the `_` should select the blackhole register, not trigger
 // vim::StartOfLineDownward.
 #[inazuma::test]
@@ -2665,7 +2665,7 @@ async fn test_send_keystrokes_underscore_is_literal_46509(cx: &mut inazuma::Test
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g x",
-            workspace::SendKeystrokes("\" _ x".to_string()),
+            raijin_workspace::SendKeystrokes("\" _ x".to_string()),
             Some("VimControl"),
         )])
     });
@@ -2739,7 +2739,7 @@ async fn test_send_keystrokes_no_key_equivalent_mapping_46509(cx: &mut inazuma::
     cx.update(|_, cx| {
         cx.bind_keys([KeyBinding::new(
             "g p",
-            workspace::SendKeystrokes("{".to_string()),
+            raijin_workspace::SendKeystrokes("{".to_string()),
             Some("vim_mode == normal"),
         )])
     });
@@ -2784,7 +2784,7 @@ async fn test_project_search_opens_in_normal_mode(cx: &mut inazuma::TestAppConte
     )
     .await;
 
-    let project = project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
+    let project = raijin_project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
     let window_handle =
         cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
     let workspace = window_handle

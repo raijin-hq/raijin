@@ -318,25 +318,25 @@ pub async fn run_repair(
 
             let messages = vec![
                 // Turn 1: Original teacher prompt
-                anthropic::Message {
-                    role: anthropic::Role::User,
-                    content: vec![anthropic::RequestContent::Text {
+                raijin_anthropic::Message {
+                    role: raijin_anthropic::Role::User,
+                    content: vec![raijin_anthropic::RequestContent::Text {
                         text: teacher_prompt.input.clone(),
                         cache_control: None,
                     }],
                 },
                 // Turn 2: Original teacher response
-                anthropic::Message {
-                    role: anthropic::Role::Assistant,
-                    content: vec![anthropic::RequestContent::Text {
+                raijin_anthropic::Message {
+                    role: raijin_anthropic::Role::Assistant,
+                    content: vec![raijin_anthropic::RequestContent::Text {
                         text: teacher_response.clone(),
                         cache_control: None,
                     }],
                 },
                 // Turn 3: Repair critique and instructions
-                anthropic::Message {
-                    role: anthropic::Role::User,
-                    content: vec![anthropic::RequestContent::Text {
+                raijin_anthropic::Message {
+                    role: raijin_anthropic::Role::User,
+                    content: vec![raijin_anthropic::RequestContent::Text {
                         text: repair_message,
                         cache_control: None,
                     }],
@@ -351,7 +351,7 @@ pub async fn run_repair(
                 .content
                 .iter()
                 .filter_map(|c| match c {
-                    anthropic::ResponseContent::Text { text } => Some(text.as_str()),
+                    raijin_anthropic::ResponseContent::Text { text } => Some(text.as_str()),
                     _ => None,
                 })
                 .collect::<Vec<_>>()
@@ -369,17 +369,17 @@ pub async fn run_repair(
 
             let messages = vec![
                 // Turn 1: Original teacher prompt
-                open_ai::RequestMessage::User {
-                    content: open_ai::MessageContent::Plain(teacher_prompt.input.clone()),
+                raijin_open_ai::RequestMessage::User {
+                    content: raijin_open_ai::MessageContent::Plain(teacher_prompt.input.clone()),
                 },
                 // Turn 2: Original teacher response
-                open_ai::RequestMessage::Assistant {
-                    content: Some(open_ai::MessageContent::Plain(teacher_response.clone())),
+                raijin_open_ai::RequestMessage::Assistant {
+                    content: Some(raijin_open_ai::MessageContent::Plain(teacher_response.clone())),
                     tool_calls: vec![],
                 },
                 // Turn 3: Repair critique and instructions
-                open_ai::RequestMessage::User {
-                    content: open_ai::MessageContent::Plain(repair_message),
+                raijin_open_ai::RequestMessage::User {
+                    content: raijin_open_ai::MessageContent::Plain(repair_message),
                 },
             ];
 
@@ -391,13 +391,13 @@ pub async fn run_repair(
                 .choices
                 .into_iter()
                 .filter_map(|choice| match choice.message {
-                    open_ai::RequestMessage::Assistant { content, .. } => {
+                    raijin_open_ai::RequestMessage::Assistant { content, .. } => {
                         content.map(|c| match c {
-                            open_ai::MessageContent::Plain(text) => text,
-                            open_ai::MessageContent::Multipart(parts) => parts
+                            raijin_open_ai::MessageContent::Plain(text) => text,
+                            raijin_open_ai::MessageContent::Multipart(parts) => parts
                                 .into_iter()
                                 .filter_map(|p| match p {
-                                    open_ai::MessagePart::Text { text } => Some(text),
+                                    raijin_open_ai::MessagePart::Text { text } => Some(text),
                                     _ => None,
                                 })
                                 .collect::<Vec<_>>()

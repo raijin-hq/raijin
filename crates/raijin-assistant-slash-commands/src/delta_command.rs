@@ -50,7 +50,7 @@ impl SlashCommand for DeltaSlashCommand {
     fn run(
         self: Arc<Self>,
         _arguments: &[String],
-        context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         delegate: Option<Arc<dyn LspAdapterDelegate>>,

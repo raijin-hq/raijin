@@ -100,7 +100,7 @@ pub(crate) struct LogMenuItem {
     pub worktree_root_name: String,
     pub rpc_trace_enabled: bool,
     pub selected_entry: LogKind,
-    pub trace_level: lsp::TraceValue,
+    pub trace_level: raijin_lsp::TraceValue,
     pub server_kind: LanguageServerKind,
 }
 
@@ -353,7 +353,7 @@ impl LspLogView {
 
                 let name = LanguageServerName::new_static("copilot");
                 *subscription_slot =
-                    Some(server.on_notification::<lsp::notification::LogMessage, _>(
+                    Some(server.on_notification::<raijin_lsp::notification::LogMessage, _>(
                         move |params, cx| {
                             weak_lsp_store
                                 .update(cx, |lsp_store, cx| {
@@ -406,7 +406,7 @@ impl LspLogView {
                         worktree_root_name,
                         rpc_trace_enabled: state.rpc_state.is_some(),
                         selected_entry: self.active_entry_kind,
-                        trace_level: lsp::TraceValue::Off,
+                        trace_level: raijin_lsp::TraceValue::Off,
                     }
                 }
 
@@ -417,7 +417,7 @@ impl LspLogView {
                     worktree_root_name: "supplementary".to_string(),
                     rpc_trace_enabled: state.rpc_state.is_some(),
                     selected_entry: self.active_entry_kind,
-                    trace_level: lsp::TraceValue::Off,
+                    trace_level: raijin_lsp::TraceValue::Off,
                 },
             })
             .chain(
@@ -433,7 +433,7 @@ impl LspLogView {
                             worktree_root_name: "supplementary".to_string(),
                             rpc_trace_enabled: state.rpc_state.is_some(),
                             selected_entry: self.active_entry_kind,
-                            trace_level: lsp::TraceValue::Off,
+                            trace_level: raijin_lsp::TraceValue::Off,
                         })
                     }),
             )
@@ -701,7 +701,7 @@ fn send_toggle_log_message(
             .update(cx, |project, cx| {
                 if let Some((client, project_id)) = project.lsp_store().read(cx).upstream_client() {
                     client
-                        .send(proto::ToggleLspLogs {
+                        .send(raijin_proto::ToggleLspLogs {
                             project_id,
                             log_type: log_type as i32,
                             server_id: server_id.to_proto(),
@@ -1066,8 +1066,8 @@ impl Render for LspLogToolbarItemView {
                                         .child(Label::new(RPC_MESSAGES))
                                         .child(
                                             div().child(
-                                                Checkbox::new(
-                                                    "LspLogEnableRpcTrace",
+                                                Checkbox::new("LspLogEnableRpcTrace")
+                                                .toggle_state(
                                                     if rpc_trace_enabled {
                                                         ToggleState::Selected
                                                     } else {
@@ -1343,7 +1343,7 @@ impl LspLogToolbarItemView {
 
 struct ServerInfo {
     id: LanguageServerId,
-    capabilities: lsp::ServerCapabilities,
+    capabilities: raijin_lsp::ServerCapabilities,
     status: LanguageServerStatus,
 }
 

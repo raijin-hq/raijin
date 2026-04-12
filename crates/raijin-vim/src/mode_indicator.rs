@@ -1,6 +1,7 @@
 use inazuma::{Context, Element, Entity, FontWeight, Render, Subscription, WeakEntity, Window, div};
 use raijin_ui::text_for_keystrokes;
-use raijin_workspace::{StatusItemView, item::ItemHandle, ui::prelude::*};
+use raijin_ui::prelude::*;
+use raijin_workspace::{StatusItemView, item::ItemHandle};
 
 use crate::{Vim, VimEvent, VimGlobals};
 

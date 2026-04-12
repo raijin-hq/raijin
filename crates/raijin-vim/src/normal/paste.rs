@@ -8,7 +8,7 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 use inazuma_settings_framework::Settings;
 use std::cmp;
-use vim_mode_setting::HelixModeSetting;
+use raijin_vim_mode_setting::HelixModeSetting;
 
 use crate::{
     Vim,
@@ -826,7 +826,7 @@ mod test {
         );
 
         cx.simulate_keystrokes("shift-v");
-        cx.dispatch_action(editor::actions::Paste);
+        cx.dispatch_action(raijin_editor::actions::Paste);
         cx.assert_state(
             indoc! {"
                 ˇsomething else
@@ -1116,14 +1116,14 @@ mod test {
         // entire-line selections are NOT separated by an extra newline in the clipboard text.
         let clipboard_text = "line one\nline two\n".to_string();
         let clipboard_selections = vec![
-            editor::ClipboardSelection {
+            raijin_editor::ClipboardSelection {
                 len: "line one\n".len(),
                 is_entire_line: true,
                 first_line_indent: 0,
                 file_path: None,
                 line_range: None,
             },
-            editor::ClipboardSelection {
+            raijin_editor::ClipboardSelection {
                 len: "line two\n".len(),
                 is_entire_line: true,
                 first_line_indent: 0,

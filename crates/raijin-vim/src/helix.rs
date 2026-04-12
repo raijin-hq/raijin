@@ -2283,7 +2283,7 @@ mod test {
         )
         .await;
 
-        let project = project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window_handle =
             cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
         let workspace = window_handle

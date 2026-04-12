@@ -289,10 +289,10 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             vim.update_editor(cx, |_, editor, cx| match option {
                 VimOption::Wrap(true) => {
                     editor
-                        .set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+                        .set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
                 }
                 VimOption::Wrap(false) => {
-                    editor.set_soft_wrap_mode(language::language_settings::SoftWrap::None, cx);
+                    editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::None, cx);
                 }
                 VimOption::Number(enabled) => {
                     editor.set_show_line_numbers(*enabled, cx);
@@ -323,7 +323,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             return;
         };
         workspace.update(cx, |workspace, cx| {
-            command_palette::CommandPalette::toggle(workspace, "'<,'>", window, cx);
+            raijin_command_palette::CommandPalette::toggle(workspace, "'<,'>", window, cx);
         })
     });
 
@@ -332,7 +332,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             return;
         };
         workspace.update(cx, |workspace, cx| {
-            command_palette::CommandPalette::toggle(workspace, "'<,'>!", window, cx);
+            raijin_command_palette::CommandPalette::toggle(workspace, "'<,'>!", window, cx);
         })
     });
 
@@ -351,7 +351,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             return;
         };
         workspace.update(cx, |workspace, cx| {
-            command_palette::CommandPalette::toggle(workspace, "'<,'>!", window, cx);
+            raijin_command_palette::CommandPalette::toggle(workspace, "'<,'>!", window, cx);
         })
     });
 
@@ -867,7 +867,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             ".".to_string()
         };
         workspace.update(cx, |workspace, cx| {
-            command_palette::CommandPalette::toggle(workspace, &n, window, cx);
+            raijin_command_palette::CommandPalette::toggle(workspace, &n, window, cx);
         })
     });
 
@@ -1480,8 +1480,8 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
             action.range.replace(range.clone());
             Some(Box::new(action))
         }),
-        VimCommand::new(("e", "dit"), editor::actions::ReloadFile)
-            .bang(editor::actions::ReloadFile)
+        VimCommand::new(("e", "dit"), raijin_editor::actions::ReloadFile)
+            .bang(raijin_editor::actions::ReloadFile)
             .filename(|_, filename| Some(VimEdit { filename }.boxed_clone())),
         VimCommand::new(
             ("r", "ead"),
@@ -1504,7 +1504,7 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
             action.range.replace(range.clone());
             Some(Box::new(action))
         }),
-        VimCommand::new(("sp", "lit"), workspace::SplitHorizontal::default()).filename(
+        VimCommand::new(("sp", "lit"), raijin_workspace::SplitHorizontal::default()).filename(
             |_, filename| {
                 Some(
                     VimSplit {
@@ -1515,7 +1515,7 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
                 )
             },
         ),
-        VimCommand::new(("vs", "plit"), workspace::SplitVertical::default()).filename(
+        VimCommand::new(("vs", "plit"), raijin_workspace::SplitVertical::default()).filename(
             |_, filename| {
                 Some(
                     VimSplit {
@@ -1526,114 +1526,114 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
                 )
             },
         ),
-        VimCommand::new(("tabe", "dit"), workspace::NewFile)
+        VimCommand::new(("tabe", "dit"), raijin_workspace::NewFile)
             .filename(|_action, filename| Some(VimEdit { filename }.boxed_clone())),
-        VimCommand::new(("tabnew", ""), workspace::NewFile)
+        VimCommand::new(("tabnew", ""), raijin_workspace::NewFile)
             .filename(|_action, filename| Some(VimEdit { filename }.boxed_clone())),
         VimCommand::new(
             ("q", "uit"),
-            workspace::CloseActiveItem {
+            raijin_workspace::CloseActiveItem {
                 save_intent: Some(SaveIntent::Close),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseActiveItem {
+        .bang(raijin_workspace::CloseActiveItem {
             save_intent: Some(SaveIntent::Skip),
             close_pinned: true,
         }),
         VimCommand::new(
             ("wq", ""),
-            workspace::CloseActiveItem {
+            raijin_workspace::CloseActiveItem {
                 save_intent: Some(SaveIntent::Save),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseActiveItem {
+        .bang(raijin_workspace::CloseActiveItem {
             save_intent: Some(SaveIntent::Overwrite),
             close_pinned: true,
         }),
         VimCommand::new(
             ("x", "it"),
-            workspace::CloseActiveItem {
+            raijin_workspace::CloseActiveItem {
                 save_intent: Some(SaveIntent::SaveAll),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseActiveItem {
+        .bang(raijin_workspace::CloseActiveItem {
             save_intent: Some(SaveIntent::Overwrite),
             close_pinned: true,
         }),
         VimCommand::new(
             ("exi", "t"),
-            workspace::CloseActiveItem {
+            raijin_workspace::CloseActiveItem {
                 save_intent: Some(SaveIntent::SaveAll),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseActiveItem {
+        .bang(raijin_workspace::CloseActiveItem {
             save_intent: Some(SaveIntent::Overwrite),
             close_pinned: true,
         }),
         VimCommand::new(
             ("up", "date"),
-            workspace::Save {
+            raijin_workspace::Save {
                 save_intent: Some(SaveIntent::SaveAll),
             },
         ),
         VimCommand::new(
             ("wa", "ll"),
-            workspace::SaveAll {
+            raijin_workspace::SaveAll {
                 save_intent: Some(SaveIntent::SaveAll),
             },
         )
-        .bang(workspace::SaveAll {
+        .bang(raijin_workspace::SaveAll {
             save_intent: Some(SaveIntent::Overwrite),
         }),
         VimCommand::new(
             ("qa", "ll"),
-            workspace::CloseAllItemsAndPanes {
+            raijin_workspace::CloseAllItemsAndPanes {
                 save_intent: Some(SaveIntent::Close),
             },
         )
-        .bang(workspace::CloseAllItemsAndPanes {
+        .bang(raijin_workspace::CloseAllItemsAndPanes {
             save_intent: Some(SaveIntent::Skip),
         }),
         VimCommand::new(
             ("quita", "ll"),
-            workspace::CloseAllItemsAndPanes {
+            raijin_workspace::CloseAllItemsAndPanes {
                 save_intent: Some(SaveIntent::Close),
             },
         )
-        .bang(workspace::CloseAllItemsAndPanes {
+        .bang(raijin_workspace::CloseAllItemsAndPanes {
             save_intent: Some(SaveIntent::Skip),
         }),
         VimCommand::new(
             ("xa", "ll"),
-            workspace::CloseAllItemsAndPanes {
+            raijin_workspace::CloseAllItemsAndPanes {
                 save_intent: Some(SaveIntent::SaveAll),
             },
         )
-        .bang(workspace::CloseAllItemsAndPanes {
+        .bang(raijin_workspace::CloseAllItemsAndPanes {
             save_intent: Some(SaveIntent::Overwrite),
         }),
         VimCommand::new(
             ("wqa", "ll"),
-            workspace::CloseAllItemsAndPanes {
+            raijin_workspace::CloseAllItemsAndPanes {
                 save_intent: Some(SaveIntent::SaveAll),
             },
         )
-        .bang(workspace::CloseAllItemsAndPanes {
+        .bang(raijin_workspace::CloseAllItemsAndPanes {
             save_intent: Some(SaveIntent::Overwrite),
         }),
-        VimCommand::new(("cq", "uit"), zed_actions::Quit),
+        VimCommand::new(("cq", "uit"), raijin_actions::Quit),
         VimCommand::new(
             ("bd", "elete"),
-            workspace::CloseItemInAllPanes {
+            raijin_workspace::CloseItemInAllPanes {
                 save_intent: Some(SaveIntent::Close),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseItemInAllPanes {
+        .bang(raijin_workspace::CloseItemInAllPanes {
             save_intent: Some(SaveIntent::Skip),
             close_pinned: true,
         }),
@@ -1660,69 +1660,69 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
             action.range.replace(range.clone());
             Some(Box::new(action))
         }),
-        VimCommand::new(("bn", "ext"), workspace::ActivateNextItem).count(),
-        VimCommand::new(("bN", "ext"), workspace::ActivatePreviousItem).count(),
-        VimCommand::new(("bp", "revious"), workspace::ActivatePreviousItem).count(),
-        VimCommand::new(("bf", "irst"), workspace::ActivateItem(0)),
-        VimCommand::new(("br", "ewind"), workspace::ActivateItem(0)),
-        VimCommand::new(("bl", "ast"), workspace::ActivateLastItem),
+        VimCommand::new(("bn", "ext"), raijin_workspace::ActivateNextItem).count(),
+        VimCommand::new(("bN", "ext"), raijin_workspace::ActivatePreviousItem).count(),
+        VimCommand::new(("bp", "revious"), raijin_workspace::ActivatePreviousItem).count(),
+        VimCommand::new(("bf", "irst"), raijin_workspace::ActivateItem(0)),
+        VimCommand::new(("br", "ewind"), raijin_workspace::ActivateItem(0)),
+        VimCommand::new(("bl", "ast"), raijin_workspace::ActivateLastItem),
         VimCommand::str(("buffers", ""), "tab_switcher::ToggleAll"),
         VimCommand::str(("ls", ""), "tab_switcher::ToggleAll"),
-        VimCommand::new(("new", ""), workspace::NewFileSplitHorizontal),
-        VimCommand::new(("vne", "w"), workspace::NewFileSplitVertical),
-        VimCommand::new(("tabn", "ext"), workspace::ActivateNextItem).count(),
-        VimCommand::new(("tabp", "revious"), workspace::ActivatePreviousItem).count(),
-        VimCommand::new(("tabN", "ext"), workspace::ActivatePreviousItem).count(),
+        VimCommand::new(("new", ""), raijin_workspace::NewFileSplitHorizontal),
+        VimCommand::new(("vne", "w"), raijin_workspace::NewFileSplitVertical),
+        VimCommand::new(("tabn", "ext"), raijin_workspace::ActivateNextItem).count(),
+        VimCommand::new(("tabp", "revious"), raijin_workspace::ActivatePreviousItem).count(),
+        VimCommand::new(("tabN", "ext"), raijin_workspace::ActivatePreviousItem).count(),
         VimCommand::new(
             ("tabc", "lose"),
-            workspace::CloseActiveItem {
+            raijin_workspace::CloseActiveItem {
                 save_intent: Some(SaveIntent::Close),
                 close_pinned: false,
             },
         ),
         VimCommand::new(
             ("tabo", "nly"),
-            workspace::CloseOtherItems {
+            raijin_workspace::CloseOtherItems {
                 save_intent: Some(SaveIntent::Close),
                 close_pinned: false,
             },
         )
-        .bang(workspace::CloseOtherItems {
+        .bang(raijin_workspace::CloseOtherItems {
             save_intent: Some(SaveIntent::Skip),
             close_pinned: false,
         }),
         VimCommand::new(
             ("on", "ly"),
-            workspace::CloseInactiveTabsAndPanes {
+            raijin_workspace::CloseInactiveTabsAndPanes {
                 save_intent: Some(SaveIntent::Close),
             },
         )
-        .bang(workspace::CloseInactiveTabsAndPanes {
+        .bang(raijin_workspace::CloseInactiveTabsAndPanes {
             save_intent: Some(SaveIntent::Skip),
         }),
         VimCommand::str(("cl", "ist"), "diagnostics::Deploy"),
-        VimCommand::new(("cc", ""), editor::actions::Hover),
-        VimCommand::new(("ll", ""), editor::actions::Hover),
-        VimCommand::new(("cn", "ext"), editor::actions::GoToDiagnostic::default())
+        VimCommand::new(("cc", ""), raijin_editor::actions::Hover),
+        VimCommand::new(("ll", ""), raijin_editor::actions::Hover),
+        VimCommand::new(("cn", "ext"), raijin_editor::actions::GoToDiagnostic::default())
             .range(wrap_count),
         VimCommand::new(
             ("cp", "revious"),
-            editor::actions::GoToPreviousDiagnostic::default(),
+            raijin_editor::actions::GoToPreviousDiagnostic::default(),
         )
         .range(wrap_count),
         VimCommand::new(
             ("cN", "ext"),
-            editor::actions::GoToPreviousDiagnostic::default(),
+            raijin_editor::actions::GoToPreviousDiagnostic::default(),
         )
         .range(wrap_count),
         VimCommand::new(
             ("lp", "revious"),
-            editor::actions::GoToPreviousDiagnostic::default(),
+            raijin_editor::actions::GoToPreviousDiagnostic::default(),
         )
         .range(wrap_count),
         VimCommand::new(
             ("lN", "ext"),
-            editor::actions::GoToPreviousDiagnostic::default(),
+            raijin_editor::actions::GoToPreviousDiagnostic::default(),
         )
         .range(wrap_count),
         VimCommand::new(("j", "oin"), JoinLines).range(select_range),
@@ -1735,14 +1735,14 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
                     }))
                 })
             }),
-        VimCommand::new(("fo", "ld"), editor::actions::FoldSelectedRanges).range(act_on_range),
-        VimCommand::new(("foldo", "pen"), editor::actions::UnfoldLines)
-            .bang(editor::actions::UnfoldRecursive)
+        VimCommand::new(("fo", "ld"), raijin_editor::actions::FoldSelectedRanges).range(act_on_range),
+        VimCommand::new(("foldo", "pen"), raijin_editor::actions::UnfoldLines)
+            .bang(raijin_editor::actions::UnfoldRecursive)
             .range(act_on_range),
-        VimCommand::new(("foldc", "lose"), editor::actions::Fold)
-            .bang(editor::actions::FoldRecursive)
+        VimCommand::new(("foldc", "lose"), raijin_editor::actions::Fold)
+            .bang(raijin_editor::actions::FoldRecursive)
             .range(act_on_range),
-        VimCommand::new(("dif", "fupdate"), editor::actions::ToggleSelectedDiffHunks)
+        VimCommand::new(("dif", "fupdate"), raijin_editor::actions::ToggleSelectedDiffHunks)
             .range(act_on_range),
         VimCommand::str(("rev", "ert"), "git::Restore").range(act_on_range),
         VimCommand::new(("d", "elete"), VisualDeleteLine).range(select_range),
@@ -1778,12 +1778,12 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
         VimCommand::str(("A", "I"), "agent::ToggleFocus"),
         VimCommand::str(("G", "it"), "git_panel::ToggleFocus"),
         VimCommand::str(("D", "ebug"), "debug_panel::ToggleFocus"),
-        VimCommand::new(("noh", "lsearch"), search::buffer_search::Dismiss),
+        VimCommand::new(("noh", "lsearch"), raijin_search::buffer_search::Dismiss),
         VimCommand::new(("$", ""), EndOfDocument),
         VimCommand::new(("%", ""), EndOfDocument),
         VimCommand::new(("0", ""), StartOfDocument),
-        VimCommand::new(("ex", ""), editor::actions::ReloadFile).bang(editor::actions::ReloadFile),
-        VimCommand::new(("cpp", "link"), editor::actions::CopyPermalinkToLine).range(act_on_range),
+        VimCommand::new(("ex", ""), raijin_editor::actions::ReloadFile).bang(raijin_editor::actions::ReloadFile),
+        VimCommand::new(("cpp", "link"), raijin_editor::actions::CopyPermalinkToLine).range(act_on_range),
         VimCommand::str(("opt", "ions"), "zed::OpenDefaultSettings"),
         VimCommand::str(("map", ""), "vim::OpenDefaultKeymap"),
         VimCommand::new(("h", "elp"), OpenDocs),
@@ -1990,9 +1990,9 @@ pub fn command_interceptor(
             let mut candidates = Vec::with_capacity(filenames.len());
 
             for (idx, filename) in filenames.iter().enumerate() {
-                candidates.push(fuzzy::StringMatchCandidate::new(idx, &filename));
+                candidates.push(inazuma_fuzzy::StringMatchCandidate::new(idx, &filename));
             }
-            let filenames = fuzzy::match_strings(
+            let filenames = inazuma_fuzzy::match_strings(
                 &candidates,
                 &parsed_query.args,
                 false,
@@ -2003,7 +2003,7 @@ pub fn command_interceptor(
             )
             .await;
 
-            for fuzzy::StringMatch {
+            for inazuma_fuzzy::StringMatch {
                 candidate_id: _,
                 score: _,
                 positions,
@@ -2393,7 +2393,7 @@ impl Vim {
         });
         if let Some(command) = command {
             workspace.update(cx, |workspace, cx| {
-                command_palette::CommandPalette::toggle(workspace, &command, window, cx);
+                raijin_command_palette::CommandPalette::toggle(workspace, &command, window, cx);
             });
         }
     }
@@ -2432,7 +2432,7 @@ impl Vim {
         });
         if let Some(command) = command {
             workspace.update(cx, |workspace, cx| {
-                command_palette::CommandPalette::toggle(workspace, &command, window, cx);
+                raijin_command_palette::CommandPalette::toggle(workspace, &command, window, cx);
             });
         }
     }

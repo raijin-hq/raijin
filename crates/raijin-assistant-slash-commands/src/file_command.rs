@@ -51,7 +51,7 @@ impl FileSlashCommand {
                     let entries = worktree.child_entries_with_options(RelPath::empty(), options);
                     entries.map(move |entry| {
                         (
-                            project::ProjectPath {
+                            raijin_project::ProjectPath {
                                 worktree_id: id,
                                 path: entry.path.clone(),
                             },
@@ -93,14 +93,14 @@ impl FileSlashCommand {
                             .root_entry()
                             .is_some_and(|entry| entry.is_ignored),
                         include_root_name: true,
-                        candidates: project::Candidates::Entries,
+                        candidates: raijin_project::Candidates::Entries,
                     }
                 })
                 .collect::<Vec<_>>();
 
             let executor = cx.background_executor().clone();
             cx.foreground_executor().spawn(async move {
-                fuzzy::match_path_sets(
+                inazuma_fuzzy::match_path_sets(
                     candidate_sets.as_slice(),
                     query.as_str(),
                     &None,
@@ -194,7 +194,7 @@ impl SlashCommand for FileSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,
@@ -507,7 +507,7 @@ mod test {
     use super::collect_files;
 
     pub fn init_test(cx: &mut inazuma::TestAppContext) {
-        zlog::init_test();
+        raijin_log::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);

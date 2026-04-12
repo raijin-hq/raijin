@@ -23,7 +23,7 @@ pub struct OpenBrowser {
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
-pub struct OpenZedUrl {
+pub struct OpenRaijinUrl {
     pub url: String,
 }
 
@@ -668,8 +668,8 @@ pub mod outline {
 actions!(
     zed_predict_onboarding,
     [
-        /// Opens the Zed Predict onboarding modal.
-        OpenZedPredictOnboarding
+        /// Opens the Raijin Predict onboarding modal.
+        OpenRaijinPredictOnboarding
     ]
 );
 actions!(

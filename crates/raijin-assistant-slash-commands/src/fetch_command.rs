@@ -76,7 +76,7 @@ impl FetchSlashCommand {
                     Rc::new(RefCell::new(markdown::StyledTextHandler)),
                 ];
                 if url.contains("wikipedia.org") {
-                    use html_to_markdown::structure::wikipedia;
+                    use raijin_html_to_markdown::structure::wikipedia;
 
                     handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaChromeRemover)));
                     handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaInfoboxHandler)));
@@ -137,7 +137,7 @@ impl SlashCommand for FetchSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,

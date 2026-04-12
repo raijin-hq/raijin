@@ -140,7 +140,7 @@ impl Vim {
             workspace.open_abs_path(
                 path.to_path_buf(),
                 OpenOptions {
-                    visible: Some(workspace::OpenVisible::All),
+                    visible: Some(raijin_workspace::OpenVisible::All),
                     focus: Some(true),
                     ..Default::default()
                 },

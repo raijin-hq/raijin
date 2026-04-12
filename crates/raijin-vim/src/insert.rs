@@ -4,7 +4,7 @@ use inazuma::{Action, Context, Window, actions};
 use raijin_language::SelectionGoal;
 use inazuma_settings_framework::Settings;
 use inazuma_text::Point;
-use vim_mode_setting::HelixModeSetting;
+use raijin_vim_mode_setting::HelixModeSetting;
 use raijin_workspace::searchable::Direction;
 
 actions!(

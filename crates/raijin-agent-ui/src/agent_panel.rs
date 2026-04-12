@@ -3469,9 +3469,9 @@ impl AgentPanel {
                             .header("MCP Servers")
                             .action(
                                 "View Server Extensions",
-                                Box::new(zed_actions::Extensions {
+                                Box::new(raijin_actions::Extensions {
                                     category_filter: Some(
-                                        zed_actions::ExtensionCategoryFilter::ContextServers,
+                                        raijin_actions::ExtensionCategoryFilter::ContextServers,
                                     ),
                                     id: None,
                                 }),
@@ -3927,7 +3927,7 @@ impl AgentPanel {
                                 .handler({
                                     move |window, cx| {
                                         window
-                                            .dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                                            .dispatch_action(Box::new(raijin_actions::AcpRegistry), cx)
                                     }
                                 }),
                         )

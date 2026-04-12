@@ -2356,8 +2356,8 @@ fn go_to_line(map: &DisplaySnapshot, display_point: DisplayPoint, line: usize) -
         return map.clip_point(map.point_to_display_point(point, Bias::Left), Bias::Left);
     }
     for (excerpt, buffer, range) in map.buffer_snapshot().excerpts() {
-        let excerpt_range = language::ToOffset::to_offset(&range.context.start, buffer)
-            ..language::ToOffset::to_offset(&range.context.end, buffer);
+        let excerpt_range = raijin_language::ToOffset::to_offset(&range.context.start, buffer)
+            ..raijin_language::ToOffset::to_offset(&range.context.end, buffer);
         if offset >= excerpt_range.start && offset <= excerpt_range.end {
             let text_anchor = buffer.anchor_after(offset);
             let anchor = Anchor::in_buffer(excerpt, text_anchor);
@@ -3043,9 +3043,9 @@ fn method_motion(
         };
 
         let possibilities = snapshot
-            .text_object_ranges(range, language::TreeSitterOptions::max_start_depth(4))
+            .text_object_ranges(range, raijin_language::TreeSitterOptions::max_start_depth(4))
             .filter_map(|(range, object)| {
-                if !matches!(object, language::TextObject::AroundFunction) {
+                if !matches!(object, raijin_language::TextObject::AroundFunction) {
                     return None;
                 }
 
@@ -3095,9 +3095,9 @@ fn comment_motion(
         };
 
         let possibilities = snapshot
-            .text_object_ranges(range, language::TreeSitterOptions::max_start_depth(6))
+            .text_object_ranges(range, raijin_language::TreeSitterOptions::max_start_depth(6))
             .filter_map(|(range, object)| {
-                if !matches!(object, language::TextObject::AroundComment) {
+                if !matches!(object, raijin_language::TextObject::AroundComment) {
                     return None;
                 }
 
@@ -3153,18 +3153,18 @@ fn section_motion(
             // (and without it, ]] at the start of editor.rs is -very- slow)
             let mut possibilities = map
                 .buffer_snapshot()
-                .text_object_ranges(range, language::TreeSitterOptions::max_start_depth(3))
+                .text_object_ranges(range, raijin_language::TreeSitterOptions::max_start_depth(3))
                 .filter(|(_, object)| {
                     matches!(
                         object,
-                        language::TextObject::AroundClass | language::TextObject::AroundFunction
+                        raijin_language::TextObject::AroundClass | raijin_language::TextObject::AroundFunction
                     )
                 })
                 .collect::<Vec<_>>();
             possibilities.sort_by_key(|(range_a, _)| range_a.start);
             let mut prev_end = None;
             let possibilities = possibilities.into_iter().filter_map(|(range, t)| {
-                if t == language::TextObject::AroundFunction
+                if t == raijin_language::TextObject::AroundFunction
                     && prev_end.is_some_and(|prev_end| prev_end > range.start)
                 {
                     return None;

@@ -372,11 +372,11 @@ impl KeystrokeInput {
             &self.keystrokes
         };
         keystrokes.iter().map(move |keystroke| {
-            h_flex().children(ui::render_keybinding_keystroke(
+            h_flex().children(raijin_ui::render_keybinding_keystroke(
                 keystroke,
                 Some(Color::Default),
                 Some(rems(0.875).into()),
-                ui::PlatformStyle::platform(),
+                raijin_ui::PlatformStyle::platform(),
                 false,
             ))
         })
@@ -1115,7 +1115,7 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
         });
 
         let fs = FakeFs::new(cx.executor());

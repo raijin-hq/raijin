@@ -83,7 +83,7 @@ pub fn build_prompt(example: &Example) -> Result<String> {
 
     let mut edit_history = String::new();
     for event in &prompt_inputs.events {
-        let zeta_prompt::Event::BufferChange {
+        let raijin_zeta_prompt::Event::BufferChange {
             path,
             old_path,
             diff,
@@ -201,9 +201,9 @@ pub async fn run_qa(
                 })
             };
 
-            let messages = vec![anthropic::Message {
-                role: anthropic::Role::User,
-                content: vec![anthropic::RequestContent::Text {
+            let messages = vec![raijin_anthropic::Message {
+                role: raijin_anthropic::Role::User,
+                content: vec![raijin_anthropic::RequestContent::Text {
                     text: prompt,
                     cache_control: None,
                 }],
@@ -217,7 +217,7 @@ pub async fn run_qa(
                 .content
                 .iter()
                 .filter_map(|c| match c {
-                    anthropic::ResponseContent::Text { text } => Some(text.as_str()),
+                    raijin_anthropic::ResponseContent::Text { text } => Some(text.as_str()),
                     _ => None,
                 })
                 .collect::<Vec<_>>()
@@ -233,8 +233,8 @@ pub async fn run_qa(
                 })
             };
 
-            let messages = vec![open_ai::RequestMessage::User {
-                content: open_ai::MessageContent::Plain(prompt),
+            let messages = vec![raijin_open_ai::RequestMessage::User {
+                content: raijin_open_ai::MessageContent::Plain(prompt),
             }];
 
             let Some(response) = client.generate(model, 1024, messages, None, false).await? else {
@@ -245,13 +245,13 @@ pub async fn run_qa(
                 .choices
                 .into_iter()
                 .filter_map(|choice| match choice.message {
-                    open_ai::RequestMessage::Assistant { content, .. } => {
+                    raijin_open_ai::RequestMessage::Assistant { content, .. } => {
                         content.map(|c| match c {
-                            open_ai::MessageContent::Plain(text) => text,
-                            open_ai::MessageContent::Multipart(parts) => parts
+                            raijin_open_ai::MessageContent::Plain(text) => text,
+                            raijin_open_ai::MessageContent::Multipart(parts) => parts
                                 .into_iter()
                                 .filter_map(|p| match p {
-                                    open_ai::MessagePart::Text { text } => Some(text),
+                                    raijin_open_ai::MessagePart::Text { text } => Some(text),
                                     _ => None,
                                 })
                                 .collect::<Vec<_>>()

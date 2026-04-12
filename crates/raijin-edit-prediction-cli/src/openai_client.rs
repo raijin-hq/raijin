@@ -5,10 +5,10 @@ use raijin_open_ai::{
     MessageContent, OPEN_AI_API_URL, Request as OpenAiRequest, RequestMessage,
     Response as OpenAiResponse, batches, non_streaming_completion,
 };
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use raijin_sqlez::bindable::Bind;
 use raijin_sqlez::bindable::StaticColumnCount;
-use sqlez_macros::sql;
+use raijin_sqlez_macros::sql;
 use std::hash::Hash;
 use std::hash::Hasher;
 use std::path::Path;
@@ -21,7 +21,7 @@ pub struct PlainOpenAiClient {
 
 impl PlainOpenAiClient {
     pub fn new() -> Result<Self> {
-        let http_client: Arc<dyn http_client::HttpClient> = Arc::new(ReqwestClient::new());
+        let http_client: Arc<dyn raijin_http_client::HttpClient> = Arc::new(ReqwestClient::new());
         let api_key = std::env::var("OPENAI_API_KEY")
             .map_err(|_| anyhow::anyhow!("OPENAI_API_KEY environment variable not set"))?;
         Ok(Self {
@@ -65,7 +65,7 @@ impl PlainOpenAiClient {
 }
 
 pub struct BatchingOpenAiClient {
-    connection: Mutex<sqlez::connection::Connection>,
+    connection: Mutex<raijin_sqlez::connection::Connection>,
     http_client: Arc<dyn HttpClient>,
     api_key: String,
 }
@@ -84,7 +84,7 @@ impl StaticColumnCount for CacheRow {
 }
 
 impl Bind for CacheRow {
-    fn bind(&self, statement: &sqlez::statement::Statement, start_index: i32) -> Result<i32> {
+    fn bind(&self, statement: &raijin_sqlez::statement::Statement, start_index: i32) -> Result<i32> {
         let next_index = statement.bind(&self.request_hash, start_index)?;
         let next_index = statement.bind(&self.request, next_index)?;
         let next_index = statement.bind(&self.response, next_index)?;
@@ -108,12 +108,12 @@ struct SerializableMessage {
 
 impl BatchingOpenAiClient {
     fn new(cache_path: &Path) -> Result<Self> {
-        let http_client: Arc<dyn http_client::HttpClient> = Arc::new(ReqwestClient::new());
+        let http_client: Arc<dyn raijin_http_client::HttpClient> = Arc::new(ReqwestClient::new());
         let api_key = std::env::var("OPENAI_API_KEY")
             .map_err(|_| anyhow::anyhow!("OPENAI_API_KEY environment variable not set"))?;
 
-        let connection = sqlez::connection::Connection::open_file(cache_path.to_str().unwrap());
-        let mut statement = sqlez::statement::Statement::prepare(
+        let connection = raijin_sqlez::connection::Connection::open_file(cache_path.to_str().unwrap());
+        let mut statement = raijin_sqlez::statement::Statement::prepare(
             &connection,
             indoc! {"
                 CREATE TABLE IF NOT EXISTS openai_cache (
@@ -621,7 +621,7 @@ fn content_to_string(content: &MessageContent) -> String {
         MessageContent::Multipart(parts) => parts
             .iter()
             .filter_map(|part| match part {
-                open_ai::MessagePart::Text { text } => Some(text.clone()),
+                raijin_open_ai::MessagePart::Text { text } => Some(text.clone()),
                 _ => None,
             })
             .collect::<Vec<String>>()

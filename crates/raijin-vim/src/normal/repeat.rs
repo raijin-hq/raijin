@@ -27,7 +27,7 @@ actions!(
 
 fn should_replay(action: &dyn Action) -> bool {
     // skip so that we don't leave the character palette open
-    if editor::actions::ShowCharacterPalette.partial_eq(action) {
+    if raijin_editor::actions::ShowCharacterPalette.partial_eq(action) {
         return false;
     }
     true
@@ -975,7 +975,7 @@ mod test {
         cx.update(|_, cx| {
             cx.bind_keys([inazuma::KeyBinding::new(
                 "ctrl-f",
-                search::buffer_search::Deploy::find(),
+                raijin_search::buffer_search::Deploy::find(),
                 None,
             )])
         });

@@ -18148,7 +18148,7 @@ impl Editor {
             if let Some(url) = url {
                 cx.update(|window, cx| {
                     if parse_zed_link(&url, cx).is_some() {
-                        window.dispatch_action(Box::new(raijin_actions::OpenZedUrl { url }), cx);
+                        window.dispatch_action(Box::new(raijin_actions::OpenRaijinUrl { url }), cx);
                     } else {
                         cx.open_url(&url);
                     }
@@ -18334,7 +18334,7 @@ impl Editor {
                         cx.update(|window, cx| {
                             if parse_zed_link(&url, cx).is_some() {
                                 window
-                                    .dispatch_action(Box::new(raijin_actions::OpenZedUrl { url }), cx);
+                                    .dispatch_action(Box::new(raijin_actions::OpenRaijinUrl { url }), cx);
                             } else {
                                 cx.open_url(&url);
                             }

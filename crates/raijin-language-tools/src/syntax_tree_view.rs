@@ -5,7 +5,7 @@ use raijin_editor::{
 };
 use inazuma::{
     App, AppContext as _, Context, Div, Entity, EntityId, EventEmitter, FocusHandle, Focusable,
-    Hsla, InteractiveElement, IntoElement, MouseButton, MouseDownEvent, MouseMoveEvent,
+    InteractiveElement, IntoElement, MouseButton, MouseDownEvent, MouseMoveEvent, Oklch,
     ParentElement, Render, ScrollStrategy, SharedString, Styled, Task, UniformListScrollHandle,
     WeakEntity, Window, actions, div, rems, uniform_list,
 };
@@ -227,8 +227,8 @@ impl SyntaxTreeView {
 
         let subscription = cx.subscribe_in(&editor, window, |this, _, event, window, cx| {
             let did_reparse = match event {
-                editor::EditorEvent::Reparsed(_) => true,
-                editor::EditorEvent::SelectionsChanged { .. } => false,
+                raijin_editor::EditorEvent::Reparsed(_) => true,
+                raijin_editor::EditorEvent::SelectionsChanged { .. } => false,
                 _ => return,
             };
             this.editor_updated(did_reparse, window, cx);
@@ -392,7 +392,7 @@ impl SyntaxTreeView {
         .text_bg(if selected {
             colors.element_selected
         } else {
-            Hsla::default()
+            Oklch::default()
         })
         .pl(rems(depth as f32))
         .hover(|style| style.bg(colors.element_hover))

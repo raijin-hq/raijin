@@ -26,7 +26,7 @@ use inazuma_settings_framework::Settings;
 use raijin_ui::{HighlightedLabel, KeyBinding, ListItem, ListItemSpacing, prelude::*};
 use inazuma_util::ResultExt;
 use raijin_workspace::{ModalView, Workspace, WorkspaceSettings};
-use raijin_actions::{OpenZedUrl, command_palette::Toggle};
+use raijin_actions::{OpenRaijinUrl, command_palette::Toggle};
 
 pub fn init(cx: &mut App) {
     raijin_command_palette_hooks::init(cx);
@@ -484,7 +484,7 @@ impl PickerDelegate for CommandPaletteDelegate {
                 let intercept_result = if is_zed_link {
                     CommandInterceptResult {
                         results: vec![CommandInterceptItem {
-                            action: OpenZedUrl {
+                            action: OpenRaijinUrl {
                                 url: query_for_link.clone(),
                             }
                             .boxed_clone(),

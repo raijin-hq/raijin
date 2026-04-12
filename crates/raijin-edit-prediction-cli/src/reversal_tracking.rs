@@ -5,7 +5,7 @@ use std::sync::Arc;
 use raijin_edit_prediction::udiff::apply_diff_to_string;
 use raijin_language::{char_diff, text_diff};
 
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 fn apply_diff_to_string_lenient(diff_str: &str, text: &str) -> String {
     let hunks = parse_diff_hunks(diff_str);
@@ -574,13 +574,13 @@ fn compute_lcs_length(a: &str, b: &str) -> usize {
 }
 
 fn filter_edit_history_by_path<'a>(
-    edit_history: &'a [Arc<zeta_prompt::Event>],
+    edit_history: &'a [Arc<raijin_zeta_prompt::Event>],
     cursor_path: &std::path::Path,
-) -> Vec<&'a zeta_prompt::Event> {
+) -> Vec<&'a raijin_zeta_prompt::Event> {
     edit_history
         .iter()
         .filter(|event| match event.as_ref() {
-            zeta_prompt::Event::BufferChange { path, .. } => {
+            raijin_zeta_prompt::Event::BufferChange { path, .. } => {
                 let event_path = path.as_ref();
                 if event_path == cursor_path {
                     return true;
@@ -596,15 +596,15 @@ fn filter_edit_history_by_path<'a>(
         .collect()
 }
 
-fn extract_diff_from_event(event: &zeta_prompt::Event) -> &str {
+fn extract_diff_from_event(event: &raijin_zeta_prompt::Event) -> &str {
     match event {
-        zeta_prompt::Event::BufferChange { diff, .. } => diff.as_str(),
+        raijin_zeta_prompt::Event::BufferChange { diff, .. } => diff.as_str(),
     }
 }
 
-fn is_predicted_event(event: &zeta_prompt::Event) -> bool {
+fn is_predicted_event(event: &raijin_zeta_prompt::Event) -> bool {
     match event {
-        zeta_prompt::Event::BufferChange { predicted, .. } => *predicted,
+        raijin_zeta_prompt::Event::BufferChange { predicted, .. } => *predicted,
     }
 }
 
@@ -615,7 +615,7 @@ pub fn compute_prediction_reversal_ratio(
 ) -> f32 {
     let current_content: &str = prompt_inputs.cursor_excerpt.as_ref();
 
-    let edit_history: &[Arc<zeta_prompt::Event>] = &prompt_inputs.events;
+    let edit_history: &[Arc<raijin_zeta_prompt::Event>] = &prompt_inputs.events;
     let relevant_events = filter_edit_history_by_path(edit_history, cursor_path);
 
     let most_recent = match relevant_events.last() {
@@ -655,11 +655,11 @@ mod tests {
     use super::*;
     use raijin_edit_prediction::udiff::apply_diff_to_string;
     use indoc::indoc;
-    use zeta_prompt::ExcerptRanges;
+    use raijin_zeta_prompt::ExcerptRanges;
 
     fn make_test_prompt_inputs(
         content: &str,
-        events: Vec<Arc<zeta_prompt::Event>>,
+        events: Vec<Arc<raijin_zeta_prompt::Event>>,
         excerpt_start_row: Option<u32>,
     ) -> ZetaPromptInput {
         ZetaPromptInput {
@@ -999,7 +999,7 @@ mod tests {
         "};
 
         // unified_diff doesn't include file headers, but apply_diff_to_string needs them
-        let diff_body = language::unified_diff(original, modified);
+        let diff_body = raijin_language::unified_diff(original, modified);
         let forward_diff = format!("--- a/file\n+++ b/file\n{}", diff_body);
         let reversed_diff = reverse_diff(&forward_diff);
 
@@ -1018,7 +1018,7 @@ mod tests {
         // the edit history has paths with a repo prefix (e.g., "repo/src/file.rs")
         // but the cursor_path doesn't have the repo prefix (e.g., "src/file.rs")
         let events = vec![
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("myrepo/src/file.rs")),
                 old_path: Arc::from(Path::new("myrepo/src/file.rs")),
                 diff: indoc! {"
@@ -1029,7 +1029,7 @@ mod tests {
                 predicted: false,
                 in_open_source_repo: true,
             }),
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("myrepo/other.rs")),
                 old_path: Arc::from(Path::new("myrepo/other.rs")),
                 diff: indoc! {"
@@ -1040,7 +1040,7 @@ mod tests {
                 predicted: false,
                 in_open_source_repo: true,
             }),
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/file.rs")),
                 old_path: Arc::from(Path::new("src/file.rs")),
                 diff: indoc! {"
@@ -1766,7 +1766,7 @@ mod tests {
                 user_added
                 line2
             "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -1804,7 +1804,7 @@ mod tests {
                 user_added
                 line11
             "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -1864,7 +1864,7 @@ mod tests {
                 user_added
                 line2
             "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/other.rs")),
                 old_path: Arc::from(Path::new("src/other.rs")),
                 diff: indoc! {"
@@ -1901,7 +1901,7 @@ mod tests {
                 user_added
                 actual_line2
             "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(raijin_zeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -1969,7 +1969,7 @@ mod tests {
                 line2
             "},
             vec![
-                Arc::new(zeta_prompt::Event::BufferChange {
+                Arc::new(raijin_zeta_prompt::Event::BufferChange {
                     path: Arc::from(Path::new("src/test.rs")),
                     old_path: Arc::from(Path::new("src/test.rs")),
                     diff: indoc! {"
@@ -1982,7 +1982,7 @@ mod tests {
                     predicted: false,
                     in_open_source_repo: false,
                 }),
-                Arc::new(zeta_prompt::Event::BufferChange {
+                Arc::new(raijin_zeta_prompt::Event::BufferChange {
                     path: Arc::from(Path::new("src/test.rs")),
                     old_path: Arc::from(Path::new("src/test.rs")),
                     diff: indoc! {"

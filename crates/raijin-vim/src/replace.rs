@@ -545,7 +545,7 @@ mod test {
 
         cx.set_state(indoc! {"ˇ123"}, Mode::Replace);
         cx.write_to_clipboard(ClipboardItem::new_string("456".to_string()));
-        cx.dispatch_action(editor::actions::Paste);
+        cx.dispatch_action(raijin_editor::actions::Paste);
         cx.assert_state(indoc! {"45ˇ6"}, Mode::Replace);
 
         // If the clipboard's contents length is greater than the remaining text
@@ -553,7 +553,7 @@ mod test {
         // position.
         cx.set_state(indoc! {"ˇ123"}, Mode::Replace);
         cx.write_to_clipboard(ClipboardItem::new_string("4567".to_string()));
-        cx.dispatch_action(editor::actions::Paste);
+        cx.dispatch_action(raijin_editor::actions::Paste);
         cx.assert_state(indoc! {"ˇ123"}, Mode::Replace);
     }
 }

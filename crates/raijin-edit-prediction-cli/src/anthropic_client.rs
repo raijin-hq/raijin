@@ -7,10 +7,10 @@ use anyhow::Result;
 use futures::StreamExt as _;
 use raijin_http_client::HttpClient;
 use indoc::indoc;
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use raijin_sqlez::bindable::Bind;
 use raijin_sqlez::bindable::StaticColumnCount;
-use sqlez_macros::sql;
+use raijin_sqlez_macros::sql;
 use std::collections::HashSet;
 use std::hash::Hash;
 use std::hash::Hasher;
@@ -24,7 +24,7 @@ pub struct PlainLlmClient {
 
 impl PlainLlmClient {
     pub fn new() -> Result<Self> {
-        let http_client: Arc<dyn http_client::HttpClient> = Arc::new(ReqwestClient::new());
+        let http_client: Arc<dyn raijin_http_client::HttpClient> = Arc::new(ReqwestClient::new());
         let api_key = std::env::var("ANTHROPIC_API_KEY")
             .map_err(|_| anyhow::anyhow!("ANTHROPIC_API_KEY environment variable not set"))?;
         Ok(Self {
@@ -117,7 +117,7 @@ impl PlainLlmClient {
                     response = Some(message);
                 }
                 Event::ContentBlockDelta { delta, .. } => {
-                    if let anthropic::ContentDelta::TextDelta { text } = delta {
+                    if let raijin_anthropic::ContentDelta::TextDelta { text } = delta {
                         text_content.push_str(&text);
                         on_progress(text_content.len(), &text_content);
                     }
@@ -139,7 +139,7 @@ impl PlainLlmClient {
 }
 
 pub struct BatchingLlmClient {
-    connection: Mutex<sqlez::connection::Connection>,
+    connection: Mutex<raijin_sqlez::connection::Connection>,
     http_client: Arc<dyn HttpClient>,
     api_key: String,
 }
@@ -158,7 +158,7 @@ impl StaticColumnCount for CacheRow {
 }
 
 impl Bind for CacheRow {
-    fn bind(&self, statement: &sqlez::statement::Statement, start_index: i32) -> Result<i32> {
+    fn bind(&self, statement: &raijin_sqlez::statement::Statement, start_index: i32) -> Result<i32> {
         let next_index = statement.bind(&self.request_hash, start_index)?;
         let next_index = statement.bind(&self.request, next_index)?;
         let next_index = statement.bind(&self.response, next_index)?;
@@ -182,12 +182,12 @@ struct SerializableMessage {
 
 impl BatchingLlmClient {
     fn new(cache_path: &Path) -> Result<Self> {
-        let http_client: Arc<dyn http_client::HttpClient> = Arc::new(ReqwestClient::new());
+        let http_client: Arc<dyn raijin_http_client::HttpClient> = Arc::new(ReqwestClient::new());
         let api_key = std::env::var("ANTHROPIC_API_KEY")
             .map_err(|_| anyhow::anyhow!("ANTHROPIC_API_KEY environment variable not set"))?;
 
-        let connection = sqlez::connection::Connection::open_file(&cache_path.to_str().unwrap());
-        let mut statement = sqlez::statement::Statement::prepare(
+        let connection = raijin_sqlez::connection::Connection::open_file(&cache_path.to_str().unwrap());
+        let mut statement = raijin_sqlez::statement::Statement::prepare(
             &connection,
             indoc! {"
                 CREATE TABLE IF NOT EXISTS cache (
@@ -305,7 +305,7 @@ impl BatchingLlmClient {
         for batch_id in batch_ids {
             log::info!("Importing batch {}", batch_id);
 
-            let batch_status = anthropic::batches::retrieve_batch(
+            let batch_status = raijin_anthropic::batches::retrieve_batch(
                 self.http_client.as_ref(),
                 ANTHROPIC_API_URL,
                 &self.api_key,
@@ -329,7 +329,7 @@ impl BatchingLlmClient {
                 continue;
             }
 
-            let results = anthropic::batches::retrieve_batch_results(
+            let results = raijin_anthropic::batches::retrieve_batch_results(
                 self.http_client.as_ref(),
                 ANTHROPIC_API_URL,
                 &self.api_key,
@@ -352,12 +352,12 @@ impl BatchingLlmClient {
                     .to_string();
 
                 match result.result {
-                    anthropic::batches::BatchResult::Succeeded { message } => {
+                    raijin_anthropic::batches::BatchResult::Succeeded { message } => {
                         let response_json = serde_json::to_string(&message)?;
                         updates.push((request_hash, response_json, batch_id.clone()));
                         success_count += 1;
                     }
-                    anthropic::batches::BatchResult::Errored { error } => {
+                    raijin_anthropic::batches::BatchResult::Errored { error } => {
                         log::error!(
                             "Batch request {} failed: {}: {}",
                             request_hash,
@@ -374,11 +374,11 @@ impl BatchingLlmClient {
                         updates.push((request_hash, error_json, batch_id.clone()));
                         error_count += 1;
                     }
-                    anthropic::batches::BatchResult::Canceled => {
+                    raijin_anthropic::batches::BatchResult::Canceled => {
                         log::warn!("Batch request {} was canceled", request_hash);
                         error_count += 1;
                     }
-                    anthropic::batches::BatchResult::Expired => {
+                    raijin_anthropic::batches::BatchResult::Expired => {
                         log::warn!("Batch request {} expired", request_hash);
                         error_count += 1;
                     }
@@ -423,7 +423,7 @@ impl BatchingLlmClient {
         };
 
         for batch_id in &batch_ids {
-            let batch_status = anthropic::batches::retrieve_batch(
+            let batch_status = raijin_anthropic::batches::retrieve_batch(
                 self.http_client.as_ref(),
                 ANTHROPIC_API_URL,
                 &self.api_key,
@@ -439,7 +439,7 @@ impl BatchingLlmClient {
             );
 
             if batch_status.processing_status == "ended" {
-                let results = anthropic::batches::retrieve_batch_results(
+                let results = raijin_anthropic::batches::retrieve_batch_results(
                     self.http_client.as_ref(),
                     ANTHROPIC_API_URL,
                     &self.api_key,
@@ -458,12 +458,12 @@ impl BatchingLlmClient {
                         .to_string();
 
                     match result.result {
-                        anthropic::batches::BatchResult::Succeeded { message } => {
+                        raijin_anthropic::batches::BatchResult::Succeeded { message } => {
                             let response_json = serde_json::to_string(&message)?;
                             updates.push((response_json, request_hash));
                             success_count += 1;
                         }
-                        anthropic::batches::BatchResult::Errored { error } => {
+                        raijin_anthropic::batches::BatchResult::Errored { error } => {
                             log::error!(
                                 "Batch request {} failed: {}: {}",
                                 request_hash,
@@ -479,7 +479,7 @@ impl BatchingLlmClient {
                             .to_string();
                             updates.push((error_json, request_hash));
                         }
-                        anthropic::batches::BatchResult::Canceled => {
+                        raijin_anthropic::batches::BatchResult::Canceled => {
                             log::warn!("Batch request {} was canceled", request_hash);
                             let error_json = serde_json::json!({
                                 "error": {
@@ -490,7 +490,7 @@ impl BatchingLlmClient {
                             .to_string();
                             updates.push((error_json, request_hash));
                         }
-                        anthropic::batches::BatchResult::Expired => {
+                        raijin_anthropic::batches::BatchResult::Expired => {
                             log::warn!("Batch request {} expired", request_hash);
                             let error_json = serde_json::json!({
                                 "error": {
@@ -592,7 +592,7 @@ impl BatchingLlmClient {
                 };
 
                 let custom_id = format!("req_hash_{}", hash);
-                let batch_request = anthropic::batches::BatchRequest { custom_id, params };
+                let batch_request = raijin_anthropic::batches::BatchRequest { custom_id, params };
 
                 // Estimate the serialized size of this request
                 let estimated_size = serde_json::to_string(&batch_request)?.len();
@@ -628,7 +628,7 @@ impl BatchingLlmClient {
                 for hash in &request_hashes {
                     pending_hashes.remove(hash);
                 }
-                let batch_requests: Vec<anthropic::batches::BatchRequest> =
+                let batch_requests: Vec<raijin_anthropic::batches::BatchRequest> =
                     batch_rows.into_iter().map(|(_, req)| req).collect();
 
                 let batch_len = batch_requests.len();
@@ -638,11 +638,11 @@ impl BatchingLlmClient {
                     batch_size as f64 / (1024.0 * 1024.0)
                 );
 
-                let batch = anthropic::batches::create_batch(
+                let batch = raijin_anthropic::batches::create_batch(
                     self.http_client.as_ref(),
                     ANTHROPIC_API_URL,
                     &self.api_key,
-                    anthropic::batches::CreateBatchRequest {
+                    raijin_anthropic::batches::CreateBatchRequest {
                         requests: batch_requests,
                     },
                 )
@@ -679,7 +679,7 @@ impl BatchingLlmClient {
                 .iter()
                 .map(|(hash, _)| hash.clone())
                 .collect();
-            let batch_requests: Vec<anthropic::batches::BatchRequest> =
+            let batch_requests: Vec<raijin_anthropic::batches::BatchRequest> =
                 current_batch_rows.into_iter().map(|(_, req)| req).collect();
 
             let batch_len = batch_requests.len();
@@ -689,11 +689,11 @@ impl BatchingLlmClient {
                 current_batch_size as f64 / (1024.0 * 1024.0)
             );
 
-            let batch = anthropic::batches::create_batch(
+            let batch = raijin_anthropic::batches::create_batch(
                 self.http_client.as_ref(),
                 ANTHROPIC_API_URL,
                 &self.api_key,
-                anthropic::batches::CreateBatchRequest {
+                raijin_anthropic::batches::CreateBatchRequest {
                     requests: batch_requests,
                 },
             )

@@ -12,12 +12,12 @@ use crate::{
     retrieve_context::run_context_retrieval,
 };
 use anyhow::Context as _;
-use cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
+use raijin_cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
 use raijin_edit_prediction::{DebugEvent, EditPredictionStore, Zeta2RawConfig};
 use futures::{AsyncReadExt as _, FutureExt as _, StreamExt as _, future::Shared};
 use inazuma::{AppContext as _, AsyncApp, Task};
 use raijin_http_client::{AsyncBody, HttpClient, Method};
-use reqwest_client::ReqwestClient;
+use raijin_reqwest_client::ReqwestClient;
 use std::{
     fs,
     sync::{
@@ -25,7 +25,7 @@ use std::{
         atomic::{AtomicUsize, Ordering::SeqCst},
     },
 };
-use zeta_prompt::ZetaFormat;
+use raijin_zeta_prompt::ZetaFormat;
 
 static ANTHROPIC_CLIENT: OnceLock<AnthropicClient> = OnceLock::new();
 static OPENAI_CLIENT: OnceLock<OpenAiClient> = OnceLock::new();
@@ -135,9 +135,9 @@ pub async fn run_prediction(
 
     ep_store.update(&mut cx, |store, _cx| {
         let model = match provider {
-            PredictionProvider::Zeta1 => edit_prediction::EditPredictionModel::Zeta,
-            PredictionProvider::Zeta2(_) => edit_prediction::EditPredictionModel::Zeta,
-            PredictionProvider::Mercury => edit_prediction::EditPredictionModel::Mercury,
+            PredictionProvider::Zeta1 => raijin_edit_prediction::EditPredictionModel::Zeta,
+            PredictionProvider::Zeta2(_) => raijin_edit_prediction::EditPredictionModel::Zeta,
+            PredictionProvider::Mercury => raijin_edit_prediction::EditPredictionModel::Mercury,
             PredictionProvider::Teacher(..)
             | PredictionProvider::TeacherMultiRegion(..)
             | PredictionProvider::TeacherNonBatching(..)
@@ -273,7 +273,7 @@ pub async fn run_prediction(
                     &state.project,
                     &state.buffer,
                     state.cursor_position,
-                    cloud_llm_client::PredictEditsRequestTrigger::Cli,
+                    raijin_cloud_llm_client::PredictEditsRequestTrigger::Cli,
                     cx,
                 )
             })
@@ -384,9 +384,9 @@ async fn predict_anthropic(
             step_progress.set_substatus("running prediction");
         }
 
-        let messages = vec![anthropic::Message {
-            role: anthropic::Role::User,
-            content: vec![anthropic::RequestContent::Text {
+        let messages = vec![raijin_anthropic::Message {
+            role: raijin_anthropic::Role::User,
+            content: vec![raijin_anthropic::RequestContent::Text {
                 text: prompt.input.clone(),
                 cache_control: None,
             }],
@@ -405,7 +405,7 @@ async fn predict_anthropic(
             .content
             .into_iter()
             .filter_map(|content| match content {
-                anthropic::ResponseContent::Text { text } => Some(text),
+                raijin_anthropic::ResponseContent::Text { text } => Some(text),
                 _ => None,
             })
             .collect::<Vec<String>>()
@@ -497,8 +497,8 @@ async fn predict_openai(
             step_progress.set_substatus("running prediction");
         }
 
-        let messages = vec![open_ai::RequestMessage::User {
-            content: open_ai::MessageContent::Plain(prompt.input.clone()),
+        let messages = vec![raijin_open_ai::RequestMessage::User {
+            content: raijin_open_ai::MessageContent::Plain(prompt.input.clone()),
         }];
 
         let seed = if repetition_count > 1 { Some(ix) } else { None };
@@ -514,12 +514,12 @@ async fn predict_openai(
             .choices
             .into_iter()
             .filter_map(|choice| match choice.message {
-                open_ai::RequestMessage::Assistant { content, .. } => content.map(|c| match c {
-                    open_ai::MessageContent::Plain(text) => text,
-                    open_ai::MessageContent::Multipart(parts) => parts
+                raijin_open_ai::RequestMessage::Assistant { content, .. } => content.map(|c| match c {
+                    raijin_open_ai::MessageContent::Plain(text) => text,
+                    raijin_open_ai::MessageContent::Multipart(parts) => parts
                         .into_iter()
                         .filter_map(|p| match p {
-                            open_ai::MessagePart::Text { text } => Some(text),
+                            raijin_open_ai::MessagePart::Text { text } => Some(text),
                             _ => None,
                         })
                         .collect::<Vec<_>>()
@@ -619,7 +619,7 @@ pub async fn predict_baseten(
         serde_json::to_vec(&request_body).context("Failed to serialize request body")?;
 
     let http_client: Arc<dyn HttpClient> = Arc::new(ReqwestClient::new());
-    let request = http_client::Request::builder()
+    let request = raijin_http_client::Request::builder()
         .method(Method::POST)
         .uri(&url)
         .header("Content-Type", "application/json")

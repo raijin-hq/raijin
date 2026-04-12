@@ -210,7 +210,7 @@ pub(crate) fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
         let count = Vim::take_count(cx);
         vim.update_editor(cx, |_, editor, cx| {
             let task = editor.go_to_reference_before_or_after_position(
-                editor::Direction::Prev,
+                raijin_editor::Direction::Prev,
                 count.unwrap_or(1),
                 window,
                 cx,
@@ -225,7 +225,7 @@ pub(crate) fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
         let count = Vim::take_count(cx);
         vim.update_editor(cx, |_, editor, cx| {
             let task = editor.go_to_reference_before_or_after_position(
-                editor::Direction::Next,
+                raijin_editor::Direction::Next,
                 count.unwrap_or(1),
                 window,
                 cx,

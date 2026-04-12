@@ -25,7 +25,7 @@ use raijin_rpc::AnyProtoClient;
 use std::sync::LazyLock;
 use std::{cmp::Reverse, ffi::OsStr, mem, path::Path, sync::Arc, time::Duration};
 use inazuma_util::{ResultExt, TryFutureExt};
-use zed_env_vars::ZED_STATELESS;
+use raijin_env_vars::RAIJIN_STATELESS;
 
 pub(crate) fn init(client: &AnyProtoClient) {
     client.add_entity_message_handler(TextThreadStore::handle_advertise_contexts);
@@ -53,7 +53,7 @@ pub struct TextThreadStore {
     client: Arc<Client>,
     project: WeakEntity<Project>,
     project_is_shared: bool,
-    client_subscription: Option<client::Subscription>,
+    client_subscription: Option<raijin_client::Subscription>,
     _project_subscriptions: Vec<inazuma::Subscription>,
     prompt_builder: Arc<PromptBuilder>,
 }
@@ -330,26 +330,26 @@ impl TextThreadStore {
     fn handle_project_event(
         &mut self,
         _project: Entity<Project>,
-        event: &project::Event,
+        event: &raijin_project::Event,
         cx: &mut Context<Self>,
     ) {
         match event {
-            project::Event::RemoteIdChanged(_) => {
+            raijin_project::Event::RemoteIdChanged(_) => {
                 self.handle_project_shared(cx);
             }
-            project::Event::Reshared => {
+            raijin_project::Event::Reshared => {
                 self.advertise_contexts(cx);
             }
-            project::Event::HostReshared | project::Event::Rejoined => {
+            raijin_project::Event::HostReshared | raijin_project::Event::Rejoined => {
                 self.synchronize_contexts(cx);
             }
-            project::Event::DisconnectedFromHost => {
+            raijin_project::Event::DisconnectedFromHost => {
                 self.text_threads.retain_mut(|text_thread| {
                     if let Some(strong_context) = text_thread.upgrade() {
                         *text_thread = TextThreadHandle::Weak(text_thread.downgrade());
                         strong_context.update(cx, |text_thread, cx| {
                             if text_thread.replica_id() != ReplicaId::default() {
-                                text_thread.set_capability(language::Capability::ReadOnly, cx);
+                                text_thread.set_capability(raijin_language::Capability::ReadOnly, cx);
                             }
                         });
                         true
@@ -800,7 +800,7 @@ impl TextThreadStore {
                     .enumerate()
                     .map(|(id, metadata)| StringMatchCandidate::new(id, &metadata.title))
                     .collect::<Vec<_>>();
-                let matches = fuzzy::match_strings(
+                let matches = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     false,
@@ -822,7 +822,7 @@ impl TextThreadStore {
     fn reload(&mut self, cx: &mut Context<Self>) -> Task<Result<()>> {
         let fs = self.fs.clone();
         cx.spawn(async move |this, cx| {
-            if *ZED_STATELESS {
+            if *RAIJIN_STATELESS {
                 return Ok(());
             }
             fs.create_dir(text_threads_dir()).await?;
@@ -888,10 +888,10 @@ impl TextThreadStore {
     fn handle_context_server_event(
         &mut self,
         context_server_store: Entity<ContextServerStore>,
-        event: &project::context_server_store::ServerStatusChangedEvent,
+        event: &raijin_project::context_server_store::ServerStatusChangedEvent,
         cx: &mut Context<Self>,
     ) {
-        let project::context_server_store::ServerStatusChangedEvent { server_id, status } = event;
+        let raijin_project::context_server_store::ServerStatusChangedEvent { server_id, status } = event;
 
         match status {
             ContextServerStatus::Running => {
@@ -929,9 +929,9 @@ impl TextThreadStore {
                 return;
             };
 
-            if protocol.capable(context_server::protocol::ServerCapability::Prompts)
+            if protocol.capable(raijin_context_server::protocol::ServerCapability::Prompts)
                 && let Some(response) = protocol
-                    .request::<context_server::types::requests::PromptsList>(())
+                    .request::<raijin_context_server::types::requests::PromptsList>(())
                     .await
                     .log_err()
             {

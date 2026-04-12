@@ -118,11 +118,11 @@ async fn wait_for_language_servers_to_start(
     let subscriptions = [cx.subscribe(&lsp_store, {
         let step_progress = step_progress.clone();
         move |lsp_store, event, cx| match event {
-            project::LspStoreEvent::LanguageServerAdded(id, name, _) => {
+            raijin_project::LspStoreEvent::LanguageServerAdded(id, name, _) => {
                 step_progress.set_substatus(format!("LSP started: {}", name));
                 started_tx.try_send(*id).ok();
             }
-            project::LspStoreEvent::DiskBasedDiagnosticsFinished { language_server_id } => {
+            raijin_project::LspStoreEvent::DiskBasedDiagnosticsFinished { language_server_id } => {
                 let name = lsp_store
                     .read(cx)
                     .language_server_adapter_for_id(*language_server_id)
@@ -131,10 +131,10 @@ async fn wait_for_language_servers_to_start(
                 step_progress.set_substatus(format!("LSP idle: {}", name));
                 diag_tx.try_send(*language_server_id).ok();
             }
-            project::LspStoreEvent::LanguageServerUpdate {
+            raijin_project::LspStoreEvent::LanguageServerUpdate {
                 message:
-                    client::proto::update_language_server::Variant::WorkProgress(
-                        client::proto::LspWorkProgress {
+                    raijin_client::proto::update_language_server::Variant::WorkProgress(
+                        raijin_client::proto::LspWorkProgress {
                             message: Some(message),
                             ..
                         },

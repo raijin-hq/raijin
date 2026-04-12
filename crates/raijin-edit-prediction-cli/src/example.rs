@@ -17,7 +17,7 @@ use std::{
     io::Read,
     path::{Path, PathBuf},
 };
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Example {

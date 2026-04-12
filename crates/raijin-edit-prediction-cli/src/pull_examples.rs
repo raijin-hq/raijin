@@ -12,7 +12,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use raijin_telemetry_events::EditPredictionRating;
 
-use zeta_prompt::{ZetaFormat, ZetaPromptInput, excerpt_range_for_format};
+use raijin_zeta_prompt::{ZetaFormat, ZetaPromptInput, excerpt_range_for_format};
 
 use crate::PredictionProvider;
 use crate::example::{Example, ExamplePrompt};
@@ -1124,7 +1124,7 @@ fn build_rated_example(
         example
             .spec
             .human_feedback
-            .push(edit_prediction::example_spec::HumanFeedback { message: feedback });
+            .push(raijin_edit_prediction::example_spec::HumanFeedback { message: feedback });
     }
 
     if is_positive {
@@ -1701,7 +1701,7 @@ fn build_example_from_snowflake(
 
     let mut edit_history = String::new();
     for event in &input.events {
-        zeta_prompt::write_event(&mut edit_history, event);
+        raijin_zeta_prompt::write_event(&mut edit_history, event);
         edit_history.push('\n');
     }
 
@@ -1764,7 +1764,7 @@ fn build_output_patch(
         .filter(|&c| c == '\n')
         .count() as u32;
 
-    let diff_body = language::unified_diff_with_offsets(
+    let diff_body = raijin_language::unified_diff_with_offsets(
         old_text,
         model_output,
         editable_start_row,

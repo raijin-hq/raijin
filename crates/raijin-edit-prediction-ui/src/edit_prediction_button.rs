@@ -391,7 +391,7 @@ impl Render for EditPredictionButton {
                                     source = "Edit Prediction Status Button"
                                 );
                                 window.dispatch_action(
-                                    raijin_actions::OpenZedPredictOnboarding.boxed_clone(),
+                                    raijin_actions::OpenRaijinPredictOnboarding.boxed_clone(),
                                     cx,
                                 );
                             })),

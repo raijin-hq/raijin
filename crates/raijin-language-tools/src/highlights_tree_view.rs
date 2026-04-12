@@ -4,7 +4,7 @@ use raijin_editor::{
 };
 use inazuma::{
     Action, App, AppContext as _, Context, Corner, Div, Entity, EntityId, EventEmitter,
-    FocusHandle, Focusable, HighlightStyle, Hsla, InteractiveElement, IntoElement, MouseButton,
+    FocusHandle, Focusable, HighlightStyle, Oklch, InteractiveElement, IntoElement, MouseButton,
     MouseDownEvent, MouseMoveEvent, ParentElement, Render, ScrollStrategy, SharedString, Styled,
     Task, UniformListScrollHandle, WeakEntity, Window, actions, div, rems, uniform_list,
 };
@@ -275,8 +275,8 @@ impl HighlightsTreeView {
 
         let subscription =
             cx.subscribe_in(&editor, window, |this, _, event, window, cx| match event {
-                editor::EditorEvent::Reparsed(_)
-                | editor::EditorEvent::SelectionsChanged { .. } => {
+                raijin_editor::EditorEvent::Reparsed(_)
+                | raijin_editor::EditorEvent::SelectionsChanged { .. } => {
                     this.refresh_highlights(window, cx);
                 }
                 _ => return,
@@ -587,7 +587,7 @@ impl HighlightsTreeView {
             .text_bg(if selected {
                 colors.element_selected
             } else {
-                Hsla::default()
+                Oklch::default()
             })
             .pl(rems(0.5))
             .hover(|style| style.bg(colors.element_hover))
@@ -598,7 +598,7 @@ impl HighlightsTreeView {
         h_flex()
             .gap_1()
             .px(rems(0.5))
-            .bg(colors.surface_background)
+            .bg(colors.surface)
             .border_b_1()
             .border_color(colors.border_variant)
             .child(
@@ -954,7 +954,7 @@ impl HighlightsTreeToolbarItemView {
             .trigger_with_tooltip(
                 IconButton::new("toggle-highlights-settings-icon", IconName::Sliders)
                     .icon_size(IconSize::Small)
-                    .style(ButtonStyle::Subtle)
+                    .style(ButtonStyle::SUBTLE)
                     .toggle_state(self.toggle_settings_handle.is_deployed()),
                 Tooltip::text("Highlights Settings"),
             )
@@ -1112,8 +1112,8 @@ fn format_anchor_range(
     } else {
         let buffer = snapshot.buffer_for_excerpt(excerpt_id);
         if let Some(buffer) = buffer {
-            let start = language::ToPoint::to_point(&range.start.text_anchor, buffer);
-            let end = language::ToPoint::to_point(&range.end.text_anchor, buffer);
+            let start = raijin_language::ToPoint::to_point(&range.start.text_anchor, buffer);
+            let end = raijin_language::ToPoint::to_point(&range.end.text_anchor, buffer);
             let display = SharedString::from(format!(
                 "[{}:{} - {}:{}]",
                 start.row + 1,
@@ -1186,7 +1186,7 @@ fn render_style_preview(style: HighlightStyle, selected: bool, cx: &App) -> Div 
     ))
 }
 
-fn format_hsla_as_hex(color: Hsla) -> String {
+fn format_hsla_as_hex(color: Oklch) -> String {
     let rgba = color.to_rgb();
     let r = (rgba.r * 255.0).round() as u8;
     let g = (rgba.g * 255.0).round() as u8;

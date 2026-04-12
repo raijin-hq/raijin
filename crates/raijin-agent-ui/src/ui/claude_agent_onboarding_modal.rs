@@ -54,7 +54,7 @@ impl ClaudeCodeOnboardingModal {
     }
 
     fn view_docs(&mut self, _: &ClickEvent, window: &mut Window, cx: &mut Context<Self>) {
-        window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx);
+        window.dispatch_action(Box::new(raijin_actions::AcpRegistry), cx);
         cx.notify();
 
         claude_agent_onboarding_event!("Documentation Link Clicked");

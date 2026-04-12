@@ -249,7 +249,7 @@ impl InlineAssistant {
 
     pub fn inline_assist(
         workspace: &mut Workspace,
-        action: &zed_actions::assistant::InlineAssist,
+        action: &raijin_actions::assistant::InlineAssist,
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {

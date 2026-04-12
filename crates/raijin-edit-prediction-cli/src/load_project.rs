@@ -15,7 +15,7 @@ use inazuma::{AsyncApp, Entity};
 use raijin_language::{Anchor, Buffer, LanguageNotFound, ToOffset};
 use raijin_project::{Project, ProjectPath, buffer_store::BufferStoreEvent};
 use std::{fs, path::PathBuf, sync::Arc};
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 pub async fn run_load_project(
     example: &mut Example,
@@ -60,7 +60,7 @@ pub async fn run_load_project(
         .read_with(&cx, |buffer, _| buffer.parsing_idle())
         .await;
 
-    let events: Vec<Arc<zeta_prompt::Event>> = ep_store.update(&mut cx, |store, cx| {
+    let events: Vec<Arc<raijin_zeta_prompt::Event>> = ep_store.update(&mut cx, |store, cx| {
         store
             .edit_history_for_project(&project, cx)
             .into_iter()
@@ -89,7 +89,7 @@ pub async fn run_load_project(
             .collect::<String>()
             .into();
         let syntax_ranges = compute_syntax_ranges(&snapshot, cursor_offset, &excerpt_offset_range);
-        let excerpt_ranges = zeta_prompt::compute_legacy_excerpt_ranges(
+        let excerpt_ranges = raijin_zeta_prompt::compute_legacy_excerpt_ranges(
             &cursor_excerpt,
             cursor_offset_in_excerpt,
             &syntax_ranges,
@@ -223,7 +223,7 @@ async fn setup_project(
             app_state.languages.clone(),
             app_state.fs.clone(),
             None,
-            project::LocalProjectFlags {
+            raijin_project::LocalProjectFlags {
                 init_worktree_trust: false,
                 watch_global_configs: false,
             },
@@ -390,5 +390,5 @@ async fn apply_edit_history(
     project: &Entity<Project>,
     cx: &mut AsyncApp,
 ) -> Result<OpenedBuffers> {
-    edit_prediction::udiff::apply_diff(&example.spec.edit_history, project, cx).await
+    raijin_edit_prediction::udiff::apply_diff(&example.spec.edit_history, project, cx).await
 }

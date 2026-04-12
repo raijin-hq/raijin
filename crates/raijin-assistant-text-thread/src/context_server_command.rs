@@ -37,7 +37,7 @@ impl SlashCommand for ContextServerSlashCommand {
         self.prompt.name.clone()
     }
 
-    fn label(&self, cx: &App) -> language::CodeLabel {
+    fn label(&self, cx: &App) -> raijin_language::CodeLabel {
         let mut parts = vec![self.prompt.name.as_str()];
         if let Some(args) = &self.prompt.arguments
             && let Some(arg) = args.first()
@@ -88,15 +88,15 @@ impl SlashCommand for ContextServerSlashCommand {
                 let protocol = server.client().context("Context server not initialized")?;
 
                 let response = protocol
-                    .request::<context_server::types::requests::CompletionComplete>(
-                        context_server::types::CompletionCompleteParams {
-                            reference: context_server::types::CompletionReference::Prompt(
-                                context_server::types::PromptReference {
-                                    ty: context_server::types::PromptReferenceType::Prompt,
+                    .request::<raijin_context_server::types::requests::CompletionComplete>(
+                        raijin_context_server::types::CompletionCompleteParams {
+                            reference: raijin_context_server::types::CompletionReference::Prompt(
+                                raijin_context_server::types::PromptReference {
+                                    ty: raijin_context_server::types::PromptReferenceType::Prompt,
                                     name: prompt_name,
                                 },
                             ),
-                            argument: context_server::types::CompletionArgument {
+                            argument: raijin_context_server::types::CompletionArgument {
                                 name: arg_name,
                                 value: arg_value,
                             },
@@ -126,7 +126,7 @@ impl SlashCommand for ContextServerSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         _workspace: WeakEntity<Workspace>,
         _delegate: Option<Arc<dyn LspAdapterDelegate>>,
@@ -146,8 +146,8 @@ impl SlashCommand for ContextServerSlashCommand {
             cx.foreground_executor().spawn(async move {
                 let protocol = server.client().context("Context server not initialized")?;
                 let response = protocol
-                    .request::<context_server::types::requests::PromptsGet>(
-                        context_server::types::PromptsGetParams {
+                    .request::<raijin_context_server::types::requests::PromptsGet>(
+                        raijin_context_server::types::PromptsGetParams {
                             name: prompt_name.clone(),
                             arguments: Some(prompt_args),
                             meta: None,
@@ -159,7 +159,7 @@ impl SlashCommand for ContextServerSlashCommand {
                     response
                         .messages
                         .iter()
-                        .all(|msg| matches!(msg.role, context_server::types::Role::User)),
+                        .all(|msg| matches!(msg.role, raijin_context_server::types::Role::User)),
                     "Prompt contains non-user roles, which is not supported"
                 );
 
@@ -168,7 +168,7 @@ impl SlashCommand for ContextServerSlashCommand {
                     .messages
                     .into_iter()
                     .filter_map(|msg| match msg.content {
-                        context_server::types::MessageContent::Text { text, .. } => Some(text),
+                        raijin_context_server::types::MessageContent::Text { text, .. } => Some(text),
                         _ => None,
                     })
                     .collect::<Vec<String>>()

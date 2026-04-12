@@ -12,6 +12,7 @@ use itertools::Itertools;
 use inazuma_picker::{Picker, PickerDelegate, highlighted_match_with_paths::HighlightedMatch};
 use raijin_project::{TaskSourceKind, task_store::TaskStore};
 use raijin_task::{DebugScenario, ResolvedTask, RevealTarget, TaskContext, TaskTemplate};
+use raijin_file_icons::FileIcons;
 use raijin_ui::{
     ActiveTheme, Clickable, FluentBuilder as _, IconButtonShape, IconWithIndicator, Indicator,
     IntoElement, KeyBinding, ListItem, ListItemSpacing, RenderOnce, Toggleable, Tooltip, div,
@@ -170,9 +171,9 @@ impl TasksModal {
     pub fn tasks_loaded(
         &mut self,
         task_contexts: Arc<TaskContexts>,
-        lsp_tasks: Vec<(TaskSourceKind, task::ResolvedTask)>,
-        used_tasks: Vec<(TaskSourceKind, task::ResolvedTask)>,
-        current_resolved_tasks: Vec<(TaskSourceKind, task::ResolvedTask)>,
+        lsp_tasks: Vec<(TaskSourceKind, raijin_task::ResolvedTask)>,
+        used_tasks: Vec<(TaskSourceKind, raijin_task::ResolvedTask)>,
+        current_resolved_tasks: Vec<(TaskSourceKind, raijin_task::ResolvedTask)>,
         add_current_language_tasks: bool,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -249,7 +250,7 @@ impl PickerDelegate for TasksModalDelegate {
         &mut self,
         ix: usize,
         _window: &mut Window,
-        _cx: &mut Context<picker::Picker<Self>>,
+        _cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         self.selected_index = ix;
     }
@@ -262,7 +263,7 @@ impl PickerDelegate for TasksModalDelegate {
         &mut self,
         query: String,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> Task<()> {
         let candidates = match &self.candidates {
             Some(candidates) => Task::ready(string_match_candidates(candidates)),
@@ -277,7 +278,7 @@ impl PickerDelegate for TasksModalDelegate {
                     cx.spawn(async move |picker, cx| {
                         let (used, current) = task_list.await;
                         let Ok((lsp_tasks, prefer_lsp)) = workspace.update(cx, |workspace, cx| {
-                            let lsp_tasks = editor::lsp_tasks(
+                            let lsp_tasks = raijin_editor::lsp_tasks(
                                 workspace.project().clone(),
                                 &lsp_task_sources,
                                 task_position,
@@ -347,7 +348,7 @@ impl PickerDelegate for TasksModalDelegate {
 
         cx.spawn_in(window, async move |picker, cx| {
             let candidates = candidates.await;
-            let matches = fuzzy::match_strings(
+            let matches = inazuma_fuzzy::match_strings(
                 &candidates,
                 &query,
                 true,
@@ -388,7 +389,7 @@ impl PickerDelegate for TasksModalDelegate {
         &mut self,
         omit_history_entry: bool,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         let current_match_index = self.selected_index();
         let task = self
@@ -425,7 +426,7 @@ impl PickerDelegate for TasksModalDelegate {
         cx.emit(DismissEvent);
     }
 
-    fn dismissed(&mut self, _window: &mut Window, cx: &mut Context<picker::Picker<Self>>) {
+    fn dismissed(&mut self, _window: &mut Window, cx: &mut Context<inazuma_picker::Picker<Self>>) {
         cx.emit(DismissEvent);
     }
 
@@ -434,7 +435,7 @@ impl PickerDelegate for TasksModalDelegate {
         ix: usize,
         selected: bool,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> Option<Self::ListItem> {
         let candidates = self.candidates.as_ref()?;
         let hit = &self.matches.get(ix)?;
@@ -487,7 +488,7 @@ impl PickerDelegate for TasksModalDelegate {
                 language_name: name,
                 ..
             }
-            | TaskSourceKind::Language { name, .. } => file_icons::FileIcons::get(cx)
+            | TaskSourceKind::Language { name, .. } => FileIcons::get(cx)
                 .get_icon_for_type(&name.to_lowercase(), cx)
                 .map(Icon::from_path),
         }
@@ -673,7 +674,7 @@ impl PickerDelegate for TasksModalDelegate {
                 .map(|this| {
                     if (current_modifiers.alt || self.matches.is_empty()) && !self.prompt.is_empty()
                     {
-                        let action = picker::ConfirmInput {
+                        let action = inazuma_picker::ConfirmInput {
                             secondary: current_modifiers.secondary(),
                         }
                         .boxed_clone();
@@ -698,9 +699,9 @@ impl PickerDelegate for TasksModalDelegate {
                                 "Spawn Without History"
                             };
                             Button::new("spawn", label)
-                                .key_binding(KeyBinding::for_action(&menu::SecondaryConfirm, cx))
+                                .key_binding(KeyBinding::for_action(&inazuma_menu::SecondaryConfirm, cx))
                                 .on_click(move |_, window, cx| {
-                                    window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::SecondaryConfirm.boxed_clone(), cx)
                                 })
                         })
                     } else {
@@ -709,9 +710,9 @@ impl PickerDelegate for TasksModalDelegate {
                                 if is_recent_selected { "Rerun" } else { "Spawn" };
 
                             Button::new("spawn", run_entry_label)
-                                .key_binding(KeyBinding::for_action(&menu::Confirm, cx))
+                                .key_binding(KeyBinding::for_action(&inazuma_menu::Confirm, cx))
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::Confirm.boxed_clone(), cx);
+                                    window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx);
                                 })
                         })
                     }
@@ -822,7 +823,7 @@ mod tests {
             "Only one task should match the query {query_str}"
         );
 
-        cx.dispatch_action(picker::ConfirmCompletion);
+        cx.dispatch_action(inazuma_picker::ConfirmCompletion);
         assert_eq!(
             query(&tasks_picker, cx),
             "echo 4",
@@ -833,7 +834,7 @@ mod tests {
             Vec::<String>::new(),
             "No task should be listed"
         );
-        cx.dispatch_action(picker::ConfirmInput { secondary: false });
+        cx.dispatch_action(inazuma_picker::ConfirmInput { secondary: false });
 
         let tasks_picker = open_spawn_tasks(&workspace, cx);
         assert_eq!(
@@ -856,7 +857,7 @@ mod tests {
             "New oneshot should match custom command query"
         );
 
-        cx.dispatch_action(picker::ConfirmInput { secondary: false });
+        cx.dispatch_action(inazuma_picker::ConfirmInput { secondary: false });
         let tasks_picker = open_spawn_tasks(&workspace, cx);
         assert_eq!(
             query(&tasks_picker, cx),
@@ -869,7 +870,7 @@ mod tests {
             "Last recently used one show task should be listed first"
         );
 
-        cx.dispatch_action(picker::ConfirmCompletion);
+        cx.dispatch_action(inazuma_picker::ConfirmCompletion);
         assert_eq!(
             query(&tasks_picker, cx),
             query_str,
@@ -890,7 +891,7 @@ mod tests {
             "New oneshot should not match any command query"
         );
 
-        cx.dispatch_action(picker::ConfirmInput { secondary: true });
+        cx.dispatch_action(inazuma_picker::ConfirmInput { secondary: true });
         let tasks_picker = open_spawn_tasks(&workspace, cx);
         assert_eq!(
             query(&tasks_picker, cx),
