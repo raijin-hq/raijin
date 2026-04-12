@@ -21,6 +21,7 @@ raijin-fs.workspace = true
 inazuma-fuzzy.workspace = true
 inazuma.workspace = true
 itertools.workspace = true
+raijin-json-compat.workspace = true
 raijin-json-schema-store.workspace = true
 raijin-language.workspace = true
 log.workspace = true

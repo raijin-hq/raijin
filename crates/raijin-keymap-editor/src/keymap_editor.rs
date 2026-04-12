@@ -28,7 +28,7 @@ use raijin_language::{Language, LanguageConfig, ToOffset as _};
 use raijin_notifications::status_toast::{StatusToast, ToastIcon};
 use raijin_project::{CompletionDisplayOptions, Project};
 use inazuma_settings_framework::{
-    BaseKeymap, KeybindSource, KeymapFile, Settings as _, SettingsAssets, infer_json_indent_size,
+    BaseKeymap, KeybindSource, KeymapFile, Settings as _, SettingsAssets,
 };
 use raijin_ui::{
     ActiveTheme as _, App, Banner, BorrowAppContext, ContextMenu, IconButtonShape, IconPosition,
@@ -37,6 +37,7 @@ use raijin_ui::{
     TableResizeBehavior, Tooltip, Window, prelude::*,
 };
 use raijin_ui_input::InputField;
+use raijin_json_compat::infer_json_indent_size;
 use inazuma_util::ResultExt;
 use raijin_workspace::{
     Item, ModalView, SerializableItem, Workspace, notifications::NotifyTaskExt as _,
@@ -3482,7 +3483,7 @@ impl CompletionProvider for KeyContextCompletionProvider {
         _trigger: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
-    ) -> inazuma::Task<anyhow::Result<Vec<raijin_raijin_project::CompletionResponse>>> {
+    ) -> inazuma::Task<anyhow::Result<Vec<raijin_project::CompletionResponse>>> {
         let buffer = buffer.read(cx);
         let mut count_back = 0;
         for char in buffer.reversed_chars_at(buffer_position) {
@@ -3495,7 +3496,7 @@ impl CompletionProvider for KeyContextCompletionProvider {
         let start_anchor =
             buffer.anchor_before(buffer_position.to_offset(buffer).saturating_sub(count_back));
         let replace_range = start_anchor..buffer_position;
-        inazuma::Task::ready(Ok(vec![raijin_raijin_project::CompletionResponse {
+        inazuma::Task::ready(Ok(vec![raijin_project::CompletionResponse {
             completions: self
                 .contexts
                 .iter()
@@ -3504,7 +3505,7 @@ impl CompletionProvider for KeyContextCompletionProvider {
                     label: raijin_language::CodeLabel::plain(context.to_string(), None),
                     new_text: context.to_string(),
                     documentation: None,
-                    source: raijin_raijin_project::CompletionSource::Custom,
+                    source: raijin_project::CompletionSource::Custom,
                     icon_path: None,
                     match_start: None,
                     snippet_deduplication_key: None,
@@ -3648,7 +3649,7 @@ async fn save_keybinding_update(
     )
     .map_err(|err| anyhow::anyhow!("Could not save updated keybinding: {}", err))?;
     fs.write(
-        paths::keymap_file().as_path(),
+        raijin_paths::keymap_file().as_path(),
         updated_keymap_contents.as_bytes(),
     )
     .await
@@ -3699,7 +3700,7 @@ async fn remove_keybinding(
     )
     .context("Failed to update keybinding")?;
     fs.write(
-        paths::keymap_file().as_path(),
+        raijin_paths::keymap_file().as_path(),
         updated_keymap_contents.as_bytes(),
     )
     .await

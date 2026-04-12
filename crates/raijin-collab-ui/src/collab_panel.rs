@@ -118,7 +118,7 @@ pub fn init(cx: &mut App) {
             }
         });
         workspace.register_action(|_, action: &OpenChannelNotesById, window, cx| {
-            let channel_id = client::ChannelId(action.channel_id);
+            let channel_id = raijin_client::ChannelId(action.channel_id);
             let workspace = cx.entity();
             window.defer(cx, move |window, cx| {
                 ChannelView::open(channel_id, None, workspace, window, cx).detach_and_log_err(cx)
@@ -126,8 +126,8 @@ pub fn init(cx: &mut App) {
         });
         // TODO: make it possible to bind this one to a held key for push to talk?
         // how to make "toggle_on_modifiers_press" contextual?
-        workspace.register_action(|_, _: &Mute, _, cx| title_bar::collab::toggle_mute(cx));
-        workspace.register_action(|_, _: &Deafen, _, cx| title_bar::collab::toggle_deafen(cx));
+        workspace.register_action(|_, _: &Mute, _, cx| raijin_title_bar::collab::toggle_mute(cx));
+        workspace.register_action(|_, _: &Deafen, _, cx| raijin_title_bar::collab::toggle_deafen(cx));
         workspace.register_action(|_, _: &LeaveCall, window, cx| {
             CollabPanel::leave_call(window, cx);
         });
@@ -144,7 +144,7 @@ pub fn init(cx: &mut App) {
                     workspace.update(cx, |workspace, cx| {
                         cx.write_to_clipboard(ClipboardItem::new_string(room_id));
                         workspace.show_toast(
-                            workspace::Toast::new(
+                            raijin_workspace::Toast::new(
                                 NotificationId::unique::<RoomIdCopiedToast>(),
                                 "Room ID copied to clipboard",
                             )
@@ -339,7 +339,7 @@ impl CollabPanel {
             });
 
             cx.subscribe(&filter_editor, |this: &mut Self, _, event, cx| {
-                if let editor::EditorEvent::BufferEdited = event {
+                if let raijin_editor::EditorEvent::BufferEdited = event {
                     let query = this.filter_editor.read(cx).text(cx);
                     if !query.is_empty() {
                         this.selection.take();
@@ -361,7 +361,7 @@ impl CollabPanel {
                 &channel_name_editor,
                 window,
                 |this: &mut Self, _, event, window, cx| {
-                    if let editor::EditorEvent::Blurred = event {
+                    if let raijin_editor::EditorEvent::Blurred = event {
                         if let Some(state) = &this.channel_editing_state
                             && state.pending_name().is_some()
                         {
@@ -1157,7 +1157,7 @@ impl CollabPanel {
                 this.workspace
                     .update(cx, |workspace, cx| {
                         let app_state = workspace.app_state().clone();
-                        workspace::join_in_room_project(project_id, host_user_id, app_state, cx)
+                        raijin_workspace::join_in_room_project(project_id, host_user_id, app_state, cx)
                             .detach_and_prompt_err(
                                 "Failed to join project",
                                 window,
@@ -1720,7 +1720,7 @@ impl CollabPanel {
                 } => {
                     if let Some(workspace) = self.workspace.upgrade() {
                         let app_state = workspace.read(cx).app_state().clone();
-                        workspace::join_in_room_project(*project_id, *host_user_id, app_state, cx)
+                        raijin_workspace::join_in_room_project(*project_id, *host_user_id, app_state, cx)
                             .detach_and_prompt_err(
                                 "Failed to join project",
                                 window,
@@ -2432,7 +2432,7 @@ impl CollabPanel {
         let Some(handle) = window.window_handle().downcast::<MultiWorkspace>() else {
             return;
         };
-        workspace::join_channel(
+        raijin_workspace::join_channel(
             channel_id,
             workspace.read(cx).app_state().clone(),
             Some(handle),
@@ -2846,8 +2846,8 @@ impl CollabPanel {
                 Avatar::new(contact.user.avatar_uri.clone())
                     .indicator::<AvatarAvailabilityIndicator>(if online {
                         Some(AvatarAvailabilityIndicator::new(match busy {
-                            true => ui::CollaboratorAvailability::Busy,
-                            false => ui::CollaboratorAvailability::Free,
+                            true => raijin_ui::CollaboratorAvailability::Busy,
+                            false => raijin_ui::CollaboratorAvailability::Free,
                         }))
                     } else {
                         None
@@ -3363,7 +3363,7 @@ impl Panel for CollabPanel {
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             settings.collaboration_panel.get_or_insert_default().dock = Some(position.into())
         });
     }
@@ -3372,10 +3372,10 @@ impl Panel for CollabPanel {
         CollaborationPanelSettings::get_global(cx).default_width
     }
 
-    fn icon(&self, _window: &Window, cx: &App) -> Option<ui::IconName> {
+    fn icon(&self, _window: &Window, cx: &App) -> Option<raijin_ui::IconName> {
         CollaborationPanelSettings::get_global(cx)
             .button
-            .then_some(ui::IconName::UserGroup)
+            .then_some(raijin_ui::IconName::UserGroup)
     }
 
     fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
