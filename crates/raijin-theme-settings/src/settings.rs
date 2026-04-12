@@ -1,6 +1,6 @@
 use crate::schema::{status_colors_refinement, syntax_overrides, theme_colors_refinement};
 use inazuma_collections::HashMap;
-use inazuma::{App, Font, FontFallbacks, FontStyle, Global, Pixels, px};
+use inazuma::{App, Font, FontFallbacks, FontStyle, Global, Pixels, Window, px};
 use inazuma_refineable::Refineable;
 use inazuma_settings_framework::{IntoInazuma, RegisterSetting, Settings, SettingsContent};
 use std::sync::Arc;
@@ -274,9 +274,15 @@ pub fn reset_buffer_font_size(cx: &mut App) {
     }
 }
 
-pub fn setup_ui_font(cx: &App) -> Font {
-    let theme_settings = ThemeSettings::get_global(cx);
-    theme_settings.ui_font.clone()
+pub fn setup_ui_font(window: &mut Window, cx: &App) -> Font {
+    let (ui_font, ui_font_size) = {
+        let theme_settings = ThemeSettings::get_global(cx);
+        let font = theme_settings.ui_font.clone();
+        (font, theme_settings.ui_font_size(cx))
+    };
+
+    window.set_rem_size(ui_font_size);
+    ui_font
 }
 
 pub fn adjust_ui_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {

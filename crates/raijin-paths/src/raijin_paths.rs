@@ -35,6 +35,13 @@ pub fn remote_server_dir_relative() -> &'static RelPath {
     *CACHED
 }
 
+/// Returns the relative path to the raijin_wsl_server directory on the WSL host.
+pub fn remote_wsl_server_dir_relative() -> &'static RelPath {
+    static CACHED: LazyLock<&'static RelPath> =
+        LazyLock::new(|| RelPath::unix(".raijin_wsl_server").unwrap());
+    *CACHED
+}
+
 /// Sets a custom directory for all user data, overriding the default data directory.
 /// This function must be called before any other path operations that depend on the data directory.
 /// The directory's path will be canonicalized to an absolute path by a blocking FS operation.
@@ -216,6 +223,12 @@ pub fn crashes_retired_dir() -> &'static Option<PathBuf> {
 pub fn settings_file() -> &'static PathBuf {
     static SETTINGS_FILE: OnceLock<PathBuf> = OnceLock::new();
     SETTINGS_FILE.get_or_init(|| config_dir().join("settings.toml"))
+}
+
+/// Returns the path to the global settings file.
+pub fn global_settings_file() -> &'static PathBuf {
+    static GLOBAL_SETTINGS_FILE: OnceLock<PathBuf> = OnceLock::new();
+    GLOBAL_SETTINGS_FILE.get_or_init(|| config_dir().join("global_settings.toml"))
 }
 
 /// Returns the path to the `settings_backup.toml` file.

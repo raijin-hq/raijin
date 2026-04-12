@@ -383,16 +383,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-attributes"
-version = "1.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3203e79f4dd9bdda415ed03cf14dae5a2bf775c683a00f94e9cd1faf0f596e5"
-dependencies = [
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "async-broadcast"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -453,16 +443,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-dispatcher"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c8bff43baa5b0ca8f8bcd7f9338f5d30fbd75236a2aa89130a7c5121a06d6ca"
-dependencies = [
- "async-task",
- "futures-lite 1.13.0",
-]
-
-[[package]]
 name = "async-executor"
 version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -470,8 +450,8 @@ checksum = "c96bf972d85afc50bf5ab8fe2d54d1586b4e0b46c97c50a0c9e71e2f7bcd812a"
 dependencies = [
  "async-task",
  "concurrent-queue",
- "fastrand 2.3.0",
- "futures-lite 2.6.1",
+ "fastrand",
+ "futures-lite",
  "pin-project-lite",
  "slab",
 ]
@@ -484,7 +464,7 @@ checksum = "8034a681df4aed8b8edbd7fbe472401ecf009251c8b40556b304567052e294c5"
 dependencies = [
  "async-lock 3.4.2",
  "blocking",
- "futures-lite 2.6.1",
+ "futures-lite",
 ]
 
 [[package]]
@@ -498,7 +478,7 @@ dependencies = [
  "async-io",
  "async-lock 3.4.2",
  "blocking",
- "futures-lite 2.6.1",
+ "futures-lite",
  "once_cell",
 ]
 
@@ -512,7 +492,7 @@ dependencies = [
  "cfg-if",
  "concurrent-queue",
  "futures-io",
- "futures-lite 2.6.1",
+ "futures-lite",
  "parking",
  "polling",
  "rustix 1.1.4",
@@ -548,7 +528,7 @@ checksum = "b948000fad4873c1c9339d60f2623323a0cfd3816e5181033c6a5cb68b2accf7"
 dependencies = [
  "async-io",
  "blocking",
- "futures-lite 2.6.1",
+ "futures-lite",
 ]
 
 [[package]]
@@ -574,7 +554,7 @@ dependencies = [
  "blocking",
  "cfg-if",
  "event-listener 5.4.1",
- "futures-lite 2.6.1",
+ "futures-lite",
  "rustix 1.1.4",
 ]
 
@@ -613,7 +593,6 @@ version = "1.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2c8e079a4ab67ae52b7403632e4618815d6db36d2a010cfe41b02c1b1578f93b"
 dependencies = [
- "async-attributes",
  "async-channel 1.9.0",
  "async-global-executor",
  "async-io",
@@ -623,7 +602,7 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-io",
- "futures-lite 2.6.1",
+ "futures-lite",
  "gloo-timers",
  "kv-log-macro",
  "log",
@@ -716,24 +695,11 @@ dependencies = [
  "async-compression",
  "chrono",
  "crc32fast",
- "futures-lite 2.6.1",
+ "futures-lite",
  "pin-project",
  "thiserror 1.0.69",
  "tokio",
  "tokio-util",
-]
-
-[[package]]
-name = "asynchronous-codec"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a860072022177f903e59730004fb5dc13db9275b79bb2aef7ba8ce831956c233"
-dependencies = [
- "bytes 1.11.1",
- "futures-sink",
- "futures-util",
- "memchr",
- "pin-project-lite",
 ]
 
 [[package]]
@@ -837,7 +803,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "hex",
  "http 1.4.0",
  "ring",
@@ -900,7 +866,7 @@ dependencies = [
  "aws-types",
  "bytes 1.11.1",
  "bytes-utils",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "http-body 0.4.6",
@@ -930,7 +896,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "http-body-util",
@@ -956,7 +922,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "regex-lite",
@@ -983,7 +949,7 @@ dependencies = [
  "aws-smithy-xml",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "hex",
  "hmac",
  "http 0.2.12",
@@ -1014,7 +980,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "regex-lite",
@@ -1038,7 +1004,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "regex-lite",
@@ -1063,7 +1029,7 @@ dependencies = [
  "aws-smithy-types",
  "aws-smithy-xml",
  "aws-types",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "regex-lite",
@@ -1264,7 +1230,7 @@ dependencies = [
  "aws-smithy-runtime-api",
  "aws-smithy-types",
  "bytes 1.11.1",
- "fastrand 2.3.0",
+ "fastrand",
  "http 0.2.12",
  "http 1.4.0",
  "http-body 0.4.6",
@@ -1673,7 +1639,7 @@ dependencies = [
  "async-channel 2.5.0",
  "async-task",
  "futures-io",
- "futures-lite 2.6.1",
+ "futures-lite",
  "piper",
 ]
 
@@ -4378,15 +4344,6 @@ dependencies = [
 
 [[package]]
 name = "fastrand"
-version = "1.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e51093e27b0797c359783294ca4f0a911c270184cb10f85783b118614a1501be"
-dependencies = [
- "instant",
-]
-
-[[package]]
-name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
@@ -4846,7 +4803,7 @@ checksum = "175cd8cca9e1d45b87f18ffa75088f2099e3c4fe5e2f83e42de112560bea8ea6"
 dependencies = [
  "fixedbitset 0.5.7",
  "futures-core",
- "futures-lite 2.6.1",
+ "futures-lite",
  "pin-project",
  "smallvec",
 ]
@@ -4887,26 +4844,11 @@ checksum = "cecba35d7ad927e23624b22ad55235f2239cfa44fd10428eecbeba6d6a717718"
 
 [[package]]
 name = "futures-lite"
-version = "1.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49a9d51ce47660b1e808d3c990b4709f2f415d928835a17dfd16991515c46bce"
-dependencies = [
- "fastrand 1.9.0",
- "futures-core",
- "futures-io",
- "memchr",
- "parking",
- "pin-project-lite",
- "waker-fn",
-]
-
-[[package]]
-name = "futures-lite"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f78e10609fe0e0b3f4157ffab1876319b5b0db102a2c60dc4626306dc46b44ad"
 dependencies = [
- "fastrand 2.3.0",
+ "fastrand",
  "futures-core",
  "futures-io",
  "parking",
@@ -6604,7 +6546,7 @@ dependencies = [
  "dirs",
  "dunce",
  "futures 0.3.32",
- "futures-lite 2.6.1",
+ "futures-lite",
  "git2",
  "globset",
  "inazuma-collections",
@@ -7095,41 +7037,6 @@ dependencies = [
  "sha2",
  "signature 2.2.0",
  "simple_asn1",
-]
-
-[[package]]
-name = "jupyter-protocol"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4649647741f9794a7a02e3be976f1b248ba28a37dbfc626d5089316fd4fbf4c8"
-dependencies = [
- "async-trait",
- "bytes 1.11.1",
- "chrono",
- "futures 0.3.32",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "uuid",
-]
-
-[[package]]
-name = "jupyter-websocket-client"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c2ae4d8d5344f69bf9734b264e969c2139e30e932ce9b6455de9f65663ed614"
-dependencies = [
- "anyhow",
- "async-trait",
- "async-tungstenite",
- "bytes 1.11.1",
- "futures 0.3.32",
- "jupyter-protocol",
- "serde",
- "serde_json",
- "tokio",
- "url",
- "uuid",
 ]
 
 [[package]]
@@ -8293,21 +8200,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nbformat"
-version = "1.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89bd627a9b44814f546a1ce9dbc088599d3a030b8667b8816c07f2bd5a4507ba"
-dependencies = [
- "anyhow",
- "chrono",
- "jupyter-protocol",
- "serde",
- "serde_json",
- "thiserror 1.0.69",
- "uuid",
-]
-
-[[package]]
 name = "ndk"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9251,7 +9143,7 @@ dependencies = [
  "cipher",
  "digest",
  "endi",
- "futures-lite 2.6.1",
+ "futures-lite",
  "futures-util",
  "getrandom 0.4.2",
  "hkdf",
@@ -10201,7 +10093,7 @@ version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2cbb1126afed61dd6368748dae63b1ee7dc480191c6262a3b4ff1e29d86a6c5b"
 dependencies = [
- "fastrand 2.3.0",
+ "fastrand",
  "phf_shared 0.12.1",
 ]
 
@@ -10294,7 +10186,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c835479a4443ded371d6c535cbfd8d31ad92c5d23ae9770a61bc155e4992a3c1"
 dependencies = [
  "atomic-waker",
- "fastrand 2.3.0",
+ "fastrand",
  "futures-io",
 ]
 
@@ -11765,7 +11657,7 @@ dependencies = [
  "anyhow",
  "ctor",
  "futures 0.3.32",
- "futures-lite 2.6.1",
+ "futures-lite",
  "inazuma",
  "inazuma-clock",
  "inazuma-settings-content",
@@ -12275,6 +12167,7 @@ dependencies = [
  "anyhow",
  "inazuma",
  "inazuma-collections",
+ "inazuma-component-registry",
  "inazuma-platform",
  "inazuma-settings-framework",
  "log",
@@ -14375,7 +14268,9 @@ dependencies = [
  "inazuma-util",
  "raijin-actions",
  "raijin-rpc",
+ "raijin-theme",
  "raijin-theme-settings",
+ "raijin-ui",
  "raijin-workspace",
  "serde_json",
  "smol",
@@ -15096,60 +14991,6 @@ dependencies = [
  "unindent",
  "uuid",
  "windows 0.61.3",
-]
-
-[[package]]
-name = "raijin-repl"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-dispatcher",
- "async-task",
- "async-tungstenite",
- "base64 0.22.1",
- "futures 0.3.32",
- "image",
- "inazuma",
- "inazuma-collections",
- "inazuma-menu",
- "inazuma-picker",
- "inazuma-settings-framework",
- "inazuma-util",
- "indoc",
- "jupyter-protocol",
- "jupyter-websocket-client",
- "log",
- "nbformat",
- "raijin-actions",
- "raijin-client",
- "raijin-command-palette-hooks",
- "raijin-editor",
- "raijin-feature-flags",
- "raijin-file-icons",
- "raijin-html-to-markdown",
- "raijin-http-client",
- "raijin-language",
- "raijin-languages",
- "raijin-markdown",
- "raijin-multi-buffer",
- "raijin-project",
- "raijin-remote",
- "raijin-telemetry",
- "raijin-term",
- "raijin-terminal",
- "raijin-theme",
- "raijin-theme-settings",
- "raijin-ui",
- "raijin-workspace",
- "runtimelib",
- "serde",
- "serde_json",
- "shlex",
- "smol",
- "tree-sitter-md 0.3.2",
- "tree-sitter-python 0.25.0",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
- "uuid",
 ]
 
 [[package]]
@@ -17000,32 +16841,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7204ed6420f698836b76d4d5c2ec5dec7585fd5c3a788fd1cde855d1de598239"
 
 [[package]]
-name = "runtimelib"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa84884e45ed4a1e663120cef3fc11f14d1a2a1933776e1c31599f7bd2dd0c9e"
-dependencies = [
- "async-dispatcher",
- "async-std",
- "aws-lc-rs",
- "base64 0.22.1",
- "bytes 1.11.1",
- "chrono",
- "data-encoding",
- "dirs",
- "futures 0.3.32",
- "glob",
- "jupyter-protocol",
- "serde",
- "serde_json",
- "shellexpand",
- "smol",
- "thiserror 2.0.18",
- "uuid",
- "zeromq",
-]
-
-[[package]]
 name = "rust-embed"
 version = "8.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -17382,12 +17197,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9774ba4a74de5f7b1c1451ed6cd5285a32eddb5cccb8cc655a4e50009e06477f"
 
 [[package]]
-name = "saa"
-version = "5.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd8d438861332c3b1ac396c77bd9cac620ea1ff347efb63c05a83d8f0a593899"
-
-[[package]]
 name = "safetensors"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -17425,16 +17234,6 @@ dependencies = [
  "tao-core-video-sys",
  "windows 0.58.0",
  "windows-capture",
-]
-
-[[package]]
-name = "scc"
-version = "3.6.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f448f7d881535036452f0cac656a41463807f095eda504890764ca7d11e2a2ea"
-dependencies = [
- "saa",
- "sdd",
 ]
 
 [[package]]
@@ -17542,12 +17341,6 @@ dependencies = [
  "ring",
  "untrusted 0.9.0",
 ]
-
-[[package]]
-name = "sdd"
-version = "4.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e6ca0e33fc1ae39e36b2d1fdfc8ee470b26397b642ff87572a59a36ff4f2340b"
 
 [[package]]
 name = "sea-bae"
@@ -18198,7 +17991,7 @@ dependencies = [
  "async-net",
  "async-process",
  "blocking",
- "futures-lite 2.6.1",
+ "futures-lite",
 ]
 
 [[package]]
@@ -19091,7 +18884,7 @@ version = "3.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
- "fastrand 2.3.0",
+ "fastrand",
  "getrandom 0.4.2",
  "once_cell",
  "rustix 1.1.4",
@@ -23049,7 +22842,7 @@ dependencies = [
  "enumflags2",
  "event-listener 5.4.1",
  "futures-core",
- "futures-lite 2.6.1",
+ "futures-lite",
  "hex",
  "libc",
  "ordered-stream",
@@ -23170,30 +22963,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.117",
-]
-
-[[package]]
-name = "zeromq"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b32e1e46c4e278efd0c1153f2db0113924b9bc5fff9f9221853d035e2d26fadf"
-dependencies = [
- "async-dispatcher",
- "async-std",
- "async-trait",
- "asynchronous-codec",
- "bytes 1.11.1",
- "crossbeam-queue",
- "futures 0.3.32",
- "log",
- "num-traits",
- "once_cell",
- "parking_lot",
- "rand 0.9.2",
- "regex",
- "scc",
- "thiserror 1.0.69",
- "uuid",
 ]
 
 [[package]]

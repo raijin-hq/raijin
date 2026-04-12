@@ -2,7 +2,7 @@ mod persistence;
 
 use raijin_client::UserStore;
 use inazuma_collections::HashMap;
-use raijin_component::{ComponentId, ComponentMetadata, ComponentStatus, components};
+use inazuma_component_registry::{ComponentId, ComponentMetadata, ComponentStatus, components};
 use inazuma::{
     App, Entity, EventEmitter, FocusHandle, Focusable, Task, WeakEntity, Window, list, prelude::*,
 };

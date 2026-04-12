@@ -458,15 +458,15 @@ pub fn execute_run(
     init_paths()?;
 
     let startup_time = Instant::now();
-    let app = gpui_platform::headless();
+    let app = inazuma_platform::headless();
     let pid = std::process::id();
     let id = pid.to_string();
-    crashes::init(
-        crashes::InitCrashHandler {
+    raijin_crashes::init(
+        raijin_crashes::InitCrashHandler {
             session_id: id,
             raijin_version: VERSION.to_owned(),
             binary: "raijin-remote-server".to_string(),
-            release_channel: release_channel::RELEASE_CHANNEL_NAME.clone(),
+            release_channel: raijin_release_channel::RELEASE_CHANNEL_NAME.clone(),
             commit_sha: option_env!("RAIJIN_COMMIT_SHA").unwrap_or("no_sha").to_owned(),
         },
         |task| {
@@ -519,8 +519,8 @@ pub fn execute_run(
             option_env!("RAIJIN_BUILD_ID"),
             app_commit_sha,
         );
-        release_channel::init(app_version, cx);
-        gpui_tokio::init(cx);
+        raijin_release_channel::init(app_version, cx);
+        inazuma_tokio::init(cx);
 
         HeadlessProject::init(cx);
 
@@ -536,13 +536,13 @@ pub fn execute_run(
         trusted_worktrees::init(HashMap::default(), cx);
 
         GitHostingProviderRegistry::set_global(git_hosting_provider_registry, cx);
-        git_hosting_providers::init(cx);
-        dap_adapters::init(cx);
+        raijin_git_hosting_providers::init(cx);
+        raijin_dap_adapters::init(cx);
 
         raijin_extension::init(cx);
         let extension_host_proxy = ExtensionHostProxy::global(cx);
 
-        json_schema_store::init(cx);
+        raijin_json_schema_store::init(cx);
 
         let project = cx.new(|cx| {
             let fs = Arc::new(RealFs::new(None, cx.background_executor().clone()));
@@ -716,12 +716,12 @@ pub(crate) fn execute_proxy(
     let server_paths = ServerPaths::new(&identifier)?;
 
     let id = std::process::id().to_string();
-    crashes::init(
-        crashes::InitCrashHandler {
+    raijin_crashes::init(
+        raijin_crashes::InitCrashHandler {
             session_id: id,
             raijin_version: VERSION.to_owned(),
             binary: "raijin-remote-server".to_string(),
-            release_channel: release_channel::RELEASE_CHANNEL_NAME.clone(),
+            release_channel: raijin_release_channel::RELEASE_CHANNEL_NAME.clone(),
             commit_sha: option_env!("RAIJIN_COMMIT_SHA").unwrap_or("no_sha").to_owned(),
         },
         |task| {
@@ -1063,9 +1063,9 @@ fn initialize_settings(
     session: AnyProtoClient,
     fs: Arc<dyn Fs>,
     cx: &mut App,
-) -> watch::Receiver<Option<NodeBinaryOptions>> {
+) -> raijin_watch::Receiver<Option<NodeBinaryOptions>> {
     let (user_settings_file_rx, watcher_task) =
-        watch_config_file(cx.background_executor(), fs, paths::settings_file().clone());
+        watch_config_file(cx.background_executor(), fs, raijin_paths::settings_file().clone());
 
     handle_settings_file_changes(user_settings_file_rx, watcher_task, cx, {
         move |err, _cx| {
@@ -1078,7 +1078,7 @@ fn initialize_settings(
                         notification_id: "server-settings-failed".to_string(),
                         message: format!(
                             "Error in settings on remote host {:?}: {}",
-                            paths::settings_file(),
+                            raijin_paths::settings_file(),
                             e
                         ),
                     })
@@ -1094,7 +1094,7 @@ fn initialize_settings(
         }
     });
 
-    let (mut tx, rx) = watch::channel(None);
+    let (mut tx, rx) = raijin_watch::channel(None);
     let mut node_settings = None;
     cx.observe_global::<SettingsStore>(move |cx| {
         let new_node_settings = &ProjectSettings::get_global(cx).node;
@@ -1176,8 +1176,8 @@ fn read_proxy_settings(cx: &mut Context<HeadlessProject>) -> Option<Url> {
 }
 
 fn cleanup_old_binaries() -> Result<()> {
-    let server_dir = paths::remote_server_dir_relative();
-    let release_channel = release_channel::RELEASE_CHANNEL.dev_name();
+    let server_dir = raijin_paths::remote_server_dir_relative();
+    let release_channel = raijin_release_channel::RELEASE_CHANNEL.dev_name();
     let prefix = format!("zed-remote-server-{}-", release_channel);
 
     for entry in std::fs::read_dir(server_dir.as_std_path())? {
@@ -1199,7 +1199,7 @@ fn cleanup_old_binaries() -> Result<()> {
 // Remove this once 223 goes stable, we only have this to clean up old binaries on WSL
 // we no longer download them into this folder, we use the same folder as other remote servers
 fn cleanup_old_binaries_wsl() {
-    let server_dir = paths::remote_wsl_server_dir_relative();
+    let server_dir = raijin_paths::remote_wsl_server_dir_relative();
     if let Ok(()) = std::fs::remove_dir_all(server_dir.as_std_path()) {
         log::info!("removing old wsl remote server folder: {:?}", server_dir);
     }

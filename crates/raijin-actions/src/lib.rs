@@ -323,8 +323,8 @@ pub mod feedback {
     actions!(
         feedback,
         [
-            /// Opens email client to send feedback to Zed support.
-            EmailZed,
+            /// Opens email client to send feedback to Raijin support.
+            EmailRaijin,
             /// Opens the bug report form.
             FileBugReport,
             /// Opens the feature request form.

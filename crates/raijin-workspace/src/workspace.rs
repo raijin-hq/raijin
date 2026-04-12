@@ -134,7 +134,6 @@ use raijin_theme_settings::ThemeSettings;
 pub use toolbar::{
     PaneSearchBarCallbacks, Toolbar, ToolbarItemEvent, ToolbarItemLocation, ToolbarItemView,
 };
-pub use raijin_ui;
 use raijin_ui::{Window, prelude::*};
 use inazuma_util::{
     ResultExt, TryFutureExt,
@@ -7918,7 +7917,7 @@ impl Render for Workspace {
         } else {
             (None, None)
         };
-        let ui_font = raijin_theme_settings::setup_ui_font(cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
 
         let theme = cx.theme().clone();
         let colors = theme.colors();

@@ -1392,7 +1392,7 @@ impl RulesLibrary {
 
 impl Render for RulesLibrary {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = raijin_theme_settings::setup_ui_font(cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
         let theme = cx.theme().clone();
 
         client_side_decorations(

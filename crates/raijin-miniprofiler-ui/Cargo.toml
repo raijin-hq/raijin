@@ -14,7 +14,9 @@ path = "src/miniprofiler_ui.rs"
 [dependencies]
 inazuma.workspace = true
 raijin-rpc.workspace = true
+raijin-theme.workspace = true
 raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
 raijin-actions.workspace = true
 raijin-workspace.workspace = true
 inazuma-util.workspace = true

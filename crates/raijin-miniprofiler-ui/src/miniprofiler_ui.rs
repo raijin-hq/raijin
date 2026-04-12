@@ -6,7 +6,7 @@ use std::{
 };
 
 use inazuma::{
-    App, AppContext, ClipboardItem, Context, Div, Entity, Hsla, InteractiveElement,
+    App, AppContext, ClipboardItem, Context, Div, Entity, Oklch, InteractiveElement,
     ParentElement as _, ProfilingCollector, Render, SerializedLocation, SerializedTaskTiming,
     SerializedThreadTaskTimings, SharedString, StatefulInteractiveElement, Styled, Task,
     ThreadTimingsDelta, TitlebarOptions, UniformListScrollHandle, WeakEntity, WindowBounds,
@@ -14,14 +14,13 @@ use inazuma::{
 };
 use raijin_rpc::{AnyProtoClient, proto};
 use inazuma_util::ResultExt;
-use raijin_workspace::{
-    Workspace,
-    ui::{
-        ActiveTheme, Button, ButtonCommon, ButtonStyle, Checkbox, Clickable, ContextMenu, Divider,
-        DropdownMenu, ScrollAxes, ScrollableHandle as _, Scrollbars, ToggleState, Tooltip,
-        WithScrollbar, h_flex, v_flex,
-    },
+use raijin_theme::ActiveTheme;
+use raijin_ui::{
+    Button, ButtonCommon, ButtonStyle, Checkbox, Clickable, ContextMenu, Divider,
+    DropdownMenu, ScrollAxes, ScrollableHandle as _, Scrollbars, ToggleState, Tooltip,
+    WithScrollbar, h_flex, v_flex,
 };
+use raijin_workspace::Workspace;
 use raijin_actions::OpenPerformanceProfiler;
 
 const NANOS_PER_MS: u128 = 1_000_000;
@@ -123,7 +122,7 @@ struct TimingBar {
     location: SerializedLocation,
     start_nanos: u128,
     duration_nanos: u128,
-    color: Hsla,
+    color: Oklch,
 }
 
 pub struct ProfilerWindow {
@@ -493,7 +492,7 @@ impl Render for ProfilerWindow {
                                     "switch-mode",
                                     if self.paused { "Resume" } else { "Pause" },
                                 )
-                                .style(ButtonStyle::Filled)
+                                .style(ButtonStyle::FILLED)
                                 .on_click(cx.listener(
                                     |this, _, _window, cx| {
                                         this.paused = !this.paused;
@@ -508,7 +507,7 @@ impl Render for ProfilerWindow {
                             )
                             .child(
                                 Button::new("export-data", "Save")
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .on_click(cx.listener(|this, _, _window, cx| {
                                         let Some(workspace) = this.workspace.as_ref() else {
                                             return;
@@ -563,7 +562,8 @@ impl Render for ProfilerWindow {
                             ),
                     )
                     .child(
-                        Checkbox::new("include-self", self.include_self_timings)
+                        Checkbox::new("include-self")
+                            .toggle_state(self.include_self_timings)
                             .label("Include profiler timings")
                             .on_click(cx.listener(|this, checked, _window, cx| {
                                 this.include_self_timings = *checked;

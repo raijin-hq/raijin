@@ -3676,7 +3676,7 @@ impl SettingsWindow {
 
 impl Render for SettingsWindow {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = raijin_theme_settings::setup_ui_font(cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
 
         client_side_decorations(
             v_flex()
